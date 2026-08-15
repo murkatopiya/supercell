@@ -1,0 +1,54 @@
+export const TRACER_TIME_SCALES = [1, 5, 10, 20] as const;
+
+export type TracerTimeScale = (typeof TRACER_TIME_SCALES)[number];
+
+export interface TracerRuntimeControlsProps {
+  paused: boolean;
+  timeScale: TracerTimeScale;
+  onPausedChange: (paused: boolean) => void;
+  onTimeScaleChange: (timeScale: TracerTimeScale) => void;
+  onReset: () => void;
+}
+
+export function TracerRuntimeControls({
+  paused,
+  timeScale,
+  onPausedChange,
+  onTimeScaleChange,
+  onReset,
+}: TracerRuntimeControlsProps) {
+  return (
+    <div className="tracer-runtime-controls">
+      <div className="tracer-runtime-controls__row">
+        <button
+          type="button"
+          className="tracer-runtime-controls__button"
+          onClick={() => onPausedChange(!paused)}
+        >
+          {paused ? "Resume" : "Pause"}
+        </button>
+        <button
+          type="button"
+          className="tracer-runtime-controls__button"
+          onClick={onReset}
+        >
+          Reset
+        </button>
+      </div>
+      <fieldset className="tracer-runtime-controls__scales">
+        <legend className="tracer-runtime-controls__legend">timeScale</legend>
+        {TRACER_TIME_SCALES.map((scale) => (
+          <label key={scale} className="tracer-runtime-controls__scale">
+            <input
+              type="radio"
+              name="tracer-time-scale"
+              checked={timeScale === scale}
+              onChange={() => onTimeScaleChange(scale)}
+            />
+            {scale}×
+          </label>
+        ))}
+      </fieldset>
+    </div>
+  );
+}

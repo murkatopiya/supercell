@@ -1,0 +1,241 @@
+---
+description: Project standards for Supercell Explorer — language, physics docs, architecture, workflow
+alwaysApply: true
+---
+
+# Supercell Explorer — Cursor Rules
+
+## Communication
+
+Общайся с пользователем на русском языке.
+
+Планы, объяснения, отчёты, вопросы, замечания и обсуждение архитектурных
+решений пиши по-русски.
+
+Имена файлов, типов, функций, API, код и устоявшиеся технические или
+физические термины можно оставлять на английском.
+
+Не переходи на английский язык целиком без явной просьбы пользователя.
+
+
+## Source of truth
+
+Перед изменением physics-related кода сначала прочитай релевантные документы
+в `docs/physics/`.
+
+Physics docs являются source of truth для:
+- физических определений;
+- систем координат;
+- знаков;
+- единиц;
+- semantic meaning типов;
+- validation/domain policy;
+- границ между ground-relative, storm-relative и world representations.
+
+Не изобретай физическое поведение, отсутствующее в документации.
+
+Если код, план и документация противоречат друг другу — остановись и явно
+покажи противоречие до реализации.
+
+
+## Coordinate discipline
+
+Canonical world coordinates:
+
+- +X = East
+- +Y = Up
+- +Z = South
+
+Meteorological atmospheric velocity:
+
+- eastward
+- northward
+- vertical
+
+Mapping:
+
+(x, y, z) = (eastward, vertical, -northward)
+
+Не используй `u`, `v`, `w` как имена world-space components.
+
+Не смешивай atmospheric semantic vectors и world `Vec3`.
+
+Conversion между representations должна быть явной и выполняться через
+канонические conversion helpers.
+
+
+## Architecture
+
+Сохраняй направление зависимостей проекта.
+
+Physics defines atmospheric state.
+Rendering observes it.
+
+Physics/simulation code не должен зависеть от rendering, UI или Three.js.
+
+Не протаскивай world-space representation в atmospheric diagnostics без
+явного требования physics docs.
+
+Не заставляй derived diagnostic заново получать исходные данные, если его
+канонический input уже существует.
+
+Пример:
+
+EnvironmentalWindProfile
+→ HorizontalWindShear
+→ HorizontalVorticity
+
+Каждый слой должен зависеть от непосредственно предшествующей физической
+величины, если документация не говорит иначе.
+
+
+## Implementation workflow
+
+Работай маленькими vertical slices.
+
+Перед реализацией нового физического механизма или diagnostic:
+
+1. прочитай релевантные docs;
+2. восстанови уже принятые решения;
+3. найди contradictions / ambiguities / gaps;
+4. предложи минимальный plan;
+5. отдели зафиксированное в docs от собственной рекомендации;
+6. дождись команды на реализацию.
+
+Если пользователь просит только plan или documentation:
+НЕ начинай писать production code.
+
+После реализации запусти:
+
+- `npm test`
+- `npm run typecheck`
+
+Сообщи:
+- какие файлы созданы;
+- какие изменены;
+- краткий diff summary;
+- результаты tests/typecheck.
+
+После завершения slice остановись.
+Не начинай следующий slice без команды пользователя.
+
+
+## Scope discipline
+
+Реализуй только согласованный scope.
+
+Не добавляй "на будущее":
+- convenience wrappers;
+- generic abstractions;
+- barrel exports;
+- helpers;
+- validation;
+- caching;
+- optimization;
+- additional physics;
+- rendering integration;
+- API variants,
+
+если они не нужны текущему slice или явно не зафиксированы в docs/plan.
+
+Не рефактори соседний код только потому, что видишь более красивый вариант.
+
+Если заметил потенциальное улучшение вне scope — сообщи о нём отдельно,
+но не реализуй.
+
+
+## Physics-first development
+
+Scientific correctness важнее визуальной правдоподобности.
+
+Не вводи storm physics только потому, что результат "выглядит правильно".
+
+Для новой физической величины явно фиксируй:
+- meaning;
+- units;
+- coordinate/frame semantics;
+- assumptions;
+- equations;
+- domain/boundary policy;
+- distinction from похожих quantities.
+
+Если physics API ещё не определён документацией, сначала предложи
+documentation decision.
+
+
+## Types and semantics
+
+Не переиспользуй тип только потому, что его числовая shape совпадает,
+если величины имеют существенно разный физический смысл.
+
+Одновременно не вводи branded/nominal types без реальной необходимости.
+
+Предпочитай минимальные semantic types, соответствующие текущей модели.
+
+Plain objects предпочтительны, пока class/factory не нужен для настоящего
+invariant или behavior.
+
+
+## Numerical methods
+
+Simulation timestep передаётся снаружи.
+Не вводи production `DEFAULT_DT` без отдельного решения.
+
+Integrator не должен мутировать входной position или sampled velocity.
+
+Не путай:
+- ошибку velocity field;
+- ошибку numerical integration;
+- физическую ошибку модели.
+
+Где возможно, проверяй numerical implementation против analytical solution
+или exact discrete map.
+
+Не выбирай magic tolerance без обоснования.
+
+
+## Testing
+
+Тестируй прежде всего физический и архитектурный контракт, а не implementation
+trivia.
+
+Предпочитай:
+- analytical invariants;
+- sign checks;
+- units/semantic behavior;
+- known solutions;
+- convergence behavior;
+- explicit boundary behavior.
+
+Используй floating-point tolerance там, где арифметика не гарантирует exact
+representation.
+
+Учитывай IEEE-754 signed zero (`-0`) там, где он может повлиять на equality
+или API output.
+
+Не дублируй в каждом слое тесты validation, уже принадлежащей предыдущему
+слою.
+
+
+## Mutability
+
+Не мутируй объекты, принадлежащие caller'у, если это не является явным
+контрактом API.
+
+Не возвращай внутреннее mutable state наружу.
+
+Но не добавляй defensive copying/identity tests автоматически:
+это должно следовать из ownership contract конкретного типа.
+
+
+## Current development philosophy
+
+Prefer:
+
+explicit > implicit
+semantic > convenient
+small slice > speculative framework
+documented physics > plausible physics
+derived quantity > recomputation from lower layers
+validation at the owning boundary > repeated validation everywhere
+measured numerical error > visual smoothness
