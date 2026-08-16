@@ -242,6 +242,19 @@ This pairing is a controlled combination of two already documented mechanisms:
 
 The composite API must remain generic and must not hard-code this pairing.
 
+A later laboratory DEMO also includes `RotationField` as a third operand.
+That wiring is specified in `docs/rendering/04-composite-rotation-demo.md`.
+The current live DEMO uses `VerticalEnvelopeUpdraftField` as the updraft
+operand together with `LowerRadialInflowField` and `UpperRadialOutflowField`
+(`docs/rendering/08-composite-lower-radial-inflow-demo.md`). The
+completed five-operand DEMO immediately before that inflow replacement is
+`docs/rendering/07-composite-upper-radial-outflow-demo.md`. The
+completed four-field DEMO immediately before the fifth operand is
+`docs/rendering/06-composite-vertical-envelope-updraft-demo.md`. The
+completed four-field DEMO that still used height-independent
+`UpdraftField` is `docs/rendering/05-composite-radial-inflow-demo.md`.
+None of that wiring changes this compositor's physics.
+
 ScenarioConfig wiring, demo scene composition, and renderer changes are
 **not** part of the first implementation slice.
 

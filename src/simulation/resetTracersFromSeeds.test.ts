@@ -27,12 +27,12 @@ describe("resetTracersFromSeeds", () => {
       active: true,
     });
     expect(particles[1]).toEqual({
-      position: { x: 600, y: 1000, z: 0 },
+      position: { x: 2400, y: 1000, z: 0 },
       age: 0,
       active: true,
     });
     expect(particles[2]).toEqual({
-      position: { x: 1800, y: 1000, z: 0 },
+      position: { x: 0, y: 1000, z: -2400 },
       age: 0,
       active: true,
     });

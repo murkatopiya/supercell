@@ -10,6 +10,7 @@ import {
 } from "../ui/tracer/TracerRuntimeControls.js";
 import { TracerViewport } from "../ui/tracer/TracerViewport.js";
 import { composeDemoTracerSimulation } from "./composeDemoTracerSimulation.js";
+import { IntegrationFrame } from "./IntegrationFrame.js";
 import {
   DEMO_SELECTED_HEIGHT,
   createDemoHodographPoints,
@@ -24,7 +25,9 @@ export function App() {
   const [overlayVisibility, setOverlayVisibility] = useState(
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
-  const [tracerSimulation] = useState(() => composeDemoTracerSimulation());
+  const [tracerSimulation] = useState(() =>
+    composeDemoTracerSimulation(IntegrationFrame.StormRelativeLaboratory),
+  );
   const [paused, setPaused] = useState(false);
   const [timeScale, setTimeScale] = useState<TracerTimeScale>(1);
   const [resetEpoch, setResetEpoch] = useState(0);
@@ -41,7 +44,9 @@ export function App() {
     <main className="app">
       <h1 className="app__title">Supercell Explorer</h1>
       <p className="app__subtitle">
-        Ground-relative hodograph + environment and updraft tracers
+        Ground-relative hodograph. 3D tracers use a storm-relative
+        laboratory frame (environmental advection relative to
+        prescribed storm motion).
       </p>
 
       <section className="app__panels">
@@ -62,7 +67,11 @@ export function App() {
         </div>
 
         <div className="app__panel app__panel--tracer">
-          <h2 className="app__panel-title">Environment + updraft tracers</h2>
+          <h2 className="app__panel-title">
+            Storm-relative laboratory: environment, vertically structured
+            updraft, rotation, lower radial inflow, and upper radial
+            outflow tracers
+          </h2>
           <TracerRuntimeControls
             paused={paused}
             timeScale={timeScale}

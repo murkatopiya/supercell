@@ -287,7 +287,10 @@ says so, not because of a domain wall.
 - tornado;
 - downdraft;
 - turbulence;
-- vertical envelope `w(r, y)`;
+- vertical envelope `w(r, y)` — that mechanism is a separate type,
+  `VerticalEnvelopeUpdraftField`, specified in
+  `docs/physics/15-vertical-updraft-envelope.md`. This v1 type stays
+  height-independent;
 - `CompositeVelocityField` / `V_environment + V_updraft`;
 - ScenarioConfig / demo scene wiring;
 - rendering of a plume shape.

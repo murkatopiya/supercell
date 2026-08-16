@@ -32,19 +32,23 @@ Out of scope **for the runtime-controls slice itself** (this document does
 not implement storm physics):
 
 - trails / path ribbons;
-- implementing updraft / rotation / composite field wiring
-  (owned by `docs/rendering/03-composite-updraft-demo.md`);
+- implementing updraft / rotation / radial-inflow / outflow / composite
+  field wiring (owned by
+  `docs/rendering/08-composite-lower-radial-inflow-demo.md`);
 - storm-relative 3D velocity;
 - editing scenario parameters / forms;
 - playback timeline / scrubbing / rewind;
 - variable timestep;
 - previous/current state interpolation;
-- camera reset;
+- camera reset (`docs/rendering/11-deep-storm-tracer-view.md`
+  reaffirms: simulation Reset does not reset OrbitControls / pose;
+  a future Reset View is a separate UI item);
 - putting `paused` / `timeScale` into `ScenarioConfig`;
 - expanding `SimulationClock` with `paused` / `timeScale` in this slice.
 
 Pause / timeScale / Reset continue to apply unchanged when the DEMO field
-becomes `CompositeVelocityField([env, updraft])`.
+becomes `CompositeVelocityField([env, updraft, rotation, lowerRadialInflow,
+upperRadialOutflow])`.
 
 ---
 
@@ -308,10 +312,12 @@ docs/rendering/02-tracer-runtime-controls.md
 
 - Tracer scene / fixed-step / no interpolation:
   `docs/rendering/01-tracer-scene.md`
-- Composite env + updraft DEMO wiring (current DEMO field/seeds; runtime
-  controls unchanged):
-  `docs/rendering/03-composite-updraft-demo.md`
-- Scenario DTO (`timestep` / seeds / `storm.updraft`; no runtime scale):
+- Composite env + vertical-envelope updraft + rotation + lower radial
+  inflow + upper radial outflow DEMO wiring (current DEMO field/seeds;
+  runtime controls unchanged):
+  `docs/rendering/08-composite-lower-radial-inflow-demo.md`
+- Scenario DTO (`timestep` / seeds / `storm.updraft` / `storm.rotation` /
+  `storm.lowerRadialInflow` / `storm.upperRadialOutflow`; no runtime scale):
   `docs/architecture/01-scenario-config.md`
 - Conceptual sim vs render time:
   `docs/ARCHITECTURE.md`

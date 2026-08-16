@@ -131,6 +131,10 @@ These values are illustrative only.
 
 They do not define a canonical supercell environment.
 
+DEMO laboratory knots are owned by rendering DEMO documents, not by
+this primitive. The next deep DEMO profile is
+`docs/rendering/09-deep-environmental-profile-demo.md`.
+
 ---
 
 ## 5. Level validity requirements

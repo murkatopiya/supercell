@@ -1,5 +1,12 @@
 # Composite Updraft Demo
 
+**Status:** this document is the completed env+updraft DEMO wiring slice.
+Current DEMO tracer field, seeds, and storm DTO occupants are specified in
+`docs/rendering/08-composite-lower-radial-inflow-demo.md`. Intermediate
+historical fields: `04` (rotation), `05` (radial inflow with
+height-independent updraft), `06` (vertical-envelope updraft without
+upper outflow), and `07` (height-independent inflow + upper outflow).
+
 ## 1. Purpose
 
 This document defines the first browser demo integration that advects tracers
@@ -170,17 +177,27 @@ concern, not a reason to alter physics formulas.
 
 | Document | Role after this slice |
 | --- | --- |
-| `01-tracer-scene.md` | Fixed-step loop, observe-only Three.js, layout; DEMO field/seeds superseded here |
+| `01-tracer-scene.md` | Fixed-step loop, observe-only Three.js, layout |
 | `02-tracer-runtime-controls.md` | Pause / timeScale / Reset; still applies unchanged |
-| This document (`03`) | Composite env+updraft demo wiring and DEMO parameters |
+| This document (`03`) | Completed env+updraft DEMO wiring; field/seeds superseded by `04` then `05` |
+| `04-composite-rotation-demo.md` | Completed env+updraft+rotation DEMO wiring; field superseded by `05`; seeds kept |
+| `05-composite-radial-inflow-demo.md` | Completed four-field DEMO with height-independent updraft; superseded by `06` |
+| `06-composite-vertical-envelope-updraft-demo.md` | Historical four-field DEMO with `VerticalEnvelopeUpdraftField`; superseded by `07` |
+| `07-composite-upper-radial-outflow-demo.md` | Historical five-operand DEMO with height-independent `RadialInflowField`; superseded for the inflow occupant by `08` |
+| `08-composite-lower-radial-inflow-demo.md` | Current DEMO: same five-operand count; inflow occupant is `LowerRadialInflowField` |
 
 Historical env-only statements in `01` (constant height, vertical-column
 seeds, `EnvironmentalWindField` as the sole 3D field) describe the first
-tracer slice and must not be read as the current DEMO contract.
+tracer slice. This document's two-operand composite and far-east seed
+describe the env+updraft slice. Neither is the current DEMO contract;
+see `08`.
 
 ---
 
 ## 9. Explicit non-goals
+
+Non-goals of **this** completed env+updraft slice. Rotation DEMO wiring is
+owned by `docs/rendering/04-composite-rotation-demo.md`.
 
 - rotation / mesocyclone;
 - inflow;

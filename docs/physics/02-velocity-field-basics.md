@@ -682,8 +682,10 @@ Continuity must be considered when inflow is designed.
 
 A diverging field directs flow away from a region.
 
-For example, future upper-level outflow may visually show air spreading
-outward after rising through the storm.
+For example, upper-level outflow may visually show air spreading
+outward after rising through the storm. The first isolated laboratory
+formula for that horizontal mechanism is
+`docs/physics/16-upper-radial-outflow-field.md`.
 
 Again, divergence is not merely a particle effect.
 

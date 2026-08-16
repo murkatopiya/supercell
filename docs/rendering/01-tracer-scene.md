@@ -7,11 +7,27 @@ Supercell Explorer: fixed-step simulation, observe-only Three.js scene, and
 shared `DEMO_SCENARIO` layout beside the hodograph.
 
 **Status:** the original env-only DEMO field and vertical-column seeds in
-this document are **historical**. Current DEMO tracer wiring is:
+this document are **historical**. The later env+updraft DEMO field and
+far-east seed in `docs/rendering/03-composite-updraft-demo.md` are also
+**historical**. Current DEMO tracer wiring is:
 
-    EnvironmentalWindField + UpdraftField → CompositeVelocityField
+    EnvironmentalWindField + VerticalEnvelopeUpdraftField
+    + VerticalEnvelopeRotationField + LowerRadialInflowField
+    + UpperRadialOutflowField
+    → CompositeVelocityField
 
-as specified in `docs/rendering/03-composite-updraft-demo.md`.
+as specified in
+`docs/rendering/12-composite-vertical-envelope-rotation-demo.md`
+(current rotation occupant) and
+`docs/rendering/08-composite-lower-radial-inflow-demo.md`
+(five-operand introduction; seeds). Environmental knots:
+`docs/rendering/09-deep-environmental-profile-demo.md`.
+Live storm-envelope geometry:
+`docs/rendering/10-deep-storm-envelope-scaling.md`.
+DEMO default tracer-view fixture (camera, grid, axes, glyph size):
+`docs/rendering/11-deep-storm-tracer-view.md`.
+Chimney-retune view policy (constants unchanged):
+`docs/rendering/13-deep-chimney-rendering-scaling.md`.
 
 This document remains the source of truth for:
 
@@ -26,7 +42,16 @@ It answers (historically):
     scene, with fixed simulation steps decoupled from render frames?
 
 The **current** composition chain for DEMO tracers is documented in
-`docs/rendering/03-composite-updraft-demo.md`. The historical env-only chain
+`docs/rendering/12-composite-vertical-envelope-rotation-demo.md`
+(rotation occupant),
+`docs/rendering/08-composite-lower-radial-inflow-demo.md` (seed layout),
+`docs/rendering/09-deep-environmental-profile-demo.md` (knots), and
+`docs/rendering/10-deep-storm-envelope-scaling.md` (envelope bounds).
+The DEMO default camera/grid/glyph numbers are
+`docs/rendering/11-deep-storm-tracer-view.md`; they are not universal
+constants of this architecture document.
+
+The historical env-only chain
 was:
 
 ```text
@@ -56,10 +81,15 @@ The first tracer-scene slice showed:
 - a thin React canvas host beside the existing hodograph panel;
 - both panels fed by the same `DEMO_SCENARIO`.
 
-Originally that field was `EnvironmentalWindField` only. The composite
-updraft DEMO extension is owned by
-`docs/rendering/03-composite-updraft-demo.md` and does not change the
-observe-only rendering contract here.
+Originally that field was `EnvironmentalWindField` only. Current DEMO
+composition is owned by
+`docs/rendering/12-composite-vertical-envelope-rotation-demo.md`
+(rotation occupant),
+`docs/rendering/08-composite-lower-radial-inflow-demo.md` (seed layout),
+`docs/rendering/09-deep-environmental-profile-demo.md` (knots), and
+`docs/rendering/10-deep-storm-envelope-scaling.md` (envelope geometry)
+and
+does not change the observe-only rendering contract here.
 
 Still out of scope for the tracer-scene rendering contract:
 
@@ -96,8 +126,10 @@ src/ui/tracer/
   thin React canvas host (mount / dispose / resize hookup only)
 
 src/app/
-  composition: DEMO_SCENARIO → profile / updraft → composite field
-  → particles → Simulation (see docs/rendering/03-composite-updraft-demo.md)
+  composition: DEMO_SCENARIO → profile / enveloped updraft / rotation /
+  lower radial inflow / upper radial outflow
+  → composite field
+  → particles → Simulation (see docs/rendering/08-composite-lower-radial-inflow-demo.md)
   layout: hodograph panel + tracer viewport
   requestAnimationFrame loop wiring
 ```
@@ -152,10 +184,20 @@ height `position.y` and returns world velocity via
 For environment profile v1, `vertical = 0`. Under an **environment-only**
 field, tracers therefore stay at constant height and drift horizontally.
 
-Under the **current composite DEMO** (`docs/rendering/03-composite-updraft-demo.md`),
-`UpdraftField` contributes nonzero `Vy`, so tracer height changes and
-environment is re-sampled along the trajectory. Do not assume constant
-height for that DEMO.
+Under the **current composite DEMO**
+(`docs/rendering/12-composite-vertical-envelope-rotation-demo.md`
+occupant;
+`docs/rendering/10-deep-storm-envelope-scaling.md` envelope geometry),
+`VerticalEnvelopeUpdraftField` contributes height-dependent `Vy`,
+`VerticalEnvelopeRotationField` contributes height-localized horizontal
+tangent, `LowerRadialInflowField` contributes height-localized
+horizontal inward flow, and `UpperRadialOutflowField` contributes
+height-localized outward flow, so tracer height and horizontal path both
+change. Environment, the updraft envelope, the rotation envelope, the
+lower-inflow envelope, and the outflow envelope are re-sampled along the
+trajectory. Do not assume
+constant height, circular orbits, linear-y lift, isolated half-sine `y(t)`,
+or `r = r0 e^{±At}` for that DEMO.
 
 Storm motion `C` from `ScenarioConfig` is **not** applied to the 3D field.
 The hodograph path continues to use `C` for diagnostics/overlays only.
@@ -169,23 +211,29 @@ From `docs/architecture/01-scenario-config.md`:
 | Field | Role in tracer scene |
 | --- | --- |
 | `environment.windLevels` | build profile → `EnvironmentalWindField` |
-| `storm.updraft` | build `UpdraftField` (current DEMO; see `03`) |
+| `storm.updraft` | build `VerticalEnvelopeUpdraftField` (current DEMO; wiring `08`, bounds `10`) |
+| `storm.rotation` | build `VerticalEnvelopeRotationField` (current DEMO; occupant `12`, primitive `13`) |
+| `storm.lowerRadialInflow` | build `LowerRadialInflowField` (current DEMO; wiring `08`, bounds `10`) |
+| `storm.upperRadialOutflow` | build `UpperRadialOutflowField` (current DEMO; wiring `08`, bounds `10`) |
 | `simulation.timestep` | fixed numerical `dt` for every `Simulation.step` |
 | `simulation.tracerSeeds` | initial world positions for tracers |
 | `stormMotion` | unused by 3D field; still used by hodograph composition |
 
 ### DEMO_SCENARIO seeds
 
-**Current DEMO lock-in** (composite updraft demo):
+**Current DEMO lock-in** (composite upper-outflow demo; seeds unchanged from `04`/`05`/`06`):
 
 ```text
-(0,    1000, 0)
-(600,  1000, 0)
-(1800, 1000, 0)
+(0,    1000,  0)
+(600,  1000,  0)
+(0,    1000, -600)
 ```
 
-See `docs/rendering/03-composite-updraft-demo.md` for updraft params and
-anti-oracle rules.
+See `docs/rendering/08-composite-lower-radial-inflow-demo.md` for
+five-operand wiring, rotation/inflow/updraft params, and anti-oracle
+rules. See `docs/rendering/10-deep-storm-envelope-scaling.md` for
+live envelope bounds. See `docs/rendering/09-deep-environmental-profile-demo.md`
+for environmental knots.
 
 **Historical env-only lock-in** (first tracer slice; superseded for DEMO):
 
@@ -208,15 +256,19 @@ explicitly changes it. This is scenario data, not a project-wide
 ## 6. Building tracers and simulation (composition)
 
 App / composition responsibilities for the **current DEMO** are defined in
-`docs/rendering/03-composite-updraft-demo.md`:
+`docs/rendering/08-composite-lower-radial-inflow-demo.md` (operand list)
+and `docs/rendering/10-deep-storm-envelope-scaling.md` (envelope numbers):
 
 1. `createEnvironmentalWindProfile(DEMO_SCENARIO)`;
 2. `new EnvironmentalWindField(profile)`;
 3. `createUpdraftField(DEMO_SCENARIO)`;
-4. `new CompositeVelocityField([environmentField, updraftField])`;
-5. map each seed to a `TracerParticle`:
+4. `createRotationField(DEMO_SCENARIO)`;
+5. `createLowerRadialInflowField(DEMO_SCENARIO)`;
+6. `createUpperRadialOutflowField(DEMO_SCENARIO)`;
+7. `new CompositeVelocityField([environmentField, updraftField, rotationField, lowerRadialInflowField, upperRadialOutflowField])`;
+8. map each seed to a `TracerParticle`:
    `{ position: copy of seed, age: 0, active: true }`;
-6. `new Simulation(field, new EulerIntegrator(), particles)`.
+9. `new Simulation(field, new EulerIntegrator(), particles)`.
 
 **Integrator lock-in:** `EulerIntegrator` at composition level only.
 Do not add integrator choice to `ScenarioConfig`.
@@ -225,7 +277,8 @@ Under environment-only advection, velocity depends only on height and
 vertical motion is zero, so each tracer sees constant world velocity along
 its path and Euler matches the exact discrete map. That property does **not**
 hold for the composite DEMO (height and radius both change). Do not use a
-general linear-y oracle for DEMO tracers under nonzero environmental wind.
+general linear-y or circular oracle for DEMO tracers under nonzero
+environmental wind.
 
 Seed → particle mapping must copy coordinates so later config mutation does
 not silently move live particles without an explicit rebuild.
@@ -306,9 +359,12 @@ simulation domain or boundary policy.
 ### Camera
 
 - one `PerspectiveCamera`;
-- fixed initial pose looking toward the seed column / origin region;
-- framing is purely rendering/debug around expected short-time trajectories
-  (no invented physics domain bounds).
+- world units remain physical meters (`1:1` on X/Y/Z; no exaggerated Y);
+- DEMO default pose, FOV, near/far, grid, axes, and glyph radius are the
+  view fixture in `docs/rendering/11-deep-storm-tracer-view.md`, not
+  physics-domain bounds and not `ScenarioConfig`;
+- the historical first-slice pose framed short-time seed trajectories
+  in a `0–2 km` laboratory; that pose is not a project-wide constant.
 
 ### OrbitControls (inspection-only)
 
@@ -331,12 +387,12 @@ The Vite/React app shows both:
 DEMO_SCENARIO
 ├─ hodograph path → profile → points / diagnostics → HodographPanel
 └─ tracer path    → profile → EnvironmentalWindField
-                    + updraft → CompositeVelocityField
+                    + updraft + rotation → CompositeVelocityField
                     → seeds → Simulation → TracerScene observe
 ```
 
 There must not be a second editable copy of environment winds, updraft
-parameters, or seeds for the 3D panel.
+parameters, rotation parameters, or seeds for the 3D panel.
 
 Overlay visibility and other hodograph UI state remain UI-only and are not
 part of `ScenarioConfig`.
@@ -355,9 +411,13 @@ part of `ScenarioConfig`.
    - Historical env-only vertical-column DEMO: after `N` steps, positions
      matched analytically expected horizontal drift at each seed height.
    - Current composite DEMO: use the integration tests in
-     `docs/rendering/03-composite-updraft-demo.md` (structural sum, lift,
-     radial decay, reset, hodograph isolation). Do **not** assert
-     `y(t) = y0 + W0·t` under nonzero environmental wind.
+     `docs/rendering/08-composite-lower-radial-inflow-demo.md` (structural
+     five-field sum, envelope `Vy = W0 E_r F(y)`, `G_in(1000) = √2/2` at
+     seeds, outflow `G_out(1000) = 0`, orthogonal rotation/inflow signs,
+     reset, hodograph isolation).
+     Do **not** assert `y(t) = y0 + W0·t`, the isolated half-sine closed
+     form, circular `r(t) = r0`, or `r(t) = r0 e^{±At}` under nonzero
+     environmental wind.
 
 3. **Pure accumulator**  
    given simulation-elapsed seconds and a fixed timestep, the helper reports
@@ -400,8 +460,30 @@ trivial to test without Three.
   `docs/ui/01-hodograph-panel.md`
 - Tracer Pause / timeScale / Reset (runtime UI, fixed dt):
   `docs/rendering/02-tracer-runtime-controls.md`
-- Composite env + updraft DEMO wiring (current DEMO field/seeds):
+- Composite env + updraft DEMO wiring (superseded for current DEMO
+  field/seeds):
   `docs/rendering/03-composite-updraft-demo.md`
+- Composite env + updraft + rotation DEMO wiring (superseded for current
+  DEMO field; seeds kept):
+  `docs/rendering/04-composite-rotation-demo.md`
+- Composite env + updraft + rotation + radial-inflow DEMO wiring
+  (superseded for current DEMO field; seeds kept):
+  `docs/rendering/05-composite-radial-inflow-demo.md`
+- Composite env + vertical-envelope updraft + rotation + radial-inflow
+  DEMO wiring (superseded for current DEMO field; seeds kept):
+  `docs/rendering/06-composite-vertical-envelope-updraft-demo.md`
+- Composite env + enveloped updraft + rotation + height-independent
+  inflow + upper outflow DEMO wiring (superseded for the inflow occupant):
+  `docs/rendering/07-composite-upper-radial-outflow-demo.md`
+- Composite env + enveloped updraft + rotation + lower radial inflow +
+  upper outflow DEMO wiring (current DEMO operands/seeds):
+  `docs/rendering/08-composite-lower-radial-inflow-demo.md`
+- Deep environmental profile DEMO (current DEMO knots `0–12000 m`):
+  `docs/rendering/09-deep-environmental-profile-demo.md`
+- Deep storm envelope scaling (current DEMO envelope bounds):
+  `docs/rendering/10-deep-storm-envelope-scaling.md`
+- Deep storm tracer view (DEMO default camera/grid/glyph fixture):
+  `docs/rendering/11-deep-storm-tracer-view.md`
 
 If this document and implementation disagree, stop and resolve the
 contradiction before extending the 3D slice.
@@ -417,12 +499,15 @@ contradiction before extending the 3D slice.
    1 frame = 1 simulation step.
 4. Rendering shows the **last completed fixed-step state** — no
    previous/current interpolation.
-5. Current DEMO seeds: `(0,1000,0)`, `(600,1000,0)`, `(1800,1000,0)` — see
-   `03-composite-updraft-demo.md`.
+5. Current DEMO seeds: `(0,1000,0)`, `(600,1000,0)`, `(0,1000,-600)` — see
+   `08-composite-lower-radial-inflow-demo.md`. Envelope bounds: `10`.
 6. `EulerIntegrator` chosen in composition, not in ScenarioConfig.
 7. Spheres + `AxesHelper` + XZ `GridHelper`; OrbitControls inspection-only.
+   DEMO pose/grid/glyph numbers: `11-deep-storm-tracer-view.md`.
 8. One `DEMO_SCENARIO` feeds hodograph and 3D.
-9. Current DEMO 3D field is `CompositeVelocityField([env, updraft])`;
+9. Current DEMO 3D field is
+   `CompositeVelocityField([env, verticalEnvelopeUpdraft, rotation,
+   lowerRadialInflow, upperRadialOutflow])`;
    hodograph stays profile-only.
 10. Required tests: seed mapping, trajectory contracts appropriate to the
     active DEMO field, pure accumulator. No heavy WebGL test harness for
@@ -434,7 +519,31 @@ contradiction before extending the 3D slice.
 
 The original env-only tracer-scene implementation slice is complete.
 
-Further DEMO changes that wire `storm.updraft` and
-`CompositeVelocityField` follow
-`docs/rendering/03-composite-updraft-demo.md` under a separate
-implementation command.
+The env+updraft DEMO extension is complete
+(`docs/rendering/03-composite-updraft-demo.md`).
+
+The env+updraft+rotation DEMO extension is complete
+(`docs/rendering/04-composite-rotation-demo.md`).
+
+The env+updraft+rotation+radial-inflow DEMO extension is complete
+(`docs/rendering/05-composite-radial-inflow-demo.md`).
+
+Further DEMO changes that replace height-independent `UpdraftField` with
+`VerticalEnvelopeUpdraftField` are complete
+(`docs/rendering/06-composite-vertical-envelope-updraft-demo.md`).
+
+Adding `UpperRadialOutflowField` as a fifth operand is complete
+(`docs/rendering/07-composite-upper-radial-outflow-demo.md`).
+
+Replacing the DEMO `RadialInflowField` occupant with
+`LowerRadialInflowField` is complete
+(`docs/rendering/08-composite-lower-radial-inflow-demo.md`).
+
+The deep environmental profile (knots to `12000 m`) is complete
+(`docs/rendering/09-deep-environmental-profile-demo.md`).
+
+Deep storm-envelope scaling is complete
+(`docs/rendering/10-deep-storm-envelope-scaling.md`).
+
+The deep-storm tracer-view fixture is live
+(`docs/rendering/11-deep-storm-tracer-view.md`).
