@@ -1,15 +1,15 @@
 # Shared Tracer Inspector Architecture
 
-**Status:** architecture / product SoT. Slice 1 (stable tracer
-identity + selection lifecycle) is implemented. No inspector UI.
-No picking. No decomposition API. No Follow.
+**Status:** architecture / product SoT. Slices 1–2 are
+implemented. No inspector UI. No picking. No Follow.
 
 **Current product status:** Explore point release is live
 (`18` Slices 1–4). Guided catalog is docs-only (`17`). Live App
 still opens on Guided NG1 with a temporary Explore | Guided
-entry. Physics remains paused (`15`). Slice 1 of this document
-is headless: `tracerId` at birth and `TracerSelection`. Not
-browser-visible.
+entry. Physics remains paused (`15`). Slice 1 is headless
+identity + `TracerSelection`. Slice 2 is a headless observation
+adapter (`TracerInspection`) plus composition-held operand
+instances. Not browser-visible.
 
 This document answers:
 
@@ -18,10 +18,10 @@ This document answers:
     and Guided, without making rendering own physics or turning
     arbitrary Explore tracers into curated stories?
 
-It does **not** implement picking, an inspector panel, a
-decomposition API, Follow, a timeline, delete-one, or
-persistence. Slice 1 implemented identity + selection state
-only.
+It does **not** implement picking, an inspector panel, Follow, a
+timeline, delete-one, or persistence. Slice 1 implemented
+identity + selection state. Slice 2 implemented the read-only
+decomposition observation adapter.
 
 Predecessors:
 
@@ -52,7 +52,7 @@ stack                = seven prescribed operands
 Explore              = empty session + point release
 Guided live          = NG1 (developer default, not product nav)
 selection            = TracerSelection (headless; App unwired)
-inspector            = none
+inspector            = TracerInspection adapter (headless; App unwired)
 ```
 
 ---
@@ -134,11 +134,20 @@ TracerSelection         src/interaction/TracerSelection.ts
 findTracerById
 resolveSelectedTracer   lookup against a caller-owned list
                         selection does not own particles
+TracerInspection        src/interaction/TracerInspection.ts
+                        inspectTracer / inspectSelectedTracer
+InspectableVelocityOperands
+                        total + optional { key, field }[]
+                        same instances Simulation integrates
 CompositeVelocityField  generic Σ V_i; fields private
                         sample discards summands
+                        still nameless
 VelocityField           sample(position, time) → Vec3
 composeDemoTracerFields already returns named operand
                         instances + the composite
+composeDemoTracersWithObservation
+composeDemoTracerLab    keep those instances beside Simulation
+ExploreLab / GuidedLab  hold velocityObservation
 TracerScene             observe-only Sphere meshes + optional lines
                         addTracerSlot / clearTracerSlots
                         no selected highlight
@@ -148,19 +157,24 @@ AtmosphericTracerDomain y ≥ 0 crossing after integration
 TracerPathHistory       index-aligned lanes
 ```
 
-Composition gap (the inspector hole):
+Composition (Slice 2 closed the former inspector hole):
 
 ```text
 composeDemoTracerFields(...)
   → { field, environmentField, updraftField, ... }
 
+demoInspectableVelocityOperands(composed)
+  → { total: composed.field, parts: same operand instances }
+
+composeDemoTracersWithObservation / composeDemoTracerLab
+  → Simulation(velocityObservation.total) + velocityObservation
+
 composeDemoTracerSimulation / composeExploreTracerSimulation
-  → keep only field
-  → named operand references are discarded
+  → Simulation only (existing physics/pedagogy tests)
 ```
 
 The live operands already exist at composition time. The
-inspector must consume **those** instances. It must not call
+inspector consumes **those** instances. It must not call
 `composeDemoTracerFields` a second time.
 
 Pointer path already exists for placement (`TracerViewport`
@@ -459,13 +473,14 @@ human-readable model decomposition metadata
 v1 observation keeps that list alive next to `Simulation`
 instead of discarding it.
 
-Conceptual composition descriptor (not a type to implement now):
+Implemented composition descriptor:
 
 ```text
 InspectableVelocityOperands
   total: VelocityField          // the instance Simulation steps
-  parts: { key, field }[]       // same instances, same order
+  parts?: { key, field }[]      // same instances, same order
                                 // as the composite's operand list
+                                // omitted / empty → no Level 2
 ```
 
 The inspector adapter samples `total` and each `parts[i].field`
@@ -878,27 +893,33 @@ Named concepts:
 **Verdict: implement a narrow adapter first.** Do not wait for a
 `ModelObservation` service.
 
-The adapter:
+The adapter (implemented):
 
 ```text
-given selected particle + clock.time
-      + the Simulation velocity field
-      + optional inspectable operand list (same instances)
+src/interaction/TracerInspection.ts
 
-returns TracerInspection
-does not mutate particle, fields, or clock
+inspectTracer(particle, time, observation) → TracerInspection
+inspectSelectedTracer(particles, selection, time, observation)
+  → TracerInspection | undefined
+
+observation.total           always sampled
+observation.parts           optional; empty/absent omits contributions
+does not mutate particle, fields, clock, or selection
 does not import Three.js, React, or pedagogy
 ```
+
+`inspectSelectedTracer` uses `resolveSelectedTracer`. No
+selection or a missing id returns `undefined`, never a fake
+payload.
 
 An arbitrary-point probe (`ARCHITECTURE` §23) is a sibling later
 (click empty space, no particle). v1 is **selected tracer**, not
 a free probe.
 
-Simulation may later expose a read-only reference to the
-`VelocityField` it integrates so observation cannot attach a
-different field. That is not product knowledge. Not required
-if composition already holds the same reference beside
-`Simulation`.
+Composition holds the same `total` reference beside
+`Simulation` (`composeDemoTracersWithObservation` passes
+`velocityObservation.total` to the `Simulation` constructor).
+Simulation does not gain contribution names.
 
 ---
 
@@ -1086,21 +1107,24 @@ Slice 1 — stable identity + selection lifecycle     COMPLETE
           history and scene stay index-aligned
           not user-facing
 
-Slice 2 — model decomposition observation adapter   headless
-          keep composeDemoTracerFields operand instances
-            beside Simulation (stop discarding them)
-          narrow adapter → TracerInspection
+Slice 2 — model decomposition observation adapter   COMPLETE
+          composeDemoTracersWithObservation /
+            composeDemoTracerLab keep operand instances
+            beside Simulation
+          ExploreLab / GuidedLab hold velocityObservation
+          inspectTracer → TracerInspection
+          DEMO tokens in operand order; contributions optional
           sum invariant; SR env operand; no mutation
           no-decomposition fallback path
           not user-facing
 
-Slice 3 — glyph picking + selected highlight        first browser-visible
+Slice 3 — glyph picking + selected highlight        NEXT
           share world ray; glyph wins over placement
           highlight selected mesh; do not recreate scene
           preview marker not selectable
           inspector panel not required yet
 
-Slice 4 — minimal inspector panel                   first "why?"
+Slice 4 — minimal inspector panel                   pending
           Level 1 + Level 2 for the live DEMO model
           empty / no-selection safe
           Explore unlabeled; Guided claim stays in catalog copy
@@ -1213,15 +1237,15 @@ performance / update:        one tracer; sample on step + select
                              no optimization now
 
 implementation sequence:     1 id + selection lifecycle COMPLETE
-                             2 observation adapter
-                             3 pick + highlight
-                             4 Level 1+2 panel
+                             2 observation adapter COMPLETE
+                             3 pick + highlight NEXT
+                             4 Level 1+2 panel pending
 
 first browser-visible slice: 3
 
 first "why?" slice:          4
 
-next product slice:          implementation Slice 2
+next product slice:          implementation Slice 3
                              when commanded
                              not catalog UI
                              not Follow
@@ -1241,20 +1265,22 @@ blockers:                    none for this SoT
                                only by optional contributions
                                (already locked)
 
-production this slice:       Slice 1
-                             tracerId + TracerSelection
-                             not picking / inspector / Follow
+production this slice:       Slice 2
+                             TracerInspection adapter
+                             composition-held InspectableVelocityOperands
+                             not picking / inspector panel / Follow
 ```
 
 ---
 
 ## 26. STOP
 
-Slice 1 is complete: monotonic `tracerId` at birth and
-`TracerSelection` as the interaction owner. This SoT does not
-start picking, an inspector panel, a decomposition API, Follow,
-a timeline scrubber, delete-one, persistence, new physics,
-tilting/stretching, thermodynamics, or a continuity solver.
+Slices 1–2 are complete: monotonic `tracerId` at birth,
+`TracerSelection`, and a headless `TracerInspection` adapter
+over composition-held operand instances. This SoT does not
+start picking, an inspector panel, Follow, a timeline scrubber,
+delete-one, persistence, new physics, tilting/stretching,
+thermodynamics, or a continuity solver.
 
 Do not put selection on `Simulation` or `TracerScene`.
 Do not key the first inspector on array index.

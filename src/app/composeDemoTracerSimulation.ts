@@ -11,9 +11,13 @@ import { createRotationField } from "../scenario/createRotationField.js";
 import { createUpdraftField } from "../scenario/createUpdraftField.js";
 import { createUpperRadialOutflowField } from "../scenario/createUpperRadialOutflowField.js";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
+import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import { ATMOSPHERIC_TRACER_DOMAIN } from "../simulation/AtmosphericTracerDomain.js";
 import { createTracersFromSeeds } from "../simulation/createTracersFromSeeds.js";
-import type { TracerParticle } from "../simulation/TracerParticle.js";
+import type {
+  TracerAdvectionState,
+  TracerParticle,
+} from "../simulation/TracerParticle.js";
 import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import { Simulation } from "../simulation/Simulation.js";
 import {
@@ -25,6 +29,29 @@ import {
   TracerPedagogy,
 } from "./TracerPedagogy.js";
 import type { ScenarioTracerSeed } from "../scenario/ScenarioConfig.js";
+
+/**
+ * Role tokens for the current DEMO composite, in operand order.
+ * Not English labels and not the inspector's permanent schema.
+ * docs/architecture/19-shared-tracer-inspector.md
+ */
+export const DEMO_VELOCITY_CONTRIBUTION_KEYS = [
+  "environmentAdvection",
+  "updraft",
+  "rotation",
+  "lowerInflow",
+  "upperOutflow",
+  "downdraft",
+  "nearGroundOutflow",
+] as const;
+
+export type DemoVelocityContributionKey =
+  (typeof DEMO_VELOCITY_CONTRIBUTION_KEYS)[number];
+
+export interface DemoObservedTracerSimulation {
+  readonly simulation: Simulation;
+  readonly velocityObservation: InspectableVelocityOperands;
+}
 
 function environmentalOperand(
   groundRelativeEnvironmentField: EnvironmentalWindField,
@@ -102,6 +129,44 @@ export function composeDemoTracerFields(
 }
 
 /**
+ * Keep the SAME operand instances the composite already holds.
+ * Names live here, not on CompositeVelocityField.
+ */
+export function demoInspectableVelocityOperands(
+  composed: ReturnType<typeof composeDemoTracerFields>,
+): InspectableVelocityOperands {
+  return {
+    total: composed.field,
+    parts: DEMO_VELOCITY_CONTRIBUTION_KEYS.map((key, index) => ({
+      key,
+      field: composed.operands[index]!,
+    })),
+  };
+}
+
+/**
+ * One composition pass: Simulation integrates `velocityObservation.total`,
+ * which is the same CompositeVelocityField instance built from `parts`.
+ */
+export function composeDemoTracersWithObservation(
+  integrationFrame: IntegrationFrame,
+  particles: TracerAdvectionState[],
+): DemoObservedTracerSimulation {
+  const velocityObservation = demoInspectableVelocityOperands(
+    composeDemoTracerFields(integrationFrame),
+  );
+  return {
+    simulation: new Simulation(
+      velocityObservation.total,
+      new EulerIntegrator(),
+      particles,
+      { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN },
+    ),
+    velocityObservation,
+  };
+}
+
+/**
  * Map pedagogy to the DEMO seed array. Role is which array, not a tag.
  * Arrays are never concatenated.
  */
@@ -160,32 +225,35 @@ export function createDemoPathHistory(
 }
 
 /**
- * Compose demo tracer Simulation from DEMO_SCENARIO.
+ * Compose DEMO tracers and keep inspectable operand instances beside
+ * Simulation. TracerPedagogy selects which seed array is copied into
+ * particles. Default pedagogy is DiagnosticProbes. Live App.tsx
+ * selects NearGroundOutflowPathline explicitly.
  *
- * TracerPedagogy selects which seed array is copied into particles.
- * Default pedagogy is DiagnosticProbes. Live App.tsx selects
- * NearGroundOutflowPathline explicitly. DiagnosticProbes,
- * StoryPathlines, and DownwardPathline remain explicit composition
- * options.
- *
- * Default integration frame is GroundRelativeWindTunnel:
- * EnvironmentalWindField + VerticalEnvelopeUpdraftField
- * + VerticalEnvelopeRotationField + LowerRadialInflowField
- * + UpperRadialOutflowField + VerticalEnvelopeDowndraftField
- * + NearGroundRadialOutflowField
- * → CompositeVelocityField.
+ * Default integration frame is GroundRelativeWindTunnel.
+ * Live App selects StormRelativeLaboratory.
  *
  * AtmosphericTracerDomain is applied to tracer lifecycle only
  * (docs/architecture/11-ground-atmospheric-domain-policy.md).
  * Field sampling remains unbounded.
  */
+export function composeDemoTracerLab(
+  integrationFrame: IntegrationFrame = DEFAULT_DEMO_INTEGRATION_FRAME,
+  pedagogy: TracerPedagogy = DEFAULT_DEMO_TRACER_PEDAGOGY,
+): DemoObservedTracerSimulation {
+  return composeDemoTracersWithObservation(
+    integrationFrame,
+    createTracersFromSeeds(demoSeedsForPedagogy(pedagogy)),
+  );
+}
+
+/**
+ * Simulation-only DEMO composition. Observation-capable composition
+ * is `composeDemoTracerLab` / `composeDemoTracersWithObservation`.
+ */
 export function composeDemoTracerSimulation(
   integrationFrame: IntegrationFrame = DEFAULT_DEMO_INTEGRATION_FRAME,
   pedagogy: TracerPedagogy = DEFAULT_DEMO_TRACER_PEDAGOGY,
 ): Simulation {
-  const { field } = composeDemoTracerFields(integrationFrame);
-  const particles = createTracersFromSeeds(demoSeedsForPedagogy(pedagogy));
-  return new Simulation(field, new EulerIntegrator(), particles, {
-    tracerDomain: ATMOSPHERIC_TRACER_DOMAIN,
-  });
+  return composeDemoTracerLab(integrationFrame, pedagogy).simulation;
 }

@@ -14,7 +14,7 @@ import {
   type TracerViewportHandle,
 } from "../ui/tracer/TracerViewport.js";
 import {
-  composeDemoTracerSimulation,
+  composeDemoTracerLab,
   createDemoPathHistory,
   demoKeepInactiveGlyphs,
   demoSeedsForPedagogy,
@@ -31,6 +31,7 @@ import {
 import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
+import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import type { Simulation } from "../simulation/Simulation.js";
 import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 
@@ -38,12 +39,13 @@ type GuidedLab = {
   kind: "guided";
   simulation: Simulation;
   pathHistory: TracerPathHistory | null;
+  velocityObservation: InspectableVelocityOperands;
 };
 
 type Lab = GuidedLab | ExploreLab;
 
 function createGuidedLab(): GuidedLab {
-  const simulation = composeDemoTracerSimulation(
+  const { simulation, velocityObservation } = composeDemoTracerLab(
     IntegrationFrame.StormRelativeLaboratory,
     LIVE_DEMO_TRACER_PEDAGOGY,
   );
@@ -54,6 +56,7 @@ function createGuidedLab(): GuidedLab {
       LIVE_DEMO_TRACER_PEDAGOGY,
       simulation.particles,
     ),
+    velocityObservation,
   };
 }
 

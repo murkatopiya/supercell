@@ -1,13 +1,12 @@
-import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
-import { ATMOSPHERIC_TRACER_DOMAIN } from "../simulation/AtmosphericTracerDomain.js";
-import { Simulation } from "../simulation/Simulation.js";
 import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import { ExplorePointReleaseOrchestration } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import { ExplorePointReleaseTool } from "../explore/ExplorePointReleaseTool.js";
 import { ExploreTracerSession } from "../explore/ExploreTracerSession.js";
-import { composeDemoTracerFields } from "./composeDemoTracerSimulation.js";
+import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
+import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
+import type { Simulation } from "../simulation/Simulation.js";
 
 export interface ExploreLab {
   readonly kind: "explore";
@@ -16,6 +15,7 @@ export interface ExploreLab {
   readonly session: ExploreTracerSession;
   readonly tool: ExplorePointReleaseTool;
   readonly orchestration: ExplorePointReleaseOrchestration;
+  readonly velocityObservation: InspectableVelocityOperands;
 }
 
 /**
@@ -25,19 +25,18 @@ export interface ExploreLab {
 export function composeExploreTracerSimulation(
   integrationFrame: IntegrationFrame = IntegrationFrame.StormRelativeLaboratory,
 ): Simulation {
-  const { field } = composeDemoTracerFields(integrationFrame);
-  return new Simulation(field, new EulerIntegrator(), [], {
-    tracerDomain: ATMOSPHERIC_TRACER_DOMAIN,
-  });
+  return composeDemoTracersWithObservation(integrationFrame, []).simulation;
 }
 
 /**
  * Enter Explore: zero particles, zero history lanes, empty session.
  * Scene slots start at 0 when TracerViewport mounts with this cohort.
+ * velocityObservation holds the SAME operand instances Simulation integrates.
  */
 export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
-  const simulation = composeExploreTracerSimulation(
+  const { simulation, velocityObservation } = composeDemoTracersWithObservation(
     IntegrationFrame.StormRelativeLaboratory,
+    [],
   );
   const pathHistory = new TracerPathHistory(0);
   const session = new ExploreTracerSession(simulation, pathHistory);
@@ -54,5 +53,6 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
     session,
     tool,
     orchestration,
+    velocityObservation,
   };
 }

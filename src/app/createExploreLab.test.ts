@@ -46,6 +46,7 @@ describe("createExploreLab", () => {
     expect(lab.tool.pendingSeed).toBeNull();
     expect(lab.tool.placementEnabled).toBe(false);
     expect(lab.tool.altitudeM).toBe(1000);
+    expect(lab.velocityObservation.parts).toHaveLength(7);
   });
 
   it("samples the same seven-operand field as Guided StormRelativeLaboratory", () => {
@@ -94,9 +95,9 @@ describe("createExploreLab", () => {
     expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual(downward);
     expect(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds).toEqual(ng);
     expect(DEMO_SCENARIO.simulation.diagnosticSeeds).toEqual(diagnostic);
-    expect(createExploreLabSrc).toMatch(/composeDemoTracerFields/);
+    expect(createExploreLabSrc).toMatch(/composeDemoTracersWithObservation/);
     expect(createExploreLabSrc).toMatch(/StormRelativeLaboratory/);
-    expect(createExploreLabSrc).toMatch(/ATMOSPHERIC_TRACER_DOMAIN/);
+    expect(createExploreLabSrc).toMatch(/velocityObservation/);
     expect(createExploreLabSrc).not.toMatch(/demoSeedsForPedagogy/);
     expect(createExploreLabSrc).not.toMatch(/TracerPedagogy/);
     expect(createExploreLabSrc).not.toMatch(/storySeeds/);
