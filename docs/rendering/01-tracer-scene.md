@@ -96,7 +96,9 @@ Still out of scope for the tracer-scene rendering contract:
 - storm-relative subtraction inside the 3D velocity field
   (storm motion `C` remains hodograph / diagnostic only);
 - clouds, volumetrics, turbulence;
-- trails / path ribbons;
+- trails / path ribbons (path-history architecture:
+  `docs/rendering/14-tracer-path-history.md`; trail primitive exists,
+  live DEMO does not enable it);
 - GPU particles;
 - React Three Fiber / drei;
 - state interpolation between previous and current simulation steps;
@@ -216,7 +218,9 @@ From `docs/architecture/01-scenario-config.md`:
 | `storm.lowerRadialInflow` | build `LowerRadialInflowField` (current DEMO; wiring `08`, bounds `10`) |
 | `storm.upperRadialOutflow` | build `UpperRadialOutflowField` (current DEMO; wiring `08`, bounds `10`) |
 | `simulation.timestep` | fixed numerical `dt` for every `Simulation.step` |
-| `simulation.tracerSeeds` | initial world positions for tracers |
+| `simulation.diagnosticSeeds` | DiagnosticProbes initial positions; default composition API |
+| `simulation.storySeeds` | StoryPathlines initial positions; explicit mode (`docs/architecture/08-story-seeds.md`) |
+| `simulation.downwardPathlineSeeds` | live App DownwardPathline occupants (`docs/architecture/12-downward-ground-impact-pedagogy.md`) |
 | `stormMotion` | unused by 3D field; still used by hodograph composition |
 
 ### DEMO_SCENARIO seeds

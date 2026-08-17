@@ -1,9 +1,13 @@
 # Composite Vertical Envelope Rotation Demo
 
 **Status:** this document is the live DEMO **occupant/wiring SoT** for
-`VerticalEnvelopeRotationField` in the rotation slot. Five-operand
-composition, evolved `storm.rotation`, `createRotationField`, DEMO
-rotation bounds `[0, 6500]`, and seed confirmation are specified here.
+`VerticalEnvelopeRotationField` in the rotation slot. Live composition
+is now seven operands; the sixth (downdraft) occupant is
+`docs/rendering/15-composite-downdraft-demo.md`; the seventh
+(near-ground outflow) occupant is
+`docs/rendering/16-composite-near-ground-outflow-demo.md`. This document still
+owns evolved `storm.rotation`, `createRotationField`, DEMO rotation
+bounds `[0, 6500]`, and seed confirmation.
 Live `σ` / `Ω` / seed metres: `docs/architecture/06-deep-chimney-scaling-demo-retune.md`.
 
 After this slice:
@@ -967,7 +971,7 @@ Do not add a deep-ascent story-tracer oracle.
      historical rotation-tube decision A)
 11  live deep tracer view
 12  this document — current rotation occupant / wiring SoT
-        (after the implementation slice)
+15  live sixth operand (downdraft occupant / wiring)
 18  physics of VerticalEnvelopeRotationField
 13  isolated height-independent RotationField primitive
 ```

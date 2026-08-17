@@ -14,13 +14,17 @@ import { EnvironmentalWindField } from "../physics/environment/EnvironmentalWind
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import { StormRelativeEnvironmentalAdvectionField } from "../physics/environment/StormRelativeEnvironmentalAdvectionField.js";
 import { stormRelativeHelicityBetween } from "../physics/environment/stormRelativeHelicity.js";
+import verticalEnvelopeDowndraftSrc from "../physics/storm/VerticalEnvelopeDowndraftField.ts?raw";
 import verticalEnvelopeUpdraftSrc from "../physics/storm/VerticalEnvelopeUpdraftField.ts?raw";
 import verticalEnvelopeRotationSrc from "../physics/storm/VerticalEnvelopeRotationField.ts?raw";
 import lowerRadialInflowSrc from "../physics/storm/LowerRadialInflowField.ts?raw";
 import upperRadialOutflowSrc from "../physics/storm/UpperRadialOutflowField.ts?raw";
+import nearGroundRadialOutflowSrc from "../physics/storm/NearGroundRadialOutflowField.ts?raw";
 import compositeVelocityFieldSrc from "../core/fields/CompositeVelocityField.ts?raw";
+import { createDowndraftField } from "../scenario/createDowndraftField.js";
 import { createEnvironmentalWindProfile } from "../scenario/createEnvironmentalWindProfile.js";
 import { createLowerRadialInflowField } from "../scenario/createLowerRadialInflowField.js";
+import { createNearGroundRadialOutflowField } from "../scenario/createNearGroundRadialOutflowField.js";
 import { createRotationField } from "../scenario/createRotationField.js";
 import { createUpdraftField } from "../scenario/createUpdraftField.js";
 import { createUpperRadialOutflowField } from "../scenario/createUpperRadialOutflowField.js";
@@ -45,6 +49,10 @@ function preSliceGroundRelativeFields() {
   const rotationField = createRotationField(DEMO_SCENARIO);
   const lowerRadialInflowField = createLowerRadialInflowField(DEMO_SCENARIO);
   const upperRadialOutflowField = createUpperRadialOutflowField(DEMO_SCENARIO);
+  const downdraftField = createDowndraftField(DEMO_SCENARIO);
+  const nearGroundOutflowField = createNearGroundRadialOutflowField(
+    DEMO_SCENARIO,
+  );
   return {
     profile,
     environmentField,
@@ -52,6 +60,8 @@ function preSliceGroundRelativeFields() {
     rotationField,
     lowerRadialInflowField,
     upperRadialOutflowField,
+    downdraftField,
+    nearGroundOutflowField,
   };
 }
 
@@ -79,7 +89,7 @@ describe("DEMO IntegrationFrame composition", () => {
     );
   });
 
-  it("keeps five operands in both frames and uses scenario stormMotion once", () => {
+  it("keeps seven operands in both frames and uses scenario stormMotion once", () => {
     const ground = composeDemoTracerFields(
       IntegrationFrame.GroundRelativeWindTunnel,
     );
@@ -87,10 +97,10 @@ describe("DEMO IntegrationFrame composition", () => {
       IntegrationFrame.StormRelativeLaboratory,
     );
 
-    expect(ground.operands).toHaveLength(5);
-    expect(stormRelative.operands).toHaveLength(5);
+    expect(ground.operands).toHaveLength(7);
+    expect(stormRelative.operands).toHaveLength(7);
     expect(composeDemoTracerSimulationSrc).toMatch(
-      /new CompositeVelocityField\(\[\s*environmentField,\s*updraftField,\s*rotationField,\s*lowerRadialInflowField,\s*upperRadialOutflowField,\s*\]/,
+      /new CompositeVelocityField\(\[\s*environmentField,\s*updraftField,\s*rotationField,\s*lowerRadialInflowField,\s*upperRadialOutflowField,\s*downdraftField,\s*nearGroundOutflowField,\s*\]/,
     );
     expect(composeDemoTracerSimulationSrc).toMatch(/DEMO_SCENARIO\.stormMotion/);
     expect(composeDemoTracerSimulationSrc).not.toMatch(/integrationStormMotion/);
@@ -142,19 +152,25 @@ describe("DEMO IntegrationFrame composition", () => {
             preSlice.updraftField.sample(point, 0).x +
             preSlice.rotationField.sample(point, 0).x +
             preSlice.lowerRadialInflowField.sample(point, 0).x +
-            preSlice.upperRadialOutflowField.sample(point, 0).x,
+            preSlice.upperRadialOutflowField.sample(point, 0).x +
+            preSlice.downdraftField.sample(point, 0).x +
+            preSlice.nearGroundOutflowField.sample(point, 0).x,
           y:
             preSlice.environmentField.sample(point, 0).y +
             preSlice.updraftField.sample(point, 0).y +
             preSlice.rotationField.sample(point, 0).y +
             preSlice.lowerRadialInflowField.sample(point, 0).y +
-            preSlice.upperRadialOutflowField.sample(point, 0).y,
+            preSlice.upperRadialOutflowField.sample(point, 0).y +
+            preSlice.downdraftField.sample(point, 0).y +
+            preSlice.nearGroundOutflowField.sample(point, 0).y,
           z:
             preSlice.environmentField.sample(point, 0).z +
             preSlice.updraftField.sample(point, 0).z +
             preSlice.rotationField.sample(point, 0).z +
             preSlice.lowerRadialInflowField.sample(point, 0).z +
-            preSlice.upperRadialOutflowField.sample(point, 0).z,
+            preSlice.upperRadialOutflowField.sample(point, 0).z +
+            preSlice.downdraftField.sample(point, 0).z +
+            preSlice.nearGroundOutflowField.sample(point, 0).z,
         };
         expect(composed.field.sample(point, 0)).toEqual(expected);
       }
@@ -211,6 +227,12 @@ describe("DEMO IntegrationFrame composition", () => {
         expect(stormRelative.upperRadialOutflowField.sample(point, 0)).toEqual(
           ground.upperRadialOutflowField.sample(point, 0),
         );
+        expect(stormRelative.downdraftField.sample(point, 0)).toEqual(
+          ground.downdraftField.sample(point, 0),
+        );
+        expect(stormRelative.nearGroundOutflowField.sample(point, 0)).toEqual(
+          ground.nearGroundOutflowField.sample(point, 0),
+        );
       }
     });
 
@@ -236,7 +258,7 @@ describe("DEMO IntegrationFrame composition", () => {
       );
       const position = { x: 0, y: 1000, z: 0 };
 
-      expect(live.operands).toHaveLength(5);
+      expect(live.operands).toHaveLength(7);
       expect(live.groundRelativeEnvironmentField.sample(position, 0)).toEqual({
         x: 5,
         y: 0,
@@ -270,9 +292,13 @@ describe("DEMO IntegrationFrame composition", () => {
     ).toEqual(srhBefore);
   });
 
-  it("keeps the same seeds and Reset semantics in both frames", () => {
-    const seeds = DEMO_SCENARIO.simulation.tracerSeeds;
+  it("keeps the same diagnostic seeds and Reset semantics in both frames", () => {
+    const seeds = DEMO_SCENARIO.simulation.diagnosticSeeds;
     const seedsSnapshot = structuredClone(seeds);
+    const storySnapshot = structuredClone(DEMO_SCENARIO.simulation.storySeeds);
+    const downwardSnapshot = structuredClone(
+      DEMO_SCENARIO.simulation.downwardPathlineSeeds,
+    );
     const dt = DEMO_SCENARIO.simulation.timestep;
 
     for (const frame of [
@@ -280,8 +306,12 @@ describe("DEMO IntegrationFrame composition", () => {
       IntegrationFrame.StormRelativeLaboratory,
     ]) {
       const simulation = composeDemoTracerSimulation(frame);
+      expect(simulation.particles).toHaveLength(3);
       expect(simulation.particles.map((particle) => particle.position)).toEqual(
         seeds,
+      );
+      expect(simulation.particles.map((particle) => particle.position)).not.toEqual(
+        DEMO_SCENARIO.simulation.storySeeds,
       );
 
       for (let i = 0; i < 20; i++) {
@@ -296,7 +326,35 @@ describe("DEMO IntegrationFrame composition", () => {
       );
     }
 
-    expect(DEMO_SCENARIO.simulation.tracerSeeds).toEqual(seedsSnapshot);
+    expect(DEMO_SCENARIO.simulation.diagnosticSeeds).toEqual(seedsSnapshot);
+    expect(DEMO_SCENARIO.simulation.storySeeds).toEqual(storySnapshot);
+    expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual(
+      downwardSnapshot,
+    );
+  });
+
+  it("does not put storySeeds into default composition; live App uses LIVE_DEMO_TRACER_PEDAGOGY", () => {
+    const diagnostic = DEMO_SCENARIO.simulation.diagnosticSeeds;
+    const story = DEMO_SCENARIO.simulation.storySeeds;
+    const simulation = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+    );
+
+    expect(simulation.particles).toHaveLength(3);
+    expect(simulation.particles.map((particle) => particle.position)).toEqual(
+      diagnostic,
+    );
+    expect(simulation.particles.map((particle) => particle.position)).not.toEqual(
+      story,
+    );
+    expect(simulation.particles.map((particle) => particle.position)).not.toEqual(
+      DEMO_SCENARIO.simulation.downwardPathlineSeeds,
+    );
+
+    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).toMatch(/createDemoPathHistory/);
+    expect(appSrc).toMatch(/demoSeedsForPedagogy/);
+    expect(composeDemoTracerSimulationSrc).toMatch(/demoSeedsForPedagogy/);
   });
 
   it("does not put IntegrationFrame or StormMotion into storm fields or CompositeVelocityField", () => {
@@ -308,6 +366,10 @@ describe("DEMO IntegrationFrame composition", () => {
     expect(lowerRadialInflowSrc).not.toMatch(/StormMotion/);
     expect(upperRadialOutflowSrc).not.toMatch(/IntegrationFrame/);
     expect(upperRadialOutflowSrc).not.toMatch(/StormMotion/);
+    expect(verticalEnvelopeDowndraftSrc).not.toMatch(/IntegrationFrame/);
+    expect(verticalEnvelopeDowndraftSrc).not.toMatch(/StormMotion/);
+    expect(nearGroundRadialOutflowSrc).not.toMatch(/IntegrationFrame/);
+    expect(nearGroundRadialOutflowSrc).not.toMatch(/StormMotion/);
     expect(compositeVelocityFieldSrc).not.toMatch(/IntegrationFrame/);
     expect(compositeVelocityFieldSrc).not.toMatch(/stormMotion/);
   });

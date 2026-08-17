@@ -8,9 +8,13 @@ import { hodographPoints } from "../physics/environment/hodograph.js";
 import { RadialInflowField } from "../physics/storm/RadialInflowField.js";
 import { RotationField } from "../physics/storm/RotationField.js";
 import { VerticalEnvelopeRotationField } from "../physics/storm/VerticalEnvelopeRotationField.js";
+import createDowndraftFieldSrc from "../scenario/createDowndraftField.ts?raw";
+import { createDowndraftField } from "../scenario/createDowndraftField.js";
 import { createEnvironmentalWindProfile } from "../scenario/createEnvironmentalWindProfile.js";
 import createLowerRadialInflowFieldSrc from "../scenario/createLowerRadialInflowField.ts?raw";
 import { createLowerRadialInflowField } from "../scenario/createLowerRadialInflowField.js";
+import createNearGroundRadialOutflowFieldSrc from "../scenario/createNearGroundRadialOutflowField.ts?raw";
+import { createNearGroundRadialOutflowField } from "../scenario/createNearGroundRadialOutflowField.js";
 import createRotationFieldSrc from "../scenario/createRotationField.ts?raw";
 import { createRotationField } from "../scenario/createRotationField.js";
 import createUpdraftFieldSrc from "../scenario/createUpdraftField.ts?raw";
@@ -22,8 +26,8 @@ import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import scenarioConfigSrc from "../scenario/ScenarioConfig.ts?raw";
 import { resetTracersFromSeeds } from "../simulation/resetTracersFromSeeds.js";
 
-describe("DEMO composite env + envelope updraft + rotation + lower inflow + upper outflow", () => {
-  const seeds = DEMO_SCENARIO.simulation.tracerSeeds;
+describe("DEMO composite env + envelope updraft + rotation + lower inflow + upper outflow + downdraft + near-ground outflow", () => {
+  const seeds = DEMO_SCENARIO.simulation.diagnosticSeeds;
   const dt = DEMO_SCENARIO.simulation.timestep;
   const updraftDto = DEMO_SCENARIO.storm.updraft;
   const rotationDto = DEMO_SCENARIO.storm.rotation;
@@ -96,12 +100,18 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     const rotationField = createRotationField(DEMO_SCENARIO);
     const lowerRadialInflowField = createLowerRadialInflowField(DEMO_SCENARIO);
     const upperRadialOutflowField = createUpperRadialOutflowField(DEMO_SCENARIO);
+    const downdraftField = createDowndraftField(DEMO_SCENARIO);
+    const nearGroundOutflowField = createNearGroundRadialOutflowField(
+      DEMO_SCENARIO,
+    );
     const operands = [
       environmentField,
       updraftField,
       rotationField,
       lowerRadialInflowField,
       upperRadialOutflowField,
+      downdraftField,
+      nearGroundOutflowField,
     ];
     const composite = new CompositeVelocityField(operands);
     return {
@@ -110,6 +120,8 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       rotationField,
       lowerRadialInflowField,
       upperRadialOutflowField,
+      downdraftField,
+      nearGroundOutflowField,
       operands,
       composite,
     };
@@ -258,6 +270,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     expect(createRotationFieldSrc).not.toMatch(/storm\.updraft/);
     expect(createRotationFieldSrc).not.toMatch(/storm\.lowerRadialInflow/);
     expect(createRotationFieldSrc).not.toMatch(/storm\.upperRadialOutflow/);
+    expect(createRotationFieldSrc).not.toMatch(/storm\.downdraft/);
   });
 
   it("createLowerRadialInflowField maps DEMO DTO (axis rest; plateau peak |V|)", () => {
@@ -426,12 +439,14 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     );
   });
 
-  it("DEMO storm centers/sigma equal other blocks only as a fixture snapshot", () => {
+  it("DEMO chimney centers/sigma coincide; downdraft is an independent occupant", () => {
     expect(outflowDto.centerX).toBe(updraftDto.centerX);
     expect(outflowDto.centerZ).toBe(updraftDto.centerZ);
     expect(outflowDto.sigma).toBe(updraftDto.sigma);
     expect(outflowDto.centerX).toBe(inflowDto.centerX);
     expect(outflowDto.sigma).toBe(inflowDto.sigma);
+    expect(DEMO_SCENARIO.storm.downdraft.centerX).not.toBe(updraftDto.centerX);
+    expect(DEMO_SCENARIO.storm.downdraft.sigma).not.toBe(updraftDto.sigma);
     expect(inflowDto.baseHeight).not.toBe(updraftDto.baseHeight);
     expect(inflowDto.topHeight).not.toBe(outflowDto.topHeight);
     expect(createLowerRadialInflowFieldSrc).not.toMatch(/storm\.updraft/);
@@ -444,19 +459,44 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       /storm\.lowerRadialInflow/,
     );
     expect(createUpperRadialOutflowFieldSrc).not.toMatch(/storm\.rotation/);
+    expect(createDowndraftFieldSrc).not.toMatch(/storm\.updraft/);
+    expect(createDowndraftFieldSrc).not.toMatch(/storm\.rotation/);
+    expect(createDowndraftFieldSrc).not.toMatch(/storm\.lowerRadialInflow/);
+    expect(createDowndraftFieldSrc).not.toMatch(/storm\.upperRadialOutflow/);
+    expect(createDowndraftFieldSrc).not.toMatch(/storm\.nearGroundOutflow/);
+    expect(createNearGroundRadialOutflowFieldSrc).not.toMatch(/storm\.updraft/);
+    expect(createNearGroundRadialOutflowFieldSrc).not.toMatch(/storm\.downdraft/);
+    expect(createNearGroundRadialOutflowFieldSrc).not.toMatch(
+      /storm\.lowerRadialInflow/,
+    );
+    expect(createNearGroundRadialOutflowFieldSrc).not.toMatch(
+      /storm\.upperRadialOutflow/,
+    );
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.centerX).not.toBe(
+      updraftDto.centerX,
+    );
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.centerX).not.toBe(
+      DEMO_SCENARIO.storm.downdraft.centerX,
+    );
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.sigma).not.toBe(updraftDto.sigma);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.sigma).not.toBe(
+      DEMO_SCENARIO.storm.downdraft.sigma,
+    );
     expect(createRotationFieldSrc).not.toMatch(/storm\.updraft/);
     expect(rotationDto.baseHeight).not.toBe(updraftDto.topHeight);
     expect(rotationDto.topHeight).not.toBe(updraftDto.topHeight);
     expect(rotationDto.topHeight).not.toBe(outflowDto.topHeight);
   });
 
-  it("demo composition matches the five-operand sample sum", () => {
+  it("demo composition matches the seven-operand sample sum", () => {
     const {
       environmentField,
       updraftField,
       rotationField,
       lowerRadialInflowField,
       upperRadialOutflowField,
+      downdraftField,
+      nearGroundOutflowField,
       operands,
       composite,
     } = demoFields();
@@ -483,7 +523,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       { x: 200, y: outflowDto.topHeight + 100, z: -100 },
     ];
 
-    expect(operands).toHaveLength(5);
+    expect(operands).toHaveLength(7);
 
     for (const position of points) {
       const envV = environmentField.sample(position, 0);
@@ -491,11 +531,22 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       const rotV = rotationField.sample(position, 0);
       const inV = lowerRadialInflowField.sample(position, 0);
       const outV = upperRadialOutflowField.sample(position, 0);
+      const downV = downdraftField.sample(position, 0);
+      const ngV = nearGroundOutflowField.sample(position, 0);
       const total = composite.sample(position, 0);
 
-      expect(total.x).toBeCloseTo(envV.x + upV.x + rotV.x + inV.x + outV.x, 12);
-      expect(total.y).toBeCloseTo(envV.y + upV.y + rotV.y + inV.y + outV.y, 12);
-      expect(total.z).toBeCloseTo(envV.z + upV.z + rotV.z + inV.z + outV.z, 12);
+      expect(total.x).toBeCloseTo(
+        envV.x + upV.x + rotV.x + inV.x + outV.x + downV.x + ngV.x,
+        12,
+      );
+      expect(total.y).toBeCloseTo(
+        envV.y + upV.y + rotV.y + inV.y + outV.y + downV.y + ngV.y,
+        12,
+      );
+      expect(total.z).toBeCloseTo(
+        envV.z + upV.z + rotV.z + inV.z + outV.z + downV.z + ngV.z,
+        12,
+      );
     }
   });
 
@@ -658,13 +709,14 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     expect(northSeed.z).toBeCloseTo(northPlateau.z, 12);
   });
 
-  it("axis seed has env horizontal wind, Vy = W0 F(seed.y), and zero rotation, inflow, and outflow", () => {
+  it("axis seed has env horizontal wind, Vy = W0 F(seed.y) plus far-field downdraft, and zero rotation, inflow, and outflow", () => {
     const {
       environmentField,
       updraftField,
       rotationField,
       lowerRadialInflowField,
       upperRadialOutflowField,
+      downdraftField,
       composite,
     } = demoFields();
     const axis = seeds[0]!;
@@ -673,6 +725,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     const rotV = rotationField.sample(axis, 0);
     const inV = lowerRadialInflowField.sample(axis, 0);
     const outV = upperRadialOutflowField.sample(axis, 0);
+    const downV = downdraftField.sample(axis, 0);
     const total = composite.sample(axis, 0);
     const expectedVy = expectedUpdraftVy(0, axis.y);
 
@@ -683,16 +736,19 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     expect(rotV).toEqual({ x: 0, y: 0, z: 0 });
     expect(inV).toEqual({ x: 0, y: 0, z: 0 });
     expect(outV).toEqual({ x: 0, y: 0, z: 0 });
+    expect(downV.x).toBe(0);
+    expect(downV.z).toBe(0);
+    expect(downV.y).toBeLessThan(0);
     expect(total.x).toBe(envV.x);
     expect(total.z).toBe(envV.z);
     expect(envV.y).toBe(0);
-    expect(total.y).toBe(upV.y);
-    expect(total.y).toBeCloseTo(
+    expect(upV.y).toBeCloseTo(
       updraftDto.peakVerticalVelocity * fUpdraftSeed,
       12,
     );
-    expect(total.y).not.toBe(updraftDto.peakVerticalVelocity);
-    expect(total.y).toBeCloseTo(expectedVy, 12);
+    expect(total.y).toBe(upV.y + downV.y);
+    expect(upV.y).not.toBe(updraftDto.peakVerticalVelocity);
+    expect(total.y).toBeCloseTo(expectedVy + downV.y, 12);
   });
 
   it("east seed: inflow Vx only at full plateau G_in = 1, rotation Vz only, outflow 0", () => {
@@ -702,6 +758,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       rotationField,
       lowerRadialInflowField,
       upperRadialOutflowField,
+      downdraftField,
       composite,
     } = demoFields();
     const east = seeds[1]!;
@@ -710,6 +767,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     const rotV = rotationField.sample(east, 0);
     const inV = lowerRadialInflowField.sample(east, 0);
     const outV = upperRadialOutflowField.sample(east, 0);
+    const downV = downdraftField.sample(east, 0);
     const total = composite.sample(east, 0);
     const plateauEast = lowerRadialInflowField.sample(
       { x: east.x, y: 500, z: east.z },
@@ -730,8 +788,11 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     expect(total.z).toBeCloseTo(envV.z + rotV.z, 12);
     expect(upV.x).toBe(0);
     expect(upV.z).toBe(0);
-    expect(total.y).toBe(upV.y);
-    expect(total.y).toBeCloseTo(expectedUpdraftVy(east.x, east.y), 12);
+    expect(downV.x).toBe(0);
+    expect(downV.z).toBe(0);
+    expect(downV.y).toBeLessThan(0);
+    expect(total.y).toBe(upV.y + downV.y);
+    expect(upV.y).toBeCloseTo(expectedUpdraftVy(east.x, east.y), 12);
   });
 
   it("north seed: inflow Vz only at full plateau G_in = 1, rotation Vx only, outflow 0", () => {
@@ -741,6 +802,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       rotationField,
       lowerRadialInflowField,
       upperRadialOutflowField,
+      downdraftField,
       composite,
     } = demoFields();
     const north = seeds[2]!;
@@ -749,6 +811,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     const rotV = rotationField.sample(north, 0);
     const inV = lowerRadialInflowField.sample(north, 0);
     const outV = upperRadialOutflowField.sample(north, 0);
+    const downV = downdraftField.sample(north, 0);
     const total = composite.sample(north, 0);
     const plateauNorth = lowerRadialInflowField.sample(
       { x: north.x, y: 500, z: north.z },
@@ -769,8 +832,11 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     expect(total.x).toBeCloseTo(envV.x + rotV.x, 12);
     expect(upV.x).toBe(0);
     expect(upV.z).toBe(0);
-    expect(total.y).toBe(upV.y);
-    expect(total.y).toBeCloseTo(
+    expect(downV.x).toBe(0);
+    expect(downV.z).toBe(0);
+    expect(downV.y).toBeLessThan(0);
+    expect(total.y).toBe(upV.y + downV.y);
+    expect(upV.y).toBeCloseTo(
       expectedUpdraftVy(Math.hypot(north.x, north.z), north.y),
       12,
     );
@@ -1033,8 +1099,8 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     expect(totalAboveOutflow.z).toBeCloseTo(envAboveOutflow.z, 12);
   });
 
-  it("factory updraft is height-dependent and composeDemo uses the five-operand factory chain", () => {
-    const { updraftField, composite } = demoFields();
+  it("factory updraft is height-dependent and composeDemo uses the seven-operand factory chain", () => {
+    const { updraftField, downdraftField, composite } = demoFields();
     const atGround = updraftField.sample({ x: 0, y: 0, z: 0 }, 0);
     const atSeed = updraftField.sample({ x: 0, y: 1000, z: 0 }, 0);
     const atPeak = updraftField.sample({ x: 0, y: 4000, z: 0 }, 0);
@@ -1045,13 +1111,19 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
 
     expect(atGround.y).not.toBe(updraftDto.peakVerticalVelocity);
     expect(atGround.y).toBeCloseTo(0, 12);
-    expect(totalGround.y).toBeCloseTo(0, 12);
+    expect(totalGround.y).toBeCloseTo(
+      downdraftField.sample({ x: 0, y: 0, z: 0 }, 0).y,
+      12,
+    );
     expect(atSeed.y).toBeCloseTo(
       updraftDto.peakVerticalVelocity * fUpdraftSeed,
       12,
     );
     expect(atSeed.y).not.toBe(updraftDto.peakVerticalVelocity);
-    expect(totalSeed.y).toBe(atSeed.y);
+    expect(totalSeed.y).toBeCloseTo(
+      atSeed.y + downdraftField.sample({ x: 0, y: 1000, z: 0 }, 0).y,
+      12,
+    );
     expect(atPeak.y).toBe(updraftDto.peakVerticalVelocity);
     expect(composedMid.position).toEqual({ x: 0, y: 1000, z: 0 });
     expect(composeDemoTracerSimulationSrc).toMatch(/createUpdraftField/);
@@ -1060,6 +1132,10 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     );
     expect(composeDemoTracerSimulationSrc).toMatch(
       /createUpperRadialOutflowField/,
+    );
+    expect(composeDemoTracerSimulationSrc).toMatch(/createDowndraftField/);
+    expect(composeDemoTracerSimulationSrc).toMatch(
+      /createNearGroundRadialOutflowField/,
     );
     expect(composeDemoTracerSimulationSrc).not.toMatch(
       /from ["'][^"']*\/UpdraftField\.js["']/,
@@ -1072,7 +1148,7 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       /from ["'][^"']*\/RotationField\.js["']/,
     );
     expect(composeDemoTracerSimulationSrc).toMatch(
-      /new CompositeVelocityField\(\[\s*environmentField,\s*updraftField,\s*rotationField,\s*lowerRadialInflowField,\s*upperRadialOutflowField,\s*\]\)/,
+      /new CompositeVelocityField\(\[\s*environmentField,\s*updraftField,\s*rotationField,\s*lowerRadialInflowField,\s*upperRadialOutflowField,\s*downdraftField,\s*nearGroundOutflowField,\s*\]\)/,
     );
   });
 
@@ -1122,10 +1198,10 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
       age: 0,
       active: true,
     });
-    expect(DEMO_SCENARIO.simulation.tracerSeeds).toEqual(seedsSnapshot);
+    expect(DEMO_SCENARIO.simulation.diagnosticSeeds).toEqual(seedsSnapshot);
   });
 
-  it("hodograph points ignore updraft, rotation, lower inflow, outflow, and composite", () => {
+  it("hodograph points ignore updraft, rotation, lower inflow, outflow, downdraft, near-ground outflow, and composite", () => {
     const fromFixture = createDemoHodographPoints();
     const fromProfileOnly = hodographPoints(
       createEnvironmentalWindProfile(DEMO_SCENARIO),
@@ -1154,6 +1230,16 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     mutated.storm.upperRadialOutflow.sigma = 50;
     mutated.storm.upperRadialOutflow.baseHeight = 0;
     mutated.storm.upperRadialOutflow.topHeight = 5000;
+    mutated.storm.downdraft.peakDownwardVelocity = 99;
+    mutated.storm.downdraft.sigma = 50;
+    mutated.storm.downdraft.centerX = -8000;
+    mutated.storm.downdraft.baseHeight = -100;
+    mutated.storm.downdraft.topHeight = 4000;
+    mutated.storm.nearGroundOutflow.outflowStrainRate = 0.4;
+    mutated.storm.nearGroundOutflow.sigma = 50;
+    mutated.storm.nearGroundOutflow.centerX = -8000;
+    mutated.storm.nearGroundOutflow.baseHeight = -100;
+    mutated.storm.nearGroundOutflow.topHeight = 4000;
     const pointsWithMutatedStorm = hodographPoints(
       createEnvironmentalWindProfile(mutated),
     );
@@ -1185,6 +1271,12 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     );
     expect(createRotationFieldSrc).not.toMatch(
       /from ["'][^"']*\/RotationField\.js["']/,
+    );
+    expect(createDowndraftFieldSrc).toMatch(
+      /from ["']\.\.\/physics\/storm\/VerticalEnvelopeDowndraftField\.js["']/,
+    );
+    expect(createNearGroundRadialOutflowFieldSrc).toMatch(
+      /from ["']\.\.\/physics\/storm\/NearGroundRadialOutflowField\.js["']/,
     );
   });
 });

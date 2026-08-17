@@ -284,10 +284,17 @@ describe("DEMO storm envelopes follow the 06 chimney fixture", () => {
       topHeight: 9000,
     });
     expect(DEMO_SCENARIO.simulation.timestep).toBe(0.1);
-    expect(DEMO_SCENARIO.simulation.tracerSeeds).toEqual([
+    expect(DEMO_SCENARIO.simulation.diagnosticSeeds).toEqual([
       { x: 0, y: 1000, z: 0 },
       { x: 2400, y: 1000, z: 0 },
       { x: 0, y: 1000, z: -2400 },
+    ]);
+    expect(DEMO_SCENARIO.simulation.storySeeds).toEqual([
+      { x: 0, y: 1000, z: 4000 },
+      { x: 0, y: 1000, z: 6000 },
+    ]);
+    expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual([
+      { x: 5000, y: 1000, z: 0 },
     ]);
   });
 });
@@ -395,11 +402,41 @@ describe("scenario-owned validation", () => {
     );
   });
 
-  it("rejects non-finite tracer seed components", () => {
+  it("rejects non-finite diagnostic seed components", () => {
     const config = cloneDemoScenario();
-    config.simulation.tracerSeeds = [{ x: 0, y: Number.POSITIVE_INFINITY, z: 0 }];
+    config.simulation.diagnosticSeeds = [
+      { x: 0, y: Number.POSITIVE_INFINITY, z: 0 },
+    ];
     expect(() => createEnvironmentalWindProfile(config)).toThrow(
       ScenarioConfigError,
     );
+  });
+
+  it("rejects non-finite story seed components", () => {
+    const config = cloneDemoScenario();
+    config.simulation.storySeeds = [
+      { x: Number.NaN, y: 1000, z: 4000 },
+    ];
+    expect(() => createEnvironmentalWindProfile(config)).toThrow(
+      ScenarioConfigError,
+    );
+  });
+
+  it("rejects non-finite downward pathline seed components", () => {
+    const config = cloneDemoScenario();
+    config.simulation.downwardPathlineSeeds = [
+      { x: 5000, y: Number.NaN, z: 0 },
+    ];
+    expect(() => createEnvironmentalWindProfile(config)).toThrow(
+      ScenarioConfigError,
+    );
+  });
+
+  it("allows empty diagnosticSeeds, storySeeds, and downwardPathlineSeeds", () => {
+    const config = cloneDemoScenario();
+    config.simulation.diagnosticSeeds = [];
+    config.simulation.storySeeds = [];
+    config.simulation.downwardPathlineSeeds = [];
+    expect(() => createEnvironmentalWindProfile(config)).not.toThrow();
   });
 });

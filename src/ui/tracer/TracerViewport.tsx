@@ -1,12 +1,17 @@
 import { useEffect, useRef } from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
 import { consumeFixedTimesteps } from "../../simulation/consumeFixedTimesteps.js";
+import type { TracerPathHistory } from "../../simulation/TracerPathHistory.js";
 import { simulationElapsedFromWall } from "../../simulation/simulationElapsedFromWall.js";
 import type { Simulation } from "../../simulation/Simulation.js";
 import type { TracerTimeScale } from "./TracerRuntimeControls.js";
 
 export interface TracerViewportProps {
   simulation: Simulation;
+  /** Present only in story mode. Diagnostic live path omits this. */
+  pathHistory?: TracerPathHistory | null;
+  /** Renderer observe flag. Default false. Not a physics concern. */
+  keepInactiveGlyphs?: boolean;
   timestep: number;
   paused: boolean;
   timeScale: TracerTimeScale;
@@ -20,6 +25,8 @@ export interface TracerViewportProps {
  */
 export function TracerViewport({
   simulation,
+  pathHistory = null,
+  keepInactiveGlyphs = false,
   timestep,
   paused,
   timeScale,
@@ -44,7 +51,10 @@ export function TracerViewport({
       return;
     }
 
-    const scene = new TracerScene(canvas, simulation.particles.length);
+    const scene = new TracerScene(canvas, simulation.particles.length, {
+      trails: pathHistory !== null,
+      keepInactiveGlyphs,
+    });
     let accumulator = 0;
     let frameId = 0;
     let previousMs = performance.now();
@@ -59,8 +69,15 @@ export function TracerViewport({
       scene.setSize(rect.width, rect.height);
     };
 
+    const sync = () => {
+      scene.syncFromParticles(simulation.particles);
+      if (pathHistory) {
+        scene.syncFromPathHistory(pathHistory);
+      }
+    };
+
     resize();
-    scene.syncFromParticles(simulation.particles);
+    sync();
     scene.render();
 
     const onResize = () => {
@@ -103,9 +120,10 @@ export function TracerViewport({
       accumulator = consumed.accumulator;
       for (let i = 0; i < consumed.steps; i++) {
         simulation.step(timestep);
+        pathHistory?.recordAfterStep(simulation.particles);
       }
 
-      scene.syncFromParticles(simulation.particles);
+      sync();
       scene.render();
       frameId = requestAnimationFrame(tick);
     };
@@ -118,7 +136,7 @@ export function TracerViewport({
       window.removeEventListener("resize", onResize);
       scene.dispose();
     };
-  }, [simulation, timestep]);
+  }, [simulation, timestep, pathHistory, keepInactiveGlyphs]);
 
   return (
     <div className="tracer-viewport">

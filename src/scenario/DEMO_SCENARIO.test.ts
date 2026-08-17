@@ -45,19 +45,43 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
       baseHeight: 5000,
       topHeight: 9000,
     });
+    expect(DEMO_SCENARIO.storm.downdraft).toEqual({
+      centerX: 5000,
+      centerZ: 0,
+      peakDownwardVelocity: 20,
+      sigma: 2000,
+      baseHeight: -400,
+      topHeight: 3600,
+    });
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow).toEqual({
+      centerX: 3000,
+      centerZ: 4000,
+      outflowStrainRate: 0.010991,
+      sigma: 1500,
+      baseHeight: 0,
+      topHeight: 800,
+    });
 
-    const sigmas = [
+    const sharedSigmas = [
       DEMO_SCENARIO.storm.updraft.sigma,
       DEMO_SCENARIO.storm.rotation.sigma,
       DEMO_SCENARIO.storm.lowerRadialInflow.sigma,
       DEMO_SCENARIO.storm.upperRadialOutflow.sigma,
     ];
-    expect(sigmas).toEqual([4000, 4000, 4000, 4000]);
+    expect(sharedSigmas).toEqual([4000, 4000, 4000, 4000]);
+    expect(DEMO_SCENARIO.storm.downdraft.sigma).toBe(2000);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.sigma).toBe(1500);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.sigma).not.toBe(
+      DEMO_SCENARIO.storm.updraft.sigma,
+    );
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.sigma).not.toBe(
+      DEMO_SCENARIO.storm.downdraft.sigma,
+    );
     expect(demoScenarioSrc).not.toMatch(/storm\.sigma/);
     expect(scenarioConfigSrc).not.toMatch(/storm\.sigma/);
   });
 
-  it("keeps C, knots, timestep, and coincident centers", () => {
+  it("keeps coincident chimney centers except the offset downdraft and near-ground outflow occupants", () => {
     expect(DEMO_SCENARIO.stormMotion).toEqual({
       eastward: 10,
       northward: 0,
@@ -75,10 +99,17 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
     expect(DEMO_SCENARIO.storm.rotation.centerX).toBe(0);
     expect(DEMO_SCENARIO.storm.lowerRadialInflow.centerX).toBe(0);
     expect(DEMO_SCENARIO.storm.upperRadialOutflow.centerX).toBe(0);
+    expect(DEMO_SCENARIO.storm.downdraft.centerX).toBe(5000);
+    expect(DEMO_SCENARIO.storm.downdraft.centerZ).toBe(0);
+    expect(DEMO_SCENARIO.storm.downdraft.baseHeight).toBe(-400);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.centerX).toBe(3000);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.centerZ).toBe(4000);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.baseHeight).toBe(0);
+    expect(DEMO_SCENARIO.storm.nearGroundOutflow.topHeight).toBe(800);
   });
 
   it("keeps diagnostic seeds at r = 0.6 σ", () => {
-    const seeds = DEMO_SCENARIO.simulation.tracerSeeds;
+    const seeds = DEMO_SCENARIO.simulation.diagnosticSeeds;
     const sigma = DEMO_SCENARIO.storm.updraft.sigma;
     expect(seeds).toEqual([
       { x: 0, y: 1000, z: 0 },
@@ -88,6 +119,55 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
     expect(seeds).toHaveLength(3);
     expect(Math.hypot(seeds[1]!.x, seeds[1]!.z) / sigma).toBeCloseTo(0.6, 12);
     expect(Math.hypot(seeds[2]!.x, seeds[2]!.z) / sigma).toBeCloseTo(0.6, 12);
+  });
+
+  it("stores canonical S1/S2 story seeds south of the axis, not S3", () => {
+    const seeds = DEMO_SCENARIO.simulation.storySeeds;
+    const sigma = DEMO_SCENARIO.storm.updraft.sigma;
+    expect(seeds).toEqual([
+      { x: 0, y: 1000, z: 4000 },
+      { x: 0, y: 1000, z: 6000 },
+    ]);
+    expect(seeds).toHaveLength(2);
+
+    const s1 = seeds[0]!;
+    const s2 = seeds[1]!;
+    expect(s1.x).toBe(0);
+    expect(s2.x).toBe(0);
+    expect(s1.z).toBeGreaterThan(0);
+    expect(s2.z).toBeGreaterThan(0);
+    expect(Math.hypot(s1.x, s1.z) / sigma).toBeCloseTo(1.0, 12);
+    expect(Math.hypot(s2.x, s2.z) / sigma).toBeCloseTo(1.5, 12);
+    expect(seeds).not.toContainEqual({ x: 0, y: 750, z: 3000 });
+    expect(Object.keys(s1)).toEqual(["x", "y", "z"]);
+    expect(Object.keys(DEMO_SCENARIO.simulation.diagnosticSeeds[0]!)).toEqual([
+      "x",
+      "y",
+      "z",
+    ]);
+
+    expect(scenarioConfigSrc).toMatch(/diagnosticSeeds/);
+    expect(scenarioConfigSrc).toMatch(/storySeeds/);
+    expect(scenarioConfigSrc).toMatch(/downwardPathlineSeeds/);
+    expect(scenarioConfigSrc).not.toMatch(/tracerSeeds/);
+    expect(demoScenarioSrc).not.toMatch(/tracerSeeds/);
+  });
+
+  it("stores sole canonical D1 in downwardPathlineSeeds, not in storySeeds", () => {
+    const seeds = DEMO_SCENARIO.simulation.downwardPathlineSeeds;
+    expect(seeds).toEqual([{ x: 5000, y: 1000, z: 0 }]);
+    expect(seeds).toHaveLength(1);
+    expect(DEMO_SCENARIO.simulation.storySeeds).not.toContainEqual({
+      x: 5000,
+      y: 1000,
+      z: 0,
+    });
+    expect(DEMO_SCENARIO.simulation.diagnosticSeeds).not.toContainEqual({
+      x: 5000,
+      y: 1000,
+      z: 0,
+    });
+    expect(Object.keys(seeds[0]!)).toEqual(["x", "y", "z"]);
   });
 
   it("preserves characteristic horizontal peak speeds (DEMO frozen-peak policy)", () => {
@@ -107,6 +187,11 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
     expect(peakRotation).toBeCloseTo(12.13, 2);
     expect(peakInflow).toBeCloseTo(3.03, 2);
     expect(peakOutflow).toBeCloseTo(6.07, 2);
+
+    const ng = DEMO_SCENARIO.storm.nearGroundOutflow;
+    const peakNg = (ng.outflowStrainRate * ng.sigma) / SQRT_E;
+    expect(peakNg).toBeCloseTo(10, 2);
+    expect(ng.outflowStrainRate).toBe(0.010991);
 
     const live = composeDemoTracerFields(
       IntegrationFrame.StormRelativeLaboratory,
@@ -139,11 +224,11 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
     );
   });
 
-  it("keeps five operands and live StormRelativeLaboratory", () => {
+  it("keeps seven operands and live StormRelativeLaboratory", () => {
     const live = composeDemoTracerFields(
       IntegrationFrame.StormRelativeLaboratory,
     );
-    expect(live.operands).toHaveLength(5);
+    expect(live.operands).toHaveLength(7);
     expect(live.integrationFrame).toBe(
       IntegrationFrame.StormRelativeLaboratory,
     );

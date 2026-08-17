@@ -1,5 +1,5 @@
 import { EnvironmentalWindProfile } from "../physics/environment/EnvironmentalWindProfile.js";
-import type { ScenarioConfig } from "./ScenarioConfig.js";
+import type { ScenarioConfig, ScenarioTracerSeed } from "./ScenarioConfig.js";
 
 export class ScenarioConfigError extends Error {
   readonly name = "ScenarioConfigError";
@@ -15,8 +15,20 @@ function assertFinite(value: number, label: string): void {
   }
 }
 
+function assertFiniteSeeds(
+  seeds: readonly ScenarioTracerSeed[],
+  label: string,
+): void {
+  for (let i = 0; i < seeds.length; i++) {
+    const seed = seeds[i]!;
+    assertFinite(seed.x, `${label}[${i}].x`);
+    assertFinite(seed.y, `${label}[${i}].y`);
+    assertFinite(seed.z, `${label}[${i}].z`);
+  }
+}
+
 /**
- * Scenario-specific validation only (storm motion, timestep, tracer seeds).
+ * Scenario-specific validation only (storm motion, timestep, seed arrays).
  * Profile level invariants are owned by EnvironmentalWindProfile.
  */
 function assertScenarioOwnedFields(config: ScenarioConfig): void {
@@ -28,12 +40,12 @@ function assertScenarioOwnedFields(config: ScenarioConfig): void {
     throw new ScenarioConfigError("simulation.timestep must be > 0");
   }
 
-  for (let i = 0; i < config.simulation.tracerSeeds.length; i++) {
-    const seed = config.simulation.tracerSeeds[i]!;
-    assertFinite(seed.x, `tracerSeeds[${i}].x`);
-    assertFinite(seed.y, `tracerSeeds[${i}].y`);
-    assertFinite(seed.z, `tracerSeeds[${i}].z`);
-  }
+  assertFiniteSeeds(config.simulation.diagnosticSeeds, "diagnosticSeeds");
+  assertFiniteSeeds(config.simulation.storySeeds, "storySeeds");
+  assertFiniteSeeds(
+    config.simulation.downwardPathlineSeeds,
+    "downwardPathlineSeeds",
+  );
 }
 
 /**

@@ -877,9 +877,14 @@ resize policy:                 aspect + projection only;
                                no responsive pose
 simulation Reset → camera:     no effect
 Reset View:                    future UI, not this slice
-seeds:                         owned by DEMO_SCENARIO / 06
-                               (axis / east 2400 / north −2400)
-story tracers / trails:        out of scope
+seeds:                         live DownwardPathline from
+                               DEMO_SCENARIO.downwardPathlineSeeds (12)
+                               D1 (5000, 1000, 0)
+storySeeds:                    still in config; StoryPathlines explicit
+                               S1 (0, 1000, 4000) / S2 (0, 1000, 6000)
+diagnosticSeeds:               still in config; DiagnosticProbes API
+story tracers / trails:        live DownwardPathline; architecture 14
+                               camera/grid/glyph numbers unchanged
 follow / storm-relative cam:   forbidden
 view config home:              rendering module, not ScenarioConfig
 chimney-retune view policy:    13 (constants unchanged)

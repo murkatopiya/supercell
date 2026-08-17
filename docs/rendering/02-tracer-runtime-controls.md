@@ -31,7 +31,9 @@ In v1 the tracer panel gains:
 Out of scope **for the runtime-controls slice itself** (this document does
 not implement storm physics):
 
-- trails / path ribbons;
+- trails / path ribbons (architecture:
+  `docs/rendering/14-tracer-path-history.md`; trail primitive exists,
+  live DEMO does not enable it);
 - implementing updraft / rotation / radial-inflow / outflow / composite
   field wiring (owned by
   `docs/rendering/08-composite-lower-radial-inflow-demo.md`);
@@ -61,7 +63,7 @@ upperRadialOutflow])`.
 | Wall-frame clamp, pause gating, timeScale multiply | Runtime orchestration (viewport / loop host) |
 | `simulationElapsed → fixed steps` | Pure `consumeFixedTimesteps` |
 | Particle positions / `clock.time` | `Simulation` |
-| Seed definitions | `DEMO_SCENARIO.simulation.tracerSeeds` (immutable under Reset) |
+| Seed definitions | Active pedagogy seed array (live: `storySeeds`; immutable under Reset) |
 
 > Speed up time by feeding more **simulation elapsed** into the fixed-step
 > accumulator. Never enlarge `dt`.
@@ -102,17 +104,22 @@ when not paused. The scenario timestep stays `0.1` s on every
 
 Reset must:
 
-1. restore particle positions from **copies** of
-   `DEMO_SCENARIO.simulation.tracerSeeds` (via the existing seed→particle
-   copy helper or equivalent);
+1. restore particle positions from **copies** of the active pedagogy
+   seed array (`downwardPathlineSeeds` in live App, `storySeeds` when
+   StoryPathlines is selected, `diagnosticSeeds` when
+   DiagnosticProbes is selected);
 2. set each restored particle `age = 0`, `active = true`;
 3. set `simulation.clock.time = 0`;
 4. set the loop `accumulator = 0`;
 5. refresh `previousMs` to the current frame time;
 6. **preserve** current `paused` and `timeScale`;
-7. **not** mutate `DEMO_SCENARIO` / its seed array;
+7. **not** mutate `DEMO_SCENARIO` / its diagnostic or story seed arrays;
 8. **not** recreate the Three.js `TracerScene` (meshes stay; sync copies new
    positions).
+9. if a path-history recorder is live: `clear()` then `captureInitial`.
+
+Live Reset restores D1 and restarts the trail from that seed
+(`docs/architecture/12-downward-ground-impact-pedagogy.md`, `docs/rendering/14-tracer-path-history.md`).
 
 ---
 
@@ -260,7 +267,8 @@ resetTracersFromSeeds(simulation, seeds)
   → simulation.clock.time = 0
 ```
 
-Seeds argument is a read-only view of demo seeds; never write back into
+Seeds argument is a read-only view of the active live seed list
+(live App: `downwardPathlineSeeds`; StoryPathlines: `storySeeds`; DiagnosticProbes: `diagnosticSeeds`); never write back into
 `ScenarioConfig`.
 
 ---
@@ -278,9 +286,9 @@ Required focused tests (no WebGL harness):
    long paused gap (or equivalent pure model of that policy) then one active
    frame → steps reflect only the post-resume wall slice × scale, not pause
    duration.
-4. **Reset** — after N steps, reset restores seed positions, `clock.time === 0`,
-   preserves `timeScale` / `paused`, leaves `DEMO_SCENARIO.tracerSeeds`
-   unchanged.
+4. **Reset** — after N steps, reset restores diagnostic seed positions, `clock.time === 0`,
+   preserves `timeScale` / `paused`, leaves `DEMO_SCENARIO` seed arrays
+   and `storySeeds` unchanged.
 
 Update existing `consumeFixedTimesteps` tests for the clamp-free
 simulation-elapsed API.
@@ -316,9 +324,14 @@ docs/rendering/02-tracer-runtime-controls.md
   inflow + upper radial outflow DEMO wiring (current DEMO field/seeds;
   runtime controls unchanged):
   `docs/rendering/08-composite-lower-radial-inflow-demo.md`
-- Scenario DTO (`timestep` / seeds / `storm.updraft` / `storm.rotation` /
+- Scenario DTO (`timestep` / `diagnosticSeeds` / `storySeeds` /
+  `storm.updraft` / `storm.rotation` /
   `storm.lowerRadialInflow` / `storm.upperRadialOutflow`; no runtime scale):
   `docs/architecture/01-scenario-config.md`
+- Canonical story seeds (StoryPathlines explicit; live App DownwardPathline):
+  `docs/architecture/08-story-seeds.md`
+- Future tracer path history (SoT only; not implemented):
+  `docs/rendering/14-tracer-path-history.md`
 - Conceptual sim vs render time:
   `docs/ARCHITECTURE.md`
 - Numerical timestep philosophy:
@@ -358,7 +371,7 @@ clock interface. For this slice those fields remain **runtime UI state**, not
 
 **Done when:** Pause freezes tracers but Orbit still works; `20×` is visibly
 faster at the same `dt`; Resume has no pause-duration catch-up burst; Reset
-returns the three seeds at `t = 0` with scale/pause preserved; hodograph
+returns the live pedagogy seeds at `t = 0` with scale/pause preserved; hodograph
 unaffected.
 
 Stop after that slice.

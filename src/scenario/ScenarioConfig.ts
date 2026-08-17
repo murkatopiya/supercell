@@ -97,6 +97,51 @@ export interface ScenarioUpperRadialOutflow {
 }
 
 /**
+ * Controlled near-ground radial-outflow inputs (plain DTO).
+ * Physical validation is owned by NearGroundRadialOutflowField.
+ * baseHeight is the plateau top / taper start (G = 1 at and below).
+ */
+export interface ScenarioNearGroundOutflow {
+  /** World east coordinate of the outflow axis. Units: m */
+  centerX: number;
+  /** World south coordinate of the outflow axis. Units: m */
+  centerZ: number;
+  /**
+   * Near-axis radial strain coefficient in v_r = +A r E G.
+   * Strictly outward; must be > 0. Units: 1/s
+   */
+  outflowStrainRate: number;
+  /** Gaussian horizontal scale. Units: m */
+  sigma: number;
+  /** World +Y below which G = 1 and above which taper begins. Units: m */
+  baseHeight: number;
+  /** World +Y at which G = 0; outflow is zero at and above. Units: m */
+  topHeight: number;
+}
+
+/**
+ * Controlled vertically structured downdraft inputs (plain DTO).
+ * Physical validation is owned by VerticalEnvelopeDowndraftField.
+ */
+export interface ScenarioDowndraft {
+  /** World east coordinate of the downdraft axis. Units: m */
+  centerX: number;
+  /** World south coordinate of the downdraft axis. Units: m */
+  centerZ: number;
+  /**
+   * Global max of |Vy|, attained at axis and y_mid.
+   * Units: m/s; must be > 0. Actual Vy is negative.
+   */
+  peakDownwardVelocity: number;
+  /** Gaussian horizontal scale. Units: m */
+  sigma: number;
+  /** World +Y of the lower lid. Units: m; may be negative */
+  baseHeight: number;
+  /** World +Y of the upper lid. Units: m */
+  topHeight: number;
+}
+
+/**
  * Serializable scenario input DTO.
  * Not a physics model — composition builds physics objects from it.
  */
@@ -114,10 +159,29 @@ export interface ScenarioConfig {
     lowerRadialInflow: ScenarioLowerRadialInflow;
     /** Required controlled upper radial-outflow parameters. */
     upperRadialOutflow: ScenarioUpperRadialOutflow;
+    /** Required controlled downdraft parameters. */
+    downdraft: ScenarioDowndraft;
+    /** Required controlled near-ground radial-outflow parameters. */
+    nearGroundOutflow: ScenarioNearGroundOutflow;
   };
   simulation: {
     /** Fixed numerical step dt. Units: s; must be > 0 */
     timestep: number;
-    tracerSeeds: ScenarioTracerSeed[];
+    /**
+     * Pedagogical probe initial positions. Units: m.
+     * Role is this array, not a per-seed tag.
+     */
+    diagnosticSeeds: ScenarioTracerSeed[];
+    /**
+     * Lower→upper pathline initial positions. Units: m.
+     * Role is this array, not a per-seed tag.
+     */
+    storySeeds: ScenarioTracerSeed[];
+    /**
+     * Downward pathline initial positions. Units: m.
+     * Role is this array, not a per-seed tag.
+     * docs/architecture/12-downward-ground-impact-pedagogy.md
+     */
+    downwardPathlineSeeds: ScenarioTracerSeed[];
   };
 }

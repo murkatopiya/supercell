@@ -1,6 +1,9 @@
 # Story Seeds
 
-**Status:** research SoT. Production code was not changed.
+**Status:** implemented config split. Canonical story-seed semantics
+remain owned here. Live App selects `TracerPedagogy.DownwardPathline`
+(D1; `12`). StoryPathlines remains an explicit composition option
+(S1/S2 + trails). DiagnosticProbes remains the default composition API.
 Live frame: `StormRelativeLaboratory`.
 Live integrator: Euler, `dt = 0.1` s.
 Live fixture: `DEMO_SCENARIO` after `06` + `13`.
@@ -8,17 +11,20 @@ Live fixture: `DEMO_SCENARIO` after `06` + `13`.
 Predecessor:
 `docs/architecture/07-story-reachability-audit-v2.md` — verdict **A**:
 a robust lower→upper basin exists. Diagnostic probes stay diagnostic.
-Candidates S1–S3 were recorded there, not installed.
+Candidates S1–S3 were recorded there, not installed as the live view.
 
 This document answers:
 
-    Which minimal canonical story-seed set should a later implementation
-    install, how is it separated from the diagnostic trio, and what must
+    Which minimal canonical story-seed set is stored on ScenarioConfig,
+    how it is separated from the diagnostic trio, and what must
     be true of config, runtime, copy, integrator, and renderer before
     those seeds are shown?
 
-It does **not** retune physics, add seeds to `DEMO_SCENARIO`, add UI,
-add trails, or switch the live integrator.
+It does **not** retune physics, add UI, or switch the live
+integrator. S1 and S2 are stored on `DEMO_SCENARIO.simulation.storySeeds`
+and are the live occupants when pedagogy is `StoryPathlines`.
+Downward pathline seeds are a separate array
+(`docs/architecture/12-downward-ground-impact-pedagogy.md`).
 
 Story threshold: `04` §2, unchanged.
 
@@ -28,7 +34,7 @@ Story threshold: `04` §2, unchanged.
 
 **Two complementary story seeds. Not one. Not three.**
 
-Canonical set (not installed):
+Canonical stored set:
 
 ```text
 S1  (0, 1000, 4000)    r/σ = 1.0    azimuth 90° south    y0 = 1000
@@ -49,7 +55,9 @@ and remain a separate group. They are not replaced, not merged into an
 unlabeled `tracerSeeds` list, and not shown as a six-point cloud with
 the story pair.
 
-Live DEMO, until a later rendering/mode slice: **diagnostic only**.
+Live DEMO App: **DownwardPathline** (D1 + trails + `keepInactiveGlyphs`; `12`).
+StoryPathlines remains an explicit mode (S1/S2 + trails).
+Default composition API: **DiagnosticProbes**.
 
 ---
 
@@ -151,22 +159,26 @@ Axis letter-passing `04` does **not** make it a story seed. Its
 inflow is identically zero. East’s 2.9 s outflow graze does **not**
 make it a story seed.
 
-### Config contract (future implementation)
+### Config contract
 
 Do **not** concatenate both groups into one unlabeled
 `simulation.tracerSeeds`. After that, a seed has no role except
 array index and a recycled color.
 
-Proposed `ScenarioConfig.simulation` shape:
+Current `ScenarioConfig.simulation` shape:
 
 ```text
 timestep: number
-diagnosticSeeds: ScenarioTracerSeed[]   // pedagogical probes
-storySeeds: ScenarioTracerSeed[]        // lower→upper pathlines
+diagnosticSeeds: ScenarioTracerSeed[]         // pedagogical probes
+storySeeds: ScenarioTracerSeed[]              // lower→upper pathlines
+downwardPathlineSeeds: ScenarioTracerSeed[]   // D1; 12
 ```
 
 `ScenarioTracerSeed` stays `{ x, y, z }` in world metres. Role is
-**which array**, not a per-seed tag soup.
+**which array**, not a per-seed tag soup. `downwardPathlineSeeds` is
+owned by `docs/architecture/12-downward-ground-impact-pedagogy.md`.
+It is not this document’s story pair and must not be concatenated
+with `storySeeds`.
 
 Rejected alternatives:
 
@@ -181,12 +193,12 @@ Rejected alternatives:
 App / composition chooses **which array** to pass, the same way
 `IntegrationFrame` chooses the environmental operand.
 
-Migration of the current field: `tracerSeeds` **becomes**
+Migration of the previous field: unlabeled `tracerSeeds` **became**
 `diagnosticSeeds` with the same three coordinates. Empty
 `storySeeds` is allowed. Empty `diagnosticSeeds` is allowed only
-where empty `tracerSeeds` is already allowed (hodograph-only).
-DEMO must populate both arrays once story seeds are installed;
-live *display* is a separate choice (§5).
+where empty `tracerSeeds` was already allowed (hodograph-only).
+DEMO populates all three arrays; live *display* is DownwardPathline
+(`12`). StoryPathlines remains an explicit mode (§5). Empty `downwardPathlineSeeds` is allowed.
 
 Validation stays at the scenario boundary: each coordinate finite.
 No story-threshold check in the DTO factory. Reachability is a
@@ -198,34 +210,40 @@ Integrator id stays out of ScenarioConfig (`01` §8).
 
 ## 5. Runtime / UI policy
 
-No UI in the future seed-install slice. No mode toggle, no checkbox,
+No UI in this config-split slice. No mode toggle, no checkbox,
 no second tracer panel.
 
 Future DEMO display policy:
 
-**Default live view remains diagnostic-only.**
+**Live App view is DownwardPathline (`12`).** StoryPathlines remains
+an explicit composition option (S1/S2). DiagnosticProbes remains an
+explicit composition option and the default API.
 
-Reason: the current three colors (red / blue / green by index) and
-glyph-only renderer cannot carry two groups at once. Five or six
-moving spheres without path history will be read as “more particles,”
-not as “probes vs pathlines.”
+Reason for not showing both groups: the current three colors (red /
+blue / green by index) and glyph-only renderer cannot carry two
+groups at once. Five or six moving spheres without path history
+will be read as “more particles,” not as “probes vs pathlines.”
 
 | Presentation | Decision |
 | --- | --- |
-| Diagnostic only | **Live default.** Current DEMO contract. |
-| Story only | Allowed later as an app-composition choice, analogous to `IntegrationFrame`. Not the default. |
-| Both simultaneously | **Deferred.** Needs group-visual language (palette / labels) and preferably trails. |
-| UI to switch | Later. Until then, a composition constant in `App.tsx` is enough if a story view is ever commanded. |
+| Diagnostic only | Default composition API. Explicit runtime option. |
+| Story only | Explicit composition option. S1/S2; trails on. |
+| Downward only | **Live App.** D1; trails on; `keepInactiveGlyphs` (`12`). |
+| Both simultaneously | **Deferred.** Needs group-visual language (palette / labels). |
+| UI to switch | Later. Live selection is `LIVE_DEMO_TRACER_PEDAGOGY` in `App.tsx`. |
 
-Proposed future composition enum (not ScenarioConfig, not a feature
+Composition enum (not ScenarioConfig, not a feature
 flag on physics):
 
 ```text
-TracerPedagogy.DiagnosticProbes     // default; current live
-TracerPedagogy.StoryPathlines       // S1+S2
+TracerPedagogy.DiagnosticProbes     // default composition API
+TracerPedagogy.StoryPathlines       // explicit; S1+S2
+TracerPedagogy.DownwardPathline     // live App; D1; 12
 ```
 
-Not a third `Both` value until rendering can tell the groups apart.
+Not a `Both` value. DownwardPathline is a separate mode, not
+simultaneous upward+downward display
+(`docs/architecture/12-downward-ground-impact-pedagogy.md`).
 
 Reset continues to restore whatever seed list the active pedagogy
 passed into `Simulation`. It must not write story coordinates into
@@ -313,6 +331,9 @@ east vs north). Story teaching is a **200–400 s sequence**.
 **Trails (or equivalent path history) are a rendering prerequisite
 before story seeds become the live teaching view.**
 
+Path-history architecture (not implemented):
+`docs/rendering/14-tracer-path-history.md`.
+
 Until that slice:
 
 - storing S1/S2 in config is allowed;
@@ -328,43 +349,17 @@ labels. That is rendering work, not a seed-install extra.
 
 ---
 
-## 9. Future implementation slice (not this slice)
+## 9. Remaining implementation
 
-When commanded, a vertical slice should:
+Config split, trail primitive, StoryPathlines wiring, and
+DownwardPathline live switch are done.
+`TracerPedagogy` is an app-composition enum; default API remains
+`DiagnosticProbes`. Live App selects `DownwardPathline`. StoryPathlines
+remains explicit. No UI toggle.
 
-1. Split `ScenarioConfig.simulation` as in §4. Migrate DEMO diagnostic
-   coordinates off `tracerSeeds`. Install S1 and S2 as `storySeeds`.
-2. Keep Euler `dt = 0.1`, `StormRelativeLaboratory`, physics numbers,
-   diagnostic coordinates, camera/grid/glyph numbers.
-3. Compose particles from `diagnosticSeeds` by default.
-4. Optionally add `TracerPedagogy` at the app composition boundary,
-   default `DiagnosticProbes`. Do not add UI.
-5. Freeze S1/S2 coordinates and the diagnostic trio in tests.
-6. Update `01` (config shape), `02` (Reset source), `08` rendering
-   seed-layout notes, and DEMO comments. New rendering doc only if
-   a story view is actually shown.
-7. Use the §6 claim. Do not add trails, follow-camera, downdraft,
-   continuity, Bunkers, or a particle cloud.
-
-Likely files (implementation, later):
-
-```text
-docs/architecture/01-scenario-config.md
-docs/architecture/08-story-seeds.md          // this file; mark implemented
-docs/rendering/02-tracer-runtime-controls.md
-docs/rendering/08-composite-lower-radial-inflow-demo.md
-src/scenario/ScenarioConfig.ts
-src/scenario/DEMO_SCENARIO.ts
-src/scenario/DEMO_SCENARIO.test.ts
-src/scenario/createEnvironmentalWindProfile.ts   // finite-seed checks
-src/app/composeDemoTracerSimulation.ts
-src/app/App.tsx                                  // which array; default diagnostic
-src/simulation/resetTracersFromSeeds.ts          // active list only
-tests that snapshot tracerSeeds
-```
-
-Not in that slice: `TracerScene` trails, new colors-as-physics, UI
-mode controls, RK2 as live integrator, S3.
+When a later slice is commanded, it should not add follow-camera,
+continuity, Bunkers, a particle cloud, or Both-groups
+display until group-visual language exists.
 
 ---
 
@@ -380,17 +375,21 @@ S3:                      valid interior spare; not canonical
                          (same class as S1, lower y0)
 diagnostic trio:         unchanged coordinates; separate group
 config contract:         diagnosticSeeds + storySeeds
-                         (replace unlabeled tracerSeeds)
+                         + downwardPathlineSeeds (12; not this pair)
                          role = which array
-live display:            diagnostic only (default)
-both-at-once:            deferred (no group language, no trails)
+live display:            DownwardPathline in live App (D1; 12);
+                         StoryPathlines remains explicit (S1/S2);
+                         DiagnosticProbes remains default composition API
+both-at-once:            deferred (no group language)
 story claim:             prescribed SR pathline through lower inflow,
                          deep updraft region, and upper outflow region
 integrator:              Euler 0.1 live; RK2 / smaller dt agree
                          (Δmax y, Δmin r < 1 m); do not switch
-trails:                  rendering prerequisite before story is
-                         the live teaching view; not this install
-production this slice:   none
+trails:                  rendering prerequisite; implemented
+                         (14); StoryPathlines and DownwardPathline use them
+production this slice:   live DownwardPathline + trails;
+                         StoryPathlines and DiagnosticProbes still explicit
 ```
 
-Production code was not changed.
+S1 and S2 are stored. Live App teaching view is DownwardPathline (`12`).
+StoryPathlines remains an explicit mode.

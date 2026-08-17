@@ -9,8 +9,14 @@ import {
   type TracerTimeScale,
 } from "../ui/tracer/TracerRuntimeControls.js";
 import { TracerViewport } from "../ui/tracer/TracerViewport.js";
-import { composeDemoTracerSimulation } from "./composeDemoTracerSimulation.js";
+import {
+  composeDemoTracerSimulation,
+  createDemoPathHistory,
+  demoKeepInactiveGlyphs,
+  demoSeedsForPedagogy,
+} from "./composeDemoTracerSimulation.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
+import { LIVE_DEMO_TRACER_PEDAGOGY } from "./TracerPedagogy.js";
 import {
   DEMO_SELECTED_HEIGHT,
   createDemoHodographPoints,
@@ -26,7 +32,13 @@ export function App() {
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
   const [tracerSimulation] = useState(() =>
-    composeDemoTracerSimulation(IntegrationFrame.StormRelativeLaboratory),
+    composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      LIVE_DEMO_TRACER_PEDAGOGY,
+    ),
+  );
+  const [pathHistory] = useState(() =>
+    createDemoPathHistory(LIVE_DEMO_TRACER_PEDAGOGY, tracerSimulation.particles),
   );
   const [paused, setPaused] = useState(false);
   const [timeScale, setTimeScale] = useState<TracerTimeScale>(1);
@@ -35,8 +47,10 @@ export function App() {
   const handleReset = () => {
     resetTracersFromSeeds(
       tracerSimulation,
-      DEMO_SCENARIO.simulation.tracerSeeds,
+      demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY),
     );
+    pathHistory?.clear();
+    pathHistory?.captureInitial(tracerSimulation.particles);
     setResetEpoch((epoch) => epoch + 1);
   };
 
@@ -68,9 +82,9 @@ export function App() {
 
         <div className="app__panel app__panel--tracer">
           <h2 className="app__panel-title">
-            Storm-relative laboratory: environment, vertically structured
-            updraft, rotation, lower radial inflow, and upper radial
-            outflow tracers
+            Storm-relative laboratory: prescribed storm-relative
+            pathline descending through the downdraft region until
+            it exits the atmospheric domain at y = 0
           </h2>
           <TracerRuntimeControls
             paused={paused}
@@ -81,6 +95,8 @@ export function App() {
           />
           <TracerViewport
             simulation={tracerSimulation}
+            pathHistory={pathHistory}
+            keepInactiveGlyphs={demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)}
             timestep={DEMO_SCENARIO.simulation.timestep}
             paused={paused}
             timeScale={timeScale}

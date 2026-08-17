@@ -4,6 +4,10 @@
 **introduction** and the axis/east/north seed **layout**. Current
 rotation occupant / wiring is
 `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`.
+Live sixth operand (downdraft) is
+`docs/rendering/15-composite-downdraft-demo.md`.
+Live seventh operand (near-ground outflow) is
+`docs/rendering/16-composite-near-ground-outflow-demo.md`.
 Live storm-envelope **geometry** (before localized rotation) is
 specified in
 `docs/rendering/10-deep-storm-envelope-scaling.md`. Environmental
@@ -13,6 +17,10 @@ knots `0–12000 m` remain
 this document are this slice's **historical** fixture.
 Live seed metres (`r = 0.6σ = 2400 m`):
 `docs/architecture/06-deep-chimney-scaling-demo-retune.md`.
+Live particles come from `simulation.diagnosticSeeds` (same
+axis/east/north metres). Canonical story seeds are stored on
+`storySeeds` (`docs/architecture/08-story-seeds.md`) and are not
+the live teaching view.
 
 ## 1. Purpose
 

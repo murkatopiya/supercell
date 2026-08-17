@@ -1,13 +1,46 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { TracerParticle } from "../simulation/TracerParticle.js";
+import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import { DEEP_STORM_TRACER_VIEW } from "./deepStormTracerView.js";
+import {
+  createTrailLines,
+  disposeTrailLine,
+  syncTrailLine,
+} from "./trailGeometry.js";
 
-const TRACER_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71] as const;
+export const TRACER_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71] as const;
+
+export interface TracerSceneOptions {
+  /** When true, observe path-history as one Line per tracer. Default false. */
+  trails?: boolean;
+  /**
+   * When true, inactive glyphs stay visible at the frozen particle
+   * position. Default false (hide when active === false).
+   * Renderer state, not domain policy.
+   */
+  keepInactiveGlyphs?: boolean;
+}
+
+/**
+ * Observe-only glyph copy. Does not mutate the particle.
+ * docs/architecture/12-downward-ground-impact-pedagogy.md
+ */
+export function syncObservedTracerGlyph(
+  mesh: {
+    visible: boolean;
+    position: { set(x: number, y: number, z: number): void };
+  },
+  particle: TracerParticle,
+  keepInactiveGlyphs: boolean,
+): void {
+  mesh.visible = keepInactiveGlyphs || particle.active;
+  mesh.position.set(particle.position.x, particle.position.y, particle.position.z);
+}
 
 /**
  * Imperative Three.js tracer scene.
- * Observes particle positions; never writes simulation state.
+ * Observes particle positions and optional path-history; never writes simulation state.
  */
 export class TracerScene {
   private readonly renderer: THREE.WebGLRenderer;
@@ -15,9 +48,15 @@ export class TracerScene {
   private readonly camera: THREE.PerspectiveCamera;
   private readonly controls: OrbitControls;
   private readonly tracerMeshes: THREE.Mesh[] = [];
+  private readonly trailLines: THREE.Line[];
   private readonly sharedGeometry: THREE.SphereGeometry;
+  private readonly keepInactiveGlyphs: boolean;
 
-  constructor(canvas: HTMLCanvasElement, tracerCount: number) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    tracerCount: number,
+    options?: TracerSceneOptions,
+  ) {
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
@@ -58,6 +97,15 @@ export class TracerScene {
       this.scene.add(mesh);
       this.tracerMeshes.push(mesh);
     }
+
+    this.keepInactiveGlyphs = options?.keepInactiveGlyphs === true;
+
+    this.trailLines = options?.trails
+      ? createTrailLines(tracerCount, TRACER_COLORS)
+      : [];
+    for (const line of this.trailLines) {
+      this.scene.add(line);
+    }
   }
 
   setSize(width: number, height: number): void {
@@ -74,11 +122,21 @@ export class TracerScene {
     for (let i = 0; i < n; i++) {
       const p = particles[i]!;
       const mesh = this.tracerMeshes[i]!;
-      mesh.visible = p.active;
-      mesh.position.set(p.position.x, p.position.y, p.position.z);
+      syncObservedTracerGlyph(mesh, p, this.keepInactiveGlyphs);
     }
     for (let i = n; i < this.tracerMeshes.length; i++) {
       this.tracerMeshes[i]!.visible = false;
+    }
+  }
+
+  /**
+   * Copy path-history snapshots into trail lines.
+   * No-op when trails were not enabled. Does not record or step.
+   */
+  syncFromPathHistory(pathHistory: TracerPathHistory): void {
+    const n = Math.min(pathHistory.tracerCount, this.trailLines.length);
+    for (let i = 0; i < n; i++) {
+      syncTrailLine(this.trailLines[i]!, pathHistory.pointsFor(i));
     }
   }
 
@@ -94,6 +152,10 @@ export class TracerScene {
       (mesh.material as THREE.Material).dispose();
     }
     this.sharedGeometry.dispose();
+    for (const line of this.trailLines) {
+      this.scene.remove(line);
+      disposeTrailLine(line);
+    }
     this.renderer.dispose();
   }
 }

@@ -21,8 +21,12 @@ ScenarioConfig
 │    → VerticalEnvelopeRotationField
 ├─ createLowerRadialInflowField
 │    → LowerRadialInflowField
-└─ createUpperRadialOutflowField
-     → UpperRadialOutflowField
+├─ createUpperRadialOutflowField
+│    → UpperRadialOutflowField
+├─ createDowndraftField
+│    → VerticalEnvelopeDowndraftField
+└─ createNearGroundRadialOutflowField
+     → NearGroundRadialOutflowField
 
 app composition (tracer path):
   IntegrationFrame default API = GroundRelativeWindTunnel
@@ -35,19 +39,26 @@ app composition (tracer path):
     rotationField,
     lowerRadialInflowField,
     upperRadialOutflowField,
+    downdraftField,
+    nearGroundOutflowField,
   ])
   → Simulation / UI / 3D rendering observe
 ```
 
 Hodograph composition continues to use only the environmental profile (and
 `stormMotion` for diagnostics). It must not consume updraft, rotation,
-lower radial inflow, upper radial outflow, or composite velocity. Demo wiring
+lower radial inflow, upper radial outflow, downdraft, near-ground outflow,
+or composite velocity. Demo wiring
 details:
 `docs/rendering/08-composite-lower-radial-inflow-demo.md`.
 Live envelope bounds:
 `docs/rendering/10-deep-storm-envelope-scaling.md`.
 Current rotation occupant / wiring:
 `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`.
+Current downdraft occupant / wiring:
+`docs/rendering/15-composite-downdraft-demo.md`.
+Current near-ground outflow occupant / wiring:
+`docs/rendering/16-composite-near-ground-outflow-demo.md`.
 
 It answers:
 
@@ -72,16 +83,26 @@ In v1 `ScenarioConfig` holds:
   (`storm.lowerRadialInflow`);
 - required controlled upper radial-outflow parameters
   (`storm.upperRadialOutflow`);
+- required controlled downdraft parameters (`storm.downdraft`);
+- required controlled near-ground radial-outflow parameters
+  (`storm.nearGroundOutflow`);
 - the minimal simulation inputs for the tracer / 3D shell
-  (`timestep`, `tracerSeeds`).
+  (`timestep`, `diagnosticSeeds`, `storySeeds`,
+  `downwardPathlineSeeds`). Role is which array a seed occupies,
+  not a per-seed tag (`docs/architecture/08-story-seeds.md`,
+  `docs/architecture/12-downward-ground-impact-pedagogy.md`).
 
-`storm.updraft`, `storm.rotation`, `storm.lowerRadialInflow`, and
-`storm.upperRadialOutflow` are **required** in the current
-ScenarioConfig v1 surface. Physical meaning and validation remain in
+`storm.updraft`, `storm.rotation`, `storm.lowerRadialInflow`,
+`storm.upperRadialOutflow`, `storm.downdraft`, and
+`storm.nearGroundOutflow` are **required**
+in the current ScenarioConfig v1 surface. Physical meaning and
+validation remain in
 `docs/physics/15-vertical-updraft-envelope.md`,
 `docs/physics/18-vertical-rotation-envelope.md`,
-`docs/physics/17-lower-radial-inflow-field.md`, and
-`docs/physics/16-upper-radial-outflow-field.md`; the scenario layer
+`docs/physics/17-lower-radial-inflow-field.md`,
+`docs/physics/16-upper-radial-outflow-field.md`,
+`docs/physics/20-vertical-downdraft-envelope.md`, and
+`docs/physics/21-near-ground-radial-outflow.md`; the scenario layer
 stores plain numbers only. Isolated height-independent `UpdraftField`
 (`docs/physics/11-updraft-field.md`), isolated height-independent
 `RotationField` (`docs/physics/13-rotation-field.md`), and isolated
@@ -90,7 +111,7 @@ are not ScenarioConfig occupants.
 
 Out of scope for v1:
 
-- downdraft / surface cold-pool outflow parameters;
+- surface cold-pool / gust-front outflow parameters;
 - a shared `storm.center` or combined storm-field type;
 - thermodynamics;
 - CAPE / CIN;
@@ -123,6 +144,8 @@ src/scenario/
   createRotationField(config)
   createLowerRadialInflowField(config)
   createUpperRadialOutflowField(config)
+  createDowndraftField(config)
+  createNearGroundRadialOutflowField(config)
 ```
 
 Documentation:
@@ -134,6 +157,8 @@ docs/rendering/09-deep-environmental-profile-demo.md     // DEMO env knots (0–
 docs/rendering/10-deep-storm-envelope-scaling.md         // DEMO storm envelope bounds before localized rotation
 docs/rendering/12-composite-vertical-envelope-rotation-demo.md
                                                          // current rotation occupant / wiring
+docs/rendering/15-composite-downdraft-demo.md            // current downdraft occupant / wiring
+docs/rendering/16-composite-near-ground-outflow-demo.md  // current near-ground outflow occupant / wiring
 ```
 
 Dependency direction:
@@ -142,7 +167,9 @@ Dependency direction:
 scenario DTOs     →  nothing from physics / UI / simulation
 scenario factories → EnvironmentalWindProfile / VerticalEnvelopeUpdraftField /
                      VerticalEnvelopeRotationField / LowerRadialInflowField /
-                     UpperRadialOutflowField constructors
+                     UpperRadialOutflowField / VerticalEnvelopeDowndraftField /
+                     NearGroundRadialOutflowField
+                     constructors
                      (value import only; each in its own factory module)
 app               →  scenario + physics + simulation + ui
                      (builds IntegrationFrame-selected env operand,
@@ -164,6 +191,8 @@ Scenario defines its own serializable DTO shapes:
 - `ScenarioRotation` (plain numbers under `storm.rotation`)
 - `ScenarioLowerRadialInflow` (plain numbers under `storm.lowerRadialInflow`)
 - `ScenarioUpperRadialOutflow` (plain numbers under `storm.upperRadialOutflow`)
+- `ScenarioDowndraft` (plain numbers under `storm.downdraft`)
+- `ScenarioNearGroundOutflow` (plain numbers under `storm.nearGroundOutflow`)
 
 These may be **structurally compatible** with existing physics / core
 contracts (profile level inputs, `StormMotion`, world `Vec3`, updraft
@@ -181,6 +210,9 @@ createUpdraftField.ts             // value-import VerticalEnvelopeUpdraftField
 createRotationField.ts            // value-import VerticalEnvelopeRotationField
 createLowerRadialInflowField.ts   // value-import LowerRadialInflowField
 createUpperRadialOutflowField.ts  // value-import UpperRadialOutflowField
+createDowndraftField.ts           // value-import VerticalEnvelopeDowndraftField
+createNearGroundRadialOutflowField.ts
+                                  // value-import NearGroundRadialOutflowField
 DEMO_SCENARIO.ts                  // plain data; physics-import-free
 ```
 
@@ -197,8 +229,14 @@ into `LowerRadialInflowField` params and delegates physical validation
 to `LowerRadialInflowField`.
 `createUpperRadialOutflowField` maps `config.storm.upperRadialOutflow`
 into `UpperRadialOutflowField` params and delegates physical validation
-to `UpperRadialOutflowField`. Factories must not re-export physics types
-as the scenario public DTO surface.
+to `UpperRadialOutflowField`.
+`createDowndraftField` maps `config.storm.downdraft` into
+`VerticalEnvelopeDowndraftField` params and delegates physical validation
+to `VerticalEnvelopeDowndraftField`.
+`createNearGroundRadialOutflowField` maps `config.storm.nearGroundOutflow`
+into `NearGroundRadialOutflowField` params and delegates physical
+validation to `NearGroundRadialOutflowField`. Factories must not re-export physics
+types as the scenario public DTO surface.
 
 ---
 
@@ -284,6 +322,24 @@ interface ScenarioUpperRadialOutflow {
   topHeight: number;               // m, world +Y
 }
 
+interface ScenarioDowndraft {
+  centerX: number;                 // m, world +X
+  centerZ: number;                 // m, world +Z
+  peakDownwardVelocity: number;    // m/s; > 0; actual Vy is negative
+  sigma: number;                   // m
+  baseHeight: number;              // m, world +Y; may be negative
+  topHeight: number;               // m, world +Y
+}
+
+interface ScenarioNearGroundOutflow {
+  centerX: number;                 // m, world +X
+  centerZ: number;                 // m, world +Z
+  outflowStrainRate: number;       // 1/s; > 0; strictly outward
+  sigma: number;                   // m
+  baseHeight: number;              // m, world +Y; plateau top / taper start
+  topHeight: number;               // m, world +Y; G = 0 at and above
+}
+
 interface ScenarioConfig {
   environment: {
     windLevels: ScenarioWindLevel[];
@@ -294,10 +350,14 @@ interface ScenarioConfig {
     rotation: ScenarioRotation;                     // required in current v1
     lowerRadialInflow: ScenarioLowerRadialInflow;   // required in current v1
     upperRadialOutflow: ScenarioUpperRadialOutflow; // required in current v1
+    downdraft: ScenarioDowndraft;                   // required in current v1
+    nearGroundOutflow: ScenarioNearGroundOutflow;   // required in current v1
   };
   simulation: {
     timestep: number;              // s, must be > 0
-    tracerSeeds: ScenarioTracerSeed[];
+    diagnosticSeeds: ScenarioTracerSeed[];  // pedagogical probes
+    storySeeds: ScenarioTracerSeed[];       // lower→upper pathlines
+    downwardPathlineSeeds: ScenarioTracerSeed[]; // D1; 12
   };
 }
 ```
@@ -352,13 +412,39 @@ strictly outward sign, and constraints (`outflowStrainRate > 0`,
 `UpperRadialOutflowField` /
 `docs/physics/16-upper-radial-outflow-field.md`.
 
-Updraft, rotation, lower-radial-inflow, and upper radial-outflow centers are
-independently parameterized. DEMO may set them equal as a fixture choice;
-that coincidence is not an API invariant and must not become a shared
-`storm.center`. Vertical inflow, outflow, and rotation bounds are
-likewise independent of `storm.updraft` bounds and of each other.
+`storm.downdraft` stores serializable downdraft inputs only. Meaning,
+Gaussian radial profile, half-sine vertical envelope, `Vy ≤ 0`, and
+constraints (`peakDownwardVelocity > 0`, `sigma > 0`,
+`topHeight > baseHeight`; `baseHeight` may be negative) are owned by
+`VerticalEnvelopeDowndraftField` /
+`docs/physics/20-vertical-downdraft-envelope.md`.
+DEMO occupancy numbers are
+`docs/rendering/15-composite-downdraft-demo.md`. Isolated signed
+updraft is not constructed from this DTO.
+
+`storm.nearGroundOutflow` stores serializable near-ground radial-outflow
+inputs only. Meaning, Gaussian-modulated linear outflow, plateau +
+quarter-cosine `G(y)`, strictly outward sign, and constraints
+(`outflowStrainRate > 0`, `sigma > 0`, `topHeight > baseHeight`) are
+owned by `NearGroundRadialOutflowField` /
+`docs/physics/21-near-ground-radial-outflow.md`.
+`baseHeight` on this block is the plateau top / taper start (`G = 1`
+at and below), not a zero lid. DEMO occupancy numbers are
+`docs/rendering/16-composite-near-ground-outflow-demo.md`. This is
+not a cold-pool DTO, not a signed `storm.lowerRadialInflow`, and not
+a lowered `storm.upperRadialOutflow`.
+
+Updraft, rotation, lower-radial-inflow, upper radial-outflow,
+downdraft, and near-ground-outflow centers are independently parameterized. DEMO may set the
+first four equal as a fixture choice; the live downdraft and
+near-ground outflow are offset.
+That coincidence is not an API invariant and must not become a shared
+`storm.center`. Vertical bounds and `sigma` are likewise independent.
 Rotation `[0, 6500]` is a DEMO fixture, not a copy of updraft
-`[0, 8000]`.
+`[0, 8000]`. Downdraft `σ = 2000 m` and `[−400, 3600]` are the `15`
+fixture, not a copy of the shared chimney `σ = 4000 m`. Near-ground
+outflow `σ = 1500 m` and `[0, 800]` are the `16` fixture, not a copy
+of inflow, outflow, or downdraft bounds.
 
 Tracer seeds use canonical world coordinates. They are initial positions for
 tracer particles, not atmospheric velocity samples.
@@ -401,7 +487,12 @@ Included in v1:
 | Field | Meaning |
 | --- | --- |
 | `simulation.timestep` | Fixed numerical step `dt` in seconds, supplied to `Simulation.step(dt)` |
-| `simulation.tracerSeeds` | Initial world positions for tracers; particle count is `tracerSeeds.length` |
+| `simulation.diagnosticSeeds` | Initial world positions for pedagogical probes. Default composition / DiagnosticProbes / Diagnostic Reset. |
+| `simulation.storySeeds` | Initial world positions for prescribed lower→upper pathlines. StoryPathlines / story Reset. Canonical occupants: `docs/architecture/08-story-seeds.md` |
+| `simulation.downwardPathlineSeeds` | Initial world positions for the prescribed downward pathline. Live App / `TracerPedagogy.DownwardPathline` / D1 Reset. Canonical occupant D1: `docs/architecture/12-downward-ground-impact-pedagogy.md` |
+
+Do **not** concatenate groups into one unlabeled array. Role is which
+array, not a per-seed `role` tag.
 
 Deferred (do not add “for later”):
 
@@ -409,7 +500,7 @@ Deferred (do not add “for later”):
 | --- | --- |
 | `timeScale` | Not yet part of the implemented `SimulationClock` contract as scenario input; closer to runtime / UI clock control |
 | `paused` | Session UI state |
-| `particleCount` | Duplicates `tracerSeeds.length` |
+| `particleCount` | Duplicates the length of whichever seed array composition selects |
 | domain bounds | Not owned by current environment field model; rendering / future domain policy |
 | integrator id | Composition chooses integrator; not user scenario surface yet |
 | camera / colors | Rendering / interaction |
@@ -419,9 +510,11 @@ There is still no project-wide `DEFAULT_DT`
 the experiment-specific value for a given config, not a hidden global default
 inside core/physics.
 
-Empty `tracerSeeds: []` is allowed while only the hodograph path is wired.
-The upcoming 3D / tracer slice should extend `DEMO_SCENARIO` seeds rather than
-invent a second parameter source.
+Empty `storySeeds: []` is allowed. Empty `diagnosticSeeds: []` is allowed
+while only the hodograph path is wired. Empty `downwardPathlineSeeds: []`
+is allowed. DEMO populates all three arrays.
+Live App display is DownwardPathline; DiagnosticProbes remains the default
+composition API; StoryPathlines remains an explicit composition option.
 
 ---
 
@@ -444,6 +537,12 @@ createLowerRadialInflowField(config: ScenarioConfig)
 
 createUpperRadialOutflowField(config: ScenarioConfig)
   → UpperRadialOutflowField
+
+createDowndraftField(config: ScenarioConfig)
+  → VerticalEnvelopeDowndraftField
+
+createNearGroundRadialOutflowField(config: ScenarioConfig)
+  → NearGroundRadialOutflowField
 ```
 
 `createEnvironmentalWindProfile` behavior:
@@ -469,7 +568,8 @@ createUpperRadialOutflowField(config: ScenarioConfig)
    })`;
 3. let `VerticalEnvelopeRotationField` enforce physical invariants.
    Do not copy centers, `sigma`, or vertical bounds from `storm.updraft`,
-   `storm.lowerRadialInflow`, or `storm.upperRadialOutflow`.
+   `storm.lowerRadialInflow`, `storm.upperRadialOutflow`, or
+   `storm.downdraft`.
 
 `createLowerRadialInflowField` behavior:
 
@@ -479,7 +579,7 @@ createUpperRadialOutflowField(config: ScenarioConfig)
    })`;
 3. let `LowerRadialInflowField` enforce physical invariants.
    Do not copy centers, `sigma`, or vertical bounds from `storm.updraft`,
-   `storm.rotation`, or `storm.upperRadialOutflow`.
+   `storm.rotation`, `storm.upperRadialOutflow`, or `storm.downdraft`.
 
 `createUpperRadialOutflowField` behavior:
 
@@ -489,7 +589,29 @@ createUpperRadialOutflowField(config: ScenarioConfig)
    })`;
 3. let `UpperRadialOutflowField` enforce physical invariants.
    Do not copy centers, `sigma`, or vertical bounds from `storm.updraft`,
-   `storm.rotation`, or `storm.lowerRadialInflow`.
+   `storm.rotation`, `storm.lowerRadialInflow`, or `storm.downdraft`.
+
+`createDowndraftField` behavior:
+
+1. read `config.storm.downdraft` plain numbers;
+2. construct `new VerticalEnvelopeDowndraftField({
+     centerX, centerZ, peakDownwardVelocity, sigma, baseHeight, topHeight
+   })`;
+3. let `VerticalEnvelopeDowndraftField` enforce physical invariants.
+   Do not copy centers, `sigma`, or vertical bounds from `storm.updraft`,
+   `storm.rotation`, `storm.lowerRadialInflow`, or
+   `storm.upperRadialOutflow`.
+
+`createNearGroundRadialOutflowField` behavior:
+
+1. read `config.storm.nearGroundOutflow` plain numbers;
+2. construct `new NearGroundRadialOutflowField({
+     centerX, centerZ, outflowStrainRate, sigma, baseHeight, topHeight
+   })`;
+3. let `NearGroundRadialOutflowField` enforce physical invariants.
+   Do not copy centers, `sigma`, strength, or vertical bounds from
+   `storm.updraft`, `storm.rotation`, `storm.lowerRadialInflow`,
+   `storm.upperRadialOutflow`, or `storm.downdraft`.
 
 Optional later one-liners (not required):
 
@@ -522,8 +644,10 @@ updraft  = createUpdraftField(config)
 rotation = createRotationField(config)
 inflow   = createLowerRadialInflowField(config)
 outflow  = createUpperRadialOutflowField(config)
+downdraft = createDowndraftField(config)
+ngOutflow = createNearGroundRadialOutflowField(config)
 field    = new CompositeVelocityField(
-             [envField, updraft, rotation, inflow, outflow])
+             [envField, updraft, rotation, inflow, outflow, downdraft, ngOutflow])
 ```
 
 ---
@@ -606,7 +730,11 @@ fields:
 
 - `stormMotion.eastward` / `northward` are finite;
 - `simulation.timestep` is finite and `> 0`;
-- each `tracerSeeds[i].x|y|z` is finite.
+- each `diagnosticSeeds[i].x|y|z` is finite;
+- each `storySeeds[i].x|y|z` is finite;
+- each `downwardPathlineSeeds[i].x|y|z` is finite.
+
+No story-threshold / reachability check in the DTO factory.
 
 Scenario factory adds `vertical: 0` and delegates profile construction.
 Profile validation failures surface as profile errors.
@@ -668,13 +796,16 @@ global `topHeight` to this DTO. Lower `0 / 1000 / 2000` winds remain the
 already-studied fixture; `6000` and `12000` extend the column upward.
 Keep `C`.
 
-Controlled updraft, rotation, lower radial inflow, upper radial outflow, and
-tracer seeds for the current composite demo
+Controlled updraft, rotation, lower radial inflow, upper radial outflow,
+downdraft, and seed groups for the current composite demo
 (`docs/architecture/06-deep-chimney-scaling-demo-retune.md` live numbers;
-`docs/rendering/08-composite-lower-radial-inflow-demo.md` seed layout;
+`docs/rendering/08-composite-lower-radial-inflow-demo.md` diagnostic
+axis/east/north layout;
+`docs/architecture/08-story-seeds.md` canonical story seeds;
 `docs/rendering/10-deep-storm-envelope-scaling.md` envelope bounds;
 `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`
-rotation occupant):
+rotation occupant;
+`docs/rendering/15-composite-downdraft-demo.md` downdraft occupant):
 
 ```text
 storm.updraft:
@@ -709,22 +840,45 @@ storm.upperRadialOutflow:
   baseHeight = 5000
   topHeight = 9000
 
-tracerSeeds:
+storm.downdraft:
+  centerX = 5000
+  centerZ = 0
+  peakDownwardVelocity = 20
+  sigma = 2000
+  baseHeight = -400
+  topHeight = 3600
+
+diagnosticSeeds:
   (0,    1000,  0)
   (2400, 1000,  0)
   (0,    1000, -2400)
+
+storySeeds:
+  (0,    1000,  4000)    // S1
+  (0,    1000,  6000)    // S2
+
+downwardPathlineSeeds:
+  (5000, 1000,  0)       // D1
 ```
+
+Live App builds tracers from `downwardPathlineSeeds` (`TracerPedagogy.DownwardPathline`).
+Default composition API still uses `diagnosticSeeds`. `StoryPathlines`
+maps `storySeeds` and remains an explicit composition option
+(`docs/architecture/08-story-seeds.md`, `docs/architecture/12-downward-ground-impact-pedagogy.md`). S3 is a recorded spare,
+not a DEMO occupant.
 
 Four `sigma = 4000` values are a DEMO scenario choice, not a
 `storm.sigma` field and not a physics invariant. Peak Gaussian
 horizontal speeds stay `≈ 12.13 / 3.03 / 6.07` m/s (`06` policy B).
+`storm.downdraft.sigma = 2000` is an independent occupant scale (`15`).
 
-DEMO storm centers (and horizontal `sigma`) coincide as a fixture
-choice, not as an API invariant. Live envelope relations (inflow
+DEMO chimney centers (and those four horizontal `sigma` values)
+coincide as a fixture choice, not as an API invariant. The live
+downdraft axis is offset east. Live envelope relations (inflow
 plateau to `1500`, radial-quiet `4500–5000`, outflow `5000–9000`,
 updraft `[0, 8000]`) are the `10` fixture, not an API coupling.
 Rotation `[0, 6500]` is the `12` fixture and is **not** the updraft
-interval.
+interval. Downdraft `[−400, 3600]` is the `15` fixture.
 
 This is **one demo scenario constant**, not:
 
@@ -787,7 +941,7 @@ ScenarioConfig
 ├─ hodograph path
 │    profile → points / storm overlays / diagnostics → panel
 │    (ignores storm.updraft, storm.rotation, storm.lowerRadialInflow,
-│     and storm.upperRadialOutflow for geometry and overlays)
+│     storm.upperRadialOutflow, and storm.downdraft for geometry and overlays)
 └─ tracer / 3D path
      IntegrationFrame (app composition; default GroundRelativeWindTunnel;
      live App = StormRelativeLaboratory)
@@ -797,21 +951,27 @@ ScenarioConfig
      storm.rotation → VerticalEnvelopeRotationField
      storm.lowerRadialInflow → LowerRadialInflowField
      storm.upperRadialOutflow → UpperRadialOutflowField
-     CompositeVelocityField([envOperand, updraft, rotation, lowerRadialInflow, outflow])
+     storm.downdraft → VerticalEnvelopeDowndraftField
+     CompositeVelocityField([envOperand, updraft, rotation, lowerRadialInflow, outflow, downdraft])
      // app composition; CompositeVelocityField does not know the frame
-     tracerSeeds → TracerParticle[]
+     diagnosticSeeds or storySeeds or downwardPathlineSeeds → TracerParticle[]
+     // TracerPedagogy at app composition; live App = DownwardPathline
      timestep → Simulation.step(dt)
      rendering observes particle positions
 ```
 
 Rendering must not introduce a second editable copy of environment winds,
 updraft parameters, rotation parameters, lower-radial-inflow parameters, upper
-radial-outflow parameters, or storm motion.
+radial-outflow parameters, downdraft parameters, or storm motion.
 
 `IntegrationFrame` is an app-composition concern, not a `ScenarioConfig`
 field. Live browser 3D is `StormRelativeLaboratory`; the default
 composition API remains `GroundRelativeWindTunnel`
 (`docs/architecture/03-wind-tunnel-storm-relative-3d-semantics.md` §21).
+`TracerPedagogy` is likewise app composition, not ScenarioConfig.
+Live App is `DownwardPathline`; default composition API is
+`DiagnosticProbes`. `StoryPathlines` remains an explicit named mode.
+`DownwardPathline` is not `Both` (`docs/architecture/12-downward-ground-impact-pedagogy.md`).
 
 Camera, colors, and layer visibility stay outside `ScenarioConfig`.
 
@@ -845,19 +1005,29 @@ Scenario-layer tests should verify contracts, not React cosmetics:
 6. `createUpperRadialOutflowField(DEMO_SCENARIO)` maps DEMO outflow DTO
    params (axis `V = (0,0,0)`; at `y_mid = 7000` off-axis, outward;
    at seed height `y = 1000`, `G = 0`).
-7. replacing config values and rebuilding yields updated derived objects.
-8. mutating config after `createEnvironmentalWindProfile` does not change the
+7. `createDowndraftField(DEMO_SCENARIO)` maps DEMO downdraft DTO params
+   (offset axis `(5000, 0)`; `σ = 2000`; `y_mid = 1600`,
+   `Vy = −D0`; `baseHeight = −400` is constructible; `F(0) > 0`).
+8. `createNearGroundRadialOutflowField(DEMO_SCENARIO)` maps DEMO
+   near-ground outflow DTO params (offset axis `(3000, 4000)`;
+   `σ = 1500`; `A = 0.010991`; plateau includes `y = 0`;
+   `G(1000) = 0`; peak `|V_h| ≈ 10` m/s).
+9. replacing config values and rebuilding yields updated derived objects.
+10. mutating config after `createEnvironmentalWindProfile` does not change the
    already-created profile samples.
 
 Do not duplicate full profile, `VerticalEnvelopeUpdraftField`,
-`VerticalEnvelopeRotationField`, `LowerRadialInflowField`, or
-`UpperRadialOutflowField` validation matrices already owned by physics
-tests. Isolated `UpdraftField`, isolated `RotationField`, and isolated
+`VerticalEnvelopeRotationField`, `LowerRadialInflowField`,
+`UpperRadialOutflowField`, `VerticalEnvelopeDowndraftField`, or
+`NearGroundRadialOutflowField`
+validation matrices already owned by physics tests. Isolated
+`UpdraftField`, isolated `RotationField`, and isolated
 `RadialInflowField` validation stay in physics tests.
 Composite demo integration tests live with app / simulation composition per
 `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`,
-`docs/rendering/08-composite-lower-radial-inflow-demo.md`, and
-`docs/rendering/10-deep-storm-envelope-scaling.md`.
+`docs/rendering/08-composite-lower-radial-inflow-demo.md`,
+`docs/rendering/10-deep-storm-envelope-scaling.md`, and
+`docs/rendering/15-composite-downdraft-demo.md`.
 
 ---
 
@@ -878,14 +1048,20 @@ Composite demo integration tests live with app / simulation composition per
 - Lower radial inflow field (current DEMO occupant):
   `docs/physics/17-lower-radial-inflow-field.md`
 - Upper radial outflow field: `docs/physics/16-upper-radial-outflow-field.md`
+- Vertical envelope downdraft (current DEMO occupant):
+  `docs/physics/20-vertical-downdraft-envelope.md`
+- Near-ground radial outflow (current DEMO occupant):
+  `docs/physics/21-near-ground-radial-outflow.md`
 - Composite field: `docs/physics/12-composite-velocity-field.md`
 - Storm motion diagnostic: `docs/physics/07-storm-relative-wind.md`
 - Timestep philosophy / no project-wide `DEFAULT_DT`:
   `docs/physics/03-numerical-integration-basics.md`
 - Hodograph UI composition today: `docs/ui/01-hodograph-panel.md` and
   related overlay docs under `docs/ui/`
-- Current composite DEMO wiring / seeds / anti-oracle:
+- Current composite DEMO wiring / diagnostic seeds / anti-oracle:
   `docs/rendering/08-composite-lower-radial-inflow-demo.md`
+- Canonical story-seed set (StoryPathlines explicit; live App DownwardPathline):
+  `docs/architecture/08-story-seeds.md`
 - Current DEMO environmental knots (`0–12000 m`):
   `docs/rendering/09-deep-environmental-profile-demo.md`
 - Current DEMO storm-envelope bounds:
@@ -894,6 +1070,13 @@ Composite demo integration tests live with app / simulation composition per
   `baseHeight` / `topHeight`; `createRotationField` →
   `VerticalEnvelopeRotationField`):
   `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`
+- Current DEMO downdraft occupant / wiring (`storm.downdraft`;
+  `createDowndraftField` → `VerticalEnvelopeDowndraftField`):
+  `docs/rendering/15-composite-downdraft-demo.md`
+- Current DEMO near-ground outflow occupant / wiring
+  (`storm.nearGroundOutflow`; `createNearGroundRadialOutflowField` →
+  `NearGroundRadialOutflowField`):
+  `docs/rendering/16-composite-near-ground-outflow-demo.md`
 - Completed five-operand DEMO with height-independent inflow (superseded
   for the current DEMO inflow occupant):
   `docs/rendering/07-composite-upper-radial-outflow-demo.md`
@@ -919,30 +1102,43 @@ before extending scenario scope.
 2. `ScenarioConfig` is a JSON-serializable plain DTO, not a physics model.
 3. Scenario-owned shapes: `ScenarioWindLevel`, `ScenarioStormMotion`,
    `ScenarioTracerSeed`, `ScenarioUpdraft`, `ScenarioRotation`,
-   `ScenarioLowerRadialInflow`, `ScenarioUpperRadialOutflow`; no physics
-   type-only imports into scenario DTOs.
+   `ScenarioLowerRadialInflow`, `ScenarioUpperRadialOutflow`,
+   `ScenarioDowndraft`, `ScenarioNearGroundOutflow`; no physics type-only imports into scenario DTOs.
 4. Wind levels are flat `{ height, eastward, northward }`; factory inserts
    `vertical: 0`.
-5. `storm.updraft`, `storm.rotation`, `storm.lowerRadialInflow`, and
-   `storm.upperRadialOutflow` are required; `stormMotion` stays top-level.
-   Shared DEMO centers are a fixture choice, not an API invariant.
+5. `storm.updraft`, `storm.rotation`, `storm.lowerRadialInflow`,
+   `storm.upperRadialOutflow`, `storm.downdraft`, and
+   `storm.nearGroundOutflow` are required;
+   `stormMotion` stays top-level. Shared DEMO chimney centers are a
+   fixture choice, not an API invariant. The live downdraft and
+   near-ground outflow are offset.
    Isolated `RadialInflowField` is not a ScenarioConfig occupant.
-6. `simulation = { timestep, tracerSeeds }` only.
+6. `simulation = { timestep, diagnosticSeeds, storySeeds,
+   downwardPathlineSeeds }`.
+   Live App tracers come from `downwardPathlineSeeds` via
+   `TracerPedagogy.DownwardPathline`.
+   Role is which array. Pedagogy is not a ScenarioConfig field.
+   StoryPathlines and DiagnosticProbes remain explicit composition options.
 7. Provide `createEnvironmentalWindProfile(config)`,
    `createUpdraftField(config)` → `VerticalEnvelopeUpdraftField`,
    `createRotationField(config)` → `VerticalEnvelopeRotationField`,
-   `createLowerRadialInflowField(config)` → `LowerRadialInflowField`, and
-   `createUpperRadialOutflowField(config)` → `UpperRadialOutflowField`;
+   `createLowerRadialInflowField(config)` → `LowerRadialInflowField`,
+   `createUpperRadialOutflowField(config)` → `UpperRadialOutflowField`,
+   `createDowndraftField(config)` → `VerticalEnvelopeDowndraftField`,
+   and `createNearGroundRadialOutflowField(config)` →
+   `NearGroundRadialOutflowField`;
    no runtime god-object; no composite inside scenario.
 8. Do not duplicate profile / enveloped-updraft / enveloped-rotation /
-   lower-radial-inflow / upper-radial-outflow physical validation;
-   scenario validates storm motion, timestep, and tracer seeds.
+   lower-radial-inflow / upper-radial-outflow / enveloped-downdraft /
+   near-ground-outflow
+   physical validation;
+   scenario validates storm motion, timestep, and seed-array coordinates.
 9. Updates are plain object replacement + explicit rebuild.
 10. One `DEMO_SCENARIO` constant; no preset framework.
 11. Same config feeds hodograph (profile-only) and 3D tracer
     (env + vertical-envelope updraft + vertical-envelope rotation +
-    lower radial inflow + upper radial outflow composite in app
-    composition).
+    lower radial inflow + upper radial outflow + vertical-envelope
+    downdraft + near-ground radial outflow composite in app composition).
 
 ---
 
@@ -1005,3 +1201,34 @@ The current DEMO rotation-occupant replacement — required
 `CompositeVelocityField([env, envelopedUpdraft, envelopedRotation,
 lowerInflow, outflow])` wiring — is complete and specified in
 `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`.
+
+The unlabeled `simulation.tracerSeeds` array was the previous v1 surface
+for those diagnostic coordinates. The current split into
+`diagnosticSeeds` + `storySeeds` is specified in
+`docs/architecture/08-story-seeds.md`. Historical rendering docs that
+still say `tracerSeeds` describe the earlier unlabeled array, not a
+live story view. `downwardPathlineSeeds` is a third array, owned by
+`docs/architecture/12-downward-ground-impact-pedagogy.md`; it is not
+appended to `storySeeds`.
+
+The current DEMO prescribed-downdraft occupant — required
+`storm.downdraft`, `createDowndraftField` →
+`VerticalEnvelopeDowndraftField`, kept S1/S2, and app
+`CompositeVelocityField([env, envelopedUpdraft, envelopedRotation,
+lowerInflow, outflow, downdraft])` wiring — is complete and specified
+in `docs/rendering/15-composite-downdraft-demo.md`.
+
+The current DEMO prescribed near-ground radial-outflow occupant —
+required `storm.nearGroundOutflow`,
+`createNearGroundRadialOutflowField` → `NearGroundRadialOutflowField`,
+kept S1/S2 / D1 / diagnostic seeds, and app
+`CompositeVelocityField([env, envelopedUpdraft, envelopedRotation,
+lowerInflow, outflow, downdraft, nearGroundOutflow])` wiring — is
+complete and specified in
+`docs/rendering/16-composite-near-ground-outflow-demo.md`.
+
+Downward pedagogy config (`downwardPathlineSeeds` D1,
+`TracerPedagogy.DownwardPathline`) is specified in
+`docs/architecture/12-downward-ground-impact-pedagogy.md`. Live App
+is `DownwardPathline`. `keepInactiveGlyphs` is implemented for
+DownwardPathline. StoryPathlines remains explicit.

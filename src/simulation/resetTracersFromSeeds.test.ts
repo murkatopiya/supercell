@@ -4,9 +4,13 @@ import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import { resetTracersFromSeeds } from "./resetTracersFromSeeds.js";
 
 describe("resetTracersFromSeeds", () => {
-  it("restores seed positions and clock time without mutating DEMO seeds", () => {
-    const seeds = DEMO_SCENARIO.simulation.tracerSeeds;
+  it("restores diagnostic seed positions and clock time without mutating DEMO seeds", () => {
+    const seeds = DEMO_SCENARIO.simulation.diagnosticSeeds;
     const seedsSnapshot = structuredClone(seeds);
+    const storySnapshot = structuredClone(DEMO_SCENARIO.simulation.storySeeds);
+    const downwardSnapshot = structuredClone(
+      DEMO_SCENARIO.simulation.downwardPathlineSeeds,
+    );
     const simulation = composeDemoTracerSimulation();
     const particles = simulation.particles;
 
@@ -17,6 +21,7 @@ describe("resetTracersFromSeeds", () => {
 
     expect(simulation.clock.time).toBeGreaterThan(0);
     expect(particles[0]!.position.y).not.toBe(1000);
+    expect(particles).toHaveLength(3);
 
     resetTracersFromSeeds(simulation, seeds);
 
@@ -36,7 +41,12 @@ describe("resetTracersFromSeeds", () => {
       age: 0,
       active: true,
     });
+    expect(particles).toHaveLength(3);
 
-    expect(DEMO_SCENARIO.simulation.tracerSeeds).toEqual(seedsSnapshot);
+    expect(DEMO_SCENARIO.simulation.diagnosticSeeds).toEqual(seedsSnapshot);
+    expect(DEMO_SCENARIO.simulation.storySeeds).toEqual(storySnapshot);
+    expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual(
+      downwardSnapshot,
+    );
   });
 });
