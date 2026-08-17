@@ -1,20 +1,25 @@
-import { useState } from "react";
+import { useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import { resetTracersFromSeeds } from "../simulation/resetTracersFromSeeds.js";
 import { HodographOverlayControls } from "../ui/hodograph/HodographOverlayControls.js";
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
+import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
 import {
   TracerRuntimeControls,
   type TracerTimeScale,
 } from "../ui/tracer/TracerRuntimeControls.js";
-import { TracerViewport } from "../ui/tracer/TracerViewport.js";
+import {
+  TracerViewport,
+  type TracerViewportHandle,
+} from "../ui/tracer/TracerViewport.js";
 import {
   composeDemoTracerSimulation,
   createDemoPathHistory,
   demoKeepInactiveGlyphs,
   demoSeedsForPedagogy,
 } from "./composeDemoTracerSimulation.js";
+import { createExploreLab, type ExploreLab } from "./createExploreLab.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import { LIVE_DEMO_TRACER_PEDAGOGY } from "./TracerPedagogy.js";
 import {
@@ -23,6 +28,53 @@ import {
   createDemoStreamwiseCrosswiseOverlay,
   createDemoVorticityLayer,
 } from "./demoHodographFixture.js";
+import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
+import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
+import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
+import type { Simulation } from "../simulation/Simulation.js";
+import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
+
+type GuidedLab = {
+  kind: "guided";
+  simulation: Simulation;
+  pathHistory: TracerPathHistory | null;
+};
+
+type Lab = GuidedLab | ExploreLab;
+
+function createGuidedLab(): GuidedLab {
+  const simulation = composeDemoTracerSimulation(
+    IntegrationFrame.StormRelativeLaboratory,
+    LIVE_DEMO_TRACER_PEDAGOGY,
+  );
+  return {
+    kind: "guided",
+    simulation,
+    pathHistory: createDemoPathHistory(
+      LIVE_DEMO_TRACER_PEDAGOGY,
+      simulation.particles,
+    ),
+  };
+}
+
+function createSceneSlots(
+  sceneHandleRef: RefObject<TracerViewportHandle | null>,
+): ExploreSceneSlots {
+  return {
+    addTracerSlot() {
+      sceneHandleRef.current?.addTracerSlot();
+    },
+    clearTracerSlots() {
+      sceneHandleRef.current?.clearTracerSlots();
+    },
+    syncReleasePreview(pendingSeed) {
+      sceneHandleRef.current?.syncReleasePreview(pendingSeed);
+    },
+    get tracerSlotCount() {
+      return sceneHandleRef.current?.tracerSlotCount ?? 0;
+    },
+  };
+}
 
 export function App() {
   const points = createDemoHodographPoints();
@@ -31,28 +83,58 @@ export function App() {
   const [overlayVisibility, setOverlayVisibility] = useState(
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
-  const [tracerSimulation] = useState(() =>
-    composeDemoTracerSimulation(
-      IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
-    ),
-  );
-  const [pathHistory] = useState(() =>
-    createDemoPathHistory(LIVE_DEMO_TRACER_PEDAGOGY, tracerSimulation.particles),
-  );
+  const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
+  const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
+  if (sceneSlotsRef.current === null) {
+    sceneSlotsRef.current = createSceneSlots(sceneHandleRef);
+  }
+  const [lab, setLab] = useState<Lab>(() => createGuidedLab());
   const [paused, setPaused] = useState(false);
   const [timeScale, setTimeScale] = useState<TracerTimeScale>(1);
   const [resetEpoch, setResetEpoch] = useState(0);
+  const [altitudeM, setAltitudeM] = useState(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
+  const [placementEnabled, setPlacementEnabled] = useState(false);
+  const [pendingSeed, setPendingSeed] = useState<TracerSeedPosition | null>(
+    null,
+  );
 
   const handleReset = () => {
-    resetTracersFromSeeds(
-      tracerSimulation,
-      demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY),
-    );
-    pathHistory?.clear();
-    pathHistory?.captureInitial(tracerSimulation.particles);
+    if (lab.kind === "explore") {
+      lab.orchestration.reset();
+      setPendingSeed(null);
+    } else {
+      resetTracersFromSeeds(
+        lab.simulation,
+        demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY),
+      );
+      lab.pathHistory?.clear();
+      lab.pathHistory?.captureInitial(lab.simulation.particles);
+    }
     setResetEpoch((epoch) => epoch + 1);
   };
+
+  const enterExplore = () => {
+    if (lab.kind === "explore") {
+      return;
+    }
+    setLab(createExploreLab(sceneSlotsRef.current!));
+    setAltitudeM(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
+    setPlacementEnabled(false);
+    setPendingSeed(null);
+    setResetEpoch((epoch) => epoch + 1);
+  };
+
+  const enterGuided = () => {
+    if (lab.kind === "guided") {
+      return;
+    }
+    setLab(createGuidedLab());
+    setPendingSeed(null);
+    setPlacementEnabled(false);
+    setResetEpoch((epoch) => epoch + 1);
+  };
+
+  const explore = lab.kind === "explore" ? lab : null;
 
   return (
     <main className="app">
@@ -81,10 +163,28 @@ export function App() {
         </div>
 
         <div className="app__panel app__panel--tracer">
+          <div className="lab-experience-switch">
+            <button
+              type="button"
+              className="tracer-runtime-controls__button"
+              aria-pressed={lab.kind === "guided"}
+              onClick={enterGuided}
+            >
+              Guided
+            </button>
+            <button
+              type="button"
+              className="tracer-runtime-controls__button"
+              aria-pressed={lab.kind === "explore"}
+              onClick={enterExplore}
+            >
+              Explore
+            </button>
+          </div>
           <h2 className="app__panel-title">
-            Storm-relative laboratory: prescribed storm-relative
-            pathline descending through the downdraft region until
-            it exits the atmospheric domain at y = 0
+            {lab.kind === "explore"
+              ? "Storm-relative laboratory"
+              : "Storm-relative laboratory: prescribed storm-relative near-ground pathline advected through a divergent horizontal outflow region"}
           </h2>
           <TracerRuntimeControls
             paused={paused}
@@ -93,14 +193,62 @@ export function App() {
             onTimeScaleChange={setTimeScale}
             onReset={handleReset}
           />
+          {explore !== null && (
+            <ExplorePointReleaseControls
+              altitudeM={altitudeM}
+              placementEnabled={placementEnabled}
+              hasPending={pendingSeed !== null}
+              onAltitudeChange={(next) => {
+                explore.tool.setAltitude(next);
+                setAltitudeM(explore.tool.altitudeM);
+                setPendingSeed(explore.tool.pendingSeed);
+              }}
+              onPlacementEnabledChange={(enabled) => {
+                explore.tool.placementEnabled = enabled;
+                setPlacementEnabled(enabled);
+              }}
+              onConfirm={() => {
+                explore.orchestration.confirmRelease();
+                setPendingSeed(null);
+              }}
+              onCancel={() => {
+                explore.orchestration.cancelPending();
+                setPendingSeed(null);
+              }}
+              onClear={() => {
+                explore.orchestration.clear();
+                setPendingSeed(null);
+              }}
+            />
+          )}
           <TracerViewport
-            simulation={tracerSimulation}
-            pathHistory={pathHistory}
-            keepInactiveGlyphs={demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)}
+            simulation={lab.simulation}
+            pathHistory={lab.pathHistory}
+            keepInactiveGlyphs={
+              lab.kind === "explore"
+                ? false
+                : demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)
+            }
             timestep={DEMO_SCENARIO.simulation.timestep}
             paused={paused}
             timeScale={timeScale}
             resetEpoch={resetEpoch}
+            pendingReleasePreview={
+              lab.kind === "explore" ? pendingSeed : null
+            }
+            onPlacementAttempt={
+              explore === null
+                ? undefined
+                : (origin, direction, pointerMovementPx) => {
+                    explore.orchestration.handlePlacementAttempt(
+                      origin,
+                      direction,
+                      pointerMovementPx,
+                    );
+                    setPendingSeed(explore.tool.pendingSeed);
+                  }
+            }
+            sceneHandleRef={sceneHandleRef}
           />
         </div>
       </section>

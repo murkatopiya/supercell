@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import { resetTracersFromSeeds } from "../simulation/resetTracersFromSeeds.js";
-import type { TracerParticle } from "../simulation/TracerParticle.js";
+import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import {
   composeDemoTracerSimulation,
   createDemoPathHistory,
   demoKeepInactiveGlyphs,
+  demoSeedsForPedagogy,
 } from "../app/composeDemoTracerSimulation.js";
 import { IntegrationFrame } from "../app/IntegrationFrame.js";
 import {
@@ -24,7 +25,7 @@ function particle(
   y: number,
   z: number,
   active = true,
-): TracerParticle {
+): TracerAdvectionState {
   return { position: { x, y, z }, age: 0, active };
 }
 
@@ -75,12 +76,17 @@ describe("keepInactiveGlyphs observe policy", () => {
     expect(p).toEqual(before);
   });
 
-  it("maps keepInactiveGlyphs only for DownwardPathline; live App uses that mapping", () => {
+  it("maps keepInactiveGlyphs only for DownwardPathline; live App hides inactive glyphs", () => {
     expect(demoKeepInactiveGlyphs(TracerPedagogy.DiagnosticProbes)).toBe(false);
     expect(demoKeepInactiveGlyphs(TracerPedagogy.StoryPathlines)).toBe(false);
     expect(demoKeepInactiveGlyphs(TracerPedagogy.DownwardPathline)).toBe(true);
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(TracerPedagogy.DownwardPathline);
-    expect(demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(true);
+    expect(
+      demoKeepInactiveGlyphs(TracerPedagogy.NearGroundOutflowPathline),
+    ).toBe(false);
+    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    expect(demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(false);
     expect(appSrc).toMatch(/demoKeepInactiveGlyphs\(LIVE_DEMO_TRACER_PEDAGOGY\)/);
     expect(tracerViewportSrc).toMatch(/keepInactiveGlyphs/);
     expect(tracerViewportSrc).not.toMatch(/TracerPedagogy/);
@@ -95,14 +101,14 @@ describe("keepInactiveGlyphs observe policy", () => {
     expect(tracerSceneSrc).toMatch(/syncObservedTracerGlyph/);
   });
 
-  it("leaves D1 glyph visible at the frozen terminal after domain exit", () => {
+  it("leaves explicit DownwardPathline D1 glyph visible at the frozen terminal after domain exit", () => {
     const dt = DEMO_SCENARIO.simulation.timestep;
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.DownwardPathline,
     );
     const history = createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.DownwardPathline,
       simulation.particles,
     )!;
     const p = simulation.particles[0]!;
@@ -113,7 +119,7 @@ describe("keepInactiveGlyphs observe policy", () => {
       history.recordAfterStep(simulation.particles);
     }
 
-    const keep = demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY);
+    const keep = demoKeepInactiveGlyphs(TracerPedagogy.DownwardPathline);
     syncObservedTracerGlyph(mesh, p, keep);
 
     expect(p.active).toBe(false);
@@ -153,6 +159,64 @@ describe("keepInactiveGlyphs observe policy", () => {
     expect(p.position).toEqual({ x: 5000, y: 1000, z: 0 });
     expect(mesh.visible).toBe(true);
     expect(mesh.position.toArray()).toEqual([5000, 1000, 0]);
+    expect(history.pointsFor(0)).toHaveLength(1);
+  });
+
+  it("hides live NG1 glyph after ground exit while keeping the terminal trail sample", () => {
+    const dt = DEMO_SCENARIO.simulation.timestep;
+    const simulation = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      LIVE_DEMO_TRACER_PEDAGOGY,
+    );
+    const history = createDemoPathHistory(
+      LIVE_DEMO_TRACER_PEDAGOGY,
+      simulation.particles,
+    )!;
+    const p = simulation.particles[0]!;
+    const mesh = meshAt(0, 0, 0, true);
+    const keep = demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY);
+    const maxTime = 400;
+    let t = 0;
+
+    expect(simulation.particles).toHaveLength(1);
+    expect(p.position).toEqual({ x: 3000, y: 100, z: 4750 });
+    expect(keep).toBe(false);
+
+    while (p.active && t < maxTime - 1e-12) {
+      simulation.step(dt);
+      history.recordAfterStep(simulation.particles);
+      t += dt;
+    }
+
+    expect(p.active).toBe(false);
+    expect(p.position.y).toBe(0);
+    syncObservedTracerGlyph(mesh, p, keep);
+    const terminalLength = history.pointsFor(0).length;
+    const terminal = history.pointsFor(0)[terminalLength - 1]!;
+    expect(terminal).toEqual(p.position);
+    expect(mesh.visible).toBe(false);
+    expect(mesh.position.y).toBe(0);
+
+    for (let i = 0; i < 20; i++) {
+      simulation.step(dt);
+      history.recordAfterStep(simulation.particles);
+      syncObservedTracerGlyph(mesh, p, keep);
+    }
+    expect(history.pointsFor(0)).toHaveLength(terminalLength);
+    expect(p.active).toBe(false);
+    expect(mesh.visible).toBe(false);
+
+    resetTracersFromSeeds(
+      simulation,
+      demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY),
+    );
+    history.clear();
+    history.captureInitial(simulation.particles);
+    syncObservedTracerGlyph(mesh, p, keep);
+
+    expect(p.active).toBe(true);
+    expect(p.position).toEqual({ x: 3000, y: 100, z: 4750 });
+    expect(mesh.visible).toBe(true);
     expect(history.pointsFor(0)).toHaveLength(1);
   });
 });

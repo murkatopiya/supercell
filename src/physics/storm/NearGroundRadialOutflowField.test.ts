@@ -554,6 +554,7 @@ describe("NearGroundRadialOutflowField", () => {
       expect(src).not.toMatch(/DEMO_SCENARIO/);
       expect(src).not.toMatch(/AtmosphericTracerDomain/);
       expect(src).not.toMatch(/downwardPathlineSeeds/);
+      expect(src).not.toMatch(/nearGroundOutflowPathlineSeeds/);
       expect(src).not.toMatch(/TracerPedagogy/);
       expect(src).not.toMatch(/createDowndraftField/);
       expect(src).not.toMatch(/ScenarioConfig/);

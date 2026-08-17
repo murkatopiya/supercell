@@ -11,6 +11,9 @@ describe("resetTracersFromSeeds", () => {
     const downwardSnapshot = structuredClone(
       DEMO_SCENARIO.simulation.downwardPathlineSeeds,
     );
+    const nearGroundSnapshot = structuredClone(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
+    );
     const simulation = composeDemoTracerSimulation();
     const particles = simulation.particles;
 
@@ -23,20 +26,31 @@ describe("resetTracersFromSeeds", () => {
     expect(particles[0]!.position.y).not.toBe(1000);
     expect(particles).toHaveLength(3);
 
+    const particleRefs = particles.slice();
+    const ids = particles.map((particle) => particle.tracerId);
+    expect(ids).toEqual([1, 2, 3]);
+
     resetTracersFromSeeds(simulation, seeds);
 
     expect(simulation.clock.time).toBe(0);
-    expect(particles[0]).toEqual({
+    expect(particles[0]).toBe(particleRefs[0]);
+    expect(particles[1]).toBe(particleRefs[1]);
+    expect(particles[2]).toBe(particleRefs[2]);
+    expect(particles.map((particle) => particle.tracerId)).toEqual(ids);
+    expect(particles[0]).toMatchObject({
+      tracerId: 1,
       position: { x: 0, y: 1000, z: 0 },
       age: 0,
       active: true,
     });
-    expect(particles[1]).toEqual({
+    expect(particles[1]).toMatchObject({
+      tracerId: 2,
       position: { x: 2400, y: 1000, z: 0 },
       age: 0,
       active: true,
     });
-    expect(particles[2]).toEqual({
+    expect(particles[2]).toMatchObject({
+      tracerId: 3,
       position: { x: 0, y: 1000, z: -2400 },
       age: 0,
       active: true,
@@ -47,6 +61,9 @@ describe("resetTracersFromSeeds", () => {
     expect(DEMO_SCENARIO.simulation.storySeeds).toEqual(storySnapshot);
     expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual(
       downwardSnapshot,
+    );
+    expect(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds).toEqual(
+      nearGroundSnapshot,
     );
   });
 });

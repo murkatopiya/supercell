@@ -46,6 +46,10 @@ function assertScenarioOwnedFields(config: ScenarioConfig): void {
     config.simulation.downwardPathlineSeeds,
     "downwardPathlineSeeds",
   );
+  assertFiniteSeeds(
+    config.simulation.nearGroundOutflowPathlineSeeds,
+    "nearGroundOutflowPathlineSeeds",
+  );
 }
 
 /**

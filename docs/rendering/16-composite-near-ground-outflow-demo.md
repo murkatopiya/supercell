@@ -3,9 +3,10 @@
 **Status:** live DEMO occupant/wiring SoT. Seventh operand is in
 `DEMO_SCENARIO.storm.nearGroundOutflow`,
 `createNearGroundRadialOutflowField`, and both integration-frame
-composites. Live pedagogy is still DownwardPathline (D1). No
-near-ground seeds. S1/S2 remain StoryPathlines occupants (`08`).
-Camera, grid, glyphs, and trail visuals are unchanged.
+composites. Live pedagogy is NearGroundOutflowPathline (NG1; `14`).
+DownwardPathline (D1) remains explicit (`12`). S1/S2 remain StoryPathlines
+occupants (`08`). Camera, grid, glyphs, and trail visuals are
+unchanged.
 
 Physics of the primitive:
 `docs/physics/21-near-ground-radial-outflow.md`.
@@ -69,7 +70,7 @@ It is **not**:
 
 The live App uses this occupant in the seven-operand sum. This
 document owns the DEMO numbers. It does not add near-ground seeds.
-Live pedagogy remains DownwardPathline.
+Live pedagogy is NearGroundOutflowPathline (`14`).
 
 ---
 
@@ -805,8 +806,13 @@ Family-B east `(8000, 0)` **would** have been a renderer block
 
 ## 14. Pedagogy recommendation (not a lock)
 
-This SoT does **not** add a `TracerPedagogy` value, does not
-name the enum, and does not freeze a seed array into config.
+This occupancy SoT did **not** freeze a seed or enum. The lock-in
+is `docs/architecture/14-near-ground-outflow-pedagogy.md`: NG1,
+`TracerPedagogy.NearGroundOutflowPathline`, separate mode only;
+live App is NearGroundOutflowPathline.
+
+The occupancy recommendation below is the research that `14`
+accepted. It is not rewritten as if NG1 had been chosen here.
 `13` §10 already split Exhibit A (D1) from Exhibit B (prescribed
 near-ground outflow) as two stories.
 
@@ -847,6 +853,8 @@ A later pedagogy SoT should own:
 - the explicit refusal of a combined D1-then-outflow mode
   until a model class that may claim related air exists.
 
+`14` now owns those decisions. Live App is NearGroundOutflowPathline.
+
 This occupancy document only recommends: **separate mode only;
 not with D1.**
 
@@ -877,14 +885,11 @@ prescribed near-ground divergent horizontal outflow
 
 ## 16. Later implementation order
 
-Occupant wiring is done. Pedagogy seeds / a new `TracerPedagogy`
-value are not.
+Occupant wiring is done. Pedagogy SoT + config/mode + live switch
+(`14`) are done. Live App is NearGroundOutflowPathline.
 
-When commanded, and not before:
-
-1. pedagogy SoT, then a new mode + separate seed array;
-2. **STOP** before cold pool, gust front, RFD/FFD, D1 coupling,
-   combined-mode, or a solver.
+Do **not** start: cold pool, gust front, RFD/FFD, D1 coupling,
+combined-mode, or a solver.
 
 ---
 
@@ -928,8 +933,10 @@ continuity:                  YELLOW; axis div_h,ng ≈ +0.022 s⁻¹;
                              not an optimization target
 renderer:                    not blocking; no view change
 pedagogy recommendation:     separate mode only; never with D1
-implementation:              occupant wiring done; live App still
-                             DownwardPathline; no ng seeds
+                             (lock-in: architecture/14)
+implementation:              occupant wiring done; live App
+                             NearGroundOutflowPathline (NG1; `14`);
+                             DownwardPathline remains explicit
 ```
 
 ---
@@ -937,10 +944,10 @@ implementation:              occupant wiring done; live App still
 ## 18. STOP
 
 Occupant wiring is live in both integration frames.
-Live App is still DownwardPathline (D1). Occupant numbers unchanged.
-S1/S2 remain StoryPathlines occupants. DiagnosticProbes unchanged.
-No near-ground seeds. No camera / grid / glyph / trail visual change.
-No cold pool, gust front, RFD/FFD, D1 coupling, combined-mode,
-solver, or continuity retune.
+Live App is NearGroundOutflowPathline (NG1; `14`). Occupant numbers
+unchanged. S1/S2 remain StoryPathlines occupants. DiagnosticProbes
+unchanged. D1 remains DownwardPathline only. No camera / grid /
+glyph / trail visual change. No cold pool, gust front, RFD/FFD,
+D1 coupling, combined-mode, solver, or continuity retune.
 
 STOP.

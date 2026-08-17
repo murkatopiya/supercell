@@ -1,10 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
 import { consumeFixedTimesteps } from "../../simulation/consumeFixedTimesteps.js";
 import type { TracerPathHistory } from "../../simulation/TracerPathHistory.js";
 import { simulationElapsedFromWall } from "../../simulation/simulationElapsedFromWall.js";
 import type { Simulation } from "../../simulation/Simulation.js";
+import type { TracerSeedPosition } from "../../simulation/createTracersFromSeeds.js";
+import type { Vec3 } from "../../core/math/Vec3.js";
 import type { TracerTimeScale } from "./TracerRuntimeControls.js";
+import { pointerNdcFromClientRect } from "./pointerNdcFromClientRect.js";
+
+export interface TracerViewportHandle {
+  addTracerSlot(): void;
+  clearTracerSlots(): void;
+  syncReleasePreview(pendingSeed: TracerSeedPosition | null): void;
+  readonly tracerSlotCount: number;
+}
 
 export interface TracerViewportProps {
   simulation: Simulation;
@@ -17,6 +27,21 @@ export interface TracerViewportProps {
   timeScale: TracerTimeScale;
   /** Bumped on Reset so the loop clears accumulator without recreating the scene. */
   resetEpoch: number;
+  /**
+   * Pending release preview. Not a tracer slot. Omitted / null hides the marker.
+   */
+  pendingReleasePreview?: TracerSeedPosition | null;
+  /**
+   * When set, a left-button pointerup reports a world ray and pointer
+   * movement. The caller owns placement policy (including orbit-drag reject).
+   */
+  onPlacementAttempt?: (
+    origin: Vec3,
+    direction: Vec3,
+    pointerMovementPx: number,
+  ) => void;
+  /** Imperative observe-slot / preview access. Does not recreate the scene. */
+  sceneHandleRef?: Ref<TracerViewportHandle | null>;
 }
 
 /**
@@ -31,19 +56,45 @@ export function TracerViewport({
   paused,
   timeScale,
   resetEpoch,
+  pendingReleasePreview = null,
+  onPlacementAttempt,
+  sceneHandleRef,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pausedRef = useRef(paused);
   const timeScaleRef = useRef(timeScale);
   const resetPendingRef = useRef(false);
   const wasPausedRef = useRef(paused);
+  const sceneRef = useRef<TracerScene | null>(null);
+  const pendingPreviewRef = useRef<TracerSeedPosition | null>(
+    pendingReleasePreview,
+  );
+  const onPlacementAttemptRef = useRef(onPlacementAttempt);
+  const localSceneHandleRef = useRef<TracerViewportHandle | null>(null);
 
   pausedRef.current = paused;
   timeScaleRef.current = timeScale;
+  pendingPreviewRef.current = pendingReleasePreview;
+  onPlacementAttemptRef.current = onPlacementAttempt;
 
   useEffect(() => {
     resetPendingRef.current = true;
   }, [resetEpoch]);
+
+  useImperativeHandle(sceneHandleRef ?? localSceneHandleRef, () => ({
+    addTracerSlot() {
+      sceneRef.current?.addTracerSlot();
+    },
+    clearTracerSlots() {
+      sceneRef.current?.clearTracerSlots();
+    },
+    syncReleasePreview(pendingSeed: TracerSeedPosition | null) {
+      sceneRef.current?.syncReleasePreview(pendingSeed);
+    },
+    get tracerSlotCount() {
+      return sceneRef.current?.tracerSlotCount ?? 0;
+    },
+  }));
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -55,10 +106,13 @@ export function TracerViewport({
       trails: pathHistory !== null,
       keepInactiveGlyphs,
     });
+    sceneRef.current = scene;
     let accumulator = 0;
     let frameId = 0;
     let previousMs = performance.now();
     let disposed = false;
+    let pointerDown: { x: number; y: number; pointerId: number } | null =
+      null;
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -74,6 +128,7 @@ export function TracerViewport({
       if (pathHistory) {
         scene.syncFromPathHistory(pathHistory);
       }
+      scene.syncReleasePreview(pendingPreviewRef.current);
     };
 
     resize();
@@ -85,6 +140,60 @@ export function TracerViewport({
       scene.render();
     };
     window.addEventListener("resize", onResize);
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.button !== 0) {
+        return;
+      }
+      pointerDown = {
+        x: event.clientX,
+        y: event.clientY,
+        pointerId: event.pointerId,
+      };
+    };
+
+    const onPointerUp = (event: PointerEvent) => {
+      const down = pointerDown;
+      pointerDown = null;
+      if (
+        down === null ||
+        event.button !== 0 ||
+        event.pointerId !== down.pointerId
+      ) {
+        return;
+      }
+      const attempt = onPlacementAttemptRef.current;
+      if (attempt === undefined) {
+        return;
+      }
+      const movement = Math.hypot(
+        event.clientX - down.x,
+        event.clientY - down.y,
+      );
+      const ndc = pointerNdcFromClientRect(
+        event.clientX,
+        event.clientY,
+        canvas.getBoundingClientRect(),
+      );
+      if (ndc === null) {
+        return;
+      }
+      const ray = scene.worldRayFromNdc(ndc.x, ndc.y);
+      if (ray === null) {
+        return;
+      }
+      attempt(ray.origin, ray.direction, movement);
+    };
+
+    const onPointerCancel = (event: PointerEvent) => {
+      if (pointerDown !== null && event.pointerId === pointerDown.pointerId) {
+        pointerDown = null;
+      }
+    };
+
+    canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.addEventListener("pointerup", onPointerUp);
+    canvas.addEventListener("pointercancel", onPointerCancel);
 
     const tick = (nowMs: number) => {
       if (disposed) {
@@ -134,6 +243,10 @@ export function TracerViewport({
       disposed = true;
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", onResize);
+      canvas.removeEventListener("pointerdown", onPointerDown);
+      canvas.removeEventListener("pointerup", onPointerUp);
+      canvas.removeEventListener("pointercancel", onPointerCancel);
+      sceneRef.current = null;
       scene.dispose();
     };
   }, [simulation, timestep, pathHistory, keepInactiveGlyphs]);

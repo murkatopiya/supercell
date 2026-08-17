@@ -5,7 +5,7 @@ import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityFiel
 import { ATMOSPHERIC_GROUND_HEIGHT, ATMOSPHERIC_TRACER_DOMAIN } from "./AtmosphericTracerDomain.js";
 import { resetTracersFromSeeds } from "./resetTracersFromSeeds.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 import tracerPathHistorySrc from "./TracerPathHistory.ts?raw";
 import { TracerPathHistory } from "./TracerPathHistory.js";
 
@@ -14,7 +14,7 @@ function particle(
   y: number,
   z: number,
   active = true,
-): TracerParticle {
+): TracerAdvectionState {
   return {
     position: { x, y, z },
     age: 0,
@@ -362,6 +362,7 @@ describe("TracerPathHistory", () => {
     expect(tracerPathHistorySrc).not.toMatch(/diagnosticSeeds/);
     expect(tracerPathHistorySrc).not.toMatch(/storySeeds/);
     expect(tracerPathHistorySrc).not.toMatch(/downwardPathlineSeeds/);
+    expect(tracerPathHistorySrc).not.toMatch(/nearGroundOutflowPathlineSeeds/);
     expect(tracerPathHistorySrc).not.toMatch(/from ["'].*ui\//);
   });
 
@@ -370,5 +371,97 @@ describe("TracerPathHistory", () => {
     expect(tracerPathHistorySrc).not.toMatch(/ATMOSPHERIC_GROUND/);
     expect(tracerPathHistorySrc).not.toMatch(/groundHeight/);
     expect(tracerPathHistorySrc).not.toMatch(/y\s*===?\s*0/);
+  });
+
+  it("allows zero lanes and later append", () => {
+    const history = new TracerPathHistory(0);
+    expect(history.tracerCount).toBe(0);
+    history.captureInitial([]);
+    history.recordAfterStep([]);
+    history.clear();
+
+    const born = particle(3, 4, 5);
+    history.appendParticle(born);
+    expect(history.tracerCount).toBe(1);
+    expect(history.pointsFor(0)).toEqual([{ x: 3, y: 4, z: 5 }]);
+    expect(history.pointsFor(0)[0]).not.toBe(born.position);
+  });
+
+  it("appendParticle captures birth independently of stride and does not recapture existing lanes", () => {
+    const first = particle(0, 0, 0);
+    const history = new TracerPathHistory(1, 3);
+    history.captureInitial([first]);
+
+    first.position = { x: 1, y: 0, z: 0 };
+    history.recordAfterStep([first]);
+    first.position = { x: 2, y: 0, z: 0 };
+    history.recordAfterStep([first]);
+    expect(history.pointsFor(0)).toEqual([{ x: 0, y: 0, z: 0 }]);
+
+    const second = particle(50, 10, -4);
+    history.appendParticle(second);
+    expect(history.tracerCount).toBe(2);
+    expect(history.pointsFor(0)).toEqual([{ x: 0, y: 0, z: 0 }]);
+    expect(history.pointsFor(1)).toEqual([{ x: 50, y: 10, z: -4 }]);
+
+    first.position = { x: 3, y: 0, z: 0 };
+    second.position = { x: 51, y: 10, z: -4 };
+    history.recordAfterStep([first, second]);
+    expect(history.pointsFor(0)).toEqual([
+      { x: 0, y: 0, z: 0 },
+      { x: 3, y: 0, z: 0 },
+    ]);
+    expect(history.pointsFor(1)).toEqual([
+      { x: 50, y: 10, z: -4 },
+      { x: 51, y: 10, z: -4 },
+    ]);
+  });
+
+  it("appendParticles preserves order and treats an empty batch as a no-op", () => {
+    const history = new TracerPathHistory(0);
+    history.appendParticles([]);
+    expect(history.tracerCount).toBe(0);
+
+    history.appendParticles([particle(1, 0, 0), particle(2, 0, 0)]);
+    expect(history.tracerCount).toBe(2);
+    expect(history.pointsFor(0)).toEqual([{ x: 1, y: 0, z: 0 }]);
+    expect(history.pointsFor(1)).toEqual([{ x: 2, y: 0, z: 0 }]);
+  });
+
+  it("does not invent a terminal sample for a tracer that was inactive at append", () => {
+    const history = new TracerPathHistory(0);
+    const bornInactive = particle(1, 2, 3, false);
+    history.appendParticle(bornInactive);
+    expect(history.pointsFor(0)).toEqual([{ x: 1, y: 2, z: 3 }]);
+
+    bornInactive.position = { x: 9, y: 9, z: 9 };
+    history.recordAfterStep([bornInactive]);
+    history.recordAfterStep([bornInactive]);
+    expect(history.pointsFor(0)).toEqual([{ x: 1, y: 2, z: 3 }]);
+  });
+
+  it("clear keeps lane count; removeAllLanes drops every lane", () => {
+    const particles = [particle(0, 0, 0), particle(10, 0, 0)];
+    const history = new TracerPathHistory(2);
+    history.captureInitial(particles);
+    particles[0]!.position = { x: 1, y: 0, z: 0 };
+    history.recordAfterStep(particles);
+
+    history.clear();
+    expect(history.tracerCount).toBe(2);
+    expect(history.pointsFor(0)).toEqual([]);
+    expect(history.pointsFor(1)).toEqual([]);
+
+    history.captureInitial(particles);
+    expect(history.pointsFor(0)).toEqual([{ x: 1, y: 0, z: 0 }]);
+    expect(history.pointsFor(1)).toEqual([{ x: 10, y: 0, z: 0 }]);
+
+    history.removeAllLanes();
+    expect(history.tracerCount).toBe(0);
+    expect(() => history.pointsFor(0)).toThrow(/out of range/);
+
+    history.appendParticle(particle(7, 8, 9));
+    expect(history.tracerCount).toBe(1);
+    expect(history.pointsFor(0)).toEqual([{ x: 7, y: 8, z: 9 }]);
   });
 });

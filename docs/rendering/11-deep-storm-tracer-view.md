@@ -877,13 +877,13 @@ resize policy:                 aspect + projection only;
                                no responsive pose
 simulation Reset → camera:     no effect
 Reset View:                    future UI, not this slice
-seeds:                         live DownwardPathline from
-                               DEMO_SCENARIO.downwardPathlineSeeds (12)
-                               D1 (5000, 1000, 0)
+seeds:                         live NearGroundOutflowPathline from
+                               DEMO_SCENARIO.nearGroundOutflowPathlineSeeds (14)
+                               NG1 (3000, 100, 4750)
 storySeeds:                    still in config; StoryPathlines explicit
                                S1 (0, 1000, 4000) / S2 (0, 1000, 6000)
 diagnosticSeeds:               still in config; DiagnosticProbes API
-story tracers / trails:        live DownwardPathline; architecture 14
+story tracers / trails:        live NearGroundOutflowPathline; architecture 14
                                camera/grid/glyph numbers unchanged
 follow / storm-relative cam:   forbidden
 view config home:              rendering module, not ScenarioConfig

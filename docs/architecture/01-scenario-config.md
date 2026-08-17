@@ -88,9 +88,11 @@ In v1 `ScenarioConfig` holds:
   (`storm.nearGroundOutflow`);
 - the minimal simulation inputs for the tracer / 3D shell
   (`timestep`, `diagnosticSeeds`, `storySeeds`,
-  `downwardPathlineSeeds`). Role is which array a seed occupies,
-  not a per-seed tag (`docs/architecture/08-story-seeds.md`,
-  `docs/architecture/12-downward-ground-impact-pedagogy.md`).
+  `downwardPathlineSeeds`, `nearGroundOutflowPathlineSeeds`). Role is
+  which array a seed occupies, not a per-seed tag
+  (`docs/architecture/08-story-seeds.md`,
+  `docs/architecture/12-downward-ground-impact-pedagogy.md`,
+  `docs/architecture/14-near-ground-outflow-pedagogy.md`).
 
 `storm.updraft`, `storm.rotation`, `storm.lowerRadialInflow`,
 `storm.upperRadialOutflow`, `storm.downdraft`, and
@@ -358,6 +360,7 @@ interface ScenarioConfig {
     diagnosticSeeds: ScenarioTracerSeed[];  // pedagogical probes
     storySeeds: ScenarioTracerSeed[];       // lower→upper pathlines
     downwardPathlineSeeds: ScenarioTracerSeed[]; // D1; 12
+    nearGroundOutflowPathlineSeeds: ScenarioTracerSeed[]; // NG1; 14
   };
 }
 ```
@@ -489,7 +492,8 @@ Included in v1:
 | `simulation.timestep` | Fixed numerical step `dt` in seconds, supplied to `Simulation.step(dt)` |
 | `simulation.diagnosticSeeds` | Initial world positions for pedagogical probes. Default composition / DiagnosticProbes / Diagnostic Reset. |
 | `simulation.storySeeds` | Initial world positions for prescribed lower→upper pathlines. StoryPathlines / story Reset. Canonical occupants: `docs/architecture/08-story-seeds.md` |
-| `simulation.downwardPathlineSeeds` | Initial world positions for the prescribed downward pathline. Live App / `TracerPedagogy.DownwardPathline` / D1 Reset. Canonical occupant D1: `docs/architecture/12-downward-ground-impact-pedagogy.md` |
+| `simulation.downwardPathlineSeeds` | Initial world positions for the prescribed downward pathline. Explicit `TracerPedagogy.DownwardPathline` / D1 Reset. Canonical occupant D1: `docs/architecture/12-downward-ground-impact-pedagogy.md` |
+| `simulation.nearGroundOutflowPathlineSeeds` | Initial world positions for the prescribed near-ground outflow pathline. Live App / `TracerPedagogy.NearGroundOutflowPathline` / NG1 Reset. Canonical occupant NG1: `docs/architecture/14-near-ground-outflow-pedagogy.md`. |
 
 Do **not** concatenate groups into one unlabeled array. Role is which
 array, not a per-seed `role` tag.
@@ -512,9 +516,11 @@ inside core/physics.
 
 Empty `storySeeds: []` is allowed. Empty `diagnosticSeeds: []` is allowed
 while only the hodograph path is wired. Empty `downwardPathlineSeeds: []`
-is allowed. DEMO populates all three arrays.
-Live App display is DownwardPathline; DiagnosticProbes remains the default
-composition API; StoryPathlines remains an explicit composition option.
+is allowed. Empty `nearGroundOutflowPathlineSeeds: []` is allowed. DEMO
+populates all four arrays.
+Live App display is NearGroundOutflowPathline; DiagnosticProbes remains the default
+composition API; StoryPathlines and DownwardPathline remain
+explicit composition options.
 
 ---
 
@@ -732,7 +738,8 @@ fields:
 - `simulation.timestep` is finite and `> 0`;
 - each `diagnosticSeeds[i].x|y|z` is finite;
 - each `storySeeds[i].x|y|z` is finite;
-- each `downwardPathlineSeeds[i].x|y|z` is finite.
+- each `downwardPathlineSeeds[i].x|y|z` is finite;
+- each `nearGroundOutflowPathlineSeeds[i].x|y|z` is finite.
 
 No story-threshold / reachability check in the DTO factory.
 
@@ -859,13 +866,20 @@ storySeeds:
 
 downwardPathlineSeeds:
   (5000, 1000,  0)       // D1
+
+nearGroundOutflowPathlineSeeds:
+  (3000,  100,  4750)    // NG1
 ```
 
-Live App builds tracers from `downwardPathlineSeeds` (`TracerPedagogy.DownwardPathline`).
+Live App builds tracers from `nearGroundOutflowPathlineSeeds` (`TracerPedagogy.NearGroundOutflowPathline`).
 Default composition API still uses `diagnosticSeeds`. `StoryPathlines`
-maps `storySeeds` and remains an explicit composition option
-(`docs/architecture/08-story-seeds.md`, `docs/architecture/12-downward-ground-impact-pedagogy.md`). S3 is a recorded spare,
-not a DEMO occupant.
+maps `storySeeds` and remains an explicit composition option.
+`DownwardPathline` maps `downwardPathlineSeeds` and remains an
+explicit composition option
+(`docs/architecture/08-story-seeds.md`,
+`docs/architecture/12-downward-ground-impact-pedagogy.md`,
+`docs/architecture/14-near-ground-outflow-pedagogy.md`). S3 and N1 are
+recorded spares, not DEMO occupants.
 
 Four `sigma = 4000` values are a DEMO scenario choice, not a
 `storm.sigma` field and not a physics invariant. Peak Gaussian
@@ -954,8 +968,9 @@ ScenarioConfig
      storm.downdraft → VerticalEnvelopeDowndraftField
      CompositeVelocityField([envOperand, updraft, rotation, lowerRadialInflow, outflow, downdraft])
      // app composition; CompositeVelocityField does not know the frame
-     diagnosticSeeds or storySeeds or downwardPathlineSeeds → TracerParticle[]
-     // TracerPedagogy at app composition; live App = DownwardPathline
+     diagnosticSeeds or storySeeds or downwardPathlineSeeds
+     or nearGroundOutflowPathlineSeeds → TracerParticle[]
+     // TracerPedagogy at app composition; live App = NearGroundOutflowPathline
      timestep → Simulation.step(dt)
      rendering observes particle positions
 ```
@@ -969,9 +984,11 @@ field. Live browser 3D is `StormRelativeLaboratory`; the default
 composition API remains `GroundRelativeWindTunnel`
 (`docs/architecture/03-wind-tunnel-storm-relative-3d-semantics.md` §21).
 `TracerPedagogy` is likewise app composition, not ScenarioConfig.
-Live App is `DownwardPathline`; default composition API is
-`DiagnosticProbes`. `StoryPathlines` remains an explicit named mode.
-`DownwardPathline` is not `Both` (`docs/architecture/12-downward-ground-impact-pedagogy.md`).
+Live App is `NearGroundOutflowPathline`; default composition API is
+`DiagnosticProbes`. `StoryPathlines` and `DownwardPathline`
+remain explicit named modes. None of these is `Both`
+(`docs/architecture/12-downward-ground-impact-pedagogy.md`,
+`docs/architecture/14-near-ground-outflow-pedagogy.md`).
 
 Camera, colors, and layer visibility stay outside `ScenarioConfig`.
 
@@ -1060,7 +1077,7 @@ Composite demo integration tests live with app / simulation composition per
   related overlay docs under `docs/ui/`
 - Current composite DEMO wiring / diagnostic seeds / anti-oracle:
   `docs/rendering/08-composite-lower-radial-inflow-demo.md`
-- Canonical story-seed set (StoryPathlines explicit; live App DownwardPathline):
+- Canonical story-seed set (StoryPathlines explicit; live App NearGroundOutflowPathline):
   `docs/architecture/08-story-seeds.md`
 - Current DEMO environmental knots (`0–12000 m`):
   `docs/rendering/09-deep-environmental-profile-demo.md`
@@ -1114,11 +1131,12 @@ before extending scenario scope.
    near-ground outflow are offset.
    Isolated `RadialInflowField` is not a ScenarioConfig occupant.
 6. `simulation = { timestep, diagnosticSeeds, storySeeds,
-   downwardPathlineSeeds }`.
-   Live App tracers come from `downwardPathlineSeeds` via
-   `TracerPedagogy.DownwardPathline`.
+   downwardPathlineSeeds, nearGroundOutflowPathlineSeeds }`.
+   Live App tracers come from `nearGroundOutflowPathlineSeeds` via
+   `TracerPedagogy.NearGroundOutflowPathline`.
    Role is which array. Pedagogy is not a ScenarioConfig field.
-   StoryPathlines and DiagnosticProbes remain explicit composition options.
+   StoryPathlines, DiagnosticProbes, and DownwardPathline
+   remain explicit composition options.
 7. Provide `createEnvironmentalWindProfile(config)`,
    `createUpdraftField(config)` → `VerticalEnvelopeUpdraftField`,
    `createRotationField(config)` → `VerticalEnvelopeRotationField`,
@@ -1209,7 +1227,10 @@ for those diagnostic coordinates. The current split into
 still say `tracerSeeds` describe the earlier unlabeled array, not a
 live story view. `downwardPathlineSeeds` is a third array, owned by
 `docs/architecture/12-downward-ground-impact-pedagogy.md`; it is not
-appended to `storySeeds`.
+appended to `storySeeds`. `nearGroundOutflowPathlineSeeds` is a fourth
+array, owned by
+`docs/architecture/14-near-ground-outflow-pedagogy.md`; it is not
+appended to `downwardPathlineSeeds` or `storySeeds`.
 
 The current DEMO prescribed-downdraft occupant — required
 `storm.downdraft`, `createDowndraftField` →
@@ -1229,6 +1250,13 @@ complete and specified in
 
 Downward pedagogy config (`downwardPathlineSeeds` D1,
 `TracerPedagogy.DownwardPathline`) is specified in
-`docs/architecture/12-downward-ground-impact-pedagogy.md`. Live App
-is `DownwardPathline`. `keepInactiveGlyphs` is implemented for
-DownwardPathline. StoryPathlines remains explicit.
+`docs/architecture/12-downward-ground-impact-pedagogy.md`.
+`keepInactiveGlyphs` is implemented for DownwardPathline.
+StoryPathlines remains explicit.
+
+Near-ground outflow pedagogy config
+(`nearGroundOutflowPathlineSeeds` NG1,
+`TracerPedagogy.NearGroundOutflowPathline`) is specified in
+`docs/architecture/14-near-ground-outflow-pedagogy.md`. Slices 1–2
+(config + mode + live switch) are implemented. Live App is
+`NearGroundOutflowPathline`. DownwardPathline remains explicit.

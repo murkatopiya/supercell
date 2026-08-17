@@ -183,5 +183,11 @@ export interface ScenarioConfig {
      * docs/architecture/12-downward-ground-impact-pedagogy.md
      */
     downwardPathlineSeeds: ScenarioTracerSeed[];
+    /**
+     * Near-ground outflow pathline initial positions. Units: m.
+     * Role is this array, not a per-seed tag.
+     * docs/architecture/14-near-ground-outflow-pedagogy.md
+     */
+    nearGroundOutflowPathlineSeeds: ScenarioTracerSeed[];
   };
 }

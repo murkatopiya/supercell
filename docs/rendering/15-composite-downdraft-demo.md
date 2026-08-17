@@ -5,7 +5,8 @@
 integration-frame composites. The live stack is now seven operands;
 the seventh (near-ground outflow) occupant is
 `docs/rendering/16-composite-near-ground-outflow-demo.md`.
-Live pedagogy is DownwardPathline (D1).
+Live pedagogy is NearGroundOutflowPathline (NG1; `14`).
+DownwardPathline (D1) remains explicit (`12`).
 S1/S2 remain StoryPathlines occupants (`08`). Camera, grid,
 glyphs, and trail visuals are unchanged.
 
@@ -621,15 +622,16 @@ For a domain crossing, `Simulation.step` writes the interpolated
 that accepted terminal position. Later steps do not duplicate it.
 
 Inactive glyphs stay visible when `keepInactiveGlyphs` is true
-(live DownwardPathline). StoryPathlines still hides them.
+(DownwardPathline; not the live App after `14` slice 2).
+StoryPathlines and NearGroundOutflowPathline hide them.
 
 ---
 
 ## 14. Live seeds and pedagogy
 
-Live App is `DownwardPathline` = D1 (`12`). S1/S2 remain the
-StoryPathlines pair (`08`) and are not concatenated with D1.
-This occupancy SoT does **not** merge D1 into `storySeeds` or
+Live App is `NearGroundOutflowPathline` = NG1 (`14`). D1 remains the
+DownwardPathline occupant (`12`) and is not concatenated with NG1
+or S1/S2. This occupancy SoT does **not** merge D1 into `storySeeds` or
 `diagnosticSeeds`.
 
 The sixth field is present in the sum. S1/S2 continue to teach
@@ -697,8 +699,10 @@ terminal-trail:              recordAfterStep stores became-inactive
 implementation order:        occupant wiring done;
                              downwardPathlineSeeds + DownwardPathline
                              done (12 slice 1); keepInactiveGlyphs
-                             done (12 slice 2); live App DownwardPathline
-                             (12 slice 3); STOP before cold pool
+                             done (12 slice 2); DownwardPathline was
+                             live (12 slice 3); live App now
+                             NearGroundOutflowPathline (14);
+                             STOP before cold pool
 ```
 
 ---
@@ -706,7 +710,8 @@ implementation order:        occupant wiring done;
 ## 18. STOP
 
 Occupant wiring is live.
-Live App is DownwardPathline (D1). Occupant numbers unchanged.
+Live App is NearGroundOutflowPathline (NG1; `14`).
+DownwardPathline (D1) remains explicit. Occupant numbers unchanged.
 S1/S2 remain StoryPathlines occupants.
 No camera / grid / glyph / trail visual change.
 No cold pool, gust front, RFD/FFD, solver, or continuity retune.

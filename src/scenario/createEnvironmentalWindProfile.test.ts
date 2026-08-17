@@ -296,6 +296,9 @@ describe("DEMO storm envelopes follow the 06 chimney fixture", () => {
     expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual([
       { x: 5000, y: 1000, z: 0 },
     ]);
+    expect(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds).toEqual([
+      { x: 3000, y: 100, z: 4750 },
+    ]);
   });
 });
 
@@ -432,11 +435,22 @@ describe("scenario-owned validation", () => {
     );
   });
 
-  it("allows empty diagnosticSeeds, storySeeds, and downwardPathlineSeeds", () => {
+  it("rejects non-finite near-ground outflow pathline seed components", () => {
+    const config = cloneDemoScenario();
+    config.simulation.nearGroundOutflowPathlineSeeds = [
+      { x: 3000, y: Number.NaN, z: 4750 },
+    ];
+    expect(() => createEnvironmentalWindProfile(config)).toThrow(
+      ScenarioConfigError,
+    );
+  });
+
+  it("allows empty diagnosticSeeds, storySeeds, downwardPathlineSeeds, and nearGroundOutflowPathlineSeeds", () => {
     const config = cloneDemoScenario();
     config.simulation.diagnosticSeeds = [];
     config.simulation.storySeeds = [];
     config.simulation.downwardPathlineSeeds = [];
+    config.simulation.nearGroundOutflowPathlineSeeds = [];
     expect(() => createEnvironmentalWindProfile(config)).not.toThrow();
   });
 });

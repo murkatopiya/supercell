@@ -3,7 +3,7 @@ import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
 import { EnvironmentalWindField } from "../physics/environment/EnvironmentalWindField.js";
 import { EnvironmentalWindProfile } from "../physics/environment/EnvironmentalWindProfile.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 describe("environmental wind field tracer acceptance", () => {
   it("advects tracers at different heights with different environmental eastward winds", () => {
@@ -23,12 +23,12 @@ describe("environmental wind field tracer acceptance", () => {
     ]);
     const field = new EnvironmentalWindField(profile);
 
-    const tracerA: TracerParticle = {
+    const tracerA: TracerAdvectionState = {
       position: { x: 0, y: 0, z: 0 },
       age: 0,
       active: true,
     };
-    const tracerB: TracerParticle = {
+    const tracerB: TracerAdvectionState = {
       position: { x: 0, y: 1000, z: 0 },
       age: 0,
       active: true,

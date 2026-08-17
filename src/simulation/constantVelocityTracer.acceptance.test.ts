@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
 import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 describe("constant velocity tracer acceptance", () => {
   it("reaches (100, 1000, 0) after 10 s of eastward motion at 10 m/s", () => {
@@ -11,7 +11,7 @@ describe("constant velocity tracer acceptance", () => {
     const tolerance = 1e-9;
 
     const field = new ConstantVelocityField({ x: 10, y: 0, z: 0 });
-    const particle: TracerParticle = {
+    const particle: TracerAdvectionState = {
       position: { x: 0, y: 1000, z: 0 },
       age: 0,
       active: true,
@@ -36,7 +36,7 @@ describe("constant velocity tracer acceptance", () => {
     const tolerance = 1e-9;
 
     const field = new ConstantVelocityField({ x: 0, y: 5, z: 0 });
-    const particle: TracerParticle = {
+    const particle: TracerAdvectionState = {
       position: { x: 0, y: 1000, z: 0 },
       age: 0,
       active: true,

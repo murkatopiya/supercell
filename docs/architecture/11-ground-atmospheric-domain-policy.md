@@ -3,6 +3,9 @@
 **Status:** architecture SoT. `AtmosphericTracerDomain` is implemented
 as an optional `Simulation` lifecycle policy and is wired by
 `composeDemoTracerSimulation`. Field sampling remains unbounded.
+Explore creation-time seed policy (`18` Slice 2) is
+`assertAtmosphericTracerSeed`: finite `x/y/z`, allow `y ≥ 0`,
+reject `y < 0`. Crossing semantics in this document are unchanged.
 Downdraft DEMO occupancy and live sixth operand:
 `docs/rendering/15-composite-downdraft-demo.md`.
 No terrain, solver, or `ScenarioConfig` ground field.
@@ -367,10 +370,13 @@ Config is a DTO (`01`). A `groundHeight` field would invite
 terrain and `groundHeight(x, z)` without a consumer. v1 does not
 add it. The number is the world datum `0`.
 
-Seeds with `y < 0` are currently legal (finite-only validation).
-Future DEMO validation **may** reject atmospheric seeds below the
-floor. That is a scenario-boundary check, not the runtime contract
-itself, and not this slice.
+Seeds with `y < 0` are currently legal at the DEMO/scenario
+finite-only boundary. Explore creation-time validation
+(`assertAtmosphericTracerSeed`, `18` Slice 2) now rejects
+non-finite coordinates and `y < 0` before `Simulation` sees the
+seed. Future DEMO validation **may** reuse that helper. That is a
+scenario-boundary check, not the runtime crossing contract
+itself.
 
 ### Not in `Vec3` / coordinate transforms
 

@@ -115,6 +115,8 @@ export function demoSeedsForPedagogy(
       return DEMO_SCENARIO.simulation.storySeeds;
     case TracerPedagogy.DownwardPathline:
       return DEMO_SCENARIO.simulation.downwardPathlineSeeds;
+    case TracerPedagogy.NearGroundOutflowPathline:
+      return DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds;
   }
 }
 
@@ -124,6 +126,7 @@ export function demoTrailsEnabled(pedagogy: TracerPedagogy): boolean {
       return false;
     case TracerPedagogy.StoryPathlines:
     case TracerPedagogy.DownwardPathline:
+    case TracerPedagogy.NearGroundOutflowPathline:
       return true;
   }
 }
@@ -132,6 +135,7 @@ export function demoKeepInactiveGlyphs(pedagogy: TracerPedagogy): boolean {
   switch (pedagogy) {
     case TracerPedagogy.DiagnosticProbes:
     case TracerPedagogy.StoryPathlines:
+    case TracerPedagogy.NearGroundOutflowPathline:
       return false;
     case TracerPedagogy.DownwardPathline:
       return true;
@@ -139,8 +143,9 @@ export function demoKeepInactiveGlyphs(pedagogy: TracerPedagogy): boolean {
 }
 
 /**
- * StoryPathlines and DownwardPathline: stride-1 recorder with initial
- * seed points. DiagnosticProbes: no recorder.
+ * StoryPathlines, DownwardPathline, and NearGroundOutflowPathline:
+ * stride-1 recorder with initial seed points. DiagnosticProbes: no
+ * recorder.
  */
 export function createDemoPathHistory(
   pedagogy: TracerPedagogy,
@@ -159,8 +164,9 @@ export function createDemoPathHistory(
  *
  * TracerPedagogy selects which seed array is copied into particles.
  * Default pedagogy is DiagnosticProbes. Live App.tsx selects
- * DownwardPathline explicitly. DiagnosticProbes and StoryPathlines
- * remain explicit composition options.
+ * NearGroundOutflowPathline explicitly. DiagnosticProbes,
+ * StoryPathlines, and DownwardPathline remain explicit composition
+ * options.
  *
  * Default integration frame is GroundRelativeWindTunnel:
  * EnvironmentalWindField + VerticalEnvelopeUpdraftField

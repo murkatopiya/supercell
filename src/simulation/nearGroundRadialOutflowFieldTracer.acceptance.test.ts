@@ -4,7 +4,7 @@ import { RK2Integrator } from "../core/integrators/RK2Integrator.js";
 import type { Integrator } from "../core/integrators/Integrator.js";
 import { NearGroundRadialOutflowField } from "../physics/storm/NearGroundRadialOutflowField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 const centerX = 1000;
 const centerZ = -500;
@@ -63,7 +63,7 @@ function runTracer(
     z: centerZ + dz0,
   },
 ) {
-  const particle: TracerParticle = {
+  const particle: TracerAdvectionState = {
     position: { ...start },
     age: 0,
     active: true,
@@ -88,7 +88,7 @@ function referenceState() {
 const reference = referenceState();
 
 function radiusError(integrator: Integrator, dt: number): {
-  particle: TracerParticle;
+  particle: TracerAdvectionState;
   radius: number;
   radiusError: number;
   rayError: number;

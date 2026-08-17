@@ -27,20 +27,20 @@ import simulationSrc from "./Simulation.ts?raw";
 import { createTracersFromSeeds } from "./createTracersFromSeeds.js";
 import { resetTracersFromSeeds } from "./resetTracersFromSeeds.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 function particle(
   x: number,
   y: number,
   z: number,
   active = true,
-): TracerParticle {
+): TracerAdvectionState {
   return { position: { x, y, z }, age: 0, active };
 }
 
 function atmosphericSimulation(
   velocity: { x: number; y: number; z: number },
-  particles: TracerParticle[],
+  particles: TracerAdvectionState[],
 ) {
   return new Simulation(
     new ConstantVelocityField(velocity),
@@ -321,7 +321,8 @@ describe("AtmosphericTracerDomain vs current DEMO pathlines", () => {
     resetTracersFromSeeds(simulation, seeds);
 
     expect(simulation.clock.time).toBe(0);
-    expect(simulation.particles[0]).toEqual({
+    expect(simulation.particles[0]).toMatchObject({
+      tracerId: 1,
       position: { x: 0, y: 4, z: 0 },
       age: 0,
       active: true,

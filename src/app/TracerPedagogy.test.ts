@@ -50,18 +50,27 @@ function advanceRecordedSteps(
 }
 
 describe("TracerPedagogy", () => {
-  it("exposes DiagnosticProbes, StoryPathlines, and DownwardPathline, not Both", () => {
+  it("exposes four named pedagogies, not Both or ColdPool", () => {
     expect(TracerPedagogy.DiagnosticProbes).toBe("DiagnosticProbes");
     expect(TracerPedagogy.StoryPathlines).toBe("StoryPathlines");
     expect(TracerPedagogy.DownwardPathline).toBe("DownwardPathline");
+    expect(TracerPedagogy.NearGroundOutflowPathline).toBe(
+      "NearGroundOutflowPathline",
+    );
     expect(Object.keys(TracerPedagogy).sort()).toEqual([
       "DiagnosticProbes",
       "DownwardPathline",
+      "NearGroundOutflowPathline",
       "StoryPathlines",
     ]);
     expect(Object.values(TracerPedagogy)).not.toContain("Both");
+    expect(Object.values(TracerPedagogy)).not.toContain("ColdPool");
+    expect(Object.values(TracerPedagogy)).not.toContain("SurfaceOutflow");
+    expect(Object.values(TracerPedagogy)).not.toContain("AllStories");
     expect(DEFAULT_DEMO_TRACER_PEDAGOGY).toBe(TracerPedagogy.DiagnosticProbes);
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(TracerPedagogy.DownwardPathline);
+    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     expect(scenarioConfigSrc).not.toMatch(/TracerPedagogy/);
   });
 
@@ -115,7 +124,7 @@ describe("TracerPedagogy", () => {
     expect(history!.pointsFor(1)[0]).toEqual({ x: 0, y: 1000, z: 6000 });
   });
 
-  it("keeps the live App on explicit DownwardPathline and StormRelativeLaboratory", () => {
+  it("keeps the live App on explicit NearGroundOutflowPathline and StormRelativeLaboratory", () => {
     const seeds = demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY);
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
@@ -126,16 +135,18 @@ describe("TracerPedagogy", () => {
       simulation.particles,
     );
 
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(TracerPedagogy.DownwardPathline);
+    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     expect(demoTrailsEnabled(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(true);
-    expect(demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(true);
-    expect(seeds).toBe(DEMO_SCENARIO.simulation.downwardPathlineSeeds);
-    expect(seeds).toEqual([{ x: 5000, y: 1000, z: 0 }]);
+    expect(demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(false);
+    expect(seeds).toBe(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds);
+    expect(seeds).toEqual([{ x: 3000, y: 100, z: 4750 }]);
     expect(simulation.particles).toHaveLength(1);
     expect(simulation.particles[0]!.position).toEqual({
-      x: 5000,
-      y: 1000,
-      z: 0,
+      x: 3000,
+      y: 100,
+      z: 4750,
     });
     expect(history).not.toBeNull();
     expect(history!.tracerCount).toBe(1);
@@ -143,20 +154,29 @@ describe("TracerPedagogy", () => {
       { x: 0, y: 1000, z: 4000 },
       { x: 0, y: 1000, z: 6000 },
     ]);
+    expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual([
+      { x: 5000, y: 1000, z: 0 },
+    ]);
     expect(demoSeedsForPedagogy(TracerPedagogy.StoryPathlines)).toBe(
       DEMO_SCENARIO.simulation.storySeeds,
     );
     expect(demoSeedsForPedagogy(TracerPedagogy.DiagnosticProbes)).toBe(
       DEMO_SCENARIO.simulation.diagnosticSeeds,
     );
+    expect(demoSeedsForPedagogy(TracerPedagogy.DownwardPathline)).toBe(
+      DEMO_SCENARIO.simulation.downwardPathlineSeeds,
+    );
+    expect(seeds).not.toBe(DEMO_SCENARIO.simulation.downwardPathlineSeeds);
+    expect(seeds).not.toBe(DEMO_SCENARIO.simulation.storySeeds);
 
     expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
     expect(appSrc).toMatch(/TracerPedagogy/);
     expect(appSrc).toMatch(/IntegrationFrame\.StormRelativeLaboratory/);
     expect(appSrc).not.toMatch(/GroundRelativeWindTunnel/);
     expect(appSrc).toMatch(
-      /prescribed storm-relative\s+pathline descending through the downdraft region/,
+      /prescribed storm-relative\s+near-ground pathline advected through a divergent/,
     );
+    expect(appSrc).not.toMatch(/descending through the downdraft/);
     expect(appSrc).not.toMatch(/lower inflow/);
     expect(appSrc).not.toMatch(/realistic parcel path/i);
     expect(appSrc).not.toMatch(/full supercell circulation/i);
@@ -165,6 +185,8 @@ describe("TracerPedagogy", () => {
     expect(appSrc).not.toMatch(/air returns to the surface/i);
     expect(appSrc).not.toMatch(/RFD/i);
     expect(appSrc).not.toMatch(/cold pool/i);
+    expect(appSrc).not.toMatch(/gust.front/i);
+    expect(appSrc).not.toMatch(/density current/i);
   });
 
   it("keeps default composition on DiagnosticProbes", () => {
@@ -177,7 +199,7 @@ describe("TracerPedagogy", () => {
     expect(createDemoPathHistory(DEFAULT_DEMO_TRACER_PEDAGOGY, simulation.particles)).toBeNull();
   });
 
-  it("never concatenates diagnostic, story, and downward seed arrays", () => {
+  it("never concatenates diagnostic, story, downward, and near-ground seed arrays", () => {
     const diagnostic = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
       TracerPedagogy.DiagnosticProbes,
@@ -190,15 +212,21 @@ describe("TracerPedagogy", () => {
       IntegrationFrame.StormRelativeLaboratory,
       TracerPedagogy.DownwardPathline,
     );
+    const nearGround = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     const merged = [
       ...DEMO_SCENARIO.simulation.diagnosticSeeds,
       ...DEMO_SCENARIO.simulation.storySeeds,
       ...DEMO_SCENARIO.simulation.downwardPathlineSeeds,
+      ...DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
     ];
 
     expect(diagnostic.particles).toHaveLength(3);
     expect(story.particles).toHaveLength(2);
     expect(downward.particles).toHaveLength(1);
+    expect(nearGround.particles).toHaveLength(1);
     expect(story.particles.map((particle) => particle.position)).not.toEqual(
       merged,
     );
@@ -206,6 +234,9 @@ describe("TracerPedagogy", () => {
       merged,
     );
     expect(downward.particles.map((particle) => particle.position)).not.toEqual(
+      merged,
+    );
+    expect(nearGround.particles.map((particle) => particle.position)).not.toEqual(
       merged,
     );
     expect(demoSeedsForPedagogy(TracerPedagogy.DiagnosticProbes)).not.toBe(
@@ -217,6 +248,15 @@ describe("TracerPedagogy", () => {
     expect(demoSeedsForPedagogy(TracerPedagogy.DownwardPathline)).not.toBe(
       demoSeedsForPedagogy(TracerPedagogy.DiagnosticProbes),
     );
+    expect(
+      demoSeedsForPedagogy(TracerPedagogy.NearGroundOutflowPathline),
+    ).not.toBe(demoSeedsForPedagogy(TracerPedagogy.DownwardPathline));
+    expect(
+      demoSeedsForPedagogy(TracerPedagogy.NearGroundOutflowPathline),
+    ).not.toBe(demoSeedsForPedagogy(TracerPedagogy.StoryPathlines));
+    expect(
+      demoSeedsForPedagogy(TracerPedagogy.NearGroundOutflowPathline),
+    ).not.toBe(demoSeedsForPedagogy(TracerPedagogy.DiagnosticProbes));
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\.\.\.DEMO_SCENARIO/);
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\.concat\(/);
   });
@@ -376,6 +416,11 @@ describe("TracerPedagogy", () => {
     expect(createTracersFromSeedsSrc).not.toMatch(/downwardPathlineSeeds/);
     expect(tracerPathHistorySrc).not.toMatch(/downwardPathlineSeeds/);
     expect(tracerSceneSrc).not.toMatch(/downwardPathlineSeeds/);
+    expect(createTracersFromSeedsSrc).not.toMatch(
+      /nearGroundOutflowPathlineSeeds/,
+    );
+    expect(tracerPathHistorySrc).not.toMatch(/nearGroundOutflowPathlineSeeds/);
+    expect(tracerSceneSrc).not.toMatch(/nearGroundOutflowPathlineSeeds/);
     expect(composeDemoTracerSimulationSrc).toMatch(/demoSeedsForPedagogy/);
     expect(composeDemoTracerSimulationSrc).toMatch(/createTracersFromSeeds\(/);
   });
@@ -396,6 +441,9 @@ describe("TracerPedagogy", () => {
     expect(demoKeepInactiveGlyphs(TracerPedagogy.DownwardPathline)).toBe(true);
     expect(demoKeepInactiveGlyphs(TracerPedagogy.DiagnosticProbes)).toBe(false);
     expect(demoKeepInactiveGlyphs(TracerPedagogy.StoryPathlines)).toBe(false);
+    expect(
+      demoKeepInactiveGlyphs(TracerPedagogy.NearGroundOutflowPathline),
+    ).toBe(false);
     expect(seeds).toBe(DEMO_SCENARIO.simulation.downwardPathlineSeeds);
     expect(seeds).not.toBe(DEMO_SCENARIO.simulation.storySeeds);
     expect(seeds).toEqual([{ x: 5000, y: 1000, z: 0 }]);
@@ -412,14 +460,14 @@ describe("TracerPedagogy", () => {
     expect(history!.pointsFor(0)).toEqual([{ x: 5000, y: 1000, z: 0 }]);
   });
 
-  it("grounds live D1 at y = 0 with one terminal trail sample", () => {
+  it("grounds explicit DownwardPathline D1 at y = 0 with one terminal trail sample", () => {
     const dt = DEMO_SCENARIO.simulation.timestep;
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.DownwardPathline,
     );
     const history = createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.DownwardPathline,
       simulation.particles,
     )!;
     const particle = simulation.particles[0]!;
@@ -455,7 +503,7 @@ describe("TracerPedagogy", () => {
     expect(particle.position.y).toBe(0);
   });
 
-  it("resets live DownwardPathline to D1 with active true and trail length 1", () => {
+  it("resets live NearGroundOutflowPathline to NG1 with active true and trail length 1", () => {
     const seeds = demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY);
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
@@ -463,6 +511,39 @@ describe("TracerPedagogy", () => {
     );
     const history = createDemoPathHistory(
       LIVE_DEMO_TRACER_PEDAGOGY,
+      simulation.particles,
+    )!;
+    const dt = DEMO_SCENARIO.simulation.timestep;
+
+    for (let i = 0; i < 20; i++) {
+      simulation.step(dt);
+      history.recordAfterStep(simulation.particles);
+    }
+    expect(history.pointsFor(0).length).toBeGreaterThan(1);
+
+    resetTracersFromSeeds(simulation, seeds);
+    history.clear();
+    history.captureInitial(simulation.particles);
+
+    expect(simulation.clock.time).toBe(0);
+    expect(simulation.particles).toHaveLength(1);
+    expect(simulation.particles[0]).toMatchObject({
+      tracerId: 1,
+      position: { x: 3000, y: 100, z: 4750 },
+      age: 0,
+      active: true,
+    });
+    expect(history.pointsFor(0)).toEqual([{ x: 3000, y: 100, z: 4750 }]);
+  });
+
+  it("resets explicit DownwardPathline to D1 with active true and trail length 1", () => {
+    const seeds = demoSeedsForPedagogy(TracerPedagogy.DownwardPathline);
+    const simulation = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      TracerPedagogy.DownwardPathline,
+    );
+    const history = createDemoPathHistory(
+      TracerPedagogy.DownwardPathline,
       simulation.particles,
     )!;
     const dt = DEMO_SCENARIO.simulation.timestep;
@@ -480,7 +561,8 @@ describe("TracerPedagogy", () => {
 
     expect(simulation.clock.time).toBe(0);
     expect(simulation.particles).toHaveLength(1);
-    expect(simulation.particles[0]).toEqual({
+    expect(simulation.particles[0]).toMatchObject({
+      tracerId: 1,
       position: { x: 5000, y: 1000, z: 0 },
       age: 0,
       active: true,
@@ -514,5 +596,122 @@ describe("TracerPedagogy", () => {
     expect(
       Math.hypot(particle.position.x - 4723, particle.position.z + 1308),
     ).toBeLessThan(25);
+  });
+
+  it("maps NearGroundOutflowPathline to sole NG1 with trails on and inactive glyphs hidden", () => {
+    const seeds = demoSeedsForPedagogy(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    const simulation = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    const history = createDemoPathHistory(
+      TracerPedagogy.NearGroundOutflowPathline,
+      simulation.particles,
+    );
+
+    expect(demoTrailsEnabled(TracerPedagogy.NearGroundOutflowPathline)).toBe(
+      true,
+    );
+    expect(
+      demoKeepInactiveGlyphs(TracerPedagogy.NearGroundOutflowPathline),
+    ).toBe(false);
+    expect(seeds).toBe(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
+    );
+    expect(seeds).not.toBe(DEMO_SCENARIO.simulation.downwardPathlineSeeds);
+    expect(seeds).not.toBe(DEMO_SCENARIO.simulation.storySeeds);
+    expect(seeds).not.toBe(DEMO_SCENARIO.simulation.diagnosticSeeds);
+    expect(seeds).toEqual([{ x: 3000, y: 100, z: 4750 }]);
+    expect(seeds).toHaveLength(1);
+    expect(simulation.particles).toHaveLength(1);
+    expect(simulation.particles[0]!.position).toEqual({
+      x: 3000,
+      y: 100,
+      z: 4750,
+    });
+    expect(simulation.particles[0]!.active).toBe(true);
+    expect(history).not.toBeNull();
+    expect(history!.tracerCount).toBe(1);
+    expect(history!.pointsFor(0)).toEqual([{ x: 3000, y: 100, z: 4750 }]);
+    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).not.toMatch(/NearGroundOutflowPathline/);
+    expect(appSrc).not.toMatch(/DownwardPathline/);
+  });
+
+  it("shows qualitative near-ground outward motion for live NG1", () => {
+    const dt = DEMO_SCENARIO.simulation.timestep;
+    const simulation = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      LIVE_DEMO_TRACER_PEDAGOGY,
+    );
+    const particle = simulation.particles[0]!;
+    const ngAxisX = DEMO_SCENARIO.storm.nearGroundOutflow.centerX;
+    const ngAxisZ = DEMO_SCENARIO.storm.nearGroundOutflow.centerZ;
+    const r0 = Math.hypot(
+      particle.position.x - ngAxisX,
+      particle.position.z - ngAxisZ,
+    );
+    let tLayer = 0;
+    let maxY = particle.position.y;
+    const horizon = 200;
+
+    while (particle.active && particle.age < horizon - 1e-12) {
+      const yBefore = particle.position.y;
+      simulation.step(dt);
+      if (yBefore < 800) tLayer += dt;
+      if (particle.position.y > maxY) maxY = particle.position.y;
+    }
+
+    const r = Math.hypot(
+      particle.position.x - ngAxisX,
+      particle.position.z - ngAxisZ,
+    );
+    expect(simulation.particles).toHaveLength(1);
+    expect(r - r0).toBeGreaterThan(500);
+    expect(tLayer).toBeGreaterThan(100);
+    expect(maxY).toBeLessThan(800);
+    if (!particle.active) {
+      expect(particle.position.y).toBe(0);
+    }
+  });
+
+  it("resets explicit NearGroundOutflowPathline to NG1 with active true and trail length 1", () => {
+    const seeds = demoSeedsForPedagogy(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    const simulation = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    const history = createDemoPathHistory(
+      TracerPedagogy.NearGroundOutflowPathline,
+      simulation.particles,
+    )!;
+    const dt = DEMO_SCENARIO.simulation.timestep;
+
+    for (let i = 0; i < 20; i++) {
+      simulation.step(dt);
+      history.recordAfterStep(simulation.particles);
+    }
+    expect(history.pointsFor(0).length).toBeGreaterThan(1);
+
+    resetTracersFromSeeds(simulation, seeds);
+    history.clear();
+    history.captureInitial(simulation.particles);
+
+    expect(simulation.clock.time).toBe(0);
+    expect(simulation.particles).toHaveLength(1);
+    expect(simulation.particles[0]).toMatchObject({
+      tracerId: 1,
+      position: { x: 3000, y: 100, z: 4750 },
+      age: 0,
+      active: true,
+    });
+    expect(history.pointsFor(0)).toEqual([{ x: 3000, y: 100, z: 4750 }]);
   });
 });

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import type { Vec3 } from "../core/math/Vec3.js";
 import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
-import type { TracerParticle } from "../simulation/TracerParticle.js";
+import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
 import appSrc from "../app/App.tsx?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import tracerSceneSrc from "./TracerScene.ts?raw";
@@ -16,7 +16,7 @@ import {
   writeTrailPositions,
 } from "./trailGeometry.js";
 
-function particle(x: number, y: number, z: number): TracerParticle {
+function particle(x: number, y: number, z: number): TracerAdvectionState {
   return { position: { x, y, z }, age: 0, active: true };
 }
 

@@ -6,7 +6,7 @@ import { EnvironmentalWindField } from "../physics/environment/EnvironmentalWind
 import { EnvironmentalWindProfile } from "../physics/environment/EnvironmentalWindProfile.js";
 import { UpdraftField } from "../physics/storm/UpdraftField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 describe("composite env + updraft on-axis tracer acceptance", () => {
   const centerX = 2500;
@@ -45,7 +45,7 @@ describe("composite env + updraft on-axis tracer acceptance", () => {
       sigma,
     });
     const field = new CompositeVelocityField([env, updraft]);
-    const particle: TracerParticle = {
+    const particle: TracerAdvectionState = {
       position: { x: centerX, y: y0, z: centerZ },
       age: 0,
       active: true,

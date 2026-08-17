@@ -14,6 +14,7 @@ describe("createTracersFromSeeds", () => {
     const particles = createTracersFromSeeds(seeds);
 
     expect(particles).toHaveLength(3);
+    expect("tracerId" in particles[0]!).toBe(false);
     expect(particles[0]).toEqual({
       position: { x: 0, y: 0, z: 0 },
       age: 0,
@@ -44,6 +45,9 @@ describe("createTracersFromSeeds", () => {
     const downwardParticles = createTracersFromSeeds(
       DEMO_SCENARIO.simulation.downwardPathlineSeeds,
     );
+    const nearGroundParticles = createTracersFromSeeds(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
+    );
 
     expect(storyParticles.map((particle) => particle.position)).toEqual(
       DEMO_SCENARIO.simulation.storySeeds,
@@ -54,9 +58,15 @@ describe("createTracersFromSeeds", () => {
     expect(downwardParticles.map((particle) => particle.position)).toEqual(
       DEMO_SCENARIO.simulation.downwardPathlineSeeds,
     );
+    expect(nearGroundParticles.map((particle) => particle.position)).toEqual(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
+    );
     expect(createTracersFromSeedsSrc).not.toMatch(/diagnosticSeeds/);
     expect(createTracersFromSeedsSrc).not.toMatch(/storySeeds/);
     expect(createTracersFromSeedsSrc).not.toMatch(/downwardPathlineSeeds/);
+    expect(createTracersFromSeedsSrc).not.toMatch(
+      /nearGroundOutflowPathlineSeeds/,
+    );
     expect(createTracersFromSeedsSrc).not.toMatch(/IntegrationFrame/);
     expect(createTracersFromSeedsSrc).not.toMatch(/TracerPedagogy/);
     expect(createTracersFromSeedsSrc).not.toMatch(/\bsigma\b/);

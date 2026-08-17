@@ -3,7 +3,7 @@ import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
 import { RK2Integrator } from "../core/integrators/RK2Integrator.js";
 import { UpdraftField } from "../physics/storm/UpdraftField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 describe("updraft field on-axis tracer acceptance", () => {
   const centerX = 2500;
@@ -22,7 +22,7 @@ describe("updraft field on-axis tracer acceptance", () => {
       peakVerticalVelocity,
       sigma,
     });
-    const particle: TracerParticle = {
+    const particle: TracerAdvectionState = {
       position: { x: centerX, y: y0, z: centerZ },
       age: 0,
       active: true,

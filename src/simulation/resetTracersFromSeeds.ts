@@ -3,7 +3,9 @@ import type { TracerSeedPosition } from "./createTracersFromSeeds.js";
 
 /**
  * Restore particles from seed copies and zero simulation clock time.
- * Does not mutate the seeds array; does not recreate Simulation.
+ * Mutates the existing particle objects in place: same identity,
+ * same tracerId. Does not mutate the seeds array; does not recreate
+ * Simulation or particles.
  */
 export function resetTracersFromSeeds(
   simulation: Simulation,

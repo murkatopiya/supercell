@@ -1,15 +1,26 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import type { TracerParticle } from "../simulation/TracerParticle.js";
+import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
 import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import { DEEP_STORM_TRACER_VIEW } from "./deepStormTracerView.js";
+import { syncTrailLine } from "./trailGeometry.js";
 import {
-  createTrailLines,
-  disposeTrailLine,
-  syncTrailLine,
-} from "./trailGeometry.js";
+  createTracerObserveSlot,
+  disposeTracerObserveSlot,
+  type TracerObserveSlot,
+} from "./tracerObserveSlot.js";
+import {
+  createReleasePreviewMarker,
+  disposeReleasePreviewMarker,
+  syncReleasePreviewMarker,
+} from "./releasePreviewMarker.js";
+import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
+import {
+  worldRayFromCameraNdc,
+  type WorldRay,
+} from "./worldRayFromCameraNdc.js";
 
-export const TRACER_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71] as const;
+export { TRACER_COLORS } from "./tracerObserveSlot.js";
 
 export interface TracerSceneOptions {
   /** When true, observe path-history as one Line per tracer. Default false. */
@@ -31,7 +42,7 @@ export function syncObservedTracerGlyph(
     visible: boolean;
     position: { set(x: number, y: number, z: number): void };
   },
-  particle: TracerParticle,
+  particle: TracerAdvectionState,
   keepInactiveGlyphs: boolean,
 ): void {
   mesh.visible = keepInactiveGlyphs || particle.active;
@@ -41,16 +52,21 @@ export function syncObservedTracerGlyph(
 /**
  * Imperative Three.js tracer scene.
  * Observes particle positions and optional path-history; never writes simulation state.
+ *
+ * Construction `tracerCount` is initial occupancy, including zero, not a
+ * permanent ceiling. Use addTracerSlot / clearTracerSlots to grow or empty
+ * tracer resources without recreating camera, OrbitControls, grid, or renderer.
  */
 export class TracerScene {
   private readonly renderer: THREE.WebGLRenderer;
   private readonly scene: THREE.Scene;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly controls: OrbitControls;
-  private readonly tracerMeshes: THREE.Mesh[] = [];
-  private readonly trailLines: THREE.Line[];
+  private readonly slots: TracerObserveSlot[] = [];
+  private preview: THREE.Mesh | undefined;
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
+  private readonly trailsEnabled: boolean;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -89,23 +105,83 @@ export class TracerScene {
     this.scene.add(new THREE.GridHelper(view.gridSizeM, view.gridDivisions));
 
     this.sharedGeometry = new THREE.SphereGeometry(view.sphereRadiusM, 16, 12);
-    for (let i = 0; i < tracerCount; i++) {
-      const material = new THREE.MeshBasicMaterial({
-        color: TRACER_COLORS[i % TRACER_COLORS.length],
-      });
-      const mesh = new THREE.Mesh(this.sharedGeometry, material);
-      this.scene.add(mesh);
-      this.tracerMeshes.push(mesh);
-    }
-
     this.keepInactiveGlyphs = options?.keepInactiveGlyphs === true;
+    this.trailsEnabled = options?.trails === true;
 
-    this.trailLines = options?.trails
-      ? createTrailLines(tracerCount, TRACER_COLORS)
-      : [];
-    for (const line of this.trailLines) {
-      this.scene.add(line);
+    for (let i = 0; i < tracerCount; i++) {
+      this.addTracerSlot();
     }
+  }
+
+  get tracerSlotCount(): number {
+    return this.slots.length;
+  }
+
+  /** Append one glyph, and a trail line when trails were enabled at construction. */
+  addTracerSlot(): void {
+    const slot = createTracerObserveSlot(
+      this.slots.length,
+      this.sharedGeometry,
+      { trails: this.trailsEnabled },
+    );
+    this.scene.add(slot.mesh);
+    if (slot.trail !== undefined) {
+      this.scene.add(slot.trail);
+    }
+    this.slots.push(slot);
+  }
+
+  /** Append `count` slots. Empty count is a no-op. */
+  addTracerSlots(count: number): void {
+    if (!Number.isInteger(count) || count < 0) {
+      throw new Error("count must be an integer >= 0");
+    }
+    for (let i = 0; i < count; i++) {
+      this.addTracerSlot();
+    }
+  }
+
+  /**
+   * Dispose every tracer glyph/trail and drop slot count to 0.
+   * Camera, OrbitControls, grid, axes, shared geometry, and renderer stay.
+   */
+  clearTracerSlots(): void {
+    for (const slot of this.slots) {
+      this.scene.remove(slot.mesh);
+      if (slot.trail !== undefined) {
+        this.scene.remove(slot.trail);
+      }
+      disposeTracerObserveSlot(slot);
+    }
+    this.slots.length = 0;
+  }
+
+  /**
+   * Observe pending-release preview. Not a tracer slot.
+   * Lazy-creates the marker on the first non-null seed.
+   */
+  syncReleasePreview(pendingSeed: TracerSeedPosition | null): void {
+    if (pendingSeed === null) {
+      if (this.preview !== undefined) {
+        syncReleasePreviewMarker(this.preview, null);
+      }
+      return;
+    }
+    if (this.preview === undefined) {
+      this.preview = createReleasePreviewMarker(
+        DEEP_STORM_TRACER_VIEW.sphereRadiusM,
+      );
+      this.scene.add(this.preview);
+    }
+    syncReleasePreviewMarker(this.preview, pendingSeed);
+  }
+
+  /**
+   * Camera unproject to a world ray. Not a 3D point pick.
+   * Does not import Explore and does not intersect the ground plane.
+   */
+  worldRayFromNdc(ndcX: number, ndcY: number): WorldRay | null {
+    return worldRayFromCameraNdc(this.camera, ndcX, ndcY);
   }
 
   setSize(width: number, height: number): void {
@@ -117,15 +193,15 @@ export class TracerScene {
   }
 
   /** Copy last fixed-step particle positions into meshes (read-only observe). */
-  syncFromParticles(particles: readonly TracerParticle[]): void {
-    const n = Math.min(particles.length, this.tracerMeshes.length);
+  syncFromParticles(particles: readonly TracerAdvectionState[]): void {
+    const n = Math.min(particles.length, this.slots.length);
     for (let i = 0; i < n; i++) {
       const p = particles[i]!;
-      const mesh = this.tracerMeshes[i]!;
+      const mesh = this.slots[i]!.mesh;
       syncObservedTracerGlyph(mesh, p, this.keepInactiveGlyphs);
     }
-    for (let i = n; i < this.tracerMeshes.length; i++) {
-      this.tracerMeshes[i]!.visible = false;
+    for (let i = n; i < this.slots.length; i++) {
+      this.slots[i]!.mesh.visible = false;
     }
   }
 
@@ -134,9 +210,15 @@ export class TracerScene {
    * No-op when trails were not enabled. Does not record or step.
    */
   syncFromPathHistory(pathHistory: TracerPathHistory): void {
-    const n = Math.min(pathHistory.tracerCount, this.trailLines.length);
+    if (!this.trailsEnabled) {
+      return;
+    }
+    const n = Math.min(pathHistory.tracerCount, this.slots.length);
     for (let i = 0; i < n; i++) {
-      syncTrailLine(this.trailLines[i]!, pathHistory.pointsFor(i));
+      const trail = this.slots[i]!.trail;
+      if (trail !== undefined) {
+        syncTrailLine(trail, pathHistory.pointsFor(i));
+      }
     }
   }
 
@@ -147,15 +229,13 @@ export class TracerScene {
 
   dispose(): void {
     this.controls.dispose();
-    for (const mesh of this.tracerMeshes) {
-      this.scene.remove(mesh);
-      (mesh.material as THREE.Material).dispose();
+    this.clearTracerSlots();
+    if (this.preview !== undefined) {
+      this.scene.remove(this.preview);
+      disposeReleasePreviewMarker(this.preview);
+      this.preview = undefined;
     }
     this.sharedGeometry.dispose();
-    for (const line of this.trailLines) {
-      this.scene.remove(line);
-      disposeTrailLine(line);
-    }
     this.renderer.dispose();
   }
 }

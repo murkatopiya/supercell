@@ -1,5 +1,5 @@
 import type { Vec3 } from "../core/math/Vec3.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 function copyVec3(position: Vec3): Vec3 {
   return { x: position.x, y: position.y, z: position.z };
@@ -32,10 +32,34 @@ export class TracerPathHistory {
   }
 
   /**
+   * Append one lane and copy the particle's current position as its
+   * birth point, independent of stride. Does not recapture existing
+   * lanes or reset the global stride counter.
+   *
+   * Inactive particles still receive that birth point once.
+   * `observedActive` is set to the particle's current flag so a later
+   * `recordAfterStep` does not invent a terminal transition.
+   */
+  appendParticle(particle: TracerAdvectionState): void {
+    this.histories.push([copyVec3(particle.position)]);
+    this.observedActive.push(particle.active);
+  }
+
+  /**
+   * Append an ordered batch of lanes. Empty batch is a no-op.
+   */
+  appendParticles(particles: readonly TracerAdvectionState[]): void {
+    for (const particle of particles) {
+      this.appendParticle(particle);
+    }
+  }
+
+  /**
    * Copy current positions as the first point of each active tracer.
    * Call after construct or clear(); does not invent samples from time.
+   * Not the late-birth path — use appendParticle when the cohort grows.
    */
-  captureInitial(particles: readonly TracerParticle[]): void {
+  captureInitial(particles: readonly TracerAdvectionState[]): void {
     this.assertParticleCount(particles);
     for (let i = 0; i < particles.length; i++) {
       const particle = particles[i]!;
@@ -57,7 +81,7 @@ export class TracerPathHistory {
    * position), including off-stride. Already-inactive particles do not
    * append. Lifecycle uses the last observed `active` flag only.
    */
-  recordAfterStep(particles: readonly TracerParticle[]): void {
+  recordAfterStep(particles: readonly TracerAdvectionState[]): void {
     this.assertParticleCount(particles);
     this.stepsSinceCapture += 1;
     const onStride = this.stepsSinceCapture % this.stride === 0;
@@ -73,12 +97,25 @@ export class TracerPathHistory {
     }
   }
 
-  /** Drop all stored points and reset stride counting. */
+  /**
+   * Drop all stored points and reset stride counting.
+   * Lane count is unchanged. Guided Reset: clear() then captureInitial().
+   */
   clear(): void {
     for (const history of this.histories) {
       history.length = 0;
     }
     this.observedActive.fill(false);
+    this.stepsSinceCapture = 0;
+  }
+
+  /**
+   * Remove every lane. Distinct from clear(): the cohort itself is
+   * gone (Explore Clear), not merely the recorded points.
+   */
+  removeAllLanes(): void {
+    this.histories.length = 0;
+    this.observedActive.length = 0;
     this.stepsSinceCapture = 0;
   }
 
@@ -96,7 +133,7 @@ export class TracerPathHistory {
     return history.map(copyVec3);
   }
 
-  private assertParticleCount(particles: readonly TracerParticle[]): void {
+  private assertParticleCount(particles: readonly TracerAdvectionState[]): void {
     if (particles.length !== this.histories.length) {
       throw new Error(
         `TracerPathHistory: particle count ${particles.length} !== tracer count ${this.histories.length}`,

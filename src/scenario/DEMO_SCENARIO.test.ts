@@ -149,6 +149,7 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
     expect(scenarioConfigSrc).toMatch(/diagnosticSeeds/);
     expect(scenarioConfigSrc).toMatch(/storySeeds/);
     expect(scenarioConfigSrc).toMatch(/downwardPathlineSeeds/);
+    expect(scenarioConfigSrc).toMatch(/nearGroundOutflowPathlineSeeds/);
     expect(scenarioConfigSrc).not.toMatch(/tracerSeeds/);
     expect(demoScenarioSrc).not.toMatch(/tracerSeeds/);
   });
@@ -168,6 +169,30 @@ describe("DEMO_SCENARIO chimney retune (architecture 06)", () => {
       z: 0,
     });
     expect(Object.keys(seeds[0]!)).toEqual(["x", "y", "z"]);
+  });
+
+  it("stores sole canonical NG1 in nearGroundOutflowPathlineSeeds, not in other arrays", () => {
+    const seeds = DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds;
+    expect(seeds).toEqual([{ x: 3000, y: 100, z: 4750 }]);
+    expect(seeds).toHaveLength(1);
+    expect(DEMO_SCENARIO.simulation.storySeeds).not.toContainEqual({
+      x: 3000,
+      y: 100,
+      z: 4750,
+    });
+    expect(DEMO_SCENARIO.simulation.diagnosticSeeds).not.toContainEqual({
+      x: 3000,
+      y: 100,
+      z: 4750,
+    });
+    expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).not.toContainEqual({
+      x: 3000,
+      y: 100,
+      z: 4750,
+    });
+    expect(seeds).not.toContainEqual({ x: 2500, y: 100, z: 4500 });
+    expect(Object.keys(seeds[0]!)).toEqual(["x", "y", "z"]);
+    expect(scenarioConfigSrc).toMatch(/nearGroundOutflowPathlineSeeds/);
   });
 
   it("preserves characteristic horizontal peak speeds (DEMO frozen-peak policy)", () => {

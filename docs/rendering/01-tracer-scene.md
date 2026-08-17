@@ -36,6 +36,16 @@ This document remains the source of truth for:
 - plain Three.js scene contents (spheres, axes, grid, OrbitControls);
 - app layout of hodograph + tracer panels.
 
+Construction `tracerCount` is initial occupancy, including zero, not a
+permanent ceiling (`18` Slice 1). `addTracerSlot` / `addTracerSlots`
+grow glyphs (and trail lines when `trails: true`) without recreating
+camera, OrbitControls, grid, or the renderer. `clearTracerSlots`
+disposes tracer glyph/trail resources only.
+
+Pending-release preview (`18` Slice 3) is `syncReleasePreview` /
+`createReleasePreviewMarker`. It is not a tracer slot, not a trail,
+and not `keepInactiveGlyphs`. Guided App does not enable placement.
+
 It answers (historically):
 
     How does one ScenarioConfig drive tracer advection into a plain Three.js
@@ -220,7 +230,8 @@ From `docs/architecture/01-scenario-config.md`:
 | `simulation.timestep` | fixed numerical `dt` for every `Simulation.step` |
 | `simulation.diagnosticSeeds` | DiagnosticProbes initial positions; default composition API |
 | `simulation.storySeeds` | StoryPathlines initial positions; explicit mode (`docs/architecture/08-story-seeds.md`) |
-| `simulation.downwardPathlineSeeds` | live App DownwardPathline occupants (`docs/architecture/12-downward-ground-impact-pedagogy.md`) |
+| `simulation.downwardPathlineSeeds` | explicit DownwardPathline occupant D1 (`docs/architecture/12-downward-ground-impact-pedagogy.md`); not live App |
+| `simulation.nearGroundOutflowPathlineSeeds` | live App NearGroundOutflowPathline occupant NG1 (`docs/architecture/14-near-ground-outflow-pedagogy.md`) |
 | `stormMotion` | unused by 3D field; still used by hodograph composition |
 
 ### DEMO_SCENARIO seeds
@@ -347,10 +358,12 @@ runtime orchestration; see `docs/rendering/02-tracer-runtime-controls.md`.
 
 ### Tracers
 
-- small `THREE.Mesh` spheres (one mesh per active tracer);
+- small `THREE.Mesh` spheres (one mesh per tracer slot);
 - simple `MeshBasicMaterial` (no fancy lighting / PBR required);
 - each render sync: copy `particle.position` → `mesh.position`;
 - rendering must not write back into `TracerParticle` or `Simulation`.
+- slot count may grow or drop to zero without reconstructing the scene
+  (`addTracerSlot` / `clearTracerSlots`; `18` Slice 1).
 
 ### Debug spatial helpers (v1)
 

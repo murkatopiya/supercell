@@ -20,7 +20,12 @@ import type { ScenarioConfig } from "./ScenarioConfig.js";
  * StoryPathlines maps this array; live App does not select it.
  *
  * Downward pathline seed D1: docs/architecture/12-downward-ground-impact-pedagogy.md.
- * Live App selects DownwardPathline (this array + trails + keepInactiveGlyphs).
+ * DownwardPathline maps this array; live App does not select it.
+ *
+ * Near-ground outflow pathline seed NG1:
+ * docs/architecture/14-near-ground-outflow-pedagogy.md.
+ * Live App selects NearGroundOutflowPathline (this array + trails;
+ * inactive glyphs hidden).
  *
  * Deep environmental knots 6000 / 12000 m:
  * docs/rendering/09-deep-environmental-profile-demo.md.
@@ -116,5 +121,6 @@ export const DEMO_SCENARIO: ScenarioConfig = {
       { x: 0, y: 1000, z: 6000 },
     ],
     downwardPathlineSeeds: [{ x: 5000, y: 1000, z: 0 }],
+    nearGroundOutflowPathlineSeeds: [{ x: 3000, y: 100, z: 4750 }],
   },
 };

@@ -299,6 +299,9 @@ describe("DEMO IntegrationFrame composition", () => {
     const downwardSnapshot = structuredClone(
       DEMO_SCENARIO.simulation.downwardPathlineSeeds,
     );
+    const nearGroundSnapshot = structuredClone(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
+    );
     const dt = DEMO_SCENARIO.simulation.timestep;
 
     for (const frame of [
@@ -331,6 +334,9 @@ describe("DEMO IntegrationFrame composition", () => {
     expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual(
       downwardSnapshot,
     );
+    expect(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds).toEqual(
+      nearGroundSnapshot,
+    );
   });
 
   it("does not put storySeeds into default composition; live App uses LIVE_DEMO_TRACER_PEDAGOGY", () => {
@@ -349,6 +355,9 @@ describe("DEMO IntegrationFrame composition", () => {
     );
     expect(simulation.particles.map((particle) => particle.position)).not.toEqual(
       DEMO_SCENARIO.simulation.downwardPathlineSeeds,
+    );
+    expect(simulation.particles.map((particle) => particle.position)).not.toEqual(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
     );
 
     expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);

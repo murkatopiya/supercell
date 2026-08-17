@@ -1,9 +1,24 @@
 # Tracer Path History
 
-**Status:** live DownwardPathline wiring implemented. Recorder + trail
-primitive + `TracerPedagogy` are in production. Live App shows D1
-with trails and `keepInactiveGlyphs`. StoryPathlines remains an
-explicit mode (S1/S2). DiagnosticProbes remains the default composition API.
+**Status:** live NearGroundOutflowPathline wiring implemented. Recorder + trail
+primitive + `TracerPedagogy` are in production. Live App shows NG1
+with trails; inactive glyphs hidden. StoryPathlines remains an
+explicit mode (S1/S2). DownwardPathline remains an explicit
+mode (D1; `keepInactiveGlyphs`). DiagnosticProbes remains the default
+composition API.
+
+Lane count is no longer frozen at construction (`18` Slice 1).
+`appendParticle` / `appendParticles` add a lane and capture the birth
+position independently of stride. `clear()` still wipes points and
+keeps lanes (Guided Reset: `clear` then `captureInitial`).
+`removeAllLanes()` drops every lane (Explore Clear). `captureInitial`
+remains a full-cohort recapture and is not the late-birth path.
+Constructors accept `tracerCount = 0`.
+
+Explore Reset/Clear orchestration (`18` Slice 2) lives on
+`ExploreTracerSession`, not on this recorder: Reset still
+`clear()` + `captureInitial`; Clear still `removeAllLanes()`.
+The session does not own renderer slots.
 
 Predecessor:
 `docs/architecture/08-story-seeds.md` — trails (or equivalent path
@@ -279,8 +294,9 @@ side effect of installing the recorder.
 | --- | --- |
 | `diagnosticSeeds` (default composition API) | **Off.** No recorder wired. |
 | `storySeeds` (StoryPathlines; explicit) | **On.** Recorder + one line per story tracer. |
-| `downwardPathlineSeeds` (live App DownwardPathline) | **On.** Same recorder contract. |
-| Both groups at once | Still **deferred** (`08` §5, `12` §9). Trails do not license a concatenated cloud. |
+| `downwardPathlineSeeds` (DownwardPathline; explicit) | **On.** Same recorder contract. |
+| `nearGroundOutflowPathlineSeeds` (live App NearGroundOutflowPathline) | **On.** Same recorder contract (`14`). |
+| Both groups at once | Still **deferred** (`08` §5, `12` §9, `14` §12). Trails do not license a concatenated cloud. |
 
 Do not auto-trail “whatever particles exist.” Five glyphs with five
 trails would collapse diagnostic vs story again.
@@ -297,13 +313,15 @@ Implemented at the app composition boundary. Not a `ScenarioConfig`
 field (`08` §5, `01`).
 
 ```text
-TracerPedagogy.DiagnosticProbes     // default composition API; no trails
-TracerPedagogy.StoryPathlines       // explicit mode; S1+S2; trails on
-TracerPedagogy.DownwardPathline     // live App; D1; trails on; keepInactiveGlyphs
+TracerPedagogy.DiagnosticProbes              // default composition API; no trails
+TracerPedagogy.StoryPathlines                // explicit mode; S1+S2; trails on
+TracerPedagogy.DownwardPathline              // explicit; D1; trails on; keepInactiveGlyphs
+TracerPedagogy.NearGroundOutflowPathline     // live App; NG1; trails on; keepInactiveGlyphs false
 ```
 
-No `Both` (`08`, `12`). DownwardPathline is a separate mode, not
-simultaneous display with S1/S2.
+No `Both` (`08`, `12`, `14`). DownwardPathline is a separate mode, not
+simultaneous display with S1/S2. NearGroundOutflowPathline is a
+separate mode, not simultaneous with D1 or S1/S2.
 
 **Trail system must not import this enum.** Composition maps pedagogy
 to handles:
@@ -588,8 +606,12 @@ Commanded later, one vertical slice at a time. Not this document.
    explicit mode; default composition API remains
    `DiagnosticProbes`.
 4. **UI later** — pedagogy toggle, if ever.
-5. **DownwardPathline live switch** — done: live App selects
-   `DownwardPathline`; StoryPathlines remains explicit.
+5. **DownwardPathline live switch** — done: live App later moved
+   to NearGroundOutflowPathline (`14` slice 2); DownwardPathline
+   remains explicit.
+6. **NearGroundOutflowPathline live switch** — done: live App selects
+   `NearGroundOutflowPathline`; StoryPathlines and DownwardPathline
+   remain explicit.
 
 Do not merge (1)+(3) “so there is something to look at” without
 (2). Do not turn on story live view without trails (`08` §8).
@@ -608,12 +630,16 @@ history lifetime:        full history until Reset
 max points:              none (DEMO scale); no sliding window
 reset semantics:         clear + captureInitial at seed positions;
                          diagnostic Reset unchanged / trails unused
+lane lifecycle:          constructor sets initial count (0 allowed);
+                         appendParticle captures birth, bypasses stride;
+                         clear() keeps lanes; removeAllLanes() → 0
 pause semantics:         no step → no append; render may continue
 timeScale:               more steps → more points; not renderer sampling
 representation:          THREE.Line + BufferGeometry; glyph stays
-story-only policy:       trails on for StoryPathlines and
-                         DownwardPathline; DiagnosticProbes has
-                         no trails; live App = DownwardPathline
+story-only policy:       trails on for StoryPathlines,
+                         DownwardPathline, and
+                         NearGroundOutflowPathline; DiagnosticProbes has
+                         no trails; live App = NearGroundOutflowPathline
 renderer ownership:      observe history; do not sample FPS;
                          do not write Simulation
 memory estimate:         2 tracers × ~4000 steps ≈ 8k points;
@@ -629,11 +655,13 @@ pedagogy integration:    composition maps enum → seed array
 integrator:              unknown to recorder; copies after step
 colors:                  trail = glyph color; no fade/glow;
                          index cycle is not a group language
-production this slice:   live DownwardPathline + recorder wiring;
-                         StoryPathlines and DiagnosticProbes still explicit
+production this slice:   live NearGroundOutflowPathline + recorder wiring;
+                         StoryPathlines, DownwardPathline,
+                         and DiagnosticProbes still explicit
 ```
 
-Live App enables trails via `TracerPedagogy.DownwardPathline`.
-StoryPathlines also enables trails when selected. Diagnostic
-composition does not
-(`docs/architecture/12-downward-ground-impact-pedagogy.md`).
+Live App enables trails via `TracerPedagogy.NearGroundOutflowPathline`.
+StoryPathlines and DownwardPathline also enable trails when
+selected. Diagnostic composition does not
+(`docs/architecture/12-downward-ground-impact-pedagogy.md`,
+`docs/architecture/14-near-ground-outflow-pedagogy.md`).

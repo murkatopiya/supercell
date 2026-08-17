@@ -260,14 +260,16 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
     expect(simulation.particles[1]!.position.y).toBeGreaterThan(4000);
   });
 
-  it("keeps live DownwardPathline D1 grounding with a small landing shift", () => {
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(TracerPedagogy.DownwardPathline);
+  it("keeps explicit DownwardPathline D1 grounding with a small landing shift", () => {
+    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.DownwardPathline,
     );
     const history = createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.DownwardPathline,
       simulation.particles,
     )!;
     const particle = simulation.particles[0]!;
@@ -300,7 +302,7 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
     expect(particle.position.y).toBe(0);
   });
 
-  it("does not add near-ground seeds or change DiagnosticProbes role", () => {
+  it("keeps diagnostic, story, and downward arrays unchanged and isolates NG1", () => {
     expect(DEMO_SCENARIO.simulation.diagnosticSeeds).toEqual([
       { x: 0, y: 1000, z: 0 },
       { x: 2400, y: 1000, z: 0 },
@@ -312,6 +314,9 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
     ]);
     expect(DEMO_SCENARIO.simulation.downwardPathlineSeeds).toEqual([
       { x: 5000, y: 1000, z: 0 },
+    ]);
+    expect(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds).toEqual([
+      { x: 3000, y: 100, z: 4750 },
     ]);
 
     const diagnostic = composeDemoTracerSimulation(
@@ -326,6 +331,15 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
     expect(composeDemoTracerSimulationSrc).not.toMatch(
       /NearGroundOutflowPathlines/,
     );
+    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
+    const live = composeDemoTracerSimulation(
+      IntegrationFrame.StormRelativeLaboratory,
+      LIVE_DEMO_TRACER_PEDAGOGY,
+    );
+    expect(live.particles).toHaveLength(1);
+    expect(live.particles[0]!.position).toEqual({ x: 3000, y: 100, z: 4750 });
   });
 
   it("does not change hodograph or SRH", () => {

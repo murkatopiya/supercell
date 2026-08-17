@@ -63,7 +63,7 @@ upperRadialOutflow])`.
 | Wall-frame clamp, pause gating, timeScale multiply | Runtime orchestration (viewport / loop host) |
 | `simulationElapsed → fixed steps` | Pure `consumeFixedTimesteps` |
 | Particle positions / `clock.time` | `Simulation` |
-| Seed definitions | Active pedagogy seed array (live: `storySeeds`; immutable under Reset) |
+| Seed definitions | Active pedagogy seed array (live: `nearGroundOutflowPathlineSeeds`; immutable under Reset) |
 
 > Speed up time by feeding more **simulation elapsed** into the fixed-step
 > accumulator. Never enlarge `dt`.
@@ -105,9 +105,10 @@ when not paused. The scenario timestep stays `0.1` s on every
 Reset must:
 
 1. restore particle positions from **copies** of the active pedagogy
-   seed array (`downwardPathlineSeeds` in live App, `storySeeds` when
+   seed array (`nearGroundOutflowPathlineSeeds` in live App, `storySeeds` when
    StoryPathlines is selected, `diagnosticSeeds` when
-   DiagnosticProbes is selected);
+   DiagnosticProbes is selected, `downwardPathlineSeeds` when
+   DownwardPathline is selected);
 2. set each restored particle `age = 0`, `active = true`;
 3. set `simulation.clock.time = 0`;
 4. set the loop `accumulator = 0`;
@@ -118,8 +119,17 @@ Reset must:
    positions).
 9. if a path-history recorder is live: `clear()` then `captureInitial`.
 
-Live Reset restores D1 and restarts the trail from that seed
-(`docs/architecture/12-downward-ground-impact-pedagogy.md`, `docs/rendering/14-tracer-path-history.md`).
+Construction-time tracer count is no longer a ceiling (`18` Slice 1).
+Guided Reset still does not change slot count: same scene, same
+camera / OrbitControls, `clear()` + `captureInitial`.
+`clearTracerSlots` is the empty-occupancy path, not Reset.
+
+Explore Reset/Clear (`18` Slice 2) are `ExploreTracerSession.reset`
+/ `clear` against Explore runtime seeds. They are not this
+document’s Guided App Reset and do not read pedagogy seed arrays.
+
+Live Reset restores NG1 and restarts the trail from that seed
+(`docs/architecture/14-near-ground-outflow-pedagogy.md`, `docs/rendering/14-tracer-path-history.md`).
 
 ---
 
@@ -268,7 +278,9 @@ resetTracersFromSeeds(simulation, seeds)
 ```
 
 Seeds argument is a read-only view of the active live seed list
-(live App: `downwardPathlineSeeds`; StoryPathlines: `storySeeds`; DiagnosticProbes: `diagnosticSeeds`); never write back into
+(live App: `nearGroundOutflowPathlineSeeds`; StoryPathlines: `storySeeds`;
+DiagnosticProbes: `diagnosticSeeds`; DownwardPathline:
+`downwardPathlineSeeds`); never write back into
 `ScenarioConfig`.
 
 ---
@@ -328,7 +340,7 @@ docs/rendering/02-tracer-runtime-controls.md
   `storm.updraft` / `storm.rotation` /
   `storm.lowerRadialInflow` / `storm.upperRadialOutflow`; no runtime scale):
   `docs/architecture/01-scenario-config.md`
-- Canonical story seeds (StoryPathlines explicit; live App DownwardPathline):
+- Canonical story seeds (StoryPathlines explicit; live App NearGroundOutflowPathline):
   `docs/architecture/08-story-seeds.md`
 - Future tracer path history (SoT only; not implemented):
   `docs/rendering/14-tracer-path-history.md`

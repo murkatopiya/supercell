@@ -2,11 +2,11 @@ import { describe, expect, it } from "vitest";
 import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
 import { LinearXVelocityField } from "../physics/synthetic/LinearXVelocityField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 function runLinearXTracer(dt: number, duration: number, k: number, x0: number) {
   const field = new LinearXVelocityField(k);
-  const particle: TracerParticle = {
+  const particle: TracerAdvectionState = {
     position: { x: x0, y: 1000, z: 0 },
     age: 0,
     active: true,

@@ -1210,11 +1210,11 @@ Occupancy / scaling and seventh-operand wiring: chosen in
 `docs/rendering/16-composite-near-ground-outflow-demo.md`.
 This physics document does **not** own those numbers.
 
-Still deferred (later pedagogy slice):
+Pedagogy seeds and live mode (`docs/architecture/14-near-ground-outflow-pedagogy.md`):
 
-- pedagogy seed array;
-- a new `TracerPedagogy` value;
-- live switch away from DownwardPathline.
+- seed array and `TracerPedagogy.NearGroundOutflowPathline` implemented
+  (config + mode + live switch);
+- live App is NearGroundOutflowPathline (`14`).
 
 Isolated tests must not require `ScenarioConfig`.
 
@@ -1378,11 +1378,13 @@ cold-pool anti-claim:    this is prescribed near-ground
 implementation slice:    isolated type implemented
                          (`src/physics/storm/NearGroundRadialOutflowField.ts`);
                          unit + isolated tracer tests;
-                         DEMO wiring live (`16`); pedagogy deferred
+                         DEMO wiring live (`16`); pedagogy config +
+                         mode + live switch implemented (`14`); live
+                         App is NearGroundOutflowPathline
 
 DEMO occupancy:          chosen in rendering/16
-                         seventh operand live; seeds / live mode
-                         still deferred
+                         seventh operand live; NG1 array +
+                         NearGroundOutflowPathline live (`14`)
 ```
 
 ---

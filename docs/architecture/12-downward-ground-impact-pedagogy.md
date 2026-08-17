@@ -1,9 +1,10 @@
 # Downward Story / Ground-Impact Pedagogy
 
 **Status:** architecture SoT. Slices 1–3 implemented. Live App
-selects `TracerPedagogy.DownwardPathline` (D1, trails on,
-`keepInactiveGlyphs`). DiagnosticProbes and StoryPathlines remain
-explicit composition modes. No `Both`. STOP.
+now selects `TracerPedagogy.NearGroundOutflowPathline` (NG1; `14`).
+`DownwardPathline` (D1, trails on, `keepInactiveGlyphs`) remains an
+explicit composition mode. DiagnosticProbes and StoryPathlines remain
+explicit. No `Both`. STOP.
 
 Occupant numbers:
 `docs/rendering/15-composite-downdraft-demo.md`.

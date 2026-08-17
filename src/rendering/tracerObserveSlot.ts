@@ -1,0 +1,44 @@
+import * as THREE from "three";
+import { createTrailLine, disposeTrailLine } from "./trailGeometry.js";
+
+export const TRACER_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71] as const;
+
+export interface TracerObserveSlot {
+  readonly mesh: THREE.Mesh;
+  readonly trail: THREE.Line | undefined;
+}
+
+/**
+ * Glyph + optional trail line for one tracer index.
+ * Does not attach to a scene; the caller owns scene membership.
+ * Shared sphere geometry is not owned by the slot.
+ */
+export function createTracerObserveSlot(
+  index: number,
+  sharedGeometry: THREE.SphereGeometry,
+  options: { trails: boolean },
+): TracerObserveSlot {
+  const color = TRACER_COLORS[index % TRACER_COLORS.length]!;
+  const material = new THREE.MeshBasicMaterial({ color });
+  const mesh = new THREE.Mesh(sharedGeometry, material);
+  const trail = options.trails ? createTrailLine(color) : undefined;
+  return { mesh, trail };
+}
+
+/**
+ * Dispose slot-owned material and trail resources.
+ * Does not dispose shared glyph geometry.
+ */
+export function disposeTracerObserveSlot(slot: TracerObserveSlot): void {
+  const material = slot.mesh.material;
+  if (Array.isArray(material)) {
+    for (const item of material) {
+      item.dispose();
+    }
+  } else {
+    material.dispose();
+  }
+  if (slot.trail !== undefined) {
+    disposeTrailLine(slot.trail);
+  }
+}

@@ -1183,17 +1183,20 @@ describe("DEMO composite env + envelope updraft + rotation + lower inflow + uppe
     resetTracersFromSeeds(simulation, seeds);
 
     expect(simulation.clock.time).toBe(0);
-    expect(simulation.particles[0]).toEqual({
+    expect(simulation.particles[0]).toMatchObject({
+      tracerId: 1,
       position: { x: 0, y: 1000, z: 0 },
       age: 0,
       active: true,
     });
-    expect(simulation.particles[1]).toEqual({
+    expect(simulation.particles[1]).toMatchObject({
+      tracerId: 2,
       position: { x: 2400, y: 1000, z: 0 },
       age: 0,
       active: true,
     });
-    expect(simulation.particles[2]).toEqual({
+    expect(simulation.particles[2]).toMatchObject({
+      tracerId: 3,
       position: { x: 0, y: 1000, z: -2400 },
       age: 0,
       active: true,

@@ -4,7 +4,7 @@ import { RK2Integrator } from "../core/integrators/RK2Integrator.js";
 import type { Integrator } from "../core/integrators/Integrator.js";
 import { VerticalEnvelopeDowndraftField } from "../physics/storm/VerticalEnvelopeDowndraftField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 const centerX = 2500;
 const centerZ = -1000;
@@ -50,7 +50,7 @@ function runTracer(
   start: { x: number; y: number; z: number },
   runDuration = duration,
 ) {
-  const particle: TracerParticle = {
+  const particle: TracerAdvectionState = {
     position: { ...start },
     age: 0,
     active: true,
@@ -105,7 +105,7 @@ describe("vertical envelope downdraft field tracer acceptance", () => {
 
   it("descends monotonically inside the open layer", () => {
     const start = { x: centerX, y: y0, z: centerZ };
-    const particle: TracerParticle = {
+    const particle: TracerAdvectionState = {
       position: { ...start },
       age: 0,
       active: true,

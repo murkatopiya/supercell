@@ -7,7 +7,7 @@ and what the next physics/modeling slice should be.
 
 Production code was not changed in this slice.
 
-Current live App is `DownwardPathline` (`12`). This review's
+Current live App is `NearGroundOutflowPathline` (`14`). This review's
 snapshot below remains StoryPathlines.
 
 Live at the time of this review:

@@ -4,7 +4,7 @@ import { RK2Integrator } from "../core/integrators/RK2Integrator.js";
 import type { Integrator } from "../core/integrators/Integrator.js";
 import { SolidBodyRotationYField } from "../physics/synthetic/SolidBodyRotationYField.js";
 import { Simulation } from "./Simulation.js";
-import type { TracerParticle } from "./TracerParticle.js";
+import type { TracerAdvectionState } from "./TracerParticle.js";
 
 function horizontalRadius(x: number, z: number): number {
   return Math.hypot(x, z);
@@ -34,7 +34,7 @@ function runRotation(
   z0: number,
 ) {
   const field = new SolidBodyRotationYField(omega);
-  const particle: TracerParticle = {
+  const particle: TracerAdvectionState = {
     position: { x: x0, y: y0, z: z0 },
     age: 0,
     active: true,
