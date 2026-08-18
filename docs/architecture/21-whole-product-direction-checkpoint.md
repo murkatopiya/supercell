@@ -3,13 +3,16 @@
 **Status:** current product/architecture direction checkpoint
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
-**Implementation:** NOT STARTED
+**Implementation:** perceptual airflow Slice 1 (headless)
+COMPLETE in `22`. Browser wiring NOT STARTED. Other §13
+candidates remain unchosen.
 
 This document remains the whole-product capability map. It did
 not pick a winner among §13 candidates. Candidate 1 (perceptual
-airflow) is now specified as architecture exploration
+airflow) is specified as architecture exploration
 `docs/architecture/22-perceptual-airflow-architecture.md`.
-Other §13 candidates remain unchosen. No implementation.
+Headless visual population (Slice 1) now exists there; browser
+wiring has not started. Other §13 candidates remain unchosen.
 
 This document did **not** change production code when written.
 It does **not** create `ROADMAP.md`.
@@ -1017,10 +1020,11 @@ dataset evolution:            important boundary
                               exploration candidate
                               synthetic lab remains valuable
 
-next implementation branch:   not selected by this checkpoint
-                              Candidate 1 explored in `22`
-                              (docs only; implementation not
-                              started; other candidates open)
+next implementation branch:   Candidate 1 Slice 1 headless
+                              COMPLETE in `22`
+                              browser / Explore / Guided wiring
+                              NOT STARTED
+                              other §13 candidates still open
 physics:                      PAUSED
 ROADMAP.md:                   not created
 ```
@@ -1033,8 +1037,9 @@ ROADMAP.md:                   not created
 PHYSICS PAUSED
 ```
 
-Candidate 1 architecture exploration now lives in `22`.
-This checkpoint still does not implement it.
+Candidate 1 architecture lives in `22`. Slice 1 of that
+direction is a headless visual population; this checkpoint
+does not start browser wiring or other §13 candidates.
 
 Do not treat opening `22` as selecting Candidates 2–7.
 Do not write a Cursor implementation prompt.

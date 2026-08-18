@@ -1,9 +1,10 @@
 # Perceptual Airflow / Flow-as-Structure Architecture
 
-**Status:** architecture exploration / decision checkpoint
+**Status:** architecture SoT. Slice 1 (headless visual
+population) COMPLETE. Browser wiring NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** PAUSED
-**Implementation:** NOT STARTED
+**Implementation:** Slice 1 COMPLETE; Slice 2 NOT STARTED
 **Decision:** earned for a narrow first perceptual direction;
 other representation/runtime alternatives remain recorded
 
@@ -17,8 +18,16 @@ This document answers Candidate 1 from `21` §13:
 > legible as a spatial structure, without the picture making
 > stronger physical claims than the model allows?
 
-It does **not** implement particles, streamlines, shaders, GPU
-code, camera pan, Follow, or a dataset adapter.
+The original architecture exploration did **not** implement
+particles, streamlines, shaders, GPU code, camera pan, Follow,
+or a dataset adapter.
+
+Current implementation:
+
+```text
+Slice 1  headless VisualAirflowPopulation   COMPLETE
+Slice 2  browser / labs / TracerScene       NOT STARTED
+```
 
 Verified against current `main` after `21`:
 
@@ -949,7 +958,9 @@ First implementation slice, when commanded, should prove:
 3. Explore shows a background soup plus a distinct user probe;
 4. scientific tracer lifecycle is unchanged.
 
-Do not start that slice from this document.
+Items 1, 2, and 4 are proven headlessly in Slice 1 (§29).
+Item 3 is Slice 2 (browser wiring). This document is not that
+command.
 
 ---
 
@@ -1028,23 +1039,133 @@ performance:              hundreds CPU; no GPU promise
 dataset:                  depend on VelocityField only
 unsteady:                 particles remain valid
 physics:                  PAUSED
-implementation:           NOT STARTED
+implementation:           Slice 1 COMPLETE
+                          browser wiring NOT STARTED
 ```
 
 ---
 
-## 28. STOP
+## 28. STOP (architecture exploration)
+
+The architecture decision in this file did not by itself
+authorize implementation. Slice 1 was later commanded and is
+recorded in §29.
 
 ```text
 PHYSICS PAUSED
-IMPLEMENTATION NOT STARTED
+SLICE 1 HEADLESS POPULATION     COMPLETE
+BROWSER RENDERING               NOT STARTED
+EXPLORE / GUIDED WIRING         NOT STARTED
+POPULATION UI / TOGGLE          NOT STARTED
+CAMERA PAN / RESET              NOT STARTED
+FOLLOW                          NOT STARTED
+SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
-This document may be used for a later implementation command.
-It is not that command.
+Do not start Slice 2, streamlines, shaders, GPU code, camera
+pan, Follow, or a dataset adapter because Slice 1 exists.
 
-Do not add a population, streamlines, shaders, GPU code,
-camera pan, Follow, or a dataset adapter because this file
-exists.
+---
 
-Next work starts only when commanded.
+## 29. Slice 1 — headless visual population lifecycle     COMPLETE
+
+Runtime owner:
+
+```text
+src/visualization/VisualAirflowPopulation.ts
+  VisualAirflowPopulation
+  VisualAirflowPopulationConfig
+  VisualAirflowVolume
+  VisualAirflowOccupant
+```
+
+Ownership: visualization runtime beside `Simulation`, not
+inside `simulation/`, `rendering/`, `interaction/`, Explore,
+or Guided. Depends on `core` (`VelocityField`, `Integrator`,
+`Vec3`) only.
+
+Public occupant shape:
+
+```text
+VisualAirflowOccupant { position: Vec3, age: number }
+```
+
+`age` is time since last (re)seed, in the same seconds as
+laboratory `dt`. It is not a back-advected parcel history.
+Internal slot `generation` exists only to change jitter on
+recycle; it is not a product identity and is not on the
+public occupant.
+
+Config:
+
+```text
+count       integer >= 0     visualization budget, not density
+maxAge      finite > 0       visualization lifetime (s)
+volume      { min, max }     seed volume = retirement volume
+jitterSeed  finite number    deterministic cell jitter
+```
+
+Seed volume is an axis-aligned box. `volume.min.y < 0` throws;
+it is not silently clamped. `volume.max` must be `>= min` on
+each axis.
+
+Seeding: each slot owns one cell of a 3D lattice over the
+box, with bounded deterministic jitter (width 0.8 of the cell,
+hash of `jitterSeed`, slot index, generation, axis). No
+`Math.random()`. Count / spacing / jitter do not mean mass or
+density. v1 does not seed by `|V|`, inflow, Guided seeds, or
+operand magnitude.
+
+Canonical field: constructor takes a caller-supplied
+`VelocityField`. Population samples that instance. It does
+not compose DEMO physics, rebuild a field, or own the seven
+operands. Slice 2 should pass the same `V_total` instance
+`Simulation` uses (`velocityObservation.total` at composition).
+
+Integration: constructor takes a caller-supplied `Integrator`.
+Live scientific tracers use `EulerIntegrator`. Slice 2 should
+inject the same production integrator type. Population does
+not wrap `Simulation` and does not switch production
+scientific integration to RK2.
+
+Time: `step(dt, time)`. No internal clock. `time` is the
+laboratory time at the start of the step, matching
+`Simulation.step` sampling `clock.time` before `clock.advance`.
+Fields may be time-dependent.
+
+Step order:
+
+```text
+sample/integrate at current position and supplied time
+age += dt
+if age >= maxAge or y < 0 or outside volume:
+  reseed slot (new jitter, age = 0)
+else:
+  keep proposed position
+```
+
+A retired proposed position is discarded in the same step
+(no one-frame underground occupant). Recycle keeps the slot;
+budget and storage length stay constant. Recycled slots have
+no `tracerId`.
+
+Initial ages are staggered: `age = (slotIndex / count) * maxAge`
+when `count > 1`. Positions stay on the lattice; history is
+not fabricated.
+
+Ground: `proposed.y < 0` recycles as visualization policy.
+This is not `AtmosphericTracerDomain` and not `active = false`.
+
+No trails, no selection, no Inspector, no `Particle` reuse.
+
+Not in Slice 1:
+
+```text
+TracerScene / TracerViewport / React / App
+ExploreLab / GuidedLab
+population toggle, camera pan, Follow
+scientific tracer P2
+physics operands / constants / envelopes
+```
+
+Next: Slice 2 browser exposure, if commanded.
