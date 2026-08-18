@@ -197,6 +197,21 @@ body {
   font: inherit;
 }
 
+.guided-experiment-selector {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+
+.guided-experiment-selector select {
+  font: inherit;
+  max-width: 100%;
+  min-width: 0;
+}
+
 .hodograph-panel {
   display: block;
   width: 100%;

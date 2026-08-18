@@ -110,12 +110,14 @@ describe("GuidedExperiment catalog", () => {
     }
   });
 
-  it("is importable without TracerPedagogy and is not wired into live App yet", () => {
+  it("is importable without TracerPedagogy; App uses product ids, not pedagogy", () => {
+    expect(catalogSrc).not.toMatch(/TracerPedagogy/);
     expect(catalogSrc).not.toMatch(/from ["'].*TracerPedagogy/);
     expect(pedagogySrc).not.toMatch(/GuidedExperiment/);
-    expect(appSrc).not.toMatch(/GuidedExperimentId/);
-    expect(appSrc).not.toMatch(/GUIDED_EXPERIMENTS/);
-    expect(appSrc).not.toMatch(/guidedExperimentById/);
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).toMatch(/GuidedExperimentId/);
+    expect(appSrc).toMatch(/createGuidedLab/);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).not.toMatch(/TracerPedagogy/);
+    expect(appSrc).not.toMatch(/selectedPedagogy/);
   });
 });

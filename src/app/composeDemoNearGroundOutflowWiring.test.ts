@@ -7,10 +7,7 @@ import {
 } from "./composeDemoTracerSimulation.js";
 import { createDemoHodographPoints } from "./demoHodographFixture.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
-import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
-  TracerPedagogy,
-} from "./TracerPedagogy.js";
+import { TracerPedagogy } from "./TracerPedagogy.js";
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import { stormRelativeHelicityBetween } from "../physics/environment/stormRelativeHelicity.js";
 import { NearGroundRadialOutflowField } from "../physics/storm/NearGroundRadialOutflowField.js";
@@ -261,9 +258,6 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
   });
 
   it("keeps explicit DownwardPathline D1 grounding with a small landing shift", () => {
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
       TracerPedagogy.DownwardPathline,
@@ -331,12 +325,9 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
     expect(composeDemoTracerSimulationSrc).not.toMatch(
       /NearGroundOutflowPathlines/,
     );
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
     const live = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
     );
     expect(live.particles).toHaveLength(1);
     expect(live.particles[0]!.position).toEqual({ x: 3000, y: 100, z: 4750 });

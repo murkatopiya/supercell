@@ -4,6 +4,7 @@ import type { Vec3 } from "../core/math/Vec3.js";
 import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
 import appSrc from "../app/App.tsx?raw";
+import createGuidedLabSrc from "../app/createGuidedLab.ts?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import tracerSceneSrc from "./TracerScene.ts?raw";
 import trailGeometrySrc from "./trailGeometry.ts?raw";
@@ -155,7 +156,7 @@ describe("trail primitive stays pedagogy-agnostic; live wiring is optional", () 
     expect(tracerViewportSrc).toMatch(/syncFromPathHistory/);
     expect(tracerViewportSrc).toMatch(/recordAfterStep/);
     expect(tracerViewportSrc).toMatch(/pathHistory\?\.recordAfterStep/);
-    expect(appSrc).toMatch(/createDemoPathHistory/);
+    expect(createGuidedLabSrc).toMatch(/createDemoPathHistory/);
     expect(appSrc).toMatch(/pathHistory/);
   });
 

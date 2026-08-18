@@ -1,10 +1,10 @@
 import { useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
-import { resetTracersFromSeeds } from "../simulation/resetTracersFromSeeds.js";
 import { HodographOverlayControls } from "../ui/hodograph/HodographOverlayControls.js";
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
+import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
 import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
 import {
   TracerRuntimeControls,
@@ -14,15 +14,14 @@ import {
   TracerViewport,
   type TracerViewportHandle,
 } from "../ui/tracer/TracerViewport.js";
-import {
-  composeDemoTracerLab,
-  createDemoPathHistory,
-  demoKeepInactiveGlyphs,
-  demoSeedsForPedagogy,
-} from "./composeDemoTracerSimulation.js";
 import { createExploreLab, type ExploreLab } from "./createExploreLab.js";
-import { IntegrationFrame } from "./IntegrationFrame.js";
-import { LIVE_DEMO_TRACER_PEDAGOGY } from "./TracerPedagogy.js";
+import {
+  createGuidedLab,
+  DEFAULT_GUIDED_EXPERIMENT_ID,
+  resetGuidedLab,
+  switchGuidedExperiment,
+  type GuidedLab,
+} from "./createGuidedLab.js";
 import {
   DEMO_SELECTED_HEIGHT,
   createDemoHodographPoints,
@@ -34,37 +33,12 @@ import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestrat
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import {
   inspectSelectedTracer,
-  type InspectableVelocityOperands,
   type TracerInspection,
 } from "../interaction/TracerInspection.js";
 import { TracerSelection } from "../interaction/TracerSelection.js";
-import type { Simulation } from "../simulation/Simulation.js";
-import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
-
-type GuidedLab = {
-  kind: "guided";
-  simulation: Simulation;
-  pathHistory: TracerPathHistory | null;
-  velocityObservation: InspectableVelocityOperands;
-};
+import type { GuidedExperimentId } from "../guided/GuidedExperiment.js";
 
 type Lab = GuidedLab | ExploreLab;
-
-function createGuidedLab(): GuidedLab {
-  const { simulation, velocityObservation } = composeDemoTracerLab(
-    IntegrationFrame.StormRelativeLaboratory,
-    LIVE_DEMO_TRACER_PEDAGOGY,
-  );
-  return {
-    kind: "guided",
-    simulation,
-    pathHistory: createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
-      simulation.particles,
-    ),
-    velocityObservation,
-  };
-}
 
 function createSceneSlots(
   sceneHandleRef: RefObject<TracerViewportHandle | null>,
@@ -97,7 +71,12 @@ export function App() {
   if (sceneSlotsRef.current === null) {
     sceneSlotsRef.current = createSceneSlots(sceneHandleRef);
   }
-  const [lab, setLab] = useState<Lab>(() => createGuidedLab());
+  const [guidedExperimentId, setGuidedExperimentId] = useState<GuidedExperimentId>(
+    DEFAULT_GUIDED_EXPERIMENT_ID,
+  );
+  const [lab, setLab] = useState<Lab>(() =>
+    createGuidedLab(DEFAULT_GUIDED_EXPERIMENT_ID),
+  );
   const [paused, setPaused] = useState(false);
   const [timeScale, setTimeScale] = useState<TracerTimeScale>(1);
   const [resetEpoch, setResetEpoch] = useState(0);
@@ -144,12 +123,7 @@ export function App() {
       lab.orchestration.reset();
       setPendingSeed(null);
     } else {
-      resetTracersFromSeeds(
-        lab.simulation,
-        demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY),
-      );
-      lab.pathHistory?.clear();
-      lab.pathHistory?.captureInitial(lab.simulation.particles);
+      resetGuidedLab(lab);
     }
     setResetEpoch((epoch) => epoch + 1);
     refreshInspection();
@@ -172,9 +146,24 @@ export function App() {
       return;
     }
     clearSelectionAndInspection();
-    setLab(createGuidedLab());
+    setLab(createGuidedLab(guidedExperimentId));
     setPendingSeed(null);
     setPlacementEnabled(false);
+    setResetEpoch((epoch) => epoch + 1);
+  };
+
+  const selectGuidedExperiment = (nextId: GuidedExperimentId) => {
+    if (lab.kind !== "guided") {
+      return;
+    }
+    const nextLab = switchGuidedExperiment(lab, nextId, selection);
+    if (nextLab === lab) {
+      return;
+    }
+    setGuidedExperimentId(nextId);
+    mirrorSelection();
+    setInspection(undefined);
+    setLab(nextLab);
     setResetEpoch((epoch) => epoch + 1);
   };
 
@@ -228,11 +217,6 @@ export function App() {
 
         <div className="workbench__column workbench__column--laboratory">
           <h2 className="app__panel-title">Storm-relative laboratory</h2>
-          {lab.kind === "guided" ? (
-            <p className="workbench__column-note">
-              prescribed storm-relative near-ground pathline advected through a divergent horizontal outflow region
-            </p>
-          ) : null}
           <div className="laboratory-toolbar">
             <TracerRuntimeControls
               paused={paused}
@@ -241,6 +225,12 @@ export function App() {
               onTimeScaleChange={setTimeScale}
               onReset={handleReset}
             />
+            {lab.kind === "guided" && (
+              <GuidedExperimentSelector
+                value={guidedExperimentId}
+                onChange={selectGuidedExperiment}
+              />
+            )}
             {explore !== null && (
               <ExplorePointReleaseControls
                 altitudeM={altitudeM}
@@ -275,9 +265,7 @@ export function App() {
             simulation={lab.simulation}
             pathHistory={lab.pathHistory}
             keepInactiveGlyphs={
-              lab.kind === "explore"
-                ? false
-                : demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)
+              lab.kind === "explore" ? false : lab.keepInactiveGlyphs
             }
             timestep={DEMO_SCENARIO.simulation.timestep}
             paused={paused}

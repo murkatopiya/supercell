@@ -227,8 +227,9 @@ export function createDemoPathHistory(
 /**
  * Compose DEMO tracers and keep inspectable operand instances beside
  * Simulation. TracerPedagogy selects which seed array is copied into
- * particles. Default pedagogy is DiagnosticProbes. Live App.tsx
- * selects NearGroundOutflowPathline explicitly.
+ * particles. Default pedagogy is DiagnosticProbes. Live Guided maps
+ * GuidedExperimentId onto TracerPedagogy via
+ * guidedExperimentCompositionFor.
  *
  * Default integration frame is GroundRelativeWindTunnel.
  * Live App selects StormRelativeLaboratory.

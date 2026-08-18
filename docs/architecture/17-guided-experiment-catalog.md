@@ -4,8 +4,9 @@
 change production code when written. No `GuidedExperiment` type.
 
 **Current product status:** Explore (`18` Slices 1–4) and shared
-Inspector (`19` Slices 1–4) are live. This catalog is not a UI
-and is not the Guided shell. Do not treat the temporary
+Inspector (`19` Slices 1–4) are live. Guided runtime wiring
+(`20` Slice 2) selects among three public experiments. This
+catalog's teaching copy is not a UI yet. Do not treat the
 Explore | Guided App entry as catalog cards. Successor
 implementation SoT: `docs/architecture/20-guided-runtime-architecture.md`.
 Physics remains paused.

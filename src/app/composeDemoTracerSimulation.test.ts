@@ -29,6 +29,7 @@ import { createRotationField } from "../scenario/createRotationField.js";
 import { createUpdraftField } from "../scenario/createUpdraftField.js";
 import { createUpperRadialOutflowField } from "../scenario/createUpperRadialOutflowField.js";
 import appSrc from "./App.tsx?raw";
+import createGuidedLabSrc from "./createGuidedLab.ts?raw";
 import demoScenarioSrc from "../scenario/DEMO_SCENARIO.ts?raw";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import scenarioConfigSrc from "../scenario/ScenarioConfig.ts?raw";
@@ -339,7 +340,7 @@ describe("DEMO IntegrationFrame composition", () => {
     );
   });
 
-  it("does not put storySeeds into default composition; live App uses LIVE_DEMO_TRACER_PEDAGOGY", () => {
+  it("does not put storySeeds into default composition; live Guided uses createGuidedLab", () => {
     const diagnostic = DEMO_SCENARIO.simulation.diagnosticSeeds;
     const story = DEMO_SCENARIO.simulation.storySeeds;
     const simulation = composeDemoTracerSimulation(
@@ -360,10 +361,10 @@ describe("DEMO IntegrationFrame composition", () => {
       DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
     );
 
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
-    expect(appSrc).toMatch(/createDemoPathHistory/);
-    expect(appSrc).toMatch(/demoSeedsForPedagogy/);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).toMatch(/createGuidedLab/);
     expect(composeDemoTracerSimulationSrc).toMatch(/demoSeedsForPedagogy/);
+    expect(composeDemoTracerSimulationSrc).toMatch(/createDemoPathHistory/);
   });
 
   it("does not put IntegrationFrame or StormMotion into storm fields or CompositeVelocityField", () => {
@@ -383,9 +384,10 @@ describe("DEMO IntegrationFrame composition", () => {
     expect(compositeVelocityFieldSrc).not.toMatch(/stormMotion/);
   });
 
-  it("keeps the live App on an explicit StormRelativeLaboratory constant with no UI switch", () => {
-    expect(appSrc).toMatch(/IntegrationFrame\.StormRelativeLaboratory/);
+  it("keeps the live Guided lab on an explicit StormRelativeLaboratory constant with no frame UI switch", () => {
+    expect(createGuidedLabSrc).toMatch(/IntegrationFrame\.StormRelativeLaboratory/);
     expect(appSrc).not.toMatch(/GroundRelativeWindTunnel/);
+    expect(createGuidedLabSrc).not.toMatch(/GroundRelativeWindTunnel/);
     expect(appSrc).toMatch(/storm-relative\s+laboratory frame/);
     expect(DEFAULT_DEMO_INTEGRATION_FRAME).toBe(
       IntegrationFrame.GroundRelativeWindTunnel,

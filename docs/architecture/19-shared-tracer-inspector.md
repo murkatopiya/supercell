@@ -4,11 +4,12 @@
 implemented. No Follow. No Level 3 diagnostics.
 
 **Current product status:** Explore point release is live
-(`18` Slices 1–4). Guided catalog is docs-only (`17`). Live App
-still opens on Guided NG1 with a temporary Explore | Guided
-entry. Desktop workbench layout is live. Successor product SoT:
-`docs/architecture/20-guided-runtime-architecture.md` (docs-only
-Guided runtime; not Follow). Physics remains paused (`15`).
+(`18` Slices 1–4). Guided runtime wiring is live (`20` Slice 2);
+catalog teaching copy is not (`20` Slice 3). Live App opens on
+Guided `inflow-to-upper-outflow` with a temporary Explore |
+Guided entry. Desktop workbench layout is live. Successor
+product SoT: `docs/architecture/20-guided-runtime-architecture.md`.
+Physics remains paused (`15`).
 Slice 1 is headless identity + `TracerSelection`. Slice 2 is a
 headless observation adapter (`TracerInspection`) plus
 composition-held operand instances. Slice 3 is browser-visible

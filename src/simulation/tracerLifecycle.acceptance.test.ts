@@ -22,7 +22,6 @@ import { IntegrationFrame } from "../app/IntegrationFrame.js";
 import appSrc from "../app/App.tsx?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
   TracerPedagogy,
 } from "../app/TracerPedagogy.js";
 
@@ -139,9 +138,6 @@ describe("dynamic tracer lifecycle acceptance", () => {
   });
 
   it("does not wire lifecycle APIs into Guided composition; Explore viewport exposes slots", () => {
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\baddParticle\b/);
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\baddParticles\b/);
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\bclearParticles\b/);
@@ -198,8 +194,8 @@ describe("dynamic tracer lifecycle acceptance", () => {
       }
     }
 
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
+    expect(demoSeedsForPedagogy(TracerPedagogy.NearGroundOutflowPathline)).toBe(
+      DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds,
     );
   });
 });

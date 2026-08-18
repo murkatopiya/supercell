@@ -5,10 +5,6 @@ import { Simulation } from "../simulation/Simulation.js";
 import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import { AtmosphericTracerSeedError } from "../simulation/assertAtmosphericTracerSeed.js";
 import appSrc from "../app/App.tsx?raw";
-import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
-  TracerPedagogy,
-} from "../app/TracerPedagogy.js";
 import exploreTracerSessionSrc from "./ExploreTracerSession.ts?raw";
 import {
   ExploreTracerSession,
@@ -137,13 +133,11 @@ describe("ExploreTracerSession", () => {
     expect(exploreTracerSessionSrc).not.toMatch(/from ["'].*rendering\//);
   });
 
-  it("keeps Guided live composition on LIVE_DEMO; Explore is a separate lab factory", () => {
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
-    expect(appSrc).toMatch(/demoSeedsForPedagogy\(LIVE_DEMO_TRACER_PEDAGOGY\)/);
+  it("keeps Guided Reset on createGuidedLab; Explore is a separate lab factory", () => {
+    expect(appSrc).toMatch(/createGuidedLab/);
+    expect(appSrc).toMatch(/resetGuidedLab/);
     expect(appSrc).toMatch(/createExploreLab/);
-    expect(appSrc).not.toMatch(/demoSeedsForPedagogy\(LIVE_DEMO_TRACER_PEDAGOGY\).*releasePoint/s);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).not.toMatch(/demoSeedsForPedagogy/);
   });
 });

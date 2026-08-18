@@ -14,10 +14,6 @@ import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import simulationSrc from "../simulation/Simulation.ts?raw";
 import tracerSceneSrc from "../rendering/TracerScene.ts?raw";
 import exploreControlsSrc from "../ui/tracer/ExplorePointReleaseControls.tsx?raw";
-import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
-  TracerPedagogy,
-} from "../app/TracerPedagogy.js";
 import { createExploreLab } from "../app/createExploreLab.js";
 
 class FakeSceneSlots implements ExploreSceneSlots {
@@ -268,12 +264,10 @@ describe("Explore browser point-release acceptance", () => {
   });
 
   it("wires Explore entry beside Guided without a pedagogy selector or ScenarioConfig writes", () => {
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
     expect(appSrc).toMatch(/createExploreLab/);
     expect(appSrc).toMatch(/ExplorePointReleaseOrchestration/);
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).toMatch(/createGuidedLab/);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
     expect(appSrc).toMatch(/>\s*Guided\s*</);
     expect(appSrc).toMatch(/>\s*Explore\s*</);
     expect(exploreControlsSrc).toMatch(

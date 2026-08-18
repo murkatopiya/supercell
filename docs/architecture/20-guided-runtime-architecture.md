@@ -1,12 +1,14 @@
 # Guided Runtime Architecture
 
 **Status:** architecture / product SoT. Guided Slice 1 is
-implemented. Guided Slice 2 is **NEXT**. Guided Slice 3 is later.
+implemented. Guided Slice 2 is implemented. Guided Slice 3 is
+**NEXT**.
 
 **Current product status:** Explore arbitrary point release is
 live (`18` Slices 1–4). Shared Tracer Inspector Slices 1–4 are
 live (`19`). Desktop workbench layout is live. Physics remains
-paused (`15` D). Headless Guided product identity exists:
+paused (`15` D). Headless Guided product identity exists, and live
+Guided runtime selection is wired:
 
 ```text
 src/guided/GuidedExperiment.ts
@@ -18,25 +20,24 @@ src/guided/GuidedExperiment.ts
 src/app/guidedExperimentComposition.ts
   pedagogyForGuidedExperiment(id)
   guidedExperimentCompositionFor(id)
+
+src/app/createGuidedLab.ts
+  DEFAULT_GUIDED_EXPERIMENT_ID = inflow-to-upper-outflow
+  createGuidedLab(id)
+  resetGuidedLab(lab)
+  switchGuidedExperiment(lab, nextId, selection)
+
+App
+  session-local guidedExperimentId
+  GuidedExperimentSelector (Guided-only; catalog titles)
 ```
 
-Live Guided is still the temporary NG1 scaffold. Slice 1 does
-not change App:
-
-```text
-App starts Guided
-createGuidedLab()
-  → composeDemoTracerLab(
-      StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY
-    )
-LIVE_DEMO_TRACER_PEDAGOGY = NearGroundOutflowPathline
-```
-
-`TracerPedagogy` is still not product navigation (`16`). The
-temporary Explore | Guided entry is not a catalog. This document
-is the implementation SoT that turns `17`'s catalog into runtime
-product state without a second physics architecture.
+Live Guided no longer uses `LIVE_DEMO_TRACER_PEDAGOGY`. That
+constant was removed. `TracerPedagogy` remains internal
+composition. The temporary Explore | Guided entry is not a
+catalog teaching surface. This document is the implementation
+SoT that turns `17`'s catalog into runtime product state
+without a second physics architecture.
 
 Predecessors (not rewritten):
 
@@ -129,12 +130,13 @@ canonical ICs       stay ScenarioConfig fixture arrays
 | Concern | Live owner |
 | --- | --- |
 | Model / seven operands | `composeDemoTracerFields` |
-| Guided scaffold lab | `createGuidedLab()` → NG1 via `LIVE_DEMO_TRACER_PEDAGOGY` |
+| Guided lab | `createGuidedLab(id)` via `guidedExperimentCompositionFor` |
 | Explore empty lab + point release | `createExploreLab` / `ExploreTracerSession` |
+| Selected experiment | App session-local `guidedExperimentId` |
 | Top-level nav | App `enterExplore` / `enterGuided` |
-| Selection | `TracerSelection` in App; cleared on Explore ↔ Guided |
+| Selection | `TracerSelection` in App; cleared on Explore ↔ Guided and on experiment switch |
 | Inspector | `inspectSelectedTracer` + presentational `TracerInspectorPanel` |
-| Guided Reset | `resetTracersFromSeeds(simulation, demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY))` in place; `tracerId` kept; inspection refreshed |
+| Guided Reset | `resetGuidedLab(lab)` in place; mapped seeds; `tracerId` kept; inspection refreshed |
 | Explore Reset | `ExploreTracerSession.reset()`; in-place; ids kept |
 | Glyph pick | Guided has picking, no placement |
 | Placement | Explore-only |
@@ -543,9 +545,10 @@ resetEpoch bumped (accumulator / scene follow occupancy)
 paused and timeScale preserved
 ```
 
-The only scaffold bug to close at implementation: Reset must
-use **the currently selected experiment’s** seeds via the
-mapping, not `LIVE_DEMO_TRACER_PEDAGOGY` unconditionally.
+Slice 2 closed the scaffold bug: Reset uses **the currently
+selected experiment’s** seeds via `resetGuidedLab` /
+`guidedExperimentCompositionFor`, not a global pedagogy
+constant.
 
 Explore Reset stays Explore-owned (`ExploreTracerSession.reset`
 replays user seeds; empty list → empty occupancy, `t = 0`).
@@ -782,23 +785,30 @@ no browser catalog
 LIVE_DEMO_TRACER_PEDAGOGY remains the live Guided scaffold
 ```
 
-### Slice 2 — Guided experiment selection wiring
+### Slice 2 — Guided experiment selection wiring              COMPLETE
 
 ```text
-createGuidedLab(id) replaces NG1 scaffold
-App holds session-local selected GuidedExperimentId
+src/app/createGuidedLab.ts
+  createGuidedLab(id)
+    guidedExperimentCompositionFor(id)
+    composeDemoTracerLab(StormRelativeLaboratory, pedagogy)
+    createDemoPathHistory / keepInactiveGlyphs from mapping
+  resetGuidedLab(lab)           mapped seeds, same Simulation
+  switchGuidedExperiment(...)   same id = no-op; else fresh lab
+                                and TracerSelection.clear()
+
+App owns session-local guidedExperimentId
 default = inflow-to-upper-outflow
 Explore → Guided restores last selected id this session
-experiment switch = §6 (fresh lab, clear selection / inspection)
-Guided Reset = §8.1 using mapped seeds, not LIVE_DEMO_TRACER_PEDAGOGY
-keepInactiveGlyphs / path history from mapping
-laboratory note may use the selected title
-no three-choice catalog UI required yet
+paused / timeScale survive experiment switch
+GuidedExperimentSelector is Guided-only runtime wiring
+  options = GUIDED_EXPERIMENTS titles
+  not Slice 3 teaching copy
+LIVE_DEMO_TRACER_PEDAGOGY removed
 no Follow
-tests lock switch ≠ Reset and id-scope ≠ selectedId coincidence
 ```
 
-### Slice 3 — minimal browser catalog + teaching copy
+### Slice 3 — minimal browser catalog + teaching copy         NEXT
 
 ```text
 three selectable public experiments
@@ -870,7 +880,7 @@ DiagnosticProbes:                 not a catalog entry
 
 canonical seeds:                  remain ScenarioConfig arrays
 
-next implementation:              Slice 2 when commanded
+next implementation:              Slice 3 when commanded
                                   not Follow
                                   not physics
 ```
@@ -901,8 +911,8 @@ copy vs Inspector:    claim beside observation
                       never inside V_i rows
 
 slices:               1 identity COMPLETE
-                      2 wiring NEXT
-                      3 catalog UI later
+                      2 wiring COMPLETE
+                      3 catalog UI NEXT
 
 physics:              paused
 ```
@@ -911,9 +921,10 @@ physics:              paused
 
 ## 19. STOP
 
-This document's Slice 1 is implemented as a headless catalog and
-composition mapping. It does not start a catalog UI, a router,
-Follow, a completion engine, persistence, or physics.
+This document's Slice 1 (identity) and Slice 2 (runtime wiring)
+are implemented. Slice 3 (catalog teaching copy) has not started.
+This document does not start a router, Follow, a completion
+engine, persistence, or physics.
 
 Do not put `TracerPedagogy` in product App state.
 Do not keep selection across a new `Simulation` because both

@@ -10,10 +10,7 @@ import {
   demoSeedsForPedagogy,
 } from "../app/composeDemoTracerSimulation.js";
 import { IntegrationFrame } from "../app/IntegrationFrame.js";
-import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
-  TracerPedagogy,
-} from "../app/TracerPedagogy.js";
+import { TracerPedagogy } from "../app/TracerPedagogy.js";
 import appSrc from "../app/App.tsx?raw";
 import composeDemoTracerSimulationSrc from "../app/composeDemoTracerSimulation.ts?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
@@ -83,11 +80,8 @@ describe("keepInactiveGlyphs observe policy", () => {
     expect(
       demoKeepInactiveGlyphs(TracerPedagogy.NearGroundOutflowPathline),
     ).toBe(false);
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
-    expect(demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(false);
-    expect(appSrc).toMatch(/demoKeepInactiveGlyphs\(LIVE_DEMO_TRACER_PEDAGOGY\)/);
+    expect(appSrc).toMatch(/lab\.keepInactiveGlyphs/);
+    expect(appSrc).not.toMatch(/demoKeepInactiveGlyphs\(LIVE_DEMO_TRACER_PEDAGOGY\)/);
     expect(tracerViewportSrc).toMatch(/keepInactiveGlyphs/);
     expect(tracerViewportSrc).not.toMatch(/TracerPedagogy/);
     expect(composeDemoTracerSimulationSrc).toMatch(/demoKeepInactiveGlyphs/);
@@ -166,15 +160,17 @@ describe("keepInactiveGlyphs observe policy", () => {
     const dt = DEMO_SCENARIO.simulation.timestep;
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
     );
     const history = createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
       simulation.particles,
     )!;
     const p = simulation.particles[0]!;
     const mesh = meshAt(0, 0, 0, true);
-    const keep = demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY);
+    const keep = demoKeepInactiveGlyphs(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     const maxTime = 400;
     let t = 0;
 
@@ -208,7 +204,7 @@ describe("keepInactiveGlyphs observe policy", () => {
 
     resetTracersFromSeeds(
       simulation,
-      demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY),
+      demoSeedsForPedagogy(TracerPedagogy.NearGroundOutflowPathline),
     );
     history.clear();
     history.captureInitial(simulation.particles);

@@ -12,10 +12,6 @@ import {
 import toolSrc from "./ExplorePointReleaseTool.ts?raw";
 import appSrc from "../app/App.tsx?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
-import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
-  TracerPedagogy,
-} from "../app/TracerPedagogy.js";
 
 describe("ExplorePointReleaseTool", () => {
   it("has no pending seed initially and a UI-only default altitude", () => {
@@ -166,9 +162,6 @@ describe("ExplorePointReleaseTool", () => {
   });
 
   it("is owned by Explore orchestration; TracerViewport does not import the tool", () => {
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
     expect(appSrc).toMatch(/ExplorePointReleaseTool/);
     expect(appSrc).not.toMatch(/pickOnGroundReferencePlane/);
     expect(tracerViewportSrc).not.toMatch(/ExplorePointReleaseTool/);

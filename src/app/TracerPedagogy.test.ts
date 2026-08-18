@@ -13,6 +13,7 @@ import tracerPathHistorySrc from "../simulation/TracerPathHistory.ts?raw";
 import tracerSceneSrc from "../rendering/TracerScene.ts?raw";
 import trailGeometrySrc from "../rendering/trailGeometry.ts?raw";
 import appSrc from "./App.tsx?raw";
+import createGuidedLabSrc from "./createGuidedLab.ts?raw";
 import composeDemoTracerSimulationSrc from "./composeDemoTracerSimulation.ts?raw";
 import {
   composeDemoTracerFields,
@@ -25,7 +26,6 @@ import {
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import {
   DEFAULT_DEMO_TRACER_PEDAGOGY,
-  LIVE_DEMO_TRACER_PEDAGOGY,
   TracerPedagogy,
 } from "./TracerPedagogy.js";
 
@@ -68,9 +68,6 @@ describe("TracerPedagogy", () => {
     expect(Object.values(TracerPedagogy)).not.toContain("SurfaceOutflow");
     expect(Object.values(TracerPedagogy)).not.toContain("AllStories");
     expect(DEFAULT_DEMO_TRACER_PEDAGOGY).toBe(TracerPedagogy.DiagnosticProbes);
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
     expect(scenarioConfigSrc).not.toMatch(/TracerPedagogy/);
   });
 
@@ -124,22 +121,25 @@ describe("TracerPedagogy", () => {
     expect(history!.pointsFor(1)[0]).toEqual({ x: 0, y: 1000, z: 6000 });
   });
 
-  it("keeps the live App on explicit NearGroundOutflowPathline and StormRelativeLaboratory", () => {
-    const seeds = demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY);
+  it("maps NearGroundOutflowPathline onto NG1; live App uses GuidedExperimentId", () => {
+    const seeds = demoSeedsForPedagogy(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
     );
     const history = createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
       simulation.particles,
     );
 
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
+    expect(demoTrailsEnabled(TracerPedagogy.NearGroundOutflowPathline)).toBe(
+      true,
     );
-    expect(demoTrailsEnabled(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(true);
-    expect(demoKeepInactiveGlyphs(LIVE_DEMO_TRACER_PEDAGOGY)).toBe(false);
+    expect(
+      demoKeepInactiveGlyphs(TracerPedagogy.NearGroundOutflowPathline),
+    ).toBe(false);
     expect(seeds).toBe(DEMO_SCENARIO.simulation.nearGroundOutflowPathlineSeeds);
     expect(seeds).toEqual([{ x: 3000, y: 100, z: 4750 }]);
     expect(simulation.particles).toHaveLength(1);
@@ -169,11 +169,11 @@ describe("TracerPedagogy", () => {
     expect(seeds).not.toBe(DEMO_SCENARIO.simulation.downwardPathlineSeeds);
     expect(seeds).not.toBe(DEMO_SCENARIO.simulation.storySeeds);
 
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
-    expect(appSrc).toMatch(/TracerPedagogy/);
-    expect(appSrc).toMatch(/IntegrationFrame\.StormRelativeLaboratory/);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).not.toMatch(/TracerPedagogy/);
+    expect(appSrc).toMatch(/createGuidedLab/);
     expect(appSrc).not.toMatch(/GroundRelativeWindTunnel/);
-    expect(appSrc).toMatch(
+    expect(appSrc).not.toMatch(
       /prescribed storm-relative\s+near-ground pathline advected through a divergent/,
     );
     expect(appSrc).not.toMatch(/descending through the downdraft/);
@@ -405,7 +405,7 @@ describe("TracerPedagogy", () => {
     expect(live.integrationFrame).toBe(
       IntegrationFrame.StormRelativeLaboratory,
     );
-    expect(appSrc).toMatch(/IntegrationFrame\.StormRelativeLaboratory/);
+    expect(createGuidedLabSrc).toMatch(/IntegrationFrame\.StormRelativeLaboratory/);
   });
 
   it("keeps pedagogy out of recorder, scene, seeds factory, and ScenarioConfig", () => {
@@ -504,13 +504,15 @@ describe("TracerPedagogy", () => {
   });
 
   it("resets live NearGroundOutflowPathline to NG1 with active true and trail length 1", () => {
-    const seeds = demoSeedsForPedagogy(LIVE_DEMO_TRACER_PEDAGOGY);
+    const seeds = demoSeedsForPedagogy(
+      TracerPedagogy.NearGroundOutflowPathline,
+    );
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
     );
     const history = createDemoPathHistory(
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
       simulation.particles,
     )!;
     const dt = DEMO_SCENARIO.simulation.timestep;
@@ -635,10 +637,7 @@ describe("TracerPedagogy", () => {
     expect(history).not.toBeNull();
     expect(history!.tracerCount).toBe(1);
     expect(history!.pointsFor(0)).toEqual([{ x: 3000, y: 100, z: 4750 }]);
-    expect(LIVE_DEMO_TRACER_PEDAGOGY).toBe(
-      TracerPedagogy.NearGroundOutflowPathline,
-    );
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
     expect(appSrc).not.toMatch(/NearGroundOutflowPathline/);
     expect(appSrc).not.toMatch(/DownwardPathline/);
   });
@@ -647,7 +646,7 @@ describe("TracerPedagogy", () => {
     const dt = DEMO_SCENARIO.simulation.timestep;
     const simulation = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
     );
     const particle = simulation.particles[0]!;
     const ngAxisX = DEMO_SCENARIO.storm.nearGroundOutflow.centerX;

@@ -19,6 +19,3 @@ export type TracerPedagogy =
 
 /** Default composition API; existing diagnostic tests keep this. */
 export const DEFAULT_DEMO_TRACER_PEDAGOGY = TracerPedagogy.DiagnosticProbes;
-
-/** Live App.tsx selects NearGroundOutflowPathline explicitly. */
-export const LIVE_DEMO_TRACER_PEDAGOGY = TracerPedagogy.NearGroundOutflowPathline;

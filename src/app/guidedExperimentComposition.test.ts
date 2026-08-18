@@ -78,15 +78,14 @@ describe("guidedExperimentComposition", () => {
     expect(mappingSrc).not.toMatch(/CompositeVelocityField/);
     expect(catalogSrc).not.toMatch(/demoSeedsForPedagogy/);
     expect(catalogSrc).not.toMatch(/storySeeds/);
-    expect(composeSrc).not.toMatch(/GuidedExperiment/);
+    expect(composeSrc).not.toMatch(/from ["'].*GuidedExperiment/);
   });
 
-  it("does not replace the live NG1 Guided scaffold in App", () => {
-    expect(appSrc).toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
+  it("leaves live Guided lab creation to createGuidedLab(id)", () => {
+    expect(appSrc).toMatch(/createGuidedLab\(guidedExperimentId\)/);
+    expect(appSrc).toMatch(/createGuidedLab\(DEFAULT_GUIDED_EXPERIMENT_ID\)/);
+    expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
     expect(appSrc).not.toMatch(/pedagogyForGuidedExperiment/);
     expect(appSrc).not.toMatch(/guidedExperimentCompositionFor/);
-    expect(appSrc).toMatch(
-      /function createGuidedLab\(\): GuidedLab/,
-    );
   });
 });

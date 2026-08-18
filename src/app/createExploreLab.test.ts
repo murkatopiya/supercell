@@ -10,10 +10,7 @@ import {
 } from "./createExploreLab.js";
 import createExploreLabSrc from "./createExploreLab.ts?raw";
 import { IntegrationFrame } from "./IntegrationFrame.js";
-import {
-  LIVE_DEMO_TRACER_PEDAGOGY,
-  TracerPedagogy,
-} from "./TracerPedagogy.js";
+import { TracerPedagogy } from "./TracerPedagogy.js";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 
@@ -68,7 +65,7 @@ describe("createExploreLab", () => {
     );
     const guided = composeDemoTracerSimulation(
       IntegrationFrame.StormRelativeLaboratory,
-      LIVE_DEMO_TRACER_PEDAGOGY,
+      TracerPedagogy.NearGroundOutflowPathline,
     );
     expect(explore.particles).toHaveLength(0);
     expect(guided.particles).toHaveLength(1);
