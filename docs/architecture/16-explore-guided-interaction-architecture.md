@@ -9,7 +9,7 @@ workbench layout is live. This is not the final Explore/Guided
 product shell. The live App has a temporary Explore | Guided
 entry; `TracerPedagogy` is still not product navigation. Guided
 runtime selection among three `GuidedExperimentId` values is
-live (`20` Slice 2). Catalog teaching copy is Slice 3.
+live (`20` Slice 2). Catalog teaching copy is live (`20` Slice 3).
 Successor implementation SoT:
 `docs/architecture/20-guided-runtime-architecture.md`.
 Physics remains paused.

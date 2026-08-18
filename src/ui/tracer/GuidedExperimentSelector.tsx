@@ -14,7 +14,7 @@ function isGuidedExperimentId(value: string): value is GuidedExperimentId {
 
 /**
  * Runtime wiring surface for the selected Guided experiment.
- * Titles come from GUIDED_EXPERIMENTS. Not the Slice 3 catalog.
+ * Titles come from GUIDED_EXPERIMENTS. Teaching copy is GuidedExperimentPanel.
  */
 export function GuidedExperimentSelector({
   value,

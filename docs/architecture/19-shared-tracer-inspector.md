@@ -5,7 +5,7 @@ implemented. No Follow. No Level 3 diagnostics.
 
 **Current product status:** Explore point release is live
 (`18` Slices 1–4). Guided runtime wiring is live (`20` Slice 2);
-catalog teaching copy is not (`20` Slice 3). Live App opens on
+catalog teaching copy is live (`20` Slice 3). Live App opens on
 Guided `inflow-to-upper-outflow` with a temporary Explore |
 Guided entry. Desktop workbench layout is live. Successor
 product SoT: `docs/architecture/20-guided-runtime-architecture.md`.

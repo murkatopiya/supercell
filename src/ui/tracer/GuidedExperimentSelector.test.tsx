@@ -39,7 +39,6 @@ describe("GuidedExperimentSelector", () => {
     expect(selectorSrc).not.toMatch(/doesNotMean/);
     expect(appSrc).toMatch(/lab\.kind === "guided" && \(\s*<GuidedExperimentSelector/s);
     expect(appSrc).toMatch(/onChange=\{selectGuidedExperiment\}/);
-    expect(appSrc).not.toMatch(/observe/);
-    expect(appSrc).not.toMatch(/doesNotMean/);
+    expect(appSrc).toMatch(/GuidedExperimentPanel/);
   });
 });

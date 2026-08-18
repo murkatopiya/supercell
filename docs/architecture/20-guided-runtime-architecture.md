@@ -2,13 +2,14 @@
 
 **Status:** architecture / product SoT. Guided Slice 1 is
 implemented. Guided Slice 2 is implemented. Guided Slice 3 is
-**NEXT**.
+**COMPLETE**.
 
 **Current product status:** Explore arbitrary point release is
 live (`18` Slices 1–4). Shared Tracer Inspector Slices 1–4 are
 live (`19`). Desktop workbench layout is live. Physics remains
-paused (`15` D). Headless Guided product identity exists, and live
-Guided runtime selection is wired:
+paused (`15` D). Headless Guided product identity exists, live
+Guided runtime selection is wired, and the Guided teaching
+surface is live:
 
 ```text
 src/guided/GuidedExperiment.ts
@@ -29,15 +30,22 @@ src/app/createGuidedLab.ts
 
 App
   session-local guidedExperimentId
+  definition = guidedExperimentById(guidedExperimentId)
   GuidedExperimentSelector (Guided-only; catalog titles)
+  GuidedExperimentPanel (Guided-only; laboratory column)
 ```
 
 Live Guided no longer uses `LIVE_DEMO_TRACER_PEDAGOGY`. That
 constant was removed. `TracerPedagogy` remains internal
-composition. The temporary Explore | Guided entry is not a
-catalog teaching surface. This document is the implementation
-SoT that turns `17`'s catalog into runtime product state
-without a second physics architecture.
+composition. Explore | Guided remains top-level nav, not
+catalog cards. Teaching copy lives in `GuidedExperimentPanel`.
+This document is the implementation SoT that turns `17`'s
+catalog into runtime product state without a second physics
+architecture.
+
+**Guided v1 catalog/runtime/teaching surface is implemented.**
+The next product or physics fork remains a separate decision.
+Follow is not assigned. Physics remains paused.
 
 Predecessors (not rewritten):
 
@@ -808,20 +816,35 @@ LIVE_DEMO_TRACER_PEDAGOGY removed
 no Follow
 ```
 
-### Slice 3 — minimal browser catalog + teaching copy         NEXT
+### Slice 3 — minimal browser catalog + teaching copy         COMPLETE
 
 ```text
-three selectable public experiments
-selected-experiment copy: observe / demonstrates / doesNotMean
-copy lives beside TracerInspectorPanel, not inside it
-Inspector contract unchanged
-still no placement in Guided
-still no completion engine
+src/ui/tracer/GuidedExperimentPanel.tsx
+  GuidedExperimentPanel({ experiment: GuidedExperimentDefinition })
+  presentational; exact catalog title / observe / demonstrates /
+    doesNotMean
+  shared Guided honesty line (§4.3), not per-card copy
+  labels: Observe / Demonstrates / Does not mean
+
+App
+  selected definition = guidedExperimentById(guidedExperimentId)
+  no independent selectedExperimentDefinition state
+  panel in laboratory column:
+    toolbar / selector / teaching panel / 3D viewport
+  Guided-only; Explore has no teaching panel
+  Inspector remains TracerInspectorPanel; contract unchanged
+  teaching independent of selectedTracerId
+  still no placement in Guided
+  still no completion engine
+  no Follow
 ```
 
 Do not merge Slice 1 into 2: identity and mapping must be
 testable without App orchestration. Do not merge 2 into 3:
 lifecycle must not wait on copy layout.
+
+Guided v1 catalog/runtime/teaching surface is implemented.
+The next product or physics fork remains a separate decision.
 
 ---
 
@@ -871,7 +894,10 @@ Explore enter v1:                 empty Explore lab
 Inspector:                        shared, unchanged
                                   no Guided claim inside payload
 
-teaching copy:                    beside Inspector
+teaching copy:                    GuidedExperimentPanel
+                                  laboratory column, Guided-only
+                                  derived from guidedExperimentId
+                                  beside Inspector, not inside it
                                   static; no event engine
 
 completion engine:                none in v1
@@ -880,9 +906,10 @@ DiagnosticProbes:                 not a catalog entry
 
 canonical seeds:                  remain ScenarioConfig arrays
 
-next implementation:              Slice 3 when commanded
+next implementation:              separate product/physics decision
                                   not Follow
                                   not physics
+                                  not assigned by this slice
 ```
 
 ---
@@ -912,7 +939,7 @@ copy vs Inspector:    claim beside observation
 
 slices:               1 identity COMPLETE
                       2 wiring COMPLETE
-                      3 catalog UI NEXT
+                      3 catalog UI COMPLETE
 
 physics:              paused
 ```
@@ -921,10 +948,15 @@ physics:              paused
 
 ## 19. STOP
 
-This document's Slice 1 (identity) and Slice 2 (runtime wiring)
-are implemented. Slice 3 (catalog teaching copy) has not started.
+This document's Slice 1 (identity), Slice 2 (runtime wiring),
+and Slice 3 (catalog teaching copy) are implemented.
+
+**Guided v1 catalog/runtime/teaching surface is implemented.**
+
 This document does not start a router, Follow, a completion
-engine, persistence, or physics.
+engine, persistence, or physics. The next product or physics
+fork remains a separate decision. Follow is not assigned.
+Physics remains paused.
 
 Do not put `TracerPedagogy` in product App state.
 Do not keep selection across a new `Simulation` because both
@@ -938,4 +970,4 @@ can tick a box.
 `17` remains the catalog of *what* the three experiments are.
 This document is the catalog of *how they run*.
 
-Next work starts only when Slice 2 is commanded.
+Next work starts only when commanded.

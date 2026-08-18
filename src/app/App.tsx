@@ -4,6 +4,7 @@ import { HodographOverlayControls } from "../ui/hodograph/HodographOverlayContro
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
+import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
 import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
 import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
 import {
@@ -36,7 +37,10 @@ import {
   type TracerInspection,
 } from "../interaction/TracerInspection.js";
 import { TracerSelection } from "../interaction/TracerSelection.js";
-import type { GuidedExperimentId } from "../guided/GuidedExperiment.js";
+import {
+  guidedExperimentById,
+  type GuidedExperimentId,
+} from "../guided/GuidedExperiment.js";
 
 type Lab = GuidedLab | ExploreLab;
 
@@ -168,6 +172,10 @@ export function App() {
   };
 
   const explore = lab.kind === "explore" ? lab : null;
+  const guidedExperiment =
+    lab.kind === "guided"
+      ? guidedExperimentById(guidedExperimentId)
+      : null;
 
   return (
     <main className="app">
@@ -261,6 +269,9 @@ export function App() {
               />
             )}
           </div>
+          {guidedExperiment !== null && (
+            <GuidedExperimentPanel experiment={guidedExperiment} />
+          )}
           <TracerViewport
             simulation={lab.simulation}
             pathHistory={lab.pathHistory}
