@@ -55,18 +55,21 @@ describe("App glyph selection wiring", () => {
   });
 
   it("clears selection on Explore Clear and on Explore ↔ Guided, not on Reset", () => {
-    expect(appSrc).toMatch(/orchestration\.clear\(\);\s*selection\.clear\(\)/s);
     expect(appSrc).toMatch(
-      /enterExplore[\s\S]*selection\.clear\(\)[\s\S]*createExploreLab/s,
+      /orchestration\.clear\(\);\s*clearSelectionAndInspection\(\)/s,
     );
     expect(appSrc).toMatch(
-      /enterGuided[\s\S]*selection\.clear\(\)[\s\S]*createGuidedLab/s,
+      /enterExplore[\s\S]*clearSelectionAndInspection\(\)[\s\S]*createExploreLab/s,
+    );
+    expect(appSrc).toMatch(
+      /enterGuided[\s\S]*clearSelectionAndInspection\(\)[\s\S]*createGuidedLab/s,
     );
     const resetBlock = appSrc.slice(
       appSrc.indexOf("const handleReset"),
       appSrc.indexOf("const enterExplore"),
     );
     expect(resetBlock).not.toMatch(/selection\.clear/);
+    expect(resetBlock).toMatch(/refreshInspection/);
   });
 
   it("preserves selectedId across Explore Reset and append", () => {

@@ -5,6 +5,7 @@ import { HodographOverlayControls } from "../ui/hodograph/HodographOverlayContro
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
+import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
 import {
   TracerRuntimeControls,
   type TracerTimeScale,
@@ -31,7 +32,11 @@ import {
 import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
-import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
+import {
+  inspectSelectedTracer,
+  type InspectableVelocityOperands,
+  type TracerInspection,
+} from "../interaction/TracerInspection.js";
 import { TracerSelection } from "../interaction/TracerSelection.js";
 import type { Simulation } from "../simulation/Simulation.js";
 import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
@@ -109,9 +114,29 @@ export function App() {
   const [selectedTracerId, setSelectedTracerId] = useState<number | null>(
     null,
   );
+  const [inspection, setInspection] = useState<
+    TracerInspection | undefined
+  >(undefined);
 
   const mirrorSelection = () => {
     setSelectedTracerId(selection.selectedId);
+  };
+
+  const refreshInspection = () => {
+    setInspection(
+      inspectSelectedTracer(
+        lab.simulation.particles,
+        selection,
+        lab.simulation.clock.time,
+        lab.velocityObservation,
+      ),
+    );
+  };
+
+  const clearSelectionAndInspection = () => {
+    selection.clear();
+    mirrorSelection();
+    setInspection(undefined);
   };
 
   const handleReset = () => {
@@ -127,14 +152,14 @@ export function App() {
       lab.pathHistory?.captureInitial(lab.simulation.particles);
     }
     setResetEpoch((epoch) => epoch + 1);
+    refreshInspection();
   };
 
   const enterExplore = () => {
     if (lab.kind === "explore") {
       return;
     }
-    selection.clear();
-    mirrorSelection();
+    clearSelectionAndInspection();
     setLab(createExploreLab(sceneSlotsRef.current!));
     setAltitudeM(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
     setPlacementEnabled(false);
@@ -146,8 +171,7 @@ export function App() {
     if (lab.kind === "guided") {
       return;
     }
-    selection.clear();
-    mirrorSelection();
+    clearSelectionAndInspection();
     setLab(createGuidedLab());
     setPendingSeed(null);
     setPlacementEnabled(false);
@@ -237,8 +261,7 @@ export function App() {
               }}
               onClear={() => {
                 explore.orchestration.clear();
-                selection.clear();
-                mirrorSelection();
+                clearSelectionAndInspection();
                 setPendingSeed(null);
               }}
             />
@@ -262,7 +285,16 @@ export function App() {
             onTracerSelect={(tracerId) => {
               selection.select(tracerId);
               mirrorSelection();
+              setInspection(
+                inspectSelectedTracer(
+                  lab.simulation.particles,
+                  selection,
+                  lab.simulation.clock.time,
+                  lab.velocityObservation,
+                ),
+              );
             }}
+            onSimulationAdvanced={refreshInspection}
             onPlacementAttempt={
               explore === null
                 ? undefined
@@ -277,6 +309,7 @@ export function App() {
             }
             sceneHandleRef={sceneHandleRef}
           />
+          <TracerInspectorPanel inspection={inspection} />
         </div>
       </section>
     </main>

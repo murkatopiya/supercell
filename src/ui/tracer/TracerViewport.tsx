@@ -53,6 +53,12 @@ export interface TracerViewportProps {
    * Glyph pick → stable tracerId. Guided has this without placement.
    */
   onTracerSelect?: (tracerId: number) => void;
+  /**
+   * After one or more fixed steps in this animation frame, once the
+   * displayed particle/clock state is current. Not called when
+   * consumed.steps === 0.
+   */
+  onSimulationAdvanced?: () => void;
   /** Imperative observe-slot / preview access. Does not recreate the scene. */
   sceneHandleRef?: Ref<TracerViewportHandle | null>;
 }
@@ -73,6 +79,7 @@ export function TracerViewport({
   onPlacementAttempt,
   selectedTracerId = null,
   onTracerSelect,
+  onSimulationAdvanced,
   sceneHandleRef,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -86,6 +93,7 @@ export function TracerViewport({
   );
   const onPlacementAttemptRef = useRef(onPlacementAttempt);
   const onTracerSelectRef = useRef(onTracerSelect);
+  const onSimulationAdvancedRef = useRef(onSimulationAdvanced);
   const selectedTracerIdRef = useRef<number | null>(selectedTracerId);
   const localSceneHandleRef = useRef<TracerViewportHandle | null>(null);
 
@@ -94,6 +102,7 @@ export function TracerViewport({
   pendingPreviewRef.current = pendingReleasePreview;
   onPlacementAttemptRef.current = onPlacementAttempt;
   onTracerSelectRef.current = onTracerSelect;
+  onSimulationAdvancedRef.current = onSimulationAdvanced;
   selectedTracerIdRef.current = selectedTracerId;
 
   useEffect(() => {
@@ -272,6 +281,9 @@ export function TracerViewport({
       for (let i = 0; i < consumed.steps; i++) {
         simulation.step(timestep);
         pathHistory?.recordAfterStep(simulation.particles);
+      }
+      if (consumed.steps > 0) {
+        onSimulationAdvancedRef.current?.();
       }
 
       sync();

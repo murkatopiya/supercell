@@ -204,3 +204,91 @@ body {
   margin: 0.35rem 0;
 }
 
+.tracer-inspector {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d0d7de;
+  background: #ffffff;
+  font-size: 0.85rem;
+}
+
+.tracer-inspector__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.tracer-inspector__placeholder,
+.tracer-inspector__hint,
+.tracer-inspector__note {
+  margin: 0 0 0.35rem;
+  color: #4a5560;
+}
+
+.tracer-inspector__hint,
+.tracer-inspector__note {
+  font-size: 0.75rem;
+}
+
+.tracer-inspector__identity {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+
+.tracer-inspector__section-title {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #4a5560;
+}
+
+.tracer-inspector__rows {
+  margin: 0;
+}
+
+.tracer-inspector__row {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 11rem) minmax(0, 1fr);
+  gap: 0.2rem 0.75rem;
+  margin: 0.15rem 0;
+}
+
+.tracer-inspector__row dt {
+  margin: 0;
+  color: #4a5560;
+}
+
+.tracer-inspector__row dd {
+  margin: 0;
+}
+
+.tracer-inspector__value {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.tracer-inspector__contributions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tracer-inspector__contribution {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 11rem) minmax(0, 1fr);
+  gap: 0.15rem 0.75rem;
+  margin: 0.35rem 0;
+}
+
+.tracer-inspector__contrib-label {
+  grid-column: 1;
+  color: #4a5560;
+}
+
+.tracer-inspector__contribution .tracer-inspector__value {
+  grid-column: 2;
+}
+

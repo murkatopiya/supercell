@@ -1,7 +1,7 @@
 # Shared Tracer Inspector Architecture
 
-**Status:** architecture / product SoT. Slices 1–3 are
-implemented. No inspector UI. No Follow.
+**Status:** architecture / product SoT. Slices 1–4 are
+implemented. No Follow. No Level 3 diagnostics.
 
 **Current product status:** Explore point release is live
 (`18` Slices 1–4). Guided catalog is docs-only (`17`). Live App
@@ -10,7 +10,7 @@ entry. Physics remains paused (`15`). Slice 1 is headless
 identity + `TracerSelection`. Slice 2 is a headless observation
 adapter (`TracerInspection`) plus composition-held operand
 instances. Slice 3 is browser-visible glyph picking + selected
-highlight. Inspector panel is Slice 4.
+highlight. Slice 4 is the shared presentational Inspector panel.
 
 This document answers:
 
@@ -19,11 +19,11 @@ This document answers:
     and Guided, without making rendering own physics or turning
     arbitrary Explore tracers into curated stories?
 
-It does **not** implement an inspector panel, Follow, a
-timeline, delete-one, or persistence. Slice 1 implemented
-identity + selection state. Slice 2 implemented the read-only
-decomposition observation adapter. Slice 3 implemented glyph
-picking and selected highlight.
+It does **not** implement Follow, a timeline, delete-one, or
+persistence. Slice 1 implemented identity + selection state.
+Slice 2 implemented the read-only decomposition observation
+adapter. Slice 3 implemented glyph picking and selected
+highlight. Slice 4 implemented the shared Inspector UI.
 
 Predecessors:
 
@@ -54,7 +54,8 @@ stack                = seven prescribed operands
 Explore              = empty session + point release
 Guided live          = NG1 (developer default, not product nav)
 selection            = TracerSelection (App owner; React mirrors selectedId)
-inspector            = TracerInspection adapter (headless; panel unwired)
+inspector            = TracerInspection in App React state
+                       (presentational TracerInspectorPanel)
 picking              = visible glyph ray test (slot index → tracerId)
 highlight            = TracerScene observes selected occupancy slot
 ```
@@ -741,8 +742,8 @@ Guided has no placement tool. Glyph pick is the only 3D
 selection gesture there. `onPlacementAttempt` may be undefined;
 pointerup still runs picking.
 
-Slice 3 implemented this pointer policy. Inspector panel is
-Slice 4.
+Slice 3 implemented this pointer policy. Slice 4 consumes the
+same selection and observation path.
 
 ---
 
@@ -966,23 +967,26 @@ React / UI rerender
   may be slower than rAF
 ```
 
-v1 cadence:
+v1 cadence (Slice 4):
 
 ```text
 sample when the inspector is visible
-  on simulation step
-  on selection change
+  on selection change (immediate inspectSelectedTracer)
+  after a completed fixed-step batch in TracerViewport
+    (onSimulationAdvanced once per rAF if consumed.steps > 0)
+  on Reset (same selectedId; refresh current particle/clock)
   while paused: live (x, t) is frozen; one sample is enough
                until selection or time changes
 
 do not sample every tracer
+do not notify when consumed.steps === 0
 do not assume fields stay steady when choosing the API
   (the API always passes time)
 ```
 
-Sampling every animation frame for one tracer would also be
-fine numerically. Prefer driving the panel from step +
-selection so React does not churn at rAF by accident.
+The viewport stores `onSimulationAdvanced` in a ref, same as
+placement/select callbacks, so Inspector React state cannot
+recreate `TracerScene`.
 
 No optimization implementation.
 
@@ -1151,22 +1155,56 @@ Slice 3 — glyph picking + selected highlight        COMPLETE
           preview marker not selectable
           inspector panel not required yet
 
-Slice 4 — minimal inspector panel                   NEXT
-          Level 1 + Level 2 for the live DEMO model
-          empty / no-selection safe
+Slice 4 — minimal inspector panel                   COMPLETE
+          presentational TracerInspectorPanel
+          App holds TracerInspection | undefined
+          inspectSelectedTracer on select / step batch / Reset
+          Level 1 + optional Level 2 for the live DEMO model
+          empty / no-selection placeholder
+          no-decomposition: hide Level 2
+          inactive: panel remains; field-at-marker copy
           Explore unlabeled; Guided claim stays in catalog copy
           no Follow, no Level 3 dump, no SRH on the card
+```
+
+Slice 4 implementation shape:
+
+```text
+panel:              TracerInspectorPanel
+                    inspection: TracerInspection | undefined
+                    presentational; no field sampling
+
+observation owner:  App React state
+                    inspectSelectedTracer(particles, selection,
+                      clock.time, velocityObservation)
+
+select:             immediate inspect at current (x, t)
+                    works while paused
+
+step batch:         TracerViewport onSimulationAdvanced
+                    once per rAF if consumed.steps > 0
+                    callback in onSimulationAdvancedRef
+                    scene effect deps do not include it
+
+Reset:              keep selectedId; refresh immediately
+
+Clear / mode:       selection null; inspection undefined
+
+no-decomposition:   contributions omitted → hide Level 2
+                    no fake seven rows
+
+inactive:           panel remains; State: inactive
+                    V is field at marker, not motion
 ```
 
 **First browser-visible slice:** **3** (user can see which
 tracer is selected). Slices 1–2 without 3 change nothing on
 screen.
 
-**First “why?” slice:** **4**, which consumes 1–3. A highlight
-without contributions does not answer the canonical question.
+**First “why?” slice:** **4**, which consumes 1–3.
 
-Do not start at Slice 4. Do not implement Follow, delete-one,
-trail dimming, or a probe-at-empty-point in this sequence.
+Do not implement Follow, delete-one, trail dimming, or a
+probe-at-empty-point in this sequence.
 
 ---
 
@@ -1266,49 +1304,44 @@ performance / update:        one tracer; sample on step + select
 implementation sequence:     1 id + selection lifecycle COMPLETE
                              2 observation adapter COMPLETE
                              3 pick + highlight COMPLETE
-                             4 Level 1+2 panel NEXT
+                             4 Level 1+2 panel COMPLETE
 
 first browser-visible slice: 3
 
 first "why?" slice:          4
 
-next product slice:          implementation Slice 4
-                             when commanded
+next product slice:          Follow only when commanded
                              not catalog UI
-                             not Follow
+                             not Level 3 dump
                              not a four-mode selector
 
 modeling status:             paused
                              next: tilting/stretching SoT
 
 blockers:                    none for this SoT
-                             implementation blocked until commanded
                              Follow blocked until commanded
-                             (picking now exists; Follow is later)
                              delete-one blocked until id + history/
                                scene remap
                              3D curl / derived ω_z blocked by
                                missing diagnostic / modeling SoTs
-                             dataset inspector honesty blocked
-                               only by optional contributions
-                               (already locked)
 
-production this slice:       Slice 3
-                             glyph pick + selected highlight
-                             TracerSelection owned in App
-                             not inspector panel / Follow
+production this slice:       Slice 4
+                             shared TracerInspectorPanel
+                             App observation + step-batch notify
+                             not Follow / Level 3 / new physics
 ```
 
 ---
 
 ## 26. STOP
 
-Slices 1–3 are complete: monotonic `tracerId` at birth,
-`TracerSelection`, a headless `TracerInspection` adapter, and
-browser-visible glyph picking with selected highlight. This SoT
-does not start an inspector panel, Follow, a timeline scrubber,
-delete-one, persistence, new physics, tilting/stretching,
-thermodynamics, or a continuity solver.
+Slices 1–4 are complete: monotonic `tracerId` at birth,
+`TracerSelection`, a headless `TracerInspection` adapter,
+browser-visible glyph picking with selected highlight, and a
+shared presentational Inspector panel driven by
+`inspectSelectedTracer`. This SoT does not start Follow, a
+timeline scrubber, delete-one, persistence, new physics,
+tilting/stretching, thermodynamics, or a continuity solver.
 
 Do not put selection on `Simulation` or `TracerScene`.
 Do not key the first inspector on array index.
