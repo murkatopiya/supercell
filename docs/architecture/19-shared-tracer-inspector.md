@@ -6,11 +6,14 @@ implemented. No Follow. No Level 3 diagnostics.
 **Current product status:** Explore point release is live
 (`18` Slices 1–4). Guided catalog is docs-only (`17`). Live App
 still opens on Guided NG1 with a temporary Explore | Guided
-entry. Physics remains paused (`15`). Slice 1 is headless
-identity + `TracerSelection`. Slice 2 is a headless observation
-adapter (`TracerInspection`) plus composition-held operand
-instances. Slice 3 is browser-visible glyph picking + selected
-highlight. Slice 4 is the shared presentational Inspector panel.
+entry. Desktop workbench layout is live. Successor product SoT:
+`docs/architecture/20-guided-runtime-architecture.md` (docs-only
+Guided runtime; not Follow). Physics remains paused (`15`).
+Slice 1 is headless identity + `TracerSelection`. Slice 2 is a
+headless observation adapter (`TracerInspection`) plus
+composition-held operand instances. Slice 3 is browser-visible
+glyph picking + selected highlight. Slice 4 is the shared
+presentational Inspector panel.
 
 This document answers:
 
@@ -1310,8 +1313,8 @@ first browser-visible slice: 3
 
 first "why?" slice:          4
 
-next product slice:          Follow only when commanded
-                             not catalog UI
+next product slice:          Guided runtime (`20`) when commanded
+                             Follow only when commanded
                              not Level 3 dump
                              not a four-mode selector
 

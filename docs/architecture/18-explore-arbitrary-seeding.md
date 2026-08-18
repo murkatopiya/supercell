@@ -3,7 +3,8 @@
 **Status:** architecture / product SoT. Implementation Slices 1–4
 are complete. Slice 4 is the first browser-visible Explore point
 release. This is not the final Explore/Guided product shell.
-No inspector. No line/plane/volume tools. No Guided catalog UI.
+Shared Inspector is live (`19`). No line/plane/volume tools.
+No Guided catalog UI. Successor Guided runtime SoT: `20`.
 
 Slice 2 runtime owner: `ExploreTracerSession`
 (`src/explore/ExploreTracerSession.ts`).

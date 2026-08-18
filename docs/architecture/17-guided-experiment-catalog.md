@@ -3,11 +3,12 @@
 **Status:** product-architecture SoT. This document did not
 change production code when written. No `GuidedExperiment` type.
 
-**Current product status:** `18` Slices 1–4 implemented the first
-Explore point release in the browser. This catalog is not a UI
+**Current product status:** Explore (`18` Slices 1–4) and shared
+Inspector (`19` Slices 1–4) are live. This catalog is not a UI
 and is not the Guided shell. Do not treat the temporary
-Explore | Guided App entry as catalog cards. Next product slice:
-shared tracer inspector architecture SoT (docs), per `18` §22.
+Explore | Guided App entry as catalog cards. Successor
+implementation SoT: `docs/architecture/20-guided-runtime-architecture.md`.
+Physics remains paused.
 
 Predecessor:
 `docs/architecture/16-explore-guided-interaction-architecture.md`.
@@ -80,11 +81,12 @@ Public catalog, v1:
 Diagnostic trio: **not** public Guided. Advanced / scientific
 diagnostic preset, also the developer composition default.
 
-`GuidedExperiment` production type: **later**, not now.
+A generic lesson-engine `GuidedExperiment` type remains
+rejected. Minimal public runtime identity is specified in
+`docs/architecture/20-guided-runtime-architecture.md`.
 
-Next product slice: **shared tracer inspector architecture SoT**
-(docs), after Explore seeding Slices 1–4 of `18`. Catalog UI is
-not next.
+Next implementation SoT: **`20` Guided runtime architecture**.
+Catalog UI is not started by this document.
 
 Physics remains paused. When resumed: tilting / stretching
 interaction architecture SoT (`15`, `16`).
@@ -656,9 +658,10 @@ diagnostic trio:              not public Guided
 
 Guided abstraction:           later, not now
 
-next product slice:           inspector architecture SoT (docs)
-                              `18` Slice 4 is live; catalog UI
-                              is not next
+next product slice:           Guided runtime (`20`)
+                              catalog content in this document
+                              remains authoritative; runtime
+                              identity / lab lifecycle are `20`
 ```
 
 Why not A (catalog implementation): would force a type or DTO
@@ -775,8 +778,8 @@ future blocked experiments:      tilting, stretching, D3,
                                  not yet earned
 
 GuidedExperiment abstraction
-timing:                          later
-                                 3 entries do not require a type
+timing:                          generic lesson type still later
+                                 minimal public id is `20`
                                  enum must not become a CMS at
                                  20–50
 
@@ -784,11 +787,11 @@ catalog scalability:             3: docs + composition
                                  10: still plausible
                                  20–50: catalog data object then
 
-next product slice:              shared tracer inspector
-                                 architecture SoT (docs)
-                                 catalog UI not started
-                                 Explore point release is live
-                                 (`18` Slice 4); not this catalog
+next product slice:              Guided runtime (`20`)
+                                 catalog UI not started here
+                                 Explore + Inspector are live
+                                 (`18`, `19`); this document
+                                 remains the catalog of *what*
 
 next modeling slice:             still paused
                                  then tilting/stretching

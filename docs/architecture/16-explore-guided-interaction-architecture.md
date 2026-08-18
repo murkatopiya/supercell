@@ -3,12 +3,14 @@
 **Status:** architecture / product SoT. This document did not
 change production code when written.
 
-**Current product status:** Slice 4 of
-`docs/architecture/18-explore-arbitrary-seeding.md` wired the
-first browser-visible Explore point release. This is not the
-final Explore/Guided product shell. The live App has a temporary
-Explore | Guided entry; `TracerPedagogy` is still not product
-navigation. Guided live composition remains NG1.
+**Current product status:** Explore point release (`18` Slices
+1–4) and shared Inspector (`19` Slices 1–4) are live. Desktop
+workbench layout is live. This is not the final Explore/Guided
+product shell. The live App has a temporary Explore | Guided
+entry; `TracerPedagogy` is still not product navigation. Guided
+live composition remains the NG1 scaffold. Successor
+implementation SoT: `docs/architecture/20-guided-runtime-architecture.md`.
+Physics remains paused.
 
 This document restitches the live four-way `TracerPedagogy`
 composition with the original product concept after
@@ -777,9 +779,9 @@ ownership:                         session / interaction
                                    role-agnostic createTracersFromSeeds
                                    do not write user ICs into DEMO arrays
 
-guided-experiment abstraction:     later, when a catalog needs data
-                                   the enum cannot carry
-                                   not now (no GuidedExperiment type)
+guided-experiment abstraction:     minimal public id in `20`
+                                   still not a lesson engine
+                                   UI must not select TracerPedagogy
 
 proposed four-mode selector
 verdict:                           C
@@ -809,9 +811,9 @@ current-work reuse verdict:        not a dead end
                                    live code-constant = scaffold
                                    3-color palette = likely replacement
 
-next product slice:                Guided experiment catalog SoT
-                                   (docs only; no UI; no new type
-                                   unless proven necessary)
+next product slice:                Guided runtime architecture SoT
+                                   (`20`; docs-only when written.
+                                   Catalog content remains `17`.)
 
 next modeling slice:               still paused
                                    when resumed: tilting/stretching
