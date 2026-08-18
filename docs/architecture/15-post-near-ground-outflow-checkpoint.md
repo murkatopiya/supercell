@@ -3,7 +3,12 @@
 **Status:** architecture checkpoint SoT after the complete
 near-ground-outflow arc. Production code was not changed.
 No solver, thermodynamics, tilting/stretching implementation,
-UI, new field, or translating storm.
+UI, new field, or translating storm. This document remains the
+physics/continuity checkpoint of that arc. Product direction
+after Explore / Inspector / Guided v1:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
+`16` already superseded the four-mode pedagogy-selector
+recommendation in §11.
 
 Live at the time of this audit:
 

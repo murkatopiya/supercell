@@ -6,9 +6,10 @@ tracer acceptance:
 `src/simulation/nearGroundRadialOutflowFieldTracer.acceptance.test.ts`.
 DEMO occupancy / scaling:
 `docs/rendering/16-composite-near-ground-outflow-demo.md`.
-Seventh-operand DEMO wiring is live. Pedagogy seeds and a live
-mode switch remain deferred. This document owns the formula, not
-DEMO occupancy numbers.
+Seventh-operand DEMO wiring is live. Pedagogy seeds and the
+public Guided experiment `near-ground-outflow` were implemented
+later (`14` architecture, `17`, `20`). This document owns the
+formula, not DEMO occupancy numbers and not product navigation.
 
 Predecessor authorization:
 `docs/architecture/13-post-downdraft-checkpoint.md` verdict A.

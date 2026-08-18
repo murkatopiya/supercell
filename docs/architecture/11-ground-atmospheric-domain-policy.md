@@ -28,10 +28,12 @@ stack. It does **not** design a prescribed downdraft. It does **not**
 claim to close the continuity residual in `10`.
 
 Live at the time of this SoT (five-operand snapshot used to decide
-the floor). Current live composition adds
-`VerticalEnvelopeDowndraftField` as a sixth operand
-(`docs/rendering/15-composite-downdraft-demo.md`); field sampling
-is still unbounded, and tracers still occupy `y ≥ 0`.
+the floor). That snapshot’s `Vy_total ≥ 0 everywhere` line is
+**historical** and false for the later live stack, which adds
+offset downdraft and near-ground outflow (`15`, `21` architecture
+checkpoint). Field sampling is still unbounded, and atmospheric
+tracers still occupy `y ≥ 0`. The floor policy in this document
+is unchanged.
 
 ```text
 stack then       = EnvironmentalWindField

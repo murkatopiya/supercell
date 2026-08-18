@@ -1,9 +1,13 @@
 # Wind-Tunnel / Storm-Relative 3D Semantics
 
-**Status:** architecture SoT. Migration slices 1–3 are implemented.
+**Status:** architecture SoT for the 3D advection-frame contract.
+Migration slices 1–3 are implemented.
 Live browser 3D DEMO is `StormRelativeLaboratory`. Default composition
 API remains `GroundRelativeWindTunnel`. Wind-tunnel remains a supported
-explicit mode. Story tracers are **not** authorized.
+explicit mode. Story tracers S1/S2 are now canonical ICs of Guided
+`inflow-to-upper-outflow` (`17`, `20`); the “not authorized” sentence
+below is historical to this frame migration. Current product direction:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
 
 This document is the Y15 revisit required after the deep prescribed
 storm stack (`docs/rendering/10-deep-storm-envelope-scaling.md`,

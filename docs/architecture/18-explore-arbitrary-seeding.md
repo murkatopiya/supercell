@@ -4,7 +4,10 @@
 are complete. Slice 4 is the first browser-visible Explore point
 release. This is not the final Explore/Guided product shell.
 Shared Inspector is live (`19`). No line/plane/volume tools.
-No Guided catalog UI. Successor Guided runtime SoT: `20`.
+Guided catalog UI is live (`20` Slice 3); this document remains
+the Explore seeding SoT. Successor Guided runtime SoT: `20`.
+Current whole-product direction checkpoint:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
 
 Slice 2 runtime owner: `ExploreTracerSession`
 (`src/explore/ExploreTracerSession.ts`).
@@ -35,8 +38,9 @@ This document answers:
 It does **not** implement seeding, a store, IDs, inspector,
 persistence, or performance work.
 
-Live App still opens on Guided NG1 (`NearGroundOutflowPathline`).
-Explore is an explicit empty-session entry. That Guided default
+Live App opens on Guided `inflow-to-upper-outflow` (`20`).
+NG1 remains one catalog experiment, not the product default.
+Explore is an explicit empty-session entry. The Guided default
 does not define Explore seeding.
 
 Authoritative:

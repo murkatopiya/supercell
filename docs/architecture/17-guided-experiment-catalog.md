@@ -1,7 +1,10 @@
 # Guided Experiment Catalog
 
-**Status:** product-architecture SoT. This document did not
-change production code when written. No `GuidedExperiment` type.
+**Status:** product-architecture SoT for catalog *content*.
+This document did not change production code when written.
+Runtime identity `GuidedExperimentId` / catalog copy objects
+live in `20`; this document remains what the three experiments
+are.
 
 **Current product status:** Explore (`18` Slices 1–4) and shared
 Inspector (`19` Slices 1–4) are live. Guided runtime wiring
@@ -10,6 +13,8 @@ catalog's teaching copy is live in `GuidedExperimentPanel`
 (`20` Slice 3). Do not treat the Explore | Guided App entry as
 catalog cards. Successor implementation SoT:
 `docs/architecture/20-guided-runtime-architecture.md`.
+Current whole-product direction checkpoint:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
 Physics remains paused.
 
 Predecessor:

@@ -46,6 +46,10 @@ architecture.
 **Guided v1 catalog/runtime/teaching surface is implemented.**
 The next product or physics fork remains a separate decision.
 Follow is not assigned. Physics remains paused.
+Current whole-product direction checkpoint:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
+This document remains how the three experiments run. It does
+not select the next implementation branch.
 
 Predecessors (not rewritten):
 

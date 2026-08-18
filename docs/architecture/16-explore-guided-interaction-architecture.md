@@ -12,6 +12,10 @@ runtime selection among three `GuidedExperimentId` values is
 live (`20` Slice 2). Catalog teaching copy is live (`20` Slice 3).
 Successor implementation SoT:
 `docs/architecture/20-guided-runtime-architecture.md`.
+Current whole-product direction checkpoint:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
+This document remains the Explore/Guided split SoT. It is not
+the latest product-direction SoT.
 Physics remains paused.
 
 This document restitches the live four-way `TracerPedagogy`
@@ -26,7 +30,9 @@ It answers:
 It does **not** implement Explore, Guided, a selector, arbitrary
 seeding, an inspector, or a `GuidedExperiment` type.
 
-Live at the time of this SoT (unchanged):
+Live snapshot at the time this SoT was written (historical;
+current default Guided experiment is
+`inflow-to-upper-outflow`, see `20` / `21`):
 
 ```text
 IntegrationFrame     = StormRelativeLaboratory

@@ -9,6 +9,8 @@ catalog teaching copy is live (`20` Slice 3). Live App opens on
 Guided `inflow-to-upper-outflow` with a temporary Explore |
 Guided entry. Desktop workbench layout is live. Successor
 product SoT: `docs/architecture/20-guided-runtime-architecture.md`.
+Current whole-product direction checkpoint:
+`docs/architecture/21-whole-product-direction-checkpoint.md`.
 Physics remains paused (`15`).
 Slice 1 is headless identity + `TracerSelection`. Slice 2 is a
 headless observation adapter (`TracerInspection`) plus
@@ -49,14 +51,16 @@ Historical docs remain historical. `01-tracer-scene` operand
 lists lag the live seven-operand stack; the observe-only
 rendering contract remains SoT.
 
-Live at the time of this SoT (unchanged):
+Live snapshot (current default Guided experiment is
+`inflow-to-upper-outflow`; NG1 is one catalog experiment, not
+product navigation):
 
 ```text
 IntegrationFrame     = StormRelativeLaboratory
 environmental operand = StormRelativeEnvironmentalAdvectionField
 stack                = seven prescribed operands
 Explore              = empty session + point release
-Guided live          = NG1 (developer default, not product nav)
+Guided live default  = inflow-to-upper-outflow (`20`)
 selection            = TracerSelection (App owner; React mirrors selectedId)
 inspector            = TracerInspection in App React state
                        (presentational TracerInspectorPanel)
