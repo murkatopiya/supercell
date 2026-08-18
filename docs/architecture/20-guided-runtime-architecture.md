@@ -1,14 +1,27 @@
 # Guided Runtime Architecture
 
-**Status:** architecture / product SoT. Docs-only. Production
-implementation is **not** started by this document.
+**Status:** architecture / product SoT. Guided Slice 1 is
+implemented. Guided Slice 2 is **NEXT**. Guided Slice 3 is later.
 
 **Current product status:** Explore arbitrary point release is
 live (`18` Slices 1–4). Shared Tracer Inspector Slices 1–4 are
 live (`19`). Desktop workbench layout is live. Physics remains
-paused (`15` D). The three earned Guided Experiments are defined
-by `17` but are **not** yet browser product state. Live Guided
-is still the temporary NG1 scaffold:
+paused (`15` D). Headless Guided product identity exists:
+
+```text
+src/guided/GuidedExperiment.ts
+  GuidedExperimentId
+  GuidedExperimentDefinition
+  GUIDED_EXPERIMENTS
+  guidedExperimentById(id)
+
+src/app/guidedExperimentComposition.ts
+  pedagogyForGuidedExperiment(id)
+  guidedExperimentCompositionFor(id)
+```
+
+Live Guided is still the temporary NG1 scaffold. Slice 1 does
+not change App:
 
 ```text
 App starts Guided
@@ -179,8 +192,7 @@ constant. That is scaffold, not catalog.
 
 ### 3.2 Canonical form
 
-Conceptual TypeScript (implementation later; names are the
-lock-in, not a shipped file):
+Conceptual TypeScript (Slice 1 shipped these names):
 
 ```text
 GuidedExperimentId
@@ -747,21 +759,27 @@ Derived from the live layering (`19` headless identity before
 browser UI; `18` headless session before App wiring). Follow is
 not in this sequence.
 
-### Slice 1 — headless Guided catalog / product identity
+### Slice 1 — headless Guided catalog / product identity     COMPLETE
 
 ```text
-GuidedExperimentId union
-ordered catalog of three GuidedExperimentDefinition records
-mapping function → TracerPedagogy
-tests:
-  three public ids, catalog order
-  mapping table in §5
-  DiagnosticProbes has no id
-  product strings ≠ TracerPedagogy / S1 / NG1
-  seeds still come from ScenarioConfig via existing helpers
-  definitions carry no coordinates and no Inspector payload
+src/guided/GuidedExperiment.ts
+  GuidedExperimentId
+    "inflow-to-upper-outflow"
+    "downdraft-path-to-ground"
+    "near-ground-outflow"
+  GuidedExperimentDefinition { id, title, observe, demonstrates, doesNotMean }
+  GUIDED_EXPERIMENTS            canonical order
+  guidedExperimentById(id)      total lookup
+
+src/app/guidedExperimentComposition.ts
+  pedagogyForGuidedExperiment(id) → TracerPedagogy
+  guidedExperimentCompositionFor(id)
+    pedagogy, seeds, trailsEnabled, keepInactiveGlyphs
+    seeds = demoSeedsForPedagogy(pedagogy)  (ScenarioConfig reference)
+
 no App.tsx change
 no browser catalog
+LIVE_DEMO_TRACER_PEDAGOGY remains the live Guided scaffold
 ```
 
 ### Slice 2 — Guided experiment selection wiring
@@ -852,7 +870,7 @@ DiagnosticProbes:                 not a catalog entry
 
 canonical seeds:                  remain ScenarioConfig arrays
 
-next implementation:              Slice 1 when commanded
+next implementation:              Slice 2 when commanded
                                   not Follow
                                   not physics
 ```
@@ -882,7 +900,9 @@ nav:                  Explore | Guided unchanged as top level
 copy vs Inspector:    claim beside observation
                       never inside V_i rows
 
-slices:               1 identity  2 wiring  3 catalog UI
+slices:               1 identity COMPLETE
+                      2 wiring NEXT
+                      3 catalog UI later
 
 physics:              paused
 ```
@@ -891,8 +911,9 @@ physics:              paused
 
 ## 19. STOP
 
-This document does not start production code, a catalog UI, a
-router, Follow, a completion engine, persistence, or physics.
+This document's Slice 1 is implemented as a headless catalog and
+composition mapping. It does not start a catalog UI, a router,
+Follow, a completion engine, persistence, or physics.
 
 Do not put `TracerPedagogy` in product App state.
 Do not keep selection across a new `Simulation` because both
@@ -906,4 +927,4 @@ can tick a box.
 `17` remains the catalog of *what* the three experiments are.
 This document is the catalog of *how they run*.
 
-Next work starts only when Slice 1 is commanded.
+Next work starts only when Slice 2 is commanded.
