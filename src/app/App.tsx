@@ -182,15 +182,35 @@ export function App() {
 
   return (
     <main className="app">
-      <h1 className="app__title">Supercell Explorer</h1>
+      <header className="app__header">
+        <h1 className="app__title">Supercell Explorer</h1>
+        <div className="app__mode-switch lab-experience-switch">
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-pressed={lab.kind === "guided"}
+            onClick={enterGuided}
+          >
+            Guided
+          </button>
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-pressed={lab.kind === "explore"}
+            onClick={enterExplore}
+          >
+            Explore
+          </button>
+        </div>
+      </header>
       <p className="app__subtitle">
         Ground-relative hodograph. 3D tracers use a storm-relative
         laboratory frame (environmental advection relative to
         prescribed storm motion).
       </p>
 
-      <section className="app__panels">
-        <div className="app__panel app__panel--hodograph">
+      <section className="workbench">
+        <div className="workbench__column workbench__column--hodograph">
           <h2 className="app__panel-title">Hodograph</h2>
           <HodographPanel
             points={points}
@@ -206,66 +226,51 @@ export function App() {
           />
         </div>
 
-        <div className="app__panel app__panel--tracer">
-          <div className="lab-experience-switch">
-            <button
-              type="button"
-              className="tracer-runtime-controls__button"
-              aria-pressed={lab.kind === "guided"}
-              onClick={enterGuided}
-            >
-              Guided
-            </button>
-            <button
-              type="button"
-              className="tracer-runtime-controls__button"
-              aria-pressed={lab.kind === "explore"}
-              onClick={enterExplore}
-            >
-              Explore
-            </button>
-          </div>
-          <h2 className="app__panel-title">
-            {lab.kind === "explore"
-              ? "Storm-relative laboratory"
-              : "Storm-relative laboratory: prescribed storm-relative near-ground pathline advected through a divergent horizontal outflow region"}
-          </h2>
-          <TracerRuntimeControls
-            paused={paused}
-            timeScale={timeScale}
-            onPausedChange={setPaused}
-            onTimeScaleChange={setTimeScale}
-            onReset={handleReset}
-          />
-          {explore !== null && (
-            <ExplorePointReleaseControls
-              altitudeM={altitudeM}
-              placementEnabled={placementEnabled}
-              hasPending={pendingSeed !== null}
-              onAltitudeChange={(next) => {
-                explore.tool.setAltitude(next);
-                setAltitudeM(explore.tool.altitudeM);
-                setPendingSeed(explore.tool.pendingSeed);
-              }}
-              onPlacementEnabledChange={(enabled) => {
-                explore.tool.placementEnabled = enabled;
-                setPlacementEnabled(enabled);
-              }}
-              onConfirm={() => {
-                explore.orchestration.confirmRelease();
-                setPendingSeed(null);
-              }}
-              onCancel={() => {
-                explore.orchestration.cancelPending();
-                setPendingSeed(null);
-              }}
-              onClear={() => {
-                explore.orchestration.clear();
-                clearSelectionAndInspection();
-                setPendingSeed(null);
-              }}
+        <div className="workbench__column workbench__column--laboratory">
+          <h2 className="app__panel-title">Storm-relative laboratory</h2>
+          {lab.kind === "guided" ? (
+            <p className="workbench__column-note">
+              prescribed storm-relative near-ground pathline advected through a divergent horizontal outflow region
+            </p>
+          ) : null}
+          <div className="laboratory-toolbar">
+            <TracerRuntimeControls
+              paused={paused}
+              timeScale={timeScale}
+              onPausedChange={setPaused}
+              onTimeScaleChange={setTimeScale}
+              onReset={handleReset}
             />
-          )}
+            {explore !== null && (
+              <ExplorePointReleaseControls
+                altitudeM={altitudeM}
+                placementEnabled={placementEnabled}
+                hasPending={pendingSeed !== null}
+                onAltitudeChange={(next) => {
+                  explore.tool.setAltitude(next);
+                  setAltitudeM(explore.tool.altitudeM);
+                  setPendingSeed(explore.tool.pendingSeed);
+                }}
+                onPlacementEnabledChange={(enabled) => {
+                  explore.tool.placementEnabled = enabled;
+                  setPlacementEnabled(enabled);
+                }}
+                onConfirm={() => {
+                  explore.orchestration.confirmRelease();
+                  setPendingSeed(null);
+                }}
+                onCancel={() => {
+                  explore.orchestration.cancelPending();
+                  setPendingSeed(null);
+                }}
+                onClear={() => {
+                  explore.orchestration.clear();
+                  clearSelectionAndInspection();
+                  setPendingSeed(null);
+                }}
+              />
+            )}
+          </div>
           <TracerViewport
             simulation={lab.simulation}
             pathHistory={lab.pathHistory}
@@ -309,6 +314,9 @@ export function App() {
             }
             sceneHandleRef={sceneHandleRef}
           />
+        </div>
+
+        <div className="workbench__column workbench__column--inspector">
           <TracerInspectorPanel inspection={inspection} />
         </div>
       </section>

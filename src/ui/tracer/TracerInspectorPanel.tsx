@@ -23,13 +23,15 @@ export function TracerInspectorPanel({ inspection }: TracerInspectorPanelProps) 
   return (
     <section className="tracer-inspector" aria-label="Tracer inspector">
       <h3 className="tracer-inspector__title">Inspector</h3>
-      {inspection === undefined ? (
-        <p className="tracer-inspector__placeholder">
-          Select a tracer to inspect its motion.
-        </p>
-      ) : (
-        <InspectionBody inspection={inspection} />
-      )}
+      <div className="tracer-inspector__body">
+        {inspection === undefined ? (
+          <p className="tracer-inspector__placeholder">
+            Select a tracer to inspect its motion.
+          </p>
+        ) : (
+          <InspectionBody inspection={inspection} />
+        )}
+      </div>
     </section>
   );
 }

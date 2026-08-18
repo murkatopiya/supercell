@@ -25,11 +25,11 @@ export function ExplorePointReleaseControls({
   return (
     <div className="explore-point-release-controls">
       <p className="explore-point-release-controls__copy">
-        Release passive tracers into the current storm-relative laboratory.
+        Release tracer. Release passive tracers into the current storm-relative laboratory.
       </p>
       <div className="explore-point-release-controls__row">
         <label className="explore-point-release-controls__field">
-          altitude (m)
+          Altitude
           <input
             type="number"
             min={0}
@@ -43,6 +43,7 @@ export function ExplorePointReleaseControls({
               onAltitudeChange(next);
             }}
           />
+          m
         </label>
         <label className="explore-point-release-controls__field">
           <input
@@ -52,17 +53,15 @@ export function ExplorePointReleaseControls({
               onPlacementEnabledChange(event.target.checked)
             }
           />
-          enable placement
+          Enable placement
         </label>
-      </div>
-      <div className="explore-point-release-controls__row">
         <button
           type="button"
           className="tracer-runtime-controls__button"
           disabled={!hasPending}
           onClick={onConfirm}
         >
-          Confirm release
+          Confirm
         </button>
         <button
           type="button"
@@ -70,7 +69,7 @@ export function ExplorePointReleaseControls({
           disabled={!hasPending}
           onClick={onCancel}
         >
-          Cancel pending
+          Cancel
         </button>
         <button
           type="button"

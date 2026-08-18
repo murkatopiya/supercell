@@ -19,7 +19,7 @@ export function TracerRuntimeControls({
 }: TracerRuntimeControlsProps) {
   return (
     <div className="tracer-runtime-controls">
-      <div className="tracer-runtime-controls__row">
+      <div className="tracer-runtime-controls__group tracer-runtime-controls__group--runtime">
         <button
           type="button"
           className="tracer-runtime-controls__button"
@@ -36,7 +36,7 @@ export function TracerRuntimeControls({
         </button>
       </div>
       <fieldset className="tracer-runtime-controls__scales">
-        <legend className="tracer-runtime-controls__legend">timeScale</legend>
+        <legend className="tracer-runtime-controls__legend">Speed</legend>
         {TRACER_TIME_SCALES.map((scale) => (
           <label key={scale} className="tracer-runtime-controls__scale">
             <input

@@ -196,6 +196,22 @@ describe("shared inspector observation wiring", () => {
     expect(tracerInspectorPanelSrc).not.toMatch(/\.sample\(/);
   });
 
+  it("places the shared inspector in a workbench column beside the laboratory", () => {
+    expect(appSrc).toMatch(/className="workbench"/);
+    expect(appSrc).toMatch(/workbench__column--hodograph/);
+    expect(appSrc).toMatch(/workbench__column--laboratory/);
+    expect(appSrc).toMatch(/workbench__column--inspector/);
+    const laboratory = appSrc.slice(
+      appSrc.indexOf("workbench__column--laboratory"),
+      appSrc.indexOf("workbench__column--inspector"),
+    );
+    expect(laboratory).toMatch(/TracerViewport/);
+    expect(laboratory).not.toMatch(/TracerInspectorPanel/);
+    expect(appSrc).toMatch(
+      /workbench__column--inspector[\s\S]*TracerInspectorPanel/s,
+    );
+  });
+
   it("clears inspection on Explore ↔ Guided in App", () => {
     expect(appSrc).toMatch(
       /enterExplore[\s\S]*clearSelectionAndInspection\(\)[\s\S]*createExploreLab/s,
