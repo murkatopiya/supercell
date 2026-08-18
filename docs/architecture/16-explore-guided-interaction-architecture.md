@@ -14,6 +14,8 @@ Successor implementation SoT:
 `docs/architecture/20-guided-runtime-architecture.md`.
 Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
+Perceptual airflow exploration (Candidate 1):
+`docs/architecture/22-perceptual-airflow-architecture.md`.
 This document remains the Explore/Guided split SoT. It is not
 the latest product-direction SoT.
 Physics remains paused.

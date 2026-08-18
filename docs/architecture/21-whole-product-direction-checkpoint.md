@@ -3,14 +3,16 @@
 **Status:** current product/architecture direction checkpoint
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
-**Implementation branch after checkpoint:** NOT YET SELECTED
+**Implementation:** NOT STARTED
 
-This document is the current architecture/product direction SoT
-after Explore, shared Inspector, and Guided v1.
+This document remains the whole-product capability map. It did
+not pick a winner among §13 candidates. Candidate 1 (perceptual
+airflow) is now specified as architecture exploration
+`docs/architecture/22-perceptual-airflow-architecture.md`.
+Other §13 candidates remain unchosen. No implementation.
 
-It does **not** change production code. It does **not** choose
-the next implementation slice. It does **not** create
-`ROADMAP.md`.
+This document did **not** change production code when written.
+It does **not** create `ROADMAP.md`.
 
 Verified against:
 
@@ -1015,7 +1017,10 @@ dataset evolution:            important boundary
                               exploration candidate
                               synthetic lab remains valuable
 
-next implementation branch:   NOT SELECTED
+next implementation branch:   not selected by this checkpoint
+                              Candidate 1 explored in `22`
+                              (docs only; implementation not
+                              started; other candidates open)
 physics:                      PAUSED
 ROADMAP.md:                   not created
 ```
@@ -1026,12 +1031,12 @@ ROADMAP.md:                   not created
 
 ```text
 PHYSICS PAUSED
-NEXT IMPLEMENTATION BRANCH NOT SELECTED
 ```
 
-This checkpoint is for a human decision.
+Candidate 1 architecture exploration now lives in `22`.
+This checkpoint still does not implement it.
 
-Do not start a candidate architecture exploration.
+Do not treat opening `22` as selecting Candidates 2–7.
 Do not write a Cursor implementation prompt.
 Do not implement pan, Follow, population particles, trail
 caps, RK2 switch, streamfunctions, or datasets because this

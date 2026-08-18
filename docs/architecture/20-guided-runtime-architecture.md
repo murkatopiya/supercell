@@ -48,8 +48,10 @@ The next product or physics fork remains a separate decision.
 Follow is not assigned. Physics remains paused.
 Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
+Perceptual airflow exploration:
+`docs/architecture/22-perceptual-airflow-architecture.md`.
 This document remains how the three experiments run. It does
-not select the next implementation branch.
+not start perceptual implementation.
 
 Predecessors (not rewritten):
 

@@ -8,6 +8,8 @@ Guided catalog UI is live (`20` Slice 3); this document remains
 the Explore seeding SoT. Successor Guided runtime SoT: `20`.
 Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
+Perceptual airflow exploration (`22`) must not replace point
+release; probes stay unlabeled scientific tracers.
 
 Slice 2 runtime owner: `ExploreTracerSession`
 (`src/explore/ExploreTracerSession.ts`).
