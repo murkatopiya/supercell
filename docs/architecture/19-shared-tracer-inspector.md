@@ -1,7 +1,7 @@
 # Shared Tracer Inspector Architecture
 
-**Status:** architecture / product SoT. Slices 1–2 are
-implemented. No inspector UI. No picking. No Follow.
+**Status:** architecture / product SoT. Slices 1–3 are
+implemented. No inspector UI. No Follow.
 
 **Current product status:** Explore point release is live
 (`18` Slices 1–4). Guided catalog is docs-only (`17`). Live App
@@ -9,7 +9,8 @@ still opens on Guided NG1 with a temporary Explore | Guided
 entry. Physics remains paused (`15`). Slice 1 is headless
 identity + `TracerSelection`. Slice 2 is a headless observation
 adapter (`TracerInspection`) plus composition-held operand
-instances. Not browser-visible.
+instances. Slice 3 is browser-visible glyph picking + selected
+highlight. Inspector panel is Slice 4.
 
 This document answers:
 
@@ -18,10 +19,11 @@ This document answers:
     and Guided, without making rendering own physics or turning
     arbitrary Explore tracers into curated stories?
 
-It does **not** implement picking, an inspector panel, Follow, a
+It does **not** implement an inspector panel, Follow, a
 timeline, delete-one, or persistence. Slice 1 implemented
 identity + selection state. Slice 2 implemented the read-only
-decomposition observation adapter.
+decomposition observation adapter. Slice 3 implemented glyph
+picking and selected highlight.
 
 Predecessors:
 
@@ -51,8 +53,10 @@ environmental operand = StormRelativeEnvironmentalAdvectionField
 stack                = seven prescribed operands
 Explore              = empty session + point release
 Guided live          = NG1 (developer default, not product nav)
-selection            = TracerSelection (headless; App unwired)
-inspector            = TracerInspection adapter (headless; App unwired)
+selection            = TracerSelection (App owner; React mirrors selectedId)
+inspector            = TracerInspection adapter (headless; panel unwired)
+picking              = visible glyph ray test (slot index → tracerId)
+highlight            = TracerScene observes selected occupancy slot
 ```
 
 ---
@@ -150,7 +154,9 @@ composeDemoTracerLab    keep those instances beside Simulation
 ExploreLab / GuidedLab  hold velocityObservation
 TracerScene             observe-only Sphere meshes + optional lines
                         addTracerSlot / clearTracerSlots
-                        no selected highlight
+                        pickVisibleTracer(ray) → slotIndex | null
+                        syncSelectedSlot observes highlight
+                        no product selectedId
 ExploreTracerSession    seeds, late birth, Reset, Clear
                         not a selection owner
 AtmosphericTracerDomain y ≥ 0 crossing after integration
@@ -679,12 +685,31 @@ the tracer test.
 | Nearest projected tracer | Later fallback; more ambiguous |
 | Numeric id entry | Not the laboratory gesture |
 
-Stationary-click gate: same idea as `shouldAcceptPlacementPick`.
-Orbit drag must not select.
+Stationary-click gate: `shouldAcceptStationaryClick`, the same
+movement threshold as Explore placement
+(`DEFAULT_PLACEMENT_CLICK_MOVEMENT_PX`). Orbit drag must not
+select.
 
 Hidden glyphs (`keepInactiveGlyphs === false` and
 `active === false`) are not pickable. Preview marker is not
 pickable.
+
+Implemented picking boundary:
+
+```text
+TracerScene.pickVisibleTracer(WorldRay) → slotIndex | null
+  ray-test visible slot meshes only
+  nearest hit
+  preview excluded (not a slot)
+
+TracerViewport
+  slotIndex → simulation.particles[slotIndex].tracerId
+  onTracerSelect(tracerId)
+  selectedTracerId → occupancyIndex → TracerScene.syncSelectedSlot
+```
+
+`TracerScene` does not own `tracerId`. `TracerViewport` does not
+own `TracerSelection`.
 
 ### 12.1 Placement vs selection precedence
 
@@ -713,9 +738,11 @@ They are different objects. Confirm-release stays the explicit
 confirm control (`18` Slice 4), not the glyph click.
 
 Guided has no placement tool. Glyph pick is the only 3D
-selection gesture there.
+selection gesture there. `onPlacementAttempt` may be undefined;
+pointerup still runs picking.
 
-Do not implement raycasting in this SoT.
+Slice 3 implemented this pointer policy. Inspector panel is
+Slice 4.
 
 ---
 
@@ -1118,13 +1145,13 @@ Slice 2 — model decomposition observation adapter   COMPLETE
           no-decomposition fallback path
           not user-facing
 
-Slice 3 — glyph picking + selected highlight        NEXT
+Slice 3 — glyph picking + selected highlight        COMPLETE
           share world ray; glyph wins over placement
           highlight selected mesh; do not recreate scene
           preview marker not selectable
           inspector panel not required yet
 
-Slice 4 — minimal inspector panel                   pending
+Slice 4 — minimal inspector panel                   NEXT
           Level 1 + Level 2 for the live DEMO model
           empty / no-selection safe
           Explore unlabeled; Guided claim stays in catalog copy
@@ -1238,14 +1265,14 @@ performance / update:        one tracer; sample on step + select
 
 implementation sequence:     1 id + selection lifecycle COMPLETE
                              2 observation adapter COMPLETE
-                             3 pick + highlight NEXT
-                             4 Level 1+2 panel pending
+                             3 pick + highlight COMPLETE
+                             4 Level 1+2 panel NEXT
 
 first browser-visible slice: 3
 
 first "why?" slice:          4
 
-next product slice:          implementation Slice 3
+next product slice:          implementation Slice 4
                              when commanded
                              not catalog UI
                              not Follow
@@ -1256,7 +1283,8 @@ modeling status:             paused
 
 blockers:                    none for this SoT
                              implementation blocked until commanded
-                             Follow blocked until picking exists
+                             Follow blocked until commanded
+                             (picking now exists; Follow is later)
                              delete-one blocked until id + history/
                                scene remap
                              3D curl / derived ω_z blocked by
@@ -1265,20 +1293,20 @@ blockers:                    none for this SoT
                                only by optional contributions
                                (already locked)
 
-production this slice:       Slice 2
-                             TracerInspection adapter
-                             composition-held InspectableVelocityOperands
-                             not picking / inspector panel / Follow
+production this slice:       Slice 3
+                             glyph pick + selected highlight
+                             TracerSelection owned in App
+                             not inspector panel / Follow
 ```
 
 ---
 
 ## 26. STOP
 
-Slices 1–2 are complete: monotonic `tracerId` at birth,
-`TracerSelection`, and a headless `TracerInspection` adapter
-over composition-held operand instances. This SoT does not
-start picking, an inspector panel, Follow, a timeline scrubber,
+Slices 1–3 are complete: monotonic `tracerId` at birth,
+`TracerSelection`, a headless `TracerInspection` adapter, and
+browser-visible glyph picking with selected highlight. This SoT
+does not start an inspector panel, Follow, a timeline scrubber,
 delete-one, persistence, new physics, tilting/stretching,
 thermodynamics, or a continuity solver.
 

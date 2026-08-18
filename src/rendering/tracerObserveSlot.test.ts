@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import tracerSceneSrc from "./TracerScene.ts?raw";
 import {
+  SELECTED_TRACER_GLYPH_COLOR,
   TRACER_COLORS,
   createTracerObserveSlot,
   disposeTracerObserveSlot,
+  syncSelectedTracerGlyph,
 } from "./tracerObserveSlot.js";
 
 function materialHex(mesh: THREE.Mesh): number {
@@ -151,7 +153,37 @@ describe("tracer observe slots (no WebGLRenderer)", () => {
     expect(tracerSceneSrc).toMatch(/this\.clearTracerSlots\(\)/);
     expect(tracerSceneSrc).toMatch(/this\.sharedGeometry\.dispose\(\)/);
     expect(tracerSceneSrc).toMatch(/this\.renderer\.dispose\(\)/);
+    expect(tracerSceneSrc).toMatch(/pickVisibleTracer/);
+    expect(tracerSceneSrc).toMatch(/syncSelectedSlot/);
+    expect(tracerSceneSrc).not.toMatch(/TracerSelection/);
+    expect(tracerSceneSrc).not.toMatch(/selectedId/);
     expect(tracerSceneSrc).not.toMatch(/TracerPedagogy/);
     expect(tracerSceneSrc).not.toMatch(/AtmosphericTracerDomain/);
+  });
+
+  it("highlights the selected glyph and restores occupancy color without replacing the mesh", () => {
+    const sharedGeometry = new THREE.SphereGeometry(1, 8, 6);
+    const first = createTracerObserveSlot(0, sharedGeometry, { trails: false });
+    const second = createTracerObserveSlot(1, sharedGeometry, { trails: false });
+    const firstMesh = first.mesh;
+    const secondMesh = second.mesh;
+
+    expect(materialHex(firstMesh)).toBe(TRACER_COLORS[0]);
+    expect(materialHex(secondMesh)).toBe(TRACER_COLORS[1]);
+
+    syncSelectedTracerGlyph(firstMesh, 0, true);
+    expect(materialHex(firstMesh)).toBe(SELECTED_TRACER_GLYPH_COLOR);
+    expect(materialHex(secondMesh)).toBe(TRACER_COLORS[1]);
+
+    syncSelectedTracerGlyph(firstMesh, 0, false);
+    syncSelectedTracerGlyph(secondMesh, 1, true);
+    expect(first.mesh).toBe(firstMesh);
+    expect(second.mesh).toBe(secondMesh);
+    expect(materialHex(firstMesh)).toBe(TRACER_COLORS[0]);
+    expect(materialHex(secondMesh)).toBe(SELECTED_TRACER_GLYPH_COLOR);
+
+    disposeTracerObserveSlot(first);
+    disposeTracerObserveSlot(second);
+    sharedGeometry.dispose();
   });
 });

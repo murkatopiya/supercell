@@ -32,6 +32,7 @@ import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointRelease
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
+import { TracerSelection } from "../interaction/TracerSelection.js";
 import type { Simulation } from "../simulation/Simulation.js";
 import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 
@@ -100,6 +101,18 @@ export function App() {
   const [pendingSeed, setPendingSeed] = useState<TracerSeedPosition | null>(
     null,
   );
+  const selectionRef = useRef<TracerSelection | null>(null);
+  if (selectionRef.current === null) {
+    selectionRef.current = new TracerSelection();
+  }
+  const selection = selectionRef.current;
+  const [selectedTracerId, setSelectedTracerId] = useState<number | null>(
+    null,
+  );
+
+  const mirrorSelection = () => {
+    setSelectedTracerId(selection.selectedId);
+  };
 
   const handleReset = () => {
     if (lab.kind === "explore") {
@@ -120,6 +133,8 @@ export function App() {
     if (lab.kind === "explore") {
       return;
     }
+    selection.clear();
+    mirrorSelection();
     setLab(createExploreLab(sceneSlotsRef.current!));
     setAltitudeM(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
     setPlacementEnabled(false);
@@ -131,6 +146,8 @@ export function App() {
     if (lab.kind === "guided") {
       return;
     }
+    selection.clear();
+    mirrorSelection();
     setLab(createGuidedLab());
     setPendingSeed(null);
     setPlacementEnabled(false);
@@ -220,6 +237,8 @@ export function App() {
               }}
               onClear={() => {
                 explore.orchestration.clear();
+                selection.clear();
+                mirrorSelection();
                 setPendingSeed(null);
               }}
             />
@@ -239,6 +258,11 @@ export function App() {
             pendingReleasePreview={
               lab.kind === "explore" ? pendingSeed : null
             }
+            selectedTracerId={selectedTracerId}
+            onTracerSelect={(tracerId) => {
+              selection.select(tracerId);
+              mirrorSelection();
+            }}
             onPlacementAttempt={
               explore === null
                 ? undefined

@@ -8,6 +8,11 @@ import type { TracerSeedPosition } from "../../simulation/createTracersFromSeeds
 import type { Vec3 } from "../../core/math/Vec3.js";
 import type { TracerTimeScale } from "./TracerRuntimeControls.js";
 import { pointerNdcFromClientRect } from "./pointerNdcFromClientRect.js";
+import {
+  occupancyIndexForTracerId,
+  resolveTracerPointerUp,
+  tracerIdForSlot,
+} from "./resolveTracerPointerUp.js";
 
 export interface TracerViewportHandle {
   addTracerSlot(): void;
@@ -40,6 +45,14 @@ export interface TracerViewportProps {
     direction: Vec3,
     pointerMovementPx: number,
   ) => void;
+  /**
+   * Occupancy highlight observation. TracerScene does not own selectedId.
+   */
+  selectedTracerId?: number | null;
+  /**
+   * Glyph pick → stable tracerId. Guided has this without placement.
+   */
+  onTracerSelect?: (tracerId: number) => void;
   /** Imperative observe-slot / preview access. Does not recreate the scene. */
   sceneHandleRef?: Ref<TracerViewportHandle | null>;
 }
@@ -58,6 +71,8 @@ export function TracerViewport({
   resetEpoch,
   pendingReleasePreview = null,
   onPlacementAttempt,
+  selectedTracerId = null,
+  onTracerSelect,
   sceneHandleRef,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -70,12 +85,16 @@ export function TracerViewport({
     pendingReleasePreview,
   );
   const onPlacementAttemptRef = useRef(onPlacementAttempt);
+  const onTracerSelectRef = useRef(onTracerSelect);
+  const selectedTracerIdRef = useRef<number | null>(selectedTracerId);
   const localSceneHandleRef = useRef<TracerViewportHandle | null>(null);
 
   pausedRef.current = paused;
   timeScaleRef.current = timeScale;
   pendingPreviewRef.current = pendingReleasePreview;
   onPlacementAttemptRef.current = onPlacementAttempt;
+  onTracerSelectRef.current = onTracerSelect;
+  selectedTracerIdRef.current = selectedTracerId;
 
   useEffect(() => {
     resetPendingRef.current = true;
@@ -129,6 +148,12 @@ export function TracerViewport({
         scene.syncFromPathHistory(pathHistory);
       }
       scene.syncReleasePreview(pendingPreviewRef.current);
+      scene.syncSelectedSlot(
+        occupancyIndexForTracerId(
+          simulation.particles,
+          selectedTracerIdRef.current,
+        ),
+      );
     };
 
     resize();
@@ -162,10 +187,6 @@ export function TracerViewport({
       ) {
         return;
       }
-      const attempt = onPlacementAttemptRef.current;
-      if (attempt === undefined) {
-        return;
-      }
       const movement = Math.hypot(
         event.clientX - down.x,
         event.clientY - down.y,
@@ -179,10 +200,31 @@ export function TracerViewport({
         return;
       }
       const ray = scene.worldRayFromNdc(ndc.x, ndc.y);
-      if (ray === null) {
+      const hitSlotIndex =
+        ray === null ? null : scene.pickVisibleTracer(ray);
+      const decision = resolveTracerPointerUp({
+        pointerMovementPx: movement,
+        hitSlotIndex,
+        placementAvailable: onPlacementAttemptRef.current !== undefined,
+        ray,
+      });
+      if (decision.action === "select") {
+        const tracerId = tracerIdForSlot(
+          simulation.particles,
+          decision.slotIndex,
+        );
+        if (tracerId !== undefined) {
+          onTracerSelectRef.current?.(tracerId);
+        }
         return;
       }
-      attempt(ray.origin, ray.direction, movement);
+      if (decision.action === "placement") {
+        onPlacementAttemptRef.current?.(
+          decision.origin,
+          decision.direction,
+          decision.pointerMovementPx,
+        );
+      }
     };
 
     const onPointerCancel = (event: PointerEvent) => {

@@ -7,6 +7,7 @@ import { syncTrailLine } from "./trailGeometry.js";
 import {
   createTracerObserveSlot,
   disposeTracerObserveSlot,
+  syncSelectedTracerGlyph,
   type TracerObserveSlot,
 } from "./tracerObserveSlot.js";
 import {
@@ -19,6 +20,7 @@ import {
   worldRayFromCameraNdc,
   type WorldRay,
 } from "./worldRayFromCameraNdc.js";
+import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 
@@ -64,6 +66,7 @@ export class TracerScene {
   private readonly controls: OrbitControls;
   private readonly slots: TracerObserveSlot[] = [];
   private preview: THREE.Mesh | undefined;
+  private selectedSlotIndex: number | null = null;
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
   private readonly trailsEnabled: boolean;
@@ -154,6 +157,7 @@ export class TracerScene {
       disposeTracerObserveSlot(slot);
     }
     this.slots.length = 0;
+    this.selectedSlotIndex = null;
   }
 
   /**
@@ -182,6 +186,39 @@ export class TracerScene {
    */
   worldRayFromNdc(ndcX: number, ndcY: number): WorldRay | null {
     return worldRayFromCameraNdc(this.camera, ndcX, ndcY);
+  }
+
+  /**
+   * Nearest visible tracer glyph along a world ray.
+   * Slot index is occupancy layout, not tracerId.
+   * Preview marker is not a candidate.
+   */
+  pickVisibleTracer(ray: WorldRay): number | null {
+    return pickVisibleTracerSlotIndex(this.slots, ray);
+  }
+
+  /**
+   * Observe which occupancy slot is highlighted.
+   * Product selection stays outside TracerScene.
+   */
+  syncSelectedSlot(slotIndex: number | null): void {
+    const previous = this.selectedSlotIndex;
+    if (previous === slotIndex) {
+      return;
+    }
+    if (previous !== null) {
+      const previousSlot = this.slots[previous];
+      if (previousSlot !== undefined) {
+        syncSelectedTracerGlyph(previousSlot.mesh, previous, false);
+      }
+    }
+    this.selectedSlotIndex = slotIndex;
+    if (slotIndex !== null) {
+      const nextSlot = this.slots[slotIndex];
+      if (nextSlot !== undefined) {
+        syncSelectedTracerGlyph(nextSlot.mesh, slotIndex, true);
+      }
+    }
   }
 
   setSize(width: number, height: number): void {

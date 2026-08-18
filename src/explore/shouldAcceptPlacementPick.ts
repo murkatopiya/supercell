@@ -1,4 +1,10 @@
-export const DEFAULT_PLACEMENT_CLICK_MOVEMENT_PX = 5;
+import {
+  DEFAULT_STATIONARY_CLICK_MOVEMENT_PX,
+  shouldAcceptStationaryClick,
+} from "../interaction/shouldAcceptStationaryClick.js";
+
+export const DEFAULT_PLACEMENT_CLICK_MOVEMENT_PX =
+  DEFAULT_STATIONARY_CLICK_MOVEMENT_PX;
 
 /**
  * Minimum OrbitControls coexistence: inspect-orbit stays enabled.
@@ -13,15 +19,10 @@ export function shouldAcceptPlacementPick(options: {
   if (!options.placementEnabled) {
     return false;
   }
-  const max =
-    options.maxClickMovementPx ?? DEFAULT_PLACEMENT_CLICK_MOVEMENT_PX;
-  if (!Number.isFinite(options.pointerMovementPx) || !Number.isFinite(max)) {
-    return false;
-  }
-  if (!(max >= 0) || options.pointerMovementPx < 0) {
-    return false;
-  }
-  return options.pointerMovementPx <= max;
+  return shouldAcceptStationaryClick({
+    pointerMovementPx: options.pointerMovementPx,
+    maxClickMovementPx: options.maxClickMovementPx,
+  });
 }
 
 export function pointerMovementPx(
