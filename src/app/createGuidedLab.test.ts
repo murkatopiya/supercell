@@ -265,6 +265,8 @@ describe("Guided Explore isolation", () => {
       DEMO_SCENARIO.simulation.downwardPathlineSeeds[0],
     );
     expect(guided.simulation).not.toBe(explore.simulation);
+    expect("visualAirflowPopulation" in guided).toBe(false);
+    expect(explore.visualAirflowPopulation.occupantCount).toBeGreaterThan(0);
     expect(explore.simulation.particles[0]!.position).toEqual({
       x: 1,
       y: 2,

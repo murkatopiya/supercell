@@ -98,6 +98,21 @@ export class VisualAirflowPopulation {
   }
 
   /**
+   * True when this population samples the given VelocityField instance.
+   * Identity, not an equal rebuilt field.
+   */
+  samplesField(field: VelocityField): boolean {
+    return this.field === field;
+  }
+
+  /**
+   * True when this population uses the given Integrator instance.
+   */
+  usesIntegrator(integrator: Integrator): boolean {
+    return this.integrator === integrator;
+  }
+
+  /**
    * Copied snapshots. Mutating the result does not affect slots.
    */
   occupants(): readonly VisualAirflowOccupant[] {
@@ -105,6 +120,39 @@ export class VisualAirflowPopulation {
       position: copyVec3(slot.position),
       age: slot.age,
     }));
+  }
+
+  /**
+   * Write current slot positions into a caller-owned xyz buffer.
+   * Does not allocate occupant snapshots. Does not expose slots.
+   */
+  writePositionsTo(out: Float32Array): void {
+    const needed = this.slots.length * 3;
+    if (out.length < needed) {
+      throw new VisualAirflowPopulationError(
+        "position buffer must hold occupantCount * 3 values",
+      );
+    }
+    for (let i = 0; i < this.slots.length; i++) {
+      const position = this.slots[i]!.position;
+      const offset = i * 3;
+      out[offset] = position.x;
+      out[offset + 1] = position.y;
+      out[offset + 2] = position.z;
+    }
+  }
+
+  /**
+   * Restore deterministic initial lattice positions, staggered ages,
+   * and generation 0. Does not replace the field or integrator.
+   */
+  reset(): void {
+    for (let i = 0; i < this.slots.length; i++) {
+      const slot = this.slots[i]!;
+      slot.generation = 0;
+      slot.position = this.seedPosition(i, 0);
+      slot.age = this.initialAge(i);
+    }
   }
 
   /**

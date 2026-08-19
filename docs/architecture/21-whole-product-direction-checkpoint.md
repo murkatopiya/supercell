@@ -4,15 +4,18 @@
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
 **Implementation:** perceptual airflow Slice 1 (headless)
-COMPLETE in `22`. Browser wiring NOT STARTED. Other §13
-candidates remain unchosen.
+and Slice 2 (Explore browser exposure) COMPLETE in `22`.
+Guided population NOT STARTED. Other §13 candidates remain
+unchosen.
 
 This document remains the whole-product capability map. It did
 not pick a winner among §13 candidates. Candidate 1 (perceptual
 airflow) is specified as architecture exploration
 `docs/architecture/22-perceptual-airflow-architecture.md`.
-Headless visual population (Slice 1) now exists there; browser
-wiring has not started. Other §13 candidates remain unchosen.
+Headless visual population (Slice 1) and first Explore
+browser exposure (Slice 2) now exist there. Guided
+population has not started. Other §13 candidates remain
+unchosen.
 
 This document did **not** change production code when written.
 It does **not** create `ROADMAP.md`.
@@ -205,7 +208,10 @@ What is actually on screen:
 - Inspector panel;
 - Guided teaching annotations;
 - Explore placement controls and a pending-release preview
-  marker (not a particle).
+  marker (not a particle);
+- Explore background visual airflow (Slice 2): hundreds of
+  non-pickable `THREE.Points` markers advected by the same
+  `V_total` as scientific tracers. Guided has no population.
 
 Not present, and not to be attributed:
 
@@ -217,7 +223,7 @@ Not present, and not to be attributed:
 - product pan / target translation / reset-view control;
 - timeline scrubber;
 - local SRH card;
-- population / continuous seeding visualization.
+- Guided population / population hide toggle.
 
 `CONCEPT` §4's other artificial senses are not started.
 
@@ -966,7 +972,8 @@ continuity:                   YELLOW
 
 perceptual surface:           glyphs, trails, grid, hodograph,
                               Inspector, Guided copy
-                              not flow-as-structure
+                              Explore background Points (Slice 2)
+                              Guided population not live
 
 P1:                           playtest finding
                               orbit/zoom around fixed target
@@ -1020,9 +1027,9 @@ dataset evolution:            important boundary
                               exploration candidate
                               synthetic lab remains valuable
 
-next implementation branch:   Candidate 1 Slice 1 headless
-                              COMPLETE in `22`
-                              browser / Explore / Guided wiring
+next implementation branch:   Candidate 1 Slice 1–2 COMPLETE
+                              in `22` (Explore background live)
+                              Guided population / camera pan
                               NOT STARTED
                               other §13 candidates still open
 physics:                      PAUSED
@@ -1037,13 +1044,14 @@ ROADMAP.md:                   not created
 PHYSICS PAUSED
 ```
 
-Candidate 1 architecture lives in `22`. Slice 1 of that
-direction is a headless visual population; this checkpoint
-does not start browser wiring or other §13 candidates.
+Candidate 1 architecture lives in `22`. Slice 1 (headless)
+and Slice 2 (Explore browser exposure) are complete there.
+Guided population, camera pan, and other §13 candidates
+are not started.
 
 Do not treat opening `22` as selecting Candidates 2–7.
 Do not write a Cursor implementation prompt.
-Do not implement pan, Follow, population particles, trail
+Do not implement pan, Follow, Guided population, trail
 caps, RK2 switch, streamfunctions, or datasets because this
 document exists.
 

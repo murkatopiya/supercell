@@ -15,7 +15,11 @@ import {
   TracerViewport,
   type TracerViewportHandle,
 } from "../ui/tracer/TracerViewport.js";
-import { createExploreLab, type ExploreLab } from "./createExploreLab.js";
+import {
+  createExploreLab,
+  resetExploreLab,
+  type ExploreLab,
+} from "./createExploreLab.js";
 import {
   createGuidedLab,
   DEFAULT_GUIDED_EXPERIMENT_ID,
@@ -124,7 +128,7 @@ export function App() {
 
   const handleReset = () => {
     if (lab.kind === "explore") {
-      lab.orchestration.reset();
+      resetExploreLab(lab);
       setPendingSeed(null);
     } else {
       resetGuidedLab(lab);
@@ -286,6 +290,9 @@ export function App() {
               lab.kind === "explore" ? pendingSeed : null
             }
             selectedTracerId={selectedTracerId}
+            visualAirflowPopulation={
+              lab.kind === "explore" ? lab.visualAirflowPopulation : null
+            }
             onTracerSelect={(tracerId) => {
               selection.select(tracerId);
               mirrorSelection();

@@ -5,6 +5,7 @@ import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
 import appSrc from "../app/App.tsx?raw";
 import createGuidedLabSrc from "../app/createGuidedLab.ts?raw";
+import advanceLaboratoryFixedStepSrc from "../ui/tracer/advanceLaboratoryFixedStep.ts?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import tracerSceneSrc from "./TracerScene.ts?raw";
 import trailGeometrySrc from "./trailGeometry.ts?raw";
@@ -154,8 +155,10 @@ describe("trail primitive stays pedagogy-agnostic; live wiring is optional", () 
     expect(tracerViewportSrc).toMatch(/trails:\s*pathHistory !== null/);
     expect(tracerViewportSrc).toMatch(/keepInactiveGlyphs/);
     expect(tracerViewportSrc).toMatch(/syncFromPathHistory/);
-    expect(tracerViewportSrc).toMatch(/recordAfterStep/);
-    expect(tracerViewportSrc).toMatch(/pathHistory\?\.recordAfterStep/);
+    expect(tracerViewportSrc).toMatch(/advanceLaboratoryFixedStep/);
+    expect(advanceLaboratoryFixedStepSrc).toMatch(
+      /pathHistory\?\.recordAfterStep/,
+    );
     expect(createGuidedLabSrc).toMatch(/createDemoPathHistory/);
     expect(appSrc).toMatch(/pathHistory/);
   });

@@ -227,10 +227,10 @@ describe("shared inspector observation wiring", () => {
       /if \(consumed\.steps > 0\) \{\s*onSimulationAdvancedRef\.current\?\.\(\);/s,
     );
     expect(tracerViewportSrc).toMatch(
-      /}, \[simulation, timestep, pathHistory, keepInactiveGlyphs\]\);/,
+      /simulation,\s*timestep,\s*pathHistory,\s*keepInactiveGlyphs,\s*visualAirflowPopulation/,
     );
     expect(tracerViewportSrc).not.toMatch(
-      /\[simulation, timestep, pathHistory, keepInactiveGlyphs, onSimulationAdvanced/,
+      /keepInactiveGlyphs, visualAirflowPopulation, onSimulationAdvanced/,
     );
     expect(tracerViewportSrc).not.toMatch(/inspection/);
   });

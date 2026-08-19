@@ -66,6 +66,7 @@ export class TracerScene {
   private readonly controls: OrbitControls;
   private readonly slots: TracerObserveSlot[] = [];
   private preview: THREE.Mesh | undefined;
+  private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
@@ -158,6 +159,27 @@ export class TracerScene {
     }
     this.slots.length = 0;
     this.selectedSlotIndex = null;
+  }
+
+  /**
+   * Attach an observe-only visual-airflow object. Not a tracer slot,
+   * not pickable via pickVisibleTracer, and not a preview marker.
+   */
+  attachVisualAirflow(object: THREE.Object3D): void {
+    this.detachVisualAirflow();
+    this.visualAirflowObject = object;
+    this.scene.add(object);
+  }
+
+  /**
+   * Remove the attached visual-airflow object. Does not dispose it.
+   */
+  detachVisualAirflow(): void {
+    if (this.visualAirflowObject === undefined) {
+      return;
+    }
+    this.scene.remove(this.visualAirflowObject);
+    this.visualAirflowObject = undefined;
   }
 
   /**
@@ -266,6 +288,7 @@ export class TracerScene {
 
   dispose(): void {
     this.controls.dispose();
+    this.detachVisualAirflow();
     this.clearTracerSlots();
     if (this.preview !== undefined) {
       this.scene.remove(this.preview);

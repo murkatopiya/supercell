@@ -4,7 +4,9 @@ import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestrat
 import { ExplorePointReleaseTool } from "../explore/ExplorePointReleaseTool.js";
 import { ExploreTracerSession } from "../explore/ExploreTracerSession.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
+import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
+import { DEMO_VISUAL_AIRFLOW_POPULATION } from "./demoVisualAirflowFixture.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import type { Simulation } from "../simulation/Simulation.js";
 
@@ -16,6 +18,7 @@ export interface ExploreLab {
   readonly tool: ExplorePointReleaseTool;
   readonly orchestration: ExplorePointReleaseOrchestration;
   readonly velocityObservation: InspectableVelocityOperands;
+  readonly visualAirflowPopulation: VisualAirflowPopulation;
 }
 
 /**
@@ -32,12 +35,14 @@ export function composeExploreTracerSimulation(
  * Enter Explore: zero particles, zero history lanes, empty session.
  * Scene slots start at 0 when TracerViewport mounts with this cohort.
  * velocityObservation holds the SAME operand instances Simulation integrates.
+ * Visual airflow samples that same total field with the same Euler instance.
  */
 export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
-  const { simulation, velocityObservation } = composeDemoTracersWithObservation(
-    IntegrationFrame.StormRelativeLaboratory,
-    [],
-  );
+  const { simulation, velocityObservation, integrator } =
+    composeDemoTracersWithObservation(
+      IntegrationFrame.StormRelativeLaboratory,
+      [],
+    );
   const pathHistory = new TracerPathHistory(0);
   const session = new ExploreTracerSession(simulation, pathHistory);
   const tool = new ExplorePointReleaseTool();
@@ -45,6 +50,11 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
     session,
     tool,
     sceneSlots,
+  );
+  const visualAirflowPopulation = new VisualAirflowPopulation(
+    velocityObservation.total,
+    integrator,
+    DEMO_VISUAL_AIRFLOW_POPULATION,
   );
   return {
     kind: "explore",
@@ -54,5 +64,15 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
     tool,
     orchestration,
     velocityObservation,
+    visualAirflowPopulation,
   };
+}
+
+/**
+ * In-place Explore Reset: scientific cohort replay plus deterministic
+ * visual-population reseed. Same lab, same canonical field.
+ */
+export function resetExploreLab(lab: ExploreLab): void {
+  lab.orchestration.reset();
+  lab.visualAirflowPopulation.reset();
 }

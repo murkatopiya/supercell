@@ -51,6 +51,8 @@ export type DemoVelocityContributionKey =
 export interface DemoObservedTracerSimulation {
   readonly simulation: Simulation;
   readonly velocityObservation: InspectableVelocityOperands;
+  /** Same Euler instance Simulation integrates. Not a second policy. */
+  readonly integrator: EulerIntegrator;
 }
 
 function environmentalOperand(
@@ -155,14 +157,16 @@ export function composeDemoTracersWithObservation(
   const velocityObservation = demoInspectableVelocityOperands(
     composeDemoTracerFields(integrationFrame),
   );
+  const integrator = new EulerIntegrator();
   return {
     simulation: new Simulation(
       velocityObservation.total,
-      new EulerIntegrator(),
+      integrator,
       particles,
       { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN },
     ),
     velocityObservation,
+    integrator,
   };
 }
 

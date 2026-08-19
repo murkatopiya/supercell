@@ -399,3 +399,47 @@ describe("VisualAirflowPopulation mutation and time", () => {
     );
   });
 });
+
+describe("VisualAirflowPopulation reset and observation", () => {
+  it("reset restores deterministic initial positions and ages without replacing the field", () => {
+    const field = new ConstantVelocityField({ x: 10, y: 0, z: 0 });
+    const integrator = new EulerIntegrator();
+    const population = createPopulation(field, cubeConfig({ count: 4 }), integrator);
+    const initial = population.occupants();
+    population.step(0.5, 0);
+    expect(population.occupants()).not.toEqual(initial);
+
+    population.reset();
+    expect(population.occupants()).toEqual(initial);
+    expect(population.samplesField(field)).toBe(true);
+    expect(population.usesIntegrator(integrator)).toBe(true);
+    expect(population.occupantCount).toBe(4);
+  });
+
+  it("samplesField is instance identity, not an equal rebuilt field", () => {
+    const field = new ConstantVelocityField({ x: 1, y: 0, z: 0 });
+    const population = createPopulation(field);
+    expect(population.samplesField(field)).toBe(true);
+    expect(
+      population.samplesField(new ConstantVelocityField({ x: 1, y: 0, z: 0 })),
+    ).toBe(false);
+  });
+
+  it("writePositionsTo fills a caller buffer without exposing slots", () => {
+    const population = createPopulation(undefined, cubeConfig({ count: 2 }));
+    const occupants = population.occupants();
+    const buffer = new Float32Array(6);
+    population.writePositionsTo(buffer);
+    expect(buffer[0]).toBeCloseTo(occupants[0]!.position.x, 5);
+    expect(buffer[1]).toBeCloseTo(occupants[0]!.position.y, 5);
+    expect(buffer[2]).toBeCloseTo(occupants[0]!.position.z, 5);
+    expect(buffer[3]).toBeCloseTo(occupants[1]!.position.x, 5);
+    expect(buffer[4]).toBeCloseTo(occupants[1]!.position.y, 5);
+    expect(buffer[5]).toBeCloseTo(occupants[1]!.position.z, 5);
+    buffer[0] = 99;
+    expect(population.occupants()[0]!.position.x).not.toBe(99);
+    expect(() => population.writePositionsTo(new Float32Array(5))).toThrow(
+      VisualAirflowPopulationError,
+    );
+  });
+});

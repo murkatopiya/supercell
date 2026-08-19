@@ -1,11 +1,14 @@
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
+import { VisualAirflowScene } from "../../rendering/VisualAirflowScene.js";
 import { consumeFixedTimesteps } from "../../simulation/consumeFixedTimesteps.js";
 import type { TracerPathHistory } from "../../simulation/TracerPathHistory.js";
 import { simulationElapsedFromWall } from "../../simulation/simulationElapsedFromWall.js";
 import type { Simulation } from "../../simulation/Simulation.js";
 import type { TracerSeedPosition } from "../../simulation/createTracersFromSeeds.js";
 import type { Vec3 } from "../../core/math/Vec3.js";
+import type { VisualAirflowPopulation } from "../../visualization/VisualAirflowPopulation.js";
+import { advanceLaboratoryFixedStep } from "./advanceLaboratoryFixedStep.js";
 import type { TracerTimeScale } from "./TracerRuntimeControls.js";
 import { pointerNdcFromClientRect } from "./pointerNdcFromClientRect.js";
 import {
@@ -50,6 +53,11 @@ export interface TracerViewportProps {
    */
   selectedTracerId?: number | null;
   /**
+   * Explore background airflow. Guided omits this. Not scientific
+   * occupancy and not a TracerScene slot.
+   */
+  visualAirflowPopulation?: VisualAirflowPopulation | null;
+  /**
    * Glyph pick → stable tracerId. Guided has this without placement.
    */
   onTracerSelect?: (tracerId: number) => void;
@@ -78,6 +86,7 @@ export function TracerViewport({
   pendingReleasePreview = null,
   onPlacementAttempt,
   selectedTracerId = null,
+  visualAirflowPopulation = null,
   onTracerSelect,
   onSimulationAdvanced,
   sceneHandleRef,
@@ -135,6 +144,13 @@ export function TracerViewport({
       keepInactiveGlyphs,
     });
     sceneRef.current = scene;
+    const visualAirflowScene =
+      visualAirflowPopulation === null
+        ? null
+        : new VisualAirflowScene(visualAirflowPopulation.occupantCount);
+    if (visualAirflowScene !== null) {
+      scene.attachVisualAirflow(visualAirflowScene.object);
+    }
     let accumulator = 0;
     let frameId = 0;
     let previousMs = performance.now();
@@ -155,6 +171,9 @@ export function TracerViewport({
       scene.syncFromParticles(simulation.particles);
       if (pathHistory) {
         scene.syncFromPathHistory(pathHistory);
+      }
+      if (visualAirflowScene !== null && visualAirflowPopulation !== null) {
+        visualAirflowScene.syncFromPopulation(visualAirflowPopulation);
       }
       scene.syncReleasePreview(pendingPreviewRef.current);
       scene.syncSelectedSlot(
@@ -279,8 +298,10 @@ export function TracerViewport({
       );
       accumulator = consumed.accumulator;
       for (let i = 0; i < consumed.steps; i++) {
-        simulation.step(timestep);
-        pathHistory?.recordAfterStep(simulation.particles);
+        advanceLaboratoryFixedStep(simulation, timestep, {
+          pathHistory,
+          visualAirflowPopulation,
+        });
       }
       if (consumed.steps > 0) {
         onSimulationAdvancedRef.current?.();
@@ -301,9 +322,17 @@ export function TracerViewport({
       canvas.removeEventListener("pointerup", onPointerUp);
       canvas.removeEventListener("pointercancel", onPointerCancel);
       sceneRef.current = null;
+      scene.detachVisualAirflow();
+      visualAirflowScene?.dispose();
       scene.dispose();
     };
-  }, [simulation, timestep, pathHistory, keepInactiveGlyphs]);
+  }, [
+    simulation,
+    timestep,
+    pathHistory,
+    keepInactiveGlyphs,
+    visualAirflowPopulation,
+  ]);
 
   return (
     <div className="tracer-viewport">

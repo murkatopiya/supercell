@@ -1,10 +1,11 @@
 # Perceptual Airflow / Flow-as-Structure Architecture
 
-**Status:** architecture SoT. Slice 1 (headless visual
-population) COMPLETE. Browser wiring NOT STARTED.
+**Status:** architecture SoT. Slice 1 COMPLETE. Slice 2
+(first Explore browser exposure) COMPLETE. Guided
+population NOT STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** PAUSED
-**Implementation:** Slice 1 COMPLETE; Slice 2 NOT STARTED
+**Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE
 **Decision:** earned for a narrow first perceptual direction;
 other representation/runtime alternatives remain recorded
 
@@ -26,7 +27,9 @@ Current implementation:
 
 ```text
 Slice 1  headless VisualAirflowPopulation   COMPLETE
-Slice 2  browser / labs / TracerScene       NOT STARTED
+Slice 2  Explore browser exposure           COMPLETE
+Guided population                           NOT STARTED
+camera pan                                  NOT STARTED
 ```
 
 Verified against current `main` after `21`:
@@ -104,16 +107,19 @@ Typical occupancy:
 Guided inflow-to-upper-outflow    2 curated tracers
 Guided downdraft-path-to-ground   1
 Guided near-ground-outflow        1
-Explore default                   0 until the user releases
+Explore scientific default        0 until the user releases
+Explore visual airflow            256 ephemeral markers (Slice 2)
 ```
 
-The empty Explore lab is an honest empty probe session and a
-perceptual failure: the storm-relative velocity field is fully
-defined, and almost nothing of it is visible.
+Before Slice 2 the empty Explore lab was an honest empty
+probe session and a perceptual failure. Slice 2 shows a
+background picture of `V_total`; scientific occupancy can
+still be zero. Guided still has no population.
 
 The gap is **not** missing operands. The seven-operand sum
-already exists. The gap is that rendering observes a handful of
-scientific occupants of that sum.
+already exists. Slice 2 is the first Explore picture of that
+sum as a spatial structure; it is not yet a claim that every
+mechanism region is readable from the default camera.
 
 ---
 
@@ -1040,7 +1046,9 @@ dataset:                  depend on VelocityField only
 unsteady:                 particles remain valid
 physics:                  PAUSED
 implementation:           Slice 1 COMPLETE
-                          browser wiring NOT STARTED
+                          Slice 2 Explore browser COMPLETE
+                          Guided population NOT STARTED
+                          camera pan NOT STARTED
 ```
 
 ---
@@ -1048,22 +1056,23 @@ implementation:           Slice 1 COMPLETE
 ## 28. STOP (architecture exploration)
 
 The architecture decision in this file did not by itself
-authorize implementation. Slice 1 was later commanded and is
-recorded in §29.
+authorize implementation. Slice 1 is recorded in §29.
+Slice 2 is recorded in §30.
 
 ```text
 PHYSICS PAUSED
 SLICE 1 HEADLESS POPULATION     COMPLETE
-BROWSER RENDERING               NOT STARTED
-EXPLORE / GUIDED WIRING         NOT STARTED
+SLICE 2 EXPLORE BROWSER         COMPLETE
+GUIDED POPULATION               NOT STARTED
 POPULATION UI / TOGGLE          NOT STARTED
 CAMERA PAN / RESET              NOT STARTED
 FOLLOW                          NOT STARTED
 SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
-Do not start Slice 2, streamlines, shaders, GPU code, camera
-pan, Follow, or a dataset adapter because Slice 1 exists.
+Do not start Guided population, streamlines, shaders, GPU
+code, camera pan, Follow, or a dataset adapter because
+Slice 2 exists. First user browser playtest is next.
 
 ---
 
@@ -1168,4 +1177,96 @@ scientific tracer P2
 physics operands / constants / envelopes
 ```
 
-Next: Slice 2 browser exposure, if commanded.
+Slice 2 browser exposure is recorded in §30.
+
+---
+
+## 30. Slice 2 — Explore background rendering     COMPLETE
+
+First live Explore exposure of the headless population.
+
+Ownership:
+
+```text
+ExploreLab.visualAirflowPopulation
+  created with the lab
+  destroyed with the lab
+  not inside Simulation / ExploreTracerSession /
+    TracerSelection / TracerScene
+```
+
+Canonical field (one composition pass):
+
+```text
+composeDemoTracersWithObservation
+  velocityObservation.total  →  Simulation
+  same instance              →  VisualAirflowPopulation
+  same EulerIntegrator instance
+```
+
+GuidedLab has no visual population. App passes
+`lab.visualAirflowPopulation` only when `lab.kind === "explore"`.
+
+DEMO visualization fixture
+(`src/app/demoVisualAirflowFixture.ts`), not physics:
+
+```text
+count      256
+maxAge     80 s
+jitterSeed 1
+volume     min (-6000, 0, -6000)
+           max ( 8000, 9000,  7000) m
+```
+
+Renderer:
+
+```text
+VisualAirflowScene
+  THREE.Points + fixed BufferGeometry
+  observe-only syncFromPopulation
+  not a TracerScene slot
+  raycast disabled; pickVisibleTracer uses scientific slots only
+```
+
+Marker styling (`src/rendering/visualAirflowAppearance.ts`)
+is perceptual encoding only (muted slate, smaller than the
+150 m scientific sphere, no trail, no selected highlight).
+
+Stepping: `advanceLaboratoryFixedStep` captures
+`t0 = simulation.clock.time`, then `Simulation.step(dt)`,
+then `visualAirflowPopulation.step(dt, t0)`. Pause and
+timeScale go through the existing fixed-step accumulator.
+No second visual timeScale.
+
+Reset (`resetExploreLab`): scientific cohort replay as
+today, plus `VisualAirflowPopulation.reset()` to the
+deterministic fixture. Same lab, same `V_total`.
+
+Clear: scientific tracers / selection / Inspector empty;
+background population unchanged.
+
+Explore ↔ Guided: fresh labs; population is not carried.
+
+Narrow observation API: `writePositionsTo(Float32Array)`
+avoids copying occupant snapshots every frame. `occupants()`
+still returns copies. Internal slots stay encapsulated.
+
+First Explore browser notes (implementation observation,
+not physics SoT): empty Explore is no longer a blank
+laboratory; markers read as a faint volumetric dusting,
+not a mass/cloud; a released scientific glyph stays larger
+and distinct; Guided still shows only curated tracers.
+From the default overview pose, occupancy and height fill
+are obvious; named mechanism regions (inflow, rotation,
+upper outflow, downdraft, NG) are not yet clearly separable
+by eye. Camera pan remains P1 / not this slice.
+
+Not in Slice 2:
+
+```text
+Guided population / hide toggle
+background trails / speed or operand color
+camera pan / Follow / scientific P2
+RK2 / new physics
+```
+

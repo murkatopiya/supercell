@@ -44,6 +44,10 @@ describe("createExploreLab", () => {
     expect(lab.tool.placementEnabled).toBe(false);
     expect(lab.tool.altitudeM).toBe(1000);
     expect(lab.velocityObservation.parts).toHaveLength(7);
+    expect(lab.visualAirflowPopulation.occupantCount).toBeGreaterThan(0);
+    expect(
+      lab.visualAirflowPopulation.samplesField(lab.velocityObservation.total),
+    ).toBe(true);
   });
 
   it("samples the same seven-operand field as Guided StormRelativeLaboratory", () => {
