@@ -6,6 +6,11 @@ loop; lift the physics pause for design / model development
 **Physics:** RESUMED FOR DESIGN / MODEL DEVELOPMENT
 **Implementation:** none. Docs-only. Production code
 unchanged. Tilting / stretching implementation NOT STARTED.
+Current modeling-direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
+`25` ranks T1 diagnostic tendency as the next design
+target. This file remains the perceptual-loop / pause-lift
+checkpoint. It is not the tilting design SoT.
 **Decision:** the current perceptual question is answered
 enough to proceed. That is not “visualization complete.”
 Comets are a provisional `V_total` representation, not a
@@ -416,7 +421,8 @@ TILTING / STRETCHING
 
 That direction is not an implementation command.
 
-Next allowed task after this checkpoint:
+Next allowed task after this checkpoint (commanded here;
+answered in `25`):
 
 ```text
 docs-first revalidation of the existing tilting / stretching
@@ -424,6 +430,10 @@ direction against the CURRENT repository architecture and
 CURRENT physics state, then a separate design step if the
 direction still holds
 ```
+
+Revalidation result: `25`. CONDITIONAL. Next design target
+is T1 diagnostic-tendency architecture, not Y12 / derived
+rotation. Dedicated SoT still not written.
 
 Do not port a pre-pause sketch into production.
 Do not add an eighth compositor operand that pretends to be
@@ -580,12 +590,16 @@ field class:              prescribed seven-operand kinematic
 
 physics:                  RESUMED FOR DESIGN
 implementation:           NOT STARTED
-next modeling direction:  tilting / stretching
+next modeling direction:  tilting / stretching as QUESTION
+                          revalidated in `25` as CONDITIONAL
 authoritative design SoT: NOT WRITTEN
 existing direction:       `15` §9 / §14.1; `02` Y12;
                           `21` Candidate 5
-next allowed task:        docs-first revalidation of that
-                          direction against current repository
+                          ranked by `25`: T1 next, T2–T4 parked
+revalidation:             COMPLETE in `25`
+next allowed task:        dedicated T1 diagnostic-tendency
+                          architecture SoT when commanded
+                          (`25` §17.4). Not implementation.
 ```
 
 ---
@@ -612,7 +626,8 @@ PHYSICS
   RESUMED FOR DESIGN
 
 NEXT MODELING DIRECTION
-  TILTING / STRETCHING — EXISTING DIRECTION TO BE REVALIDATED
+  REVALIDATED IN `25` — CONDITIONAL
+  NEXT DESIGN TARGET = T1 DIAGNOSTIC TENDENCY
   DEDICATED ARCHITECTURE SoT NOT WRITTEN
 
 PHYSICS IMPLEMENTATION
@@ -626,6 +641,6 @@ exists.
 Do not start another perceptual-encoding slice because the
 workbench still exists.
 
-Next work starts only when commanded: docs-first
-revalidation of the tilting / stretching direction against
-the current repository.
+Modeling-direction revalidation lives in `25`. Next modeling
+work starts only when commanded: the T1 diagnostic-tendency
+architecture SoT scoped there.

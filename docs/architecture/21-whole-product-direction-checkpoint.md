@@ -3,6 +3,8 @@
 **Status:** whole-product capability map after Guided v1.
 Current perceptual-loop and physics-resumption decision:
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Tilting / stretching direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** pause lifted for design in `24`. This file does
 not resume physics implementation.
@@ -56,12 +58,12 @@ docs/reviews/2026-08-18-independent-project-audit.md
 docs/reviews/2026-08-19-independent-perceptual-airflow-review.md
 ```
 
-Physics pause of `15` D is lifted for design in `24`. When
-modeling proceeds, the leading physics-architecture
-*direction* from existing SoT is still tilting / stretching
-interaction architecture — unless the docs-first revalidation
-in `24` replaces that. This checkpoint does **not** replace
-that design and does **not** command implementation.
+Physics pause of `15` D is lifted for design in `24`.
+Revalidation in `25`: CONDITIONAL. The leading *question*
+remains tilting / stretching; the next design target is T1
+diagnostic tendency, not Y12 interaction implementation.
+This checkpoint does **not** replace that design and does
+**not** command implementation.
 
 ---
 
@@ -907,13 +909,13 @@ whether teaching “capture” ever becomes honest.
 process claims. It does not block perception, pan, or Inspector
 of the current sum.
 
-**Status:** leading modeling *direction* from existing SoT
-**when physics resumes**. Docs-only first. **Not selected** as
-the next implementation branch by this checkpoint. Physics
-pause later lifted for design in `24`; that is still not an
-implementation order. Existing direction requires
-revalidation before any architecture SoT is treated as
-current.
+**Status:** leading modeling *question* after `25`. Next
+design target is T1 diagnostic tendency (`25`), not this
+candidate’s derived-rotation ability. Docs-only first.
+**Not selected** as the next implementation branch by this
+checkpoint. Physics pause later lifted for design in `24`;
+that is still not an implementation order. Revalidation is
+in `25`; a dedicated architecture SoT is still not written.
 
 ### Candidate 6 — Continuity / mass-consistency investigation
 
@@ -1066,11 +1068,12 @@ streamfunction / DF:          OPEN FUTURE SYNTHETIC-MODEL
                               CANDIDATE
                               not next approved physics branch
 
-tilting / stretching:         leading modeling direction
-                              when physics proceeds
+tilting / stretching:         leading modeling QUESTION
+                              revalidated CONDITIONAL (`25`)
+                              next design target = T1
+                              diagnostic tendency; V unchanged
                               existing sketch in `15` §9
                               dedicated SoT not written
-                              revalidation required (`24`)
                               not an implementation order
 
 dataset evolution:            important boundary

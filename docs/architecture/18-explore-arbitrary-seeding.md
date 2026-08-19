@@ -12,6 +12,8 @@ Perceptual airflow exploration (`22`) must not replace point
 release; probes stay unlabeled scientific tracers.
 Current perceptual-loop / physics-resumption status:
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Tilting / stretching direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 
 Slice 2 runtime owner: `ExploreTracerSession`
 (`src/explore/ExploreTracerSession.ts`).

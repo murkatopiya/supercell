@@ -9,7 +9,9 @@ live (`18` Slices 1–4). Shared Tracer Inspector Slices 1–4 are
 live (`19`). Desktop workbench layout is live. Physics pause
 of `15` D is lifted for design in
 `docs/architecture/24-perceptual-exploration-checkpoint.md`;
-implementation is not started here. Headless Guided product
+tilting / stretching direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
+Implementation is not started here. Headless Guided product
 identity exists, live
 Guided runtime selection is wired, and the Guided teaching
 surface is live:
@@ -56,6 +58,8 @@ Perceptual airflow exploration:
 `docs/architecture/22-perceptual-airflow-architecture.md`.
 Current perceptual-loop / physics-resumption status:
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Tilting / stretching direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 This document remains how the three experiments run. It does
 not start perceptual implementation.
 

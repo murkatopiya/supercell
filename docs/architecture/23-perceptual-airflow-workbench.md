@@ -5,6 +5,8 @@ exploration-loop decision lives in `24`.
 **Scope:** representation comparison after Slice A browser playtest
 **Physics:** pause lifted for design in
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 This file does not resume physics implementation.
 **Implementation:** Workbench Slice A COMPLETE. Prototype
 comparison slice IMPLEMENTED. Background highlight is a

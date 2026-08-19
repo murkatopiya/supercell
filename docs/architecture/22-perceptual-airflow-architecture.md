@@ -7,7 +7,8 @@ COMPLETE in `23`. Current perceptual-loop decision lives in
 Guided population NOT STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** pause lifted for design in `24`. This file does
-not resume physics implementation.
+not resume physics implementation. Direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 **Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE;
 Workbench Slice A COMPLETE in `23`; prototype comparison
 COMPLETE in `23`; exploration-loop decision in `24`; product
@@ -73,9 +74,7 @@ Authoritative:
 - `docs/rendering/11-deep-storm-tracer-view.md`
 - `docs/rendering/14-tracer-path-history.md`
 
-Operands, constants, envelopes, seeds,
-and the integrator are unchanged by this document. Current
-modeling status: `24`.
+Current modeling status: `24`; direction revalidation `25`.
 
 ---
 
@@ -1104,6 +1103,8 @@ this file exists. Encoding contracts remain in `22` / `23`.
 The current perceptual loop and physics-resumption decision
 live in
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Tilting / stretching direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 
 ---
 

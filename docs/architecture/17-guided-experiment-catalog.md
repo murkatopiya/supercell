@@ -17,6 +17,8 @@ Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
 Current perceptual-loop / physics-resumption status:
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Tilting / stretching direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 Physics pause is lifted for design in `24`; this catalog does
 not start physics implementation.
 

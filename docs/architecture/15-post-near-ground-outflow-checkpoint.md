@@ -12,9 +12,12 @@ recommendation in §11.
 **Current modeling status:** physics pause of Verdict D is
 lifted for design in
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
-This file is not that resumption SoT. §9 remains the sketched
-tilting / stretching fork; it is not a later implementation
-design.
+Direction revalidation:
+`docs/architecture/25-tilting-stretching-direction-revalidation.md`.
+This file is not that resumption or revalidation SoT. §9
+remains the sketched tilting / stretching fork; it is not a
+later implementation design. `25` ranks which of §9 still
+holds.
 
 Live at the time of this audit:
 
