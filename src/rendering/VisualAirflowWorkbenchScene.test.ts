@@ -140,7 +140,7 @@ describe("VisualAirflowWorkbenchScene", () => {
 
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
-      highlightMode: "hue-a",
+      highlightMode: "updraft",
       highlightOperand: operand,
       time: 0,
     });
@@ -155,29 +155,29 @@ describe("VisualAirflowWorkbenchScene", () => {
 
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
-      highlightMode: "hue-a",
+      highlightMode: "updraft",
       highlightOperand: operand,
       time: 15,
     });
-    const tintedA = Array.from(
+    const tinted = Array.from(
       (comets.geometry.getAttribute("color") as THREE.BufferAttribute).array,
     );
     const tintedPositions = Array.from(
       (comets.geometry.getAttribute("position") as THREE.BufferAttribute).array,
     );
     expect(tintedPositions).toEqual(offPositions);
-    expect(tintedA).not.toEqual(offColors);
+    expect(tinted).not.toEqual(offColors);
 
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
-      highlightMode: "hue-b",
+      highlightMode: "off",
       highlightOperand: operand,
       time: 15,
     });
-    const tintedB = Array.from(
+    const restored = Array.from(
       (comets.geometry.getAttribute("color") as THREE.BufferAttribute).array,
     );
-    expect(tintedB).not.toEqual(tintedA);
+    expect(restored).toEqual(offColors);
     expect(scene.object.getObjectByName("updraftHighlightBackground")).toBeUndefined();
     expect(comets.visible).toBe(true);
     expect(workbenchSrc).not.toMatch(/OperandHighlightBackgroundScene/);
@@ -186,6 +186,7 @@ describe("VisualAirflowWorkbenchScene", () => {
 
   it("does not construct a second updraft field", () => {
     expect(workbenchSrc).not.toMatch(/createUpdraftField/);
+    expect(workbenchSrc).not.toMatch(/createRotationField/);
     expect(workbenchSrc).not.toMatch(/VerticalEnvelopeUpdraftField/);
   });
 });

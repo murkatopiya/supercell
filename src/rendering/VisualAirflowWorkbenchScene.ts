@@ -3,14 +3,17 @@ import type { VelocityField } from "../core/fields/VelocityField.js";
 import { cometFadeFromAges } from "../visualization/cometAirflowMark.js";
 import type { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
 import { writeAdvectedOrientedAirflow } from "../visualization/observeAdvectedOrientedAirflow.js";
-import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
+import {
+  OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
+  displayReferenceMpsForOperand,
+} from "../visualization/operandContributionDisplay.js";
 import type { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { writeContributionDisplayStrengths } from "../visualization/writeContributionDisplayStrengths.js";
 import { CometAirflowMarkScene } from "./CometAirflowMarkScene.js";
 import { OrientedAirflowMarkScene } from "./OrientedAirflowMarkScene.js";
 import { VisualAirflowScene } from "./VisualAirflowScene.js";
 import type {
-  UpdraftHighlightMode,
+  OperandHighlightMode,
   VisualAirflowWorkbenchMode,
 } from "./visualAirflowWorkbenchMode.js";
 
@@ -77,7 +80,7 @@ export class VisualAirflowWorkbenchScene {
     eulerian: EulerianAirflowSamples;
     field: VelocityField;
     time: number;
-    highlightMode: UpdraftHighlightMode;
+    highlightMode: OperandHighlightMode;
     highlightOperand: VelocityField | null;
   }): void {
     if (this.disposed) {
@@ -87,7 +90,11 @@ export class VisualAirflowWorkbenchScene {
     const highlightHue =
       input.highlightMode === "off"
         ? undefined
-        : UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES[input.highlightMode];
+        : OPERAND_HIGHLIGHT_PROTOTYPE_HUE;
+    const referenceMps =
+      input.highlightMode === "off"
+        ? undefined
+        : displayReferenceMpsForOperand(input.highlightMode);
     const cometTint = highlightHue !== undefined;
     if (input.mode === "points") {
       this.points.syncFromPopulation(input.population);
@@ -106,6 +113,7 @@ export class VisualAirflowWorkbenchScene {
         input.population.occupantCount,
         input.time,
         this.advectedHighlight,
+        referenceMps,
       );
       this.advectedMarks.syncFromObservation(
         this.advectedPositions,
@@ -135,6 +143,7 @@ export class VisualAirflowWorkbenchScene {
         input.population.occupantCount,
         input.time,
         this.advectedHighlight,
+        referenceMps,
       );
       this.cometMarks.syncFromObservation(
         this.advectedPositions,
@@ -158,6 +167,7 @@ export class VisualAirflowWorkbenchScene {
         input.eulerian.sampleCount,
         input.time,
         this.eulerianHighlight,
+        referenceMps,
       );
       this.eulerianMarks.syncFromObservation(
         this.eulerianPositions,
@@ -186,11 +196,19 @@ export class VisualAirflowWorkbenchScene {
     count: number,
     time: number,
     out: Float32Array,
+    referenceMps: number | undefined,
   ): Float32Array | undefined {
-    if (!enabled || operand === null) {
+    if (!enabled || operand === null || referenceMps === undefined) {
       return undefined;
     }
-    writeContributionDisplayStrengths(operand, positions, count, time, out);
+    writeContributionDisplayStrengths(
+      operand,
+      positions,
+      count,
+      time,
+      out,
+      referenceMps,
+    );
     return out;
   }
 }

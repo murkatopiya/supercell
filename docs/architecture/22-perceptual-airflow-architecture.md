@@ -1066,7 +1066,8 @@ implementation:           Slice 1 COMPLETE
                           representation UNDER EVALUATION
                           in `23`; Workbench Slice A COMPLETE
                           prototype comparison slice
-                          IMPLEMENTED in `23` (playtest pending)
+                          IMPLEMENTED in `23`
+                          six-operand playtest pending
                           Guided population NOT STARTED
                           camera pan NOT STARTED
 ```
@@ -1084,7 +1085,9 @@ PHYSICS PAUSED
 SLICE 1 HEADLESS POPULATION     COMPLETE
 SLICE 2 EXPLORE BROWSER         COMPLETE
 WORKBENCH SLICE A               COMPLETE (see `23`)
-PROTOTYPE COMPARISON SLICE      COMPLETE IN `23`; PLAYTEST PENDING
+PROTOTYPE COMPARISON SLICE      COMPLETE IN `23`
+SINGLE-OPERAND SELECTOR         IMPLEMENTED IN `23`;
+                                SIX-OPERAND PLAYTEST PENDING
 PRODUCT REPRESENTATION          UNDER EVALUATION
 GUIDED POPULATION               NOT STARTED
 POPULATION UI / TOGGLE          NOT STARTED

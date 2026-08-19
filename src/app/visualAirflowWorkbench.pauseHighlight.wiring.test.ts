@@ -6,9 +6,14 @@ import { GuidedExperimentId } from "../guided/GuidedExperiment.js";
 import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityField.js";
 import { createExploreLab } from "./createExploreLab.js";
 import { createGuidedLab } from "./createGuidedLab.js";
-import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
+import { composeDemoTracersWithObservation, DEMO_VELOCITY_CONTRIBUTION_KEYS } from "./composeDemoTracerSimulation.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import { stepVisualAirflowOnFrozenField } from "../visualization/stepVisualAirflowOnFrozenField.js";
+import {
+  displayReferenceMpsForOperand,
+  resolveStormOperandHighlightField,
+  STORM_OPERAND_HIGHLIGHT_KEYS,
+} from "../visualization/operandContributionDisplay.js";
 import { writeContributionDisplayStrengths } from "../visualization/writeContributionDisplayStrengths.js";
 import { VisualAirflowWorkbenchScene } from "../rendering/VisualAirflowWorkbenchScene.js";
 import {
@@ -17,8 +22,11 @@ import {
 import appSrc from "./App.tsx?raw";
 import createGuidedLabSrc from "./createGuidedLab.ts?raw";
 import highlightSrc from "../visualization/writeContributionDisplayStrengths.ts?raw";
+import displaySrc from "../visualization/operandContributionDisplay.ts?raw";
 import viewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import controlsSrc from "../ui/tracer/VisualAirflowWorkbenchControls.tsx?raw";
+import workbenchSrc from "../rendering/VisualAirflowWorkbenchScene.ts?raw";
+import * as THREE from "three";
 
 function fakeSlots(): ExploreSceneSlots {
   let tracerSlotCount = 0;
@@ -36,14 +44,32 @@ function fakeSlots(): ExploreSceneSlots {
   };
 }
 
-function updraftFieldFromLab(lab: ReturnType<typeof createExploreLab>) {
-  const part = lab.velocityObservation.parts?.find(
-    (item) => item.key === "updraft",
+function cometBuffers(scene: VisualAirflowWorkbenchScene) {
+  const comets = scene.object.getObjectByName(
+    "cometAirflowMarks",
+  ) as THREE.LineSegments;
+  return {
+    positions: Array.from(
+      (comets.geometry.getAttribute("position") as THREE.BufferAttribute).array,
+    ),
+    colors: Array.from(
+      (comets.geometry.getAttribute("color") as THREE.BufferAttribute).array,
+    ),
+  };
+}
+
+function namedField(
+  lab: ReturnType<typeof createExploreLab>,
+  key: (typeof STORM_OPERAND_HIGHLIGHT_KEYS)[number],
+) {
+  const field = resolveStormOperandHighlightField(
+    lab.velocityObservation.parts,
+    key,
   );
-  if (part === undefined) {
-    throw new Error("expected updraft operand");
+  if (field === null) {
+    throw new Error(`expected ${key} operand`);
   }
-  return part.field;
+  return field;
 }
 
 describe("frozen-field pause animation", () => {
@@ -78,84 +104,132 @@ describe("frozen-field pause animation", () => {
     expect(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION).toBe("full-freeze");
     expect(appSrc).toMatch(/DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION/);
     expect(controlsSrc).toMatch(/"full-freeze"/);
+    expect(viewportSrc).toMatch(/time: simulation\.clock\.time/);
+    expect(viewportSrc).toMatch(/highlightOperand: highlightOperandRef\.current/);
   });
 });
 
-describe("updraft highlight observation", () => {
-  it("uses the SAME named updraft operand instance as Inspector decomposition", () => {
+describe("storm operand highlight observation", () => {
+  it("resolves each diagnostic operand to the SAME named Inspector instance", () => {
     const lab = createExploreLab(fakeSlots());
-    const updraft = updraftFieldFromLab(lab);
-    expect(updraft).toBe(
-      lab.velocityObservation.parts!.find((part) => part.key === "updraft")!
-        .field,
-    );
-    expect(lab.visualAirflowPopulation.samplesField(updraft)).toBe(false);
+    const total = lab.velocityObservation.total;
+    expect(STORM_OPERAND_HIGHLIGHT_KEYS).not.toContain("environmentAdvection");
+    expect(DEMO_VELOCITY_CONTRIBUTION_KEYS).toEqual([
+      "environmentAdvection",
+      ...STORM_OPERAND_HIGHLIGHT_KEYS,
+    ]);
+    for (const key of STORM_OPERAND_HIGHLIGHT_KEYS) {
+      const resolved = namedField(lab, key);
+      expect(resolved).toBe(
+        lab.velocityObservation.parts!.find((part) => part.key === key)!.field,
+      );
+      expect(resolved).toBe(
+        resolveStormOperandHighlightField(lab.velocityObservation.parts, key),
+      );
+      expect(lab.visualAirflowPopulation.samplesField(resolved)).toBe(false);
+      expect(lab.velocityObservation.total).toBe(total);
+      expect(total).not.toBe(resolved);
+    }
     expect(
       lab.visualAirflowPopulation.samplesField(lab.velocityObservation.total),
     ).toBe(true);
-    expect(lab.velocityObservation.total).not.toBe(updraft);
     const rebuilt = composeDemoTracersWithObservation(
       IntegrationFrame.StormRelativeLaboratory,
       [],
     );
-    const rebuiltUpdraft = rebuilt.velocityObservation.parts!.find(
-      (part) => part.key === "updraft",
-    )!.field;
-    expect(updraft).not.toBe(rebuiltUpdraft);
+    expect(namedField(lab, "updraft")).not.toBe(
+      rebuilt.velocityObservation.parts!.find((part) => part.key === "updraft")!
+        .field,
+    );
+    expect(appSrc).toMatch(/resolveStormOperandHighlightField/);
+    expect(appSrc).not.toMatch(/createUpdraftField/);
+    expect(appSrc).not.toMatch(/createRotationField/);
+    expect(appSrc).not.toMatch(/createLowerRadialInflowField/);
+    expect(appSrc).not.toMatch(/createUpperRadialOutflowField/);
+    expect(appSrc).not.toMatch(/createDowndraftField/);
+    expect(appSrc).not.toMatch(/createNearGroundRadialOutflowField/);
     expect(highlightSrc).not.toMatch(/createUpdraftField/);
-    expect(appSrc).toMatch(/item\.key === "updraft"/);
+    expect(workbenchSrc).not.toMatch(/createUpdraftField/);
+    expect(displaySrc).not.toMatch(/DEMO_SCENARIO/);
   });
 
-  it("tints marks from operand magnitude without changing advection field", () => {
+  it("tints from operand magnitude without changing V_total or comet endpoints", () => {
     const lab = createExploreLab(fakeSlots());
-    const updraft = updraftFieldFromLab(lab);
-    const positions = new Float32Array([0, 4000, 0]);
-    const core = new Float32Array(1);
-    const far = new Float32Array(1);
-    writeContributionDisplayStrengths(
-      updraft,
-      positions,
-      1,
-      0,
-      core,
+    const total = lab.velocityObservation.total;
+    const scene = new VisualAirflowWorkbenchScene(
+      lab.visualAirflowPopulation.occupantCount,
+      lab.eulerianAirflowSamples.sampleCount,
     );
-    writeContributionDisplayStrengths(
-      updraft,
-      new Float32Array([-20000, 4000, -20000]),
-      1,
-      0,
-      far,
-    );
-    expect(core[0]!).toBeGreaterThan(far[0]!);
-    expect(lab.velocityObservation.total).not.toBe(updraft);
+    const sync = (
+      highlightMode: "off" | (typeof STORM_OPERAND_HIGHLIGHT_KEYS)[number],
+    ) => {
+      scene.sync({
+        mode: "advected-comet",
+        population: lab.visualAirflowPopulation,
+        eulerian: lab.eulerianAirflowSamples,
+        field: lab.velocityObservation.total,
+        time: 0,
+        highlightMode,
+        highlightOperand:
+          highlightMode === "off" ? null : namedField(lab, highlightMode),
+      });
+    };
 
+    sync("off");
+    const off = cometBuffers(scene);
+    const colorsByOperand: Record<string, number[]> = {};
+    for (const key of STORM_OPERAND_HIGHLIGHT_KEYS) {
+      sync(key);
+      const tinted = cometBuffers(scene);
+      expect(lab.velocityObservation.total).toBe(total);
+      expect(tinted.positions).toEqual(off.positions);
+      colorsByOperand[key] = tinted.colors;
+    }
+    expect(colorsByOperand.updraft).not.toEqual(off.colors);
+    expect(colorsByOperand.rotation).not.toEqual(colorsByOperand.updraft);
+    expect(colorsByOperand.lowerInflow).not.toEqual(colorsByOperand.updraft);
+    expect(colorsByOperand.downdraft).not.toEqual(colorsByOperand.updraft);
+    expect(colorsByOperand.upperOutflow).not.toEqual(
+      colorsByOperand.nearGroundOutflow,
+    );
+
+    sync("off");
+    expect(cometBuffers(scene).colors).toEqual(off.colors);
+    expect(cometBuffers(scene).positions).toEqual(off.positions);
+    expect(lab.velocityObservation.total).toBe(total);
+    scene.dispose();
+  });
+
+  it("uses a per-operand display reference so a weak configured peak stays readable", () => {
+    const lab = createExploreLab(fakeSlots());
+    const lower = namedField(lab, "lowerInflow");
     const occupantPositions = new Float32Array(
       lab.visualAirflowPopulation.occupantCount * 3,
     );
     lab.visualAirflowPopulation.writePositionsTo(occupantPositions);
-    const occupantStrengths = new Float32Array(
+    const unified = new Float32Array(lab.visualAirflowPopulation.occupantCount);
+    const diagnostic = new Float32Array(
       lab.visualAirflowPopulation.occupantCount,
     );
     writeContributionDisplayStrengths(
-      updraft,
+      lower,
       occupantPositions,
       lab.visualAirflowPopulation.occupantCount,
       0,
-      occupantStrengths,
+      unified,
+      30,
     );
-    let maxStrength = 0;
-    let visible = 0;
-    for (const strength of occupantStrengths) {
-      if (strength > maxStrength) {
-        maxStrength = strength;
-      }
-      if (strength >= 0.15) {
-        visible += 1;
-      }
-    }
-    expect(maxStrength).toBeGreaterThan(0.9);
-    expect(maxStrength).toBeLessThanOrEqual(1);
-    expect(visible).toBeGreaterThan(lab.visualAirflowPopulation.occupantCount / 3);
+    writeContributionDisplayStrengths(
+      lower,
+      occupantPositions,
+      lab.visualAirflowPopulation.occupantCount,
+      0,
+      diagnostic,
+      displayReferenceMpsForOperand("lowerInflow"),
+    );
+    expect(Math.max(...unified)).toBeLessThan(0.15);
+    expect(Math.max(...diagnostic)).toBeGreaterThan(0.9);
+    expect(lab.velocityObservation.total).not.toBe(lower);
   });
 
   it("does not construct the rejected Background overlay", () => {
@@ -172,7 +246,7 @@ describe("updraft highlight observation", () => {
       field: lab.velocityObservation.total,
       time: 0,
       highlightMode: "off",
-      highlightOperand: updraftFieldFromLab(lab),
+      highlightOperand: namedField(lab, "updraft"),
     });
     scene.sync({
       mode: "advected-comet",
@@ -180,18 +254,44 @@ describe("updraft highlight observation", () => {
       eulerian: lab.eulerianAirflowSamples,
       field: lab.velocityObservation.total,
       time: 0,
-      highlightMode: "hue-a",
-      highlightOperand: updraftFieldFromLab(lab),
+      highlightMode: "updraft",
+      highlightOperand: namedField(lab, "updraft"),
     });
     expect(scene.object.getObjectByName("updraftHighlightBackground")).toBeUndefined();
+    expect(workbenchSrc).not.toMatch(/OperandHighlightBackgroundScene/);
     scene.dispose();
   });
 
-  it("does not treat a dummy field as the updraft operand", () => {
+  it("does not treat a dummy field as a canonical storm operand", () => {
     const lab = createExploreLab(fakeSlots());
-    expect(updraftFieldFromLab(lab)).not.toBe(
+    expect(namedField(lab, "updraft")).not.toBe(
       new ConstantVelocityField({ x: 0, y: 30, z: 0 }),
     );
+    expect(
+      resolveStormOperandHighlightField(
+        [{ key: "updraft", field: new ConstantVelocityField({ x: 0, y: 1, z: 0 }) }],
+        "updraft",
+      ),
+    ).not.toBe(namedField(lab, "updraft"));
+  });
+
+  it("does not couple highlight to Inspector, picking, or tracerId", () => {
+    const lab = createExploreLab(fakeSlots());
+    lab.session.releasePoint({ x: 0, y: 1000, z: 0 });
+    const selection = new TracerSelection();
+    selection.select(1);
+    const inspection = inspectSelectedTracer(
+      lab.simulation.particles,
+      selection,
+      lab.simulation.clock.time,
+      lab.velocityObservation,
+    );
+    expect(inspection?.tracerId).toBe(1);
+    expect(inspection?.contributions?.map((part) => part.key)).toEqual([
+      ...DEMO_VELOCITY_CONTRIBUTION_KEYS,
+    ]);
+    expect(workbenchSrc).not.toMatch(/tracerId/);
+    expect(workbenchSrc).not.toMatch(/inspectSelectedTracer/);
   });
 });
 
@@ -199,8 +299,9 @@ describe("workbench control independence", () => {
   it("does not wire highlight or pause visualization into Guided", () => {
     const guided = createGuidedLab(GuidedExperimentId.InflowToUpperOutflow);
     expect("visualAirflowPopulation" in guided).toBe(false);
-    expect(createGuidedLabSrc).not.toMatch(/UpdraftHighlight/);
+    expect(createGuidedLabSrc).not.toMatch(/OperandHighlight/);
     expect(createGuidedLabSrc).not.toMatch(/pauseVisualization/);
+    expect(createGuidedLabSrc).not.toMatch(/VisualAirflowWorkbenchControls/);
     expect(appSrc).toMatch(/onHighlightModeChange=\{setHighlightMode\}/);
     expect(appSrc).toMatch(
       /onPauseVisualizationChange=\{setPauseVisualization\}/,
@@ -208,11 +309,9 @@ describe("workbench control independence", () => {
     expect(appSrc).not.toMatch(/setHighlightMode\([^)]*setWorkbenchMode/);
     expect(appSrc).not.toMatch(/setPauseVisualization\([^)]*setWorkbenchMode/);
     expect(controlsSrc).toMatch(/onHighlightModeChange\("off"\)/);
-    expect(controlsSrc).toMatch(/label: "Hue A"/);
-    expect(controlsSrc).toMatch(/label: "Hue B"/);
-    expect(controlsSrc).toMatch(/label: "Hue C"/);
     expect(controlsSrc).not.toMatch(/Background/);
     expect(controlsSrc).not.toMatch(/type=["']color["']/);
-    expect(controlsSrc).not.toMatch(/environmentAdvection|rotation|downdraft/);
+    expect(controlsSrc).not.toMatch(/environmentAdvection/);
+    expect(controlsSrc).not.toMatch(/Hue A|hue-a/);
   });
 });

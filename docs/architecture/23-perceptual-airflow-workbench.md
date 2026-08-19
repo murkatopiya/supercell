@@ -4,16 +4,21 @@
 **Scope:** representation comparison after Slice A browser playtest
 **Physics:** PAUSED
 **Implementation:** Workbench Slice A COMPLETE. Prototype
-comparison slice (comet / frozen-field Pause / updraft
-highlight) IMPLEMENTED. Background highlight is a
+comparison slice IMPLEMENTED. Background highlight is a
 REJECTED BRANCH (historical record in §25.1; not live).
-Live updraft highlight is Off / Hue A / Hue B / Hue C
-comet tint. Product encoding not chosen.
+Comet contribution tint VALIDATED. Hue A/B/C comparison
+COMPLETE; exact product palette DEFERRED. Live highlight
+is Off / one of six storm operands, single prototype hue
+(§31). Multi-operand simultaneous visualization NOT
+STARTED. Environmental advection visualization DEFERRED.
+Six-operand browser playtest WAITING FOR USER. Product
+encoding not chosen.
 **Decision:** product representation STILL UNDER EVALUATION.
 R1 is the strongest current main-layer candidate. R2 is an
 earned diagnostic-layer candidate. Neither is a product default.
-Comet vs oriented R1, Pause viz, and updraft highlight hues
-are live comparison tools, not winners.
+Comets are the strongest current perceptual-airflow candidate.
+Comet contribution tint is VALIDATED. Representation winner
+is not declared.
 
 Predecessor:
 
@@ -36,9 +41,12 @@ This document owns:
 - Slice A workbench architecture and implementation record;
 - Slice A R0/R1/R2 comparison playtest;
 - prototype decision state;
-- prototype comparison slice implementation record (§31);
-- browser playtest of comet / Pause viz / updraft highlight
-  (not yet decided);
+- prototype comparison slice implementation record (§30);
+- single-operand diagnostic selector implementation record
+  (§31);
+- comet / Pause viz / Hue A/B/C playtest COMPLETE as a
+  mechanism and palette-research pass;
+- six storm-operand comet-tint playtest WAITING FOR USER;
 - Background highlight REJECTED as a live workbench branch
   without deleting the historical hypothesis.
 
@@ -1081,9 +1089,11 @@ frozen field. It does not authorize physics stepping.
 A visualization/understanding candidate, not Inspector
 payload and not a new physics operand.
 
-The user may select **one** named velocity operand — first
-prototype: **updraft** — and see where that operand
-contributes to the velocity field.
+The user may select **one** named velocity operand and see
+where that operand contributes to the velocity field. The
+first prototype used **updraft** only. The live diagnostic
+selector now includes the six storm operands (§31).
+Environmental advection visualization is deferred.
 
 ### 24.1 Source of truth
 
@@ -1158,7 +1168,8 @@ mode.
 
 ## 25. Highlight encoding experiment — Off / A / B
 
-**Kind:** HISTORICAL HYPOTHESIS. Live API in §31.
+**Kind:** HISTORICAL HYPOTHESIS. Hue A/B/C comparison
+COMPLETE. Exact product palette DEFERRED. Live API in §31.
 
 Do not pick a product winner in this section.
 
@@ -1170,12 +1181,17 @@ A. Background highlight     REJECTED BRANCH (not live)
 B. Comet highlight          KEPT as the live encoding
 ```
 
-Live workbench comparison after that rejection:
+Live workbench comparison after that rejection was three
+prototype hues on the kept comet-tint encoding:
 
 ```text
 OFF
 Hue A / Hue B / Hue C     comet tint; prototype hues
 ```
+
+That hue comparison completed its research task. Exact
+product palette is deferred. Live selector is one operand
+plus one prototype hue (§31).
 
 Shared invariants (still binding for the live hues):
 
@@ -1277,37 +1293,41 @@ v1 hypothesis: at most **one** operand selected at a time.
 
 ## 26. Next workbench experiments
 
-**Kind:** A/B/C IMPLEMENTED AS PROTOTYPE SLICE; D WAITING
-FOR BROWSER PLAYTEST
+**Kind:** A/B/C IMPLEMENTED; hue comparison COMPLETE;
+single-operand selector IMPLEMENTED (§31); six-operand
+browser playtest WAITING FOR USER
 
 Sequence as commanded:
 
 ### A. R1 mark refinement     IMPLEMENTED PROTOTYPE
 
 Current oriented `LineSegments` vs comet-like oriented
-mark. Same population, same `V_total`. Live in §31.
+mark. Same population, same `V_total`. Live in §30.
 
 ### B. Pause semantics     IMPLEMENTED PROTOTYPE
 
 Full visual freeze vs frozen-field continuing perceptual
-animation. Samples at `t_pause` only. Live in §31.
+animation. Samples at `t_pause` only. Live in §30.
 
 ### C. Operand highlight     IMPLEMENTED PROTOTYPE
 
-Off vs Hue A vs Hue B vs Hue C on comet tint.
-First operand: updraft contribution from
-`velocityObservation.parts`. Background overlay is a
-rejected branch (historical §25.1). Live in §31.
+Comet tint VALIDATED as the contribution-encoding
+mechanism. Background overlay is a rejected branch
+(historical §25.1). Hue A/B/C comparison COMPLETE; exact
+palette DEFERRED. Live diagnostic selector is Off plus one
+of six storm operands, one prototype hue (§31).
 
-### D. Browser playtest / decision checkpoint     NOT DONE
+### D. Browser playtest / decision checkpoint     WAITING FOR USER
+
+Six storm-operand comet-tint playtest is the next evidence.
+Do not declare a representation winner from this document.
 
 Only after evidence decide:
 
 - whether comet-R1 becomes the main perceptual layer;
 - whether R2 is kept as a separate diagnostic layer;
-- which operand-highlight encoding wins;
-- whether a background representation is needed at all;
-- whether R3 / LIC / slices is earned.
+- whether a product highlight palette is earned;
+- whether Pause should animate a frozen field in product UI.
 
 Do not implement R3, LIC, slices, micro-trails, speed
 encoding, public selectors, Guided population, camera
@@ -1385,12 +1405,16 @@ during scientific Pause:  IMPLEMENTED PROTOTYPE
 
 operand contribution
 highlight:                IMPLEMENTED PROTOTYPE
-                          Off / Hue A / Hue B / Hue C
-                          comet tint; prototype hues
-                          Background = rejected branch
-                          first operand: updraft
+                          comet tint VALIDATED
+                          Background = REJECTED
+                          Hue A/B/C comparison COMPLETE
+                          exact product palette DEFERRED
+                          live: Off / one of six storm
+                          operands, one prototype hue
+                          environmental advection DEFERRED
+                          multi-operand display NOT STARTED
                           not Inspector-owned
-                          not a product winner
+                          six-operand playtest WAITING
 
 depth cue:                ORTHOGONAL TOGGLE LIVE
 
@@ -1404,7 +1428,8 @@ continuity:               YELLOW
 camera P1:                contingency, not implemented
 
 Slice A:                  COMPLETE
-prototype comparison:     IMPLEMENTED; playtest pending
+prototype comparison:     IMPLEMENTED
+single-operand selector:  IMPLEMENTED; playtest pending
 physics:                  PAUSED
 ```
 
@@ -1555,25 +1580,32 @@ ExploreLab.velocityObservation.total
 R1/comet advection and orientation use that instance via
 `samplesField` + `writeAdvectedOrientedAirflow`.
 
-### Canonical updraft operand
+### Canonical operand resolution
+
+Previous live path resolved only updraft. Current path:
 
 ```text
-App.updraftOperandField(observation)
-  = observation.parts.find(key === "updraft").field
+resolveStormOperandHighlightField(observation.parts, key)
+  = observation.parts.find(part.key === key).field
 ```
 
-Same named instance Inspector decomposition already holds.
-No `createUpdraftField`, no second
-`VerticalEnvelopeUpdraftField`. `V_total` is not replaced.
+`key` is one of `STORM_OPERAND_HIGHLIGHT_KEYS`. Same named
+instance Inspector decomposition already holds. No
+`createUpdraftField` / `createRotationField` / other
+factory, no second physics field. `V_total` is not replaced.
 
 ### Highlight modes (independent of encoding)
+
+**Superseded by §31.** Hue A/B/C were the previous live
+comparison. They completed their research task and are no
+longer mounted.
 
 Live:
 
 ```text
 Off          no overlay, no tint
-Hue A/B/C    comet tint of R1 / comet / R2 marks at sample P,t
-             prototype hues, not a product palette
+one storm    comet tint of R1 / comet / R2 marks at P,t
+operand      one prototype hue, not a product palette
              advection/orientation still V_total
              Points stay uniform (documented no-op)
 ```
@@ -1588,27 +1620,14 @@ Background   OperandHighlightBackgroundScene
 
 Color means “this visual sample is where the selected
 operand currently contributes this much”, not “this is
-updraft air”. Head–tail comet alpha is unchanged by hue.
+updraft air” / rotation air / a separate mass. Head–tail
+comet alpha is unchanged by tint.
 
 ### Display mapping (visualization fixture)
 
-```text
-contributionMagnitude = |V_operand(P, t)|
-displayStrength = clamp(magnitude / 30, 0, 1)
-Hue A = 0xff2ec8
-Hue B = 0x00f0ff
-Hue C = 0xe4ff1a
-```
-
-`30` is `UPDRAFT_HIGHLIGHT_DISPLAY_REFERENCE_MPS`. Sampled
-DEMO occupant |V_updraft| at t=0: max ≈ 29 m/s, p50 ≈ 6.5
-m/s. The linear reference stays 30 so the sampled peak
-nearly saturates. It is **not** imported from
-`ScenarioConfig` and is not a physics threshold. No
-“updraft exists iff value > X” claim.
-
-Comet tint samples the operand at laboratory time
-(`simulation.clock.time`).
+**Superseded by §31.** The previous updraft-only mapping
+used `R = 30 m/s` and three prototype hues. Live mapping
+is per selected storm operand, one hue.
 
 ### Combinations
 
@@ -1617,17 +1636,17 @@ Independent rows:
 ```text
 encoding:     Points | Advected marks | Comets | Eulerian marks
 Pause viz:    Full freeze | Animate frozen field
-highlight:    Off | Hue A | Hue B | Hue C
+highlight:    Off | one of six storm operands
 depth cue:    orthogonal checkbox
 ```
 
 No hidden coupling. Comet encoding does not turn highlight
-on. Hue buttons do not change encoding. Pause viz does not
-change scientific Pause.
+on. Operand selector does not change encoding. Pause viz
+does not change scientific Pause.
 
-Meaningless-but-legal: Hue A/B/C + Points leaves Points
+Meaningless-but-legal: an operand + Points leaves Points
 uniform. Use Comets (or Advected / Eulerian marks) to see
-updraft geography.
+operand geography.
 
 Explore-only. Guided has no workbench. Explore↔Guided
 resets encoding, Pause viz, highlight, and depth cue.
@@ -1644,22 +1663,140 @@ Browser playtest has not yet chosen:
 
 - comet-R1 vs oriented R1 as the main perceptual layer;
 - whether R2 stays a diagnostic layer;
-- which prototype updraft-highlight hue, if any, is kept;
+- a product highlight palette;
 - whether Pause should animate a frozen field in product UI.
 
 Background highlight is rejected as a live workbench branch.
-That is not a product-palette decision.
+Hue A/B/C comparison is complete. That is not a product
+palette decision.
 
 ### What this slice did not implement
 
 R3, LIC, slices, GPU particles, volume/cloud renderer,
-seven-operand selector, color picker, legend, camera
-pan/reset, Follow, Inspector Level, Guided population,
-RK2, continuity solver, new physics.
+multi-operand simultaneous colors, color picker, legend,
+camera pan/reset, Follow, Inspector Level, Guided
+population, RK2, continuity solver, new physics.
 
 ---
 
-## 31. STOP
+## 31. Single-operand diagnostic selector — implementation record
+
+**Status:** IMPLEMENTED for browser playtest. No product
+winner. Physics PAUSED.
+
+Decision state:
+
+```text
+Background highlight                  REJECTED
+comet contribution tint               VALIDATED
+Hue A/B/C comparison                  COMPLETE
+exact product palette                 DEFERRED
+single-operand diagnostic selector    IMPLEMENTED
+multi-operand simultaneous display    NOT STARTED
+Environmental advection visualization DEFERRED
+                                      (separate semantics)
+six-operand browser perceptual result WAITING FOR USER PLAYTEST
+```
+
+### Live UI
+
+Explore-only `VisualAirflowWorkbenchControls`:
+
+```text
+Highlight:  [ Off ]  [ Updraft ▼ ]
+```
+
+Options: Off, Updraft, Rotation, Lower inflow, Upper
+outflow, Downdraft, Near-ground outflow.
+
+Not mounted in Guided. No color picker. No Hue A/B/C.
+One prototype hue for all six: `OPERAND_HIGHLIGHT_PROTOTYPE_HUE`
+= 0xff2ec8 (former Hue A).
+
+### Canonical resolution
+
+```text
+App highlightMode
+  → resolveStormOperandHighlightField(
+      lab.velocityObservation.parts,
+      highlightMode,
+    )
+  → SAME named VelocityField as Inspector parts[key]
+```
+
+Comets still advect and orient on
+`velocityObservation.total`. Selected operand affects only
+display tint/salience.
+
+```text
+motion / orientation = V_total(P, t)
+highlight strength   = |V_selected(P, t)| → display mapping
+```
+
+### Display normalization (visualization policy)
+
+Unified `R = 30 m/s` is not equally useful. DEMO occupant
+volume at t=0, 256 occupants:
+
+```text
+updraft            occupant max ≈ 28.9; locus 30
+rotation           occupant max ≈ 12.1; locus ≈ 12.1
+lowerInflow        occupant max ≈ 3.03; locus ≈ 3.03
+upperOutflow       occupant max ≈ 6.04; locus ≈ 6.07
+downdraft          occupant max ≈ 14.5; locus 20
+nearGroundOutflow  occupant max ≈ 7.83; locus ≈ 9.81
+```
+
+At R = 30, lowerInflow has zero occupants ≥ 0.15 display
+strength; near-ground outflow has one. That is a display
+limit, not absence of the operand.
+
+Live per-operand references
+(`STORM_OPERAND_HIGHLIGHT_DISPLAY_REFERENCE_MPS`):
+
+```text
+updraft            30
+rotation           12
+lowerInflow         3
+upperOutflow        6
+downdraft          20
+nearGroundOutflow  10
+```
+
+Each R sits near the configured/locus peak, not the
+undersampled occupant-volume max. They are **not** imported
+from `ScenarioConfig`, not physics constants, and not
+existence thresholds. Color is not a quantitative
+comparison across operands. Inspector remains the local
+magnitude answer.
+
+```text
+displayStrength = clamp(|V_operand| / R_operand, 0, 1)
+```
+
+Sampled at `simulation.clock.time` (laboratory time /
+`t_pause` on scientific Pause).
+
+### Unchanged contracts
+
+Pause viz (full freeze / frozen-field animation), comet
+geometry, scientific foreground/picking, and Points no-op
+are unchanged. Advected/Eulerian marks keep the cheap tint
+path. Background overlay is still not constructed.
+
+### What this slice did not implement
+
+Multi-operand simultaneous colors, seven-color palette,
+color picker, Background highlight, volume/cloud, R3, LIC,
+slices, new particles, GPU rewrite, camera pan/reset,
+Follow, Inspector/Guided redesign, scientific tracer P2,
+RK2, continuity, tilting/stretching, datasets,
+thermo/cloud/precip, physics parameter tuning,
+Environmental advection visualization.
+
+---
+
+## 32. STOP
 
 ```text
 PHYSICS PAUSED
@@ -1667,14 +1804,20 @@ PRODUCT REPRESENTATION              UNDER EVALUATION
 R0 POINTS                           BASELINE / NOT PREFERRED MAIN
 R1 ORIENTED ADVECTED                STRONGEST MAIN-LAYER CANDIDATE
 R1 COMET REFINEMENT                 IMPLEMENTED PROTOTYPE
+                                    strongest current candidate
 R2 EULERIAN                         DIAGNOSTIC-LAYER CANDIDATE
 R3                                  DEFERRED
 FROZEN-FIELD PAUSE ANIMATION        IMPLEMENTED PROTOTYPE
-OPERAND CONTRIBUTION HIGHLIGHT      IMPLEMENTED PROTOTYPE
-                                    Off / Hue A / Hue B / Hue C
-                                    Background REJECTED BRANCH
+COMET CONTRIBUTION TINT             VALIDATED
+BACKGROUND HIGHLIGHT                REJECTED
+HUE A/B/C COMPARISON                COMPLETE
+EXACT PRODUCT PALETTE               DEFERRED
+SINGLE-OPERAND SELECTOR             IMPLEMENTED
+MULTI-OPERAND DISPLAY               NOT STARTED
+ENVIRONMENTAL ADVECTION VIZ         DEFERRED
+SIX-OPERAND PLAYTEST                WAITING FOR USER
 WORKBENCH SLICE A                   COMPLETE
-PROTOTYPE COMPARISON SLICE          COMPLETE; HUE PLAYTEST PENDING
+PROTOTYPE COMPARISON SLICE          COMPLETE
 CAMERA PAN / RESET                  NOT STARTED
 FOLLOW                              NOT STARTED
 GUIDED POPULATION                   NOT STARTED
@@ -1687,4 +1830,5 @@ Do not implement R3, LIC, slices, shaders-as-framework,
 public selectors, Guided population, camera pan, Follow,
 or physics because this document exists.
 
-Next product decision waits for browser playtest.
+Next evidence is the user browser playtest of six storm
+operands on the same comet population.

@@ -4,7 +4,7 @@ import {
   COMET_SEGMENT_COUNT,
   writeCometMarkEndpoints,
 } from "../visualization/cometAirflowMark.js";
-import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
+import { OPERAND_HIGHLIGHT_PROTOTYPE_HUE } from "../visualization/operandContributionDisplay.js";
 import { VISUAL_AIRFLOW_COMET } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex, type LinearRgb } from "./vertexColorSpace.js";
 
@@ -77,7 +77,7 @@ export class CometAirflowMarkScene {
     unitDirections: Float32Array,
     occupancyFade: Float32Array,
     highlightStrengths?: Float32Array,
-    highlightHue: number = UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+    highlightHue: number = OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
   ): void {
     if (this.disposed) {
       throw new Error("CometAirflowMarkScene is disposed");

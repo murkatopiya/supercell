@@ -1,4 +1,4 @@
-import type { UpdraftHighlightPrototypeId } from "../visualization/operandContributionDisplay.js";
+import type { StormOperandHighlightKey } from "../visualization/operandContributionDisplay.js";
 
 export type VisualAirflowWorkbenchMode =
   | "points"
@@ -17,10 +17,10 @@ export const DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION: VisualAirflowPauseVisua
   "full-freeze";
 
 /**
- * Live updraft highlight. Background is a rejected branch and is not
- * a mode. Non-off values tint R1 / comet / Eulerian marks (Highlight
- * Comets) with one prototype hue.
+ * Live operand highlight. Background is a rejected branch and is not
+ * a mode. Non-off values tint R1 / comet / Eulerian marks from the
+ * selected storm operand with one prototype hue.
  */
-export type UpdraftHighlightMode = "off" | UpdraftHighlightPrototypeId;
+export type OperandHighlightMode = "off" | StormOperandHighlightKey;
 
-export const DEFAULT_UPDRAFT_HIGHLIGHT_MODE: UpdraftHighlightMode = "off";
+export const DEFAULT_OPERAND_HIGHLIGHT_MODE: OperandHighlightMode = "off";

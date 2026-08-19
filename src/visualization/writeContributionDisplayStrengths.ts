@@ -4,6 +4,7 @@ import { contributionDisplayStrength } from "./operandContributionDisplay.js";
 /**
  * Sample |V_operand| at xyz positions for display mapping.
  * Does not compose physics or alter V_total.
+ * `referenceMps` is visualization-only; it is not a physics threshold.
  */
 export function writeContributionDisplayStrengths(
   operand: VelocityField,
@@ -11,6 +12,7 @@ export function writeContributionDisplayStrengths(
   count: number,
   time: number,
   out: Float32Array,
+  referenceMps: number,
 ): void {
   const needed = count * 3;
   if (positions.length < needed || out.length < count) {
@@ -27,6 +29,6 @@ export function writeContributionDisplayStrengths(
       time,
     );
     const magnitude = Math.hypot(velocity.x, velocity.y, velocity.z);
-    out[i] = contributionDisplayStrength(magnitude);
+    out[i] = contributionDisplayStrength(magnitude, referenceMps);
   }
 }

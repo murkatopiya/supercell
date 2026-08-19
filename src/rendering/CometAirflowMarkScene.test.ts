@@ -9,7 +9,7 @@ import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { CometAirflowMarkScene } from "./CometAirflowMarkScene.js";
 import cometSceneSrc from "./CometAirflowMarkScene.ts?raw";
 import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
-import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
+import { OPERAND_HIGHLIGHT_PROTOTYPE_HUE } from "../visualization/operandContributionDisplay.js";
 import { VISUAL_AIRFLOW_COMET } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
 
@@ -64,16 +64,8 @@ describe("CometAirflowMarkScene", () => {
         direction: { x: 0, y: 0, z: -1 },
       }),
     ).toBeNull();
-    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"]);
-    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-b"]);
-    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-c"]);
-    expect(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"]).not.toBe(
-      SELECTED_TRACER_GLYPH_COLOR,
-    );
-    expect(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-b"]).not.toBe(
-      SELECTED_TRACER_GLYPH_COLOR,
-    );
-    expect(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-c"]).not.toBe(
+    expect(TRACER_COLORS).not.toContain(OPERAND_HIGHLIGHT_PROTOTYPE_HUE);
+    expect(OPERAND_HIGHLIGHT_PROTOTYPE_HUE).not.toBe(
       SELECTED_TRACER_GLYPH_COLOR,
     );
     expect(cometSceneSrc).not.toMatch(/from ["'][^"']*TracerPathHistory/);
@@ -151,11 +143,11 @@ describe("CometAirflowMarkScene", () => {
       directions,
       fade,
       new Float32Array([1]),
-      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+      OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
     );
     const tinted = Array.from(attribute.array);
 
-    const hue = linearRgbFromSrgbHex(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"]);
+    const hue = linearRgbFromSrgbHex(OPERAND_HIGHLIGHT_PROTOTYPE_HUE);
     for (let vertex = 0; vertex < attribute.count; vertex++) {
       const offset = vertex * 4;
       expect(tinted[offset]!).toBeCloseTo(hue.r, 6);
@@ -175,58 +167,43 @@ describe("CometAirflowMarkScene", () => {
     scene.dispose();
   });
 
-  it("keeps head–tail alpha when switching prototype hues", () => {
+  it("keeps head–tail alpha and endpoints when only display strength changes", () => {
     const scene = new CometAirflowMarkScene(1);
     const positions = new Float32Array([0, 0, 0]);
     const directions = new Float32Array([1, 0, 0]);
     const fade = new Float32Array([1]);
-    const full = new Float32Array([1]);
     const attribute = scene.object.geometry.getAttribute(
       "color",
+    ) as THREE.BufferAttribute;
+    const positionAttribute = scene.object.geometry.getAttribute(
+      "position",
     ) as THREE.BufferAttribute;
 
     scene.syncFromObservation(
       positions,
       directions,
       fade,
-      full,
-      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+      new Float32Array([0]),
+      OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
     );
-    const hueA = Array.from(attribute.array);
+    const none = Array.from(attribute.array);
+    const endpoints = Array.from(positionAttribute.array);
     scene.syncFromObservation(
       positions,
       directions,
       fade,
-      full,
-      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-b"],
+      new Float32Array([1]),
+      OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
     );
-    const hueB = Array.from(attribute.array);
-    scene.syncFromObservation(
-      positions,
-      directions,
-      fade,
-      full,
-      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-c"],
-    );
-    const hueC = Array.from(attribute.array);
+    const full = Array.from(attribute.array);
 
     const head = attribute.count * 4 - 4;
-    expect(hueA[3]!).toBe(0);
-    expect(hueA[head + 3]!).toBeCloseTo(VISUAL_AIRFLOW_COMET.headOpacity, 6);
-    expect(hueB[3]!).toBe(hueA[3]!);
-    expect(hueB[head + 3]!).toBe(hueA[head + 3]!);
-    expect(hueC[3]!).toBe(hueA[3]!);
-    expect(hueC[head + 3]!).toBe(hueA[head + 3]!);
-
-    const dist = (left: number[], right: number[]) =>
-      Math.hypot(
-        left[head]! - right[head]!,
-        left[head + 1]! - right[head + 1]!,
-        left[head + 2]! - right[head + 2]!,
-      );
-    expect(dist(hueA, hueB)).toBeGreaterThan(0.4);
-    expect(dist(hueB, hueC)).toBeGreaterThan(0.4);
-    expect(dist(hueA, hueC)).toBeGreaterThan(0.4);
+    expect(none[3]!).toBe(0);
+    expect(none[head + 3]!).toBeCloseTo(VISUAL_AIRFLOW_COMET.headOpacity, 6);
+    expect(full[3]!).toBe(none[3]!);
+    expect(full[head + 3]!).toBe(none[head + 3]!);
+    expect(Array.from(positionAttribute.array)).toEqual(endpoints);
+    expect(full).not.toEqual(none);
     scene.dispose();
   });
 });

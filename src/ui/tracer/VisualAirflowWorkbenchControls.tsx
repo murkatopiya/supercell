@@ -1,32 +1,24 @@
 import {
-  UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES,
-  type UpdraftHighlightPrototypeId,
+  STORM_OPERAND_HIGHLIGHT_KEYS,
+  isStormOperandHighlightKey,
 } from "../../visualization/operandContributionDisplay.js";
 import type {
-  UpdraftHighlightMode,
+  OperandHighlightMode,
   VisualAirflowPauseVisualization,
   VisualAirflowWorkbenchMode,
 } from "../../rendering/visualAirflowWorkbenchMode.js";
-
-const PROTOTYPE_HUE_BUTTONS: ReadonlyArray<{
-  mode: UpdraftHighlightPrototypeId;
-  label: string;
-}> = [
-  { mode: "hue-a", label: "Hue A" },
-  { mode: "hue-b", label: "Hue B" },
-  { mode: "hue-c", label: "Hue C" },
-];
+import { labelForContribution } from "./tracerContributionLabels.js";
 
 export interface VisualAirflowWorkbenchControlsProps {
   mode: VisualAirflowWorkbenchMode;
   pauseVisualization: VisualAirflowPauseVisualization;
-  highlightMode: UpdraftHighlightMode;
+  highlightMode: OperandHighlightMode;
   depthCueEnabled: boolean;
   onModeChange: (mode: VisualAirflowWorkbenchMode) => void;
   onPauseVisualizationChange: (
     value: VisualAirflowPauseVisualization,
   ) => void;
-  onHighlightModeChange: (value: UpdraftHighlightMode) => void;
+  onHighlightModeChange: (value: OperandHighlightMode) => void;
   onDepthCueChange: (enabled: boolean) => void;
 }
 
@@ -50,8 +42,10 @@ export function VisualAirflowWorkbenchControls({
         Dev workbench — independent comparisons of the same V_total. Not
         product visualization modes. Encoding, Pause viz, and highlight do not
         change each other. Use Comets (or Advected / Eulerian marks), then Off
-        → Hue A → Hue B → Hue C. Hues tint those marks from updraft |V| at
-        sample P,t. Points stay uniform. Prototype hues, not a product palette.
+        or one storm operand. Comets still follow V_total; tint is only that
+        operand&apos;s |V| at P,t. Color is not a separate air mass and not a
+        quantitative comparison across operands. Points stay uniform. One
+        prototype hue, not a product palette.
       </p>
       <div className="visual-airflow-workbench-controls__row">
         <button
@@ -110,7 +104,7 @@ export function VisualAirflowWorkbenchControls({
       </div>
       <div className="visual-airflow-workbench-controls__row">
         <span className="visual-airflow-workbench-controls__label">
-          Updraft highlight
+          Highlight
         </span>
         <button
           type="button"
@@ -120,24 +114,31 @@ export function VisualAirflowWorkbenchControls({
         >
           Off
         </button>
-        {PROTOTYPE_HUE_BUTTONS.map(({ mode: hueMode, label }) => (
-          <button
-            key={hueMode}
-            type="button"
-            className="tracer-runtime-controls__button"
-            aria-pressed={highlightMode === hueMode}
-            onClick={() => onHighlightModeChange(hueMode)}
+        <label className="visual-airflow-workbench-controls__field">
+          Operand
+          <select
+            className="visual-airflow-workbench-controls__select"
+            aria-label="Highlighted storm operand"
+            value={highlightMode === "off" ? "" : highlightMode}
+            onChange={(event) => {
+              const next = event.target.value;
+              if (isStormOperandHighlightKey(next)) {
+                onHighlightModeChange(next);
+              }
+            }}
           >
-            <span
-              className="visual-airflow-workbench-controls__hue-chip"
-              style={{
-                backgroundColor: cssHex(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES[hueMode]),
-              }}
-              aria-hidden="true"
-            />
-            {label}
-          </button>
-        ))}
+            {highlightMode === "off" ? (
+              <option value="" disabled>
+                Choose
+              </option>
+            ) : null}
+            {STORM_OPERAND_HIGHLIGHT_KEYS.map((key) => (
+              <option key={key} value={key}>
+                {labelForContribution(key)}
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="visual-airflow-workbench-controls__field">
           <input
             type="checkbox"
@@ -149,8 +150,4 @@ export function VisualAirflowWorkbenchControls({
       </div>
     </div>
   );
-}
-
-function cssHex(hex: number): string {
-  return `#${hex.toString(16).padStart(6, "0")}`;
 }

@@ -4,12 +4,13 @@
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
 **Implementation:** perceptual airflow Slice 1–2 COMPLETE
-in `22`. Workbench Slice A COMPLETE in `23`. Slice A
-R0/R1/R2 playtest recorded in `23`. Prototype comparison
-slice (comet / frozen-field Pause / updraft highlight)
-IMPLEMENTED in `23`; browser playtest pending. Product
-representation UNDER EVALUATION. Guided population NOT
-STARTED. Other §13 candidates remain unchosen.
+in `22`. Workbench Slice A COMPLETE in `23`. Prototype
+comparison slice IMPLEMENTED in `23`. Comet contribution
+tint VALIDATED; Background highlight REJECTED; Hue A/B/C
+COMPLETE; exact palette DEFERRED. Single-operand diagnostic
+selector IMPLEMENTED in `23`; six-operand playtest WAITING.
+Product representation UNDER EVALUATION. Guided population
+NOT STARTED. Other §13 candidates remain unchosen.
 
 This document remains the whole-product capability map. It did
 not pick a winner among §13 candidates. Candidate 1 (perceptual
@@ -1068,6 +1069,7 @@ next implementation branch:   Candidate 1 Slice 1–2 COMPLETE
                               representation UNDER EVALUATION
                               in `23` (workbench Slice A +
                               prototype comparison live;
+                              six-operand comet tint
                               playtest pending)
                               Guided population / camera pan
                               NOT STARTED

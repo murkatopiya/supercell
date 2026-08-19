@@ -3,7 +3,7 @@ import {
   ORIENTED_AIRFLOW_MARK_LENGTH_M,
   writeOrientedMarkEndpoints,
 } from "../visualization/orientedAirflowMark.js";
-import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
+import { OPERAND_HIGHLIGHT_PROTOTYPE_HUE } from "../visualization/operandContributionDisplay.js";
 import { VISUAL_AIRFLOW_ORIENTED_MARK } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex, type LinearRgb } from "./vertexColorSpace.js";
 
@@ -74,7 +74,7 @@ export class OrientedAirflowMarkScene {
     positions: Float32Array,
     unitDirections: Float32Array,
     highlightStrengths?: Float32Array,
-    highlightHue: number = UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+    highlightHue: number = OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
   ): void {
     if (this.disposed) {
       throw new Error("OrientedAirflowMarkScene is disposed");
@@ -110,7 +110,7 @@ function writeHeadTailColors(
   out: Float32Array,
   count: number,
   highlightStrengths: Float32Array | undefined,
-  highlightHue: number = UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+  highlightHue: number = OPERAND_HIGHLIGHT_PROTOTYPE_HUE,
 ): void {
   const tail = linearRgbFromSrgbHex(VISUAL_AIRFLOW_ORIENTED_MARK.tailColor);
   const head = linearRgbFromSrgbHex(VISUAL_AIRFLOW_ORIENTED_MARK.headColor);

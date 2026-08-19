@@ -2,10 +2,10 @@ import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
 import { VisualAirflowWorkbenchScene } from "../../rendering/VisualAirflowWorkbenchScene.js";
 import {
-  DEFAULT_UPDRAFT_HIGHLIGHT_MODE,
+  DEFAULT_OPERAND_HIGHLIGHT_MODE,
   DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION,
   DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
-  type UpdraftHighlightMode,
+  type OperandHighlightMode,
   type VisualAirflowPauseVisualization,
   type VisualAirflowWorkbenchMode,
 } from "../../rendering/visualAirflowWorkbenchMode.js";
@@ -83,9 +83,9 @@ export interface TracerViewportProps {
    */
   workbenchMode?: VisualAirflowWorkbenchMode;
   pauseVisualization?: VisualAirflowPauseVisualization;
-  highlightMode?: UpdraftHighlightMode;
+  highlightMode?: OperandHighlightMode;
   /**
-   * SAME named updraft operand instance from velocityObservation.parts.
+   * SAME named storm operand instance from velocityObservation.parts.
    * Guided omits this. Not a rebuilt field.
    */
   highlightOperand?: VelocityField | null;
@@ -127,7 +127,7 @@ export function TracerViewport({
   visualAirflowField = null,
   workbenchMode = DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
   pauseVisualization = DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION,
-  highlightMode = DEFAULT_UPDRAFT_HIGHLIGHT_MODE,
+  highlightMode = DEFAULT_OPERAND_HIGHLIGHT_MODE,
   highlightOperand = null,
   depthCueEnabled = false,
   onTracerSelect,
