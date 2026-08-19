@@ -123,6 +123,27 @@ export class VisualAirflowPopulation {
   }
 
   /**
+   * Visualization recycle age. Not a physical lifetime.
+   */
+  get retirementAge(): number {
+    return this.maxAge;
+  }
+
+  /**
+   * Write current slot ages (time since last reseed). Not path history.
+   */
+  writeAgesTo(out: Float32Array): void {
+    if (out.length < this.slots.length) {
+      throw new VisualAirflowPopulationError(
+        "age buffer must hold occupantCount values",
+      );
+    }
+    for (let i = 0; i < this.slots.length; i++) {
+      out[i] = this.slots[i]!.age;
+    }
+  }
+
+  /**
    * Write current slot positions into a caller-owned xyz buffer.
    * Does not allocate occupant snapshots. Does not expose slots.
    */

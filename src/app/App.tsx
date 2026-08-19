@@ -37,8 +37,10 @@ import {
 import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
+import type { VelocityField } from "../core/fields/VelocityField.js";
 import {
   inspectSelectedTracer,
+  type InspectableVelocityOperands,
   type TracerInspection,
 } from "../interaction/TracerInspection.js";
 import { TracerSelection } from "../interaction/TracerSelection.js";
@@ -47,7 +49,11 @@ import {
   type GuidedExperimentId,
 } from "../guided/GuidedExperiment.js";
 import {
+  DEFAULT_UPDRAFT_HIGHLIGHT_MODE,
+  DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION,
   DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
+  type UpdraftHighlightMode,
+  type VisualAirflowPauseVisualization,
   type VisualAirflowWorkbenchMode,
 } from "../rendering/visualAirflowWorkbenchMode.js";
 
@@ -100,6 +106,13 @@ export function App() {
   );
   const [workbenchMode, setWorkbenchMode] =
     useState<VisualAirflowWorkbenchMode>(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
+  const [pauseVisualization, setPauseVisualization] =
+    useState<VisualAirflowPauseVisualization>(
+      DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION,
+    );
+  const [highlightMode, setHighlightMode] = useState<UpdraftHighlightMode>(
+    DEFAULT_UPDRAFT_HIGHLIGHT_MODE,
+  );
   const [depthCueEnabled, setDepthCueEnabled] = useState(false);
   const selectionRef = useRef<TracerSelection | null>(null);
   if (selectionRef.current === null) {
@@ -155,6 +168,8 @@ export function App() {
     setPlacementEnabled(false);
     setPendingSeed(null);
     setWorkbenchMode(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
+    setPauseVisualization(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION);
+    setHighlightMode(DEFAULT_UPDRAFT_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
     setResetEpoch((epoch) => epoch + 1);
   };
@@ -168,6 +183,8 @@ export function App() {
     setPendingSeed(null);
     setPlacementEnabled(false);
     setWorkbenchMode(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
+    setPauseVisualization(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION);
+    setHighlightMode(DEFAULT_UPDRAFT_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
     setResetEpoch((epoch) => epoch + 1);
   };
@@ -287,8 +304,12 @@ export function App() {
             {explore !== null && (
               <VisualAirflowWorkbenchControls
                 mode={workbenchMode}
+                pauseVisualization={pauseVisualization}
+                highlightMode={highlightMode}
                 depthCueEnabled={depthCueEnabled}
                 onModeChange={setWorkbenchMode}
+                onPauseVisualizationChange={setPauseVisualization}
+                onHighlightModeChange={setHighlightMode}
                 onDepthCueChange={setDepthCueEnabled}
               />
             )}
@@ -320,6 +341,13 @@ export function App() {
               lab.kind === "explore" ? lab.velocityObservation.total : null
             }
             workbenchMode={workbenchMode}
+            pauseVisualization={pauseVisualization}
+            highlightMode={highlightMode}
+            highlightOperand={
+              lab.kind === "explore"
+                ? updraftOperandField(lab.velocityObservation)
+                : null
+            }
             depthCueEnabled={depthCueEnabled}
             onTracerSelect={(tracerId) => {
               selection.select(tracerId);
@@ -356,4 +384,11 @@ export function App() {
       </section>
     </main>
   );
+}
+
+function updraftOperandField(
+  observation: InspectableVelocityOperands,
+): VelocityField | null {
+  const part = observation.parts?.find((item) => item.key === "updraft");
+  return part === undefined ? null : part.field;
 }

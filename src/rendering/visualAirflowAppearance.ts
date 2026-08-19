@@ -33,3 +33,14 @@ export const VISUAL_AIRFLOW_DEPTH_CUE = {
   nearM: 8000,
   farM: 26000,
 } as const;
+
+export const VISUAL_AIRFLOW_COMET = {
+  tailColor: 0x2a3540,
+  headColor: 0xe8f2f8,
+  opacity: 0.55,
+} as const;
+
+export const VISUAL_AIRFLOW_HIGHLIGHT_BACKGROUND = {
+  size: 160,
+  opacity: 0.22,
+} as const;

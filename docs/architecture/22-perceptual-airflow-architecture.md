@@ -2,16 +2,17 @@
 
 **Status:** architecture SoT. Slice 1 COMPLETE. Slice 2
 (first Explore browser exposure) COMPLETE. Workbench Slice A
-COMPLETE in `23`. Slice A playtest recorded; next perceptual
-prototypes (comet, frozen-field Pause animation, operand
-highlight) are hypotheses in `23`, not started. Product
-representation UNDER EVALUATION. Guided population NOT
-STARTED. Camera pan NOT STARTED.
+COMPLETE in `23`. Slice A playtest recorded. Prototype
+comparison slice (comet / frozen-field Pause / updraft
+highlight) IMPLEMENTED in `23`; browser playtest pending.
+Product representation UNDER EVALUATION. Guided population
+NOT STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** PAUSED
 **Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE;
 Workbench Slice A COMPLETE in `23`; Slice A playtest
-recorded; next prototypes NOT STARTED; product encoding not chosen
+recorded; prototype comparison slice IMPLEMENTED in `23`
+(playtest pending); product encoding not chosen
 **Decision:** earned for a narrow first perceptual direction;
 other representation/runtime alternatives remain recorded
 
@@ -40,7 +41,8 @@ Slice 1  headless VisualAirflowPopulation   COMPLETE
 Slice 2  Explore browser exposure           COMPLETE
 Workbench Slice A (R0/R1/R2 + depth cue)    COMPLETE in `23`
 Slice A playtest                            recorded in `23`
-next perceptual prototypes                  NOT STARTED
+prototype comparison slice                  IMPLEMENTED in `23`
+                                            (playtest pending)
 product representation                      UNDER EVALUATION
 Guided population                           NOT STARTED
 camera pan                                  NOT STARTED
@@ -1063,7 +1065,8 @@ implementation:           Slice 1 COMPLETE
                           Slice 2 Explore browser COMPLETE
                           representation UNDER EVALUATION
                           in `23`; Workbench Slice A COMPLETE
-                          next prototypes NOT STARTED
+                          prototype comparison slice
+                          IMPLEMENTED in `23` (playtest pending)
                           Guided population NOT STARTED
                           camera pan NOT STARTED
 ```
@@ -1081,6 +1084,7 @@ PHYSICS PAUSED
 SLICE 1 HEADLESS POPULATION     COMPLETE
 SLICE 2 EXPLORE BROWSER         COMPLETE
 WORKBENCH SLICE A               COMPLETE (see `23`)
+PROTOTYPE COMPARISON SLICE      COMPLETE IN `23`; PLAYTEST PENDING
 PRODUCT REPRESENTATION          UNDER EVALUATION
 GUIDED POPULATION               NOT STARTED
 POPULATION UI / TOGGLE          NOT STARTED
@@ -1090,11 +1094,12 @@ SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
 Do not start Guided population, streamlines, shaders, GPU
-code, camera pan, Follow, a dataset adapter, R3, comet
-marks, frozen-field Pause animation, or operand highlight
-because `23` records them as hypotheses. Product
-representation stays under evaluation in `23`. First browser
-playtest is recorded; representation comparison lives in
+code, camera pan, Follow, a dataset adapter, or R3 because
+`23` still defers them. Comet marks, frozen-field Pause
+animation, and operand highlight are live **prototypes** in
+`23`, not product defaults. Product representation stays
+under evaluation in `23`. First browser playtest is
+recorded; representation comparison lives in
 `docs/architecture/23-perceptual-airflow-workbench.md`.
 
 ---

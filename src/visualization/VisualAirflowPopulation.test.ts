@@ -442,4 +442,21 @@ describe("VisualAirflowPopulation reset and observation", () => {
       VisualAirflowPopulationError,
     );
   });
+
+  it("writeAgesTo copies visualization ages without exposing slots", () => {
+    const population = createPopulation(
+      undefined,
+      cubeConfig({ count: 4, maxAge: 8 }),
+    );
+    const occupants = population.occupants();
+    const ages = new Float32Array(4);
+    population.writeAgesTo(ages);
+    expect(Array.from(ages)).toEqual(occupants.map((occupant) => occupant.age));
+    expect(population.retirementAge).toBe(8);
+    ages[0] = 99;
+    expect(population.occupants()[0]!.age).not.toBe(99);
+    expect(() => population.writeAgesTo(new Float32Array(3))).toThrow(
+      VisualAirflowPopulationError,
+    );
+  });
 });

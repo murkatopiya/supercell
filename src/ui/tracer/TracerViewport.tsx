@@ -2,7 +2,11 @@ import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
 import { VisualAirflowWorkbenchScene } from "../../rendering/VisualAirflowWorkbenchScene.js";
 import {
+  DEFAULT_UPDRAFT_HIGHLIGHT_MODE,
+  DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION,
   DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
+  type UpdraftHighlightMode,
+  type VisualAirflowPauseVisualization,
   type VisualAirflowWorkbenchMode,
 } from "../../rendering/visualAirflowWorkbenchMode.js";
 import { consumeFixedTimesteps } from "../../simulation/consumeFixedTimesteps.js";
@@ -14,6 +18,8 @@ import type { Vec3 } from "../../core/math/Vec3.js";
 import type { VelocityField } from "../../core/fields/VelocityField.js";
 import type { EulerianAirflowSamples } from "../../visualization/EulerianAirflowSamples.js";
 import type { VisualAirflowPopulation } from "../../visualization/VisualAirflowPopulation.js";
+import { stepVisualAirflowOnFrozenField } from "../../visualization/stepVisualAirflowOnFrozenField.js";
+import { visualAirflowElapsedFromWall } from "../../visualization/visualAirflowElapsedFromWall.js";
 import { advanceLaboratoryFixedStep } from "./advanceLaboratoryFixedStep.js";
 import type { TracerTimeScale } from "./TracerRuntimeControls.js";
 import { pointerNdcFromClientRect } from "./pointerNdcFromClientRect.js";
@@ -76,6 +82,13 @@ export interface TracerViewportProps {
    * the mount effect deps). Default R0 Points.
    */
   workbenchMode?: VisualAirflowWorkbenchMode;
+  pauseVisualization?: VisualAirflowPauseVisualization;
+  highlightMode?: UpdraftHighlightMode;
+  /**
+   * SAME named updraft operand instance from velocityObservation.parts.
+   * Guided omits this. Not a rebuilt field.
+   */
+  highlightOperand?: VelocityField | null;
   /**
    * Orthogonal camera-distance salience. Not meteorological fog.
    */
@@ -113,6 +126,9 @@ export function TracerViewport({
   eulerianAirflowSamples = null,
   visualAirflowField = null,
   workbenchMode = DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
+  pauseVisualization = DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION,
+  highlightMode = DEFAULT_UPDRAFT_HIGHLIGHT_MODE,
+  highlightOperand = null,
   depthCueEnabled = false,
   onTracerSelect,
   onSimulationAdvanced,
@@ -133,6 +149,9 @@ export function TracerViewport({
   const selectedTracerIdRef = useRef<number | null>(selectedTracerId);
   const localSceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const workbenchModeRef = useRef(workbenchMode);
+  const pauseVisualizationRef = useRef(pauseVisualization);
+  const highlightModeRef = useRef(highlightMode);
+  const highlightOperandRef = useRef(highlightOperand);
   const depthCueEnabledRef = useRef(depthCueEnabled);
   const eulerianAirflowSamplesRef = useRef(eulerianAirflowSamples);
   const visualAirflowFieldRef = useRef(visualAirflowField);
@@ -145,6 +164,9 @@ export function TracerViewport({
   onSimulationAdvancedRef.current = onSimulationAdvanced;
   selectedTracerIdRef.current = selectedTracerId;
   workbenchModeRef.current = workbenchMode;
+  pauseVisualizationRef.current = pauseVisualization;
+  highlightModeRef.current = highlightMode;
+  highlightOperandRef.current = highlightOperand;
   depthCueEnabledRef.current = depthCueEnabled;
   eulerianAirflowSamplesRef.current = eulerianAirflowSamples;
   visualAirflowFieldRef.current = visualAirflowField;
@@ -190,6 +212,7 @@ export function TracerViewport({
       scene.attachVisualAirflow(workbenchScene.object);
     }
     let accumulator = 0;
+    let visualAccumulator = 0;
     let frameId = 0;
     let previousMs = performance.now();
     let disposed = false;
@@ -220,6 +243,8 @@ export function TracerViewport({
             eulerian,
             field,
             time: simulation.clock.time,
+            highlightMode: highlightModeRef.current,
+            highlightOperand: highlightOperandRef.current,
           });
         }
       }
@@ -322,6 +347,7 @@ export function TracerViewport({
       if (resetPendingRef.current) {
         resetPendingRef.current = false;
         accumulator = 0;
+        visualAccumulator = 0;
         previousMs = nowMs;
       }
 
@@ -329,6 +355,7 @@ export function TracerViewport({
       if (wasPausedRef.current && !pausedNow) {
         // Extra no-catch-up safety on resume transition
         previousMs = nowMs;
+        visualAccumulator = 0;
       }
       wasPausedRef.current = pausedNow;
 
@@ -354,6 +381,26 @@ export function TracerViewport({
       }
       if (consumed.steps > 0) {
         onSimulationAdvancedRef.current?.();
+      } else if (
+        pausedNow &&
+        pauseVisualizationRef.current === "frozen-field-animation" &&
+        visualAirflowPopulation !== null
+      ) {
+        const visualElapsed = visualAirflowElapsedFromWall(wallFrameDt);
+        const visualConsumed = consumeFixedTimesteps(
+          visualAccumulator,
+          visualElapsed,
+          timestep,
+        );
+        visualAccumulator = visualConsumed.accumulator;
+        const frozenTime = simulation.clock.time;
+        for (let i = 0; i < visualConsumed.steps; i++) {
+          stepVisualAirflowOnFrozenField(
+            visualAirflowPopulation,
+            timestep,
+            frozenTime,
+          );
+        }
       }
 
       sync();

@@ -182,6 +182,12 @@ describe("Workbench representation switching lifecycle", () => {
     expect(appSrc).toMatch(
       /enterExplore[\s\S]*setDepthCueEnabled\(false\)/s,
     );
+    expect(appSrc).toMatch(
+      /enterExplore[\s\S]*setPauseVisualization\(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION\)/s,
+    );
+    expect(appSrc).toMatch(
+      /enterExplore[\s\S]*setHighlightMode\(DEFAULT_UPDRAFT_HIGHLIGHT_MODE\)/s,
+    );
     expect(appSrc).not.toMatch(/localStorage/);
   });
 

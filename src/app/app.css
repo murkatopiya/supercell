@@ -218,6 +218,12 @@ body {
   align-items: center;
 }
 
+.visual-airflow-workbench-controls__label {
+  font-size: 0.75rem;
+  color: #6a737d;
+  margin-right: 0.15rem;
+}
+
 .visual-airflow-workbench-controls__field {
   display: inline-flex;
   align-items: center;

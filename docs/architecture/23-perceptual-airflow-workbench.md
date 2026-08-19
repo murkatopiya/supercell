@@ -3,11 +3,15 @@
 **Status:** architecture exploration / decision checkpoint
 **Scope:** representation comparison after Slice A browser playtest
 **Physics:** PAUSED
-**Implementation:** Workbench Slice A COMPLETE. Next prototype
-slice NOT STARTED.
+**Implementation:** Workbench Slice A COMPLETE. Prototype
+comparison slice (comet / frozen-field Pause / updraft
+highlight) IMPLEMENTED for browser playtest. Product
+encoding not chosen.
 **Decision:** product representation STILL UNDER EVALUATION.
 R1 is the strongest current main-layer candidate. R2 is an
 earned diagnostic-layer candidate. Neither is a product default.
+Comet vs oriented R1, Pause viz, and updraft highlight are
+live comparison tools, not winners.
 
 Predecessor:
 
@@ -30,7 +34,9 @@ This document owns:
 - Slice A workbench architecture and implementation record;
 - Slice A R0/R1/R2 comparison playtest;
 - prototype decision state;
-- proposed next perceptual experiments (not implemented).
+- prototype comparison slice implementation record (§31);
+- browser playtest of comet / Pause viz / updraft highlight
+  (not yet decided).
 
 **Naming:** `22` §10 used `R1`–`R4` for *runtime*
 architectures (Simulation particles vs separate population
@@ -813,7 +819,9 @@ Product representation is still not chosen.
 
 R3 remains deferred. New evidence did not earn streamlines.
 
-Proposed next experiments (§22–§26) are **not implemented**.
+Proposed next experiments (§22–§25) are now a live
+prototype comparison slice (§31). Browser playtest (§26 D)
+has not decided a product encoding.
 
 Encoding contracts that Slice A can already state:
 
@@ -928,7 +936,8 @@ recorded, not treated as an order to build streamlines.
 
 ## 22. R1 comet-mark refinement
 
-**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+**Kind:** IMPLEMENTED PROTOTYPE / UNDER EVALUATION
+(historical hypothesis below; live API in §31)
 
 **Decision:** none. Compare against current R1 LineSegments
 before choosing.
@@ -986,7 +995,8 @@ The experiment is current mark vs comet-like mark, same
 
 ## 23. Pause: scientific time vs perceptual animation
 
-**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+**Kind:** IMPLEMENTED PROTOTYPE / UNDER EVALUATION
+(historical hypothesis below; live API in §31)
 
 **Live contract today:** scientific Pause is a **full visual
 freeze**. `simulationElapsedFromWall(..., paused: true)`
@@ -1061,7 +1071,8 @@ frozen field. It does not authorize physics stepping.
 
 ## 24. Operand contribution highlight
 
-**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+**Kind:** IMPLEMENTED PROTOTYPE / UNDER EVALUATION
+(historical hypothesis below; live API in §31)
 
 A visualization/understanding candidate, not Inspector
 payload and not a new physics operand.
@@ -1143,7 +1154,8 @@ mode.
 
 ## 25. Highlight encoding experiment — Off / A / B
 
-**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+**Kind:** IMPLEMENTED PROTOTYPE / UNDER EVALUATION
+(historical hypothesis below; live API in §31)
 
 Do not pick a winner in docs.
 
@@ -1247,26 +1259,27 @@ v1 hypothesis: at most **one** operand selected at a time.
 
 ## 26. Next workbench experiments
 
-**Kind:** PROPOSED SEQUENCE / NOT STARTED
+**Kind:** A/B/C IMPLEMENTED AS PROTOTYPE SLICE; D WAITING
+FOR BROWSER PLAYTEST
 
-When commanded, narrow slices in this order:
+Sequence as commanded:
 
-### A. R1 mark refinement
+### A. R1 mark refinement     IMPLEMENTED PROTOTYPE
 
 Current oriented `LineSegments` vs comet-like oriented
-mark. Same population, same `V_total`.
+mark. Same population, same `V_total`. Live in §31.
 
-### B. Pause semantics
+### B. Pause semantics     IMPLEMENTED PROTOTYPE
 
-Full visual freeze (live) vs frozen-field continuing
-perceptual animation. Samples at `t_pause` only.
+Full visual freeze vs frozen-field continuing perceptual
+animation. Samples at `t_pause` only. Live in §31.
 
-### C. Operand highlight
+### C. Operand highlight     IMPLEMENTED PROTOTYPE
 
 Off vs Background vs Comet. First operand: updraft
-contribution from `velocityObservation.parts`.
+contribution from `velocityObservation.parts`. Live in §31.
 
-### D. Browser playtest / decision checkpoint
+### D. Browser playtest / decision checkpoint     NOT DONE
 
 Only after evidence decide:
 
@@ -1334,9 +1347,10 @@ R1 Oriented Advected:     IMPLEMENTED PROTOTYPE
                           strongest current main-layer
                           candidate; geometry not final
 
-R1 comet refinement:      PROTOTYPE PROPOSED
-                          NOT IMPLEMENTED
+R1 comet refinement:      IMPLEMENTED PROTOTYPE
+                          same VisualAirflowPopulation
                           perceptual cue, not path history
+                          not a product winner
 
 R2 Eulerian Oriented:     IMPLEMENTED PROTOTYPE
                           earned diagnostic-layer candidate
@@ -1345,16 +1359,16 @@ R2 Eulerian Oriented:     IMPLEMENTED PROTOTYPE
 R3 Sparse Streamlines:    DEFERRED
 
 frozen-field animation
-during scientific Pause:  PROTOTYPE PROPOSED
-                          NOT IMPLEMENTED
-                          live Pause = full visual freeze
+during scientific Pause:  IMPLEMENTED PROTOTYPE
+                          default Pause viz = full freeze
+                          optional animate at t_pause
 
 operand contribution
-highlight:                PROTOTYPE PROPOSED
-                          NOT IMPLEMENTED
-                          Off / A background / B comets
+highlight:                IMPLEMENTED PROTOTYPE
+                          Off / Background / Comets
                           first operand: updraft
                           not Inspector-owned
+                          not a product winner
 
 depth cue:                ORTHOGONAL TOGGLE LIVE
 
@@ -1368,37 +1382,221 @@ continuity:               YELLOW
 camera P1:                contingency, not implemented
 
 Slice A:                  COMPLETE
-next implementation:      NOT STARTED
+prototype comparison:     IMPLEMENTED; playtest pending
 physics:                  PAUSED
 ```
 
 ---
 
-## 30. STOP
+## 30. Prototype comparison slice — implementation record
+
+**Status:** IMPLEMENTED for browser playtest. No product
+winner. Physics PAUSED.
+
+### Live modules
+
+```text
+src/visualization/cometAirflowMark.ts
+src/visualization/cometOccupancyFade.ts
+src/visualization/operandContributionDisplay.ts
+src/visualization/writeContributionDisplayStrengths.ts
+src/visualization/stepVisualAirflowOnFrozenField.ts
+src/visualization/visualAirflowElapsedFromWall.ts
+src/rendering/CometAirflowMarkScene.ts
+src/rendering/OperandHighlightBackgroundScene.ts
+src/rendering/visualAirflowWorkbenchMode.ts
+src/ui/tracer/VisualAirflowWorkbenchControls.tsx
+```
+
+Existing `VisualAirflowPopulation` is reused. No second
+physical population. No `TracerPathHistory` on occupants.
+
+### Encodings (independent of Pause viz and highlight)
+
+```text
+R0  VisualAirflowScene             THREE.Points
+R1  OrientedAirflowMarkScene       THREE.LineSegments
+R1c CometAirflowMarkScene          THREE.LineSegments
+    4 segments / occupant
+    head at occupant P
+    tail at P − L d̂
+    L = 500 m fixture, not |V|
+    occupancy fade from visualization age
+R2  OrientedAirflowMarkScene       THREE.LineSegments
+    name eulerianAirflowMarks
+```
+
+Default Explore encoding remains **R0 Points**.
+
+### Comet fade
+
+Renderer-local only. `age` is time since last visual
+reseed, not parcel history.
+
+```text
+fadeIn  = clamp(age / 3 s, 0, 1)
+fadeOut = clamp((maxAge − age) / 8 s, 0, 1)
+fade    = min(fadeIn, fadeOut)
+```
+
+`maxAge` is the visualization retirement age (DEMO fixture
+80 s). Fade does not mutate Simulation, Inspector, or
+scientific trails.
+
+### Pause visualization (independent of scientific Pause)
+
+Scientific Pause is unchanged: `simulationElapsedFromWall`
+with `paused: true` yields 0, so `Simulation.step` does not
+run. Inspector stays at current `P, t`.
+
+Workbench choice:
+
+```text
+full-freeze                 default; no visual step
+frozen-field-animation      VisualAirflowPopulation.step(dt, t_pause)
+```
+
+`t_pause = simulation.clock.time` on every visual step.
+Wall-clock is not field time. Visual dt comes from
+`visualAirflowElapsedFromWall` (clamp 0.25 s) into a
+**view-runtime** `visualAccumulator` in `TracerViewport`.
+It does not call `Simulation.step` and does not fire
+`onSimulationAdvanced`.
+
+R2 Eulerian samples stay at their fixed lattice. Sync still
+observes `V_total(P, t_pause)`.
+
+### Canonical V_total
+
+Unchanged from Slice A:
+
+```text
+ExploreLab.velocityObservation.total
+  == Simulation field
+  == VisualAirflowPopulation field
+  == EulerianAirflowSamples field
+  == TracerViewport visualAirflowField
+```
+
+R1/comet advection and orientation use that instance via
+`samplesField` + `writeAdvectedOrientedAirflow`.
+
+### Canonical updraft operand
+
+```text
+App.updraftOperandField(observation)
+  = observation.parts.find(key === "updraft").field
+```
+
+Same named instance Inspector decomposition already holds.
+No `createUpdraftField`, no second
+`VerticalEnvelopeUpdraftField`. `V_total` is not replaced.
+
+### Highlight modes (independent of encoding)
+
+```text
+Off          no overlay, no tint
+Background   OperandHighlightBackgroundScene
+             THREE.Points at Eulerian sample xyz
+             color = prototype hue × displayStrength
+             not a volume, cloud, air mass, or envelope
+             isosurface; not physical air
+Comets       tint R1 / comet / R2 marks at their sample P,t
+             advection/orientation still V_total
+             Points stay uniform (documented no-op)
+```
+
+Color means “this visual sample is where the selected
+operand currently contributes this much”, not “this is
+updraft air”.
+
+### Display mapping (visualization fixture)
+
+```text
+contributionMagnitude = |V_operand(P, t)|
+displayStrength = clamp(magnitude / 30, 0, 1)
+hue = 0x4fd2c2
+```
+
+`30` is `UPDRAFT_HIGHLIGHT_DISPLAY_REFERENCE_MPS`. Chosen
+so DEMO updraft peak (~30 m/s) saturates the slider. It is
+**not** imported from `ScenarioConfig` and is not a physics
+threshold. No “updraft exists iff value > X” claim.
+
+Background and Comet highlight both sample the operand at
+the same laboratory time (`simulation.clock.time`).
+
+### Combinations
+
+Independent rows:
+
+```text
+encoding:     Points | Advected marks | Comets | Eulerian marks
+Pause viz:    Full freeze | Animate frozen field
+highlight:    Off | Background | Comets
+depth cue:    orthogonal checkbox
+```
+
+No hidden coupling. Comet encoding does not turn highlight
+on. Background does not change encoding. Pause viz does not
+change scientific Pause.
+
+Meaningless-but-legal: Comet highlight + Points leaves
+Points uniform. Background + any encoding still shows the
+Eulerian-point overlay.
+
+Explore-only. Guided has no workbench. Explore↔Guided
+resets encoding, Pause viz, highlight, and depth cue.
+
+### Foreground / picking
+
+Scientific tracers remain pickable, selectable, Inspector-
+owned, with scientific trails. Comet marks, oriented marks,
+points, and highlight background set `raycast = () => {}`
+and carry no `tracerId`.
+
+### What this slice did not decide
+
+Browser playtest has not yet chosen:
+
+- comet-R1 vs oriented R1 as the main perceptual layer;
+- whether R2 stays a diagnostic layer;
+- which updraft-highlight encoding, if any, is kept;
+- whether Pause should animate a frozen field in product UI.
+
+### What this slice did not implement
+
+R3, LIC, slices, GPU particles, volume/cloud renderer,
+seven-operand selector, color picker, legend, camera
+pan/reset, Follow, Inspector Level, Guided population,
+RK2, continuity solver, new physics.
+
+---
+
+## 31. STOP
 
 ```text
 PHYSICS PAUSED
 PRODUCT REPRESENTATION              UNDER EVALUATION
 R0 POINTS                           BASELINE / NOT PREFERRED MAIN
 R1 ORIENTED ADVECTED                STRONGEST MAIN-LAYER CANDIDATE
-R1 COMET REFINEMENT                 NOT IMPLEMENTED
+R1 COMET REFINEMENT                 IMPLEMENTED PROTOTYPE
 R2 EULERIAN                         DIAGNOSTIC-LAYER CANDIDATE
 R3                                  DEFERRED
-FROZEN-FIELD PAUSE ANIMATION        NOT IMPLEMENTED
-OPERAND CONTRIBUTION HIGHLIGHT      NOT IMPLEMENTED
+FROZEN-FIELD PAUSE ANIMATION        IMPLEMENTED PROTOTYPE
+OPERAND CONTRIBUTION HIGHLIGHT      IMPLEMENTED PROTOTYPE
 WORKBENCH SLICE A                   COMPLETE
-NEXT IMPLEMENTATION SLICE           NOT STARTED
+PROTOTYPE COMPARISON SLICE          COMPLETE; PLAYTEST PENDING
 CAMERA PAN / RESET                  NOT STARTED
 FOLLOW                              NOT STARTED
 GUIDED POPULATION                   NOT STARTED
 ```
 
-Do not implement comet marks, frozen-field Pause animation,
-operand highlight meshes, shaders, R3, micro-trails, LIC,
-speed encoding, public selectors, Guided population, camera
-pan, Follow, or physics because this document exists.
+Do not pick a product representation because these
+prototypes exist.
 
-Do not pick a product representation because this playtest
-exists.
+Do not implement R3, LIC, slices, shaders-as-framework,
+public selectors, Guided population, camera pan, Follow,
+or physics because this document exists.
 
-Next work starts only when commanded.
+Next product decision waits for browser playtest.
