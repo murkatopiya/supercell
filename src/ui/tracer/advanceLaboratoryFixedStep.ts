@@ -12,6 +12,8 @@ export interface AdvanceLaboratoryFixedStepOptions {
  *
  * Captures pre-step clock time, advances scientific Simulation, then
  * steps the Explore visual population with the same dt and that time.
+ * The population keeps stepping even when a workbench encoding hides
+ * it (R2), so returning to R0/R1 stays on the same laboratory session.
  * Does not apply timeScale. Caller decides how many steps to consume.
  */
 export function advanceLaboratoryFixedStep(

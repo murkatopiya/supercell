@@ -1,12 +1,18 @@
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
-import { VisualAirflowScene } from "../../rendering/VisualAirflowScene.js";
+import { VisualAirflowWorkbenchScene } from "../../rendering/VisualAirflowWorkbenchScene.js";
+import {
+  DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
+  type VisualAirflowWorkbenchMode,
+} from "../../rendering/visualAirflowWorkbenchMode.js";
 import { consumeFixedTimesteps } from "../../simulation/consumeFixedTimesteps.js";
 import type { TracerPathHistory } from "../../simulation/TracerPathHistory.js";
 import { simulationElapsedFromWall } from "../../simulation/simulationElapsedFromWall.js";
 import type { Simulation } from "../../simulation/Simulation.js";
 import type { TracerSeedPosition } from "../../simulation/createTracersFromSeeds.js";
 import type { Vec3 } from "../../core/math/Vec3.js";
+import type { VelocityField } from "../../core/fields/VelocityField.js";
+import type { EulerianAirflowSamples } from "../../visualization/EulerianAirflowSamples.js";
 import type { VisualAirflowPopulation } from "../../visualization/VisualAirflowPopulation.js";
 import { advanceLaboratoryFixedStep } from "./advanceLaboratoryFixedStep.js";
 import type { TracerTimeScale } from "./TracerRuntimeControls.js";
@@ -58,6 +64,23 @@ export interface TracerViewportProps {
    */
   visualAirflowPopulation?: VisualAirflowPopulation | null;
   /**
+   * Fixed Eulerian samples for the workbench. Guided omits this.
+   */
+  eulerianAirflowSamples?: EulerianAirflowSamples | null;
+  /**
+   * Canonical V_total identity used by R1/R2 observation. Guided omits.
+   */
+  visualAirflowField?: VelocityField | null;
+  /**
+   * Dev workbench encoding. Must not recreate TracerScene (keep out of
+   * the mount effect deps). Default R0 Points.
+   */
+  workbenchMode?: VisualAirflowWorkbenchMode;
+  /**
+   * Orthogonal camera-distance salience. Not meteorological fog.
+   */
+  depthCueEnabled?: boolean;
+  /**
    * Glyph pick → stable tracerId. Guided has this without placement.
    */
   onTracerSelect?: (tracerId: number) => void;
@@ -87,6 +110,10 @@ export function TracerViewport({
   onPlacementAttempt,
   selectedTracerId = null,
   visualAirflowPopulation = null,
+  eulerianAirflowSamples = null,
+  visualAirflowField = null,
+  workbenchMode = DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
+  depthCueEnabled = false,
   onTracerSelect,
   onSimulationAdvanced,
   sceneHandleRef,
@@ -105,6 +132,10 @@ export function TracerViewport({
   const onSimulationAdvancedRef = useRef(onSimulationAdvanced);
   const selectedTracerIdRef = useRef<number | null>(selectedTracerId);
   const localSceneHandleRef = useRef<TracerViewportHandle | null>(null);
+  const workbenchModeRef = useRef(workbenchMode);
+  const depthCueEnabledRef = useRef(depthCueEnabled);
+  const eulerianAirflowSamplesRef = useRef(eulerianAirflowSamples);
+  const visualAirflowFieldRef = useRef(visualAirflowField);
 
   pausedRef.current = paused;
   timeScaleRef.current = timeScale;
@@ -113,6 +144,10 @@ export function TracerViewport({
   onTracerSelectRef.current = onTracerSelect;
   onSimulationAdvancedRef.current = onSimulationAdvanced;
   selectedTracerIdRef.current = selectedTracerId;
+  workbenchModeRef.current = workbenchMode;
+  depthCueEnabledRef.current = depthCueEnabled;
+  eulerianAirflowSamplesRef.current = eulerianAirflowSamples;
+  visualAirflowFieldRef.current = visualAirflowField;
 
   useEffect(() => {
     resetPendingRef.current = true;
@@ -144,12 +179,15 @@ export function TracerViewport({
       keepInactiveGlyphs,
     });
     sceneRef.current = scene;
-    const visualAirflowScene =
-      visualAirflowPopulation === null
+    const workbenchScene =
+      visualAirflowPopulation === null || eulerianAirflowSamples === null
         ? null
-        : new VisualAirflowScene(visualAirflowPopulation.occupantCount);
-    if (visualAirflowScene !== null) {
-      scene.attachVisualAirflow(visualAirflowScene.object);
+        : new VisualAirflowWorkbenchScene(
+            visualAirflowPopulation.occupantCount,
+            eulerianAirflowSamples.sampleCount,
+          );
+    if (workbenchScene !== null) {
+      scene.attachVisualAirflow(workbenchScene.object);
     }
     let accumulator = 0;
     let frameId = 0;
@@ -172,9 +210,20 @@ export function TracerViewport({
       if (pathHistory) {
         scene.syncFromPathHistory(pathHistory);
       }
-      if (visualAirflowScene !== null && visualAirflowPopulation !== null) {
-        visualAirflowScene.syncFromPopulation(visualAirflowPopulation);
+      if (workbenchScene !== null && visualAirflowPopulation !== null) {
+        const field = visualAirflowFieldRef.current;
+        const eulerian = eulerianAirflowSamplesRef.current;
+        if (field !== null && eulerian !== null) {
+          workbenchScene.sync({
+            mode: workbenchModeRef.current,
+            population: visualAirflowPopulation,
+            eulerian,
+            field,
+            time: simulation.clock.time,
+          });
+        }
       }
+      scene.setDepthCueEnabled(depthCueEnabledRef.current);
       scene.syncReleasePreview(pendingPreviewRef.current);
       scene.syncSelectedSlot(
         occupancyIndexForTracerId(
@@ -323,7 +372,7 @@ export function TracerViewport({
       canvas.removeEventListener("pointercancel", onPointerCancel);
       sceneRef.current = null;
       scene.detachVisualAirflow();
-      visualAirflowScene?.dispose();
+      workbenchScene?.dispose();
       scene.dispose();
     };
   }, [

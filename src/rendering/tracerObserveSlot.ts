@@ -22,7 +22,7 @@ export function createTracerObserveSlot(
   options: { trails: boolean },
 ): TracerObserveSlot {
   const color = TRACER_COLORS[index % TRACER_COLORS.length]!;
-  const material = new THREE.MeshBasicMaterial({ color });
+  const material = new THREE.MeshBasicMaterial({ color, fog: false });
   const mesh = new THREE.Mesh(sharedGeometry, material);
   const trail = options.trails ? createTrailLine(color) : undefined;
   return { mesh, trail };

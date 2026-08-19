@@ -76,6 +76,7 @@ describe("VisualAirflowScene", () => {
     expect("tracerId" in scene.object.userData).toBe(false);
     const material = scene.object.material as THREE.PointsMaterial;
     expect(material.color.getHex()).toBe(VISUAL_AIRFLOW_MARKER.color);
+    expect(material.fog).toBe(true);
     expect(TRACER_COLORS).not.toContain(VISUAL_AIRFLOW_MARKER.color);
     expect(material.color.getHex()).not.toBe(SELECTED_TRACER_GLYPH_COLOR);
     expect(material.color.getHex()).not.toBe(RELEASE_PREVIEW_COLOR);

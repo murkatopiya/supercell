@@ -28,7 +28,7 @@ export function writeTrailPositions(
 export function createTrailLine(color: number): THREE.Line {
   const geometry = new THREE.BufferGeometry();
   writeTrailPositions(geometry, []);
-  const material = new THREE.LineBasicMaterial({ color });
+  const material = new THREE.LineBasicMaterial({ color, fog: false });
   return new THREE.Line(geometry, material);
 }
 

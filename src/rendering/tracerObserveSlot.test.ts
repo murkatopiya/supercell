@@ -78,7 +78,9 @@ describe("tracer observe slots (no WebGLRenderer)", () => {
 
     const first = createTracerObserveSlot(0, sharedGeometry, { trails: true });
     const material = first.mesh.material as THREE.MeshBasicMaterial;
+    expect(material.fog).toBe(false);
     const trailMaterial = first.trail!.material as THREE.LineBasicMaterial;
+    expect(trailMaterial.fog).toBe(false);
     let meshMaterialDisposed = false;
     let trailGeometryDisposed = false;
     let trailMaterialDisposed = false;

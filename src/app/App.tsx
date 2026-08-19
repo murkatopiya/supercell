@@ -11,6 +11,7 @@ import {
   TracerRuntimeControls,
   type TracerTimeScale,
 } from "../ui/tracer/TracerRuntimeControls.js";
+import { VisualAirflowWorkbenchControls } from "../ui/tracer/VisualAirflowWorkbenchControls.js";
 import {
   TracerViewport,
   type TracerViewportHandle,
@@ -45,6 +46,10 @@ import {
   guidedExperimentById,
   type GuidedExperimentId,
 } from "../guided/GuidedExperiment.js";
+import {
+  DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE,
+  type VisualAirflowWorkbenchMode,
+} from "../rendering/visualAirflowWorkbenchMode.js";
 
 type Lab = GuidedLab | ExploreLab;
 
@@ -93,6 +98,9 @@ export function App() {
   const [pendingSeed, setPendingSeed] = useState<TracerSeedPosition | null>(
     null,
   );
+  const [workbenchMode, setWorkbenchMode] =
+    useState<VisualAirflowWorkbenchMode>(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
+  const [depthCueEnabled, setDepthCueEnabled] = useState(false);
   const selectionRef = useRef<TracerSelection | null>(null);
   if (selectionRef.current === null) {
     selectionRef.current = new TracerSelection();
@@ -146,6 +154,8 @@ export function App() {
     setAltitudeM(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
     setPlacementEnabled(false);
     setPendingSeed(null);
+    setWorkbenchMode(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
+    setDepthCueEnabled(false);
     setResetEpoch((epoch) => epoch + 1);
   };
 
@@ -157,6 +167,8 @@ export function App() {
     setLab(createGuidedLab(guidedExperimentId));
     setPendingSeed(null);
     setPlacementEnabled(false);
+    setWorkbenchMode(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
+    setDepthCueEnabled(false);
     setResetEpoch((epoch) => epoch + 1);
   };
 
@@ -272,6 +284,14 @@ export function App() {
                 }}
               />
             )}
+            {explore !== null && (
+              <VisualAirflowWorkbenchControls
+                mode={workbenchMode}
+                depthCueEnabled={depthCueEnabled}
+                onModeChange={setWorkbenchMode}
+                onDepthCueChange={setDepthCueEnabled}
+              />
+            )}
           </div>
           {guidedExperiment !== null && (
             <GuidedExperimentPanel experiment={guidedExperiment} />
@@ -293,6 +313,14 @@ export function App() {
             visualAirflowPopulation={
               lab.kind === "explore" ? lab.visualAirflowPopulation : null
             }
+            eulerianAirflowSamples={
+              lab.kind === "explore" ? lab.eulerianAirflowSamples : null
+            }
+            visualAirflowField={
+              lab.kind === "explore" ? lab.velocityObservation.total : null
+            }
+            workbenchMode={workbenchMode}
+            depthCueEnabled={depthCueEnabled}
             onTracerSelect={(tracerId) => {
               selection.select(tracerId);
               mirrorSelection();

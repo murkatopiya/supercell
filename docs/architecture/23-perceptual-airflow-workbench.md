@@ -3,9 +3,40 @@
 **Status:** architecture exploration / decision checkpoint
 **Scope:** representation comparison after Slice 2 playtest
 **Physics:** PAUSED
-**Implementation:** NOT STARTED
-**Decision:** workbench prototypes R1/R2 APPROVED as
-unimplemented experiments; product representation NOT chosen
+**Implementation:** Workbench Slice A COMPLETE
+**Decision:** product representation STILL UNDER EVALUATION;
+R1/R2 are live workbench encodings, not product defaults
+
+Predecessor:
+
+```text
+docs/architecture/22-perceptual-airflow-architecture.md
+```
+
+`22` remains SoT for:
+
+- why perceptual airflow is needed;
+- scientific tracer ≠ visual occupant;
+- separate visualization runtime;
+- SAME canonical `V_total`;
+- honesty constraints (occupancy ≠ mass/cloud);
+- live R0 Points implementation (Slices 1–2).
+
+This document owns:
+
+- first browser playtest evidence;
+- representation comparison;
+- temporary workbench architecture;
+- prototype decision state;
+- Slice A implementation record.
+
+**Naming:** `22` §10 used `R1`–`R4` for *runtime*
+architectures (Simulation particles vs separate population
+vs renderer integration vs streamlines). This document
+reuses `R0`–`R3` for *visual encodings*. They are not the
+same letters. Live runtime remains `22`'s separate
+visualization population. Do not read `23` R2 (Eulerian
+samples) as `22` runtime R2.
 
 Predecessor:
 
@@ -41,10 +72,11 @@ Physics remains paused. Operands, constants, envelopes,
 seeds, integrator, Guided catalog, Inspector, and camera
 pan are unchanged by this document.
 
-Verified against current `main`:
+Verified against the Slice A implementation commit that
+updates this file. Predecessor docs checkpoint:
 
 ```text
-be43bf1c04fbb834f3c5bec59273bec0bd21c797
+79156296bfaf59079838e2fba5c5c352b7ec1614
 ```
 
 External review (decision input, **not** SoT):
@@ -191,7 +223,7 @@ divergent. That must not be labeled `∇ · V`.
 
 ## 4. Depth legibility — orthogonal problem
 
-**Status:** ORTHOGONAL PROTOTYPE / NOT IMPLEMENTED
+**Status:** ORTHOGONAL TOGGLE IMPLEMENTED / not a product encoding
 
 Current population occupies a large 3D volume. Live
 appearance is one color, one opacity, `depthWrite: false`,
@@ -288,7 +320,7 @@ make room for later encodings.
 
 ## 7. R1 — Oriented Advected Marks
 
-**Status:** PROTOTYPE APPROVED / NOT IMPLEMENTED
+**Status:** WORKBENCH IMPLEMENTED / product NOT CHOSEN
 
 Same advected visual occupants. Replace the point with a
 spatially extended oriented mark.
@@ -369,7 +401,7 @@ not a new physics object.
 
 ## 8. R2 — Eulerian Oriented Samples
 
-**Status:** PROTOTYPE APPROVED / NOT IMPLEMENTED
+**Status:** WORKBENCH IMPLEMENTED / product NOT CHOSEN
 
 Semantically different from R1, not a restyle of R1.
 
@@ -598,13 +630,27 @@ Inspector
 
 No persistence.
 
-**Architecture recommendation (not implemented here):**
+**Implemented (Slice A):**
 
-An Explore-only, clearly internal control that switches
-R0/R1/R2 in the current laboratory without reload. Optional
-query/dev flag may gate whether that control is mounted.
-The control is not a fourth product mode beside Guided /
-Explore.
+Explore-only `VisualAirflowWorkbenchControls` in the
+laboratory toolbar. Labels are technical:
+
+```text
+Points
+Advected marks
+Eulerian marks
+Depth cue
+```
+
+Copy states this is a dev workbench, not product modes.
+React state in `App` (`workbenchMode`, `depthCueEnabled`).
+Not URL, not localStorage, not ScenarioConfig. No query
+flag in v1 — the control is mounted whenever Explore is
+active, still clearly marked internal.
+
+Default remains R0 Points. Explore↔Guided round-trip
+resets workbench state to Points / depth OFF. Explore
+Reset/Clear keep the current workbench mode.
 
 After a decision, the workbench should be easy to remove.
 Shipping three encodings as a public selector is not implied.
@@ -705,30 +751,95 @@ Do not smuggle Follow into that contingency.
 
 ---
 
-## 20. Recommended implementation slicing
+## 20. Slice A implementation record
 
-Not started by this document.
+**Status:** COMPLETE. Product representation not chosen.
 
-### Workbench Slice A
+### Live modules
 
-When commanded:
+```text
+src/visualization/orientedAirflowMark.ts
+src/visualization/observeAdvectedOrientedAirflow.ts
+src/visualization/EulerianAirflowSamples.ts
+src/app/demoEulerianAirflowFixture.ts
+src/rendering/visualAirflowWorkbenchMode.ts
+src/rendering/OrientedAirflowMarkScene.ts
+src/rendering/VisualAirflowWorkbenchScene.ts
+src/ui/tracer/VisualAirflowWorkbenchControls.tsx
+```
 
-- temporary dev representation switch;
-- preserve R0;
-- R1 oriented advected marks (fixed length, head–tail);
-- R2 Eulerian oriented samples (fixed length, same region);
-- optional independent depth-cue toggle;
-- browser comparison on the checklists above.
+`ExploreLab` owns `visualAirflowPopulation` and
+`eulerianAirflowSamples`, both constructed on
+`velocityObservation.total`. Workbench mode and depth-cue
+flags live in `App` React state.
 
-### Decision checkpoint
+### Encodings
 
-User playtest. Keep / reject encodings. Record evidence.
+```text
+R0  VisualAirflowScene          THREE.Points
+R1  OrientedAirflowMarkScene    THREE.LineSegments
+    positions from VisualAirflowPopulation
+    direction from writeAdvectedOrientedAirflow
+R2  OrientedAirflowMarkScene    THREE.LineSegments
+    positions from EulerianAirflowSamples
+```
 
-### Only if earned
+Switch is visibility inside `VisualAirflowWorkbenchScene`.
+It does not recreate `TracerScene`, Simulation, clock,
+scientific tracers, selection, Inspector, or `V_total`.
 
-R3 sparse instantaneous streamlines prototype.
+### Observation / zero-speed / length
 
-Do not start Slice A because this file exists.
+```text
+direction = normalize(V_total(P, t))
+|V| <= 1e-6 m/s  →  unit direction (0,0,0), collapsed mark
+mark length      =  500 m fixture, not |V|
+```
+
+Head–tail sign is static vertex color (faded tail →
+stronger head). Not speed, density, age, or moisture.
+No pulse / running texture.
+
+### Hidden-mode stepping
+
+The advected population **keeps stepping** with laboratory
+time while R2 is shown, so returning to R0/R1 stays on the
+same session. Eulerian positions never move.
+
+### Depth cue
+
+`TracerScene.setDepthCueEnabled` sets `THREE.Fog` on the
+scene (camera distance, clear-color tint). UI/docs name is
+**Depth cue**, not meteorological fog. Scientific glyphs,
+trails, preview, grid, and axes use `fog: false`. Cue
+changes salience only.
+
+### Slice A did not include
+
+R3, micro-trails, LIC, speed encoding, public selector,
+Guided population, camera pan/reset, Follow, physics.
+
+### Decision checkpoint (still open)
+
+User playtest of the live workbench. This document does
+not pick a product winner.
+
+R3 remains deferred until R1/R2 evidence.
+
+Encoding contracts that Slice A can already state:
+
+- R0 Pause still has no instantaneous direction cue.
+- R1/R2 Pause keep a head–tail mark at the paused laboratory
+  time.
+- `V_total` at named DEMO loci is a **superposition**. A
+  sample near a named occupant is not an isolated-mechanism
+  glyph. Storm-relative environment often adds a large
+  northward (world −Z) component.
+- Local marks still cannot show path curvature.
+- Lagrangian R0/R1 can still show apparent concentration;
+  R2 sampling density does not follow `∇ · V`.
+
+Those are technical observations, not a product verdict.
 
 ---
 
@@ -745,19 +856,20 @@ apparent density:         Lagrangian spacing may look like
 
 depth:                    ORTHOGONAL; camera-distance cue;
                           not altitude; not fog physics
+                          Slice A toggle live
 
 product representation:   UNDER EVALUATION
                           no winner
 
 R0 Advected Points:       IMPLEMENTED BASELINE
+                          default Explore encoding
 
-R1 Oriented Advected:     PROTOTYPE APPROVED
-                          NOT IMPLEMENTED
+R1 Oriented Advected:     WORKBENCH IMPLEMENTED
                           same population; fixed length;
                           head–tail sign; not a trail
 
-R2 Eulerian Oriented:     PROTOTYPE APPROVED
-                          NOT IMPLEMENTED
+R2 Eulerian Oriented:     WORKBENCH IMPLEMENTED
+                          EulerianAirflowSamples
                           not a fake VisualAirflowPopulation
 
 R3 Sparse Streamlines:    DEFERRED UNTIL R1/R2 EVIDENCE
@@ -773,14 +885,14 @@ workbench:                dev/research only
 field:                    same canonical V_total
                           no rebuilt / prettier duplicate
 
-length:                   fixed; speed encoding later
+length:                   fixed 500 m; speed encoding later
 curvature:                local mark cannot show it
 divergence API:           not this branch
 
 Pause:                    first-class
 camera P1:                contingency, not implemented
 
-Slice A:                  proposed, not started
+Slice A:                  COMPLETE
 physics:                  PAUSED
 ```
 
@@ -791,20 +903,20 @@ physics:                  PAUSED
 ```text
 PHYSICS PAUSED
 PRODUCT REPRESENTATION     UNDER EVALUATION
-R0 POINTS                  LIVE BASELINE
-R1 / R2                    APPROVED PROTOTYPES
-                           NOT IMPLEMENTED
+R0 POINTS                  LIVE BASELINE / DEFAULT
+R1 / R2                    WORKBENCH LIVE
+                           NOT PRODUCT DEFAULTS
 R3                         DEFERRED
-DEPTH CUE                  ORTHOGONAL / NOT IMPLEMENTED
-WORKBENCH SLICE A          NOT STARTED
+DEPTH CUE                  ORTHOGONAL TOGGLE LIVE
+WORKBENCH SLICE A          COMPLETE
 CAMERA PAN / RESET         NOT STARTED
 FOLLOW                     NOT STARTED
 GUIDED POPULATION          NOT STARTED
 ```
 
-Do not implement oriented marks, Eulerian samples,
-streamlines, micro-trails, depth attenuation, shaders,
-camera pan, Follow, public selectors, or physics because
-this document exists.
+Do not pick a product representation because Slice A
+exists. Do not start R3, micro-trails, LIC, speed encoding,
+public selectors, Guided population, camera pan, Follow, or
+physics because this document exists.
 
 Next work starts only when commanded.

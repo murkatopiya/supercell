@@ -1,13 +1,13 @@
 # Perceptual Airflow / Flow-as-Structure Architecture
 
 **Status:** architecture SoT. Slice 1 COMPLETE. Slice 2
-(first Explore browser exposure) COMPLETE. First playtest
-recorded; representation UNDER EVALUATION in `23`. Guided
-population NOT STARTED. Camera pan NOT STARTED.
+(first Explore browser exposure) COMPLETE. Workbench Slice A
+COMPLETE in `23`. Product representation UNDER EVALUATION.
+Guided population NOT STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** PAUSED
 **Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE;
-workbench prototypes NOT STARTED
+Workbench Slice A COMPLETE in `23`; product encoding not chosen
 **Decision:** earned for a narrow first perceptual direction;
 other representation/runtime alternatives remain recorded
 
@@ -34,7 +34,8 @@ Current implementation:
 ```text
 Slice 1  headless VisualAirflowPopulation   COMPLETE
 Slice 2  Explore browser exposure           COMPLETE
-first playtest / workbench comparison       `23`
+Workbench Slice A (R0/R1/R2 + depth cue)    COMPLETE in `23`
+product representation                      UNDER EVALUATION
 Guided population                           NOT STARTED
 camera pan                                  NOT STARTED
 ```
@@ -1055,7 +1056,7 @@ physics:                  PAUSED
 implementation:           Slice 1 COMPLETE
                           Slice 2 Explore browser COMPLETE
                           representation UNDER EVALUATION
-                          in `23`; workbench NOT STARTED
+                          in `23`; Workbench Slice A COMPLETE
                           Guided population NOT STARTED
                           camera pan NOT STARTED
 ```
@@ -1064,14 +1065,16 @@ implementation:           Slice 1 COMPLETE
 
 ## 28. STOP (architecture exploration)
 
-The architecture decision in this file did not by itself
-authorize implementation. Slice 1 is recorded in §29.
-Slice 2 is recorded in §30.
+Slice 2 Explore browser COMPLETE.
+Workbench Slice A is recorded in `23`. This file does not
+pick a product encoding.
 
 ```text
 PHYSICS PAUSED
 SLICE 1 HEADLESS POPULATION     COMPLETE
 SLICE 2 EXPLORE BROWSER         COMPLETE
+WORKBENCH SLICE A               COMPLETE (see `23`)
+PRODUCT REPRESENTATION          UNDER EVALUATION
 GUIDED POPULATION               NOT STARTED
 POPULATION UI / TOGGLE          NOT STARTED
 CAMERA PAN / RESET              NOT STARTED
@@ -1080,9 +1083,10 @@ SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
 Do not start Guided population, streamlines, shaders, GPU
-code, camera pan, Follow, a dataset adapter, or the
-workbench in `23` because Slice 2 exists. First browser
-playtest is recorded; representation comparison lives in
+code, camera pan, Follow, a dataset adapter, or R3 because
+Slice A exists. Product representation stays under
+evaluation in `23`. First browser playtest is recorded;
+representation comparison lives in
 `docs/architecture/23-perceptual-airflow-workbench.md`.
 
 ---

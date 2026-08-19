@@ -5,8 +5,10 @@ import { ExplorePointReleaseTool } from "../explore/ExplorePointReleaseTool.js";
 import { ExploreTracerSession } from "../explore/ExploreTracerSession.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
+import { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
 import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
 import { DEMO_VISUAL_AIRFLOW_POPULATION } from "./demoVisualAirflowFixture.js";
+import { DEMO_EULERIAN_AIRFLOW_SAMPLES } from "./demoEulerianAirflowFixture.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import type { Simulation } from "../simulation/Simulation.js";
 
@@ -19,6 +21,7 @@ export interface ExploreLab {
   readonly orchestration: ExplorePointReleaseOrchestration;
   readonly velocityObservation: InspectableVelocityOperands;
   readonly visualAirflowPopulation: VisualAirflowPopulation;
+  readonly eulerianAirflowSamples: EulerianAirflowSamples;
 }
 
 /**
@@ -35,7 +38,8 @@ export function composeExploreTracerSimulation(
  * Enter Explore: zero particles, zero history lanes, empty session.
  * Scene slots start at 0 when TracerViewport mounts with this cohort.
  * velocityObservation holds the SAME operand instances Simulation integrates.
- * Visual airflow samples that same total field with the same Euler instance.
+ * Visual airflow and Eulerian samples observe that same total field.
+ * Visual advection uses the same Euler instance.
  */
 export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
   const { simulation, velocityObservation, integrator } =
@@ -56,6 +60,10 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
     integrator,
     DEMO_VISUAL_AIRFLOW_POPULATION,
   );
+  const eulerianAirflowSamples = new EulerianAirflowSamples(
+    velocityObservation.total,
+    DEMO_EULERIAN_AIRFLOW_SAMPLES,
+  );
   return {
     kind: "explore",
     simulation,
@@ -65,6 +73,7 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
     orchestration,
     velocityObservation,
     visualAirflowPopulation,
+    eulerianAirflowSamples,
   };
 }
 

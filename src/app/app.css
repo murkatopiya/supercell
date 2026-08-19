@@ -197,6 +197,34 @@ body {
   font: inherit;
 }
 
+.visual-airflow-workbench-controls {
+  margin: 0;
+  padding: 0.35rem 0 0;
+  border: none;
+  border-top: 1px dashed #d0d7de;
+  background: transparent;
+}
+
+.visual-airflow-workbench-controls__copy {
+  margin: 0 0 0.3rem;
+  font-size: 0.75rem;
+  color: #6a737d;
+}
+
+.visual-airflow-workbench-controls__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+}
+
+.visual-airflow-workbench-controls__field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
 .guided-experiment-selector {
   display: inline-flex;
   flex-wrap: wrap;

@@ -32,6 +32,7 @@ export class VisualAirflowScene {
       transparent: true,
       opacity: VISUAL_AIRFLOW_MARKER.opacity,
       depthWrite: false,
+      fog: true,
     });
 
     this.points = new THREE.Points(this.geometry, this.material);

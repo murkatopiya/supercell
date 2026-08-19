@@ -21,6 +21,7 @@ import {
   type WorldRay,
 } from "./worldRayFromCameraNdc.js";
 import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
+import { VISUAL_AIRFLOW_DEPTH_CUE } from "./visualAirflowAppearance.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 
@@ -68,6 +69,7 @@ export class TracerScene {
   private preview: THREE.Mesh | undefined;
   private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
+  private depthCueEnabled = false;
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
   private readonly trailsEnabled: boolean;
@@ -105,8 +107,12 @@ export class TracerScene {
     this.controls.enableDamping = false;
     this.controls.update();
 
-    this.scene.add(new THREE.AxesHelper(view.axisSizeM));
-    this.scene.add(new THREE.GridHelper(view.gridSizeM, view.gridDivisions));
+    const axes = new THREE.AxesHelper(view.axisSizeM);
+    disableFogOn(axes);
+    this.scene.add(axes);
+    const grid = new THREE.GridHelper(view.gridSizeM, view.gridDivisions);
+    disableFogOn(grid);
+    this.scene.add(grid);
 
     this.sharedGeometry = new THREE.SphereGeometry(view.sphereRadiusM, 16, 12);
     this.keepInactiveGlyphs = options?.keepInactiveGlyphs === true;
@@ -159,6 +165,28 @@ export class TracerScene {
     }
     this.slots.length = 0;
     this.selectedSlotIndex = null;
+  }
+
+  /**
+   * Camera-distance salience for background airflow. Not meteorological
+   * fog and not a physics scalar. Scientific glyphs keep fog: false.
+   */
+  setDepthCueEnabled(enabled: boolean): void {
+    if (this.depthCueEnabled === enabled) {
+      return;
+    }
+    this.depthCueEnabled = enabled;
+    this.scene.fog = enabled
+      ? new THREE.Fog(
+          VISUAL_AIRFLOW_DEPTH_CUE.color,
+          VISUAL_AIRFLOW_DEPTH_CUE.nearM,
+          VISUAL_AIRFLOW_DEPTH_CUE.farM,
+        )
+      : null;
+  }
+
+  get depthCueIsEnabled(): boolean {
+    return this.depthCueEnabled;
   }
 
   /**
@@ -297,5 +325,27 @@ export class TracerScene {
     }
     this.sharedGeometry.dispose();
     this.renderer.dispose();
+  }
+}
+
+function disableFogOn(object: THREE.Object3D): void {
+  object.traverse((child) => {
+    const material = (child as THREE.Mesh).material;
+    if (material === undefined) {
+      return;
+    }
+    if (Array.isArray(material)) {
+      for (const item of material) {
+        setMaterialFog(item, false);
+      }
+      return;
+    }
+    setMaterialFog(material, false);
+  });
+}
+
+function setMaterialFog(material: THREE.Material, fog: boolean): void {
+  if ("fog" in material) {
+    (material as THREE.Material & { fog: boolean }).fog = fog;
   }
 }

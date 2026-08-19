@@ -4,8 +4,8 @@
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
 **Implementation:** perceptual airflow Slice 1–2 COMPLETE
-in `22`. First playtest / workbench comparison in `23`.
-Product representation UNDER EVALUATION. Guided population
+in `22`. Workbench Slice A COMPLETE in `23`. Product
+representation UNDER EVALUATION. Guided population
 NOT STARTED. Other §13 candidates remain unchosen.
 
 This document remains the whole-product capability map. It did

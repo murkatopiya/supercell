@@ -13,6 +13,7 @@ export function createReleasePreviewMarker(radiusM: number): THREE.Mesh {
   const material = new THREE.MeshBasicMaterial({
     color: RELEASE_PREVIEW_COLOR,
     wireframe: true,
+    fog: false,
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.name = "exploreReleasePreview";
