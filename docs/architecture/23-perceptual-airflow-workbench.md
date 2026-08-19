@@ -1,8 +1,11 @@
 # Perceptual Airflow Workbench
 
-**Status:** architecture exploration / decision checkpoint
+**Status:** architecture exploration / workbench SoT. Current
+exploration-loop decision lives in `24`.
 **Scope:** representation comparison after Slice A browser playtest
-**Physics:** PAUSED
+**Physics:** pause lifted for design in
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
+This file does not resume physics implementation.
 **Implementation:** Workbench Slice A COMPLETE. Prototype
 comparison slice IMPLEMENTED. Background highlight is a
 REJECTED BRANCH (historical record in §25.1; not live).
@@ -11,14 +14,12 @@ COMPLETE; exact product palette DEFERRED. Live highlight
 is Off / one of six storm operands, single prototype hue
 (§31). Multi-operand simultaneous visualization NOT
 STARTED. Environmental advection visualization DEFERRED.
-Six-operand browser playtest WAITING FOR USER. Product
-encoding not chosen.
-**Decision:** product representation STILL UNDER EVALUATION.
-R1 is the strongest current main-layer candidate. R2 is an
-earned diagnostic-layer candidate. Neither is a product default.
-Comets are the strongest current perceptual-airflow candidate.
-Comet contribution tint is VALIDATED. Representation winner
-is not declared.
+Six-operand browser playtest recorded as loop-closing
+evidence in `24`. Product encoding not chosen here.
+**Decision:** this file does not declare a product winner.
+Successor checkpoint `24` records: current perceptual loop
+CLOSED enough to proceed; comets PROVISIONAL; tint
+diagnostic; Background REJECTED; physics resumed for design.
 
 Predecessor:
 
@@ -46,9 +47,16 @@ This document owns:
   (§31);
 - comet / Pause viz / Hue A/B/C playtest COMPLETE as a
   mechanism and palette-research pass;
-- six storm-operand comet-tint playtest WAITING FOR USER;
+- six storm-operand comet-tint playtest recorded; loop-closing
+  decision in `24`;
 - Background highlight REJECTED as a live workbench branch
   without deleting the historical hypothesis.
+
+Successor decision checkpoint:
+
+```text
+docs/architecture/24-perceptual-exploration-checkpoint.md
+```
 
 **Naming:** `22` §10 used `R1`–`R4` for *runtime*
 architectures (Simulation particles vs separate population
@@ -68,9 +76,10 @@ scientific tracer
   != operand contribution overlay
 ```
 
-Physics remains paused. Operands, constants, envelopes,
-seeds, integrator, Guided catalog, Inspector, and camera
-pan are unchanged by this document.
+Operands, constants, envelopes, seeds, integrator, Guided
+catalog, Inspector, and camera pan are unchanged by this
+document. Physics implementation is not started here.
+Current modeling status: `24`.
 
 Verified against live Slice A:
 
@@ -1295,7 +1304,7 @@ v1 hypothesis: at most **one** operand selected at a time.
 
 **Kind:** A/B/C IMPLEMENTED; hue comparison COMPLETE;
 single-operand selector IMPLEMENTED (§31); six-operand
-browser playtest WAITING FOR USER
+browser playtest recorded; loop-closing decision in `24`
 
 Sequence as commanded:
 
@@ -1317,10 +1326,11 @@ mechanism. Background overlay is a rejected branch
 palette DEFERRED. Live diagnostic selector is Off plus one
 of six storm operands, one prototype hue (§31).
 
-### D. Browser playtest / decision checkpoint     WAITING FOR USER
+### D. Browser playtest / decision checkpoint     RECORDED IN `24`
 
-Six storm-operand comet-tint playtest is the next evidence.
-Do not declare a representation winner from this document.
+Six storm-operand comet-tint playtest is recorded. The
+exploration-loop decision is `24`, not a product encoding
+winner in this file.
 
 Only after evidence decide:
 
@@ -1429,8 +1439,9 @@ camera P1:                contingency, not implemented
 
 Slice A:                  COMPLETE
 prototype comparison:     IMPLEMENTED
-single-operand selector:  IMPLEMENTED; playtest pending
-physics:                  PAUSED
+single-operand selector:  IMPLEMENTED
+six-operand playtest:     recorded; decision in `24`
+physics:                  see `24` (resumed for design)
 ```
 
 ---
@@ -1681,8 +1692,8 @@ population, RK2, continuity solver, new physics.
 
 ## 31. Single-operand diagnostic selector — implementation record
 
-**Status:** IMPLEMENTED for browser playtest. No product
-winner. Physics PAUSED.
+**Status:** IMPLEMENTED. Playtest recorded. Loop-closing
+decision in `24`. No product winner in this file.
 
 Decision state:
 
@@ -1695,7 +1706,7 @@ single-operand diagnostic selector    IMPLEMENTED
 multi-operand simultaneous display    NOT STARTED
 Environmental advection visualization DEFERRED
                                       (separate semantics)
-six-operand browser perceptual result WAITING FOR USER PLAYTEST
+six-operand browser perceptual result RECORDED; DECISION IN `24`
 ```
 
 ### Live UI
@@ -1799,12 +1810,11 @@ Environmental advection visualization.
 ## 32. STOP
 
 ```text
-PHYSICS PAUSED
-PRODUCT REPRESENTATION              UNDER EVALUATION
+PHYSICS STATUS                      SEE `24` (RESUMED FOR DESIGN)
+PRODUCT REPRESENTATION              NOT CHOSEN IN THIS FILE
 R0 POINTS                           BASELINE / NOT PREFERRED MAIN
-R1 ORIENTED ADVECTED                STRONGEST MAIN-LAYER CANDIDATE
+R1 ORIENTED ADVECTED                IMPLEMENTED PROTOTYPE
 R1 COMET REFINEMENT                 IMPLEMENTED PROTOTYPE
-                                    strongest current candidate
 R2 EULERIAN                         DIAGNOSTIC-LAYER CANDIDATE
 R3                                  DEFERRED
 FROZEN-FIELD PAUSE ANIMATION        IMPLEMENTED PROTOTYPE
@@ -1815,7 +1825,7 @@ EXACT PRODUCT PALETTE               DEFERRED
 SINGLE-OPERAND SELECTOR             IMPLEMENTED
 MULTI-OPERAND DISPLAY               NOT STARTED
 ENVIRONMENTAL ADVECTION VIZ         DEFERRED
-SIX-OPERAND PLAYTEST                WAITING FOR USER
+SIX-OPERAND PLAYTEST                RECORDED; DECISION IN `24`
 WORKBENCH SLICE A                   COMPLETE
 PROTOTYPE COMPARISON SLICE          COMPLETE
 CAMERA PAN / RESET                  NOT STARTED
@@ -1830,5 +1840,5 @@ Do not implement R3, LIC, slices, shaders-as-framework,
 public selectors, Guided population, camera pan, Follow,
 or physics because this document exists.
 
-Next evidence is the user browser playtest of six storm
-operands on the same comet population.
+Exploration-loop decision and physics resumption live in
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.

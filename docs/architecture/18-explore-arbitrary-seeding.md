@@ -10,6 +10,8 @@ Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
 Perceptual airflow exploration (`22`) must not replace point
 release; probes stay unlabeled scientific tracers.
+Current perceptual-loop / physics-resumption status:
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
 
 Slice 2 runtime owner: `ExploreTracerSession`
 (`src/explore/ExploreTracerSession.ts`).

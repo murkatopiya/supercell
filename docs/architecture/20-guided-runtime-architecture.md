@@ -6,8 +6,11 @@ implemented. Guided Slice 2 is implemented. Guided Slice 3 is
 
 **Current product status:** Explore arbitrary point release is
 live (`18` Slices 1–4). Shared Tracer Inspector Slices 1–4 are
-live (`19`). Desktop workbench layout is live. Physics remains
-paused (`15` D). Headless Guided product identity exists, live
+live (`19`). Desktop workbench layout is live. Physics pause
+of `15` D is lifted for design in
+`docs/architecture/24-perceptual-exploration-checkpoint.md`;
+implementation is not started here. Headless Guided product
+identity exists, live
 Guided runtime selection is wired, and the Guided teaching
 surface is live:
 
@@ -45,11 +48,14 @@ architecture.
 
 **Guided v1 catalog/runtime/teaching surface is implemented.**
 The next product or physics fork remains a separate decision.
-Follow is not assigned. Physics remains paused.
+Follow is not assigned. Physics pause is lifted for design in
+`24`; this Guided SoT does not start physics implementation.
 Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
 Perceptual airflow exploration:
 `docs/architecture/22-perceptual-airflow-architecture.md`.
+Current perceptual-loop / physics-resumption status:
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
 This document remains how the three experiments run. It does
 not start perceptual implementation.
 

@@ -16,9 +16,12 @@ Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
 Perceptual airflow exploration (Candidate 1):
 `docs/architecture/22-perceptual-airflow-architecture.md`.
+Current perceptual-loop / physics-resumption status:
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
 This document remains the Explore/Guided split SoT. It is not
 the latest product-direction SoT.
-Physics remains paused.
+Physics pause is lifted for design in `24`; implementation
+is not started here.
 
 This document restitches the live four-way `TracerPedagogy`
 composition with the original product concept after

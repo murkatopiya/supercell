@@ -2,19 +2,20 @@
 
 **Status:** architecture SoT. Slice 1 COMPLETE. Slice 2
 (first Explore browser exposure) COMPLETE. Workbench Slice A
-COMPLETE in `23`. Slice A playtest recorded. Prototype
-comparison slice (comet / frozen-field Pause / updraft
-highlight) IMPLEMENTED in `23`; browser playtest pending.
-Product representation UNDER EVALUATION. Guided population
-NOT STARTED. Camera pan NOT STARTED.
+COMPLETE in `23`. Current perceptual-loop decision lives in
+`24`. Product representation is not locked by this file.
+Guided population NOT STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
-**Physics:** PAUSED
+**Physics:** pause lifted for design in `24`. This file does
+not resume physics implementation.
 **Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE;
-Workbench Slice A COMPLETE in `23`; Slice A playtest
-recorded; prototype comparison slice IMPLEMENTED in `23`
-(playtest pending); product encoding not chosen
+Workbench Slice A COMPLETE in `23`; prototype comparison
+COMPLETE in `23`; exploration-loop decision in `24`; product
+encoding not chosen here
 **Decision:** earned for a narrow first perceptual direction;
-other representation/runtime alternatives remain recorded
+other representation/runtime alternatives remain recorded.
+Successor `24` closes the current exploration loop without
+declaring a final product visualization.
 
 Predecessor whole-product checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
@@ -22,6 +23,9 @@ Predecessor whole-product checkpoint:
 First playtest and representation-comparison successor:
 `docs/architecture/23-perceptual-airflow-workbench.md`.
 That document does not replace this one.
+
+Exploration-loop decision and physics resumption:
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
 
 This document answers Candidate 1 from `21` §13:
 
@@ -40,10 +44,9 @@ Current implementation:
 Slice 1  headless VisualAirflowPopulation   COMPLETE
 Slice 2  Explore browser exposure           COMPLETE
 Workbench Slice A (R0/R1/R2 + depth cue)    COMPLETE in `23`
-Slice A playtest                            recorded in `23`
-prototype comparison slice                  IMPLEMENTED in `23`
-                                            (playtest pending)
-product representation                      UNDER EVALUATION
+prototype comparison slice                  COMPLETE in `23`
+exploration-loop decision                   `24`
+product representation                      NOT LOCKED HERE
 Guided population                           NOT STARTED
 camera pan                                  NOT STARTED
 ```
@@ -70,8 +73,9 @@ Authoritative:
 - `docs/rendering/11-deep-storm-tracer-view.md`
 - `docs/rendering/14-tracer-path-history.md`
 
-Physics remains paused. Operands, constants, envelopes, seeds,
-and the integrator are unchanged by this document.
+Operands, constants, envelopes, seeds,
+and the integrator are unchanged by this document. Current
+modeling status: `24`.
 
 ---
 
@@ -1060,14 +1064,13 @@ camera:                   CAN BE PARALLEL
 performance:              hundreds CPU; no GPU promise
 dataset:                  depend on VelocityField only
 unsteady:                 particles remain valid
-physics:                  PAUSED
+physics:                  pause lifted for design in `24`
+                          implementation not started
 implementation:           Slice 1 COMPLETE
                           Slice 2 Explore browser COMPLETE
-                          representation UNDER EVALUATION
-                          in `23`; Workbench Slice A COMPLETE
-                          prototype comparison slice
-                          IMPLEMENTED in `23`
-                          six-operand playtest pending
+                          Workbench Slice A COMPLETE in `23`
+                          prototype comparison COMPLETE in `23`
+                          exploration-loop decision in `24`
                           Guided population NOT STARTED
                           camera pan NOT STARTED
 ```
@@ -1081,14 +1084,13 @@ Workbench Slice A is recorded in `23`. This file does not
 pick a product encoding.
 
 ```text
-PHYSICS PAUSED
+PHYSICS STATUS                  SEE `24` (RESUMED FOR DESIGN)
 SLICE 1 HEADLESS POPULATION     COMPLETE
 SLICE 2 EXPLORE BROWSER         COMPLETE
 WORKBENCH SLICE A               COMPLETE (see `23`)
 PROTOTYPE COMPARISON SLICE      COMPLETE IN `23`
-SINGLE-OPERAND SELECTOR         IMPLEMENTED IN `23`;
-                                SIX-OPERAND PLAYTEST PENDING
-PRODUCT REPRESENTATION          UNDER EVALUATION
+EXPLORATION-LOOP DECISION       `24`
+PRODUCT REPRESENTATION          NOT LOCKED HERE
 GUIDED POPULATION               NOT STARTED
 POPULATION UI / TOGGLE          NOT STARTED
 CAMERA PAN / RESET              NOT STARTED
@@ -1098,12 +1100,10 @@ SCIENTIFIC TRACER P2            NOT STARTED
 
 Do not start Guided population, streamlines, shaders, GPU
 code, camera pan, Follow, a dataset adapter, or R3 because
-`23` still defers them. Comet marks, frozen-field Pause
-animation, and operand highlight are live **prototypes** in
-`23`, not product defaults. Product representation stays
-under evaluation in `23`. First browser playtest is
-recorded; representation comparison lives in
-`docs/architecture/23-perceptual-airflow-workbench.md`.
+this file exists. Encoding contracts remain in `22` / `23`.
+The current perceptual loop and physics-resumption decision
+live in
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
 
 ---
 

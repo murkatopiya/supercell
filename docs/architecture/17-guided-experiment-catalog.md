@@ -15,7 +15,10 @@ catalog cards. Successor implementation SoT:
 `docs/architecture/20-guided-runtime-architecture.md`.
 Current whole-product direction checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
-Physics remains paused.
+Current perceptual-loop / physics-resumption status:
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Physics pause is lifted for design in `24`; this catalog does
+not start physics implementation.
 
 Predecessor:
 `docs/architecture/16-explore-guided-interaction-architecture.md`.

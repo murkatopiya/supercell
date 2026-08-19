@@ -1,16 +1,18 @@
 # Whole-Product Direction Checkpoint
 
-**Status:** current product/architecture direction checkpoint
+**Status:** whole-product capability map after Guided v1.
+Current perceptual-loop and physics-resumption decision:
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
 **Scope:** post-Guided-v1 whole-product assessment
-**Physics:** PAUSED
+**Physics:** pause lifted for design in `24`. This file does
+not resume physics implementation.
 **Implementation:** perceptual airflow Slice 1–2 COMPLETE
-in `22`. Workbench Slice A COMPLETE in `23`. Prototype
-comparison slice IMPLEMENTED in `23`. Comet contribution
-tint VALIDATED; Background highlight REJECTED; Hue A/B/C
-COMPLETE; exact palette DEFERRED. Single-operand diagnostic
-selector IMPLEMENTED in `23`; six-operand playtest WAITING.
-Product representation UNDER EVALUATION. Guided population
-NOT STARTED. Other §13 candidates remain unchosen.
+in `22`. Workbench COMPLETE in `23`. Exploration-loop
+decision in `24`: comets provisional; tint diagnostic;
+Background REJECTED; further visual optimization deferred.
+Guided population NOT STARTED. Other §13 candidates remain
+unchosen as implementation except that Candidate 1's current
+question is closed in `24`.
 
 This document remains the whole-product capability map. It did
 not pick a winner among §13 candidates. Candidate 1 (perceptual
@@ -20,8 +22,12 @@ Headless visual population (Slice 1) and first Explore
 browser exposure (Slice 2) now exist there. Slice A
 workbench comparison and the prototype comparison slice live
 in `docs/architecture/23-perceptual-airflow-workbench.md`.
-Product encoding is not chosen. Guided population has not
-started. Other §13 candidates remain unchosen.
+The current perceptual-loop decision and physics resumption
+live in
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
+Product encoding is not locked. Guided population has not
+started. Other §13 candidates remain unchosen as the next
+implementation branch.
 
 This document did **not** change production code when written.
 It does **not** create `ROADMAP.md`.
@@ -50,11 +56,12 @@ docs/reviews/2026-08-18-independent-project-audit.md
 docs/reviews/2026-08-19-independent-perceptual-airflow-review.md
 ```
 
-Physics remains paused (`15` D). When modeling resumes, the
-leading physics-architecture document from existing SoT is
-still tilting / stretching interaction architecture — unless a
-later explicit decision replaces that. This checkpoint does
-**not** replace it and does **not** command it.
+Physics pause of `15` D is lifted for design in `24`. When
+modeling proceeds, the leading physics-architecture
+*direction* from existing SoT is still tilting / stretching
+interaction architecture — unless the docs-first revalidation
+in `24` replaces that. This checkpoint does **not** replace
+that design and does **not** command implementation.
 
 ---
 
@@ -900,9 +907,13 @@ whether teaching “capture” ever becomes honest.
 process claims. It does not block perception, pan, or Inspector
 of the current sum.
 
-**Status:** leading modeling branch from existing SoT **when
-physics resumes**. Docs-only first. **Not selected** as the
-next implementation branch by this checkpoint.
+**Status:** leading modeling *direction* from existing SoT
+**when physics resumes**. Docs-only first. **Not selected** as
+the next implementation branch by this checkpoint. Physics
+pause later lifted for design in `24`; that is still not an
+implementation order. Existing direction requires
+revalidation before any architecture SoT is treated as
+current.
 
 ### Candidate 6 — Continuity / mass-consistency investigation
 
@@ -1055,26 +1066,26 @@ streamfunction / DF:          OPEN FUTURE SYNTHETIC-MODEL
                               CANDIDATE
                               not next approved physics branch
 
-tilting / stretching:         leading modeling SoT when
-                              physics resumes
-                              still docs-first
-                              not selected now
+tilting / stretching:         leading modeling direction
+                              when physics proceeds
+                              existing sketch in `15` §9
+                              dedicated SoT not written
+                              revalidation required (`24`)
+                              not an implementation order
 
 dataset evolution:            important boundary
                               exploration candidate
                               synthetic lab remains valuable
 
-next implementation branch:   Candidate 1 Slice 1–2 COMPLETE
-                              in `22` (Explore background live)
-                              representation UNDER EVALUATION
-                              in `23` (workbench Slice A +
-                              prototype comparison live;
-                              six-operand comet tint
-                              playtest pending)
+next implementation branch:   Candidate 1 current loop CLOSED
+                              in `24` (comets provisional;
+                              tint diagnostic; Background
+                              REJECTED)
                               Guided population / camera pan
                               NOT STARTED
                               other §13 candidates still open
-physics:                      PAUSED
+physics:                      RESUMED FOR DESIGN (`24`)
+                              implementation NOT STARTED
 ROADMAP.md:                   not created
 ```
 
@@ -1083,21 +1094,19 @@ ROADMAP.md:                   not created
 ## 16. STOP
 
 ```text
-PHYSICS PAUSED
+PHYSICS STATUS                        SEE `24` (RESUMED FOR DESIGN)
 ```
 
-Candidate 1 architecture lives in `22`. Slice 1 (headless)
-and Slice 2 (Explore browser exposure) are complete there.
-First playtest finding P3 and the comparison workbench live
-in `23`. Slice A R0/R1/R2 playtest is recorded there; comet
-refinement, frozen-field Pause animation, and operand
-highlight are live prototypes awaiting browser playtest,
-not product defaults.
-Product representation is not chosen. Guided
+Candidate 1 architecture lives in `22`. Workbench and
+encoding records live in `23`. The current perceptual-loop
+decision and physics resumption live in `24`.
+Product representation is not locked. Guided
 population, camera pan, and other §13 candidates are not
-started.
+started as the next implementation branch.
 
-Do not treat opening `22` or `23` as selecting Candidates 2–7.
+Do not treat opening `22`, `23`, or `24` as selecting
+Candidates 2–7, nor as authorizing tilting / stretching
+code.
 Do not write a Cursor implementation prompt.
 Do not implement pan, Follow, Guided population, trail
 caps, RK2 switch, streamfunctions, datasets, R3, LIC, or

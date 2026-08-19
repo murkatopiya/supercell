@@ -9,6 +9,12 @@ after Explore / Inspector / Guided v1:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
 `16` already superseded the four-mode pedagogy-selector
 recommendation in §11.
+**Current modeling status:** physics pause of Verdict D is
+lifted for design in
+`docs/architecture/24-perceptual-exploration-checkpoint.md`.
+This file is not that resumption SoT. §9 remains the sketched
+tilting / stretching fork; it is not a later implementation
+design.
 
 Live at the time of this audit:
 
