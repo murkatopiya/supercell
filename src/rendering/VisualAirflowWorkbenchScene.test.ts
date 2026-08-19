@@ -100,7 +100,7 @@ describe("VisualAirflowWorkbenchScene", () => {
     }
     scene.dispose();
     scene.dispose();
-    expect(disposed).toBe(5);
+    expect(disposed).toBe(4);
   });
 
   it("does not pick background encodings and is not a tracer owner", () => {
@@ -122,16 +122,15 @@ describe("VisualAirflowWorkbenchScene", () => {
     const fx = fixtures();
     const operand = new TimeDependentYField();
     const scene = new VisualAirflowWorkbenchScene(4, 4);
-    const background = scene.object.getObjectByName(
-      "updraftHighlightBackground",
-    )!;
     const comets = scene.object.getObjectByName("cometAirflowMarks") as THREE.LineSegments;
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
       highlightMode: "off",
       highlightOperand: operand,
     });
-    expect(background.visible).toBe(false);
+    expect(
+      scene.object.getObjectByName("updraftHighlightBackground"),
+    ).toBeUndefined();
     const offPositions = Array.from(
       (comets.geometry.getAttribute("position") as THREE.BufferAttribute).array,
     );
@@ -141,11 +140,10 @@ describe("VisualAirflowWorkbenchScene", () => {
 
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
-      highlightMode: "comets",
+      highlightMode: "hue-a",
       highlightOperand: operand,
       time: 0,
     });
-    expect(background.visible).toBe(false);
     const zeroTintPositions = Array.from(
       (comets.geometry.getAttribute("position") as THREE.BufferAttribute).array,
     );
@@ -157,27 +155,32 @@ describe("VisualAirflowWorkbenchScene", () => {
 
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
-      highlightMode: "comets",
+      highlightMode: "hue-a",
       highlightOperand: operand,
       time: 15,
     });
+    const tintedA = Array.from(
+      (comets.geometry.getAttribute("color") as THREE.BufferAttribute).array,
+    );
     const tintedPositions = Array.from(
       (comets.geometry.getAttribute("position") as THREE.BufferAttribute).array,
     );
-    const tintedColors = Array.from(
-      (comets.geometry.getAttribute("color") as THREE.BufferAttribute).array,
-    );
     expect(tintedPositions).toEqual(offPositions);
-    expect(tintedColors).not.toEqual(offColors);
+    expect(tintedA).not.toEqual(offColors);
 
     scene.sync({
       ...syncArgs(fx, "advected-comet"),
-      highlightMode: "background",
+      highlightMode: "hue-b",
       highlightOperand: operand,
       time: 15,
     });
-    expect(background.visible).toBe(true);
+    const tintedB = Array.from(
+      (comets.geometry.getAttribute("color") as THREE.BufferAttribute).array,
+    );
+    expect(tintedB).not.toEqual(tintedA);
+    expect(scene.object.getObjectByName("updraftHighlightBackground")).toBeUndefined();
     expect(comets.visible).toBe(true);
+    expect(workbenchSrc).not.toMatch(/OperandHighlightBackgroundScene/);
     scene.dispose();
   });
 

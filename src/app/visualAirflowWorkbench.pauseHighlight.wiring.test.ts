@@ -128,18 +128,43 @@ describe("updraft highlight observation", () => {
     );
     expect(core[0]!).toBeGreaterThan(far[0]!);
     expect(lab.velocityObservation.total).not.toBe(updraft);
+
+    const occupantPositions = new Float32Array(
+      lab.visualAirflowPopulation.occupantCount * 3,
+    );
+    lab.visualAirflowPopulation.writePositionsTo(occupantPositions);
+    const occupantStrengths = new Float32Array(
+      lab.visualAirflowPopulation.occupantCount,
+    );
+    writeContributionDisplayStrengths(
+      updraft,
+      occupantPositions,
+      lab.visualAirflowPopulation.occupantCount,
+      0,
+      occupantStrengths,
+    );
+    let maxStrength = 0;
+    let visible = 0;
+    for (const strength of occupantStrengths) {
+      if (strength > maxStrength) {
+        maxStrength = strength;
+      }
+      if (strength >= 0.15) {
+        visible += 1;
+      }
+    }
+    expect(maxStrength).toBeGreaterThan(0.9);
+    expect(maxStrength).toBeLessThanOrEqual(1);
+    expect(visible).toBeGreaterThan(lab.visualAirflowPopulation.occupantCount / 3);
   });
 
-  it("background overlay samples the operand at Eulerian locations", () => {
+  it("does not construct the rejected Background overlay", () => {
     const lab = createExploreLab(fakeSlots());
     const scene = new VisualAirflowWorkbenchScene(
       lab.visualAirflowPopulation.occupantCount,
       lab.eulerianAirflowSamples.sampleCount,
     );
-    const background = scene.object.getObjectByName(
-      "updraftHighlightBackground",
-    );
-    expect(background).toBeDefined();
+    expect(scene.object.getObjectByName("updraftHighlightBackground")).toBeUndefined();
     scene.sync({
       mode: "advected-comet",
       population: lab.visualAirflowPopulation,
@@ -149,17 +174,16 @@ describe("updraft highlight observation", () => {
       highlightMode: "off",
       highlightOperand: updraftFieldFromLab(lab),
     });
-    expect(background!.visible).toBe(false);
     scene.sync({
       mode: "advected-comet",
       population: lab.visualAirflowPopulation,
       eulerian: lab.eulerianAirflowSamples,
       field: lab.velocityObservation.total,
       time: 0,
-      highlightMode: "background",
+      highlightMode: "hue-a",
       highlightOperand: updraftFieldFromLab(lab),
     });
-    expect(background!.visible).toBe(true);
+    expect(scene.object.getObjectByName("updraftHighlightBackground")).toBeUndefined();
     scene.dispose();
   });
 
@@ -183,5 +207,12 @@ describe("workbench control independence", () => {
     );
     expect(appSrc).not.toMatch(/setHighlightMode\([^)]*setWorkbenchMode/);
     expect(appSrc).not.toMatch(/setPauseVisualization\([^)]*setWorkbenchMode/);
+    expect(controlsSrc).toMatch(/onHighlightModeChange\("off"\)/);
+    expect(controlsSrc).toMatch(/label: "Hue A"/);
+    expect(controlsSrc).toMatch(/label: "Hue B"/);
+    expect(controlsSrc).toMatch(/label: "Hue C"/);
+    expect(controlsSrc).not.toMatch(/Background/);
+    expect(controlsSrc).not.toMatch(/type=["']color["']/);
+    expect(controlsSrc).not.toMatch(/environmentAdvection|rotation|downdraft/);
   });
 });

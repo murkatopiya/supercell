@@ -3,8 +3,12 @@ import {
   ORIENTED_AIRFLOW_MARK_LENGTH_M,
   writeOrientedMarkEndpoints,
 } from "../visualization/orientedAirflowMark.js";
-import { UPDRAFT_HIGHLIGHT_HUE } from "../visualization/operandContributionDisplay.js";
+import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
 import { VISUAL_AIRFLOW_ORIENTED_MARK } from "./visualAirflowAppearance.js";
+import { linearRgbFromSrgbHex, type LinearRgb } from "./vertexColorSpace.js";
+
+/** RGBA per vertex. itemSize 4 is what enables per-vertex alpha in Three.js. */
+const COLOR_COMPONENTS_PER_VERTEX = 4;
 
 /**
  * Batched head–tail marks. Observe-only: receives positions and unit
@@ -27,13 +31,16 @@ export class OrientedAirflowMarkScene {
     }
     this.count = count;
     this.vertices = new Float32Array(count * 6);
-    this.colors = new Float32Array(count * 6);
+    this.colors = new Float32Array(count * 2 * COLOR_COMPONENTS_PER_VERTEX);
     writeHeadTailColors(this.colors, count, undefined);
 
     this.geometry = new THREE.BufferGeometry();
     this.positionAttribute = new THREE.BufferAttribute(this.vertices, 3);
     this.positionAttribute.setUsage(THREE.DynamicDrawUsage);
-    this.colorAttribute = new THREE.BufferAttribute(this.colors, 3);
+    this.colorAttribute = new THREE.BufferAttribute(
+      this.colors,
+      COLOR_COMPONENTS_PER_VERTEX,
+    );
     this.colorAttribute.setUsage(THREE.DynamicDrawUsage);
     this.geometry.setAttribute("position", this.positionAttribute);
     this.geometry.setAttribute("color", this.colorAttribute);
@@ -41,7 +48,6 @@ export class OrientedAirflowMarkScene {
     this.material = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: VISUAL_AIRFLOW_ORIENTED_MARK.opacity,
       depthWrite: false,
       fog: true,
     });
@@ -68,6 +74,7 @@ export class OrientedAirflowMarkScene {
     positions: Float32Array,
     unitDirections: Float32Array,
     highlightStrengths?: Float32Array,
+    highlightHue: number = UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
   ): void {
     if (this.disposed) {
       throw new Error("OrientedAirflowMarkScene is disposed");
@@ -80,7 +87,12 @@ export class OrientedAirflowMarkScene {
       this.vertices,
     );
     this.positionAttribute.needsUpdate = true;
-    writeHeadTailColors(this.colors, this.count, highlightStrengths);
+    writeHeadTailColors(
+      this.colors,
+      this.count,
+      highlightStrengths,
+      highlightHue,
+    );
     this.colorAttribute.needsUpdate = true;
   }
 
@@ -98,42 +110,33 @@ function writeHeadTailColors(
   out: Float32Array,
   count: number,
   highlightStrengths: Float32Array | undefined,
+  highlightHue: number = UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
 ): void {
-  const tail = rgb01(VISUAL_AIRFLOW_ORIENTED_MARK.tailColor);
-  const head = rgb01(VISUAL_AIRFLOW_ORIENTED_MARK.headColor);
-  const hue = rgb01(UPDRAFT_HIGHLIGHT_HUE);
+  const tail = linearRgbFromSrgbHex(VISUAL_AIRFLOW_ORIENTED_MARK.tailColor);
+  const head = linearRgbFromSrgbHex(VISUAL_AIRFLOW_ORIENTED_MARK.headColor);
+  const hue = linearRgbFromSrgbHex(highlightHue);
   for (let i = 0; i < count; i++) {
     const strength =
       highlightStrengths === undefined ? 0 : highlightStrengths[i]!;
-    const offset = i * 6;
+    const offset = i * 2 * COLOR_COMPONENTS_PER_VERTEX;
     const tailMix = mixRgb(tail, hue, strength);
     const headMix = mixRgb(head, hue, strength);
     out[offset] = tailMix.r;
     out[offset + 1] = tailMix.g;
     out[offset + 2] = tailMix.b;
-    out[offset + 3] = headMix.r;
-    out[offset + 4] = headMix.g;
-    out[offset + 5] = headMix.b;
+    out[offset + 3] = VISUAL_AIRFLOW_ORIENTED_MARK.tailOpacity;
+    out[offset + 4] = headMix.r;
+    out[offset + 5] = headMix.g;
+    out[offset + 6] = headMix.b;
+    out[offset + 7] = VISUAL_AIRFLOW_ORIENTED_MARK.headOpacity;
   }
 }
 
-function mixRgb(
-  base: { r: number; g: number; b: number },
-  hue: { r: number; g: number; b: number },
-  strength: number,
-): { r: number; g: number; b: number } {
+function mixRgb(base: LinearRgb, hue: LinearRgb, strength: number): LinearRgb {
   const t = strength;
   return {
     r: base.r * (1 - t) + hue.r * t,
     g: base.g * (1 - t) + hue.g * t,
     b: base.b * (1 - t) + hue.b * t,
-  };
-}
-
-function rgb01(hex: number): { r: number; g: number; b: number } {
-  return {
-    r: ((hex >> 16) & 255) / 255,
-    g: ((hex >> 8) & 255) / 255,
-    b: (hex & 255) / 255,
   };
 }

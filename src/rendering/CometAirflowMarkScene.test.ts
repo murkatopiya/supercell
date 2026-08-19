@@ -9,7 +9,9 @@ import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { CometAirflowMarkScene } from "./CometAirflowMarkScene.js";
 import cometSceneSrc from "./CometAirflowMarkScene.ts?raw";
 import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
-import { UPDRAFT_HIGHLIGHT_HUE } from "../visualization/operandContributionDisplay.js";
+import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
+import { VISUAL_AIRFLOW_COMET } from "./visualAirflowAppearance.js";
+import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
 
 describe("CometAirflowMarkScene", () => {
   it("creates batched LineSegments with four segments per occupant", () => {
@@ -62,10 +64,169 @@ describe("CometAirflowMarkScene", () => {
         direction: { x: 0, y: 0, z: -1 },
       }),
     ).toBeNull();
-    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_HUE);
-    expect(UPDRAFT_HIGHLIGHT_HUE).not.toBe(SELECTED_TRACER_GLYPH_COLOR);
+    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"]);
+    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-b"]);
+    expect(TRACER_COLORS).not.toContain(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-c"]);
+    expect(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"]).not.toBe(
+      SELECTED_TRACER_GLYPH_COLOR,
+    );
+    expect(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-b"]).not.toBe(
+      SELECTED_TRACER_GLYPH_COLOR,
+    );
+    expect(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-c"]).not.toBe(
+      SELECTED_TRACER_GLYPH_COLOR,
+    );
     expect(cometSceneSrc).not.toMatch(/from ["'][^"']*TracerPathHistory/);
     expect(cometSceneSrc).not.toMatch(/userData\.tracerId/);
+    scene.dispose();
+  });
+
+  it("tapers alpha toward the tail and leaves RGB for hue", () => {
+    const scene = new CometAirflowMarkScene(1);
+    const positions = new Float32Array([0, 0, 0]);
+    const directions = new Float32Array([1, 0, 0]);
+    scene.syncFromObservation(positions, directions, new Float32Array([1]));
+    const attribute = scene.object.geometry.getAttribute(
+      "color",
+    ) as THREE.BufferAttribute;
+    // itemSize 4 is what makes Three.js honour per-vertex alpha.
+    expect(attribute.itemSize).toBe(4);
+    const colors = attribute.array;
+
+    const tailAlpha = colors[3]!;
+    const headAlpha = colors[attribute.count * 4 - 1]!;
+    expect(tailAlpha).toBe(0);
+    expect(headAlpha).toBeCloseTo(VISUAL_AIRFLOW_COMET.headOpacity, 6);
+    for (let vertex = 1; vertex < attribute.count; vertex++) {
+      expect(colors[vertex * 4 + 3]!).toBeGreaterThanOrEqual(
+        colors[(vertex - 1) * 4 + 3]!,
+      );
+    }
+
+    const tailColor = linearRgbFromSrgbHex(VISUAL_AIRFLOW_COMET.tailColor);
+    const headColor = linearRgbFromSrgbHex(VISUAL_AIRFLOW_COMET.headColor);
+    // The tail keeps its own chroma at zero alpha instead of being scaled
+    // toward black, so the fade removes the mark rather than darkening it.
+    expect(colors[0]!).toBeCloseTo(tailColor.r, 6);
+    expect(colors[attribute.count * 4 - 4]!).toBeCloseTo(headColor.r, 6);
+    scene.dispose();
+  });
+
+  it("scales alpha, not RGB, by occupancy fade", () => {
+    const scene = new CometAirflowMarkScene(1);
+    const positions = new Float32Array([0, 0, 0]);
+    const directions = new Float32Array([1, 0, 0]);
+    const attribute = scene.object.geometry.getAttribute(
+      "color",
+    ) as THREE.BufferAttribute;
+
+    scene.syncFromObservation(positions, directions, new Float32Array([1]));
+    const opaque = Array.from(attribute.array);
+    scene.syncFromObservation(positions, directions, new Float32Array([0.25]));
+    const faded = Array.from(attribute.array);
+
+    for (let vertex = 0; vertex < attribute.count; vertex++) {
+      const offset = vertex * 4;
+      expect(faded[offset]!).toBeCloseTo(opaque[offset]!, 6);
+      expect(faded[offset + 1]!).toBeCloseTo(opaque[offset + 1]!, 6);
+      expect(faded[offset + 2]!).toBeCloseTo(opaque[offset + 2]!, 6);
+      expect(faded[offset + 3]!).toBeCloseTo(opaque[offset + 3]! * 0.25, 6);
+    }
+    scene.dispose();
+  });
+
+  it("moves highlight strength into chroma without touching the fade", () => {
+    const scene = new CometAirflowMarkScene(1);
+    const positions = new Float32Array([0, 0, 0]);
+    const directions = new Float32Array([1, 0, 0]);
+    const fade = new Float32Array([1]);
+    const attribute = scene.object.geometry.getAttribute(
+      "color",
+    ) as THREE.BufferAttribute;
+
+    scene.syncFromObservation(positions, directions, fade);
+    const neutral = Array.from(attribute.array);
+    scene.syncFromObservation(
+      positions,
+      directions,
+      fade,
+      new Float32Array([1]),
+      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+    );
+    const tinted = Array.from(attribute.array);
+
+    const hue = linearRgbFromSrgbHex(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"]);
+    for (let vertex = 0; vertex < attribute.count; vertex++) {
+      const offset = vertex * 4;
+      expect(tinted[offset]!).toBeCloseTo(hue.r, 6);
+      expect(tinted[offset + 1]!).toBeCloseTo(hue.g, 6);
+      expect(tinted[offset + 2]!).toBeCloseTo(hue.b, 6);
+      expect(tinted[offset + 3]!).toBeCloseTo(neutral[offset + 3]!, 6);
+    }
+    // Full strength must be a visible chroma change at the head, where the
+    // neutral palette is brightest and a tint is easiest to lose.
+    const headRed = attribute.count * 4 - 4;
+    const chromaDelta = Math.hypot(
+      tinted[headRed]! - neutral[headRed]!,
+      tinted[headRed + 1]! - neutral[headRed + 1]!,
+      tinted[headRed + 2]! - neutral[headRed + 2]!,
+    );
+    expect(chromaDelta).toBeGreaterThan(0.2);
+    scene.dispose();
+  });
+
+  it("keeps head–tail alpha when switching prototype hues", () => {
+    const scene = new CometAirflowMarkScene(1);
+    const positions = new Float32Array([0, 0, 0]);
+    const directions = new Float32Array([1, 0, 0]);
+    const fade = new Float32Array([1]);
+    const full = new Float32Array([1]);
+    const attribute = scene.object.geometry.getAttribute(
+      "color",
+    ) as THREE.BufferAttribute;
+
+    scene.syncFromObservation(
+      positions,
+      directions,
+      fade,
+      full,
+      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-a"],
+    );
+    const hueA = Array.from(attribute.array);
+    scene.syncFromObservation(
+      positions,
+      directions,
+      fade,
+      full,
+      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-b"],
+    );
+    const hueB = Array.from(attribute.array);
+    scene.syncFromObservation(
+      positions,
+      directions,
+      fade,
+      full,
+      UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES["hue-c"],
+    );
+    const hueC = Array.from(attribute.array);
+
+    const head = attribute.count * 4 - 4;
+    expect(hueA[3]!).toBe(0);
+    expect(hueA[head + 3]!).toBeCloseTo(VISUAL_AIRFLOW_COMET.headOpacity, 6);
+    expect(hueB[3]!).toBe(hueA[3]!);
+    expect(hueB[head + 3]!).toBe(hueA[head + 3]!);
+    expect(hueC[3]!).toBe(hueA[3]!);
+    expect(hueC[head + 3]!).toBe(hueA[head + 3]!);
+
+    const dist = (left: number[], right: number[]) =>
+      Math.hypot(
+        left[head]! - right[head]!,
+        left[head + 1]! - right[head + 1]!,
+        left[head + 2]! - right[head + 2]!,
+      );
+    expect(dist(hueA, hueB)).toBeGreaterThan(0.4);
+    expect(dist(hueB, hueC)).toBeGreaterThan(0.4);
+    expect(dist(hueA, hueC)).toBeGreaterThan(0.4);
     scene.dispose();
   });
 });

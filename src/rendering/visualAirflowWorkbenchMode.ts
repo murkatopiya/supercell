@@ -1,3 +1,5 @@
+import type { UpdraftHighlightPrototypeId } from "../visualization/operandContributionDisplay.js";
+
 export type VisualAirflowWorkbenchMode =
   | "points"
   | "advected-oriented"
@@ -14,6 +16,11 @@ export type VisualAirflowPauseVisualization =
 export const DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION: VisualAirflowPauseVisualization =
   "full-freeze";
 
-export type UpdraftHighlightMode = "off" | "background" | "comets";
+/**
+ * Live updraft highlight. Background is a rejected branch and is not
+ * a mode. Non-off values tint R1 / comet / Eulerian marks (Highlight
+ * Comets) with one prototype hue.
+ */
+export type UpdraftHighlightMode = "off" | UpdraftHighlightPrototypeId;
 
 export const DEFAULT_UPDRAFT_HIGHLIGHT_MODE: UpdraftHighlightMode = "off";

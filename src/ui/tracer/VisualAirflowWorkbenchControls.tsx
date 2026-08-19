@@ -1,8 +1,21 @@
+import {
+  UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES,
+  type UpdraftHighlightPrototypeId,
+} from "../../visualization/operandContributionDisplay.js";
 import type {
   UpdraftHighlightMode,
   VisualAirflowPauseVisualization,
   VisualAirflowWorkbenchMode,
 } from "../../rendering/visualAirflowWorkbenchMode.js";
+
+const PROTOTYPE_HUE_BUTTONS: ReadonlyArray<{
+  mode: UpdraftHighlightPrototypeId;
+  label: string;
+}> = [
+  { mode: "hue-a", label: "Hue A" },
+  { mode: "hue-b", label: "Hue B" },
+  { mode: "hue-c", label: "Hue C" },
+];
 
 export interface VisualAirflowWorkbenchControlsProps {
   mode: VisualAirflowWorkbenchMode;
@@ -36,9 +49,9 @@ export function VisualAirflowWorkbenchControls({
       <p className="visual-airflow-workbench-controls__copy">
         Dev workbench — independent comparisons of the same V_total. Not
         product visualization modes. Encoding, Pause viz, and highlight do not
-        change each other. Comet highlight tints R1/comet/Eulerian marks at
-        their sample P,t; Points stay uniform. Background is sparse Eulerian
-        points, not a volume.
+        change each other. Use Comets (or Advected / Eulerian marks), then Off
+        → Hue A → Hue B → Hue C. Hues tint those marks from updraft |V| at
+        sample P,t. Points stay uniform. Prototype hues, not a product palette.
       </p>
       <div className="visual-airflow-workbench-controls__row">
         <button
@@ -107,22 +120,24 @@ export function VisualAirflowWorkbenchControls({
         >
           Off
         </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={highlightMode === "background"}
-          onClick={() => onHighlightModeChange("background")}
-        >
-          Background
-        </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={highlightMode === "comets"}
-          onClick={() => onHighlightModeChange("comets")}
-        >
-          Comets
-        </button>
+        {PROTOTYPE_HUE_BUTTONS.map(({ mode: hueMode, label }) => (
+          <button
+            key={hueMode}
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-pressed={highlightMode === hueMode}
+            onClick={() => onHighlightModeChange(hueMode)}
+          >
+            <span
+              className="visual-airflow-workbench-controls__hue-chip"
+              style={{
+                backgroundColor: cssHex(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES[hueMode]),
+              }}
+              aria-hidden="true"
+            />
+            {label}
+          </button>
+        ))}
         <label className="visual-airflow-workbench-controls__field">
           <input
             type="checkbox"
@@ -134,4 +149,8 @@ export function VisualAirflowWorkbenchControls({
       </div>
     </div>
   );
+}
+
+function cssHex(hex: number): string {
+  return `#${hex.toString(16).padStart(6, "0")}`;
 }

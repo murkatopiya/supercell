@@ -5,13 +5,15 @@
 **Physics:** PAUSED
 **Implementation:** Workbench Slice A COMPLETE. Prototype
 comparison slice (comet / frozen-field Pause / updraft
-highlight) IMPLEMENTED for browser playtest. Product
-encoding not chosen.
+highlight) IMPLEMENTED. Background highlight is a
+REJECTED BRANCH (historical record in §25.1; not live).
+Live updraft highlight is Off / Hue A / Hue B / Hue C
+comet tint. Product encoding not chosen.
 **Decision:** product representation STILL UNDER EVALUATION.
 R1 is the strongest current main-layer candidate. R2 is an
 earned diagnostic-layer candidate. Neither is a product default.
-Comet vs oriented R1, Pause viz, and updraft highlight are
-live comparison tools, not winners.
+Comet vs oriented R1, Pause viz, and updraft highlight hues
+are live comparison tools, not winners.
 
 Predecessor:
 
@@ -36,7 +38,9 @@ This document owns:
 - prototype decision state;
 - prototype comparison slice implementation record (§31);
 - browser playtest of comet / Pause viz / updraft highlight
-  (not yet decided).
+  (not yet decided);
+- Background highlight REJECTED as a live workbench branch
+  without deleting the historical hypothesis.
 
 **Naming:** `22` §10 used `R1`–`R4` for *runtime*
 architectures (Simulation particles vs separate population
@@ -1154,30 +1158,39 @@ mode.
 
 ## 25. Highlight encoding experiment — Off / A / B
 
-**Kind:** IMPLEMENTED PROTOTYPE / UNDER EVALUATION
-(historical hypothesis below; live API in §31)
+**Kind:** HISTORICAL HYPOTHESIS. Live API in §31.
 
-Do not pick a winner in docs.
+Do not pick a product winner in this section.
 
-Compare at least three states, fair:
+The first comparison was three states, fair:
 
 ```text
 OFF
-A. Background highlight
-B. Comet highlight
+A. Background highlight     REJECTED BRANCH (not live)
+B. Comet highlight          KEPT as the live encoding
 ```
 
-Shared invariants:
+Live workbench comparison after that rejection:
+
+```text
+OFF
+Hue A / Hue B / Hue C     comet tint; prototype hues
+```
+
+Shared invariants (still binding for the live hues):
 
 - one selected operand (first: updraft);
 - same canonical field instances;
 - same laboratory time;
 - same camera;
 - same perceptual occupants;
-- same scientific foreground tracers;
-- same highlight hue.
+- same scientific foreground tracers.
 
 ### 25.1 A — Background highlight
+
+**Status:** REJECTED BRANCH. Not constructed by the live
+workbench. Text below is the historical hypothesis. Do not
+delete it.
 
 Comets / marks stay neutral (e.g. white/grey) and still
 encode `V_total` motion and orientation.
@@ -1243,9 +1256,14 @@ population.
 
 No meteorological fixed palette in this prototype.
 
-One fixed hue for fair A/B. A future product **may** let
-the user pick highlight color; a color picker is **not**
-this experiment and must not be implemented here.
+The first A/B used one fixed hue. Live comparison is three
+fixed high-chroma **prototype** hues (Hue A / B / C) on the
+kept comet-tint encoding. These are workbench candidates,
+not a product palette.
+
+A future product **may** let the user pick highlight color;
+a color picker is **not** this experiment and must not be
+implemented here.
 
 If intensity is opacity or saturation, name it as visual
 mapping of **selected-operand contribution magnitude**,
@@ -1276,8 +1294,10 @@ animation. Samples at `t_pause` only. Live in §31.
 
 ### C. Operand highlight     IMPLEMENTED PROTOTYPE
 
-Off vs Background vs Comet. First operand: updraft
-contribution from `velocityObservation.parts`. Live in §31.
+Off vs Hue A vs Hue B vs Hue C on comet tint.
+First operand: updraft contribution from
+`velocityObservation.parts`. Background overlay is a
+rejected branch (historical §25.1). Live in §31.
 
 ### D. Browser playtest / decision checkpoint     NOT DONE
 
@@ -1365,7 +1385,9 @@ during scientific Pause:  IMPLEMENTED PROTOTYPE
 
 operand contribution
 highlight:                IMPLEMENTED PROTOTYPE
-                          Off / Background / Comets
+                          Off / Hue A / Hue B / Hue C
+                          comet tint; prototype hues
+                          Background = rejected branch
                           first operand: updraft
                           not Inspector-owned
                           not a product winner
@@ -1404,6 +1426,8 @@ src/visualization/stepVisualAirflowOnFrozenField.ts
 src/visualization/visualAirflowElapsedFromWall.ts
 src/rendering/CometAirflowMarkScene.ts
 src/rendering/OperandHighlightBackgroundScene.ts
+  (rejected branch; not constructed by live workbench)
+src/rendering/vertexColorSpace.ts
 src/rendering/visualAirflowWorkbenchMode.ts
 src/ui/tracer/VisualAirflowWorkbenchControls.tsx
 ```
@@ -1442,6 +1466,56 @@ fade    = min(fadeIn, fadeOut)
 `maxAge` is the visualization retirement age (DEMO fixture
 80 s). Fade does not mutate Simulation, Inspector, or
 scientific trails.
+
+Fade scales **vertex alpha**, not RGB. Scaling RGB darkens a
+mark toward black over the clear color instead of removing
+it, so a faded comet stayed visible as a grey streak.
+
+### Vertex color space and alpha channel
+
+Three.js decodes sRGB only for `THREE.Color` inputs such as
+`material.color`. A `BufferAttribute` named `color` is
+uploaded as is and assumed to be in the renderer working
+color space (linear-sRGB), then encoded to sRGB on output.
+Palette constants are authored as sRGB hex, so every value
+that reaches a color attribute passes through
+`linearRgbFromSrgbHex`.
+
+Writing raw sRGB channel fractions lifted the dark end of
+each ramp (comet tail `0x2a` rendered near `0x71`), which
+flattened tail→head asymmetry, halved the perceived
+occupancy fade, and washed the highlight hue toward white.
+
+Alpha lives in the color attribute, not in
+`material.opacity`. `itemSize = 4` on the color attribute is
+what makes Three.js compile `USE_COLOR_ALPHA`.
+
+```text
+R1 / R2 alpha    tail 0.10 → head 0.85     direction sign
+R1c alpha        headOpacity × t × fade    t = headward
+highlight alpha  peakOpacity × displayStrength
+```
+
+A uniform `material.opacity` cannot express head–tail
+asymmetry, so the sign cue relied on luminance alone.
+
+Encoding only. Alpha does not mean density, mass, moisture,
+cloud, probability, or velocity magnitude.
+
+### Depth cue range
+
+From the `DEEP_STORM_TRACER_VIEW` pose the DEMO airflow
+volume spans about 6.4 km (near corner) to 26.2 km (far
+corner). A far plane at the far corner drives the whole back
+half of the volume to the clear color instead of ordering
+it, so `far` sits beyond the volume.
+
+```text
+nearM 12000
+farM  38000
+```
+
+Still camera distance, still not meteorological fog.
 
 ### Pause visualization (independent of scientific Pause)
 
@@ -1494,37 +1568,47 @@ No `createUpdraftField`, no second
 
 ### Highlight modes (independent of encoding)
 
+Live:
+
 ```text
 Off          no overlay, no tint
-Background   OperandHighlightBackgroundScene
-             THREE.Points at Eulerian sample xyz
-             color = prototype hue × displayStrength
-             not a volume, cloud, air mass, or envelope
-             isosurface; not physical air
-Comets       tint R1 / comet / R2 marks at their sample P,t
+Hue A/B/C    comet tint of R1 / comet / R2 marks at sample P,t
+             prototype hues, not a product palette
              advection/orientation still V_total
              Points stay uniform (documented no-op)
 ```
 
+Rejected, not constructed:
+
+```text
+Background   OperandHighlightBackgroundScene
+             historical §25.1; live workbench does not
+             instantiate it
+```
+
 Color means “this visual sample is where the selected
 operand currently contributes this much”, not “this is
-updraft air”.
+updraft air”. Head–tail comet alpha is unchanged by hue.
 
 ### Display mapping (visualization fixture)
 
 ```text
 contributionMagnitude = |V_operand(P, t)|
 displayStrength = clamp(magnitude / 30, 0, 1)
-hue = 0x4fd2c2
+Hue A = 0xff2ec8
+Hue B = 0x00f0ff
+Hue C = 0xe4ff1a
 ```
 
-`30` is `UPDRAFT_HIGHLIGHT_DISPLAY_REFERENCE_MPS`. Chosen
-so DEMO updraft peak (~30 m/s) saturates the slider. It is
-**not** imported from `ScenarioConfig` and is not a physics
-threshold. No “updraft exists iff value > X” claim.
+`30` is `UPDRAFT_HIGHLIGHT_DISPLAY_REFERENCE_MPS`. Sampled
+DEMO occupant |V_updraft| at t=0: max ≈ 29 m/s, p50 ≈ 6.5
+m/s. The linear reference stays 30 so the sampled peak
+nearly saturates. It is **not** imported from
+`ScenarioConfig` and is not a physics threshold. No
+“updraft exists iff value > X” claim.
 
-Background and Comet highlight both sample the operand at
-the same laboratory time (`simulation.clock.time`).
+Comet tint samples the operand at laboratory time
+(`simulation.clock.time`).
 
 ### Combinations
 
@@ -1533,17 +1617,17 @@ Independent rows:
 ```text
 encoding:     Points | Advected marks | Comets | Eulerian marks
 Pause viz:    Full freeze | Animate frozen field
-highlight:    Off | Background | Comets
+highlight:    Off | Hue A | Hue B | Hue C
 depth cue:    orthogonal checkbox
 ```
 
 No hidden coupling. Comet encoding does not turn highlight
-on. Background does not change encoding. Pause viz does not
+on. Hue buttons do not change encoding. Pause viz does not
 change scientific Pause.
 
-Meaningless-but-legal: Comet highlight + Points leaves
-Points uniform. Background + any encoding still shows the
-Eulerian-point overlay.
+Meaningless-but-legal: Hue A/B/C + Points leaves Points
+uniform. Use Comets (or Advected / Eulerian marks) to see
+updraft geography.
 
 Explore-only. Guided has no workbench. Explore↔Guided
 resets encoding, Pause viz, highlight, and depth cue.
@@ -1552,8 +1636,7 @@ resets encoding, Pause viz, highlight, and depth cue.
 
 Scientific tracers remain pickable, selectable, Inspector-
 owned, with scientific trails. Comet marks, oriented marks,
-points, and highlight background set `raycast = () => {}`
-and carry no `tracerId`.
+and points set `raycast = () => {}` and carry no `tracerId`.
 
 ### What this slice did not decide
 
@@ -1561,8 +1644,11 @@ Browser playtest has not yet chosen:
 
 - comet-R1 vs oriented R1 as the main perceptual layer;
 - whether R2 stays a diagnostic layer;
-- which updraft-highlight encoding, if any, is kept;
+- which prototype updraft-highlight hue, if any, is kept;
 - whether Pause should animate a frozen field in product UI.
+
+Background highlight is rejected as a live workbench branch.
+That is not a product-palette decision.
 
 ### What this slice did not implement
 
@@ -1585,8 +1671,10 @@ R2 EULERIAN                         DIAGNOSTIC-LAYER CANDIDATE
 R3                                  DEFERRED
 FROZEN-FIELD PAUSE ANIMATION        IMPLEMENTED PROTOTYPE
 OPERAND CONTRIBUTION HIGHLIGHT      IMPLEMENTED PROTOTYPE
+                                    Off / Hue A / Hue B / Hue C
+                                    Background REJECTED BRANCH
 WORKBENCH SLICE A                   COMPLETE
-PROTOTYPE COMPARISON SLICE          COMPLETE; PLAYTEST PENDING
+PROTOTYPE COMPARISON SLICE          COMPLETE; HUE PLAYTEST PENDING
 CAMERA PAN / RESET                  NOT STARTED
 FOLLOW                              NOT STARTED
 GUIDED POPULATION                   NOT STARTED

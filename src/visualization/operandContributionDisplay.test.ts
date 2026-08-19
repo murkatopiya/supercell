@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   contributionDisplayStrength,
   UPDRAFT_HIGHLIGHT_DISPLAY_REFERENCE_MPS,
+  UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES,
 } from "./operandContributionDisplay.js";
 import displaySrc from "./operandContributionDisplay.ts?raw";
 
@@ -25,5 +26,12 @@ describe("contributionDisplayStrength", () => {
     expect(displaySrc).not.toMatch(/DEMO_SCENARIO/);
     expect(displaySrc).not.toMatch(/createUpdraftField/);
     expect(UPDRAFT_HIGHLIGHT_DISPLAY_REFERENCE_MPS).toBe(30);
+  });
+
+  it("exposes three distinct prototype hues, not a picker", () => {
+    const hues = Object.values(UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES);
+    expect(hues).toHaveLength(3);
+    expect(new Set(hues).size).toBe(3);
+    expect(displaySrc).not.toMatch(/input type=["']color["']/);
   });
 });

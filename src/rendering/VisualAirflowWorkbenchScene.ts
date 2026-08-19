@@ -3,10 +3,10 @@ import type { VelocityField } from "../core/fields/VelocityField.js";
 import { cometFadeFromAges } from "../visualization/cometAirflowMark.js";
 import type { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
 import { writeAdvectedOrientedAirflow } from "../visualization/observeAdvectedOrientedAirflow.js";
+import { UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES } from "../visualization/operandContributionDisplay.js";
 import type { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { writeContributionDisplayStrengths } from "../visualization/writeContributionDisplayStrengths.js";
 import { CometAirflowMarkScene } from "./CometAirflowMarkScene.js";
-import { OperandHighlightBackgroundScene } from "./OperandHighlightBackgroundScene.js";
 import { OrientedAirflowMarkScene } from "./OrientedAirflowMarkScene.js";
 import { VisualAirflowScene } from "./VisualAirflowScene.js";
 import type {
@@ -17,6 +17,7 @@ import type {
 /**
  * Explore-only grouping of encodings and highlight overlays.
  * Visibility switch only. Does not own Simulation or scientific tracers.
+ * Background highlight is a rejected branch and is not constructed.
  */
 export class VisualAirflowWorkbenchScene {
   private readonly group: THREE.Group;
@@ -24,7 +25,6 @@ export class VisualAirflowWorkbenchScene {
   private readonly advectedMarks: OrientedAirflowMarkScene;
   private readonly cometMarks: CometAirflowMarkScene;
   private readonly eulerianMarks: OrientedAirflowMarkScene;
-  private readonly highlightBackground: OperandHighlightBackgroundScene;
   private readonly advectedPositions: Float32Array;
   private readonly advectedDirections: Float32Array;
   private readonly advectedAges: Float32Array;
@@ -45,10 +45,6 @@ export class VisualAirflowWorkbenchScene {
       eulerianCount,
       "eulerianAirflowMarks",
     );
-    this.highlightBackground = new OperandHighlightBackgroundScene(
-      eulerianCount,
-    );
-    this.group.add(this.highlightBackground.object);
     this.group.add(this.points.object);
     this.group.add(this.advectedMarks.object);
     this.group.add(this.cometMarks.object);
@@ -62,7 +58,6 @@ export class VisualAirflowWorkbenchScene {
     this.eulerianDirections = new Float32Array(eulerianCount * 3);
     this.eulerianHighlight = new Float32Array(eulerianCount);
     this.setMode("points");
-    this.highlightBackground.object.visible = false;
   }
 
   get object(): THREE.Group {
@@ -89,7 +84,11 @@ export class VisualAirflowWorkbenchScene {
       throw new Error("VisualAirflowWorkbenchScene is disposed");
     }
     this.setMode(input.mode);
-    const cometTint = input.highlightMode === "comets";
+    const highlightHue =
+      input.highlightMode === "off"
+        ? undefined
+        : UPDRAFT_HIGHLIGHT_PROTOTYPE_HUES[input.highlightMode];
+    const cometTint = highlightHue !== undefined;
     if (input.mode === "points") {
       this.points.syncFromPopulation(input.population);
     } else if (input.mode === "advected-oriented") {
@@ -112,6 +111,7 @@ export class VisualAirflowWorkbenchScene {
         this.advectedPositions,
         this.advectedDirections,
         strengths,
+        highlightHue,
       );
     } else if (input.mode === "advected-comet") {
       writeAdvectedOrientedAirflow(
@@ -141,6 +141,7 @@ export class VisualAirflowWorkbenchScene {
         this.advectedDirections,
         this.occupancyFade,
         strengths,
+        highlightHue,
       );
     } else {
       if (!input.eulerian.samplesField(input.field)) {
@@ -162,23 +163,7 @@ export class VisualAirflowWorkbenchScene {
         this.eulerianPositions,
         this.eulerianDirections,
         strengths,
-      );
-    }
-
-    const showBackground = input.highlightMode === "background";
-    this.highlightBackground.object.visible = showBackground;
-    if (showBackground && input.highlightOperand !== null) {
-      input.eulerian.writePositionsTo(this.eulerianPositions);
-      writeContributionDisplayStrengths(
-        input.highlightOperand,
-        this.eulerianPositions,
-        input.eulerian.sampleCount,
-        input.time,
-        this.eulerianHighlight,
-      );
-      this.highlightBackground.syncFromStrengths(
-        this.eulerianPositions,
-        this.eulerianHighlight,
+        highlightHue,
       );
     }
   }
@@ -192,7 +177,6 @@ export class VisualAirflowWorkbenchScene {
     this.advectedMarks.dispose();
     this.cometMarks.dispose();
     this.eulerianMarks.dispose();
-    this.highlightBackground.dispose();
   }
 
   private markHighlightStrengths(

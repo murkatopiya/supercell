@@ -9,6 +9,7 @@ import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
 import { RELEASE_PREVIEW_COLOR } from "./releasePreviewMarker.js";
 import { VISUAL_AIRFLOW_ORIENTED_MARK } from "./visualAirflowAppearance.js";
+import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
 import { OrientedAirflowMarkScene } from "./OrientedAirflowMarkScene.js";
 import orientedSrc from "./OrientedAirflowMarkScene.ts?raw";
 
@@ -62,14 +63,18 @@ describe("OrientedAirflowMarkScene", () => {
     scene.dispose();
   });
 
-  it("stores head–tail color asymmetry that is not a scientific trail", () => {
+  it("stores head–tail color and alpha asymmetry that is not a scientific trail", () => {
     const scene = new OrientedAirflowMarkScene(1);
-    const colors = (
-      scene.object.geometry.getAttribute("color") as THREE.BufferAttribute
-    ).array;
+    const attribute = scene.object.geometry.getAttribute(
+      "color",
+    ) as THREE.BufferAttribute;
+    // itemSize 4 is what makes Three.js honour per-vertex alpha.
+    expect(attribute.itemSize).toBe(4);
+    const colors = attribute.array;
     const tailLum = colors[0]! + colors[1]! + colors[2]!;
-    const headLum = colors[3]! + colors[4]! + colors[5]!;
+    const headLum = colors[4]! + colors[5]! + colors[6]!;
     expect(headLum).toBeGreaterThan(tailLum);
+    expect(colors[7]!).toBeGreaterThan(colors[3]!);
     const material = scene.object.material as THREE.LineBasicMaterial;
     expect(material.vertexColors).toBe(true);
     expect(TRACER_COLORS).not.toContain(VISUAL_AIRFLOW_ORIENTED_MARK.headColor);
@@ -79,6 +84,25 @@ describe("OrientedAirflowMarkScene", () => {
     expect(VISUAL_AIRFLOW_ORIENTED_MARK.headColor).not.toBe(RELEASE_PREVIEW_COLOR);
     expect(orientedSrc).not.toMatch(/TracerPathHistory/);
     expect(orientedSrc).not.toMatch(/userData\.tracerId/);
+    scene.dispose();
+  });
+
+  it("writes the palette in the renderer working color space", () => {
+    const scene = new OrientedAirflowMarkScene(1);
+    const colors = (
+      scene.object.geometry.getAttribute("color") as THREE.BufferAttribute
+    ).array;
+    const tail = linearRgbFromSrgbHex(VISUAL_AIRFLOW_ORIENTED_MARK.tailColor);
+    const head = linearRgbFromSrgbHex(VISUAL_AIRFLOW_ORIENTED_MARK.headColor);
+    expect(colors[0]!).toBeCloseTo(tail.r, 6);
+    expect(colors[1]!).toBeCloseTo(tail.g, 6);
+    expect(colors[2]!).toBeCloseTo(tail.b, 6);
+    expect(colors[4]!).toBeCloseTo(head.r, 6);
+    expect(colors[5]!).toBeCloseTo(head.g, 6);
+    expect(colors[6]!).toBeCloseTo(head.b, 6);
+    // Raw sRGB channel fractions would lift the dark end of the ramp.
+    const rawTailRed = ((VISUAL_AIRFLOW_ORIENTED_MARK.tailColor >> 16) & 255) / 255;
+    expect(colors[0]!).toBeLessThan(rawTailRed);
     scene.dispose();
   });
 
