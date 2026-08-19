@@ -1,11 +1,13 @@
 # Perceptual Airflow Workbench
 
 **Status:** architecture exploration / decision checkpoint
-**Scope:** representation comparison after Slice 2 playtest
+**Scope:** representation comparison after Slice A browser playtest
 **Physics:** PAUSED
-**Implementation:** Workbench Slice A COMPLETE
-**Decision:** product representation STILL UNDER EVALUATION;
-R1/R2 are live workbench encodings, not product defaults
+**Implementation:** Workbench Slice A COMPLETE. Next prototype
+slice NOT STARTED.
+**Decision:** product representation STILL UNDER EVALUATION.
+R1 is the strongest current main-layer candidate. R2 is an
+earned diagnostic-layer candidate. Neither is a product default.
 
 Predecessor:
 
@@ -24,11 +26,11 @@ docs/architecture/22-perceptual-airflow-architecture.md
 
 This document owns:
 
-- first browser playtest evidence;
-- representation comparison;
-- temporary workbench architecture;
+- first browser playtest evidence (P3 / Points);
+- Slice A workbench architecture and implementation record;
+- Slice A R0/R1/R2 comparison playtest;
 - prototype decision state;
-- Slice A implementation record.
+- proposed next perceptual experiments (not implemented).
 
 **Naming:** `22` §10 used `R1`–`R4` for *runtime*
 architectures (Simulation particles vs separate population
@@ -38,45 +40,24 @@ same letters. Live runtime remains `22`'s separate
 visualization population. Do not read `23` R2 (Eulerian
 samples) as `22` runtime R2.
 
-Predecessor:
+Keep these roles distinct:
 
 ```text
-docs/architecture/22-perceptual-airflow-architecture.md
+scientific tracer
+  != visual airflow occupant
+  != Eulerian sample
+  != Guided cohort
+  != operand contribution overlay
 ```
-
-`22` remains SoT for:
-
-- why perceptual airflow is needed;
-- scientific tracer ≠ visual occupant;
-- separate visualization runtime;
-- SAME canonical `V_total`;
-- honesty constraints (occupancy ≠ mass/cloud);
-- live R0 Points implementation (Slices 1–2).
-
-This document owns:
-
-- first browser playtest evidence;
-- representation comparison;
-- temporary workbench architecture;
-- prototype decision state.
-
-**Naming:** `22` §10 used `R1`–`R4` for *runtime*
-architectures (Simulation particles vs separate population
-vs renderer integration vs streamlines). This document
-reuses `R0`–`R3` for *visual encodings*. They are not the
-same letters. Live runtime remains `22`'s separate
-visualization population. Do not read `23` R2 (Eulerian
-samples) as `22` runtime R2.
 
 Physics remains paused. Operands, constants, envelopes,
 seeds, integrator, Guided catalog, Inspector, and camera
 pan are unchanged by this document.
 
-Verified against the Slice A implementation commit that
-updates this file. Predecessor docs checkpoint:
+Verified against live Slice A:
 
 ```text
-79156296bfaf59079838e2fba5c5c352b7ec1614
+f1d858e5d6352d99f2f90c8f168f6c530a792d0a
 ```
 
 External review (decision input, **not** SoT):
@@ -301,7 +282,11 @@ PAUSE
 
 ## 6. R0 — Advected Points     IMPLEMENTED BASELINE
 
-Live encoding. Not a candidate winner. Needed for A/B.
+**Status:** IMPLEMENTED BASELINE / not preferred main candidate
+
+Live encoding. Default Explore workbench mode (`points`).
+Needed for A/B. Slice A browser playtest did **not** prefer
+it as the main perceptual airflow layer.
 
 ```text
 family            Lagrangian / advected
@@ -320,7 +305,8 @@ make room for later encodings.
 
 ## 7. R1 — Oriented Advected Marks
 
-**Status:** WORKBENCH IMPLEMENTED / product NOT CHOSEN
+**Status:** IMPLEMENTED PROTOTYPE / strongest current
+main-layer candidate / product NOT CHOSEN
 
 Same advected visual occupants. Replace the point with a
 spatially extended oriented mark.
@@ -401,7 +387,8 @@ not a new physics object.
 
 ## 8. R2 — Eulerian Oriented Samples
 
-**Status:** WORKBENCH IMPLEMENTED / product NOT CHOSEN
+**Status:** IMPLEMENTED PROTOTYPE / earned diagnostic-layer
+candidate / not the main product representation
 
 Semantically different from R1, not a restyle of R1.
 
@@ -819,12 +806,14 @@ changes salience only.
 R3, micro-trails, LIC, speed encoding, public selector,
 Guided population, camera pan/reset, Follow, physics.
 
-### Decision checkpoint (still open)
+### Decision checkpoint (Slice A playtest recorded)
 
-User playtest of the live workbench. This document does
-not pick a product winner.
+Browser comparison of live R0/R1/R2 is recorded in §21.
+Product representation is still not chosen.
 
-R3 remains deferred until R1/R2 evidence.
+R3 remains deferred. New evidence did not earn streamlines.
+
+Proposed next experiments (§22–§26) are **not implemented**.
 
 Encoding contracts that Slice A can already state:
 
@@ -838,85 +827,578 @@ Encoding contracts that Slice A can already state:
 - Local marks still cannot show path curvature.
 - Lagrangian R0/R1 can still show apparent concentration;
   R2 sampling density does not follow `∇ · V`.
+- Live Pause is currently a **full visual freeze**:
+  `clock.time` stops, scientific tracers stop, the visual
+  population does not `step`. Frozen-field animation is a
+  later hypothesis (§23), not the live contract.
 
 Those are technical observations, not a product verdict.
 
 ---
 
-## 21. Compact lock-in
+## 21. Slice A browser playtest — R0 / R1 / R2
+
+**Kind:** OBSERVATION (browser comparison after Slice A)
+
+Not a product-representation decision.
+
+Live encodings compared (`f1d858e`):
 
 ```text
-playtest P3:              R0 Points = temporal direction only
-                          Pause ≈ grey pixel cloud
-                          not an opacity/count diagnosis
+R0  VisualAirflowScene          THREE.Points
+R1  OrientedAirflowMarkScene    THREE.LineSegments
+    fixed 500 m; vertex-color head–tail
+R2  OrientedAirflowMarkScene    THREE.LineSegments
+    EulerianAirflowSamples
+```
 
-apparent density:         Lagrangian spacing may look like
-                          mass; YELLOW ∇ · V; comparison
-                          criterion, not delete-population
+Default Explore mode remains R0 Points. Workbench switch
+does not promote R1/R2 to a product default.
 
-depth:                    ORTHOGONAL; camera-distance cue;
-                          not altitude; not fog physics
-                          Slice A toggle live
+### 21.1 R0 — Advected Points
 
+Observation:
+
+- fulfilled the baseline role;
+- during motion, creates a sense of a moving medium;
+- on Pause, position-only encoding nearly loses direction;
+- reads as cloud / dust / random pixels;
+- **not** the preferred candidate for the main perceptual
+  airflow representation.
+
+Decision (narrow): keep R0 as baseline/reference. Do not
+delete it in this checkpoint. Do not ship it as the intended
+main layer on the strength of this playtest.
+
+### 21.2 R1 — Oriented Advected Marks
+
+Observation:
+
+- substantially stronger than R0;
+- combines temporal motion cue with instantaneous
+  orientation cue;
+- better “living airflow” percept;
+- even a single frame contains local direction;
+- Lagrangian convergence/divergence still risks
+  apparent-density reading;
+- current simple LineSegments geometry is **not** final art.
+
+Assessment:
+
+```text
+R1 = strongest current candidate for MAIN perceptual layer
+representation remains UNDER EVALUATION
+```
+
+This is not a product lock-in. Current mark geometry may
+still lose to a comet refinement (§22).
+
+### 21.3 R2 — Eulerian Oriented Samples
+
+Observation:
+
+- very good at instantaneous field structure;
+- especially strong on Pause;
+- spacing stays regular; no Lagrangian concentration
+  pattern;
+- perceptually closer to a measurement / vector-field
+  instrument than to a living moving medium.
+
+Assessment:
+
+```text
+R2 = earned candidate for a future Eulerian diagnostic /
+     field layer
+not declared a loser
+not declared the main product representation
+not deleted
+```
+
+### 21.4 R3
+
+```text
+R3 Sparse Instantaneous Streamlines = DEFERRED
+```
+
+Slice A evidence did not earn implementation. Local marks
+still cannot show path curvature; that limitation is
+recorded, not treated as an order to build streamlines.
+
+---
+
+## 22. R1 comet-mark refinement
+
+**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+
+**Decision:** none. Compare against current R1 LineSegments
+before choosing.
+
+Instead of the current simple oriented segment, try a
+Windy-inspired perceptual **comet / streak**:
+
+- readable head region;
+- short fading tail;
+- smooth fade-in / fade-out;
+- soft recycle / disappearance;
+- low opacity / subordinate hierarchy;
+- scientific tracers remain explicit foreground.
+
+### 22.1 Semantics
+
+The tail is a **perceptual motion cue**.
+
+It is **not**:
+
+- a scientific tracer trail;
+- stored pathline history;
+- a material trajectory;
+- same-air-mass history;
+- parcel history.
+
+Do **not** use `TracerPathHistory` because a tail is
+visible. That object remains scientific-probe history
+(`rendering/14`, `22` §4 / §14).
+
+This is also **not** the deferred micro-trail family
+(§10.1). Micro-trails were rejected as a first-line
+prototype because they share scientific-trail language
+and imply material history. A comet is shorter, fades,
+and must stay visually distinct from tracer trails.
+
+Do not make long trails. Do not turn the comet into a
+pseudo-streamline.
+
+First prototype: **fixed perceptual length** / short
+temporal visual cue. Do not encode speed by tail length
+without a separate decision.
+
+### 22.2 Live R1 that this would replace in the experiment
+
+Current R1 (`OrientedAirflowMarkScene`): two-vertex
+`LineSegments`, static vertex-color tail→head, length
+500 m, no history, no shader fade, recycle is the
+population policy (hard reseed), not a visual dissolve.
+
+The experiment is current mark vs comet-like mark, same
+`VisualAirflowPopulation`, same `V_total`.
+
+---
+
+## 23. Pause: scientific time vs perceptual animation
+
+**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+
+**Live contract today:** scientific Pause is a **full visual
+freeze**. `simulationElapsedFromWall(..., paused: true)`
+yields zero elapsed time, so `advanceLaboratoryFixedStep`
+does not run. `clock.time` stays put, scientific tracers
+stay put, the visual population does not `step`, R1/R2
+orientations stay at `t_pause` because sync still samples
+`V_total(P, clock.time)` but positions do not advect.
+
+Hypothesis: “Pause laboratory” need not mean “freeze every
+visual animation.”
+
+Distinguish:
+
+```text
+A. scientific / laboratory time
+B. perceptual animation phase
+```
+
+On scientific Pause:
+
+- `Simulation.clock.time` frozen (`t_pause`);
+- scientific tracers frozen;
+- Guided cohort frozen;
+- scientific trails do not extend physical history;
+- Inspector stays on frozen `P, t`;
+- physics state does not evolve.
+
+Perceptual airflow animation **may** continue, using the
+frozen canonical field snapshot:
+
+```text
+V_total(P, t_pause)
+```
+
+Visual occupants / future comets may keep moving on that
+frozen-in-time velocity field **without advancing the
+laboratory clock**.
+
+Semantics:
+
+> Simulation time is paused; animation continues to reveal
+> the flow field at that frozen laboratory time.
+
+This is **not** time evolution of the model.
+
+### 23.1 Unsteady compatibility
+
+If the field later depends on time, Pause must **not**
+sample at advancing wall-clock as if laboratory time were
+running. Every sample uses `t_pause`.
+
+Wall-clock may drive a perceptual phase only. It must not
+be treated as `clock.time`.
+
+### 23.2 Workbench comparison (future)
+
+When commanded, compare:
+
+```text
+full visual freeze          (current live Pause)
+frozen-field animated flow  (this hypothesis)
+```
+
+Do not silently replace the current Pause contract.
+
+`CONCEPT` already wants freeze-and-look and camera motion
+during freeze. This hypothesis extends revelation of the
+frozen field. It does not authorize physics stepping.
+
+---
+
+## 24. Operand contribution highlight
+
+**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+
+A visualization/understanding candidate, not Inspector
+payload and not a new physics operand.
+
+The user may select **one** named velocity operand — first
+prototype: **updraft** — and see where that operand
+contributes to the velocity field.
+
+### 24.1 Source of truth
+
+The same named observable operand instance already used by
+canonical decomposition / Inspector path:
+
+```text
+lab.velocityObservation.parts[i].field
+```
+
+Live DEMO keys (`DEMO_VELOCITY_CONTRIBUTION_KEYS`,
+`19` / compose path):
+
+```text
+environmentAdvection
+updraft
+rotation
+lowerInflow
+upperOutflow
+downdraft
+nearGroundOutflow
+```
+
+These seven tokens are the **current-model** observable set.
+Do not promote them into a permanent generic visualization
+anatomy. A later model may have different named parts
+(`19` §17).
+
+### 24.2 What highlight is
+
+Observation only.
+
+```text
+where / how strongly the selected operand contributes
+to velocity at (P, t)
+```
+
+Does **not** mean:
+
+- this volume contains updraft air;
+- this is a separate air mass;
+- this is the physical boundary of the updraft;
+- this is cloud;
+- this is density.
+
+Forbidden:
+
+- rebuild the field;
+- visually tuned duplicate;
+- change `V_total`;
+- disable the other operands.
+
+`V_total` remains the motion/orientation source for
+perceptual occupants.
+
+### 24.3 Not Inspector
+
+Inspector remains the **local tracer** answer:
+
+> Why is this tracer moving this way right now?
+
+Highlight answers a **spatial** question:
+
+> Where in space does this mechanism/contribution act?
+
+Compatible named observation semantics. Highlight state
+must **not** live in `TracerInspection` only for UI
+convenience. Inspector does not own global visualization
+mode.
+
+---
+
+## 25. Highlight encoding experiment — Off / A / B
+
+**Kind:** PROTOTYPE HYPOTHESIS / NOT IMPLEMENTED
+
+Do not pick a winner in docs.
+
+Compare at least three states, fair:
+
+```text
+OFF
+A. Background highlight
+B. Comet highlight
+```
+
+Shared invariants:
+
+- one selected operand (first: updraft);
+- same canonical field instances;
+- same laboratory time;
+- same camera;
+- same perceptual occupants;
+- same scientific foreground tracers;
+- same highlight hue.
+
+### 25.1 A — Background highlight
+
+Comets / marks stay neutral (e.g. white/grey) and still
+encode `V_total` motion and orientation.
+
+A weak spatial background/underlay shows selected operand
+contribution.
+
+```text
+neutral comet motion/orientation  →  V_total
+colored spatial highlight         →  selected operand contribution
+```
+
+Potential advantage: clean split between total motion and
+mechanism geography.
+
+Risks:
+
+- 3D transparency / depth legibility;
+- may read as physical cloud / air volume;
+- may hide scientific tracers;
+- volume representation is **unsolved**.
+
+Do **not** automatically choose volume rendering.
+Background geometry is an open prototype question
+(slice / samples / weak volume-like support / other).
+
+### 25.2 B — Comet highlight
+
+No extra background geometry.
+
+The perceptual comets change color/intensity from the
+selected operand’s contribution at current position and
+laboratory time.
+
+Still:
+
+- trajectory / advection = `V_total`;
+- orientation = `V_total`;
+- highlight does **not** mean the comet “belongs to
+  updraft”;
+- it is the same visual occupant, sitting where the
+  selected operand currently contributes.
+
+Potential advantage: less clutter; spatial structure rides
+on the flow.
+
+Risk: colored comets read as a separate air sort / separate
+population.
+
+### 25.3 Comparison questions
+
+1. Where is the selected operand’s spatial geometry clearer?
+2. Where does `V_total` direction remain readable?
+3. Where is scientific-tracer foreground hierarchy better?
+4. Which works better on PLAY?
+5. Which works better on PAUSE?
+6. Which less invites a separate-air-mass reading?
+7. Which less invites cloud/density reading?
+8. Which survives camera orbit / depth overlap better?
+9. Is legend/copy required for the semantics to be honest?
+
+### 25.4 Color
+
+No meteorological fixed palette in this prototype.
+
+One fixed hue for fair A/B. A future product **may** let
+the user pick highlight color; a color picker is **not**
+this experiment and must not be implemented here.
+
+If intensity is opacity or saturation, name it as visual
+mapping of **selected-operand contribution magnitude**,
+not density.
+
+No multi-operand rainbow overlay.
+
+v1 hypothesis: at most **one** operand selected at a time.
+
+---
+
+## 26. Next workbench experiments
+
+**Kind:** PROPOSED SEQUENCE / NOT STARTED
+
+When commanded, narrow slices in this order:
+
+### A. R1 mark refinement
+
+Current oriented `LineSegments` vs comet-like oriented
+mark. Same population, same `V_total`.
+
+### B. Pause semantics
+
+Full visual freeze (live) vs frozen-field continuing
+perceptual animation. Samples at `t_pause` only.
+
+### C. Operand highlight
+
+Off vs Background vs Comet. First operand: updraft
+contribution from `velocityObservation.parts`.
+
+### D. Browser playtest / decision checkpoint
+
+Only after evidence decide:
+
+- whether comet-R1 becomes the main perceptual layer;
+- whether R2 is kept as a separate diagnostic layer;
+- which operand-highlight encoding wins;
+- whether a background representation is needed at all;
+- whether R3 / LIC / slices is earned.
+
+Do not implement R3, LIC, slices, micro-trails, speed
+encoding, public selectors, Guided population, camera
+pan/reset, Follow, or physics because these hypotheses
+exist.
+
+---
+
+## 27. Physics honesty (still binding)
+
+Continuity remains YELLOW.
+
+New visual layers do **not** license:
+
+- mass-consistent circulation;
+- same-air-mass circulation;
+- realistic parcel;
+- mesocyclone capture;
+- full supercell circulation;
+- D1 → NG1 causal continuation;
+- RFD / FFD;
+- cold pool;
+- gust front;
+- density current;
+- cloud / precipitation.
+
+```text
+comet spacing / count     != density / mass
+operand highlight         != physical air-mass boundary
+```
+
+---
+
+## 28. Camera
+
+P1 pan/reset (`21` §3) remains a known separate issue.
+This checkpoint does not implement it.
+
+If playtest again shows that projection/depth hides known
+structures **regardless of encoding**, camera/navigation
+may become a prerequisite later.
+
+Do not smuggle Follow into that contingency.
+
+---
+
+## 29. Compact lock-in
+
+```text
 product representation:   UNDER EVALUATION
-                          no winner
 
 R0 Advected Points:       IMPLEMENTED BASELINE
-                          default Explore encoding
+                          default Explore mode
+                          not preferred main candidate
 
-R1 Oriented Advected:     WORKBENCH IMPLEMENTED
-                          same population; fixed length;
-                          head–tail sign; not a trail
+R1 Oriented Advected:     IMPLEMENTED PROTOTYPE
+                          strongest current main-layer
+                          candidate; geometry not final
 
-R2 Eulerian Oriented:     WORKBENCH IMPLEMENTED
-                          EulerianAirflowSamples
-                          not a fake VisualAirflowPopulation
+R1 comet refinement:      PROTOTYPE PROPOSED
+                          NOT IMPLEMENTED
+                          perceptual cue, not path history
 
-R3 Sparse Streamlines:    DEFERRED UNTIL R1/R2 EVIDENCE
+R2 Eulerian Oriented:     IMPLEMENTED PROTOTYPE
+                          earned diagnostic-layer candidate
+                          not main product representation
 
-micro-trails:             NOT FIRST-LINE
-LIC / slices:             LATER FAMILY
-tubes / surfaces:         REJECTED FOR CURRENT MODEL
+R3 Sparse Streamlines:    DEFERRED
+
+frozen-field animation
+during scientific Pause:  PROTOTYPE PROPOSED
+                          NOT IMPLEMENTED
+                          live Pause = full visual freeze
+
+operand contribution
+highlight:                PROTOTYPE PROPOSED
+                          NOT IMPLEMENTED
+                          Off / A background / B comets
+                          first operand: updraft
+                          not Inspector-owned
+
+depth cue:                ORTHOGONAL TOGGLE LIVE
 
 workbench:                dev/research only
                           modes != public product modes
-                          one live switch; same V_total
 
 field:                    same canonical V_total
-                          no rebuilt / prettier duplicate
-
-length:                   fixed 500 m; speed encoding later
+length:                   fixed; speed encoding later
 curvature:                local mark cannot show it
-divergence API:           not this branch
-
-Pause:                    first-class
+continuity:               YELLOW
 camera P1:                contingency, not implemented
 
 Slice A:                  COMPLETE
+next implementation:      NOT STARTED
 physics:                  PAUSED
 ```
 
 ---
 
-## 22. STOP
+## 30. STOP
 
 ```text
 PHYSICS PAUSED
-PRODUCT REPRESENTATION     UNDER EVALUATION
-R0 POINTS                  LIVE BASELINE / DEFAULT
-R1 / R2                    WORKBENCH LIVE
-                           NOT PRODUCT DEFAULTS
-R3                         DEFERRED
-DEPTH CUE                  ORTHOGONAL TOGGLE LIVE
-WORKBENCH SLICE A          COMPLETE
-CAMERA PAN / RESET         NOT STARTED
-FOLLOW                     NOT STARTED
-GUIDED POPULATION          NOT STARTED
+PRODUCT REPRESENTATION              UNDER EVALUATION
+R0 POINTS                           BASELINE / NOT PREFERRED MAIN
+R1 ORIENTED ADVECTED                STRONGEST MAIN-LAYER CANDIDATE
+R1 COMET REFINEMENT                 NOT IMPLEMENTED
+R2 EULERIAN                         DIAGNOSTIC-LAYER CANDIDATE
+R3                                  DEFERRED
+FROZEN-FIELD PAUSE ANIMATION        NOT IMPLEMENTED
+OPERAND CONTRIBUTION HIGHLIGHT      NOT IMPLEMENTED
+WORKBENCH SLICE A                   COMPLETE
+NEXT IMPLEMENTATION SLICE           NOT STARTED
+CAMERA PAN / RESET                  NOT STARTED
+FOLLOW                              NOT STARTED
+GUIDED POPULATION                   NOT STARTED
 ```
 
-Do not pick a product representation because Slice A
-exists. Do not start R3, micro-trails, LIC, speed encoding,
-public selectors, Guided population, camera pan, Follow, or
-physics because this document exists.
+Do not implement comet marks, frozen-field Pause animation,
+operand highlight meshes, shaders, R3, micro-trails, LIC,
+speed encoding, public selectors, Guided population, camera
+pan, Follow, or physics because this document exists.
+
+Do not pick a product representation because this playtest
+exists.
 
 Next work starts only when commanded.

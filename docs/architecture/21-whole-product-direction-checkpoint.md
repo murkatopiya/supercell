@@ -4,20 +4,22 @@
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
 **Implementation:** perceptual airflow Slice 1–2 COMPLETE
-in `22`. Workbench Slice A COMPLETE in `23`. Product
-representation UNDER EVALUATION. Guided population
-NOT STARTED. Other §13 candidates remain unchosen.
+in `22`. Workbench Slice A COMPLETE in `23`. Slice A
+R0/R1/R2 playtest recorded in `23`; next perceptual
+prototypes NOT STARTED. Product representation UNDER
+EVALUATION. Guided population NOT STARTED. Other §13
+candidates remain unchosen.
 
 This document remains the whole-product capability map. It did
 not pick a winner among §13 candidates. Candidate 1 (perceptual
 airflow) is specified as architecture exploration
 `docs/architecture/22-perceptual-airflow-architecture.md`.
 Headless visual population (Slice 1) and first Explore
-browser exposure (Slice 2) now exist there. First playtest
-did not choose a product encoding; comparison lives in
-`docs/architecture/23-perceptual-airflow-workbench.md`.
-Guided population has not started. Other §13 candidates
-remain unchosen.
+browser exposure (Slice 2) now exist there. Slice A
+workbench comparison and later perceptual hypotheses live
+in `docs/architecture/23-perceptual-airflow-workbench.md`.
+Product encoding is not chosen. Guided population has not
+started. Other §13 candidates remain unchosen.
 
 This document did **not** change production code when written.
 It does **not** create `ROADMAP.md`.
@@ -1082,14 +1084,18 @@ PHYSICS PAUSED
 Candidate 1 architecture lives in `22`. Slice 1 (headless)
 and Slice 2 (Explore browser exposure) are complete there.
 First playtest finding P3 and the comparison workbench live
-in `23`. Product representation is not chosen. Guided
+in `23`. Slice A R0/R1/R2 playtest is recorded there; comet
+refinement, frozen-field Pause animation, and operand
+highlight are hypotheses, not implementation orders.
+Product representation is not chosen. Guided
 population, camera pan, and other §13 candidates are not
 started.
 
 Do not treat opening `22` or `23` as selecting Candidates 2–7.
 Do not write a Cursor implementation prompt.
 Do not implement pan, Follow, Guided population, trail
-caps, RK2 switch, streamfunctions, datasets, or workbench
-encodings because this document exists.
+caps, RK2 switch, streamfunctions, datasets, comet marks,
+operand highlight, or Pause-animation changes because this
+document exists.
 
 Next work starts only when commanded.

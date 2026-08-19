@@ -2,12 +2,16 @@
 
 **Status:** architecture SoT. Slice 1 COMPLETE. Slice 2
 (first Explore browser exposure) COMPLETE. Workbench Slice A
-COMPLETE in `23`. Product representation UNDER EVALUATION.
-Guided population NOT STARTED. Camera pan NOT STARTED.
+COMPLETE in `23`. Slice A playtest recorded; next perceptual
+prototypes (comet, frozen-field Pause animation, operand
+highlight) are hypotheses in `23`, not started. Product
+representation UNDER EVALUATION. Guided population NOT
+STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** PAUSED
 **Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE;
-Workbench Slice A COMPLETE in `23`; product encoding not chosen
+Workbench Slice A COMPLETE in `23`; Slice A playtest
+recorded; next prototypes NOT STARTED; product encoding not chosen
 **Decision:** earned for a narrow first perceptual direction;
 other representation/runtime alternatives remain recorded
 
@@ -35,6 +39,8 @@ Current implementation:
 Slice 1  headless VisualAirflowPopulation   COMPLETE
 Slice 2  Explore browser exposure           COMPLETE
 Workbench Slice A (R0/R1/R2 + depth cue)    COMPLETE in `23`
+Slice A playtest                            recorded in `23`
+next perceptual prototypes                  NOT STARTED
 product representation                      UNDER EVALUATION
 Guided population                           NOT STARTED
 camera pan                                  NOT STARTED
@@ -1057,6 +1063,7 @@ implementation:           Slice 1 COMPLETE
                           Slice 2 Explore browser COMPLETE
                           representation UNDER EVALUATION
                           in `23`; Workbench Slice A COMPLETE
+                          next prototypes NOT STARTED
                           Guided population NOT STARTED
                           camera pan NOT STARTED
 ```
@@ -1083,10 +1090,11 @@ SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
 Do not start Guided population, streamlines, shaders, GPU
-code, camera pan, Follow, a dataset adapter, or R3 because
-Slice A exists. Product representation stays under
-evaluation in `23`. First browser playtest is recorded;
-representation comparison lives in
+code, camera pan, Follow, a dataset adapter, R3, comet
+marks, frozen-field Pause animation, or operand highlight
+because `23` records them as hypotheses. Product
+representation stays under evaluation in `23`. First browser
+playtest is recorded; representation comparison lives in
 `docs/architecture/23-perceptual-airflow-workbench.md`.
 
 ---
