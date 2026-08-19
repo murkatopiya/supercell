@@ -1,16 +1,22 @@
 # Perceptual Airflow / Flow-as-Structure Architecture
 
 **Status:** architecture SoT. Slice 1 COMPLETE. Slice 2
-(first Explore browser exposure) COMPLETE. Guided
+(first Explore browser exposure) COMPLETE. First playtest
+recorded; representation UNDER EVALUATION in `23`. Guided
 population NOT STARTED. Camera pan NOT STARTED.
 **Scope:** perceptual airflow / flow-as-structure
 **Physics:** PAUSED
-**Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE
+**Implementation:** Slice 1 COMPLETE; Slice 2 COMPLETE;
+workbench prototypes NOT STARTED
 **Decision:** earned for a narrow first perceptual direction;
 other representation/runtime alternatives remain recorded
 
 Predecessor whole-product checkpoint:
 `docs/architecture/21-whole-product-direction-checkpoint.md`.
+
+First playtest and representation-comparison successor:
+`docs/architecture/23-perceptual-airflow-workbench.md`.
+That document does not replace this one.
 
 This document answers Candidate 1 from `21` §13:
 
@@ -28,6 +34,7 @@ Current implementation:
 ```text
 Slice 1  headless VisualAirflowPopulation   COMPLETE
 Slice 2  Explore browser exposure           COMPLETE
+first playtest / workbench comparison       `23`
 Guided population                           NOT STARTED
 camera pan                                  NOT STARTED
 ```
@@ -1047,6 +1054,8 @@ unsteady:                 particles remain valid
 physics:                  PAUSED
 implementation:           Slice 1 COMPLETE
                           Slice 2 Explore browser COMPLETE
+                          representation UNDER EVALUATION
+                          in `23`; workbench NOT STARTED
                           Guided population NOT STARTED
                           camera pan NOT STARTED
 ```
@@ -1071,8 +1080,10 @@ SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
 Do not start Guided population, streamlines, shaders, GPU
-code, camera pan, Follow, or a dataset adapter because
-Slice 2 exists. First user browser playtest is next.
+code, camera pan, Follow, a dataset adapter, or the
+workbench in `23` because Slice 2 exists. First browser
+playtest is recorded; representation comparison lives in
+`docs/architecture/23-perceptual-airflow-workbench.md`.
 
 ---
 
@@ -1260,6 +1271,12 @@ From the default overview pose, occupancy and height fill
 are obvious; named mechanism regions (inflow, rotation,
 upper outflow, downdraft, NG) are not yet clearly separable
 by eye. Camera pan remains P1 / not this slice.
+
+Fuller first-playtest finding (Pause ≈ unoriented grey
+cloud; direction is temporal-only): playtest P3 in
+`docs/architecture/23-perceptual-airflow-workbench.md`.
+That document owns representation comparison. This section
+does not choose a successor encoding.
 
 Not in Slice 2:
 

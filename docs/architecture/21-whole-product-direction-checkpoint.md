@@ -3,19 +3,21 @@
 **Status:** current product/architecture direction checkpoint
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** PAUSED
-**Implementation:** perceptual airflow Slice 1 (headless)
-and Slice 2 (Explore browser exposure) COMPLETE in `22`.
-Guided population NOT STARTED. Other §13 candidates remain
-unchosen.
+**Implementation:** perceptual airflow Slice 1–2 COMPLETE
+in `22`. First playtest / workbench comparison in `23`.
+Product representation UNDER EVALUATION. Guided population
+NOT STARTED. Other §13 candidates remain unchosen.
 
 This document remains the whole-product capability map. It did
 not pick a winner among §13 candidates. Candidate 1 (perceptual
 airflow) is specified as architecture exploration
 `docs/architecture/22-perceptual-airflow-architecture.md`.
 Headless visual population (Slice 1) and first Explore
-browser exposure (Slice 2) now exist there. Guided
-population has not started. Other §13 candidates remain
-unchosen.
+browser exposure (Slice 2) now exist there. First playtest
+did not choose a product encoding; comparison lives in
+`docs/architecture/23-perceptual-airflow-workbench.md`.
+Guided population has not started. Other §13 candidates
+remain unchosen.
 
 This document did **not** change production code when written.
 It does **not** create `ROADMAP.md`.
@@ -41,6 +43,7 @@ External review (decision input, **not** SoT):
 
 ```text
 docs/reviews/2026-08-18-independent-project-audit.md
+docs/reviews/2026-08-19-independent-perceptual-airflow-review.md
 ```
 
 Physics remains paused (`15` D). When modeling resumes, the
@@ -233,8 +236,10 @@ The laboratory can host prescribed pathlines, release probes,
 select one tracer, and explain that tracer from the same field
 sum the integrator uses.
 
-It cannot yet show storm airflow as a coherent visible
-structure. That is a product fact, not a rendering complaint.
+Explore can show a moving background occupancy of `V_total`
+(Slice 2 Points). That occupancy is not yet a coherent
+readable field structure, especially on Pause (P3 / `23`).
+That is a product fact, not a rendering complaint.
 
 ---
 
@@ -327,6 +332,32 @@ laboratory.
 
 This is a future lifecycle **and** visualization policy
 question, not a current bug.
+
+---
+
+## 4.1 Playtest finding P3 — paused Points have no direction
+
+**Status:** PLAYTEST FINDING / representation evaluation in `23`
+
+Observed after Slice 2:
+
+During motion the background volume feels like a living
+medium, but named `V_total` regions stay weakly readable.
+On Pause the population reads as a random grey cloud.
+
+Encoding fact, not an opacity/count diagnosis:
+
+```text
+position-only point
+  = no instantaneous direction cue
+```
+
+Direction in live `THREE.Points` is only a temporal percept.
+Workbench comparison of encodings is specified in
+`docs/architecture/23-perceptual-airflow-workbench.md`.
+
+Do **not** implement oriented marks, Eulerian samples, or
+streamlines here.
 
 ---
 
@@ -974,6 +1005,8 @@ perceptual surface:           glyphs, trails, grid, hodograph,
                               Inspector, Guided copy
                               Explore background Points (Slice 2)
                               Guided population not live
+                              representation UNDER EVALUATION
+                              (`23`; P3 Pause encoding limit)
 
 P1:                           playtest finding
                               orbit/zoom around fixed target
@@ -1029,6 +1062,8 @@ dataset evolution:            important boundary
 
 next implementation branch:   Candidate 1 Slice 1–2 COMPLETE
                               in `22` (Explore background live)
+                              representation UNDER EVALUATION
+                              in `23` (workbench NOT STARTED)
                               Guided population / camera pan
                               NOT STARTED
                               other §13 candidates still open
@@ -1046,13 +1081,15 @@ PHYSICS PAUSED
 
 Candidate 1 architecture lives in `22`. Slice 1 (headless)
 and Slice 2 (Explore browser exposure) are complete there.
-Guided population, camera pan, and other §13 candidates
-are not started.
+First playtest finding P3 and the comparison workbench live
+in `23`. Product representation is not chosen. Guided
+population, camera pan, and other §13 candidates are not
+started.
 
-Do not treat opening `22` as selecting Candidates 2–7.
+Do not treat opening `22` or `23` as selecting Candidates 2–7.
 Do not write a Cursor implementation prompt.
 Do not implement pan, Follow, Guided population, trail
-caps, RK2 switch, streamfunctions, or datasets because this
-document exists.
+caps, RK2 switch, streamfunctions, datasets, or workbench
+encodings because this document exists.
 
 Next work starts only when commanded.
