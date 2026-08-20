@@ -1239,8 +1239,19 @@ rendering 01:  observe-only; no interpolation
 rendering 02:  Reset does not move camera — reaffirmed
 ```
 
-Successor of `33`: this file. Closed physics docs are not
-rewritten.
+Successor of `33`: this file. Successor post-Follow
+live-playtest product direction:
+
+```text
+docs/architecture/35-post-follow-live-playtest-product-direction-checkpoint.md
+```
+
+`35` re-ranks product work after Explore Follow v1 and its
+first live playtest. This file remains the Follow camera
+contract. Completing Follow does **not** start Reset View,
+picking/halo, overlay, or new physics.
+
+Closed physics docs are not rewritten.
 
 ---
 
