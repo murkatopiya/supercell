@@ -54,6 +54,17 @@ docs/research/2026-08-20-t1-demo-field-validation.md
 docs/research/2026-08-20-candidate-a-demo-field-validation.md
 ```
 
+Successor selected-tracer Follow camera architecture:
+
+```text
+docs/architecture/34-selected-tracer-follow-camera-architecture.md
+```
+
+`34` is the Follow camera-contract SoT this checkpoint
+required. This file remains the post-point-diagnostics
+product-direction checkpoint. Completing `34` does **not**
+start Follow implementation.
+
 Keep these roles distinct:
 
 ```text
@@ -1040,8 +1051,10 @@ rendering 11:  default pose fixture; Follow out of *that*
                fixture’s scope — not rewritten here
 ```
 
-Successor of `32`: this file. Closed physics docs are
-not rewritten.
+Successor of `32`: this file. Successor of this file:
+`docs/architecture/34-selected-tracer-follow-camera-architecture.md`.
+Closed physics docs are not rewritten. The ranking in
+§9 is not replaced.
 
 ---
 
@@ -1104,6 +1117,7 @@ NEXT DESIGN
   Follow camera-contract architecture SoT
   NOT THIS FILE
   NOT IMPLEMENTATION
+  successor: docs/architecture/34-selected-tracer-follow-camera-architecture.md
 
 NOT NEXT
   overlay / signed volume / diagnostic colormap
