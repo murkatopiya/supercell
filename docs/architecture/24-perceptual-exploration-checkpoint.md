@@ -9,8 +9,11 @@ unchanged. Tilting / stretching implementation NOT STARTED.
 Current modeling-direction revalidation:
 `docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 `25` ranks T1 diagnostic tendency as the next design
-target. This file remains the perceptual-loop / pause-lift
-checkpoint. It is not the tilting design SoT.
+target. T1 physics derivation:
+`docs/physics/22-diagnostic-tilting-tendency.md`.
+This file remains the perceptual-loop / pause-lift
+checkpoint. It is not the tilting design SoT. The T1
+architecture SoT is still not written.
 **Decision:** the current perceptual question is answered
 enough to proceed. That is not “visualization complete.”
 Comets are a provisional `V_total` representation, not a

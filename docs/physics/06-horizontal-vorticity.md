@@ -28,7 +28,9 @@ It does not define:
 - streamwise / crosswise decomposition
   (see `docs/physics/08-streamwise-crosswise-vorticity.md`);
 - storm-relative helicity (SRH);
-- tilting;
+- tilting (diagnostic tilting tendency of vertical vorticity
+  is derived later in `docs/physics/22-diagnostic-tilting-tendency.md`;
+  this document does not own it);
 - stretching;
 - local pointwise curl at a single height independent of shear;
 - world-space vorticity vectors.
@@ -424,8 +426,13 @@ It does not yet include:
 - streamwise / crosswise vorticity
   (defined separately in `docs/physics/08-streamwise-crosswise-vorticity.md`);
 - SRH;
-- tilting / stretching operators;
-- world-space vorticity vectors;
+- tilting / stretching operators
+  (T1 consumes this `ω_h` in
+  `docs/physics/22-diagnostic-tilting-tendency.md`;
+  this document remains the `ω_h` SoT);
+- world-space vorticity vectors
+  (T1 states the conversion
+  `(ω_x, ω_z) = (omegaEastward, −omegaNorthward)`);
 - local pointwise curl API separate from shear.
 
 ---

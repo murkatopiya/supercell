@@ -38,7 +38,9 @@ It does not define:
 - effective inflow layer selection;
 - observed sounding conventions or operational layer recipes (0–1 km, 0–3 km
   as special cased physics);
-- tilting or stretching;
+- tilting or stretching
+  (`docs/physics/22-diagnostic-tilting-tendency.md` locks
+  SRH ≠ `T_tilt,y`; this document remains the SRH SoT);
 - updraft, mesocyclone, or tornado prediction;
 - storm-relative shear or vorticity as separate types;
 - hodograph rendering or a second “area” physics API

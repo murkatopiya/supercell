@@ -15,6 +15,18 @@ leading *modeling question*. The next earned capability is
 operand. It is a dedicated diagnostic-tendency architecture
 SoT (T1), with `V_total` left unchanged.
 
+Successor physics derivation (T1 diagnostic, not architecture):
+
+```text
+docs/physics/22-diagnostic-tilting-tendency.md
+```
+
+`22` is the physics SoT for diagnostic tilting tendency
+`T_tilt,y`. This file remains the direction-revalidation
+checkpoint. Completing `22` does **not** write the T1
+architecture SoT named in §17.4. Physics implementation
+remains NOT STARTED.
+
 Predecessor perceptual / physics-resumption checkpoint:
 
 ```text
@@ -1460,8 +1472,12 @@ direction:                   CONDITIONAL
 bridge ω_z → V:              none now
                              not automatic tangential field
 
-dedicated SoT:               YES, scoped in §17.4
+dedicated architecture SoT:  YES, scoped in §17.4
                              not written here
+
+T1 physics derivation:       docs/physics/22-diagnostic-tilting-tendency.md
+                             verdict YES as a kinematic diagnostic
+                             V unchanged, Ω unchanged
 
 physics implementation:      NOT STARTED
 ```
@@ -1494,12 +1510,18 @@ CONTINUITY
 PHYSICS IMPLEMENTATION
   NOT STARTED
 
+T1 PHYSICS DERIVATION
+  docs/physics/22-diagnostic-tilting-tendency.md
+  YES as kinematic diagnostic
+  NOT AN ARCHITECTURE SoT
+
 DEDICATED ARCHITECTURE SoT
   NAMED, NOT WRITTEN
 ```
 
 Do not implement tilting because this file exists.
-Do not write the T1 SoT until commanded.
+Do not treat `22` as the architecture SoT of §17.4.
+Do not write the T1 architecture SoT until commanded.
 Do not port `15` §9 into production.
 Do not relabel `Ω` as tilting.
 Do not “save” derived rotation if a later command

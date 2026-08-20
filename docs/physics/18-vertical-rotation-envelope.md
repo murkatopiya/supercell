@@ -35,7 +35,9 @@ It is **not**:
 
 - a mesocyclone;
 - a tornado;
-- tilted or stretched environmental vorticity;
+- tilted or stretched environmental vorticity
+  (diagnostic T1 does not use this field's curl:
+  `docs/physics/22-diagnostic-tilting-tendency.md`);
 - a Rankine vortex;
 - a pressure-perturbation or mass-continuity solution;
 - a dual-mode of `RotationField`;

@@ -44,6 +44,12 @@ live-DEMO updraft **type**; it does not own those DEMO numbers.
 The `storm/` module path means: controlled storm mechanism. It does **not**
 mean full or realistic supercell physics.
 
+Horizontal derivatives `∂Vy/∂x` and `∂Vy/∂z` are analytic
+consequences of the locked formula below. They are named as T1
+inputs in `docs/physics/22-diagnostic-tilting-tendency.md`.
+This document remains the velocity-field SoT. It does not own
+tilting.
+
 ---
 
 ## 2. Relationship to existing foundations
@@ -540,6 +546,11 @@ Sign, for `W0 > 0` and `E_r > 0`:
 `VelocityField` v1 still exposes only `sample`. There is no production
 `derivative()` API. The formulas above are the documented analytic
 derivative for tests and later diagnostics.
+
+Horizontal derivatives, from the same separable formula, are
+derived for diagnostic tilting in
+`docs/physics/22-diagnostic-tilting-tendency.md` §11. This
+section still owns `∂Vy/∂y` only.
 
 ### 9.3 This is not a continuity solver
 

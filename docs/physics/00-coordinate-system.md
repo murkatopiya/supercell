@@ -512,6 +512,14 @@ Therefore:
 When meteorological equations refer to vertical vorticity, that vertical
 component must map explicitly to the project Y axis.
 
+The right-handed Cartesian curl in these axes, the map
+
+    (ω_x, ω_z) = (omegaEastward, −omegaNorthward)
+
+and the diagnostic tilting tendency of `ω_y` are derived in
+`docs/physics/22-diagnostic-tilting-tendency.md`. This document
+remains the coordinate SoT.
+
 No visualization-specific rotation convention may override this rule.
 
 ---

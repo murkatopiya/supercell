@@ -26,7 +26,8 @@ This diagnostic answers:
 It does not define:
 
 - storm-relative helicity (SRH);
-- tilting;
+- tilting (see `docs/physics/22-diagnostic-tilting-tendency.md`;
+  streamwise vorticity is not `T_tilt,y`);
 - stretching;
 - updraft or mesocyclone dynamics;
 - Bunkers or other storm-motion estimators;
