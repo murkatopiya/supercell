@@ -834,5 +834,3 @@ Do not add a fourth public card for DiagnosticProbes.
 Do not split S1 and S2 into two experiments.
 Do not treat NG1’s ground exit as completion.
 Do not assemble a circulation Journey from the three cards.
-
-Next work starts only when commanded.

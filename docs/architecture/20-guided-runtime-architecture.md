@@ -511,7 +511,7 @@ do not carry Guided claims
 
 `17` §13’s “leave carrying positions, claims stripped” remains
 a **useful later** option. It is not v1. Default if that later
-slice is commanded: treat transferred particles as new Explore
+slice exists: treat transferred particles as new Explore
 identities; clear selection; never keep a Guided claim on the
 id (`19` §13).
 
@@ -728,7 +728,7 @@ releases into them (`18`).
 
 Not a mockup. Not a router. Not a modal. Not a carousel.
 
-When Slice 3 is commanded, the product surface is:
+Slice 3 product surface:
 
 ```text
 three experiment choices
@@ -985,5 +985,3 @@ can tick a box.
 
 `17` remains the catalog of *what* the three experiments are.
 This document is the catalog of *how they run*.
-
-Next work starts only when commanded.

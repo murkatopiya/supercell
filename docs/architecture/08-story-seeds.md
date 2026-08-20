@@ -371,7 +371,7 @@ mode, and NearGroundOutflowPathline live switch are done (`14`).
 `DiagnosticProbes`. Live App selects `NearGroundOutflowPathline`.
 StoryPathlines and DownwardPathline remain explicit. No UI toggle.
 
-When a later slice is commanded, it should not add follow-camera,
+A later slice should not add follow-camera,
 continuity, Bunkers, a particle cloud, or Both-groups
 display until group-visual language exists.
 

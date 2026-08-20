@@ -271,8 +271,8 @@ The two questions stay separate:
    **stronger storm**, not “the same storm, wider.”
 
 If a later production slice changes `σ`, it must name the peak-speed
-consequences explicitly. Default recommendation if that slice is
-commanded: **hold live peak Gaussian speeds** (rescale `Ω`, `A_in`,
+consequences explicitly. Default recommendation if that slice
+happens: **hold live peak Gaussian speeds** (rescale `Ω`, `A_in`,
 `A_out` with `1/σ`) unless the slice is intentionally a stronger
 mesocyclone.
 
@@ -443,7 +443,7 @@ Coupling. Needs a separate contract (how rotation width, inflow
 width, and outflow width are functions of one storm scale).
 Forbidden as a silent outcome of this SoT.
 
-**Policy for a later DEMO scaling slice, if commanded:** **A** —
+**Policy for a later DEMO scaling slice:** **A** —
 keep a shared DEMO `σ`, change it explicitly, and name the
 peak-speed policy from §5.3. Independent `σ` remains allowed in
 the API for a later, labeled experiment. Do not introduce C.
@@ -529,7 +529,7 @@ scale policy:            A — keep shared DEMO σ; no derived-width
 C / knots / centers:     not this problem
 harness:                 not kept in repo
 production this slice:   none
-next if commanded:       06 (verdict A: numbers frozen;
+next:                    06 (verdict A: numbers frozen;
                          implementation + rendering still later)
 ```
 

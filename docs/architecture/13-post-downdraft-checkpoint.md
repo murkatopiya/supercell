@@ -491,7 +491,7 @@ This is the main question of the audit.
 | Density / temperature / buoyancy first? | **No**, not for a kinematic prescribed field. Required only if the object is a cold pool. |
 | Coupling to D1 landing required? | **No.** Prefer independence (`§8`). |
 
-### 7.2 Allowed kinematic scope, if commanded
+### 7.2 Allowed kinematic scope
 
 A later physics SoT **may** define an independent prescribed
 near-ground divergent horizontal velocity field, in the same
@@ -586,7 +586,7 @@ Exhibit B  (future): prescribed near-ground divergent outflow
 ```
 
 That pair is honest if they are **two pedagogy modes** (or two
-commanded live switches), like StoryPathlines vs
+exclusive live switches), like StoryPathlines vs
 DownwardPathline.
 
 A combined exhibit:
@@ -659,7 +659,7 @@ is historically frozen; this table is the current register.
 | Terminal glyph-on-ground as deposition reading | `§3.1`. Policy B is right; the lie is now visible. |
 | D1 landing as tempting outflow / cold-pool source | `§8`–`§9`. Coupling temptation, not an implementation. |
 | Occupant-core `∇ · V` at `y = 0` as the loud residual site | `10` mapped the chimney. Live teaching now sits in the sixth operand’s lower-half sink. |
-| Near-ground prescribed `V_h` as the next honest kinematic family | Prerequisites in `11`/`12`/`15` are satisfied. Opening it is a commanded SoT, not an accident. |
+| Near-ground prescribed `V_h` as the next honest kinematic family | Prerequisites in `11`/`12`/`15` are satisfied. Opening it is a dedicated SoT, not an accident. |
 | Three-mode UX: two exhibits off-screen | Diagnostic and story both require a code-constant change. |
 
 ---
@@ -674,9 +674,8 @@ Physics/modeling first. Visual polish is not a reason.
    be cold pool.
 2. **Occupancy + pedagogy for that field, later, as separate
    slices** — after the physics SoT is accepted and implemented.
-   Same order as `20` → `15` → `12`. Combined D1+outflow mode is
-   not part of those slices unless separately commanded and
-   justified.
+   Same order as `20` → `15` → `12`.    Combined D1+outflow mode is
+   not part of those slices unless separately justified.
 3. **UI mode selector** DiagnosticProbes / StoryPathlines /
    DownwardPathline — not physics; more justified than in `09`
    because two teaching contracts are now hidden; still not the
@@ -851,5 +850,3 @@ Do not name the next primitive a cold pool.
 Do not treat D1 landing as a source.
 Do not add `Both`.
 Do not retune `D0`, envelopes, or seeds to shrink `∇ · V`.
-
-Next work starts only when commanded.

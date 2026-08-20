@@ -400,5 +400,3 @@ and does not change production code.
 Do not add a downdraft because the pathlines “want to come
 down.” Do not treat S1 / S2 as a storm. Do not silently
 rewrite `04` verdict C as a live result.
-
-Next work starts only when commanded.

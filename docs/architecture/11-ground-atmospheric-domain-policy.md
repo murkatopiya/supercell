@@ -900,5 +900,3 @@ No continuity solver.
 Y20 is answered as an atmospheric tracer floor, not as a mesh.
 Y5 is reaffirmed, not rewritten.
 `10` remains the continuity SoT.
-
-Next work starts only when commanded.

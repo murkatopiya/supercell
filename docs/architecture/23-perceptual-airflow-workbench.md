@@ -484,7 +484,7 @@ streamline  !=  pathline
 
 must remain explicit (`ARCHITECTURE` §20, `22` §7 / §21).
 
-Do not implement R3 because this document exists.
+R3 implementation is out of scope for this SoT.
 
 ---
 
@@ -1077,7 +1077,7 @@ be treated as `clock.time`.
 
 ### 23.2 Workbench comparison (future)
 
-When commanded, compare:
+Compare:
 
 ```text
 full visual freeze          (current live Pause)
@@ -1308,7 +1308,7 @@ v1 hypothesis: at most **one** operand selected at a time.
 single-operand selector IMPLEMENTED (§31); six-operand
 browser playtest recorded; loop-closing decision in `24`
 
-Sequence as commanded:
+Sequence:
 
 ### A. R1 mark refinement     IMPLEMENTED PROTOTYPE
 
@@ -1838,9 +1838,9 @@ GUIDED POPULATION                   NOT STARTED
 Do not pick a product representation because these
 prototypes exist.
 
-Do not implement R3, LIC, slices, shaders-as-framework,
+R3, LIC, slices, shaders-as-framework,
 public selectors, Guided population, camera pan, Follow,
-or physics because this document exists.
+and physics implementation are out of scope for this SoT.
 
 Exploration-loop decision and physics resumption live in
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.

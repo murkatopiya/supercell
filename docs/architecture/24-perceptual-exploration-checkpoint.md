@@ -427,10 +427,9 @@ Leading next modeling **direction** from existing SoT:
 TILTING / STRETCHING
 ```
 
-That direction is not an implementation command.
+That direction is not an implementation order.
 
-Next allowed task after this checkpoint (commanded here;
-answered in `25`):
+Next allowed task after this checkpoint (answered in `25`):
 
 ```text
 docs-first revalidation of the existing tilting / stretching
@@ -606,7 +605,7 @@ existing direction:       `15` §9 / §14.1; `02` Y12;
                           ranked by `25`: T1 next, T2–T4 parked
 revalidation:             COMPLETE in `25`
 next allowed task:        dedicated T1 diagnostic-tendency
-                          architecture SoT when commanded
+                          architecture SoT
                           (`25` §17.4). Not implementation.
 ```
 
@@ -644,11 +643,11 @@ PHYSICS IMPLEMENTATION
 
 Do not treat this checkpoint as visualization-complete.
 Do not treat provisional comets as a permanent art decision.
-Do not start tilting / stretching code because this file
-exists.
+Tilting / stretching implementation is out of scope for this
+SoT.
 Do not start another perceptual-encoding slice because the
 workbench still exists.
 
 Modeling-direction revalidation lives in `25`. Next modeling
-work starts only when commanded: the T1 diagnostic-tendency
-architecture SoT scoped there.
+work is the T1 diagnostic-tendency architecture SoT scoped
+there.

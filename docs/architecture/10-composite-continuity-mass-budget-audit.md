@@ -534,7 +534,7 @@ It is not required to keep the current kinematic story.
 - Ground/underground remains a separate YELLOW (`y < 0` is a
   quantified uncompensated sink). This audit does not set a ground
   plane.
-- Next mechanism, if commanded, is still not a solver.
+- Next mechanism is still not a solver.
 
 ---
 
@@ -571,5 +571,3 @@ tilting/stretching, or a translating storm.
 Do not shrink the residual by changing DEMO numbers.
 Do not advertise the mid-level sheet as balance.
 Do not read S1/S2 trails as a mass circuit.
-
-Next work starts only when commanded.

@@ -282,7 +282,7 @@ north = downstream of the `y = 1000` free stream.
 
 They were **not** moved to pass `04`. After the retune, north at
 `0.6σ` is expected to **fail** the story threshold. That is
-honest. Future story seeds, if ever commanded, are a different
+honest. Future story seeds, if ever added, are a different
 set (`04` §11).
 
 ---

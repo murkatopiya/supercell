@@ -976,7 +976,7 @@ observed by a distinct `TracerScene` glyph set.
 This is **not** a particle engine, not GPU, not a layer CMS,
 not seven systems.
 
-First implementation slice, when commanded, should prove:
+First implementation slice should prove:
 
 1. headless occupants follow the canonical `V_total`;
 2. they do not enter `Simulation.particles` or Inspector;
@@ -985,7 +985,7 @@ First implementation slice, when commanded, should prove:
 
 Items 1, 2, and 4 are proven headlessly in Slice 1 (§29).
 Item 3 is Slice 2 (browser wiring). This document is not that
-command.
+implementation slice.
 
 ---
 
@@ -1097,9 +1097,9 @@ FOLLOW                          NOT STARTED
 SCIENTIFIC TRACER P2            NOT STARTED
 ```
 
-Do not start Guided population, streamlines, shaders, GPU
-code, camera pan, Follow, a dataset adapter, or R3 because
-this file exists. Encoding contracts remain in `22` / `23`.
+Guided population, streamlines, shaders, GPU
+code, camera pan, Follow, a dataset adapter, and R3 are
+out of scope for this SoT. Encoding contracts remain in `22` / `23`.
 The current perceptual loop and physics-resumption decision
 live in
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.

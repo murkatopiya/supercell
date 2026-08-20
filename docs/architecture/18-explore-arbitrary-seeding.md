@@ -835,8 +835,8 @@ After this SoT, remaining **architecture** in the `16` queue:
 
 **Shared tracer inspector architecture SoT** (docs). Selection,
 `V_total`, per-operand contributions, and the moment stable IDs
-become earned (`§12` C). Point-release implementation may be
-commanded without it if the first slice stays append-only.
+become earned (`§12` C). Point-release implementation may
+proceed without it if the first slice stays append-only.
 
 Do not treat catalog DTO migration or a four-mode selector as
 next.
@@ -922,7 +922,7 @@ first browser-visible slice:     4 (point tracer in Explore)
 next product slice after
 seeding:                         inspector architecture SoT
                                  (docs)
-                                 first impl when commanded:
+                                 first impl:
                                  sequence 4
 
 modeling status:                 paused
@@ -934,7 +934,7 @@ blockers:                        none for writing inspector SoT
                                  Guided claim inheritance forbidden
                                  final Explore UI not started
                                  inspector SoT is the next product
-                                 docs slice when commanded
+                                 docs slice
 
 production this slice:           Slices 1–4
                                  first browser-visible Explore
@@ -956,5 +956,3 @@ Do not write user seeds into `storySeeds` or `DEMO_SCENARIO`.
 Do not fake a 3D click without a plane + altitude.
 Do not require Reset to add a tracer.
 Do not treat a user trail as a Guided experiment.
-
-Next work starts only when commanded.

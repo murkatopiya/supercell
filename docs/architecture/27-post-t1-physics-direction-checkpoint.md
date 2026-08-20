@@ -1033,7 +1033,7 @@ generation tendency.
 Inspector L3 of T1 itself is a **product** candidate
 (`21` Candidate 4), not a new physics capability. This
 checkpoint does not order L3 UI ahead of A’s physics
-question, and does not forbid a later product command from
+question, and does not forbid a later product slice from
 exposing T1 first.
 
 ---
@@ -1349,10 +1349,6 @@ CONTINUITY
   NOT A SOLVER BRANCH
 ```
 
-Do not implement curl, stretching, T2, ω state, grid, closure,
-Ω changes, continuity, RK2, thermo, dataset, Inspector, or
-visualization because this file exists.
-
-Do not start the selected branch until commanded.
-
-Next work starts only when commanded.
+Curl, stretching, T2, ω state, grid, closure,
+Ω changes, continuity, RK2, thermo, dataset, Inspector, and
+visualization implementation are out of scope for this SoT.

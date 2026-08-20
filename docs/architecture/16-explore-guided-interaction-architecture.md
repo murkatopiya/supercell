@@ -720,8 +720,7 @@ Modeling remains paused (`15` D).
    the hodograph may and may not say about that parcel. Not an
    inspector UI. Not `divergence()`.
 4. **Only after those:** a first Guided shell *or* a first Explore
-   release — whichever is commanded. Neither is a four-pedagogy
-   selector.
+   release. Neither is a four-pedagogy selector.
 
 Not next: Follow camera, cinematic Journey beats, pad widen,
 debug contribution HUD as a substitute for (3), Both-mode.
@@ -861,5 +860,3 @@ Do not concatenate Guided experiments because CONCEPT mentioned
 a Journey.
 Do not treat DiagnosticProbes as a fourth public experiment.
 Do not write user seeds into `ScenarioConfig`.
-
-Next work starts only when commanded.

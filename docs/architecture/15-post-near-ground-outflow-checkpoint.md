@@ -84,7 +84,7 @@ the additive class. Another near-ground patch, a second
 downdraft, a gust-front arc, or `Vx`/`Vz` bolted onto the
 downdraft type would be a naming trap, not a missing mechanism.
 
-Not B as the *next commanded slice*: tilting / stretching is the
+Not B as the *next slice*: tilting / stretching is the
 leading **future** physics-architecture branch, and `13` §12
 item 6 is now unblocked (surface-flow naming is settled). It is
 still a new model class (`02` Y12). Opening that SoT immediately
@@ -837,7 +837,7 @@ class. Not because NG1 is on screen.
 `13` §12 item 6: do not start while surface-flow naming is
 unsettled. Naming is now settled (`NearGroundRadialOutflowField`,
 not cold pool). This fork is **unblocked**. It is not
-therefore the next commanded slice (`§1`).
+therefore the next slice (`§1`).
 
 ### 9.1 Current rotation
 
@@ -923,7 +923,7 @@ diagnostic/tendency step, or prognostic `ω` plus inversion
 to `V`, or a parameterized source that is still documented
 as parameterized — not as “the compositor learned dynamics.”
 
-Architecture research, when commanded, may choose among
+Architecture research may choose among
 overlays-only, diagnostic curl, parameterized tilting source,
 or prognostic `ω`. This checkpoint does not choose.
 
@@ -931,7 +931,7 @@ or prognostic `ω`. This checkpoint does not choose.
 
 Tilting / stretching is the **leading future modeling
 branch**. It is not implementable next, and it is not the
-next commanded slice.
+next slice.
 
 When modeling resumes: open an **architecture SoT** (docs
 only). Do not implement. Do not add an eighth operand that
@@ -1149,7 +1149,7 @@ UI is not a substitute for B. B is not a substitute for UI.
 
 **None immediately.** Verdict D.
 
-When modeling is commanded again: **tilting / stretching
+When modeling resumes: **tilting / stretching
 interaction architecture SoT.**
 
 Why not another prescribed field: the surface pair and the
@@ -1317,7 +1317,7 @@ readiness:                   unblocked for architecture SoT
                              CompositeVelocityField cannot host it
                              diagnostics are conceptual ingredients,
                              not local evolving ω
-                             not the next commanded slice
+                             not the next slice
 
 UI-selector readiness:       yes
                              next non-modeling slice
@@ -1358,5 +1358,3 @@ Do not treat D1 landing as a source of NG1.
 Do not add `Both` or `DownwardThenOutflow`.
 Do not retune `A`, `D0`, envelopes, or seeds to shrink `∇ · V`.
 Do not install a second NG seed.
-
-Next work starts only when commanded.

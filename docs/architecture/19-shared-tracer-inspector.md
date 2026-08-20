@@ -1010,7 +1010,7 @@ No optimization implementation.
 
 ## 21. Testing strategy (future; none written here)
 
-When implementation is commanded, tests should lock:
+Tests should lock:
 
 ```text
 selected tracer identity (id, not index)
@@ -1326,8 +1326,8 @@ first browser-visible slice: 3
 
 first "why?" slice:          4
 
-next product slice:          Guided runtime (`20`) when commanded
-                             Follow only when commanded
+next product slice:          Guided runtime (`20`)
+                             Follow not started
                              not Level 3 dump
                              not a four-mode selector
 
@@ -1335,7 +1335,7 @@ modeling status:             paused
                              next: tilting/stretching SoT
 
 blockers:                    none for this SoT
-                             Follow blocked until commanded
+                             Follow not started
                              delete-one blocked until id + history/
                                scene remap
                              3D curl / derived ω_z blocked by
@@ -1370,5 +1370,3 @@ Do not treat prescribed rotation as diagnosed vertical vorticity.
 
 Explore point release and the Guided catalog remain valid.
 Physics remains paused.
-
-Next work starts only when commanded.

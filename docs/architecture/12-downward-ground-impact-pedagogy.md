@@ -4,7 +4,7 @@
 now selects `TracerPedagogy.NearGroundOutflowPathline` (NG1; `14`).
 `DownwardPathline` (D1, trails on, `keepInactiveGlyphs`) remains an
 explicit composition mode. DiagnosticProbes and StoryPathlines remain
-explicit. No `Both`. STOP.
+explicit. No `Both`.
 
 Occupant numbers:
 `docs/rendering/15-composite-downdraft-demo.md`.
@@ -828,7 +828,7 @@ reuse `08`’s word “story” for a different sequence.
 
 ## 19. Tests / implementation contract
 
-When commanded, test the **exhibit contract**, not the full
+Tests lock the **exhibit contract**, not the full
 research grid.
 
 Required:
@@ -945,6 +945,5 @@ production this slice:   LIVE_DEMO_TRACER_PEDAGOGY = DownwardPathline;
 
 Slice 3 is implemented.
 Live App is `DownwardPathline` (D1).
-STOP.
 No cold pool, gust front, near-ground outflow, RFD/FFD,
 precipitation, solver, UI, splash, or camera polish.

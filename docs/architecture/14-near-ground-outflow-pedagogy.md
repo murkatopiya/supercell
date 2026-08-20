@@ -4,7 +4,7 @@
 selects `TracerPedagogy.NearGroundOutflowPathline` (NG1, trails on,
 inactive glyphs hidden). DiagnosticProbes, StoryPathlines, and
 DownwardPathline remain explicit composition modes. Occupant
-numbers unchanged. Live switch is done. No `Both`. STOP.
+numbers unchanged. Live switch is done. No `Both`.
 
 Occupant / seventh-operand wiring:
 `docs/rendering/16-composite-near-ground-outflow-demo.md`.
@@ -1013,7 +1013,7 @@ Do not add `nearGroundOutflowSeeds` as a second name. One field.
 
 ## 19. Tests / implementation contract
 
-When commanded, test the **exhibit contract**, not the full
+Tests lock the **exhibit contract**, not the full
 research grid.
 
 Required:
@@ -1047,8 +1047,6 @@ Do not screenshot the trail.
 ---
 
 ## 20. Implementation slices
-
-When commanded, and not before:
 
 1. **Config + mode, not live.** **Done.**
    `nearGroundOutflowPathlineSeeds` on `ScenarioConfig` /
@@ -1160,9 +1158,6 @@ Slices 1–2 are implemented.
 Live App is `NearGroundOutflowPathline` (NG1).
 DiagnosticProbes, StoryPathlines, and DownwardPathline remain
 explicit. Occupant numbers unchanged.
-STOP.
 No cold pool, gust front, RFD/FFD, D1 coupling,
 combined-mode, thermodynamics, solver, UI, occupant retune, domain
 change, or camera polish.
-
-Next work starts only when commanded.

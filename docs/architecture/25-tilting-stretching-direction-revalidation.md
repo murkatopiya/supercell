@@ -1284,7 +1284,7 @@ of existing hodograph quantities is a *product* candidate
 (`21` Candidate 4). It is useful and cheap. It does not
 answer the causal-rotation question. This checkpoint does
 not order it ahead of the T1 design SoT, and does not
-forbid a later product command from doing L3 first. It is
+forbid a later product slice from doing L3 first. It is
 **not a physics prerequisite** for T1.
 
 ---
@@ -1328,8 +1328,7 @@ T1 diagnostic tilting / stretching architecture
   — no ω→V bridge
 ```
 
-This is **not** Y12. Completing that SoT (and any later
-implementation commanded from it) would not mark the first
+This is **not** Y12. Completing that SoT would not mark the first
 interaction mechanism done.
 
 ### 17.3 C. Prerequisites?
@@ -1538,11 +1537,11 @@ T1 ARCHITECTURE SoT
   IMPLEMENTATION NOT STARTED
 ```
 
-Do not implement tilting because this file exists.
+Tilting implementation is out of scope for this SoT.
 Do not treat `22` as the architecture SoT; that successor is `26`.
-Do not start T1 implementation until commanded.
+T1 implementation is out of scope for this SoT.
 Do not port `15` §9 into production.
 Do not relabel `Ω` as tilting.
-Do not “save” derived rotation if a later command
-reopens T2–T4: those remain parked until a future
+Do not “save” derived rotation if T2–T4 are later
+reopened: those remain parked until a future
 checkpoint changes this ranking.

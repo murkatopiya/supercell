@@ -1060,7 +1060,7 @@ slice. Not authorized automatically by this file.
 Candidate A** (Inspector L3, research-style overlay).
 Product, not new physics. Does not close the causal gap.
 Not selected here; not forbidden as a later *product*
-command (`27` §15).
+slice (`27` §15).
 
 **D4. Expand T1 sources** (downdraft / total `Vy`).
 `27` §9: NOT NEXT then; still not. Broadens a validated
@@ -1081,11 +1081,11 @@ NOT NEXT     C ω → V / causal bridge
 NOT NEXT     D1 / D4 / D5 as physics slices
 NOT NEXT     D3 as a physics slice (product-only)
 
-OPEN LATER   D2 model-class conceptual SoT, when commanded
+OPEN LATER   D2 model-class conceptual SoT
 OPEN LATER   D3 product exposure of T1 / Candidate A
 OPTIONAL     A or D1 as L1 literacy, only after an explicit
-             stretching-diagnostic physics SoT and a command
-             that accepts the false-causality risk
+             stretching-diagnostic physics SoT that accepts
+             the false-causality risk
 ```
 
 ---
@@ -1223,12 +1223,12 @@ Why not HYBRID “stretching SoT now, implement later in the
 same breath”:
 
 A hybrid would smuggle a default. If stretching is ever
-wanted, it needs its **own** command after review of *this*
-honesty lock.
+wanted, it needs its **own** stretching-diagnostic physics SoT
+after this honesty lock.
 
 Confidence is HIGH on the negative ranking and HIGH on
 pause. It is MEDIUM that a later **docs-only** model-class
-SoT (option D2) is the right follow-up *when commanded*.
+SoT (option D2) is the right follow-up.
 That follow-up is **not** started here.
 
 ### 11.1 Explicit next slice
@@ -1415,12 +1415,7 @@ CONTINUITY
   NOT A SOLVER BRANCH
 ```
 
-Do not implement stretching, T2, prognostic `ω`, `ω → V`,
+Stretching, T2, prognostic `ω`, `ω → V`,
 `Ω` changes, `V_total` changes, continuity, thermo,
-Inspector, or visualization because this file exists.
-
-Do not start a selected branch until commanded.
-
-Wait for review.
-
-Next work starts only when commanded.
+Inspector, and visualization implementation are out of
+scope for this SoT.

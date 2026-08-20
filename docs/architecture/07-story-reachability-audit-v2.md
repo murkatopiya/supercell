@@ -49,7 +49,7 @@ Story-seed SoT may now be opened. Story seeds were **not** added here.
 
 The three live seeds stay **diagnostic probes**. Axis and east happen
 to pass the `04` letter; north fails. Passing does not change their
-pedagogical role. Candidate story seeds, if later commanded, should
+pedagogical role. Candidate story seeds, if later installed, should
 come from the *interior* of the basin, not from those probes.
 
 `04` verdict C is historical for `σ = 1000`, `W0 = 20`. It is not
@@ -457,7 +457,7 @@ during the climb. Same physics, different dimensionless chimney.
 Diagnostic probes stay. Axis / east / north keep their mechanism
 roles (`06` §7, rendering `08` and siblings).
 
-If a later commanded slice adds story seeds, pick from the
+If a later slice adds story seeds, pick from the
 **interior** basin, with explicit normalized geometry, and keep
 the two sets labeled apart:
 
@@ -525,7 +525,7 @@ story seeds this slice:  none (candidates recorded, not installed)
 blocker remaining:       none for the 04 path from lower ICs;
                          downstream sweep and F(0)=0 remain
                          honest laboratory facts
-next if commanded:       story-seed SoT (install interior
+next:                    story-seed SoT (install interior
                          candidates; keep diagnostic trio)
 not next:                retune, downdraft, Bunkers, moving storm,
                          follow-camera, trails

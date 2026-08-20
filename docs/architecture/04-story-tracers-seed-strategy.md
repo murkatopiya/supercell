@@ -343,8 +343,8 @@ The blockage is **not** “wrong seeds.”
 Diagnostic seeds stay.
 
 A later *labeled partial-transit* demo (upstream lower seeds, copy
-restricted to “chimney crossing”) would be a separate commanded
-fixture slice. It is not authorized here. It would still not be a
+restricted to “chimney crossing”) would be a separate
+fixture slice. It is out of scope here. It would still not be a
 full story.
 
 ---
@@ -362,8 +362,7 @@ storm, renderer polish inside a physics retune.
 
 The 1 km chimney limitation is addressed as a **future** fixture
 change (`σ = 4000 m`, `W0 = 30 m/s`, frozen peaks, diagnostic
-`r = 0.6σ`). Story seeds remain forbidden until someone commands
-them after implementation.
+`r = 0.6σ`). Story seeds remain forbidden in this SoT.
 
 `C` retune alone is **not** sufficient on this hodograph.
 

@@ -860,7 +860,7 @@ Do not:
 5. StormRelativeLaboratory = env adapter (V_env − C) + unchanged
    storm operands + fixed centers. Steady. No sample() change.
 6. Wind-tunnel remains a first-class mode and the current live DEMO
-   until a commanded DEMO-frame slice switches the default.
+   until a later DEMO-frame slice switches the default.
 7. Translating-storm world (D3) is a later third mode, not the next
    slice, and must not be combined with the env boost.
 8. Renderer stays observe-only; SR mode reuses the current pose;
@@ -1035,13 +1035,13 @@ Optional one-line pointers are docs hygiene, not a production slice.
 
 ---
 
-## 24. Blocking decisions (need explicit user command before code)
+## 24. Blocking decisions (not assumed implemented by this SoT)
 
 The following are **not** assumed implemented by this SoT:
 
 1. **Accept E** (dual IntegrationFrame; next physics object = env
    adapter) as the architecture to implement.
-2. **Keep live DEMO on A** until a separate DEMO-frame command
+2. **Keep live DEMO on A** until a separate DEMO-frame decision
    (recommended) versus switch DEMO 3D to D in the same
    implementation slice.
 3. **One prescribed `C`** for diagnostics and D2 (recommended) versus
@@ -1079,7 +1079,7 @@ story tracers:           not designed here; SR mode gives meaning,
                          not residence, with current C
 downdraft:               C-ignorant storm operand; circulation
                          teaching wants E first
-next code:              story tracers only when commanded; not started
+next code:              story tracers; not started
 ```
 
 ---

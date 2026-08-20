@@ -730,17 +730,17 @@ no stretching / T2 / ω→V / thermo / solver implementation
 ```
 
 Product work on *already closed* diagnostics (Inspector
-L3, copy, perception) is a **product** command, not
+L3, copy, perception) is **product** work, not
 authorized here (`21` Candidate 4; `27` §15; `29` D3).
 
 Further L1 diagnostics (honest stretching bookkeeping,
 T1 siblings) remain **optional literacy**, not a class
-change, and still need their own command (`29`).
+change, and still need their own SoT (`29`).
 
 ### NEXT PHASE
 
 ```text
-stay in class A unless a future command opens a
+stay in class A unless a future SoT opens a
 named source-class or named dynamics-class SoT
 ```
 
@@ -825,7 +825,7 @@ HIGH on:
 MEDIUM on:
 
 - when, if ever, a dataset adapter should be a product
-  command;
+  slice;
 - whether optional L1 diagnostics or product UI of T1 /
   Candidate A should come first (not decided here).
 
@@ -840,8 +840,8 @@ NO.
 
 Selecting class A conceptually does **not** authorize a
 solver, a grid, Ω changes, or a diagnostic slice.
-Default remains no implementation unless a later command
-names a *product* or *L1* slice inside class A.
+Implementation of a *product* or *L1* slice inside class A
+is out of scope for this SoT.
 
 ---
 
@@ -967,12 +967,9 @@ IMPLEMENTATION
 STRETCHING / T2 / ω→V / Ω / V_total /
 CONTINUITY SOLVER / THERMO / UI
   UNCHANGED / NOT STARTED
-
-WAIT FOR REVIEW
 ```
 
-Do not implement stretching, T2, prognostic `ω`,
+Stretching, T2, prognostic `ω`,
 continuity solver, `ω → V`, Ω changes, `V_total`
-changes, or visualization because this file exists.
-
-Next work starts only when commanded.
+changes, and visualization implementation are out of
+scope for this SoT.

@@ -1202,7 +1202,7 @@ It must **not**:
   strategy.
 
 After that SoT is accepted, implementation of envelope scaling is a
-separate command.
+separate slice.
 
 ---
 

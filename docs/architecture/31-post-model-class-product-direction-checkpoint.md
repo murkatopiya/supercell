@@ -545,7 +545,7 @@ warned.
 
 ### 9.1 Next small design step (not implementation)
 
-When commanded, write a **diagnostic observation UI
+The next design step is a **diagnostic observation UI
 architecture SoT** (docs-only) that locks:
 
 ```text
@@ -580,12 +580,13 @@ Does this document authorize any production implementation?
 NO.
 ```
 
-It does not authorize Inspector edits, overlays, Guided
+Implementation is out of scope for this SoT. It does not
+authorize Inspector edits, overlays, Guided
 catalog changes, camera, Follow, comet work, dataset
 support, or new physics.
 
-Default remains: wait for the design SoT, then a separate
-implementation command.
+A diagnostic observation UI architecture SoT is required
+before implementation.
 
 ---
 
@@ -601,7 +602,7 @@ U1  Inspector diagnostic section vs a panel beside L1/L2
 U2  Whether Guided shares the readout in v1 or Explore-only
 U3  When, if ever, an overlay/slice SoT is earned
 U4  Whether camera P1 should be a *separate* product
-    command after diagnostic access
+    slice after diagnostic access
 U5  Whether an Ω=0 scenario exhibit is ever wanted
 U6  Copy language: keep “positive/negative ω_y”; never
     canonicalize cyclonic (`23`)
@@ -695,7 +696,6 @@ NEXT DIRECTION
 
 NEXT DESIGN
   diagnostic observation UI architecture
-  WHEN COMMANDED
   NOT THIS FILE
 
 NOT NEXT
@@ -707,12 +707,8 @@ NOT NEXT
   new VelocityField
   dataset adapter
   stretching / T2 / ω→V
-
-WAIT FOR REVIEW
 ```
 
-Do not implement UI, new physics, Guided expansion, airflow
-polish, camera/Follow, or dataset support because this file
-exists.
-
-Next work starts only when commanded.
+UI, new physics, Guided expansion, airflow
+polish, camera/Follow, and dataset support implementation
+are out of scope for this SoT.

@@ -757,7 +757,7 @@ must not call verticalWindShearBetween outside the sounding
 
 ## 23. Implementation slices
 
-Implementation is **not** started by this file. When commanded:
+Implementation is out of scope for this SoT. Recorded slices:
 
 ### Slice 1 — analytic updraft `∇_h Vy`
 
@@ -780,11 +780,10 @@ UI / Inspector / visualization not started.
 
 No Inspector Level 3. No overlay. No Guided experiment.
 
-If a later product command wants a consumer, that is a separate
+If a later product SoT wants a consumer, that is a separate
 SoT. Scientific completion of T1 is Slice 2.
 
-Do not merge Slice 1 into Slice 2 unless a later implementation
-command says so. Isolated gradient tests are the cheaper lock
+Do not merge Slice 1 into Slice 2. Isolated gradient tests are the cheaper lock
 on exact zeros before the product `ω_h · ∇_h Vy`.
 
 ---
@@ -893,12 +892,12 @@ Slice 1 gradient; Slice 2 T1 + wiring; no UI slice. §23.
 
 ### L. STOP after architecture
 
-This file did not authorize implementation. Slice 1 and Slice 2
-were completed by later explicit commands. UI / Inspector /
-overlay remain unauthorized here.
+This SoT does not include implementation. Slice 1 and Slice 2
+are complete. UI / Inspector /
+overlay remain out of scope here.
 
-Continuity YELLOW is not a blocker. Do not start Slice 3 UI
-without a separate command.
+Continuity YELLOW is not a blocker. Slice 3 UI is out of
+scope for this SoT.
 
 ---
 

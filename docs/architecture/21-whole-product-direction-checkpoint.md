@@ -65,7 +65,7 @@ Revalidation in `25`: CONDITIONAL. The leading *question*
 remains tilting / stretching; the next design target is T1
 diagnostic tendency, not Y12 interaction implementation.
 This checkpoint does **not** replace that design and does
-**not** command implementation.
+**not** start implementation.
 
 ---
 
@@ -1112,10 +1112,7 @@ started as the next implementation branch.
 Do not treat opening `22`, `23`, or `24` as selecting
 Candidates 2–7, nor as authorizing tilting / stretching
 code.
-Do not write a Cursor implementation prompt.
-Do not implement pan, Follow, Guided population, trail
+Implementation of pan, Follow, Guided population, trail
 caps, RK2 switch, streamfunctions, datasets, R3, LIC, or
-a public visualization-settings architecture because this
-document exists.
-
-Next work starts only when commanded.
+a public visualization-settings architecture is out of
+scope for this SoT.

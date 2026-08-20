@@ -1052,7 +1052,7 @@ docs/research/2026-08-20-candidate-a-demo-field-validation.md
 
 ## 27. Implementation slices
 
-Implementation is **not** started by this file. When commanded:
+Implementation is out of scope for this SoT. Recorded slices:
 
 ### Slice 1 — analytic rotation `ω_y`
 
@@ -1082,8 +1082,7 @@ Headless **capability** is implemented after Slice 2.
 Candidate A is VALIDATED HEADLESS / DEMO in the T1 sense.
 UI remains unstarted.
 
-Do not merge Slice 1 into Slice 2 unless a later
-implementation command says so. Isolated analytic zeros are
+Do not merge Slice 1 into Slice 2. Isolated analytic zeros are
 the cheaper lock before composition wiring.
 
 No UI slice.
@@ -1300,8 +1299,8 @@ STRETCHING / T2 / ω→V / Ω / V_total / UI / curl()
   UNCHANGED / NOT STARTED
 ```
 
-Do not start stretching, T2, `ω → V`, or Candidate A UI
-because this file exists. Slices 1–3 are complete.
+Stretching, T2, `ω → V`, and Candidate A UI
+are out of scope for this SoT. Slices 1–3 are complete.
 Do not start stretching, T2, full curl, or Inspector L3.
 Do not treat physics 23 or checkpoint 27 as this architecture.
 Do not treat physics 18 §18.2 as a production API.
