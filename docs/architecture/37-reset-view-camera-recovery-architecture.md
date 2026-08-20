@@ -1,8 +1,10 @@
 # Reset View / Camera Recovery Architecture
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
-NO IMPLEMENTATION AUTHORIZATION /
-Reset View NOT IMPLEMENTED
+SLICE 1 COMPLETE /
+SLICE 2 NOT STARTED /
+TracerScene.resetView IMPLEMENTED /
+Explore Reset View control NOT IMPLEMENTED
 **Scope:** interaction/camera contract for explicit
 Reset View — recovery to the canonical storm framing after
 Follow or free orbit leaves an orphaned orbit center.
@@ -12,8 +14,11 @@ Not auto-recenter. Not a camera engine. Not `ROADMAP.md`.
 remains prescribed kinematic laboratory (`30`). This file
 does not reopen `22`, `23`, `26`, `28`, `30`–`35`, or the
 selection contracts in `36`.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged.
+**Implementation:** Slice 1 COMPLETE
+(`src/rendering/applyDeepStormTracerViewPose.ts`,
+`TracerScene.resetView()`).
+Slice 2 (Explore Reset View button + App Follow OFF wiring)
+is NOT STARTED.
 
 Predecessor selection acquisition / identity architecture:
 
@@ -462,13 +467,17 @@ Derived from live ownership. Out of scope for this SoT’s
 landing as production code.
 
 ```text
-Slice 1 — TracerScene.resetView geometry
-  apply DEEP_STORM_TRACER_VIEW camera + target
-  clearFollowPoint / enablePan restore
-  pure or scene-local tests
-  no App button yet
+Slice 1 — TracerScene.resetView geometry             COMPLETE
+  src/rendering/applyDeepStormTracerViewPose.ts
+  TracerScene.resetView():
+    followPoint ← null
+    enablePan ← true
+    apply DEEP_STORM_TRACER_VIEW camera + target
+    controls.update()
+  tests: TracerScene.resetView.test.ts
+  no App button
 
-Slice 2 — Explore control + App lifecycle
+Slice 2 — Explore control + App lifecycle            NOT STARTED
   Reset View button in Explore laboratory-toolbar
   App: Follow OFF then invoke resetView
     (epoch or imperative viewport handle)
@@ -524,30 +533,31 @@ U3  Whether pending Explore placement preview should cancel
 
 ---
 
-## 15. Implementation authorization
+## 15. Implementation status
 
 ```text
-Does this document authorize any production implementation?
-NO.
+Slice 1 TracerScene.resetView:     COMPLETE
+Slice 2 Explore control + App:     NOT STARTED
+
+Canonical pose source: DEEP_STORM_TRACER_VIEW
+Helper: applyDeepStormTracerViewPose(cameraPosition, target)
 ```
 
-Reset View UI, `TracerScene.resetView`, Align with motion,
-auto-center, Guided mounts, and physics remain out of scope
-for this document’s own landing as production code.
+This architecture SoT does not authorize Slice 2.
 
 ---
 
 ## 16. Anti-claims
 
 ```text
-this file does not change src/**
+this file records Slice 1 COMPLETE; Slice 2 NOT STARTED
 Reset View is not simulation Reset
 Reset View is not Clear
 Stop Following is not Reset View
 simulation Reset still must not move the camera
 Clear still must not move the camera
 auto-recenter on Follow OFF / Clear is rejected
-Reset View turns Follow OFF when it was ON
+Reset View turns Follow OFF when it was ON (Slice 2 App wiring)
 Reset View does not clear selection
 Reset View is not Align with motion
 this file is not a CameraState framework
@@ -608,8 +618,8 @@ Closed physics docs are not rewritten.
      only DEEP_STORM_TRACER_VIEW
 
 9  Slices
-     1 scene geometry  2 Explore UI + App wiring
-     neither implemented by this file
+     1 scene geometry COMPLETE (TracerScene.resetView)
+     2 Explore UI + App wiring NOT STARTED
 
 10 Non-goals
      Align, auto-center, domain, overlay, physics, …

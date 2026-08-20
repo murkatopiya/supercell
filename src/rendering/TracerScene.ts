@@ -35,6 +35,7 @@ import {
   copyFollowPoint,
   translateCameraFollowTarget,
 } from "./translateCameraFollowTarget.js";
+import { applyDeepStormTracerViewPose } from "./applyDeepStormTracerViewPose.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 export {
@@ -300,6 +301,19 @@ export class TracerScene {
   clearFollowPoint(): void {
     this.followPoint = null;
     this.controls.enablePan = true;
+  }
+
+  /**
+   * Restore canonical storm framing from DEEP_STORM_TRACER_VIEW.
+   * Clears the scene follow point and restores pan. Does not own
+   * product Follow state, selection, tracers, preview, or airflow.
+   * docs/architecture/37-reset-view-camera-recovery-architecture.md
+   */
+  resetView(): void {
+    this.followPoint = null;
+    this.controls.enablePan = true;
+    applyDeepStormTracerViewPose(this.camera.position, this.controls.target);
+    this.controls.update();
   }
 
   /**
