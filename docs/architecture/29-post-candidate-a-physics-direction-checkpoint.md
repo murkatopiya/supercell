@@ -86,6 +86,20 @@ NEW PROJECT DECISION
 ANTI-CLAIM
 ```
 
+Successor model-class decision (not this checkpoint):
+
+```text
+docs/architecture/30-model-class-decision.md
+```
+
+`30` answers whether the project remains a prescribed
+kinematic laboratory or migrates toward prognostic
+dynamics. This file remains the post-Candidate-A
+*physics-direction* checkpoint. Completing `29` does
+**not** start stretching, T2, or `ω → V`. Completing
+`30` does **not** start them either unless `30` itself
+authorizes implementation.
+
 This document did **not** change production code.
 It does **not** create `ROADMAP.md`.
 It does **not** start a selected branch.
