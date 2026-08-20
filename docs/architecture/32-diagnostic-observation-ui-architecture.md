@@ -39,6 +39,17 @@ Explore point-diagnostics v1 is implemented. Guided mount
 remains deferred / not implemented. Overlay/slice is not
 implemented.
 
+Successor post-point-diagnostics product direction:
+
+```text
+docs/architecture/33-post-point-diagnostics-product-direction-checkpoint.md
+```
+
+`33` re-ranks product work after Explore point-diagnostics
+v1. This file remains the point-first observation UI SoT.
+Completing `32` / Slice 2 does **not** start Follow,
+overlay, Guided mount, or new physics.
+
 Related contracts (not replaced):
 
 ```text
@@ -1158,9 +1169,14 @@ Not a backlog commitment. Not implementation tasks.
 
 ```text
 U1  When, if ever, an overlay/slice SoT is earned (`31` U3)
+    → `33`: not earned as NEXT; overfitting arguments
+      unchanged
 U2  When, if ever, Guided mounts the same panel (`§13`)
 U3  Whether camera P1 should be a separate product slice
     after diagnostic access (`31` U4)
+    → answered in `33`: selected-tracer Follow-as-framing
+      is the next product direction; product pan is not
+      bundled
 U4  Whether an Ω=0 scenario exhibit is ever wanted (`31` U5)
 U5  Whether Inspector Level 3 env/column is ever built
     (still `19`; not this surface)
