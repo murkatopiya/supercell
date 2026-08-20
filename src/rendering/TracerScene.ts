@@ -15,6 +15,7 @@ import {
   disposeReleasePreviewMarker,
   syncReleasePreviewMarker,
 } from "./releasePreviewMarker.js";
+import type { Vec3 } from "../core/math/Vec3.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import {
   worldRayFromCameraNdc,
@@ -22,6 +23,10 @@ import {
 } from "./worldRayFromCameraNdc.js";
 import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { VISUAL_AIRFLOW_DEPTH_CUE } from "./visualAirflowAppearance.js";
+import {
+  copyFollowPoint,
+  translateCameraFollowTarget,
+} from "./translateCameraFollowTarget.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 
@@ -69,6 +74,7 @@ export class TracerScene {
   private preview: THREE.Mesh | undefined;
   private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
+  private followPoint: { x: number; y: number; z: number } | null = null;
   private depthCueEnabled = false;
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
@@ -248,6 +254,30 @@ export class TracerScene {
   }
 
   /**
+   * Make `position` the OrbitControls target, preserving the current
+   * camera-to-target world offset. Copies the point; no tracer identity.
+   * docs/architecture/34-selected-tracer-follow-camera-architecture.md
+   */
+  setFollowPoint(position: Vec3): void {
+    this.followPoint = copyFollowPoint(position);
+    translateCameraFollowTarget(
+      this.camera.position,
+      this.controls.target,
+      this.followPoint,
+    );
+    this.controls.enablePan = false;
+  }
+
+  /**
+   * Stop follow-point translation. Restores unlabeled pan.
+   * Does not move the camera or restore DEEP_STORM_TRACER_VIEW.
+   */
+  clearFollowPoint(): void {
+    this.followPoint = null;
+    this.controls.enablePan = true;
+  }
+
+  /**
    * Observe which occupancy slot is highlighted.
    * Product selection stays outside TracerScene.
    */
@@ -310,6 +340,13 @@ export class TracerScene {
   }
 
   render(): void {
+    if (this.followPoint !== null) {
+      translateCameraFollowTarget(
+        this.camera.position,
+        this.controls.target,
+        this.followPoint,
+      );
+    }
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }

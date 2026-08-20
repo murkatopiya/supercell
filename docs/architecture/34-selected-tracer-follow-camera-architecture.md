@@ -1,8 +1,9 @@
 # Selected-Tracer Follow Camera Architecture
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
-NO IMPLEMENTATION AUTHORIZATION /
-Follow NOT IMPLEMENTED
+SLICE 1 COMPLETE /
+SLICE 2 NEXT / NOT STARTED /
+Follow product control NOT IMPLEMENTED
 **Scope:** interaction/camera contract for selected-tracer
 Follow-as-framing. Locks meaning, state ownership, target
 identity, initiation, OrbitControls geometry, manual input,
@@ -13,8 +14,11 @@ Not Guided diagnostic mount. Not `ROADMAP.md`.
 remains prescribed kinematic laboratory (`30`). This file
 does not reopen `22`, `23`, `26`, `28`, `30`, `31`, `32`,
 or the ranking in `33`.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged.
+**Implementation:** Slice 1 COMPLETE
+(`src/rendering/translateCameraFollowTarget.ts`,
+`TracerScene.setFollowPoint` / `clearFollowPoint`).
+Slice 2 is NOT STARTED. App `followEnabled`, Explore Follow
+button, and lifecycle wiring are NOT IMPLEMENTED.
 
 Predecessor product-direction checkpoint:
 
@@ -35,9 +39,10 @@ selected-tracer Follow-as-framing
 ```
 
 This file is the camera/interaction SoT that checkpoint
-required. Completing this document does **not** start
-Follow implementation, overlay, Guided diagnostic mount,
-product pan/reset-view, or new physics.
+required. Slice 1 (headless follow-point geometry on
+`TracerScene`) is complete. Completing this document did
+**not** start product Follow UI, overlay, Guided diagnostic
+mount, product pan/reset-view, or new physics.
 
 Related contracts (not replaced):
 
@@ -107,15 +112,19 @@ It does not control or pull the tracer.
 
 ### 2.1 Camera ownership
 
-There is no `CameraState`, no Follow API, and no camera
-mode enum in production.
+There is no `CameraState` and no App `followEnabled`.
+Slice 1 rendering API:
 
 ```text
-TracerScene
-  private PerspectiveCamera
-  private OrbitControls
-  constructed from DEEP_STORM_TRACER_VIEW
-  render() → controls.update() then renderer.render()
+src/rendering/translateCameraFollowTarget.ts
+  translateCameraFollowTarget(cameraPosition, currentTarget, nextTarget)
+  copyFollowPoint(position)
+
+TracerScene.setFollowPoint(position: Vec3)
+TracerScene.clearFollowPoint()
+private followPoint: { x, y, z } | null
+render() → stored follow translation, then controls.update(),
+           then renderer.render()
 ```
 
 Live rest fixture (`src/rendering/deepStormTracerView.ts`):
@@ -1016,13 +1025,13 @@ Derived from live ownership, not from a generic camera
 roadmap.
 
 ```text
-Slice 1 — headless Follow geometry
-  pure world-offset translation helper + tests
-  TracerScene method: apply follow point / clear follow point
+Slice 1 — headless Follow geometry                 COMPLETE
+  src/rendering/translateCameraFollowTarget.ts
+  TracerScene.setFollowPoint / clearFollowPoint
   enablePan false only while a follow point is active
-  no App UI, no Follow product boolean yet
+  no App UI, no Follow product boolean
 
-Slice 2 — Explore control + App lifecycle
+Slice 2 — Explore control + App lifecycle          NOT STARTED
   App followEnabled
   Explore laboratory-toolbar Follow button
   TracerViewport: after syncFromParticles, resolve P and
@@ -1152,13 +1161,15 @@ Follow-owned second tracer id
      camera is not the probe
 
 19 Future slices
-     Slice 1 geometry/scene helper
-     Slice 2 Explore UI + App lifecycle
+     Slice 1 geometry/scene helper COMPLETE
+     Slice 2 Explore UI + App lifecycle NOT STARTED
      Guided button optional later
      Reset View not bundled
 
 20 Implementation authorized?
-     NO
+     Slice 1 yes (complete)
+     Slice 2 no
+     product Follow control no
 ```
 
 ---
@@ -1166,7 +1177,8 @@ Follow-owned second tracer id
 ## 28. Anti-claims
 
 ```text
-this file does not implement Follow
+this file does not implement product Follow UI
+Slice 1 is rendering follow-point geometry only
 Follow-as-framing is not CONCEPT travel-with-the-air
 Follow is not cinematic Journey
 Follow is not overlay
@@ -1212,14 +1224,22 @@ rewritten.
 ```text
 FOLLOW-AS-FRAMING CAMERA CONTRACT
   DECIDED AS ARCHITECTURE SoT
-  NOT AN IMPLEMENTATION ORDER
+
+SLICE 1
+  COMPLETE
+  src/rendering/translateCameraFollowTarget.ts
+  TracerScene.setFollowPoint(position: Vec3)
+  TracerScene.clearFollowPoint()
+  stored followPoint copy or null
+  pan disabled while follow point is active
+
+SLICE 2
+  NEXT / NOT STARTED
+  Follow product control NOT IMPLEMENTED
 
 FOLLOW MEANING
   moving orbit center = selected particle.position
   preserved world-space camera offset
-
-IMPLEMENTATION FROM THIS FILE
-  NONE
 
 NOT IN THIS SoT
   production Follow UI
