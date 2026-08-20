@@ -17,7 +17,8 @@ Direction revalidation:
 This file is not that resumption or revalidation SoT. §9
 remains the sketched tilting / stretching fork; it is not a
 later implementation design. `25` ranks which of §9 still
-holds.
+holds. Post-T1 direction after validated T1:
+`docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 
 Live at the time of this audit:
 

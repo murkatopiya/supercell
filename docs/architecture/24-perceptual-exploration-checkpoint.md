@@ -4,8 +4,9 @@
 **Scope:** close the current perceptual-airflow exploration
 loop; lift the physics pause for design / model development
 **Physics:** RESUMED FOR DESIGN / MODEL DEVELOPMENT
-**Implementation:** none. Docs-only. Production code
-unchanged. Tilting / stretching implementation NOT STARTED.
+**Implementation:** none from this file. Docs-only.
+Headless T1 was later implemented and validated; that did
+not start Y12 / derived rotation. Post-T1 direction is `27`.
 Current modeling-direction revalidation:
 `docs/architecture/25-tilting-stretching-direction-revalidation.md`.
 `25` ranks T1 diagnostic tendency as the next design
@@ -13,9 +14,11 @@ target. T1 physics derivation:
 `docs/physics/22-diagnostic-tilting-tendency.md`.
 T1 architecture:
 `docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
+Headless T1 is implemented and validated. Post-T1 direction:
+`docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 This file remains the perceptual-loop / pause-lift
-checkpoint. It is not the T1 architecture SoT.
-Implementation remains NOT STARTED.
+checkpoint. It is not the T1 architecture SoT and not the
+post-T1 direction checkpoint.
 **Decision:** the current perceptual question is answered
 enough to proceed. That is not “visualization complete.”
 Comets are a provisional `V_total` representation, not a

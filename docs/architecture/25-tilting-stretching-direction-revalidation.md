@@ -6,9 +6,9 @@
 implementation design. Not a VelocityField. Not Y12 as a
 production slice.
 **Physics:** RESUMED FOR DESIGN / MODEL DEVELOPMENT (`24`).
-Implementation remains NOT STARTED.
-**Implementation:** none. Docs-only. Production `src/**`
-unchanged.
+Headless T1 was later implemented and validated. Post-T1
+direction lives in `27`. This file does not rank that work.
+**Implementation:** none from this file. Docs-only.
 **Decision:** CONDITIONAL. Tilting / stretching remains the
 leading *modeling question*. The next earned capability is
 **not** derived rotation, prognostic `ω_z`, or an eighth
@@ -32,9 +32,18 @@ docs/architecture/26-diagnostic-tilting-tendency-architecture.md
 ```
 
 `26` owns T1 ownership, sampling, wiring, and slices.
-Completing `22` did not write that architecture. Completing
-`26` does **not** start implementation. Physics
-implementation remains NOT STARTED.
+Headless T1 is now implemented and scientifically validated.
+This file remains the pre-T1 direction-revalidation checkpoint.
+It does not rank post-T1 work.
+
+Post-T1 physics direction checkpoint:
+
+```text
+docs/architecture/27-post-t1-physics-direction-checkpoint.md
+```
+
+`27` answers what is earned after validated T1. Completing
+`26` did **not** start T2, stretching, or `ω → V`.
 
 Predecessor perceptual / physics-resumption checkpoint:
 

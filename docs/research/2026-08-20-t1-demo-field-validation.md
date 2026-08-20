@@ -10,8 +10,9 @@
 
 This file records a headless scientific inspection of T1 on the
 live `DEMO_SCENARIO` atmosphere. It does not retune parameters,
-does not add an overlay, and does not select the next physics
-branch.
+does not add an overlay, and does not itself select the next
+physics branch. Post-T1 direction lives in
+`docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 
 Sampler (research-only, not a production API):
 

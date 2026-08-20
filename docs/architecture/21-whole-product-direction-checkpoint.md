@@ -5,6 +5,8 @@ Current perceptual-loop and physics-resumption decision:
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
 Tilting / stretching direction revalidation:
 `docs/architecture/25-tilting-stretching-direction-revalidation.md`.
+Post-T1 physics direction:
+`docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 **Scope:** post-Guided-v1 whole-product assessment
 **Physics:** pause lifted for design in `24`. This file does
 not resume physics implementation.

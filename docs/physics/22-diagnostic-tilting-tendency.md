@@ -11,7 +11,10 @@ Architecture Slice 1 (analytic `∇_h Vy` on
 T1 HEADLESS CAPABILITY IMPLEMENTED.
 SCIENTIFIC DEMO VALIDATION:
 `docs/research/2026-08-20-t1-demo-field-validation.md`.
-UI NOT STARTED.
+T1 remains CLOSED as the current headless diagnostic
+capability. UI NOT STARTED.
+Post-T1 physics direction:
+`docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 `V_total` unchanged.
 **Architecture:** this file does not own architecture.
 Successor architecture SoT:
@@ -1467,4 +1470,6 @@ implementation:       Slice 1 COMPLETE
                       SCIENTIFIC DEMO VALIDATION COMPLETE
                       docs/research/2026-08-20-t1-demo-field-validation.md
                       UI NOT STARTED
+                      T1 CLOSED as headless diagnostic
+                      post-T1 direction: docs/architecture/27
 ```
