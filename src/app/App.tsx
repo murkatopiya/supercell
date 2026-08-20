@@ -46,7 +46,11 @@ import {
   inspectSelectedTracer,
   type TracerInspection,
 } from "../interaction/TracerInspection.js";
-import { TracerSelection } from "../interaction/TracerSelection.js";
+import {
+  TracerSelection,
+  resolveSelectedTracer,
+} from "../interaction/TracerSelection.js";
+import { ExploreFollowControl } from "../ui/tracer/ExploreFollowControl.js";
 import {
   guidedExperimentById,
   type GuidedExperimentId,
@@ -134,6 +138,13 @@ export function App() {
   const [pointDiagnostics, setPointDiagnostics] = useState<
     PointDiagnosticObservation | undefined
   >(undefined);
+  const followEnabledRef = useRef(false);
+  const [followEnabled, setFollowEnabledState] = useState(false);
+
+  const setFollowEnabled = (next: boolean) => {
+    followEnabledRef.current = next;
+    setFollowEnabledState(next);
+  };
 
   const mirrorSelection = () => {
     setSelectedTracerId(selection.selectedId);
@@ -164,6 +175,7 @@ export function App() {
   };
 
   const clearSelectionAndInspection = () => {
+    setFollowEnabled(false);
     selection.clear();
     mirrorSelection();
     setInspection(undefined);
@@ -171,6 +183,7 @@ export function App() {
   };
 
   const handleReset = () => {
+    setFollowEnabled(false);
     if (lab.kind === "explore") {
       resetExploreLab(lab);
       setPendingSeed(null);
@@ -221,6 +234,7 @@ export function App() {
       return;
     }
     setGuidedExperimentId(nextId);
+    setFollowEnabled(false);
     mirrorSelection();
     setInspection(undefined);
     setPointDiagnostics(undefined);
@@ -233,6 +247,9 @@ export function App() {
     lab.kind === "guided"
       ? guidedExperimentById(guidedExperimentId)
       : null;
+  const followTargetResolves =
+    resolveSelectedTracer(lab.simulation.particles, selection) !==
+    undefined;
 
   return (
     <main className="app">
@@ -290,6 +307,13 @@ export function App() {
               onTimeScaleChange={setTimeScale}
               onReset={handleReset}
             />
+            {explore !== null && (
+              <ExploreFollowControl
+                followEnabled={followEnabled}
+                canFollow={followTargetResolves}
+                onFollowEnabledChange={setFollowEnabled}
+              />
+            )}
             {lab.kind === "guided" && (
               <GuidedExperimentSelector
                 value={guidedExperimentId}
@@ -382,6 +406,8 @@ export function App() {
               refreshInspection();
             }}
             onSimulationAdvanced={refreshInspection}
+            followEnabledRef={followEnabledRef}
+            onFollowUnavailable={() => setFollowEnabled(false)}
             onPlacementAttempt={
               explore === null
                 ? undefined

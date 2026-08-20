@@ -195,12 +195,13 @@ describe("TracerScene follow-point capability", () => {
     expect(tracerSceneSrc).not.toMatch(/followEnabled/);
   });
 
-  it("does not wire product Follow into App or TracerViewport in Slice 1", () => {
-    expect(appSrc).not.toMatch(/followEnabled/);
-    expect(appSrc).not.toMatch(/setFollowPoint/);
-    expect(appSrc).not.toMatch(/clearFollowPoint/);
-    expect(tracerViewportSrc).not.toMatch(/setFollowPoint/);
-    expect(tracerViewportSrc).not.toMatch(/clearFollowPoint/);
-    expect(tracerViewportSrc).not.toMatch(/followEnabled/);
+  it("does not own product followEnabled; App/Viewport drive setFollowPoint", () => {
+    expect(tracerSceneSrc).not.toMatch(/followEnabled/);
+    expect(appSrc).toMatch(
+      /const \[followEnabled, setFollowEnabledState\] = useState\(false\)/,
+    );
+    expect(tracerViewportSrc).toMatch(/scene\.setFollowPoint\(follow\.position\)/);
+    expect(tracerViewportSrc).toMatch(/scene\.clearFollowPoint\(\)/);
+    expect(tracerViewportSrc).toMatch(/followEnabledSourceRef/);
   });
 });

@@ -2,8 +2,10 @@
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
 SLICE 1 COMPLETE /
-SLICE 2 NEXT / NOT STARTED /
-Follow product control NOT IMPLEMENTED
+SLICE 2 COMPLETE /
+Explore selected-tracer Follow v1 IMPLEMENTED /
+Guided Follow control NOT IMPLEMENTED /
+Reset View NOT IMPLEMENTED
 **Scope:** interaction/camera contract for selected-tracer
 Follow-as-framing. Locks meaning, state ownership, target
 identity, initiation, OrbitControls geometry, manual input,
@@ -17,8 +19,11 @@ or the ranking in `33`.
 **Implementation:** Slice 1 COMPLETE
 (`src/rendering/translateCameraFollowTarget.ts`,
 `TracerScene.setFollowPoint` / `clearFollowPoint`).
-Slice 2 is NOT STARTED. App `followEnabled`, Explore Follow
-button, and lifecycle wiring are NOT IMPLEMENTED.
+Slice 2 COMPLETE. App owns `followEnabled` (default false).
+Explore mounts `ExploreFollowControl`. `TracerViewport`
+applies live selected `P` after glyph sync via
+`viewportFollowSync`. Guided Follow control is NOT
+IMPLEMENTED. Reset View is NOT IMPLEMENTED.
 
 Predecessor product-direction checkpoint:
 
@@ -39,10 +44,10 @@ selected-tracer Follow-as-framing
 ```
 
 This file is the camera/interaction SoT that checkpoint
-required. Slice 1 (headless follow-point geometry on
-`TracerScene`) is complete. Completing this document did
-**not** start product Follow UI, overlay, Guided diagnostic
-mount, product pan/reset-view, or new physics.
+required. Slice 1 is headless follow-point geometry on
+`TracerScene`. Slice 2 is Explore Follow control and App
+lifecycle. Overlay, Guided diagnostic mount, product
+pan/reset-view, and new physics remain outside this SoT.
 
 Related contracts (not replaced):
 
@@ -112,7 +117,17 @@ It does not control or pull the tracer.
 
 ### 2.1 Camera ownership
 
-There is no `CameraState` and no App `followEnabled`.
+There is no `CameraState`. Product Follow state is App-owned:
+
+```text
+App followEnabled: boolean                 default false
+App followEnabledRef                       live rAF source
+ExploreFollowControl                       Explore toolbar only
+TracerViewport followEnabledRef            per-frame glue
+viewportFollowSync                         selectedId → live P
+TracerScene.setFollowPoint / clearFollowPoint
+```
+
 Slice 1 rendering API:
 
 ```text
@@ -126,6 +141,11 @@ private followPoint: { x, y, z } | null
 render() → stored follow translation, then controls.update(),
            then renderer.render()
 ```
+
+`TracerViewport` does not own `selectedId`. After
+`syncFromParticles` it maps the already-owned
+`selectedTracerId` to the current `particle.position`
+object and copies those coordinates into `TracerScene`.
 
 Live rest fixture (`src/rendering/deepStormTracerView.ts`):
 
@@ -984,10 +1004,11 @@ camera to support this.
 
 ---
 
-## 24. Future test contract
+## 24. Test contract
 
-Do not implement these tests in this docs-only SoT.
-Implementation slices must cover at least:
+Slice 1 owns follow-point geometry tests.
+Slice 2 owns Explore UI, App lifecycle, mutable-position,
+and scientific-independence wiring tests. Cover at least:
 
 ```text
 no selection → cannot enable Follow
@@ -1013,9 +1034,10 @@ glyph pick still wins over orbit-scale drag
 
 Prefer pure helper tests for the translation geometry.
 Do not add a WebGL screenshot harness (`01`). App lifecycle
-may follow the existing wiring-test style
+follows the existing wiring-test style
 (`tracerGlyphSelection.wiring.test.ts`,
-`pointDiagnostics.wiring.test.tsx`).
+`pointDiagnostics.wiring.test.tsx`,
+`exploreFollow.wiring.test.tsx`).
 
 ---
 
@@ -1031,23 +1053,24 @@ Slice 1 — headless Follow geometry                 COMPLETE
   enablePan false only while a follow point is active
   no App UI, no Follow product boolean
 
-Slice 2 — Explore control + App lifecycle          NOT STARTED
-  App followEnabled
-  Explore laboratory-toolbar Follow button
-  TracerViewport: after syncFromParticles, resolve P and
-    apply or clear the scene follow point
+Slice 2 — Explore control + App lifecycle          COMPLETE
+  App followEnabled / followEnabledRef
+  ExploreFollowControl in the laboratory-toolbar
+  TracerViewport: after syncFromParticles, viewportFollowSync
+    applies or clears the scene follow point
   Reset / Clear / mode switch / missing / A→B / inactive
   wiring tests from §24
   Guided control not mounted
 
-Optional later (not this SoT, not authorized here)
+Out of scope for this SoT
   Guided Follow button on the same contract
   product Reset View / labeled pan (`33` A′)
 ```
 
-Each slice is independently reviewable. Slice 1 must not
-enable Follow in the product UI. Slice 2 must not introduce
-Reset View, Guided diagnostics, or a camera framework.
+Slice 1 is rendering follow-point geometry; it does not
+include product Follow UI. Slice 2 is Explore Follow
+control and App lifecycle. It does not include Reset View,
+Guided diagnostics, or a camera framework.
 
 Rendering `11` remains the rest-pose fixture. Follow
 coexists with it; this SoT does not rewrite `11` numbers.
@@ -1160,16 +1183,16 @@ Follow-owned second tracer id
      P, t, values, cadence, mount unchanged
      camera is not the probe
 
-19 Future slices
+19 Implementation slices
      Slice 1 geometry/scene helper COMPLETE
-     Slice 2 Explore UI + App lifecycle NOT STARTED
-     Guided button optional later
-     Reset View not bundled
+     Slice 2 Explore UI + App lifecycle COMPLETE
+     Guided Follow control NOT IMPLEMENTED
+     Reset View not bundled; out of scope for this SoT
 
-20 Implementation authorized?
-     Slice 1 yes (complete)
-     Slice 2 no
-     product Follow control no
+20 Product exposure
+     Explore selected-tracer Follow v1 IMPLEMENTED
+     Guided Follow control NOT IMPLEMENTED
+     Reset View NOT IMPLEMENTED
 ```
 
 ---
@@ -1177,8 +1200,10 @@ Follow-owned second tracer id
 ## 28. Anti-claims
 
 ```text
-this file does not implement product Follow UI
-Slice 1 is rendering follow-point geometry only
+Guided Follow control is not implemented
+Reset View is not implemented
+Slice 1 is rendering follow-point geometry
+Slice 2 is Explore Follow control + App lifecycle
 Follow-as-framing is not CONCEPT travel-with-the-air
 Follow is not cinematic Journey
 Follow is not overlay
@@ -1234,17 +1259,20 @@ SLICE 1
   pan disabled while follow point is active
 
 SLICE 2
-  NEXT / NOT STARTED
-  Follow product control NOT IMPLEMENTED
+  COMPLETE
+  App followEnabled: boolean (default false)
+  App followEnabledRef: live rAF source
+  ExploreFollowControl (Explore laboratory-toolbar)
+  TracerViewport + viewportFollowSync after glyph sync
+  Explore selected-tracer Follow v1 IMPLEMENTED
 
 FOLLOW MEANING
   moving orbit center = selected particle.position
   preserved world-space camera offset
 
 NOT IN THIS SoT
-  production Follow UI
+  Guided Follow control
   Reset View / labeled pan
-  Guided Follow button
   overlay / Guided diagnostics
   camera framework
   new physics

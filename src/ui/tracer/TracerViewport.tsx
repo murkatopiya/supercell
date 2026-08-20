@@ -28,6 +28,7 @@ import {
   resolveTracerPointerUp,
   tracerIdForSlot,
 } from "./resolveTracerPointerUp.js";
+import { viewportFollowSync } from "./viewportFollowSync.js";
 
 export interface TracerViewportHandle {
   addTracerSlot(): void;
@@ -103,6 +104,17 @@ export interface TracerViewportProps {
    * consumed.steps === 0.
    */
   onSimulationAdvanced?: () => void;
+  /**
+   * Live App Follow flag. Read every frame after glyph sync.
+   * A ref so Reset/Clear can turn Follow OFF before the next rAF
+   * observes restored or emptied particles.
+   */
+  followEnabledRef?: { current: boolean };
+  /**
+   * Follow was ON and the selected tracer no longer resolves.
+   * App turns followEnabled OFF. Does not clear selection.
+   */
+  onFollowUnavailable?: () => void;
   /** Imperative observe-slot / preview access. Does not recreate the scene. */
   sceneHandleRef?: Ref<TracerViewportHandle | null>;
 }
@@ -132,6 +144,8 @@ export function TracerViewport({
   depthCueEnabled = false,
   onTracerSelect,
   onSimulationAdvanced,
+  followEnabledRef,
+  onFollowUnavailable,
   sceneHandleRef,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -146,6 +160,8 @@ export function TracerViewport({
   const onPlacementAttemptRef = useRef(onPlacementAttempt);
   const onTracerSelectRef = useRef(onTracerSelect);
   const onSimulationAdvancedRef = useRef(onSimulationAdvanced);
+  const followEnabledSourceRef = useRef(followEnabledRef);
+  const onFollowUnavailableRef = useRef(onFollowUnavailable);
   const selectedTracerIdRef = useRef<number | null>(selectedTracerId);
   const localSceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const workbenchModeRef = useRef(workbenchMode);
@@ -162,6 +178,8 @@ export function TracerViewport({
   onPlacementAttemptRef.current = onPlacementAttempt;
   onTracerSelectRef.current = onTracerSelect;
   onSimulationAdvancedRef.current = onSimulationAdvanced;
+  followEnabledSourceRef.current = followEnabledRef;
+  onFollowUnavailableRef.current = onFollowUnavailable;
   selectedTracerIdRef.current = selectedTracerId;
   workbenchModeRef.current = workbenchMode;
   pauseVisualizationRef.current = pauseVisualization;
@@ -256,6 +274,19 @@ export function TracerViewport({
           selectedTracerIdRef.current,
         ),
       );
+      const follow = viewportFollowSync({
+        followEnabled: followEnabledSourceRef.current?.current === true,
+        particles: simulation.particles,
+        selectedTracerId: selectedTracerIdRef.current,
+      });
+      if (follow.kind === "set") {
+        scene.setFollowPoint(follow.position);
+      } else {
+        scene.clearFollowPoint();
+        if (follow.kind === "unavailable") {
+          onFollowUnavailableRef.current?.();
+        }
+      }
     };
 
     resize();
