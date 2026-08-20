@@ -9,9 +9,12 @@ Diagnostic world-vertical vorticity of this field's curl
 `docs/physics/23-diagnostic-vertical-vorticity.md`.
 Architecture of that diagnostic (not this field's velocity API):
 `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
-Implementation of Candidate A is **not** started.
-This file remains the velocity-field SoT. `23` re-derives
-`ω_y^Ω` as a diagnostic contract; it does not replace §18.
+Candidate A Slice 1 is implemented on this type:
+`worldVerticalVorticity(position, time) → signed ω_y` [s⁻¹].
+`DiagnosticVerticalVorticity` (Slice 2 owner) is **not**
+implemented. This file remains the velocity-field SoT. `23`
+re-derives `ω_y^Ω` as a diagnostic contract; it does not
+replace §18.
 
 ## 1. Purpose
 
@@ -964,12 +967,17 @@ Inside the layer, with `E = exp(−r²/(2σ²))`:
 This is the `13` shielded-vortex `ω_y` multiplied by `G`. It changes
 sign at `r = σ √2` when `G ≠ 0`. Outside the layer, `ω_y = 0`.
 
-This identity is **not** a production diagnostic API. Candidate A
-physics lives in `23`; architecture (including a later concrete
-`worldVerticalVorticity` scalar method on this type, not
-`VelocityField.curl()`) lives in
+This identity is **not** a `curl()` API and **not** environmental
+`HorizontalVorticity`. Candidate A physics lives in `23`;
+architecture lives in
 `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
-Do not add that method because this section exists.
+Production analytic method on this type (Slice 1):
+
+    worldVerticalVorticity(position, time) → ω_y   [s⁻¹]
+
+Not on `VelocityField`. `DiagnosticVerticalVorticity` remains
+Slice 2 and is not implemented. Do not add `curl()` because
+this section exists.
 
 ### 18.3 Horizontal vorticity from `G'`
 
@@ -1333,8 +1341,10 @@ Vy:                      identically 0
 axis:                    rest at every y
 tangency:                dx Vx + dz Vz = 0
 ∇ · V:                   0 identically
-ω_y:                     13 profile × G(y)  (documentation only)
+ω_y:                     13 profile × G(y)
                          diagnostic SoT: physics 23
+                         Slice 1 API: worldVerticalVorticity
+                         on this type; not VelocityField.curl
 ω_h from G':             not HorizontalVorticity; not tilting
 DEMO bounds:             not owned here; see rendering/12
 not:                     mesocyclone, stretching, env-vorticity-derived

@@ -3,7 +3,10 @@
 **Status:** PHYSICS DERIVATION / DIAGNOSTIC SoT
 **Scope:** world-vertical component of curl of the CURRENT
 prescribed velocity field, in project coordinates.
-**Implementation:** NONE / DOCS-ONLY
+**Implementation:** Slice 1 COMPLETE
+(`VerticalEnvelopeRotationField.worldVerticalVorticity`).
+Slice 2 NEXT. `DiagnosticVerticalVorticity` owner NOT
+IMPLEMENTED. This file remains the derivation SoT.
 **Architecture:** not this file. Successor architecture SoT:
 `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
 Candidate A direction checkpoint:
@@ -51,7 +54,10 @@ ANTI-CLAIM
 DEFERRED
 ```
 
-This document does **not** change production code.
+This document does **not** change `V_total` or prescribed `Ω`.
+Slice 1 of the implementation is the concrete rotation method
+named in architecture 28. Completing this derivation did **not**
+authorize that method; a later command did.
 
 ---
 
@@ -1040,7 +1046,12 @@ full curl:            VERTICAL ONLY for Candidate A
 continuity:           YELLOW; curl still defined
 thermo:               not required; origin is Ω
 architecture:         docs/architecture/28
-implementation:       NONE
+implementation:       Slice 1 COMPLETE
+                      VerticalEnvelopeRotationField
+                      .worldVerticalVorticity
+                      Slice 2 NEXT
+                      DiagnosticVerticalVorticity owner
+                      NOT IMPLEMENTED
 ```
 
 ---
@@ -1057,14 +1068,18 @@ ARCHITECTURE
   NOT AUTHORIZED BY THIS FILE
 
 IMPLEMENTATION
-  NONE
+  SLICE 1 COMPLETE
+  SLICE 2 NEXT
+  DiagnosticVerticalVorticity owner NOT IMPLEMENTED
 
 STRETCHING / T2 / ω→V / Ω / V_total / UI
   UNCHANGED / NOT STARTED
 ```
 
-Do not implement `curl()`, `worldVerticalVorticity()`, or a
-diagnostic type because this file exists.
+Do not implement `DiagnosticVerticalVorticity` or composition
+wiring because this file exists. Slice 1
+(`worldVerticalVorticity` on `VerticalEnvelopeRotationField`)
+is implemented.
 Do not treat physics `18` §18.2 as a substitute for this
 diagnostic contract: `18` remains the velocity-field SoT.
 Do not treat `27` as this derivation.

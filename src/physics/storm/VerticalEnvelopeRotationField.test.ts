@@ -421,4 +421,274 @@ describe("VerticalEnvelopeRotationField", () => {
         }),
     ).not.toThrow();
   });
+
+  describe("worldVerticalVorticity", () => {
+    /**
+     * Independent expected ω_y. Closed G lids (diagnostic policy).
+     * Must not call the production method.
+     */
+    function expectedWorldVerticalVorticity(
+      dx: number,
+      dz: number,
+      y: number,
+      omega = angularVelocity,
+    ): number {
+      if (y <= baseHeight || y >= topHeight) {
+        return 0;
+      }
+      const r2 = dx * dx + dz * dz;
+      const E = Math.exp(-r2 / (2 * sigma * sigma));
+      const G = Math.sin((Math.PI * (y - baseHeight)) / heightSpan);
+      return 2 * omega * G * E * (1 - r2 / (2 * sigma * sigma));
+    }
+
+    it("on the axis equals 2 Ω G, and 2 Ω at y_mid", () => {
+      const field = createField();
+      const y = yMid - 900;
+      const onAxis = field.worldVerticalVorticity(
+        { x: centerX, y, z: centerZ },
+        0,
+      );
+      const atMid = field.worldVerticalVorticity(
+        { x: centerX, y: yMid, z: centerZ },
+        0,
+      );
+      const G = Math.sin((Math.PI * (y - baseHeight)) / heightSpan);
+
+      expect(onAxis).toBeCloseTo(2 * angularVelocity * G, 12);
+      expect(atMid).toBeCloseTo(2 * angularVelocity, 12);
+    });
+
+    it("at r = σ equals Ω G exp(-1/2)", () => {
+      const field = createField();
+      const y = yMid - 400;
+      const omegaY = field.worldVerticalVorticity(
+        { x: centerX + sigma, y, z: centerZ },
+        0,
+      );
+      const G = Math.sin((Math.PI * (y - baseHeight)) / heightSpan);
+
+      expect(omegaY).toBeCloseTo(
+        angularVelocity * G * Math.exp(-0.5),
+        12,
+      );
+    });
+
+    it("is exactly 0 when r² = 2 σ²", () => {
+      const field = createField();
+      const omegaY = field.worldVerticalVorticity(
+        { x: centerX + sigma, y: yMid, z: centerZ + sigma },
+        0,
+      );
+
+      expect(omegaY).toBe(0);
+    });
+
+    it("has opposite sign outside r = σ √2 relative to the core", () => {
+      const field = createField();
+      const core = field.worldVerticalVorticity(
+        { x: centerX, y: yMid, z: centerZ },
+        0,
+      );
+      const outer = field.worldVerticalVorticity(
+        { x: centerX + 2 * sigma, y: yMid, z: centerZ },
+        0,
+      );
+
+      expect(core).toBeGreaterThan(0);
+      expect(outer).toBeLessThan(0);
+    });
+
+    it("tends to 0 in the far field", () => {
+      const field = createField();
+      const omegaY = field.worldVerticalVorticity(
+        { x: centerX + 8 * sigma, y: yMid, z: centerZ },
+        0,
+      );
+
+      expect(Math.abs(omegaY)).toBeLessThan(1e-12);
+      expect(omegaY).toBeCloseTo(
+        expectedWorldVerticalVorticity(8 * sigma, 0, yMid),
+        12,
+      );
+    });
+
+    it("matches the independent analytic formula at arbitrary interior points", () => {
+      const field = createField();
+      const points = [
+        { dx: 500, dz: 400, y: yMid - 900 },
+        { dx: -1200, dz: 80, y: yMid },
+        { dx: 0, dz: -1500, y: yMid + 600 },
+        { dx: 300, dz: -250, y: baseHeight + 50 },
+        { dx: sigma, dz: -sigma / 2, y: yMid - 200 },
+      ];
+
+      for (const { dx, dz, y } of points) {
+        const omegaY = field.worldVerticalVorticity(
+          { x: centerX + dx, y, z: centerZ + dz },
+          0,
+        );
+        expect(omegaY).toBeCloseTo(
+          expectedWorldVerticalVorticity(dx, dz, y),
+          12,
+        );
+      }
+    });
+
+    it("is exactly 0 below the layer, at both lids, and above the layer", () => {
+      const field = createField();
+      const points = [
+        { x: centerX + 800, y: baseHeight - 1, z: centerZ - 300 },
+        { x: centerX + 400, y: -200, z: centerZ - 100 },
+        { x: centerX + 600, y: baseHeight, z: centerZ - 200 },
+        { x: centerX - 900, y: topHeight, z: centerZ + 50 },
+        { x: centerX - 900, y: topHeight + 1, z: centerZ + 50 },
+        { x: centerX + 1200, y: 12000, z: centerZ },
+      ];
+
+      for (const p of points) {
+        expect(field.worldVerticalVorticity(p, 0)).toBe(0);
+      }
+    });
+
+    it("reverses sign with equal magnitude when Ω is negated", () => {
+      const positive = createField(angularVelocity);
+      const negative = createField(-angularVelocity);
+      const position = { x: centerX + 800, y: yMid - 100, z: centerZ - 300 };
+
+      const wp = positive.worldVerticalVorticity(position, 0);
+      const wn = negative.worldVerticalVorticity(position, 0);
+      const vp = positive.sample(position, 0);
+      const vn = negative.sample(position, 0);
+
+      expect(wn).toBeCloseTo(-wp, 12);
+      expect(Math.abs(wn)).toBeCloseTo(Math.abs(wp), 12);
+      expect(vn.x).toBeCloseTo(-vp.x, 12);
+      expect(vn.z).toBeCloseTo(-vp.z, 12);
+    });
+
+    it("for Ω < 0, the core is negative and the outer annulus is positive", () => {
+      const field = createField(-angularVelocity);
+      const core = field.worldVerticalVorticity(
+        { x: centerX, y: yMid, z: centerZ },
+        0,
+      );
+      const outer = field.worldVerticalVorticity(
+        { x: centerX + 2 * sigma, y: yMid, z: centerZ },
+        0,
+      );
+
+      expect(core).toBeLessThan(0);
+      expect(outer).toBeGreaterThan(0);
+    });
+
+    it("is 0 everywhere when Ω = 0", () => {
+      const field = createField(0);
+      const points = [
+        { x: centerX, y: yMid, z: centerZ },
+        { x: centerX + sigma, y: yMid, z: centerZ },
+        { x: centerX + 2 * sigma, y: yMid, z: centerZ },
+      ];
+
+      for (const p of points) {
+        expect(field.worldVerticalVorticity(p, 0)).toBe(0);
+      }
+    });
+
+    it("uses the field center, not the world origin", () => {
+      const field = createField();
+      const onAxis = field.worldVerticalVorticity(
+        { x: centerX, y: yMid, z: centerZ },
+        0,
+      );
+      const atOrigin = field.worldVerticalVorticity(
+        { x: 0, y: yMid, z: 0 },
+        0,
+      );
+      const other = new VerticalEnvelopeRotationField({
+        centerX: -2500,
+        centerZ: 1800,
+        angularVelocity,
+        sigma,
+        baseHeight,
+        topHeight,
+      });
+
+      expect(onAxis).toBeCloseTo(2 * angularVelocity, 12);
+      expect(atOrigin).toBeCloseTo(
+        expectedWorldVerticalVorticity(-centerX, -centerZ, yMid),
+        12,
+      );
+      expect(atOrigin).not.toBeCloseTo(onAxis, 5);
+      expect(
+        other.worldVerticalVorticity({ x: -2500, y: yMid, z: 1800 }, 0),
+      ).toBeCloseTo(2 * angularVelocity, 12);
+    });
+
+    it("is independent of laboratory time for the current field", () => {
+      const field = createField();
+      const position = { x: centerX + 100, y: yMid - 50, z: centerZ - 20 };
+      const w0 = field.worldVerticalVorticity(position, 0);
+      const w1 = field.worldVerticalVorticity(position, 99);
+
+      expect(w0).toBe(w1);
+      expect(position).toEqual({
+        x: centerX + 100,
+        y: yMid - 50,
+        z: centerZ - 20,
+      });
+    });
+
+    it("rejects non-finite position or time", () => {
+      const field = createField();
+      const ok = { x: centerX, y: yMid, z: centerZ };
+
+      expect(() =>
+        field.worldVerticalVorticity({ ...ok, x: Number.NaN }, 0),
+      ).toThrow(VerticalEnvelopeRotationFieldError);
+      expect(() =>
+        field.worldVerticalVorticity(
+          { ...ok, y: Number.POSITIVE_INFINITY },
+          0,
+        ),
+      ).toThrow(VerticalEnvelopeRotationFieldError);
+      expect(() =>
+        field.worldVerticalVorticity(
+          { ...ok, z: Number.NEGATIVE_INFINITY },
+          0,
+        ),
+      ).toThrow(VerticalEnvelopeRotationFieldError);
+      expect(() => field.worldVerticalVorticity(ok, Number.NaN)).toThrow(
+        VerticalEnvelopeRotationFieldError,
+      );
+      expect(() =>
+        field.worldVerticalVorticity(ok, Number.POSITIVE_INFINITY),
+      ).toThrow(VerticalEnvelopeRotationFieldError);
+    });
+
+    it("does not change sample() on the axis, interior, r = σ, lids, or outside", () => {
+      const field = createField();
+      const points = [
+        { x: centerX, y: yMid, z: centerZ },
+        { x: centerX + 500, y: yMid - 900, z: centerZ + 400 },
+        { x: centerX + sigma, y: yMid, z: centerZ },
+        { x: centerX + 600, y: baseHeight, z: centerZ - 200 },
+        { x: centerX + 400, y: topHeight, z: centerZ },
+        { x: centerX + 400, y: baseHeight - 1, z: centerZ },
+        { x: centerX - 900, y: topHeight + 40, z: centerZ + 50 },
+      ];
+
+      for (const p of points) {
+        const v = field.sample(p, 0);
+        const dx = p.x - centerX;
+        const dz = p.z - centerZ;
+        const expected = expectedVelocity(dx, dz, p.y);
+        expect(v.x).toBeCloseTo(expected.x, 12);
+        expect(v.y).toBe(0);
+        expect(v.z).toBeCloseTo(expected.z, 12);
+        field.worldVerticalVorticity(p, 0);
+        expect(field.sample(p, 7)).toEqual(v);
+      }
+    });
+  });
 });

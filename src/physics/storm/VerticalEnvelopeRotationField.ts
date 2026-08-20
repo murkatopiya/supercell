@@ -93,4 +93,48 @@ export class VerticalEnvelopeRotationField implements VelocityField {
       z: -omegaEff * dx + 0,
     };
   }
+
+  /**
+   * Analytic world-vertical vorticity ω_y of this field.
+   * Same Ω, σ, center, and G(y) as sample.
+   * Accepts laboratory time; the current envelope is Eulerian-steady.
+   * Units: 1/s. Signed scalar.
+   *
+   * ω_y = 2 Ω G E (1 − r² / (2 σ²))
+   * E = exp(−r² / (2 σ²))
+   *
+   * On and outside [baseHeight, topHeight], G = 0 ⇒ ω_y = +0.
+   * Not a VelocityField.curl / vorticity API.
+   * docs/physics/23-diagnostic-vertical-vorticity.md
+   */
+  worldVerticalVorticity(position: Vec3, time: number): number {
+    assertFinite(position.x, "position.x");
+    assertFinite(position.y, "position.y");
+    assertFinite(position.z, "position.z");
+    assertFinite(time, "time");
+
+    // Closed interval: G(y_b)=G(y_t)=0 exactly. Do not use sin(π),
+    // which is a tiny IEEE residual and would leak fake vorticity.
+    if (position.y <= this.baseHeight || position.y >= this.topHeight) {
+      return 0;
+    }
+
+    const dx = position.x - this.centerX;
+    const dz = position.z - this.centerZ;
+    const r2 = dx * dx + dz * dz;
+    const sigma2 = this.sigma * this.sigma;
+    const radialEnvelope = Math.exp(-r2 / (2 * sigma2));
+    const xi = (position.y - this.baseHeight) / this.heightSpan;
+    const verticalEnvelope = Math.sin(Math.PI * xi);
+
+    // +0 canonicalizes IEEE-754 signed zero (Ω < 0 on the zero ring).
+    return (
+      2 *
+        this.angularVelocity *
+        verticalEnvelope *
+        radialEnvelope *
+        (1 - r2 / (2 * sigma2)) +
+      0
+    );
+  }
 }
