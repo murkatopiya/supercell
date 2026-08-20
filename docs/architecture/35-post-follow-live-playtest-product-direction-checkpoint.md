@@ -982,17 +982,15 @@ comet / dataset / richer model stay parked for the reasons
 in §§11–15.
 
 NEXT ARTIFACT:
-docs-only architecture SoT
-subject: Explore selected-tracer acquisition and identity
-indication
-(pick policy + identity≠selection encoding + halo)
+docs/architecture/36-explore-selection-acquisition-identity-architecture.md
+(docs-only SoT for pick policy + identity≠selection + halo)
 NOT Reset View bundled
 NOT Align with motion
 NOT domain bounds
 NOT overlay
 ```
 
-### 17.1 What the next SoT must lock (not written here)
+### 17.1 What successor `36` locks
 
 ```text
 pick policy: invisible volume vs screen-space tolerance
@@ -1063,8 +1061,7 @@ and new physics are out of scope for this checkpoint.
     indication (pick + preserve color + halo).
 
 13. **Exact next artifact:**
-    docs-only architecture SoT for that subject
-    (next available number after this file).
+    `docs/architecture/36-explore-selection-acquisition-identity-architecture.md`
 
 14. **Is implementation authorized?** No.
 
@@ -1076,8 +1073,9 @@ Not a backlog commitment.
 
 ```text
 U1  Exact pick policy (invisible mesh vs screen tolerance
-    vs both) — belongs in the next identity SoT
+    vs both) — answered in `36` as screen-space tolerance
 U2  Exact halo geometry / material vs preview language
+    — answered in `36` (same family, not exact reuse)
 U3  Reset View = full DEEP_STORM_TRACER_VIEW vs recenter-
     only — belongs in a later camera-recovery SoT
 U4  Whether occupation+Follow can teach couple ≠ core
@@ -1133,9 +1131,19 @@ this file:     post-Follow live-playtest product direction
 rendering 11:  rest-pose fixture numbers unchanged here
 ```
 
-Successor of `34`: this file.
-Successor design step from this file: the selection
-acquisition / identity architecture SoT named in §17.
+Successor of `34`: this file. Successor selection
+acquisition / identity architecture:
+
+```text
+docs/architecture/36-explore-selection-acquisition-identity-architecture.md
+```
+
+`36` is the architecture SoT this checkpoint required.
+This file remains the post-Follow playtest product-direction
+checkpoint. Completing `35` / `36` does **not** start
+production implementation of picking, halo, Reset View,
+overlay, or new physics.
+
 Closed physics docs are not rewritten. Historical rankings
 in `31` / `33` are not silently modernized beyond this
 successor pointer relationship.
@@ -1166,7 +1174,8 @@ DEFERRED / NOT NEXT:    overlay, Ω=0, Align, Guided mounts,
 NEXT DIRECTION:         selection acquisition + identity
                         indication architecture SoT
 
-NEXT ARTIFACT:          docs-only SoT after this file’s number
+NEXT ARTIFACT:          completed as
+                        docs/architecture/36-explore-selection-acquisition-identity-architecture.md
 
 IMPLEMENTATION
 FROM THIS FILE:         NONE
@@ -1175,5 +1184,5 @@ CONFIDENCE:             HIGH on not reopening Follow /
                         not auto-recenter / not naive X/Z box
                         HIGH on identity friction as bottleneck
                         MEDIUM on exact pick/halo mechanics
-                        (next SoT owns that lock)
+                        (successor `36` owns that lock)
 ```
