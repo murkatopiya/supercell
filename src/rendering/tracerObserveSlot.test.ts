@@ -2,11 +2,10 @@ import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import tracerSceneSrc from "./TracerScene.ts?raw";
 import {
-  SELECTED_TRACER_GLYPH_COLOR,
   TRACER_COLORS,
   createTracerObserveSlot,
   disposeTracerObserveSlot,
-  syncSelectedTracerGlyph,
+  tracerOccupancyColorHex,
 } from "./tracerObserveSlot.js";
 
 function materialHex(mesh: THREE.Mesh): number {
@@ -53,6 +52,8 @@ describe("tracer observe slots (no WebGLRenderer)", () => {
     expect(trailHex(slots[1]!.trail!)).toBe(TRACER_COLORS[1]);
     expect(trailHex(slots[2]!.trail!)).toBe(TRACER_COLORS[2]);
     expect(trailHex(slots[3]!.trail!)).toBe(TRACER_COLORS[0]);
+    expect(tracerOccupancyColorHex(0)).toBe(TRACER_COLORS[0]);
+    expect(tracerOccupancyColorHex(1)).toBe(TRACER_COLORS[1]);
 
     for (const slot of slots) {
       disposeTracerObserveSlot(slot);
@@ -157,33 +158,23 @@ describe("tracer observe slots (no WebGLRenderer)", () => {
     expect(tracerSceneSrc).toMatch(/this\.renderer\.dispose\(\)/);
     expect(tracerSceneSrc).toMatch(/pickVisibleTracer/);
     expect(tracerSceneSrc).toMatch(/syncSelectedSlot/);
+    expect(tracerSceneSrc).toMatch(/createSelectionHaloMarker/);
     expect(tracerSceneSrc).not.toMatch(/TracerSelection/);
     expect(tracerSceneSrc).not.toMatch(/selectedId/);
     expect(tracerSceneSrc).not.toMatch(/TracerPedagogy/);
     expect(tracerSceneSrc).not.toMatch(/AtmosphericTracerDomain/);
   });
 
-  it("highlights the selected glyph and restores occupancy color without replacing the mesh", () => {
+  it("does not recolor glyphs for selection; occupancy color stays the identity channel", () => {
     const sharedGeometry = new THREE.SphereGeometry(1, 8, 6);
     const first = createTracerObserveSlot(0, sharedGeometry, { trails: false });
     const second = createTracerObserveSlot(1, sharedGeometry, { trails: false });
-    const firstMesh = first.mesh;
-    const secondMesh = second.mesh;
-
-    expect(materialHex(firstMesh)).toBe(TRACER_COLORS[0]);
-    expect(materialHex(secondMesh)).toBe(TRACER_COLORS[1]);
-
-    syncSelectedTracerGlyph(firstMesh, 0, true);
-    expect(materialHex(firstMesh)).toBe(SELECTED_TRACER_GLYPH_COLOR);
-    expect(materialHex(secondMesh)).toBe(TRACER_COLORS[1]);
-
-    syncSelectedTracerGlyph(firstMesh, 0, false);
-    syncSelectedTracerGlyph(secondMesh, 1, true);
-    expect(first.mesh).toBe(firstMesh);
-    expect(second.mesh).toBe(secondMesh);
-    expect(materialHex(firstMesh)).toBe(TRACER_COLORS[0]);
-    expect(materialHex(secondMesh)).toBe(SELECTED_TRACER_GLYPH_COLOR);
-
+    const firstHex = materialHex(first.mesh);
+    const secondHex = materialHex(second.mesh);
+    expect(firstHex).toBe(TRACER_COLORS[0]);
+    expect(secondHex).toBe(TRACER_COLORS[1]);
+    expect(firstHex).not.toBe(0xffcc33);
+    expect(secondHex).not.toBe(0xffcc33);
     disposeTracerObserveSlot(first);
     disposeTracerObserveSlot(second);
     sharedGeometry.dispose();

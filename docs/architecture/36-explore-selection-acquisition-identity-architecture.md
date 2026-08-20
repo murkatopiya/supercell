@@ -2,9 +2,10 @@
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
 SLICE 1 COMPLETE /
-SLICE 2 NOT STARTED /
+SLICE 2 COMPLETE /
 screen-space acquisition IMPLEMENTED /
-preserve-color + selection halo NOT IMPLEMENTED
+base-color preservation IMPLEMENTED /
+selection halo IMPLEMENTED
 **Scope:** interaction/rendering contract for selected-tracer
 *acquisition* (easier intended pick) and *identity continuity*
 (selection indication that does not destroy the tracer’s
@@ -21,8 +22,12 @@ ranking in `35`.
 `PICK_TOLERANCE_PX = 16` (CSS/canvas pixels).
 Former raycast `pickVisibleTracerSlotIndex(slots, ray)` removed;
 product acquisition is screen-space only.
-Slice 2 (preserve-color + halo) is NOT STARTED.
-Yellow selected-glyph override remains until Slice 2.
+Slice 2 COMPLETE
+(`src/rendering/selectionHaloMarker.ts`;
+`TracerScene` one selection halo; yellow glyph override retired;
+occupancy `TRACER_COLORS` preserved on select).
+`SELECTION_HALO_COLOR = 0xffcc66`, radius = glyph × 1.6
+(= 240 m when glyph is 150 m).
 
 Predecessor product-direction checkpoint:
 
@@ -45,9 +50,8 @@ explicit selection halo/shell)
 ```
 
 This file is the architecture SoT that checkpoint required.
-Slice 1 (screen-space acquisition) is complete. Slice 2
-(preserve-color + selection halo) is not started. Completing
-Slice 1 does **not** start Slice 2.
+Slice 1 (screen-space acquisition) is COMPLETE.
+Slice 2 (preserve-color + selection halo) is COMPLETE.
 
 Related contracts (not replaced):
 
@@ -133,9 +137,16 @@ TRACER_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71]
   (createTrailLine(color); selection does not recolor trails)
 
 SELECTED_TRACER_GLYPH_COLOR = 0xffcc33
-  syncSelectedTracerGlyph(mesh, slotIndex, selected)
-  selected → yellow override on glyph material only
-  unselected → restore TRACER_COLORS[slotIndex % 3]
+  RETIRED from product selection visuals (Slice 2)
+  selection indication = one selectionHalo wireframe shell
+  glyph keeps TRACER_COLORS[slot % 3]
+```
+
+Historical note (pre–Slice 2, superseded):
+
+```text
+syncSelectedTracerGlyph used to yellow-override the glyph
+selected glyph → yellow while trail stayed occupancy color
 ```
 
 Classification of `TRACER_COLORS`:
@@ -157,16 +168,8 @@ among several pathlines — especially when Follow retargets.
 Destroying it on select is the E4 failure.
 ```
 
-Live side effect of yellow override:
-
-```text
-selected glyph → yellow
-trail stays occupancy color
-→ glyph/trail color split while selected
-```
-
-That already weakens identity continuity; this SoT removes
-the override rather than “fixing” trails to yellow.
+After Slice 2 the glyph and trail stay occupancy-colored while
+selected; indication is the separate halo.
 
 ### 2.2 Glyph geometry and preview
 
@@ -219,7 +222,9 @@ Explore placement only.
 TracerSelection (App)     owns selectedId
 TracerViewport            maps selectedId → occupancy slot
 TracerScene.syncSelectedSlot(slotIndex)
-  observes highlight only; no product selectedId
+  observes selected occupancy slot
+  applies one selection halo when the glyph is visible
+  does not recolor glyph materials
 ```
 
 ### 2.5 Inactive visibility
@@ -240,7 +245,7 @@ Guided D1: keepInactiveGlyphs === true
 Follow ON + select B
   Follow stays ON
   camera retargets with preserved world offset (`34`)
-  syncSelectedSlot moves yellow override A → B (live today)
+  syncSelectedSlot moves the selection halo A → B (live)
 ```
 
 This SoT changes the **visual** of that move (preserve B’s
@@ -831,16 +836,20 @@ Slice 1 — screen-space acquisition                 COMPLETE
     world ray retained for placement only
   former raycast pickVisibleTracerSlotIndex REMOVED
   tests: pickVisibleTracerSlot.test.ts (+ wiring updates)
-  no halo; yellow override still temporary
 
-Slice 2 — identity indication                      NOT STARTED
-  stop yellow glyph override
-  one selection halo mesh on TracerScene
-  sync with syncSelectedSlot / particle positions
-  visibility follows glyph visibility
-  distinguish from release preview
-  tests from §18.2
-  Follow A→B visual continuity covered here
+Slice 2 — identity indication                      COMPLETE
+  syncSelectedTracerGlyph yellow override REMOVED
+  SELECTED_TRACER_GLYPH_COLOR retired from product path
+  src/rendering/selectionHaloMarker.ts
+    SELECTION_HALO_COLOR = 0xffcc66
+    SELECTION_HALO_RADIUS_SCALE = 1.6
+    createSelectionHaloMarker / syncSelectionHaloMarker
+  TracerScene: one selectionHalo mesh
+    syncSelectedSlot + syncFromParticles → observeSelectionHalo
+    visibility follows selected glyph mesh.visible
+    not in pick slot list; raycast no-op
+  distinct from exploreReleasePreview (white, pending seed)
+  tests: selectionHaloMarker.test.ts (+ observe-slot updates)
 
 Out of scope for both slices
   Reset View, Align with motion, remove-last, domain,
@@ -849,9 +858,7 @@ Out of scope for both slices
 
 Why two slices: acquisition and indication are separable
 test surfaces and match existing helper boundaries. They
-remain one product review concept. A single combined
-implementation pass is allowed only if it still lands both
-contracts without expanding scope.
+remain one product review concept.
 
 ---
 
@@ -886,25 +893,26 @@ recreating TracerScene on select
 
 ```text
 Slice 1 screen-space acquisition: COMPLETE
-Slice 2 preserve-color + halo:    NOT STARTED
+Slice 2 preserve-color + halo:    COMPLETE
 
-This architecture SoT does not authorize Slice 2.
-Yellow glyph override remains until Slice 2.
+PICK_TOLERANCE_PX = 16
+SELECTION_HALO_COLOR = 0xffcc66
+SELECTION_HALO_RADIUS_SCALE = 1.6
+  (240 m when glyph radius is 150 m)
 ```
 
-Former §21 “NO” applied to landing the architecture document
-itself. Slice 1 was authorized separately and is now complete.
+Explore selected-tracer acquisition and identity indication
+v1 is implemented for both slices.
 
 ---
 
 ## 22. Anti-claims
 
 ```text
-this file authorizes Slice 1 only as completed status above
-Slice 2 is not started
+this file records Slice 1 and Slice 2 as COMPLETE
 screen-space pick is not a world-radius enlarge
 halo is not the pick target by default
-yellow override is not scientific encoding
+yellow override is retired from product selection visuals
 TRACER_COLORS are not V_i / diagnostic colors
 preview white wireframe ≠ selection halo
 there was no “yellow tracer inside preview” fact
@@ -979,7 +987,8 @@ Closed physics docs are not rewritten.
 
 11 Slices
      1 picking COMPLETE (PICK_TOLERANCE_PX = 16)
-     2 preserve-color + halo NOT STARTED
+     2 preserve-color + halo COMPLETE
+       (SELECTION_HALO_COLOR 0xffcc66, radius ×1.6)
 
 12 Non-goals
      Reset View, domain, overlay, Align, physics, …

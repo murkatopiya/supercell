@@ -5,8 +5,9 @@ import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityFiel
 import { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
 import { writeAdvectedOrientedAirflow } from "../visualization/observeAdvectedOrientedAirflow.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
-import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
+import { TRACER_COLORS } from "./tracerObserveSlot.js";
 import { RELEASE_PREVIEW_COLOR } from "./releasePreviewMarker.js";
+import { SELECTION_HALO_COLOR } from "./selectionHaloMarker.js";
 import { VISUAL_AIRFLOW_ORIENTED_MARK } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
 import { OrientedAirflowMarkScene } from "./OrientedAirflowMarkScene.js";
@@ -79,7 +80,7 @@ describe("OrientedAirflowMarkScene", () => {
     expect(material.vertexColors).toBe(true);
     expect(TRACER_COLORS).not.toContain(VISUAL_AIRFLOW_ORIENTED_MARK.headColor);
     expect(VISUAL_AIRFLOW_ORIENTED_MARK.headColor).not.toBe(
-      SELECTED_TRACER_GLYPH_COLOR,
+      SELECTION_HALO_COLOR,
     );
     expect(VISUAL_AIRFLOW_ORIENTED_MARK.headColor).not.toBe(RELEASE_PREVIEW_COLOR);
     expect(orientedSrc).not.toMatch(/TracerPathHistory/);

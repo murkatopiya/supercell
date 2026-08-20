@@ -72,8 +72,10 @@ describe("release preview marker (no WebGLRenderer)", () => {
     disposeReleasePreviewMarker(mesh);
     expect(tracerSceneSrc).toMatch(/syncReleasePreview/);
     expect(tracerSceneSrc).toMatch(/createReleasePreviewMarker/);
+    expect(tracerSceneSrc).toMatch(/createSelectionHaloMarker/);
     expect(tracerSceneSrc).not.toMatch(/keepInactiveGlyphs \|\| pending/);
     expect(tracerSceneSrc).toMatch(/this\.clearTracerSlots\(\)/);
     expect(tracerSceneSrc).toMatch(/disposeReleasePreviewMarker/);
+    expect(tracerSceneSrc).toMatch(/disposeSelectionHaloMarker/);
   });
 });

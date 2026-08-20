@@ -7,7 +7,8 @@ import { cometFadeFromAges } from "../visualization/cometAirflowMark.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { CometAirflowMarkScene } from "./CometAirflowMarkScene.js";
 import cometSceneSrc from "./CometAirflowMarkScene.ts?raw";
-import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
+import { TRACER_COLORS } from "./tracerObserveSlot.js";
+import { SELECTION_HALO_COLOR } from "./selectionHaloMarker.js";
 import { OPERAND_HIGHLIGHT_PROTOTYPE_HUE } from "../visualization/operandContributionDisplay.js";
 import { VISUAL_AIRFLOW_COMET } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
@@ -66,7 +67,7 @@ describe("CometAirflowMarkScene", () => {
     );
     expect(TRACER_COLORS).not.toContain(OPERAND_HIGHLIGHT_PROTOTYPE_HUE);
     expect(OPERAND_HIGHLIGHT_PROTOTYPE_HUE).not.toBe(
-      SELECTED_TRACER_GLYPH_COLOR,
+      SELECTION_HALO_COLOR,
     );
     expect(cometSceneSrc).not.toMatch(/from ["'][^"']*TracerPathHistory/);
     expect(cometSceneSrc).not.toMatch(/userData\.tracerId/);

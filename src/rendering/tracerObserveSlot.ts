@@ -3,9 +3,6 @@ import { createTrailLine, disposeTrailLine } from "./trailGeometry.js";
 
 export const TRACER_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71] as const;
 
-/** Distinct from unselected glyph colors and the white preview wireframe. */
-export const SELECTED_TRACER_GLYPH_COLOR = 0xffcc33;
-
 export interface TracerObserveSlot {
   readonly mesh: THREE.Mesh;
   readonly trail: THREE.Line | undefined;
@@ -15,6 +12,7 @@ export interface TracerObserveSlot {
  * Glyph + optional trail line for one tracer index.
  * Does not attach to a scene; the caller owns scene membership.
  * Shared sphere geometry is not owned by the slot.
+ * Selection does not recolor the glyph — see selectionHaloMarker.
  */
 export function createTracerObserveSlot(
   index: number,
@@ -47,21 +45,9 @@ export function disposeTracerObserveSlot(slot: TracerObserveSlot): void {
 }
 
 /**
- * Renderer observation of selection. Restores the occupancy color
- * when unselected. Does not store product selectedId.
+ * Occupancy / path cosmetic color for a slot index.
+ * Selection must not replace this — identity indication is the halo.
  */
-export function syncSelectedTracerGlyph(
-  mesh: THREE.Mesh,
-  slotIndex: number,
-  selected: boolean,
-): void {
-  const material = mesh.material;
-  if (Array.isArray(material) || !(material instanceof THREE.MeshBasicMaterial)) {
-    return;
-  }
-  material.color.setHex(
-    selected
-      ? SELECTED_TRACER_GLYPH_COLOR
-      : TRACER_COLORS[slotIndex % TRACER_COLORS.length]!,
-  );
+export function tracerOccupancyColorHex(slotIndex: number): number {
+  return TRACER_COLORS[slotIndex % TRACER_COLORS.length]!;
 }

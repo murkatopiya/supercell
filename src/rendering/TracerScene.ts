@@ -7,7 +7,6 @@ import { syncTrailLine } from "./trailGeometry.js";
 import {
   createTracerObserveSlot,
   disposeTracerObserveSlot,
-  syncSelectedTracerGlyph,
   type TracerObserveSlot,
 } from "./tracerObserveSlot.js";
 import {
@@ -15,6 +14,12 @@ import {
   disposeReleasePreviewMarker,
   syncReleasePreviewMarker,
 } from "./releasePreviewMarker.js";
+import {
+  createSelectionHaloMarker,
+  disposeSelectionHaloMarker,
+  selectionHaloRadiusM,
+  syncSelectionHaloMarker,
+} from "./selectionHaloMarker.js";
 import type { Vec3 } from "../core/math/Vec3.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import {
@@ -32,6 +37,10 @@ import {
 } from "./translateCameraFollowTarget.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
+export {
+  SELECTION_HALO_COLOR,
+  SELECTION_HALO_RADIUS_SCALE,
+} from "./selectionHaloMarker.js";
 
 export interface TracerSceneOptions {
   /** When true, observe path-history as one Line per tracer. Default false. */
@@ -75,6 +84,7 @@ export class TracerScene {
   private readonly controls: OrbitControls;
   private readonly slots: TracerObserveSlot[] = [];
   private preview: THREE.Mesh | undefined;
+  private selectionHalo: THREE.Mesh | undefined;
   private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
   private followPoint: { x: number; y: number; z: number } | null = null;
@@ -174,6 +184,7 @@ export class TracerScene {
     }
     this.slots.length = 0;
     this.selectedSlotIndex = null;
+    this.observeSelectionHalo();
   }
 
   /**
@@ -292,27 +303,14 @@ export class TracerScene {
   }
 
   /**
-   * Observe which occupancy slot is highlighted.
+   * Observe which occupancy slot is selected.
    * Product selection stays outside TracerScene.
+   * Glyph occupancy colors are not mutated; indication is the halo.
+   * docs/architecture/36-explore-selection-acquisition-identity-architecture.md
    */
   syncSelectedSlot(slotIndex: number | null): void {
-    const previous = this.selectedSlotIndex;
-    if (previous === slotIndex) {
-      return;
-    }
-    if (previous !== null) {
-      const previousSlot = this.slots[previous];
-      if (previousSlot !== undefined) {
-        syncSelectedTracerGlyph(previousSlot.mesh, previous, false);
-      }
-    }
     this.selectedSlotIndex = slotIndex;
-    if (slotIndex !== null) {
-      const nextSlot = this.slots[slotIndex];
-      if (nextSlot !== undefined) {
-        syncSelectedTracerGlyph(nextSlot.mesh, slotIndex, true);
-      }
-    }
+    this.observeSelectionHalo();
   }
 
   setSize(width: number, height: number): void {
@@ -334,6 +332,7 @@ export class TracerScene {
     for (let i = n; i < this.slots.length; i++) {
       this.slots[i]!.mesh.visible = false;
     }
+    this.observeSelectionHalo();
   }
 
   /**
@@ -374,8 +373,43 @@ export class TracerScene {
       disposeReleasePreviewMarker(this.preview);
       this.preview = undefined;
     }
+    if (this.selectionHalo !== undefined) {
+      this.scene.remove(this.selectionHalo);
+      disposeSelectionHaloMarker(this.selectionHalo);
+      this.selectionHalo = undefined;
+    }
     this.sharedGeometry.dispose();
     this.renderer.dispose();
+  }
+
+  /**
+   * At most one selection halo. Follows selected glyph visibility and
+   * position. Not a pick candidate. Not the release preview.
+   */
+  private observeSelectionHalo(): void {
+    if (this.selectedSlotIndex === null) {
+      if (this.selectionHalo !== undefined) {
+        syncSelectionHaloMarker(this.selectionHalo, null);
+      }
+      return;
+    }
+    const slot = this.slots[this.selectedSlotIndex];
+    if (slot === undefined) {
+      if (this.selectionHalo !== undefined) {
+        syncSelectionHaloMarker(this.selectionHalo, null);
+      }
+      return;
+    }
+    if (this.selectionHalo === undefined) {
+      this.selectionHalo = createSelectionHaloMarker(
+        selectionHaloRadiusM(DEEP_STORM_TRACER_VIEW.sphereRadiusM),
+      );
+      this.scene.add(this.selectionHalo);
+    }
+    syncSelectionHaloMarker(this.selectionHalo, {
+      visible: slot.mesh.visible,
+      position: slot.mesh.position,
+    });
   }
 }
 
