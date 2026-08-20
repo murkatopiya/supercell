@@ -4,6 +4,11 @@
 Live DEMO rotation occupant is this type, with DEMO bounds owned by
 `docs/rendering/12-composite-vertical-envelope-rotation-demo.md`.
 `RotationField` remains the isolated height-independent primitive.
+Diagnostic world-vertical vorticity of this field's curl
+(Candidate A; not a `curl()` API):
+`docs/physics/23-diagnostic-vertical-vorticity.md`.
+This file remains the velocity-field SoT. `23` re-derives
+`ω_y^Ω` as a diagnostic contract; it does not replace §18.
 
 ## 1. Purpose
 
@@ -37,7 +42,9 @@ It is **not**:
 - a tornado;
 - tilted or stretched environmental vorticity
   (diagnostic T1 does not use this field's curl:
-  `docs/physics/22-diagnostic-tilting-tendency.md`);
+  `docs/physics/22-diagnostic-tilting-tendency.md`;
+  current `ω_y` of this prescribed `V` is derived in
+  `docs/physics/23-diagnostic-vertical-vorticity.md`);
 - a Rankine vortex;
 - a pressure-perturbation or mass-continuity solution;
 - a dual-mode of `RotationField`;
@@ -1315,6 +1322,7 @@ axis:                    rest at every y
 tangency:                dx Vx + dz Vz = 0
 ∇ · V:                   0 identically
 ω_y:                     13 profile × G(y)  (documentation only)
+                         diagnostic SoT: physics 23
 ω_h from G':             not HorizontalVorticity; not tilting
 DEMO bounds:             not owned here; see rendering/12
 not:                     mesocyclone, stretching, env-vorticity-derived

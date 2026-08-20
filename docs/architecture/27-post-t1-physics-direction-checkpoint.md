@@ -11,6 +11,16 @@ remain unchanged. This checkpoint does **not** authorize curl,
 stretching, T2, ω state, closure, Ω changes, continuity, RK2,
 thermo, dataset, Inspector, or visualization work.
 
+Successor Candidate A physics derivation (not architecture):
+
+```text
+docs/physics/23-diagnostic-vertical-vorticity.md
+```
+
+`23` is the physics SoT for `ω_y,current`. This file remains
+the post-T1 *direction* checkpoint. Completing `23` does
+**not** start architecture or implementation.
+
 Predecessor T1 physics:
 
 ```text
@@ -1231,6 +1241,8 @@ prescribed Ω:               STILL ACTIVE IN V_total
 
 current ω_y of DEMO V:      algebraically ω_y(V_rotation)
                             no production curl API
+                            physics SoT: docs/physics/23
+                            architecture: NOT STARTED
 
 continuity:                 YELLOW
                             LIMITATION for A
@@ -1273,6 +1285,12 @@ POST-T1 PHYSICS DIRECTION
 
 NEXT DIRECTION
   A — DIAGNOSTIC VERTICAL VORTICITY / CURL BOOKKEEPING
+
+CANDIDATE A PHYSICS
+  docs/physics/23-diagnostic-vertical-vorticity.md
+  WRITTEN
+  ARCHITECTURE NOT STARTED
+  IMPLEMENTATION NONE
 
 NOT NEXT
   B stretching

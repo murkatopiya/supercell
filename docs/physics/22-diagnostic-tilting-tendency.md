@@ -15,6 +15,9 @@ T1 remains CLOSED as the current headless diagnostic
 capability. UI NOT STARTED.
 Post-T1 physics direction:
 `docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
+Sibling diagnostic (current prescribed `ω_y`, not T1):
+`docs/physics/23-diagnostic-vertical-vorticity.md`.
+`T_tilt,y` [s⁻²] ≠ `ω_y,current` [s⁻¹].
 `V_total` unchanged.
 **Architecture:** this file does not own architecture.
 Successor architecture SoT:
