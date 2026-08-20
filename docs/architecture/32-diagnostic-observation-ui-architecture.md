@@ -1,8 +1,7 @@
 # Diagnostic Observation UI Architecture
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
-SLICE 1 COMPLETE / SLICE 2 NOT STARTED /
-NO SLICE 2 AUTHORIZATION
+SLICE 1 COMPLETE / SLICE 2 NEXT / NOT STARTED
 **Scope:** point-first diagnostic *observation* UI for two
 already implemented headless capabilities: T1
 (`T_tilt,y`) and Candidate A (`ω_y,current`). Locks
@@ -17,7 +16,8 @@ does not reopen `22`, `23`, `26`, `28`, `30`, or `31`.
 **Implementation:** Slice 1 COMPLETE
 (`src/interaction/PointDiagnosticObservation.ts`,
 `inspectSelectedPointDiagnostics`). Slice 2 (presentation)
-NOT STARTED and not authorized by this file.
+NEXT / NOT STARTED. Slice 2 implementation is out of
+scope for this SoT.
 
 Predecessor product-direction checkpoint:
 
@@ -28,9 +28,9 @@ docs/architecture/31-post-model-class-product-direction-checkpoint.md
 `31` selected point-first diagnostic access for T1 and
 Candidate A, Explore-primary, not L2, not overlay v1, not
 a new Guided experiment. This file is the design SoT that
-checkpoint required. Completing this file did **not**
-authorize production implementation. Slice 1 was authorized
-separately and is complete. Slice 2 remains unauthorized.
+checkpoint required. Slice 1 is complete. Slice 2 remains
+NEXT / NOT STARTED. Slice 2 implementation is out of
+scope for this SoT.
 
 Related contracts (not replaced):
 
@@ -65,8 +65,8 @@ ANTI-CLAIM
 
 Slice 1 implemented the headless adapter. This document
 does **not** create `ROADMAP.md`.
-It does **not** start Inspector L3 as reserved in `19`.
-It does **not** start Slice 2 presentation.
+Inspector L3 remains reserved as in `19` and is not started.
+Slice 2 presentation is NEXT / NOT STARTED.
 
 ---
 
@@ -91,7 +91,7 @@ It does **not**:
 - add stretching, T2, prognostic `ω`, or `ω → V`;
 - change Inspector Level 2;
 - add a Guided experiment;
-- authorize Slice 2 presentation.
+- include Slice 2 presentation.
 
 Canonical consumed capabilities (CURRENT FACT):
 
@@ -1001,8 +1001,9 @@ which already stacks under the viewport on small widths.
 
 ## 19. Implementation slices
 
-Slice 1 is complete. Slice 2 remains future work and is
-not started by completing Slice 1.
+Slice 1 is complete. Slice 2 is NEXT / NOT STARTED.
+Slice 2 implementation is out of scope for the Slice 1
+closure.
 
 ### Slice 1 — headless observation adapter
 
@@ -1020,7 +1021,7 @@ does not change V_total
 
 ### Slice 2 — Explore presentation
 
-**NEXT. NOT STARTED. NOT AUTHORIZED by completing Slice 1.**
+**NEXT. NOT STARTED.**
 
 ```text
 formatPointDiagnosticDisplay
@@ -1037,11 +1038,11 @@ tests in §21 presentation subset
 same panel, same adapter
 Guided catalog copy unchanged
 not a fourth experiment
-not authorized by Slice 2
+out of scope for Slice 2
 ```
 
-Do not implement overlay, L3, Follow, or a registry as
-part of these slices.
+Overlay, L3, Follow, and a registry are out of scope
+for these slices.
 
 ---
 
@@ -1110,7 +1111,7 @@ Do not duplicate physics validation already owned by
 ## 21. Explicit non-goals
 
 ```text
-production implementation (not authorized)
+Slice 2 presentation (out of scope for this SoT)
 new physics / stretching / T2 / prognostic ω
 Ω changes / V_total changes / eighth VelocityField
 Inspector L2 changes
@@ -1155,14 +1156,14 @@ They are not reopened.
 
 ---
 
-## 23. Implementation authorization
+## 23. Implementation status
 
 ```text
 Slice 1  COMPLETE
-Slice 2  NOT AUTHORIZED by this file
+Slice 2  NEXT / NOT STARTED
 ```
 
-Completing Slice 1 does **not** start Slice 2.
+Slice 2 implementation is out of scope for this SoT.
 
 ---
 
@@ -1298,8 +1299,8 @@ NOT STARTED
   generic diagnostic registry
 
 SLICE 2
-  NOT AUTHORIZED BY COMPLETING SLICE 1
+  NEXT / NOT STARTED
+  out of scope for this SoT
 ```
 
-Do not start Slice 2 without an explicit command.
 Do not rewrite closed physics or `30` / `31` decisions.

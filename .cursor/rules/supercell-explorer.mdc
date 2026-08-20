@@ -120,6 +120,69 @@ EnvironmentalWindProfile
 Не начинай следующий slice без команды пользователя.
 
 
+## Durable documentation vs workflow control
+
+Инструкции управления работой агента принадлежат Cursor rules
+или активному task prompt, не долговечным SoT проекта.
+
+При создании или обновлении `docs/architecture/**` и других
+долговечных SoT:
+
+Сохраняй:
+- принятые архитектурные решения;
+- invariants;
+- статусы accepted / rejected / deferred;
+- scope документа;
+- anti-claims;
+- implementation status;
+- successor pointers;
+- долговечные dependency/order constraints.
+
+Не копируй task-control / agent-control язык, например:
+
+```text
+wait for review
+next work starts only when commanded
+do not start until commanded
+explicit user command required
+when commanded, and not before
+do not write a Cursor implementation prompt
+```
+
+Если такой workflow control несёт полезную долговечную границу,
+переформулируй её как statement о системе или документе:
+
+```text
+BAD:
+Do not implement X until commanded.
+
+GOOD:
+X implementation is out of scope for this SoT.
+
+BAD:
+Wait for review before Slice 2.
+
+GOOD:
+Slice 2 is NOT STARTED.
+
+BAD:
+A later explicit command is required.
+
+GOOD:
+This document does not include that implementation.
+```
+
+Не удаляй настоящий architectural constraint только потому,
+что он написан императивом.
+
+Пример: `Do not add diagnostics to velocityObservation.parts`
+может оставаться constraint'ом или быть переформулирован
+declarative form.
+
+SoT описывает проект и его границы, а не историю управления
+Cursor.
+
+
 ## Scope discipline
 
 Реализуй только согласованный scope.
