@@ -10,7 +10,10 @@ composition wiring, observation boundaries, tests, slices
 **Implementation:** Slice 1 COMPLETE
 (`VerticalEnvelopeUpdraftField.horizontalGradientOfVerticalVelocity`).
 Slice 2 COMPLETE. `DiagnosticTiltingTendency` implemented.
-T1 HEADLESS CAPABILITY IMPLEMENTED. UI NOT STARTED.
+T1 HEADLESS CAPABILITY IMPLEMENTED.
+SCIENTIFIC DEMO VALIDATION COMPLETE:
+`docs/research/2026-08-20-t1-demo-field-validation.md`.
+UI NOT STARTED.
 Production `V_total` unchanged.
 
 ```text
@@ -920,5 +923,7 @@ UI completion:      not required
 implementation:     Slice 1 COMPLETE
                     Slice 2 COMPLETE
                     T1 HEADLESS CAPABILITY IMPLEMENTED
+                    SCIENTIFIC DEMO VALIDATION COMPLETE
+                    docs/research/2026-08-20-t1-demo-field-validation.md
                     UI NOT STARTED
 ```

@@ -8,7 +8,10 @@ kinematic laboratory.
 `DiagnosticTiltingTendency` is the headless T1 owner.
 Architecture Slice 1 (analytic `∇_h Vy` on
 `VerticalEnvelopeUpdraftField`) is implemented.
-T1 HEADLESS CAPABILITY IMPLEMENTED. UI NOT STARTED.
+T1 HEADLESS CAPABILITY IMPLEMENTED.
+SCIENTIFIC DEMO VALIDATION:
+`docs/research/2026-08-20-t1-demo-field-validation.md`.
+UI NOT STARTED.
 `V_total` unchanged.
 **Architecture:** this file does not own architecture.
 Successor architecture SoT:
@@ -1178,6 +1181,13 @@ Order of magnitude for live DEMO:
     |∇_h Vy|     ∼ 10⁻³ s⁻¹
     |T_tilt,y|   ∼ 10⁻⁵ s⁻²
 
+Headless sampling of the current DEMO field is recorded in
+`docs/research/2026-08-20-t1-demo-field-validation.md`.
+That file does not change this derivation. At an interior
+sounding knot T1 uses the upper segment (`26` §6.1), so the
+`y = 1000` illustration above is the hodograph `[0, 1000]`
+layer, not T1's knot pick.
+
 A characteristic time `1 / |T_tilt,y|` is many hours. That number
 is **not** a mesocyclone formation time. T1 is an instantaneous
 local product, not an integrated ODE.
@@ -1454,5 +1464,7 @@ physics verdict:      YES
 implementation:       Slice 1 COMPLETE
                       Slice 2 COMPLETE
                       T1 HEADLESS CAPABILITY IMPLEMENTED
+                      SCIENTIFIC DEMO VALIDATION COMPLETE
+                      docs/research/2026-08-20-t1-demo-field-validation.md
                       UI NOT STARTED
 ```
