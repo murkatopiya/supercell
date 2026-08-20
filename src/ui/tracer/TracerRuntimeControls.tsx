@@ -10,6 +10,10 @@ export interface TracerRuntimeControlsProps {
   onReset: () => void;
 }
 
+/**
+ * Shared Pause / simulation Reset / Speed.
+ * Terminology: Reset = simulation, not camera (40 F7).
+ */
 export function TracerRuntimeControls({
   paused,
   timeScale,
@@ -30,6 +34,8 @@ export function TracerRuntimeControls({
         <button
           type="button"
           className="tracer-runtime-controls__button"
+          aria-label="Reset simulation"
+          title="Reset simulation (not camera)"
           onClick={onReset}
         >
           Reset

@@ -160,6 +160,59 @@ body:has(.app--explore) {
   max-width: 100%;
 }
 
+.laboratory-toolbar--explore {
+  gap: 0;
+  padding: 0.25rem 0.5rem;
+}
+
+.control-band {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.control-band:last-child {
+  border-bottom: none;
+}
+
+.control-band__label {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6a737d;
+}
+
+.control-band__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.65rem;
+  min-width: 0;
+}
+
+.control-band--secondary {
+  margin-top: 0.15rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed #d0d7de;
+  border-bottom: none;
+}
+
+.control-band--secondary .control-band__label {
+  color: #8a949e;
+}
+
+.control-disabled-reason {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: #6a737d;
+}
+
 .tracer-runtime-controls,
 .explore-point-release-controls {
   margin: 0;
@@ -172,18 +225,19 @@ body:has(.app--explore) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 1.25rem;
+  gap: 0.35rem 0.75rem;
   min-width: 0;
 }
 
 .tracer-runtime-controls__group--runtime {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.35rem;
 }
 
 .tracer-runtime-controls__button {
-  padding: 0.2rem 0.65rem;
+  padding: 0.15rem 0.55rem;
   font: inherit;
   cursor: pointer;
 }
@@ -206,7 +260,7 @@ body:has(.app--explore) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.2rem 0.65rem;
+  gap: 0.2rem 0.5rem;
   margin: 0;
   padding: 0;
   border: none;
@@ -217,83 +271,107 @@ body:has(.app--explore) {
   width: auto;
   padding: 0;
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #4a5560;
 }
 
 .tracer-runtime-controls__scale {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.9rem;
+  gap: 0.2rem;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
 .explore-point-release-controls__copy {
-  margin: 0 0 0.3rem;
-  font-size: 0.8rem;
+  margin: 0 0 0.2rem;
+  font-size: 0.75rem;
   color: #4a5560;
 }
 
 .explore-point-release-controls__row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem 0.75rem;
+  gap: 0.35rem 0.55rem;
   align-items: center;
 }
 
 .explore-point-release-controls__field {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.85rem;
+  gap: 0.3rem;
+  font-size: 0.8rem;
 }
 
 .explore-point-release-controls__field input[type="number"] {
-  width: 5.5rem;
+  width: 4.75rem;
   font: inherit;
 }
 
 .visual-airflow-workbench-controls {
   margin: 0;
-  padding: 0.35rem 0 0;
+  padding: 0;
   border: none;
-  border-top: 1px dashed #d0d7de;
   background: transparent;
 }
 
 .visual-airflow-workbench-controls__group {
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.35rem;
 }
 
 .visual-airflow-workbench-controls__group:last-child {
   margin-bottom: 0;
 }
 
+.visual-airflow-workbench-controls__group--diagnostic {
+  padding-top: 0.3rem;
+  border-top: 1px dotted #e0e5ea;
+}
+
 .visual-airflow-workbench-controls__copy {
-  margin: 0.25rem 0 0;
-  font-size: 0.75rem;
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
   color: #6a737d;
+  line-height: 1.3;
+}
+
+.visual-airflow-workbench-controls__copy--compact {
+  margin: 0.15rem 0 0;
+}
+
+.visual-airflow-workbench-controls__details {
+  margin: 0.15rem 0 0;
+  font-size: 0.72rem;
+  color: #6a737d;
+}
+
+.visual-airflow-workbench-controls__details summary {
+  cursor: pointer;
+  color: #5a6570;
+}
+
+.visual-airflow-workbench-controls__details .visual-airflow-workbench-controls__copy {
+  margin-top: 0.25rem;
 }
 
 .visual-airflow-workbench-controls__row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.75rem;
+  gap: 0.3rem 0.55rem;
   align-items: center;
 }
 
 .visual-airflow-workbench-controls__label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #6a737d;
-  margin-right: 0.15rem;
+  margin-right: 0.1rem;
 }
 
 .visual-airflow-workbench-controls__field {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.85rem;
+  gap: 0.3rem;
+  font-size: 0.8rem;
 }
 
 .visual-airflow-workbench-controls__select {

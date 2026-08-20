@@ -271,7 +271,7 @@ describe("Explore browser point-release acceptance", () => {
     expect(appSrc).toMatch(/>\s*Guided\s*</);
     expect(appSrc).toMatch(/>\s*Explore\s*</);
     expect(exploreControlsSrc).toMatch(
-      /Release passive tracers into the current storm-relative laboratory/,
+      /Release passive tracers at a chosen altitude/,
     );
     expect(appSrc).not.toMatch(/DiagnosticProbes/);
     expect(appSrc).not.toMatch(/StoryPathlines/);

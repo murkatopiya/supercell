@@ -97,14 +97,14 @@ describe("M2 V1 visual-airflow product state", () => {
 
   it("D: Eulerian directions remain available as diagnostic", () => {
     const html = productMarkup();
-    expect(html).toContain("Eulerian directions — diagnostic");
+    expect(html).toContain("Eulerian — diagnostic");
     expect(controlsSrc).toMatch(/onModeChange\("eulerian-oriented"\)/);
   });
 
   it("E: Highlight defaults Off with one-of-six storm operands", () => {
     expect(DEFAULT_OPERAND_HIGHLIGHT_MODE).toBe("off");
     const html = productMarkup();
-    expect(html).toContain("Diagnostic airflow tools");
+    expect(html).toContain("Diagnostic tools");
     expect(html).toContain("Highlight");
     expect(html).not.toContain("Both");
     expect(html).not.toContain("environmentAdvection");

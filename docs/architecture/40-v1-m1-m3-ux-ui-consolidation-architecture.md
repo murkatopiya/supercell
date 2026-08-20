@@ -3,7 +3,8 @@
 **Status:** ARCHITECTURE / PRODUCT SoT /
 M2 COMPLETE / V1 FEATURE FREEZE ACTIVE /
 M1 + M3 DECIDED /
-SLICE A COMPLETE / SLICES B–G NOT STARTED
+SLICE A COMPLETE / SLICE B COMPLETE /
+SLICES C–G NOT STARTED
 **Scope:** decide how already-built V1 capabilities are
 spatially and informationally organized so a user can
 perform acceptance tasks T1–T10 with minimal unnecessary
@@ -18,8 +19,8 @@ operands. Prescribed Ω semantics unchanged. Inspector L2
 boundary and Point-diagnostics sibling relation unchanged
 (`19`, `32`). This file does not reopen `17`, `22`, `23`,
 `26`, `28`, `30`–`39`.
-**Implementation:** Slice A production shell geometry is
-COMPLETE. Slices B–G remain NOT STARTED.
+**Implementation:** Slice A and Slice B production work is
+COMPLETE. Slices C–G remain NOT STARTED.
 
 Predecessor V1 visual-airflow product-state architecture:
 
@@ -794,7 +795,13 @@ Slice A  Explore shell regions + page vs region scroll policy
 
 Slice B  Action-rail control consolidation + terminology +
          disabled reasons + compact airflow/diagnostic chrome
-         STATUS: NOT STARTED
+         STATUS: COMPLETE
+         Evidence: Explore control bands Runtime | View |
+         Release | secondary Airflow; F7 Reset / Reset View /
+         Clear labels; F8 Follow and Confirm/Cancel disabled
+         reasons; airflow anti-claims compact + on-demand
+         <details>. Tests: ExploreActionRailControls.test.tsx,
+         updated Follow / airflow control suites.
 
 Slice C  Observation dock (Inspector + Point diagnostics)
          shared empty state + internal scroll contract
@@ -883,8 +890,9 @@ RESPONSIVE            existing breakpoints; further work
 RECOMMENDED LAYOUT    Option 2
 USER HYPOTHESES       accepted where evidenced; not automatic
 FREEZE                intact; no new capability
-IMPLEMENTATION        Slice A COMPLETE; B–G NOT STARTED
-NEXT                  Slice B when commanded; then C–G;
+IMPLEMENTATION        Slice A COMPLETE; Slice B COMPLETE;
+                      C–G NOT STARTED
+NEXT                  Slice C when commanded; then D–G;
                       then M5 playtest
 ```
 
@@ -930,6 +938,6 @@ NEXT                  Slice B when commanded; then C–G;
 10. **Does this authorize implementation?**  
 
 ```text
-Slice A production geometry is COMPLETE.
-Slices B–G remain NOT STARTED until commanded.
+Slice A and Slice B production geometry/controls are COMPLETE.
+Slices C–G remain NOT STARTED until commanded.
 ```

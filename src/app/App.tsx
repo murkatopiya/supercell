@@ -374,55 +374,81 @@ export function App() {
           <div className="workbench__column workbench__column--controls">
             <div className="workbench__environment">{hodographColumn}</div>
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
-            <div className="laboratory-toolbar">
-              <TracerRuntimeControls
-                paused={paused}
-                timeScale={timeScale}
-                onPausedChange={setPaused}
-                onTimeScaleChange={setTimeScale}
-                onReset={handleReset}
-              />
-              <ExploreFollowControl
-                followEnabled={followEnabled}
-                canFollow={followTargetResolves}
-                onFollowEnabledChange={setFollowEnabled}
-              />
-              <ExploreResetViewControl onResetView={handleResetView} />
-              <ExplorePointReleaseControls
-                altitudeM={altitudeM}
-                placementEnabled={placementEnabled}
-                hasPending={pendingSeed !== null}
-                onAltitudeChange={(next) => {
-                  explore.tool.setAltitude(next);
-                  setAltitudeM(explore.tool.altitudeM);
-                  setPendingSeed(explore.tool.pendingSeed);
-                }}
-                onPlacementEnabledChange={(enabled) => {
-                  explore.tool.placementEnabled = enabled;
-                  setPlacementEnabled(enabled);
-                }}
-                onConfirm={() => {
-                  explore.orchestration.confirmRelease();
-                  setPendingSeed(null);
-                }}
-                onCancel={() => {
-                  explore.orchestration.cancelPending();
-                  setPendingSeed(null);
-                }}
-                onClear={() => {
-                  explore.orchestration.clear();
-                  clearSelectionAndInspection();
-                  setPendingSeed(null);
-                }}
-              />
-              <VisualAirflowWorkbenchControls
-                mode={workbenchMode}
-                highlightMode={highlightMode}
-                depthCueEnabled={depthCueEnabled}
-                onModeChange={setWorkbenchMode}
-                onHighlightModeChange={setHighlightMode}
-                onDepthCueChange={setDepthCueEnabled}
-              />
+            <div className="laboratory-toolbar laboratory-toolbar--explore">
+              <div
+                className="control-band control-band--runtime"
+                aria-label="Runtime"
+              >
+                <span className="control-band__label">Runtime</span>
+                <TracerRuntimeControls
+                  paused={paused}
+                  timeScale={timeScale}
+                  onPausedChange={setPaused}
+                  onTimeScaleChange={setTimeScale}
+                  onReset={handleReset}
+                />
+              </div>
+              <div
+                className="control-band control-band--view"
+                aria-label="View"
+              >
+                <span className="control-band__label">View</span>
+                <div className="control-band__row">
+                  <ExploreFollowControl
+                    followEnabled={followEnabled}
+                    canFollow={followTargetResolves}
+                    onFollowEnabledChange={setFollowEnabled}
+                  />
+                  <ExploreResetViewControl onResetView={handleResetView} />
+                </div>
+              </div>
+              <div
+                className="control-band control-band--release"
+                aria-label="Release"
+              >
+                <span className="control-band__label">Release</span>
+                <ExplorePointReleaseControls
+                  altitudeM={altitudeM}
+                  placementEnabled={placementEnabled}
+                  hasPending={pendingSeed !== null}
+                  onAltitudeChange={(next) => {
+                    explore.tool.setAltitude(next);
+                    setAltitudeM(explore.tool.altitudeM);
+                    setPendingSeed(explore.tool.pendingSeed);
+                  }}
+                  onPlacementEnabledChange={(enabled) => {
+                    explore.tool.placementEnabled = enabled;
+                    setPlacementEnabled(enabled);
+                  }}
+                  onConfirm={() => {
+                    explore.orchestration.confirmRelease();
+                    setPendingSeed(null);
+                  }}
+                  onCancel={() => {
+                    explore.orchestration.cancelPending();
+                    setPendingSeed(null);
+                  }}
+                  onClear={() => {
+                    explore.orchestration.clear();
+                    clearSelectionAndInspection();
+                    setPendingSeed(null);
+                  }}
+                />
+              </div>
+              <div
+                className="control-band control-band--airflow control-band--secondary"
+                aria-label="Airflow"
+              >
+                <span className="control-band__label">Airflow</span>
+                <VisualAirflowWorkbenchControls
+                  mode={workbenchMode}
+                  highlightMode={highlightMode}
+                  depthCueEnabled={depthCueEnabled}
+                  onModeChange={setWorkbenchMode}
+                  onHighlightModeChange={setHighlightMode}
+                  onDepthCueChange={setDepthCueEnabled}
+                />
+              </div>
             </div>
           </div>
 

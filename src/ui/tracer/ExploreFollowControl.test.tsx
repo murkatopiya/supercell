@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ExploreFollowControl } from "./ExploreFollowControl.js";
+import {
+  ExploreFollowControl,
+  FOLLOW_REQUIRES_SELECTION_REASON,
+} from "./ExploreFollowControl.js";
 import appSrc from "../../app/App.tsx?raw";
 import inspectorPanelSrc from "./TracerInspectorPanel.tsx?raw";
 import pointDiagnosticsPanelSrc from "./PointDiagnosticsPanel.tsx?raw";
@@ -24,17 +27,23 @@ describe("ExploreFollowControl", () => {
     expect(html).toContain("tracer-runtime-controls__button");
   });
 
-  it("is disabled and unpressed when no selected tracer resolves", () => {
+  it("is disabled and states a reason when no selected tracer resolves", () => {
     const html = markup(false, false);
     expect(html).toContain("disabled");
     expect(html).toContain('aria-pressed="false"');
     expect(html).not.toContain('aria-pressed="true"');
+    expect(html).toContain(FOLLOW_REQUIRES_SELECTION_REASON);
+    expect(html).toContain("control-disabled-reason");
+    expect(html).toContain(
+      `aria-label="Follow selected tracer — ${FOLLOW_REQUIRES_SELECTION_REASON}"`,
+    );
   });
 
   it("stays unpressed when a tracer is selected and Follow is OFF", () => {
     const html = markup(false, true);
     expect(html).not.toContain("disabled");
     expect(html).toContain('aria-pressed="false"');
+    expect(html).not.toContain(FOLLOW_REQUIRES_SELECTION_REASON);
   });
 
   it("is pressed when Follow is ON and a tracer resolves", () => {

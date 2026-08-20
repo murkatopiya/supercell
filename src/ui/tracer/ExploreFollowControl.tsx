@@ -4,9 +4,13 @@ export interface ExploreFollowControlProps {
   onFollowEnabledChange: (enabled: boolean) => void;
 }
 
+export const FOLLOW_REQUIRES_SELECTION_REASON =
+  "Select a tracer to follow.";
+
 /**
  * Explore-only Follow toggle. Navigation/framing, not selection.
  * docs/architecture/34-selected-tracer-follow-camera-architecture.md
+ * Disabled reason: docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md F8
  */
 export function ExploreFollowControl({
   followEnabled,
@@ -20,9 +24,14 @@ export function ExploreFollowControl({
         <button
           type="button"
           className="tracer-runtime-controls__button"
-          aria-label="Follow selected tracer"
+          aria-label={
+            canFollow
+              ? "Follow selected tracer"
+              : `Follow selected tracer — ${FOLLOW_REQUIRES_SELECTION_REASON}`
+          }
           aria-pressed={pressed}
           disabled={!canFollow}
+          title={!canFollow ? FOLLOW_REQUIRES_SELECTION_REASON : undefined}
           onClick={() => {
             if (!canFollow) {
               return;
@@ -32,6 +41,11 @@ export function ExploreFollowControl({
         >
           Follow
         </button>
+        {!canFollow ? (
+          <span className="control-disabled-reason">
+            {FOLLOW_REQUIRES_SELECTION_REASON}
+          </span>
+        ) : null}
       </div>
     </div>
   );

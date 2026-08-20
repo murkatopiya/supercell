@@ -37,8 +37,11 @@ describe("VisualAirflowWorkbenchControls V1 product surface", () => {
     const html = markup("advected-comet");
     expect(html).toContain("Airflow view");
     expect(html).toContain("Flow comets");
-    expect(html).toContain("Eulerian directions — diagnostic");
+    expect(html).toContain("Eulerian — diagnostic");
     expect(html).toContain('aria-pressed="true"');
+    expect(html).toContain("tails ≠ history");
+    expect(html).toContain("spacing ≠ density");
+    expect(html).toContain("About airflow view");
     expect(html).toContain(
       "Airflow marks show motion and direction in the prescribed total velocity field, V_total.",
     );
@@ -69,10 +72,12 @@ describe("VisualAirflowWorkbenchControls V1 product surface", () => {
   it("groups Highlight as a diagnostic tool defaulting Off with six operands", () => {
     expect(DEFAULT_OPERAND_HIGHLIGHT_MODE).toBe("off");
     const html = markup("advected-comet", "off");
-    expect(html).toContain("Diagnostic airflow tools");
+    expect(html).toContain("Diagnostic tools");
     expect(html).toContain("Highlight");
     expect(html).toContain("Off");
     expect(html).toContain("Choose");
+    expect(html).toContain("not a separate air mass");
+    expect(html).toContain("About diagnostic tools");
     expect(html).toContain(
       "Highlight tints where one selected storm operand contributes",
     );
@@ -99,21 +104,37 @@ describe("VisualAirflowWorkbenchControls V1 product surface", () => {
     expect(html).toContain("Depth cue");
     expect(html).toContain('type="checkbox"');
     expect(html).not.toMatch(/checked=""/);
+    expect(html).toContain("not meteorological fog");
     expect(html).toContain(
       "Depth cue changes background airflow salience with camera distance",
     );
-    expect(html).toContain("not meteorological fog");
+  });
+
+  it("keeps full anti-claims on demand rather than permanent multi-paragraph chrome", () => {
+    expect(controlsSrc).toMatch(/<details/);
+    expect(controlsSrc).toMatch(/About airflow view/);
+    expect(controlsSrc).toMatch(/About diagnostic tools/);
+    expect(controlsSrc).toMatch(/copy--compact/);
+    const html = markup("advected-comet");
+    expect(html).toContain("<details");
+    expect(html).toContain("About airflow view");
   });
 
   it("replaces Eulerian copy when the diagnostic view is active", () => {
     const html = markup("eulerian-oriented");
+    expect(html).toContain("Fixed-position V_total samples");
     expect(html).toContain(
       "Eulerian direction marks sample the prescribed total velocity field, V_total",
     );
     expect(html).toContain(
       "They show instantaneous direction, not moving air parcels",
     );
-    expect(html).not.toContain("Short tails are direction cues");
+    expect(html).not.toContain(
+      ">Short tails are direction cues, not tracer histories<",
+    );
+    expect(html).not.toContain(
+      "tails ≠ history; spacing ≠ density.",
+    );
   });
 
   it("removes user-visible research / workbench apology copy", () => {

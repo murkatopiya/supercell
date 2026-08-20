@@ -29,9 +29,22 @@ const HIGHLIGHT_COPY =
 const DEPTH_CUE_COPY =
   "Depth cue changes background airflow salience with camera distance. It is a viewing aid, not meteorological fog or an atmospheric quantity.";
 
+const FLOW_COMETS_LINE =
+  "V_total direction cues — tails ≠ history; spacing ≠ density.";
+
+const EULERIAN_DIRECTIONS_LINE =
+  "Fixed-position V_total samples — not parcels; spacing ≠ density.";
+
+const HIGHLIGHT_LINE =
+  "Tint shows one storm operand’s contribution — not a separate air mass.";
+
+const DEPTH_CUE_LINE = "Viewing aid only — not meteorological fog.";
+
 /**
  * Explore V1 airflow product controls. Comets are the default view;
  * Eulerian directions remain a diagnostic alternative.
+ * Slice B: compact chrome; full anti-claims remain on-demand.
+ * docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
  */
 export function VisualAirflowWorkbenchControls({
   mode,
@@ -43,6 +56,8 @@ export function VisualAirflowWorkbenchControls({
 }: VisualAirflowWorkbenchControlsProps) {
   const airflowViewCopy =
     mode === "eulerian-oriented" ? EULERIAN_DIRECTIONS_COPY : FLOW_COMETS_COPY;
+  const airflowViewLine =
+    mode === "eulerian-oriented" ? EULERIAN_DIRECTIONS_LINE : FLOW_COMETS_LINE;
 
   return (
     <div className="visual-airflow-workbench-controls">
@@ -55,6 +70,7 @@ export function VisualAirflowWorkbenchControls({
             type="button"
             className="tracer-runtime-controls__button"
             aria-pressed={mode === "advected-comet"}
+            title={FLOW_COMETS_COPY}
             onClick={() => onModeChange("advected-comet")}
           >
             Flow comets
@@ -63,17 +79,26 @@ export function VisualAirflowWorkbenchControls({
             type="button"
             className="tracer-runtime-controls__button"
             aria-pressed={mode === "eulerian-oriented"}
+            title={EULERIAN_DIRECTIONS_COPY}
             onClick={() => onModeChange("eulerian-oriented")}
           >
-            Eulerian directions — diagnostic
+            Eulerian — diagnostic
           </button>
         </div>
-        <p className="visual-airflow-workbench-controls__copy">{airflowViewCopy}</p>
+        <p className="visual-airflow-workbench-controls__copy visual-airflow-workbench-controls__copy--compact">
+          {airflowViewLine}
+        </p>
+        <details className="visual-airflow-workbench-controls__details">
+          <summary>About airflow view</summary>
+          <p className="visual-airflow-workbench-controls__copy">
+            {airflowViewCopy}
+          </p>
+        </details>
       </div>
 
-      <div className="visual-airflow-workbench-controls__group">
+      <div className="visual-airflow-workbench-controls__group visual-airflow-workbench-controls__group--diagnostic">
         <span className="visual-airflow-workbench-controls__label">
-          Diagnostic airflow tools
+          Diagnostic tools
         </span>
         <div className="visual-airflow-workbench-controls__row">
           <span className="visual-airflow-workbench-controls__label">
@@ -83,6 +108,7 @@ export function VisualAirflowWorkbenchControls({
             type="button"
             className="tracer-runtime-controls__button"
             aria-pressed={highlightMode === "off"}
+            title={HIGHLIGHT_COPY}
             onClick={() => onHighlightModeChange("off")}
           >
             Off
@@ -92,6 +118,7 @@ export function VisualAirflowWorkbenchControls({
             <select
               className="visual-airflow-workbench-controls__select"
               aria-label="Highlighted storm operand"
+              title={HIGHLIGHT_COPY}
               value={highlightMode === "off" ? "" : highlightMode}
               onChange={(event) => {
                 const next = event.target.value;
@@ -112,13 +139,10 @@ export function VisualAirflowWorkbenchControls({
               ))}
             </select>
           </label>
-        </div>
-        <p className="visual-airflow-workbench-controls__copy">{HIGHLIGHT_COPY}</p>
-      </div>
-
-      <div className="visual-airflow-workbench-controls__group">
-        <div className="visual-airflow-workbench-controls__row">
-          <label className="visual-airflow-workbench-controls__field">
+          <label
+            className="visual-airflow-workbench-controls__field"
+            title={DEPTH_CUE_COPY}
+          >
             <input
               type="checkbox"
               checked={depthCueEnabled}
@@ -129,7 +153,18 @@ export function VisualAirflowWorkbenchControls({
             Depth cue
           </label>
         </div>
-        <p className="visual-airflow-workbench-controls__copy">{DEPTH_CUE_COPY}</p>
+        <p className="visual-airflow-workbench-controls__copy visual-airflow-workbench-controls__copy--compact">
+          {HIGHLIGHT_LINE} {DEPTH_CUE_LINE}
+        </p>
+        <details className="visual-airflow-workbench-controls__details">
+          <summary>About diagnostic tools</summary>
+          <p className="visual-airflow-workbench-controls__copy">
+            {HIGHLIGHT_COPY}
+          </p>
+          <p className="visual-airflow-workbench-controls__copy">
+            {DEPTH_CUE_COPY}
+          </p>
+        </details>
       </div>
     </div>
   );

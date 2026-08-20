@@ -9,8 +9,11 @@ export interface ExplorePointReleaseControlsProps {
   onClear: () => void;
 }
 
+const PENDING_REQUIRED_REASON = "Click the ground to place a release point first.";
+
 /**
- * Compact Slice 4 Explore controls. Not the final product panel.
+ * Explore release controls. Compact Slice B action-rail surface.
+ * docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
  */
 export function ExplorePointReleaseControls({
   altitudeM,
@@ -25,7 +28,7 @@ export function ExplorePointReleaseControls({
   return (
     <div className="explore-point-release-controls">
       <p className="explore-point-release-controls__copy">
-        Release tracer. Release passive tracers into the current storm-relative laboratory.
+        Release passive tracers at a chosen altitude.
       </p>
       <div className="explore-point-release-controls__row">
         <label className="explore-point-release-controls__field">
@@ -50,7 +53,7 @@ export function ExplorePointReleaseControls({
             type="checkbox"
             checked={placementEnabled}
             onChange={(event) =>
-              onPlacementEnabledChange(event.target.checked)
+              onPlacementEnabledChange(event.currentTarget.checked)
             }
           />
           Enable placement
@@ -59,6 +62,12 @@ export function ExplorePointReleaseControls({
           type="button"
           className="tracer-runtime-controls__button"
           disabled={!hasPending}
+          title={!hasPending ? PENDING_REQUIRED_REASON : undefined}
+          aria-label={
+            hasPending
+              ? "Confirm release"
+              : `Confirm release — ${PENDING_REQUIRED_REASON}`
+          }
           onClick={onConfirm}
         >
           Confirm
@@ -67,6 +76,12 @@ export function ExplorePointReleaseControls({
           type="button"
           className="tracer-runtime-controls__button"
           disabled={!hasPending}
+          title={!hasPending ? PENDING_REQUIRED_REASON : undefined}
+          aria-label={
+            hasPending
+              ? "Cancel pending release"
+              : `Cancel pending release — ${PENDING_REQUIRED_REASON}`
+          }
           onClick={onCancel}
         >
           Cancel
@@ -74,11 +89,16 @@ export function ExplorePointReleaseControls({
         <button
           type="button"
           className="tracer-runtime-controls__button"
+          aria-label="Clear released tracers"
+          title="Clear released tracers (not simulation Reset or Reset View)"
           onClick={onClear}
         >
           Clear
         </button>
       </div>
+      {!hasPending ? (
+        <p className="control-disabled-reason">{PENDING_REQUIRED_REASON}</p>
+      ) : null}
     </div>
   );
 }
