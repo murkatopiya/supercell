@@ -1298,8 +1298,9 @@ class, not queued.
 Not a backlog commitment.
 
 ```text
-U1  Whether the M2 product default is `points` or `comets` —
-    owned by the successor SoT, not by this file
+U1  RESOLVED BY `39`: M2 product default = existing Comets;
+    Points and Advected marks hidden; Eulerian directions
+    remain exposed as a diagnostic alternative
 U2  Whether F4 (viewport priority) and F5 (diagnostics fold)
     are closed by reordering inside M3 or admitted as
     CONDITIONAL after Phase 4
@@ -1374,6 +1375,9 @@ Successor architecture SoT required by this file:
 ```text
 docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 ```
+
+Successor status: M2 product-state decision **DECIDED** in
+`39`; production M2 implementation remains **NOT STARTED**.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1457,9 +1461,8 @@ READINESS           architecture 90 / physics 95 / interaction 85
 CONFIDENCE          HIGH on the promise wording, on one fixed
                     environment, on preserving three Guided
                     experiments, and on no new physics
-                    MEDIUM on the exact M2 default encoding
-                    (successor SoT owns it) and on whether F4/F5
-                    survive Phase 3
+                    M2 default resolved by successor `39`
+                    MEDIUM on whether F4/F5 survive Phase 3
 ```
 
 ---
