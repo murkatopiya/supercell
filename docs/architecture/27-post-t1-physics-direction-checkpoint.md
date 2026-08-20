@@ -28,6 +28,17 @@ architecture SoT. This file remains the post-T1 *direction*
 checkpoint. Completing `23` or `28` does **not** start
 implementation.
 
+Successor post-Candidate-A direction checkpoint:
+
+```text
+docs/architecture/29-post-candidate-a-physics-direction-checkpoint.md
+```
+
+`29` answers what is earned after validated headless
+Candidate A. This file does **not** rank that work.
+Completing Candidate A does **not** make stretching, T2,
+or `ω → V` automatic.
+
 Predecessor T1 physics:
 
 ```text
