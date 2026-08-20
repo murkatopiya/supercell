@@ -4,14 +4,15 @@
 **Scope:** diagnostic tilting of environmental horizontal vorticity
 into vertical vorticity, in the current prescribed storm-relative
 kinematic laboratory.
-**Implementation:** T1 diagnostic owner NOT STARTED.
+**Implementation:** Slice 2 COMPLETE.
+`DiagnosticTiltingTendency` is the headless T1 owner.
 Architecture Slice 1 (analytic `∇_h Vy` on
 `VerticalEnvelopeUpdraftField`) is implemented.
+T1 HEADLESS CAPABILITY IMPLEMENTED. UI NOT STARTED.
 `V_total` unchanged.
 **Architecture:** this file does not own architecture.
 Successor architecture SoT:
 `docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
-T1 owner / Slice 2 remain NOT STARTED.
 
 ```text
 V_total:                 UNCHANGED
@@ -1346,8 +1347,8 @@ NEW PROJECT DERIVATION: §§5–8, 10–13, 19–20, and the T1 formula.
 
 ```text
 T1 architecture SoT          (successor: docs/architecture/26)
-production diagnostic API
-Inspector / visualization
+production diagnostic API    DONE — headless DiagnosticTiltingTendency
+Inspector / visualization    UI NOT STARTED
 stretching physics SoT
 prognostic ω_y
 ω → V closure
@@ -1419,7 +1420,7 @@ true.
 
 **YES** — and that SoT now exists:
 `docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
-Physics implementation remains NOT STARTED.
+Headless T1 owner implemented (Slice 2). UI not started.
 
 ---
 
@@ -1450,4 +1451,8 @@ prognostic ω:         none
 architecture SoT:     docs/architecture/26
                       (this file remains physics only)
 physics verdict:      YES
+implementation:       Slice 1 COMPLETE
+                      Slice 2 COMPLETE
+                      T1 HEADLESS CAPABILITY IMPLEMENTED
+                      UI NOT STARTED
 ```

@@ -9,7 +9,8 @@ composition wiring, observation boundaries, tests, slices
 `docs/architecture/25-tilting-stretching-direction-revalidation.md`
 **Implementation:** Slice 1 COMPLETE
 (`VerticalEnvelopeUpdraftField.horizontalGradientOfVerticalVelocity`).
-Slice 2 NOT STARTED. `DiagnosticTiltingTendency` not implemented.
+Slice 2 COMPLETE. `DiagnosticTiltingTendency` implemented.
+T1 HEADLESS CAPABILITY IMPLEMENTED. UI NOT STARTED.
 Production `V_total` unchanged.
 
 ```text
@@ -759,13 +760,14 @@ Isolated tests. No T1 type. `VelocityField` interface unchanged.
 
 ### Slice 2 — T1 + canonical wiring
 
-**NEXT.** Not started.
+**COMPLETE.**
 
 `worldHorizontalVorticityFromAtmospheric`, segment `ω_h`,
 `DiagnosticTiltingTendency`, composition + Explore/Guided lab
 sibling, tests `22.1`, `22.2`, `22.4`.
 
 Headless. `V_total` and tracer motion unchanged by construction.
+UI / Inspector / visualization not started.
 
 ### Slice 3 — not UI
 
@@ -884,12 +886,12 @@ Slice 1 gradient; Slice 2 T1 + wiring; no UI slice. §23.
 
 ### L. STOP after architecture
 
-Implementation is **not** authorized by this file. No production
-code. No Inspector. No overlay.
+This file did not authorize implementation. Slice 1 and Slice 2
+were completed by later explicit commands. UI / Inspector /
+overlay remain unauthorized here.
 
-No physics blocker remains for that later implementation
-command. Continuity YELLOW is not a blocker. Completing slices
-still requires an explicit implementation command.
+Continuity YELLOW is not a blocker. Do not start Slice 3 UI
+without a separate command.
 
 ---
 
@@ -916,5 +918,7 @@ C / Ω / V_other:    structurally independent
 state:              none
 UI completion:      not required
 implementation:     Slice 1 COMPLETE
-                    Slice 2 NOT STARTED
+                    Slice 2 COMPLETE
+                    T1 HEADLESS CAPABILITY IMPLEMENTED
+                    UI NOT STARTED
 ```

@@ -1,6 +1,7 @@
 import { CompositeVelocityField } from "../core/fields/CompositeVelocityField.js";
 import type { VelocityField } from "../core/fields/VelocityField.js";
 import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
+import { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
 import { EnvironmentalWindField } from "../physics/environment/EnvironmentalWindField.js";
 import { StormRelativeEnvironmentalAdvectionField } from "../physics/environment/StormRelativeEnvironmentalAdvectionField.js";
 import { createDowndraftField } from "../scenario/createDowndraftField.js";
@@ -53,6 +54,11 @@ export interface DemoObservedTracerSimulation {
   readonly velocityObservation: InspectableVelocityOperands;
   /** Same Euler instance Simulation integrates. Not a second policy. */
   readonly integrator: EulerIntegrator;
+  /**
+   * Sibling diagnostic of velocityObservation, not a V_total operand.
+   * Built from the same profile and updraftField instances.
+   */
+  readonly tiltingTendency: DiagnosticTiltingTendency;
 }
 
 function environmentalOperand(
@@ -149,14 +155,19 @@ export function demoInspectableVelocityOperands(
 /**
  * One composition pass: Simulation integrates `velocityObservation.total`,
  * which is the same CompositeVelocityField instance built from `parts`.
+ * T1 observes the same profile and updraftField instances; it is not
+ * a parts row and is not owned by Simulation.
  */
 export function composeDemoTracersWithObservation(
   integrationFrame: IntegrationFrame,
   particles: TracerAdvectionState[],
 ): DemoObservedTracerSimulation {
-  const velocityObservation = demoInspectableVelocityOperands(
-    composeDemoTracerFields(integrationFrame),
-  );
+  const composed = composeDemoTracerFields(integrationFrame);
+  const tiltingTendency = new DiagnosticTiltingTendency({
+    profile: composed.profile,
+    updraft: composed.updraftField,
+  });
+  const velocityObservation = demoInspectableVelocityOperands(composed);
   const integrator = new EulerIntegrator();
   return {
     simulation: new Simulation(
@@ -167,6 +178,7 @@ export function composeDemoTracersWithObservation(
     ),
     velocityObservation,
     integrator,
+    tiltingTendency,
   };
 }
 

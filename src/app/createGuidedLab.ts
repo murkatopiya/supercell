@@ -5,6 +5,7 @@
 import { resetTracersFromSeeds } from "../simulation/resetTracersFromSeeds.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import { TracerSelection } from "../interaction/TracerSelection.js";
+import type { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
 import type { Simulation } from "../simulation/Simulation.js";
 import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import { GuidedExperimentId } from "../guided/GuidedExperiment.js";
@@ -25,14 +26,16 @@ export interface GuidedLab {
   readonly pathHistory: TracerPathHistory | null;
   readonly velocityObservation: InspectableVelocityOperands;
   readonly keepInactiveGlyphs: boolean;
+  readonly tiltingTendency: DiagnosticTiltingTendency;
 }
 
 export function createGuidedLab(id: GuidedExperimentId): GuidedLab {
   const policy = guidedExperimentCompositionFor(id);
-  const { simulation, velocityObservation } = composeDemoTracerLab(
-    IntegrationFrame.StormRelativeLaboratory,
-    policy.pedagogy,
-  );
+  const { simulation, velocityObservation, tiltingTendency } =
+    composeDemoTracerLab(
+      IntegrationFrame.StormRelativeLaboratory,
+      policy.pedagogy,
+    );
   return {
     kind: "guided",
     experimentId: id,
@@ -43,6 +46,7 @@ export function createGuidedLab(id: GuidedExperimentId): GuidedLab {
     ),
     velocityObservation,
     keepInactiveGlyphs: policy.keepInactiveGlyphs,
+    tiltingTendency,
   };
 }
 
