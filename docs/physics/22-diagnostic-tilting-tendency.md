@@ -4,11 +4,14 @@
 **Scope:** diagnostic tilting of environmental horizontal vorticity
 into vertical vorticity, in the current prescribed storm-relative
 kinematic laboratory.
-**Implementation:** none. Docs-only. Production `src/**` unchanged.
+**Implementation:** T1 diagnostic owner NOT STARTED.
+Architecture Slice 1 (analytic `∇_h Vy` on
+`VerticalEnvelopeUpdraftField`) is implemented.
+`V_total` unchanged.
 **Architecture:** this file does not own architecture.
 Successor architecture SoT:
 `docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
-Implementation remains NOT STARTED.
+T1 owner / Slice 2 remain NOT STARTED.
 
 ```text
 V_total:                 UNCHANGED

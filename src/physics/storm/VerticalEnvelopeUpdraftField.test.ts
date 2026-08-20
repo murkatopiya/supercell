@@ -357,4 +357,312 @@ describe("VerticalEnvelopeUpdraftField", () => {
         }),
     ).toThrow(VerticalEnvelopeUpdraftFieldError);
   });
+
+  describe("horizontalGradientOfVerticalVelocity", () => {
+    function expectedGradient(dx: number, dz: number, y: number) {
+      const expectedFactor =
+        peakVerticalVelocity *
+        verticalEnvelope(y) *
+        Math.exp(-(dx * dx + dz * dz) / (2 * sigma * sigma));
+      return {
+        dVyDx: expectedFactor * (-dx / (sigma * sigma)),
+        dVyDz: expectedFactor * (-dz / (sigma * sigma)),
+      };
+    }
+
+    it("is zero on the axis inside the layer", () => {
+      const field = createField();
+      const g = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX, y: yMid, z: centerZ },
+        0,
+      );
+
+      expect(g.dVyDx).toBe(0);
+      expect(g.dVyDz).toBe(0);
+    });
+
+    it("has dVyDx < 0 and dVyDz = 0 east of center when F > 0", () => {
+      const field = createField();
+      const dx = 800;
+      const g = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX + dx, y: yMid, z: centerZ },
+        0,
+      );
+
+      expect(g.dVyDx).toBeLessThan(0);
+      expect(g.dVyDz).toBe(0);
+    });
+
+    it("has dVyDx > 0 west of center when F > 0", () => {
+      const field = createField();
+      const g = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX - 800, y: yMid, z: centerZ },
+        0,
+      );
+
+      expect(g.dVyDx).toBeGreaterThan(0);
+      expect(g.dVyDz).toBe(0);
+    });
+
+    it("has dVyDz < 0 south of center (+Z) when F > 0", () => {
+      const field = createField();
+      const g = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX, y: yMid, z: centerZ + 600 },
+        0,
+      );
+
+      expect(g.dVyDx).toBe(0);
+      expect(g.dVyDz).toBeLessThan(0);
+    });
+
+    it("has dVyDz > 0 north of center (−Z) when F > 0", () => {
+      const field = createField();
+      const g = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX, y: yMid, z: centerZ - 600 },
+        0,
+      );
+
+      expect(g.dVyDx).toBe(0);
+      expect(g.dVyDz).toBeGreaterThan(0);
+    });
+
+    it("mirrors dVyDx across the axis in x", () => {
+      const field = createField();
+      const a = 900;
+      const y = yMid - 400;
+      const east = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX + a, y, z: centerZ },
+        0,
+      );
+      const west = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX - a, y, z: centerZ },
+        0,
+      );
+
+      expect(east.dVyDx).toBeCloseTo(-west.dVyDx, 12);
+      expect(Math.abs(east.dVyDx)).toBeCloseTo(Math.abs(west.dVyDx), 12);
+      expect(east.dVyDz).toBe(0);
+      expect(west.dVyDz).toBe(0);
+    });
+
+    it("mirrors dVyDz across the axis in z", () => {
+      const field = createField();
+      const a = 700;
+      const y = yMid - 400;
+      const south = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX, y, z: centerZ + a },
+        0,
+      );
+      const north = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX, y, z: centerZ - a },
+        0,
+      );
+
+      expect(south.dVyDz).toBeCloseTo(-north.dVyDz, 12);
+      expect(Math.abs(south.dVyDz)).toBeCloseTo(Math.abs(north.dVyDz), 12);
+      expect(south.dVyDx).toBe(0);
+      expect(north.dVyDx).toBe(0);
+    });
+
+    it("matches the independent analytic formula at arbitrary interior points", () => {
+      const field = createField();
+      const points = [
+        { dx: 500, dz: 400, y: yMid - 900 },
+        { dx: -1200, dz: 80, y: yMid },
+        { dx: 0, dz: -1500, y: yMid + 600 },
+        { dx: 300, dz: -250, y: baseHeight + 50 },
+      ];
+
+      for (const { dx, dz, y } of points) {
+        const g = field.horizontalGradientOfVerticalVelocity(
+          { x: centerX + dx, y, z: centerZ + dz },
+          0,
+        );
+        const expected = expectedGradient(dx, dz, y);
+        expect(g.dVyDx).toBeCloseTo(expected.dVyDx, 12);
+        expect(g.dVyDz).toBeCloseTo(expected.dVyDz, 12);
+      }
+    });
+
+    it("tends to zero in the far field and matches the analytic tail", () => {
+      const field = createField();
+      const dx = 8 * sigma;
+      const g = field.horizontalGradientOfVerticalVelocity(
+        { x: centerX + dx, y: yMid, z: centerZ },
+        0,
+      );
+      const expected = expectedGradient(dx, 0, yMid);
+
+      expect(Math.abs(g.dVyDx)).toBeLessThan(1e-12);
+      expect(g.dVyDx).toBeCloseTo(expected.dVyDx, 12);
+      expect(g.dVyDz).toBe(0);
+    });
+
+    it("is zero outside the vertical layer", () => {
+      const field = createField();
+      const points = [
+        { x: centerX + 400, y: baseHeight - 1, z: centerZ - 100 },
+        { x: centerX, y: -200, z: centerZ },
+        { x: centerX - 900, y: topHeight + 1, z: centerZ + 50 },
+        { x: centerX, y: 12000, z: centerZ },
+      ];
+
+      for (const p of points) {
+        expect(field.horizontalGradientOfVerticalVelocity(p, 0)).toEqual({
+          dVyDx: 0,
+          dVyDz: 0,
+        });
+      }
+    });
+
+    it("is zero at both lids where Vy = 0", () => {
+      const field = createField();
+      const offAxis = { x: centerX + 600, z: centerZ - 200 };
+      const atBase = field.horizontalGradientOfVerticalVelocity(
+        { ...offAxis, y: baseHeight },
+        0,
+      );
+      const atTop = field.horizontalGradientOfVerticalVelocity(
+        { ...offAxis, y: topHeight },
+        0,
+      );
+
+      expect(atBase).toEqual({ dVyDx: 0, dVyDz: 0 });
+      expect(atTop).toEqual({ dVyDx: 0, dVyDz: 0 });
+      expect(field.sample({ ...offAxis, y: baseHeight }, 0).y).toBeCloseTo(
+        0,
+        12,
+      );
+      expect(field.sample({ ...offAxis, y: topHeight }, 0).y).toBeCloseTo(0, 12);
+    });
+
+    it("scales linearly with W0", () => {
+      const base = {
+        centerX,
+        centerZ,
+        sigma,
+        baseHeight,
+        topHeight,
+      };
+      const a = new VerticalEnvelopeUpdraftField({
+        ...base,
+        peakVerticalVelocity,
+      });
+      const b = new VerticalEnvelopeUpdraftField({
+        ...base,
+        peakVerticalVelocity: 2 * peakVerticalVelocity,
+      });
+      const p = { x: centerX + 500, y: yMid - 200, z: centerZ + 300 };
+      const ga = a.horizontalGradientOfVerticalVelocity(p, 0);
+      const gb = b.horizontalGradientOfVerticalVelocity(p, 0);
+
+      expect(gb.dVyDx).toBeCloseTo(2 * ga.dVyDx, 12);
+      expect(gb.dVyDz).toBeCloseTo(2 * ga.dVyDz, 12);
+    });
+
+    it("at fixed r/σ, |∇_h Vy| scales as 1/σ", () => {
+      const y = yMid;
+      const sigmaA = sigma;
+      const sigmaB = 2 * sigma;
+      const a = new VerticalEnvelopeUpdraftField({
+        centerX,
+        centerZ,
+        peakVerticalVelocity,
+        sigma: sigmaA,
+        baseHeight,
+        topHeight,
+      });
+      const b = new VerticalEnvelopeUpdraftField({
+        centerX,
+        centerZ,
+        peakVerticalVelocity,
+        sigma: sigmaB,
+        baseHeight,
+        topHeight,
+      });
+      const ga = a.horizontalGradientOfVerticalVelocity(
+        { x: centerX + sigmaA, y, z: centerZ },
+        0,
+      );
+      const gb = b.horizontalGradientOfVerticalVelocity(
+        { x: centerX + sigmaB, y, z: centerZ },
+        0,
+      );
+
+      expect(ga.dVyDz).toBe(0);
+      expect(gb.dVyDz).toBe(0);
+      expect(gb.dVyDx).toBeCloseTo(ga.dVyDx / 2, 12);
+    });
+
+    it("is steady in time for the current envelope", () => {
+      const field = createField();
+      const position = { x: centerX + 100, y: yMid - 50, z: centerZ - 20 };
+      const g0 = field.horizontalGradientOfVerticalVelocity(position, 0);
+      const g1 = field.horizontalGradientOfVerticalVelocity(position, 99);
+
+      expect(g0).toEqual(g1);
+      expect(g0).not.toBe(g1);
+      expect(position).toEqual({
+        x: centerX + 100,
+        y: yMid - 50,
+        z: centerZ - 20,
+      });
+    });
+
+    it("rejects non-finite position or time", () => {
+      const field = createField();
+      const ok = { x: centerX, y: yMid, z: centerZ };
+
+      expect(() =>
+        field.horizontalGradientOfVerticalVelocity(
+          { ...ok, x: Number.NaN },
+          0,
+        ),
+      ).toThrow(VerticalEnvelopeUpdraftFieldError);
+      expect(() =>
+        field.horizontalGradientOfVerticalVelocity(
+          { ...ok, y: Number.POSITIVE_INFINITY },
+          0,
+        ),
+      ).toThrow(VerticalEnvelopeUpdraftFieldError);
+      expect(() =>
+        field.horizontalGradientOfVerticalVelocity(
+          { ...ok, z: Number.NEGATIVE_INFINITY },
+          0,
+        ),
+      ).toThrow(VerticalEnvelopeUpdraftFieldError);
+      expect(() =>
+        field.horizontalGradientOfVerticalVelocity(ok, Number.NaN),
+      ).toThrow(VerticalEnvelopeUpdraftFieldError);
+      expect(() =>
+        field.horizontalGradientOfVerticalVelocity(
+          ok,
+          Number.POSITIVE_INFINITY,
+        ),
+      ).toThrow(VerticalEnvelopeUpdraftFieldError);
+    });
+
+    it("does not change sample() at center, lids, outside, or an interior point", () => {
+      const field = createField();
+      const points = [
+        { x: centerX, y: yMid, z: centerZ },
+        { x: centerX + 600, y: baseHeight, z: centerZ - 200 },
+        { x: centerX, y: topHeight, z: centerZ },
+        { x: centerX + 400, y: baseHeight - 1, z: centerZ },
+        { x: centerX + 500, y: yMid - 900, z: centerZ + 400 },
+      ];
+
+      for (const p of points) {
+        const v = field.sample(p, 0);
+        expect(v.x).toBe(0);
+        expect(v.z).toBe(0);
+        expect(v.y).toBeCloseTo(
+          expectedVy(p.x - centerX, p.z - centerZ, p.y),
+          12,
+        );
+        field.horizontalGradientOfVerticalVelocity(p, 0);
+        expect(field.sample(p, 7)).toEqual(v);
+      }
+    });
+  });
 });

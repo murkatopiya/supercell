@@ -20,6 +20,18 @@ export class VerticalEnvelopeUpdraftFieldError extends Error {
   readonly name = "VerticalEnvelopeUpdraftFieldError";
 }
 
+/**
+ * Analytic horizontal gradient of world vertical velocity.
+ * Units: 1/s. Not a Vec3; there is no dummy vertical component.
+ * docs/physics/22-diagnostic-tilting-tendency.md §11
+ */
+export interface HorizontalGradientOfVerticalVelocity {
+  /** ∂Vy/∂x. Units: 1/s */
+  readonly dVyDx: number;
+  /** ∂Vy/∂z. Units: 1/s */
+  readonly dVyDz: number;
+}
+
 function assertFinite(value: number, label: string): void {
   if (!Number.isFinite(value)) {
     throw new VerticalEnvelopeUpdraftFieldError(`${label} must be finite`);
@@ -89,5 +101,48 @@ export class VerticalEnvelopeUpdraftField implements VelocityField {
     const w = this.peakVerticalVelocity * radialEnvelope * verticalEnvelope;
 
     return { x: 0, y: w, z: 0 };
+  }
+
+  /**
+   * Analytic ∇_h Vy of this field. Same W0, σ, center, and F(y) as sample.
+   * Accepts laboratory time; the current envelope is Eulerian-steady.
+   * Units: 1/s.
+   *
+   * dVyDx = W0 F E_r (−dx / σ²)
+   * dVyDz = W0 F E_r (−dz / σ²)
+   *
+   * Outside [baseHeight, topHeight], F = 0 ⇒ both components 0.
+   * Not a VelocityField.derivative / curl API.
+   */
+  horizontalGradientOfVerticalVelocity(
+    position: Vec3,
+    time: number,
+  ): HorizontalGradientOfVerticalVelocity {
+    assertFinite(position.x, "position.x");
+    assertFinite(position.y, "position.y");
+    assertFinite(position.z, "position.z");
+    assertFinite(time, "time");
+
+    // Closed interval: F(y_b)=F(y_t)=0 exactly. Do not use sin(π),
+    // which is a tiny IEEE residual and would leak a fake gradient.
+    if (position.y <= this.baseHeight || position.y >= this.topHeight) {
+      return { dVyDx: 0, dVyDz: 0 };
+    }
+
+    const dx = position.x - this.centerX;
+    const dz = position.z - this.centerZ;
+    const r2 = dx * dx + dz * dz;
+    const radialEnvelope = Math.exp(-r2 / (2 * this.sigma * this.sigma));
+    const xi = (position.y - this.baseHeight) / this.heightSpan;
+    const verticalEnvelope = Math.sin(Math.PI * xi);
+    const factor =
+      this.peakVerticalVelocity * verticalEnvelope * radialEnvelope;
+    const invSigma2 = 1 / (this.sigma * this.sigma);
+
+    // 0 - x avoids IEEE signed zero from multiplying by dx/dz = 0
+    return {
+      dVyDx: 0 - factor * dx * invSigma2,
+      dVyDz: 0 - factor * dz * invSigma2,
+    };
   }
 }

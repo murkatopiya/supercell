@@ -7,8 +7,10 @@ composition wiring, observation boundaries, tests, slices
 (authoritative derivation; not reopened here)
 **Direction checkpoint:**
 `docs/architecture/25-tilting-stretching-direction-revalidation.md`
-**Implementation:** NOT STARTED. Docs-only. Production `src/**`
-unchanged.
+**Implementation:** Slice 1 COMPLETE
+(`VerticalEnvelopeUpdraftField.horizontalGradientOfVerticalVelocity`).
+Slice 2 NOT STARTED. `DiagnosticTiltingTendency` not implemented.
+Production `V_total` unchanged.
 
 ```text
 V_total:                 UNCHANGED
@@ -751,11 +753,13 @@ Implementation is **not** started by this file. When commanded:
 
 ### Slice 1 — analytic updraft `∇_h Vy`
 
+**COMPLETE.**
 `VerticalEnvelopeUpdraftField.horizontalGradientOfVerticalVelocity`.
-Isolated tests (`22.3`). No T1 type yet. No UI. `VelocityField`
-interface unchanged.
+Isolated tests. No T1 type. `VelocityField` interface unchanged.
 
 ### Slice 2 — T1 + canonical wiring
+
+**NEXT.** Not started.
 
 `worldHorizontalVorticityFromAtmospheric`, segment `ω_h`,
 `DiagnosticTiltingTendency`, composition + Explore/Guided lab
@@ -911,5 +915,6 @@ visualization:      does not consume T1
 C / Ω / V_other:    structurally independent
 state:              none
 UI completion:      not required
-implementation:     NOT STARTED
+implementation:     Slice 1 COMPLETE
+                    Slice 2 NOT STARTED
 ```
