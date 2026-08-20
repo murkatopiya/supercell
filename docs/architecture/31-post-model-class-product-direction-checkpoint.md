@@ -23,6 +23,17 @@ NOW and NEXT PHASE. Dataset `V` remains a long-term
 source possibility, not a commitment. This file answers
 what product work is earned **inside that class**.
 
+Successor diagnostic observation UI architecture:
+
+```text
+docs/architecture/32-diagnostic-observation-ui-architecture.md
+```
+
+`32` locks point-first observation UI for T1 and
+Candidate A. This file remains the product-direction
+checkpoint. Completing `31` / `32` does **not** start
+production implementation.
+
 Related product / perception / diagnostics (not replaced):
 
 ```text
@@ -570,8 +581,14 @@ OUT OF SCOPE
   ROADMAP.md
 ```
 
-Filename is not locked here. Do not treat this checkpoint
-as that SoT.
+That design SoT is now:
+
+```text
+docs/architecture/32-diagnostic-observation-ui-architecture.md
+```
+
+This checkpoint is not that SoT and still does not
+authorize implementation.
 
 ### 9.2 Implementation authorization
 
@@ -594,18 +611,24 @@ before implementation.
 
 Not a backlog commitment.
 
+`32` answers U1, U2, and U6. They are left here as this
+checkpoint recorded them; they are not reopened.
+
 ```text
 U1  Inspector diagnostic section vs a panel beside L1/L2
     (L3 was reserved in `19` for env/column; T1/A may
     need a named rotational-diagnostic surface instead
     of stuffing SRH-era L3)
+    → answered in `32`: sibling panel, not L3
 U2  Whether Guided shares the readout in v1 or Explore-only
+    → answered in `32`: adapter shared; panel Explore-only
 U3  When, if ever, an overlay/slice SoT is earned
 U4  Whether camera P1 should be a *separate* product
     slice after diagnostic access
 U5  Whether an Ω=0 scenario exhibit is ever wanted
 U6  Copy language: keep “positive/negative ω_y”; never
     canonicalize cyclonic (`23`)
+    → answered in `32`: positive / negative / zero
 ```
 
 ---
@@ -624,6 +647,7 @@ camera/Follow are not this branch
 comet polish is still deferred (`24`)
 class lock is not a visualization lock-in
 this file is not a diagnostic-UI architecture SoT
+  (successor is `32`)
 this file is not ROADMAP.md
 ```
 
@@ -634,6 +658,8 @@ this file is not ROADMAP.md
 ```text
 this file:     post-model-class product direction
 30:            model class — not replaced
+32:            diagnostic observation UI architecture
+               (successor of this checkpoint)
 24:            perceptual loop — V_total polish still deferred
 21:            capability map — historical ranking; this
                file re-ranks product work after T1/A/30
@@ -641,8 +667,8 @@ this file:     post-model-class product direction
 19:            Inspector L1/L2 live; L3 not started
 ```
 
-Successor pointer only on `30`. Closed physics docs are
-not rewritten.
+Successor of this checkpoint: `32`. Closed physics docs
+are not rewritten.
 
 ---
 
@@ -663,9 +689,7 @@ NEXT PRODUCT DIRECTION: diagnostic ACCESS
                         not overlay v1
                         not new Guided experiment
 
-NEXT DESIGN STEP:       diagnostic observation UI
-                        architecture SoT
-                        NOT WRITTEN HERE
+NEXT DESIGN STEP:       completed as `32`
                         NOT IMPLEMENTATION
 
 V_total PERCEPTUAL
@@ -696,7 +720,9 @@ NEXT DIRECTION
 
 NEXT DESIGN
   diagnostic observation UI architecture
+  → `32`
   NOT THIS FILE
+  NOT IMPLEMENTATION
 
 NOT NEXT
   overlay / signed volume
