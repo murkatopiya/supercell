@@ -5,8 +5,10 @@
 into vertical vorticity, in the current prescribed storm-relative
 kinematic laboratory.
 **Implementation:** none. Docs-only. Production `src/**` unchanged.
-**Architecture:** not this document. Ownership, sampling, Inspector,
-and rendering remain for a later architecture SoT.
+**Architecture:** this file does not own architecture.
+Successor architecture SoT:
+`docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
+Implementation remains NOT STARTED.
 
 ```text
 V_total:                 UNCHANGED
@@ -26,7 +28,7 @@ docs/architecture/25-tilting-stretching-direction-revalidation.md
 
 `25` remains the modeling-direction checkpoint. It ranked T1 as the
 next earned *capability*. This file is the physics derivation of that
-capability. It is not the T1 architecture SoT named in `25` §17.4.
+capability. Architecture ownership lives in `26`, not here.
 
 Coordinate SoT:
 
@@ -1340,7 +1342,7 @@ NEW PROJECT DERIVATION: §§5–8, 10–13, 19–20, and the T1 formula.
 ## 27. Deferred
 
 ```text
-T1 architecture SoT
+T1 architecture SoT          (successor: docs/architecture/26)
 production diagnostic API
 Inspector / visualization
 stretching physics SoT
@@ -1412,9 +1414,9 @@ true.
 
 ### H. Is T1 ready to receive a separate architecture SoT?
 
-**YES.** Physics contract is locked. Architecture ownership,
-sampling, and product placement are still unwritten, as required
-by `25` §17.4.
+**YES** — and that SoT now exists:
+`docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
+Physics implementation remains NOT STARTED.
 
 ---
 
@@ -1442,6 +1444,7 @@ continuity:           YELLOW; T1 ≠ Dω_y/Dt
 baroclinic:           omitted
 V_total:              unchanged
 prognostic ω:         none
-architecture SoT:     not this file
+architecture SoT:     docs/architecture/26
+                      (this file remains physics only)
 physics verdict:      YES
 ```

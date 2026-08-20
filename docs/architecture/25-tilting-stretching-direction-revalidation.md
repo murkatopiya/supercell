@@ -23,9 +23,18 @@ docs/physics/22-diagnostic-tilting-tendency.md
 
 `22` is the physics SoT for diagnostic tilting tendency
 `T_tilt,y`. This file remains the direction-revalidation
-checkpoint. Completing `22` does **not** write the T1
-architecture SoT named in §17.4. Physics implementation
-remains NOT STARTED.
+checkpoint.
+
+Successor T1 architecture SoT:
+
+```text
+docs/architecture/26-diagnostic-tilting-tendency-architecture.md
+```
+
+`26` owns T1 ownership, sampling, wiring, and slices.
+Completing `22` did not write that architecture. Completing
+`26` does **not** start implementation. Physics
+implementation remains NOT STARTED.
 
 Predecessor perceptual / physics-resumption checkpoint:
 
@@ -64,8 +73,8 @@ operands and `VerticalEnvelopeRotationField`. Do not silently
 reconcile that.
 
 This document did **not** change production code.
-It does **not** write the missing tilting / stretching
-architecture SoT.
+It did **not** write the T1 architecture SoT; that successor
+is `26`.
 It does **not** design implementation slices.
 It does **not** add an eighth compositor operand.
 It does **not** resolve vorticity → velocity inversion.
@@ -1472,8 +1481,8 @@ direction:                   CONDITIONAL
 bridge ω_z → V:              none now
                              not automatic tangential field
 
-dedicated architecture SoT:  YES, scoped in §17.4
-                             not written here
+dedicated architecture SoT:  docs/architecture/26
+                             written; implementation NOT STARTED
 
 T1 physics derivation:       docs/physics/22-diagnostic-tilting-tendency.md
                              verdict YES as a kinematic diagnostic
@@ -1513,15 +1522,16 @@ PHYSICS IMPLEMENTATION
 T1 PHYSICS DERIVATION
   docs/physics/22-diagnostic-tilting-tendency.md
   YES as kinematic diagnostic
-  NOT AN ARCHITECTURE SoT
 
-DEDICATED ARCHITECTURE SoT
-  NAMED, NOT WRITTEN
+T1 ARCHITECTURE SoT
+  docs/architecture/26-diagnostic-tilting-tendency-architecture.md
+  WRITTEN
+  IMPLEMENTATION NOT STARTED
 ```
 
 Do not implement tilting because this file exists.
-Do not treat `22` as the architecture SoT of §17.4.
-Do not write the T1 architecture SoT until commanded.
+Do not treat `22` as the architecture SoT; that successor is `26`.
+Do not start T1 implementation until commanded.
 Do not port `15` §9 into production.
 Do not relabel `Ω` as tilting.
 Do not “save” derived rotation if a later command

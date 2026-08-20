@@ -15,8 +15,11 @@ Current perceptual-loop / physics-resumption status:
 `docs/architecture/24-perceptual-exploration-checkpoint.md`.
 Tilting / stretching direction revalidation:
 `docs/architecture/25-tilting-stretching-direction-revalidation.md`.
-Physics pause is lifted for design in `24`; this Inspector
-SoT does not start physics implementation.
+T1 architecture:
+`docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
+T1 is a diagnostic sibling, not an Inspector Level 2
+contribution. This Inspector SoT does not start T1
+implementation or Level 3.
 Slice 1 is headless identity + `TracerSelection`. Slice 2 is a
 headless observation adapter (`TracerInspection`) plus
 composition-held operand instances. Slice 3 is browser-visible

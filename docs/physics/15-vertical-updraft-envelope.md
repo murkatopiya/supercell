@@ -550,7 +550,11 @@ derivative for tests and later diagnostics.
 Horizontal derivatives, from the same separable formula, are
 derived for diagnostic tilting in
 `docs/physics/22-diagnostic-tilting-tendency.md` §11. This
-section still owns `∂Vy/∂y` only.
+section still owns `∂Vy/∂y` only. Architecture of a future
+concrete-class `horizontalGradientOfVerticalVelocity` (not
+`VelocityField.derivative`) lives in
+`docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
+That API is not implemented.
 
 ### 9.3 This is not a continuity solver
 

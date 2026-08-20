@@ -11,9 +11,11 @@ Current modeling-direction revalidation:
 `25` ranks T1 diagnostic tendency as the next design
 target. T1 physics derivation:
 `docs/physics/22-diagnostic-tilting-tendency.md`.
+T1 architecture:
+`docs/architecture/26-diagnostic-tilting-tendency-architecture.md`.
 This file remains the perceptual-loop / pause-lift
-checkpoint. It is not the tilting design SoT. The T1
-architecture SoT is still not written.
+checkpoint. It is not the T1 architecture SoT.
+Implementation remains NOT STARTED.
 **Decision:** the current perceptual question is answered
 enough to proceed. That is not “visualization complete.”
 Comets are a provisional `V_total` representation, not a
