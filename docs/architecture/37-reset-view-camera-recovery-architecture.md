@@ -587,9 +587,20 @@ this file:     Reset View / camera recovery contract
 34:            Follow framing; Stop Following ≠ Reset Camera
 rendering 11:  DEEP_STORM_TRACER_VIEW fixture — pose source
 rendering 02:  simulation Reset does not reset camera
+38:            V1 scope checkpoint — product promise,
+               capability inventory, feature freeze,
+               finite roadmap; scope successor of this file
 ```
 
 Successor of `36`: this file.
+Successor V1 scope checkpoint:
+
+```text
+docs/architecture/38-v1-scope-checkpoint.md
+```
+
+`38` classifies the Guided Reset View control as POST-V1 and
+does not change any contract in this file.
 Closed physics docs are not rewritten.
 
 ---
