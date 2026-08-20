@@ -1,7 +1,8 @@
 # Diagnostic Observation UI Architecture
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
-NO IMPLEMENTATION AUTHORIZATION
+SLICE 1 COMPLETE / SLICE 2 NOT STARTED /
+NO SLICE 2 AUTHORIZATION
 **Scope:** point-first diagnostic *observation* UI for two
 already implemented headless capabilities: T1
 (`T_tilt,y`) and Candidate A (`ω_y,current`). Locks
@@ -13,8 +14,10 @@ Not `ROADMAP.md`.
 **Physics:** T1 and Candidate A remain CLOSED. Model class
 remains prescribed kinematic laboratory (`30`). This file
 does not reopen `22`, `23`, `26`, `28`, `30`, or `31`.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged.
+**Implementation:** Slice 1 COMPLETE
+(`src/interaction/PointDiagnosticObservation.ts`,
+`inspectSelectedPointDiagnostics`). Slice 2 (presentation)
+NOT STARTED and not authorized by this file.
 
 Predecessor product-direction checkpoint:
 
@@ -25,8 +28,9 @@ docs/architecture/31-post-model-class-product-direction-checkpoint.md
 `31` selected point-first diagnostic access for T1 and
 Candidate A, Explore-primary, not L2, not overlay v1, not
 a new Guided experiment. This file is the design SoT that
-checkpoint required. Completing this file does **not**
-authorize production implementation.
+checkpoint required. Completing this file did **not**
+authorize production implementation. Slice 1 was authorized
+separately and is complete. Slice 2 remains unauthorized.
 
 Related contracts (not replaced):
 
@@ -59,9 +63,10 @@ DEFERRED
 ANTI-CLAIM
 ```
 
-This document did **not** change production code.
-It does **not** create `ROADMAP.md`.
+Slice 1 implemented the headless adapter. This document
+does **not** create `ROADMAP.md`.
 It does **not** start Inspector L3 as reserved in `19`.
+It does **not** start Slice 2 presentation.
 
 ---
 
@@ -86,7 +91,7 @@ It does **not**:
 - add stretching, T2, prognostic `ω`, or `ω → V`;
 - change Inspector Level 2;
 - add a Guided experiment;
-- authorize production implementation.
+- authorize Slice 2 presentation.
 
 Canonical consumed capabilities (CURRENT FACT):
 
@@ -114,8 +119,10 @@ GuidedLab.currentVerticalVorticity
 Siblings of `velocityObservation`, not `parts` rows
 (`26` §12–§13, `28` §16). SAME-source as composition.
 Stateless. No diagnostic-owned clock. No tracer ownership.
-UI / Inspector / visualization currently do **not** consume
-them (composition tests lock this).
+Slice 1 adapter (`inspectSelectedPointDiagnostics`) consumes
+them as SAME-source owners. Inspector UI / visualization
+still do **not** (composition and sibling-boundary tests
+lock this).
 
 DEMO magnitudes (research, not a UI scale):
 
@@ -921,19 +928,22 @@ Do not create a generic diagnostic registry, plugin list,
 or `ModelDiagnostics` bag. v1 is exactly two named
 scalars.
 
-### 16.4 Intended modules (future implementation, not this task)
+### 16.4 Modules
 
 ```text
 src/interaction/PointDiagnosticObservation.ts
+  PointDiagnosticObservation
+  PointDiagnosticSources
+  inspectSelectedPointDiagnostics
+  SLICE 1 COMPLETE
+
 src/ui/tracer/PointDiagnosticsPanel.tsx
 src/ui/tracer/formatPointDiagnosticDisplay.ts
+  SLICE 2 — not started
 ```
 
-Names are guidance for a later slice, not a license to
-start it. Panel is presentational: observation in, DOM
-out, no field sampling.
-
-`TracerInspectorPanel` remains velocity-only.
+Panel remains presentational: observation in, DOM out, no
+field sampling. `TracerInspectorPanel` remains velocity-only.
 
 ---
 
@@ -991,21 +1001,26 @@ which already stacks under the viewport on small widths.
 
 ## 19. Implementation slices
 
-Architecture is sufficiently closed to *record* slices.
-They are **future work**. This file does not start them.
+Slice 1 is complete. Slice 2 remains future work and is
+not started by completing Slice 1.
 
 ### Slice 1 — headless observation adapter
 
+**COMPLETE.**
+
 ```text
-PointDiagnosticObservation
-inspectSelectedPointDiagnostics
-tests in §21 adapter subset
+src/interaction/PointDiagnosticObservation.ts
+  PointDiagnosticObservation
+  inspectSelectedPointDiagnostics
+tests: src/interaction/PointDiagnosticObservation.test.ts
 no React, no panel, no App mount
 does not change TracerInspection
 does not change V_total
 ```
 
 ### Slice 2 — Explore presentation
+
+**NEXT. NOT STARTED. NOT AUTHORIZED by completing Slice 1.**
 
 ```text
 formatPointDiagnosticDisplay
@@ -1143,13 +1158,11 @@ They are not reopened.
 ## 23. Implementation authorization
 
 ```text
-Does this document authorize any production implementation?
-NO.
+Slice 1  COMPLETE
+Slice 2  NOT AUTHORIZED by this file
 ```
 
-If architecture is followed later, Slices 1–2 in §19 are
-the intended order. They still require an explicit
-implementation command. This SoT is not that command.
+Completing Slice 1 does **not** start Slice 2.
 
 ---
 
@@ -1254,8 +1267,10 @@ DTO:               PointDiagnosticObservation
 overlay:           not v1
 physics:           sample existing owners only
 
-implementation:    NOT AUTHORIZED
-                   slices recorded as future work
+implementation:    Slice 1 COMPLETE
+                   src/interaction/PointDiagnosticObservation.ts
+                   inspectSelectedPointDiagnostics
+                   Slice 2 NEXT / NOT STARTED
 ```
 
 ---
@@ -1265,13 +1280,15 @@ implementation:    NOT AUTHORIZED
 ```text
 POINT-FIRST DIAGNOSTIC OBSERVATION UI
   ARCHITECTURE WRITTEN
-  NOT IMPLEMENTATION
+  SLICE 1 COMPLETE
+  SLICE 2 NEXT
 
 P, t, SURFACE, DISPLAY, PEDAGOGY
   LOCKED HERE
 
-NOT
-  Inspector L2
+NOT STARTED
+  PointDiagnosticsPanel
+  Inspector L2 changes
   Inspector L3
   overlay / slice
   new Guided experiment
@@ -1280,10 +1297,9 @@ NOT
   camera / Follow
   generic diagnostic registry
 
-IMPLEMENTATION
-  NOT AUTHORIZED
+SLICE 2
+  NOT AUTHORIZED BY COMPLETING SLICE 1
 ```
 
-Production `src/**` remains unchanged.
-Do not treat this file as an implementation order.
+Do not start Slice 2 without an explicit command.
 Do not rewrite closed physics or `30` / `31` decisions.
