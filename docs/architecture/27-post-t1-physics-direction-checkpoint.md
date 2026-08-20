@@ -17,9 +17,16 @@ Successor Candidate A physics derivation (not architecture):
 docs/physics/23-diagnostic-vertical-vorticity.md
 ```
 
-`23` is the physics SoT for `ω_y,current`. This file remains
-the post-T1 *direction* checkpoint. Completing `23` does
-**not** start architecture or implementation.
+Successor Candidate A architecture (not implementation):
+
+```text
+docs/architecture/28-diagnostic-vertical-vorticity-architecture.md
+```
+
+`23` is the physics SoT for `ω_y,current`. `28` is the
+architecture SoT. This file remains the post-T1 *direction*
+checkpoint. Completing `23` or `28` does **not** start
+implementation.
 
 Predecessor T1 physics:
 
@@ -1138,7 +1145,9 @@ implement**:
 does that decision have to precede any prognostic `ω` state?**
 
 Those two architecture questions are allowed to differ in time.
-The first is the A SoT. The second is a future model-class SoT.
+The first is the A SoT, now written:
+`docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
+The second is a future model-class SoT.
 
 ### Q3. Next IMPLEMENTABLE capability, if any
 
@@ -1146,8 +1155,9 @@ The first is the A SoT. The second is a future model-class SoT.
 docs-first, T1-shaped: headless, `V_total` unchanged, `Ω`
 unchanged, no UI required to close the physics question.**
 
-This checkpoint does **not** write that SoT and does **not**
-authorize implementation.
+This checkpoint did **not** write that SoT and does **not**
+authorize implementation. The A architecture SoT is `28`.
+Completing `28` still does **not** start code.
 
 Inspector L3 / overlay of **already closed** T1 is a product
 implementable that would not answer Q1. It is not selected here.
@@ -1192,6 +1202,9 @@ diagnostic, nor authorization to code it.
 this file:     post-T1 direction checkpoint
 22 physics:    T1 derivation — CLOSED as diagnostic SoT
 26 arch:       T1 architecture — CLOSED as headless capability
+23 physics:    Candidate A derivation — CLOSED as diagnostic SoT
+28 arch:       Candidate A architecture — WRITTEN
+               IMPLEMENTATION NOT STARTED
 25:            pre-T1 revalidation — historical ranking of T1
 research 2026-08-20:  DEMO evidence — not a direction SoT
 ```
@@ -1242,7 +1255,8 @@ prescribed Ω:               STILL ACTIVE IN V_total
 current ω_y of DEMO V:      algebraically ω_y(V_rotation)
                             no production curl API
                             physics SoT: docs/physics/23
-                            architecture: NOT STARTED
+                            architecture SoT: docs/architecture/28
+                            IMPLEMENTATION NOT STARTED
 
 continuity:                 YELLOW
                             LIMITATION for A
@@ -1259,13 +1273,18 @@ time:                       DEMO V Eulerian-steady
 
 next PHYSICS QUESTION:      what ω_y currently exists in V,
                             vs T1 tendency
+                            (physics SoT: docs/physics/23)
 
 next ARCHITECTURE QUESTION: named diagnostic ω_y owner
                             without L2 / stretching-by-default
                             / T1-generated-vortex claims
+                            ANSWERED in docs/architecture/28
+                            still not an implementation order
 
 next IMPLEMENTABLE:         Candidate A, docs-first
+                            architecture SoT: docs/architecture/28
                             NOT authorized here
+                            IMPLEMENTATION NOT STARTED
 
 NEXT DIRECTION:             A
 confidence:                 HIGH
@@ -1288,9 +1307,13 @@ NEXT DIRECTION
 
 CANDIDATE A PHYSICS
   docs/physics/23-diagnostic-vertical-vorticity.md
+  WRITTEN / CLOSED as derivation
+
+CANDIDATE A ARCHITECTURE
+  docs/architecture/28-diagnostic-vertical-vorticity-architecture.md
   WRITTEN
-  ARCHITECTURE NOT STARTED
-  IMPLEMENTATION NONE
+  IMPLEMENTATION NOT STARTED
+  NOT AUTHORIZED BY THIS FILE
 
 NOT NEXT
   B stretching

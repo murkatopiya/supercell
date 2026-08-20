@@ -7,6 +7,9 @@ Live DEMO rotation occupant is this type, with DEMO bounds owned by
 Diagnostic world-vertical vorticity of this field's curl
 (Candidate A; not a `curl()` API):
 `docs/physics/23-diagnostic-vertical-vorticity.md`.
+Architecture of that diagnostic (not this field's velocity API):
+`docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
+Implementation of Candidate A is **not** started.
 This file remains the velocity-field SoT. `23` re-derives
 `ω_y^Ω` as a diagnostic contract; it does not replace §18.
 
@@ -961,6 +964,13 @@ Inside the layer, with `E = exp(−r²/(2σ²))`:
 This is the `13` shielded-vortex `ω_y` multiplied by `G`. It changes
 sign at `r = σ √2` when `G ≠ 0`. Outside the layer, `ω_y = 0`.
 
+This identity is **not** a production diagnostic API. Candidate A
+physics lives in `23`; architecture (including a later concrete
+`worldVerticalVorticity` scalar method on this type, not
+`VelocityField.curl()`) lives in
+`docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
+Do not add that method because this section exists.
+
 ### 18.3 Horizontal vorticity from `G'`
 
 Because `Vh` depends on `y`:
@@ -995,8 +1005,10 @@ v1 must not:
 Required: `∇ · V = 0` at sampled interior, lid, and exterior points
 (analytic or a tight finite-difference check of the formula).
 
-Not required: a vorticity diagnostic type, curl snapshots, or
-continuity-solver residuals.
+Not required for **this velocity-field SoT**: a vorticity
+diagnostic type, curl snapshots, or continuity-solver residuals.
+Candidate A architecture is specified in `docs/architecture/28`;
+this file still does not own that API.
 
 ---
 

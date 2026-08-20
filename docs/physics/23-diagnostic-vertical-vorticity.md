@@ -4,9 +4,13 @@
 **Scope:** world-vertical component of curl of the CURRENT
 prescribed velocity field, in project coordinates.
 **Implementation:** NONE / DOCS-ONLY
-**Architecture:** not this file. Candidate A direction:
+**Architecture:** not this file. Successor architecture SoT:
+`docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
+Candidate A direction checkpoint:
 `docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 `27` selected this quantity. It is **not** this derivation.
+`28` owns ownership, sampling, and wiring. Completing `28`
+does **not** start implementation.
 
 ```text
 V_total:                 UNCHANGED
@@ -73,6 +77,9 @@ It does **not** answer:
 - how Inspector or visualization should display it;
 - how stretching should use this `ω_y`;
 - how vorticity should ever change `V_total`.
+
+Those questions are architecture, not this derivation.
+Successor: `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
 
 ---
 
@@ -989,9 +996,10 @@ mass-consistent vortex.
 
 ### J. Is it ready for a separate architecture SoT?
 
-**YES.** This file is the physics derivation. Architecture
-ownership, sampling, and wiring are **not** written here and
-are **not** authorized by this file.
+**YES** — and that SoT now exists:
+`docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
+This file remains the physics derivation. Completing `28` does
+**not** start implementation.
 
 ---
 
@@ -1031,7 +1039,7 @@ stretching:           not this SoT; legal wording locked if
 full curl:            VERTICAL ONLY for Candidate A
 continuity:           YELLOW; curl still defined
 thermo:               not required; origin is Ω
-architecture:         NOT WRITTEN
+architecture:         docs/architecture/28
 implementation:       NONE
 ```
 
@@ -1044,7 +1052,8 @@ PHYSICS
   YES as diagnostic current ω_y of prescribed V
 
 ARCHITECTURE
-  NOT STARTED
+  docs/architecture/28
+  WRITTEN
   NOT AUTHORIZED BY THIS FILE
 
 IMPLEMENTATION
@@ -1054,9 +1063,9 @@ STRETCHING / T2 / ω→V / Ω / V_total / UI
   UNCHANGED / NOT STARTED
 ```
 
-Do not implement `curl()`, `verticalVorticity()`, or a
+Do not implement `curl()`, `worldVerticalVorticity()`, or a
 diagnostic type because this file exists.
-Do not start the Candidate A architecture SoT until commanded.
 Do not treat physics `18` §18.2 as a substitute for this
 diagnostic contract: `18` remains the velocity-field SoT.
 Do not treat `27` as this derivation.
+Do not treat `28` as an implementation order.
