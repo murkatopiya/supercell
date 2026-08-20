@@ -365,11 +365,9 @@ export function App() {
             {explore !== null && (
               <VisualAirflowWorkbenchControls
                 mode={workbenchMode}
-                pauseVisualization={pauseVisualization}
                 highlightMode={highlightMode}
                 depthCueEnabled={depthCueEnabled}
                 onModeChange={setWorkbenchMode}
-                onPauseVisualizationChange={setPauseVisualization}
                 onHighlightModeChange={setHighlightMode}
                 onDepthCueChange={setDepthCueEnabled}
               />

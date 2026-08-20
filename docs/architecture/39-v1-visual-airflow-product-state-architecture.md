@@ -1,22 +1,21 @@
 # V1 Visual-Airflow Product-State Architecture
 
-**Status:** ARCHITECTURE / PRODUCT SoT / M2 DECIDED /
-IMPLEMENTATION NOT STARTED / NO IMPLEMENTATION AUTHORIZATION
-**Scope:** close the decision half of V1 MUST item M2 by
-choosing one existing Explore visual-airflow encoding as the
-V1 product default, classifying the remaining existing
-encodings and controls, replacing user-visible research
-workbench language, and defining the objective implementation
-closure that starts feature freeze. Explore only. Docs only.
-Not a rendering redesign. Not the M3 whole-product UX/UI
-consolidation.
+**Status:** ARCHITECTURE / PRODUCT SoT / M2 COMPLETE /
+V1 FEATURE FREEZE ACTIVE / IMPLEMENTATION COMPLETE
+**Scope:** close V1 MUST item M2 by choosing one existing
+Explore visual-airflow encoding as the V1 product default,
+classifying the remaining existing encodings and controls,
+replacing user-visible research workbench language, and
+defining the objective implementation closure that starts
+feature freeze. Explore only. Not a rendering redesign. Not
+the M3 whole-product UX/UI consolidation.
 **Physics:** unchanged. Visual airflow continues to observe the
 same canonical `V_total`, the unweighted sum of exactly seven
 prescribed operands. No physics, field, frame, units, diagnostic,
 scenario, or model-class decision changes here.
-**Implementation:** none in this document. Production `src/**`
-remains unchanged. This SoT does not authorize its implementation
-slice.
+**Implementation:** the §15 product-state slice is complete in
+production `src/**`. All six §16 closure conditions are
+satisfied. Feature freeze is active per `38`.
 
 Predecessor V1 scope checkpoint:
 
@@ -768,46 +767,43 @@ POST-V1.
 
 ---
 
-## 15. Minimum future implementation slice
+## 15. Implementation slice
 
-One small product-state slice is sufficient. No split is
-justified by the live architecture.
+One small product-state slice closes M2. No split is justified
+by the live architecture.
 
-### Slice 1 — close M2
+### Slice 1 — close M2 — COMPLETE
 
 **Default wiring**
 
-- change `DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE` from `points`
-  to `advected-comet`;
-- keep `DEFAULT_OPERAND_HIGHLIGHT_MODE = "off"`;
-- keep `DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION =
-  "full-freeze"`;
-- keep depth cue default Off.
+- `DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE` = `advected-comet`;
+- `DEFAULT_OPERAND_HIGHLIGHT_MODE = "off"`;
+- `DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION = "full-freeze"`;
+- depth cue default Off.
 
 **Product exposure**
 
-- expose only `Flow comets` and
+- exposed: `Flow comets` and
   `Eulerian directions — diagnostic`;
-- remove Points and Advected marks from normal V1 controls
-  without deleting their rendering code or focused tests;
-- hide the Pause-viz selector without deleting frozen-field
-  animation code or tests;
-- group Highlight under `Diagnostic airflow tools`;
-- expose Depth cue as an advanced viewing aid;
-- replace the user-visible workbench paragraph with §11
-  product meaning.
+- Points and Advected marks hidden from normal V1 controls;
+  rendering code and focused tests retained;
+- Pause-viz selector hidden; frozen-field animation code and
+  tests retained;
+- Highlight grouped under `Diagnostic airflow tools`;
+- Depth cue exposed as an advanced viewing aid;
+- user-visible workbench paragraph replaced with §11 product
+  meaning.
 
 **Tests**
 
-- update default/reset wiring expectations from Points to
-  Comets;
-- lock the two exposed airflow-view choices and hidden
-  comparison modes;
-- lock Highlight Off, full-freeze, and depth Off defaults;
-- lock removal of user-visible dev/non-product copy;
-- preserve visual-airflow canonical-field, mode-switch,
-  Highlight, Pause, depth, selection, Follow, and Reset View
-  regressions.
+- default/reset wiring locks Comets;
+- two exposed airflow-view choices and hidden comparison modes
+  locked;
+- Highlight Off, full-freeze, and depth Off defaults locked;
+- removal of user-visible dev/non-product copy locked;
+- visual-airflow canonical-field, mode-switch, Highlight,
+  Pause, depth, selection, Follow, and Reset View regressions
+  preserved.
 
 No new rendering class, geometry, state framework, settings
 system, physics field, or Guided wiring belongs in this slice.
@@ -829,12 +825,19 @@ M2 COMPLETE when:
 ```
 
 ```text
+M2 COMPLETE                 YES
+V1 FEATURE FREEZE ACTIVE    YES
+
+All six closure conditions above are satisfied by the
+production M2 product-state implementation.
+
 FEATURE FREEZE TAKES EFFECT
   when the production M2 implementation satisfying all six
   conditions above merges.
 
-This docs-only SoT merge does not by itself trigger freeze,
-because the product default and surface are not yet wired.
+The earlier docs-only decision merge of this SoT did not by
+itself trigger freeze; freeze is active only after the
+production product-state merge.
 ```
 
 No human playtest, rendering redesign, palette work, or other
@@ -894,15 +897,15 @@ defined by `38`.
 11. **Does Guided change?**  
     No.
 
-12. **What implementation remains?**  
-    One small product-state slice in §15.
+12. **What implementation remains for M2?**  
+    None. The §15 product-state slice is complete.
 
 13. **What exact merge condition triggers feature freeze?**  
     Merge of the production M2 slice after all six §16 closure
-    conditions are true.
+    conditions are true. That merge is the freeze trigger.
 
-14. **Does this docs task authorize implementation?**  
-    No.
+14. **Is M2 complete and is feature freeze active?**  
+    Yes. M2 COMPLETE. V1 FEATURE FREEZE ACTIVE.
 
 ---
 
@@ -965,8 +968,8 @@ M2 does not add a diagnostic overlay.
 M2 does not change Guided.
 M2 does not change selection, Follow, or Reset View.
 M2 does not redesign Comets or the halo.
-This document changes no production code.
-This document does not authorize implementation.
+M2 does not reopen physics, Guided, selection, Follow, or
+  Reset View.
 ```
 
 ---
@@ -998,8 +1001,12 @@ This document does not authorize implementation.
 37  owns explicit Reset View and camera recovery
 ```
 
-Successor production work is the one bounded M2 slice in §15.
-No further architecture artifact is required for that slice.
+M2 production implementation status: **COMPLETE**.
+V1 feature freeze status: **ACTIVE**.
+
+Successor V1 work after freeze follows `38`: M1 / M3 →
+acceptance → audits → release. No architecture `40` is
+required to close M2.
 
 ---
 
@@ -1036,15 +1043,11 @@ FOLLOW / RESET VIEW   unchanged
 
 GUIDED                unchanged; no airflow population
 
-IMPLEMENTATION        one product-state slice
+IMPLEMENTATION        §15 product-state slice COMPLETE
 
-M2 COMPLETE           default wired + exposure matched +
-                     dev copy gone/replaced + anti-claims true +
-                     selection/Follow regressions pass +
-                     tests/typecheck pass
+M2 COMPLETE           YES — all six §16 conditions PASS
 
-FEATURE FREEZE        production M2 completion merge
+FEATURE FREEZE        ACTIVE at production M2 completion merge
 
-IMPLEMENTATION
-FROM THIS DOC TASK    NONE / NOT AUTHORIZED
+NEXT V1 WORK          M1 / M3 per `38` (inside freeze)
 ```

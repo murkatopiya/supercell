@@ -4,149 +4,132 @@ import {
 } from "../../visualization/operandContributionDisplay.js";
 import type {
   OperandHighlightMode,
-  VisualAirflowPauseVisualization,
   VisualAirflowWorkbenchMode,
 } from "../../rendering/visualAirflowWorkbenchMode.js";
 import { labelForContribution } from "./tracerContributionLabels.js";
 
 export interface VisualAirflowWorkbenchControlsProps {
   mode: VisualAirflowWorkbenchMode;
-  pauseVisualization: VisualAirflowPauseVisualization;
   highlightMode: OperandHighlightMode;
   depthCueEnabled: boolean;
   onModeChange: (mode: VisualAirflowWorkbenchMode) => void;
-  onPauseVisualizationChange: (
-    value: VisualAirflowPauseVisualization,
-  ) => void;
   onHighlightModeChange: (value: OperandHighlightMode) => void;
   onDepthCueChange: (enabled: boolean) => void;
 }
 
+const FLOW_COMETS_COPY =
+  "Airflow marks show motion and direction in the prescribed total velocity field, V_total. Short tails are direction cues, not tracer histories; marker count and spacing are not air density.";
+
+const EULERIAN_DIRECTIONS_COPY =
+  "Eulerian direction marks sample the prescribed total velocity field, V_total, at fixed laboratory positions. They show instantaneous direction, not moving air parcels; marker count and spacing are not air density.";
+
+const HIGHLIGHT_COPY =
+  "Highlight tints where one selected storm operand contributes to the displayed samples. Comet advection and every mark's orientation still come from the total field. Tint is not a separate air mass or a quantitative comparison between operands.";
+
+const DEPTH_CUE_COPY =
+  "Depth cue changes background airflow salience with camera distance. It is a viewing aid, not meteorological fog or an atmospheric quantity.";
+
 /**
- * Temporary Explore-only research control. Not product visualization
- * modes and not persisted.
+ * Explore V1 airflow product controls. Comets are the default view;
+ * Eulerian directions remain a diagnostic alternative.
  */
 export function VisualAirflowWorkbenchControls({
   mode,
-  pauseVisualization,
   highlightMode,
   depthCueEnabled,
   onModeChange,
-  onPauseVisualizationChange,
   onHighlightModeChange,
   onDepthCueChange,
 }: VisualAirflowWorkbenchControlsProps) {
+  const airflowViewCopy =
+    mode === "eulerian-oriented" ? EULERIAN_DIRECTIONS_COPY : FLOW_COMETS_COPY;
+
   return (
     <div className="visual-airflow-workbench-controls">
-      <p className="visual-airflow-workbench-controls__copy">
-        Dev workbench — independent comparisons of the same V_total. Not
-        product visualization modes. Encoding, Pause viz, and highlight do not
-        change each other. Use Comets (or Advected / Eulerian marks), then Off
-        or one storm operand. Comets still follow V_total; tint is only that
-        operand&apos;s |V| at P,t. Color is not a separate air mass and not a
-        quantitative comparison across operands. Points stay uniform. One
-        prototype hue, not a product palette.
-      </p>
-      <div className="visual-airflow-workbench-controls__row">
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={mode === "points"}
-          onClick={() => onModeChange("points")}
-        >
-          Points
-        </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={mode === "advected-oriented"}
-          onClick={() => onModeChange("advected-oriented")}
-        >
-          Advected marks
-        </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={mode === "advected-comet"}
-          onClick={() => onModeChange("advected-comet")}
-        >
-          Comets
-        </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={mode === "eulerian-oriented"}
-          onClick={() => onModeChange("eulerian-oriented")}
-        >
-          Eulerian marks
-        </button>
-      </div>
-      <div className="visual-airflow-workbench-controls__row">
+      <div className="visual-airflow-workbench-controls__group">
         <span className="visual-airflow-workbench-controls__label">
-          Pause viz
+          Airflow view
         </span>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={pauseVisualization === "full-freeze"}
-          onClick={() => onPauseVisualizationChange("full-freeze")}
-        >
-          Full freeze
-        </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={pauseVisualization === "frozen-field-animation"}
-          onClick={() => onPauseVisualizationChange("frozen-field-animation")}
-        >
-          Animate frozen field
-        </button>
-      </div>
-      <div className="visual-airflow-workbench-controls__row">
-        <span className="visual-airflow-workbench-controls__label">
-          Highlight
-        </span>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-pressed={highlightMode === "off"}
-          onClick={() => onHighlightModeChange("off")}
-        >
-          Off
-        </button>
-        <label className="visual-airflow-workbench-controls__field">
-          Operand
-          <select
-            className="visual-airflow-workbench-controls__select"
-            aria-label="Highlighted storm operand"
-            value={highlightMode === "off" ? "" : highlightMode}
-            onChange={(event) => {
-              const next = event.target.value;
-              if (isStormOperandHighlightKey(next)) {
-                onHighlightModeChange(next);
-              }
-            }}
+        <div className="visual-airflow-workbench-controls__row">
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-pressed={mode === "advected-comet"}
+            onClick={() => onModeChange("advected-comet")}
           >
-            {highlightMode === "off" ? (
-              <option value="" disabled>
-                Choose
-              </option>
-            ) : null}
-            {STORM_OPERAND_HIGHLIGHT_KEYS.map((key) => (
-              <option key={key} value={key}>
-                {labelForContribution(key)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="visual-airflow-workbench-controls__field">
-          <input
-            type="checkbox"
-            checked={depthCueEnabled}
-            onChange={(event) => onDepthCueChange(event.currentTarget.checked)}
-          />
-          Depth cue
-        </label>
+            Flow comets
+          </button>
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-pressed={mode === "eulerian-oriented"}
+            onClick={() => onModeChange("eulerian-oriented")}
+          >
+            Eulerian directions — diagnostic
+          </button>
+        </div>
+        <p className="visual-airflow-workbench-controls__copy">{airflowViewCopy}</p>
+      </div>
+
+      <div className="visual-airflow-workbench-controls__group">
+        <span className="visual-airflow-workbench-controls__label">
+          Diagnostic airflow tools
+        </span>
+        <div className="visual-airflow-workbench-controls__row">
+          <span className="visual-airflow-workbench-controls__label">
+            Highlight
+          </span>
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-pressed={highlightMode === "off"}
+            onClick={() => onHighlightModeChange("off")}
+          >
+            Off
+          </button>
+          <label className="visual-airflow-workbench-controls__field">
+            Operand
+            <select
+              className="visual-airflow-workbench-controls__select"
+              aria-label="Highlighted storm operand"
+              value={highlightMode === "off" ? "" : highlightMode}
+              onChange={(event) => {
+                const next = event.target.value;
+                if (isStormOperandHighlightKey(next)) {
+                  onHighlightModeChange(next);
+                }
+              }}
+            >
+              {highlightMode === "off" ? (
+                <option value="" disabled>
+                  Choose
+                </option>
+              ) : null}
+              {STORM_OPERAND_HIGHLIGHT_KEYS.map((key) => (
+                <option key={key} value={key}>
+                  {labelForContribution(key)}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <p className="visual-airflow-workbench-controls__copy">{HIGHLIGHT_COPY}</p>
+      </div>
+
+      <div className="visual-airflow-workbench-controls__group">
+        <div className="visual-airflow-workbench-controls__row">
+          <label className="visual-airflow-workbench-controls__field">
+            <input
+              type="checkbox"
+              checked={depthCueEnabled}
+              onChange={(event) =>
+                onDepthCueChange(event.currentTarget.checked)
+              }
+            />
+            Depth cue
+          </label>
+        </div>
+        <p className="visual-airflow-workbench-controls__copy">{DEPTH_CUE_COPY}</p>
       </div>
     </div>
   );

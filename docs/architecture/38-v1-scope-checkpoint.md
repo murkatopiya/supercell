@@ -1,7 +1,7 @@
 # V1 Scope Checkpoint
 
 **Status:** V1 SCOPE CHECKPOINT / PRODUCT SoT /
-NO IMPLEMENTATION AUTHORIZATION
+M2 COMPLETE / V1 FEATURE FREEZE ACTIVE
 **Scope:** define the V1 product promise, inventory current
 capability against live `src/**`, classify every known open
 item into MUST / CONDITIONAL / POST-V1 / REJECTED, decide the
@@ -15,8 +15,9 @@ Not a physics reopen. Not a Guided catalog expansion. Not
 remains prescribed kinematic laboratory (`30`). Exactly seven
 `V_total` operands. Prescribed Ω semantics unchanged. This file
 does not reopen `17`, `22`, `23`, `24`, `26`, `28`, `30`–`37`.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged by this file.
+**Implementation:** this checkpoint itself remains docs-only.
+M2 production closure and feature freeze are recorded via
+successor `39`.
 
 Predecessor Reset View / camera recovery architecture:
 
@@ -395,7 +396,7 @@ M1  Persistent model-class honesty on the product surface
     Scope: copy + placement. No new component families.
 
 M2  Resolve the Explore visual-airflow surface into a product
-    state
+    state — COMPLETE
     Name one product default encoding; demote or remove the
     remaining encodings behind an explicit advanced/diagnostic
     label; delete user-visible "Dev workbench / Not product
@@ -405,6 +406,9 @@ M2  Resolve the Explore visual-airflow surface into a product
     field is on screen.
     Scope: decision + presentation. NO new rendering geometry,
     NO new encodings, NO multi-operand display, NO overlay.
+    Closure: existing Comets default; Eulerian diagnostic
+    alternative; Points / Advected marks / Pause-viz selector
+    hidden; product copy per `39`.
 
 M3  Whole-product UX/UI consolidation — functional items only
     Information hierarchy, scene-vs-controls priority,
@@ -945,7 +949,7 @@ NOT FEATURES, therefore never frozen:
 Ordered. Derived from §3 evidence and §4 classification.
 Terminal state exists.
 
-### Phase 1 — Close the remaining functional V1 blocker
+### Phase 1 — Close the remaining functional V1 blocker — COMPLETE
 
 ```text
 goal            resolve the Explore visual-airflow surface into
@@ -955,19 +959,21 @@ exit            one named product default encoding is live;
                 no user-visible copy describes the product as a
                 dev workbench or as non-product modes;
                 `36` selection / halo contracts still pass
-architecture    YES — one successor SoT (§12 next artifact)
+status          COMPLETE via `39` product-state implementation
+architecture    YES — successor SoT `39`
 SoT needed
-production      YES, after that SoT
+production      COMPLETE
 work
 ```
 
-### Phase 2 — Feature freeze
+### Phase 2 — Feature freeze — ACTIVE
 
 ```text
 goal            close the V1 scope list
 entry           Phase 1 exit
 exit            freeze declared in this file's status line;
                 remaining V1 scope is exactly M1, M3, M4, M5
+status          ACTIVE
 architecture    NO
 SoT needed
 production      NO
@@ -1177,8 +1183,9 @@ unless §9's four conditions are all satisfied and recorded.
    (§8.1). Cosmetic polish is POST-V1.
 
 8. **When does feature freeze happen?**
-   When M2 merges, at the end of Phase 1. The freeze closes the
-   scope list; it does not pause M1, M3, M4, M5.
+   When M2 production merges, at the end of Phase 1. Freeze is
+   now **ACTIVE**. The freeze closes the scope list; it does
+   not pause M1, M3, M4, M5.
 
 9. **What reopens scope after freeze?**
    Only a recorded acceptance-playtest failure meeting all four
@@ -1377,7 +1384,8 @@ docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 ```
 
 Successor status: M2 product-state decision **DECIDED** in
-`39`; production M2 implementation remains **NOT STARTED**.
+`39`; M2 production implementation **COMPLETE**; V1 feature
+freeze **ACTIVE**. Remaining V1 MUST work is M1, M3, M4, M5.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1438,30 +1446,32 @@ GUIDED              three experiments preserved; no fourth;
 UX / UI             required as a bounded phase; functional
                     items only; cosmetic polish POST-V1
 
-FEATURE FREEZE      at M2 merge; reopened only by a recorded
-                    acceptance failure meeting four conditions
+FEATURE FREEZE      ACTIVE at M2 production merge; reopened
+                    only by a recorded acceptance failure
+                    meeting four conditions
 
-ROADMAP             1 close M2 blocker
-                    2 freeze
+ROADMAP             1 M2 COMPLETE
+                    2 freeze ACTIVE
                     3 UX/UI consolidation (+ M1)
                     4 human acceptance playtest
                     5 physics / regression / a11y / docs audit
                     6 release cleanup → V1.0 READY
 
-NEXT ARTIFACT       docs/architecture/
+M2 SUCCESSOR        docs/architecture/
                     39-v1-visual-airflow-product-state-architecture.md
+                    M2 COMPLETE / FEATURE FREEZE ACTIVE
 
 IMPLEMENTATION
 FROM THIS FILE      NONE
 
-READINESS           architecture 90 / physics 95 / interaction 85
+READINESS           architecture 90 / physics 95 / perception 90
                     teaching 70 / UX 55 / release 25
-                    overall ~70
+                    overall ~75
 
 CONFIDENCE          HIGH on the promise wording, on one fixed
                     environment, on preserving three Guided
                     experiments, and on no new physics
-                    M2 default resolved by successor `39`
+                    M2 COMPLETE via successor `39`
                     MEDIUM on whether F4/F5 survive Phase 3
 ```
 
@@ -1477,13 +1487,13 @@ V1 MUST
   FIVE ITEMS — M1..M5
 
 FEATURE FREEZE
-  RULE WRITTEN; TAKES EFFECT AT M2 MERGE
+  ACTIVE — M2 PRODUCTION COMPLETE
 
 HODOGRAPH
   ONE FIXED ENVIRONMENT
 
 PERCEPTION
-  PRODUCT-STATE DECISION ONLY
+  M2 PRODUCT STATE COMPLETE
 
 GUIDED
   THREE EXPERIMENTS PRESERVED
@@ -1491,8 +1501,8 @@ GUIDED
 PHYSICS
   UNCHANGED / CLOSED
 
-IMPLEMENTATION
-  NOT AUTHORIZED
+REMAINING V1 MUST
+  M1 / M3 / M4 / M5
 ```
 
 New features, new operands, new experiments, new environments,

@@ -206,8 +206,16 @@ body {
   background: transparent;
 }
 
+.visual-airflow-workbench-controls__group {
+  margin: 0 0 0.45rem;
+}
+
+.visual-airflow-workbench-controls__group:last-child {
+  margin-bottom: 0;
+}
+
 .visual-airflow-workbench-controls__copy {
-  margin: 0 0 0.3rem;
+  margin: 0.25rem 0 0;
   font-size: 0.75rem;
   color: #6a737d;
 }

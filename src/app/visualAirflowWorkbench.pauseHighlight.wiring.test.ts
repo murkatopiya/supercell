@@ -96,14 +96,15 @@ describe("frozen-field pause animation", () => {
     expect(inspection?.time).toBe(tPause);
   });
 
-  it("keeps full freeze as the workbench default and viewport branch", () => {
+  it("keeps full freeze as the V1 Pause default and viewport branch", () => {
     expect(viewportSrc).toMatch(/frozen-field-animation/);
     expect(viewportSrc).toMatch(/stepVisualAirflowOnFrozenField/);
     expect(viewportSrc).toMatch(/visualAirflowElapsedFromWall/);
     expect(viewportSrc).toMatch(/let visualAccumulator = 0/);
     expect(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION).toBe("full-freeze");
     expect(appSrc).toMatch(/DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION/);
-    expect(controlsSrc).toMatch(/"full-freeze"/);
+    expect(controlsSrc).not.toMatch(/Pause viz/);
+    expect(controlsSrc).not.toMatch(/Animate frozen field/);
     expect(viewportSrc).toMatch(/time: simulation\.clock\.time/);
     expect(viewportSrc).toMatch(/highlightOperand: highlightOperandRef\.current/);
   });
@@ -303,9 +304,8 @@ describe("workbench control independence", () => {
     expect(createGuidedLabSrc).not.toMatch(/pauseVisualization/);
     expect(createGuidedLabSrc).not.toMatch(/VisualAirflowWorkbenchControls/);
     expect(appSrc).toMatch(/onHighlightModeChange=\{setHighlightMode\}/);
-    expect(appSrc).toMatch(
-      /onPauseVisualizationChange=\{setPauseVisualization\}/,
-    );
+    expect(appSrc).toMatch(/pauseVisualization=\{pauseVisualization\}/);
+    expect(appSrc).not.toMatch(/onPauseVisualizationChange=\{setPauseVisualization\}/);
     expect(appSrc).not.toMatch(/setHighlightMode\([^)]*setWorkbenchMode/);
     expect(appSrc).not.toMatch(/setPauseVisualization\([^)]*setWorkbenchMode/);
     expect(controlsSrc).toMatch(/onHighlightModeChange\("off"\)/);

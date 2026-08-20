@@ -6,8 +6,9 @@ export type VisualAirflowWorkbenchMode =
   | "advected-comet"
   | "eulerian-oriented";
 
+/** V1 Explore product default: existing Comets encoding. */
 export const DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE: VisualAirflowWorkbenchMode =
-  "points";
+  "advected-comet";
 
 export type VisualAirflowPauseVisualization =
   | "full-freeze"

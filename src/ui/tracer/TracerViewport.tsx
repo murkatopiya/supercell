@@ -84,8 +84,8 @@ export interface TracerViewportProps {
    */
   visualAirflowField?: VelocityField | null;
   /**
-   * Dev workbench encoding. Must not recreate TracerScene (keep out of
-   * the mount effect deps). Default R0 Points.
+   * Explore airflow view encoding. Must not recreate TracerScene (keep
+   * out of the mount effect deps). Default: Flow comets.
    */
   workbenchMode?: VisualAirflowWorkbenchMode;
   pauseVisualization?: VisualAirflowPauseVisualization;

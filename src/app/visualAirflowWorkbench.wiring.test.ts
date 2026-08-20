@@ -172,7 +172,7 @@ describe("Workbench representation switching lifecycle", () => {
     expect(appSrc).not.toMatch(/eulerianAirflowSamples\.reset/);
   });
 
-  it("Explore↔Guided round-trip resets workbench dev state to Points", () => {
+  it("Explore↔Guided round-trip resets airflow product state to Comets defaults", () => {
     expect(appSrc).toMatch(
       /enterExplore[\s\S]*setWorkbenchMode\(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE\)/s,
     );
