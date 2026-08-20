@@ -1082,7 +1082,8 @@ Headless **capability** is implemented after Slice 2.
 Candidate A is VALIDATED HEADLESS / DEMO in the T1 sense.
 UI remains unstarted.
 
-Do not merge Slice 1 into Slice 2. Isolated analytic zeros are
+Slices 1 and 2 are distinct implementation slices and were
+implemented separately. Isolated analytic zeros are
 the cheaper lock before composition wiring.
 
 No UI slice.

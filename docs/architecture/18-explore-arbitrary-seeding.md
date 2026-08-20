@@ -835,8 +835,8 @@ After this SoT, remaining **architecture** in the `16` queue:
 
 **Shared tracer inspector architecture SoT** (docs). Selection,
 `V_total`, per-operand contributions, and the moment stable IDs
-become earned (`§12` C). Point-release implementation may
-proceed without it if the first slice stays append-only.
+become earned (`§12` C). The inspector SoT is not a
+prerequisite for an append-only first point-release slice.
 
 Do not treat catalog DTO migration or a four-mode selector as
 next.

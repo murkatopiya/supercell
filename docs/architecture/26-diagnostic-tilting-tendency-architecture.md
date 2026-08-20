@@ -783,7 +783,8 @@ No Inspector Level 3. No overlay. No Guided experiment.
 If a later product SoT wants a consumer, that is a separate
 SoT. Scientific completion of T1 is Slice 2.
 
-Do not merge Slice 1 into Slice 2. Isolated gradient tests are the cheaper lock
+Slices 1 and 2 are distinct implementation slices and were
+implemented separately. Isolated gradient tests are the cheaper lock
 on exact zeros before the product `ω_h · ∇_h Vy`.
 
 ---

@@ -674,7 +674,7 @@ Physics/modeling first. Visual polish is not a reason.
    be cold pool.
 2. **Occupancy + pedagogy for that field, later, as separate
    slices** — after the physics SoT is accepted and implemented.
-   Same order as `20` → `15` → `12`.    Combined D1+outflow mode is
+   Same order as `20` → `15` → `12`. Combined D1+outflow mode is
    not part of those slices unless separately justified.
 3. **UI mode selector** DiagnosticProbes / StoryPathlines /
    DownwardPathline — not physics; more justified than in `09`
