@@ -919,6 +919,7 @@ there was no “yellow tracer inside preview” fact
 Follow camera contract is not reopened
 inactive hidden Explore glyph does not earn a floating halo
 this file is not Reset View
+               (successor: docs/architecture/37-reset-view-camera-recovery-architecture.md)
 this file is not ROADMAP.md
 this file does not rewrite 19/34/35 rankings beyond successor
 ```
@@ -940,7 +941,18 @@ rendering 14:  trail = glyph occupancy color — preserved
 24:            V_total polish still deferred
 ```
 
-Successor of `35`: this file.
+Successor of `35`: this file. Successor Reset View /
+camera recovery architecture:
+
+```text
+docs/architecture/37-reset-view-camera-recovery-architecture.md
+```
+
+`37` locks explicit Reset View after Follow playtest E2.
+This file remains the selection acquisition / identity SoT.
+Completing `36` does **not** start Reset View
+implementation.
+
 Closed physics docs are not rewritten.
 
 ---
