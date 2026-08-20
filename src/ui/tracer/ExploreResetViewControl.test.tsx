@@ -33,26 +33,24 @@ describe("ExploreResetViewControl", () => {
     expect(appSrc).toMatch(/onResetView=\{handleResetView\}/);
   });
 
-  it("is mounted in Explore laboratory-toolbar and omitted from Guided", () => {
-    const laboratory = appSrc.slice(
-      appSrc.indexOf("workbench__column--laboratory"),
-      appSrc.indexOf("workbench__column--inspector"),
+  it("is mounted in Explore controls rail and omitted from Guided", () => {
+    const controls = appSrc.slice(
+      appSrc.indexOf("workbench__column--controls"),
+      appSrc.indexOf("workbench__column--viewport"),
     );
-    expect(laboratory).toMatch(/ExploreResetViewControl/);
-    expect(laboratory).toMatch(
-      /explore !== null && \(\s*<ExploreResetViewControl/s,
+    expect(controls).toMatch(/ExploreResetViewControl/);
+    expect(controls).toMatch(/onResetView=\{handleResetView\}/);
+    expect(controls.indexOf("ExploreFollowControl")).toBeLessThan(
+      controls.indexOf("ExploreResetViewControl"),
     );
-    expect(laboratory.indexOf("ExploreFollowControl")).toBeLessThan(
-      laboratory.indexOf("ExploreResetViewControl"),
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/ExploreResetViewControl/);
+    expect(guidedShell).not.toMatch(/Reset camera to storm view/);
+    const observation = appSrc.slice(
+      appSrc.indexOf("workbench__column--observation"),
+      appSrc.indexOf("workbench--guided"),
     );
-    expect(laboratory).not.toMatch(
-      /lab\.kind === "guided"[\s\S]*ExploreResetViewControl/,
-    );
-    const inspectorColumn = appSrc.slice(
-      appSrc.indexOf("workbench__column--inspector"),
-    );
-    expect(inspectorColumn).not.toMatch(/ExploreResetViewControl/);
-    expect(inspectorColumn).not.toMatch(/Reset camera to storm view/);
+    expect(observation).not.toMatch(/ExploreResetViewControl/);
     expect(inspectorPanelSrc).not.toMatch(/Reset View/);
     expect(pointDiagnosticsPanelSrc).not.toMatch(/Reset View/);
     expect(workbenchControlsSrc).not.toMatch(/Reset View/);

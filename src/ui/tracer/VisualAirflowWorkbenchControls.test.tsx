@@ -125,7 +125,13 @@ describe("VisualAirflowWorkbenchControls V1 product surface", () => {
     expect(controlsSrc).not.toMatch(/Dev workbench/);
     expect(controlsSrc).not.toMatch(/Not product visualization modes/);
     expect(controlsSrc).not.toMatch(/prototype hue/);
-    expect(appSrc).toMatch(/explore !== null && \(\s*<VisualAirflowWorkbenchControls/s);
+    const exploreShell = appSrc.slice(
+      appSrc.indexOf("workbench--explore"),
+      appSrc.indexOf("workbench--guided"),
+    );
+    expect(exploreShell).toMatch(/VisualAirflowWorkbenchControls/);
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
     expect(createGuidedLabSrc).not.toMatch(/VisualAirflowWorkbenchControls/);
   });
 

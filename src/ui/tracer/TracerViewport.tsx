@@ -306,6 +306,15 @@ export function TracerViewport({
       scene.render();
     };
     window.addEventListener("resize", onResize);
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => {
+            onResize();
+          })
+        : null;
+    if (resizeObserver !== null && canvas.parentElement !== null) {
+      resizeObserver.observe(canvas.parentElement);
+    }
 
     const onPointerDown = (event: PointerEvent) => {
       if (event.button !== 0) {
@@ -457,6 +466,7 @@ export function TracerViewport({
       disposed = true;
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", onResize);
+      resizeObserver?.disconnect();
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointerup", onPointerUp);
       canvas.removeEventListener("pointercancel", onPointerCancel);

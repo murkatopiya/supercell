@@ -37,8 +37,14 @@ describe("GuidedExperimentSelector", () => {
     expect(selectorSrc).not.toMatch(/observe/);
     expect(selectorSrc).not.toMatch(/demonstrates/);
     expect(selectorSrc).not.toMatch(/doesNotMean/);
-    expect(appSrc).toMatch(/lab\.kind === "guided" && \(\s*<GuidedExperimentSelector/s);
-    expect(appSrc).toMatch(/onChange=\{selectGuidedExperiment\}/);
-    expect(appSrc).toMatch(/GuidedExperimentPanel/);
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).toMatch(/<GuidedExperimentSelector/);
+    expect(guidedShell).toMatch(/onChange=\{selectGuidedExperiment\}/);
+    expect(guidedShell).toMatch(/GuidedExperimentPanel/);
+    const exploreShell = appSrc.slice(
+      appSrc.indexOf("workbench--explore"),
+      appSrc.indexOf("workbench--guided"),
+    );
+    expect(exploreShell).not.toMatch(/GuidedExperimentSelector/);
   });
 });

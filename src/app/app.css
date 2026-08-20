@@ -20,6 +20,25 @@ body {
   padding: 1rem 1.25rem 1.5rem;
 }
 
+/*
+ * Explore Slice A (40): lock the product shell to the browser viewport so
+ * selected-tracer observation uses region scroll, not page scroll.
+ */
+html:has(.app--explore),
+body:has(.app--explore) {
+  height: 100%;
+  overflow: hidden;
+}
+
+.app--explore {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
 .app__header {
   display: flex;
   flex-wrap: wrap;
@@ -75,6 +94,43 @@ body {
   font-size: 0.8rem;
   color: #4a5560;
   overflow-wrap: break-word;
+}
+
+.workbench__environment {
+  margin: 0 0 0.75rem;
+}
+
+.app--explore .app__header,
+.app--explore .app__subtitle {
+  flex: 0 0 auto;
+}
+
+.app--explore .workbench--explore {
+  flex: 1 1 auto;
+  min-height: 0;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.app--explore .workbench__column--controls,
+.app--explore .workbench__column--observation {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.app--explore .workbench__column--viewport {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.app--explore .workbench__column--viewport .tracer-viewport {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
 }
 
 .tracer-viewport {
@@ -508,6 +564,12 @@ body {
     padding: 0.75rem;
   }
 
+  .app--explore {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
   .app__title {
     font-size: 1.25rem;
   }
@@ -524,21 +586,42 @@ body {
 }
 
 @media (min-width: 840px) {
-  .workbench {
+  .workbench--guided {
     grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   }
 
-  .workbench__column--hodograph {
+  .workbench--guided .workbench__column--hodograph {
     grid-row: 1 / span 2;
   }
 
-  .workbench__column--inspector {
+  .workbench--guided .workbench__column--inspector {
     grid-column: 2;
+  }
+
+  .workbench--explore {
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .workbench--explore .workbench__column--controls {
+    grid-row: 1 / span 2;
+  }
+
+  .workbench--explore .workbench__column--viewport {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 420px;
+  }
+
+  .workbench--explore .workbench__column--observation {
+    grid-column: 2;
+    grid-row: 2;
+    max-height: 40vh;
   }
 }
 
 @media (min-width: 1240px) {
-  .workbench {
+  .workbench--guided {
     grid-template-columns:
       minmax(260px, 320px)
       minmax(0, 1fr)
@@ -546,16 +629,67 @@ body {
     align-items: stretch;
   }
 
-  .workbench__column--hodograph {
+  .workbench--guided .workbench__column--hodograph {
     grid-row: auto;
   }
 
-  .workbench__column--inspector {
+  .workbench--guided .workbench__column--inspector {
     grid-column: auto;
   }
 
-  .workbench__column--inspector .tracer-inspector {
+  .workbench--guided .workbench__column--inspector .tracer-inspector {
     position: sticky;
     top: 0.75rem;
+  }
+
+  /*
+   * Slice A primary target: 1920×1080 Explore three-band shell.
+   * Controls | Viewport | Observation; observation scrolls in-region.
+   */
+  .workbench--explore {
+    grid-template-columns:
+      minmax(260px, 320px)
+      minmax(0, 1fr)
+      minmax(280px, 360px);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .workbench--explore .workbench__column--controls {
+    grid-row: auto;
+  }
+
+  .workbench--explore .workbench__column--viewport {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 0;
+  }
+
+  .workbench--explore .workbench__column--observation {
+    grid-column: auto;
+    grid-row: auto;
+    max-height: none;
+  }
+}
+
+@media (max-width: 839px) {
+  html:has(.app--explore),
+  body:has(.app--explore) {
+    height: auto;
+    overflow: auto;
+  }
+
+  .app--explore {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .app--explore .workbench--explore {
+    overflow: visible;
+  }
+
+  .app--explore .workbench__column--viewport .tracer-viewport {
+    flex: none;
+    height: 420px;
   }
 }

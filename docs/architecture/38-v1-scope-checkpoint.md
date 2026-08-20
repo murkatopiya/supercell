@@ -990,9 +990,9 @@ entry           Phase 2 exit
 exit            F1, F2, F3-copy, F6, F7, F8 closed;
                 F4 and F5 either closed by reordering or
                 explicitly deferred to the Phase 4 verdict
-architecture    YES — `40` DECIDED (docs-only);
-SoT needed      production slices NOT STARTED
-production      YES (when commanded; not authorized by `40`)
+architecture    YES — `40` DECIDED; Slice A COMPLETE;
+SoT needed      Slices B–G NOT STARTED
+production      Slice A COMPLETE; remaining slices when commanded
 work
 ```
 

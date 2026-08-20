@@ -62,8 +62,13 @@ describe("Explore perceptual airflow workbench composition", () => {
     expect("eulerianAirflowSamples" in guided).toBe(false);
     expect(createGuidedLabSrc).not.toMatch(/EulerianAirflowSamples/);
     expect(createGuidedLabSrc).not.toMatch(/VisualAirflowWorkbenchControls/);
-    expect(appSrc).toMatch(/explore !== null && \(/);
-    expect(appSrc).toMatch(/VisualAirflowWorkbenchControls/);
+    const exploreShell = appSrc.slice(
+      appSrc.indexOf("workbench--explore"),
+      appSrc.indexOf("workbench--guided"),
+    );
+    expect(exploreShell).toMatch(/VisualAirflowWorkbenchControls/);
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
   });
 });
 

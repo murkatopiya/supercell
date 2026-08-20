@@ -2,7 +2,8 @@
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
 M2 COMPLETE / V1 FEATURE FREEZE ACTIVE /
-M1 + M3 DECIDED / IMPLEMENTATION NOT STARTED
+M1 + M3 DECIDED /
+SLICE A COMPLETE / SLICES B–G NOT STARTED
 **Scope:** decide how already-built V1 capabilities are
 spatially and informationally organized so a user can
 perform acceptance tasks T1–T10 with minimal unnecessary
@@ -17,8 +18,8 @@ operands. Prescribed Ω semantics unchanged. Inspector L2
 boundary and Point-diagnostics sibling relation unchanged
 (`19`, `32`). This file does not reopen `17`, `22`, `23`,
 `26`, `28`, `30`–`39`.
-**Implementation:** this SoT itself is docs-only.
-Production layout work is out of scope for this document.
+**Implementation:** Slice A production shell geometry is
+COMPLETE. Slices B–G remain NOT STARTED.
 
 Predecessor V1 visual-airflow product-state architecture:
 
@@ -776,23 +777,46 @@ F9  Remains M4 release-surface work, not this SoT
 
 ---
 
-## 19. Implementation slices (proposed; not authorized here)
+## 19. Implementation slices
 
-Ordered vertical slices for a later production command:
+Ordered vertical slices:
 
 ```text
 Slice A  Explore shell regions + page vs region scroll policy
          + viewport height budget at desktop
+         STATUS: COMPLETE
+         Evidence: app--explore / workbench--explore three-band
+         Controls | Viewport | Observation; 100dvh height budget;
+         observation overflow-y auto; viewport flex height;
+         Guided remains on workbench--guided; hodograph temporarily
+         in Explore controls rail pending Slice D Environment surface.
+         Wiring: src/app/exploreShell.wiring.test.ts
+
 Slice B  Action-rail control consolidation + terminology +
          disabled reasons + compact airflow/diagnostic chrome
+         STATUS: NOT STARTED
+
 Slice C  Observation dock (Inspector + Point diagnostics)
          shared empty state + internal scroll contract
+         STATUS: NOT STARTED
+         Note: region scroll geometry landed in Slice A; shared
+         empty-state copy remains Slice C.
+
 Slice D  Environment on-demand surface for hodograph/overlays
          + Guided default-open policy
+         STATUS: NOT STARTED
+
 Slice E  M1 persistent identity + mode signposting copy
+         STATUS: NOT STARTED
+
 Slice F  Guided teaching-copy consolidation without new mounts
          and without breaking one-viewport Guided fit
+         STATUS: NOT STARTED
+
 Slice G  Focused wiring/layout tests for the above contracts
+         STATUS: NOT STARTED
+         Note: Slice A already ships focused shell geometry tests;
+         later slices may extend that suite.
 ```
 
 Each slice rearranges or relabels existing capability only.
@@ -802,7 +826,7 @@ Each slice rearranges or relabels existing capability only.
 ## 20. Anti-claims
 
 ```text
-This SoT does not authorize production implementation.
+This SoT does not authorize Slices B–G by itself.
 This SoT does not add product capability under freeze.
 This SoT does not merge Inspector L2 with Point diagnostics.
 This SoT does not hide required scientific honesty to save space.
@@ -859,8 +883,8 @@ RESPONSIVE            existing breakpoints; further work
 RECOMMENDED LAYOUT    Option 2
 USER HYPOTHESES       accepted where evidenced; not automatic
 FREEZE                intact; no new capability
-IMPLEMENTATION        NOT STARTED / NOT AUTHORIZED HERE
-NEXT                  production M1/M3 slices when commanded;
+IMPLEMENTATION        Slice A COMPLETE; B–G NOT STARTED
+NEXT                  Slice B when commanded; then C–G;
                       then M5 playtest
 ```
 
@@ -906,5 +930,6 @@ NEXT                  production M1/M3 slices when commanded;
 10. **Does this authorize implementation?**  
 
 ```text
-NO.
+Slice A production geometry is COMPLETE.
+Slices B–G remain NOT STARTED until commanded.
 ```

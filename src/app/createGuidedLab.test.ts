@@ -330,16 +330,15 @@ describe("App Guided experiment wiring", () => {
   });
 
   it("renders the experiment selector only in Guided from catalog titles", () => {
-    expect(appSrc).toMatch(
-      /lab\.kind === "guided" && \(\s*<GuidedExperimentSelector/s,
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).toMatch(/<GuidedExperimentSelector/);
+    expect(guidedShell).toMatch(/value=\{guidedExperimentId\}/);
+    expect(guidedShell).toMatch(/onChange=\{selectGuidedExperiment\}/);
+    const exploreShell = appSrc.slice(
+      appSrc.indexOf("workbench--explore"),
+      appSrc.indexOf("workbench--guided"),
     );
-    expect(appSrc).toMatch(/value=\{guidedExperimentId\}/);
-    expect(appSrc).toMatch(/onChange=\{selectGuidedExperiment\}/);
-    const exploreControls = appSrc.slice(
-      appSrc.indexOf("{explore !== null &&"),
-      appSrc.indexOf("<TracerViewport"),
-    );
-    expect(exploreControls).not.toMatch(/GuidedExperimentSelector/);
+    expect(exploreShell).not.toMatch(/GuidedExperimentSelector/);
     expect(GUIDED_EXPERIMENTS).toHaveLength(3);
   });
 });

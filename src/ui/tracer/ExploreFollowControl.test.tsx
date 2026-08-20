@@ -49,27 +49,24 @@ describe("ExploreFollowControl", () => {
     expect(html).toContain('aria-pressed="false"');
   });
 
-  it("is mounted in Explore laboratory-toolbar and omitted from Guided", () => {
-    const laboratory = appSrc.slice(
-      appSrc.indexOf("workbench__column--laboratory"),
-      appSrc.indexOf("workbench__column--inspector"),
+  it("is mounted in Explore controls rail and omitted from Guided", () => {
+    const controls = appSrc.slice(
+      appSrc.indexOf("workbench__column--controls"),
+      appSrc.indexOf("workbench__column--viewport"),
     );
-    expect(laboratory).toMatch(/ExploreFollowControl/);
-    expect(laboratory).toMatch(
-      /explore !== null && \(\s*<ExploreFollowControl/s,
+    expect(controls).toMatch(/ExploreFollowControl/);
+    expect(controls).toMatch(/followEnabled=\{followEnabled\}/);
+    expect(controls.indexOf("TracerRuntimeControls")).toBeLessThan(
+      controls.indexOf("ExploreFollowControl"),
     );
-    expect(laboratory).toMatch(/followEnabled=\{followEnabled\}/);
-    expect(laboratory.indexOf("TracerRuntimeControls")).toBeLessThan(
-      laboratory.indexOf("ExploreFollowControl"),
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/ExploreFollowControl/);
+    expect(guidedShell).not.toMatch(/Follow selected tracer/);
+    const observation = appSrc.slice(
+      appSrc.indexOf("workbench__column--observation"),
+      appSrc.indexOf("workbench--guided"),
     );
-    const inspectorColumn = appSrc.slice(
-      appSrc.indexOf("workbench__column--inspector"),
-    );
-    expect(inspectorColumn).not.toMatch(/ExploreFollowControl/);
-    expect(inspectorColumn).not.toMatch(/Follow selected tracer/);
-    expect(laboratory).not.toMatch(
-      /lab\.kind === "guided"[\s\S]*ExploreFollowControl/,
-    );
+    expect(observation).not.toMatch(/ExploreFollowControl/);
     expect(inspectorPanelSrc).not.toMatch(/Follow/);
     expect(pointDiagnosticsPanelSrc).not.toMatch(/Follow/);
     expect(guidedExperimentSrc).not.toMatch(/Follow/);

@@ -261,8 +261,84 @@ export function App() {
     resolveSelectedTracer(lab.simulation.particles, selection) !==
     undefined;
 
+  const hodographColumn = (
+    <>
+      <h2 className="app__panel-title">Hodograph</h2>
+      <HodographPanel
+        points={points}
+        stormMotion={DEMO_SCENARIO.stormMotion}
+        selectedHeight={DEMO_SELECTED_HEIGHT}
+        vorticityLayer={vorticityLayer}
+        streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
+        overlayVisibility={overlayVisibility}
+      />
+      <HodographOverlayControls
+        value={overlayVisibility}
+        onChange={setOverlayVisibility}
+      />
+    </>
+  );
+
+  const tracerViewport = (
+    <TracerViewport
+      simulation={lab.simulation}
+      pathHistory={lab.pathHistory}
+      keepInactiveGlyphs={
+        lab.kind === "explore" ? false : lab.keepInactiveGlyphs
+      }
+      timestep={DEMO_SCENARIO.simulation.timestep}
+      paused={paused}
+      timeScale={timeScale}
+      resetEpoch={resetEpoch}
+      pendingReleasePreview={lab.kind === "explore" ? pendingSeed : null}
+      selectedTracerId={selectedTracerId}
+      visualAirflowPopulation={
+        lab.kind === "explore" ? lab.visualAirflowPopulation : null
+      }
+      eulerianAirflowSamples={
+        lab.kind === "explore" ? lab.eulerianAirflowSamples : null
+      }
+      visualAirflowField={
+        lab.kind === "explore" ? lab.velocityObservation.total : null
+      }
+      workbenchMode={workbenchMode}
+      pauseVisualization={pauseVisualization}
+      highlightMode={highlightMode}
+      highlightOperand={
+        lab.kind === "explore" && highlightMode !== "off"
+          ? resolveStormOperandHighlightField(
+              lab.velocityObservation.parts,
+              highlightMode,
+            )
+          : null
+      }
+      depthCueEnabled={depthCueEnabled}
+      onTracerSelect={(tracerId) => {
+        selection.select(tracerId);
+        mirrorSelection();
+        refreshInspection();
+      }}
+      onSimulationAdvanced={refreshInspection}
+      followEnabledRef={followEnabledRef}
+      onFollowUnavailable={() => setFollowEnabled(false)}
+      onPlacementAttempt={
+        explore === null
+          ? undefined
+          : (origin, direction, pointerMovementPx) => {
+              explore.orchestration.handlePlacementAttempt(
+                origin,
+                direction,
+                pointerMovementPx,
+              );
+              setPendingSeed(explore.tool.pendingSeed);
+            }
+      }
+      sceneHandleRef={sceneHandleRef}
+    />
+  );
+
   return (
-    <main className="app">
+    <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
         <h1 className="app__title">Supercell Explorer</h1>
         <div className="app__mode-switch lab-experience-switch">
@@ -290,50 +366,28 @@ export function App() {
         prescribed storm motion).
       </p>
 
-      <section className="workbench">
-        <div className="workbench__column workbench__column--hodograph">
-          <h2 className="app__panel-title">Hodograph</h2>
-          <HodographPanel
-            points={points}
-            stormMotion={DEMO_SCENARIO.stormMotion}
-            selectedHeight={DEMO_SELECTED_HEIGHT}
-            vorticityLayer={vorticityLayer}
-            streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
-            overlayVisibility={overlayVisibility}
-          />
-          <HodographOverlayControls
-            value={overlayVisibility}
-            onChange={setOverlayVisibility}
-          />
-        </div>
-
-        <div className="workbench__column workbench__column--laboratory">
-          <h2 className="app__panel-title">Storm-relative laboratory</h2>
-          <div className="laboratory-toolbar">
-            <TracerRuntimeControls
-              paused={paused}
-              timeScale={timeScale}
-              onPausedChange={setPaused}
-              onTimeScaleChange={setTimeScale}
-              onReset={handleReset}
-            />
-            {explore !== null && (
+      {explore !== null ? (
+        <section
+          className="workbench workbench--explore"
+          aria-label="Explore laboratory"
+        >
+          <div className="workbench__column workbench__column--controls">
+            <div className="workbench__environment">{hodographColumn}</div>
+            <h2 className="app__panel-title">Storm-relative laboratory</h2>
+            <div className="laboratory-toolbar">
+              <TracerRuntimeControls
+                paused={paused}
+                timeScale={timeScale}
+                onPausedChange={setPaused}
+                onTimeScaleChange={setTimeScale}
+                onReset={handleReset}
+              />
               <ExploreFollowControl
                 followEnabled={followEnabled}
                 canFollow={followTargetResolves}
                 onFollowEnabledChange={setFollowEnabled}
               />
-            )}
-            {explore !== null && (
               <ExploreResetViewControl onResetView={handleResetView} />
-            )}
-            {lab.kind === "guided" && (
-              <GuidedExperimentSelector
-                value={guidedExperimentId}
-                onChange={selectGuidedExperiment}
-              />
-            )}
-            {explore !== null && (
               <ExplorePointReleaseControls
                 altitudeM={altitudeM}
                 placementEnabled={placementEnabled}
@@ -361,8 +415,6 @@ export function App() {
                   setPendingSeed(null);
                 }}
               />
-            )}
-            {explore !== null && (
               <VisualAirflowWorkbenchControls
                 mode={workbenchMode}
                 highlightMode={highlightMode}
@@ -371,77 +423,53 @@ export function App() {
                 onHighlightModeChange={setHighlightMode}
                 onDepthCueChange={setDepthCueEnabled}
               />
-            )}
+            </div>
           </div>
-          {guidedExperiment !== null && (
-            <GuidedExperimentPanel experiment={guidedExperiment} />
-          )}
-          <TracerViewport
-            simulation={lab.simulation}
-            pathHistory={lab.pathHistory}
-            keepInactiveGlyphs={
-              lab.kind === "explore" ? false : lab.keepInactiveGlyphs
-            }
-            timestep={DEMO_SCENARIO.simulation.timestep}
-            paused={paused}
-            timeScale={timeScale}
-            resetEpoch={resetEpoch}
-            pendingReleasePreview={
-              lab.kind === "explore" ? pendingSeed : null
-            }
-            selectedTracerId={selectedTracerId}
-            visualAirflowPopulation={
-              lab.kind === "explore" ? lab.visualAirflowPopulation : null
-            }
-            eulerianAirflowSamples={
-              lab.kind === "explore" ? lab.eulerianAirflowSamples : null
-            }
-            visualAirflowField={
-              lab.kind === "explore" ? lab.velocityObservation.total : null
-            }
-            workbenchMode={workbenchMode}
-            pauseVisualization={pauseVisualization}
-            highlightMode={highlightMode}
-            highlightOperand={
-              lab.kind === "explore" && highlightMode !== "off"
-                ? resolveStormOperandHighlightField(
-                    lab.velocityObservation.parts,
-                    highlightMode,
-                  )
-                : null
-            }
-            depthCueEnabled={depthCueEnabled}
-            onTracerSelect={(tracerId) => {
-              selection.select(tracerId);
-              mirrorSelection();
-              refreshInspection();
-            }}
-            onSimulationAdvanced={refreshInspection}
-            followEnabledRef={followEnabledRef}
-            onFollowUnavailable={() => setFollowEnabled(false)}
-            onPlacementAttempt={
-              explore === null
-                ? undefined
-                : (origin, direction, pointerMovementPx) => {
-                    explore.orchestration.handlePlacementAttempt(
-                      origin,
-                      direction,
-                      pointerMovementPx,
-                    );
-                    setPendingSeed(explore.tool.pendingSeed);
-                  }
-            }
-            sceneHandleRef={sceneHandleRef}
-          />
-        </div>
 
-        <div className="workbench__column workbench__column--inspector">
-          <TracerInspectorPanel inspection={inspection} />
-          {lab.kind === "explore" && (
+          <div className="workbench__column workbench__column--viewport">
+            {tracerViewport}
+          </div>
+
+          <div className="workbench__column workbench__column--observation">
+            <TracerInspectorPanel inspection={inspection} />
             <PointDiagnosticsPanel observation={pointDiagnostics} />
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      ) : (
+        <section
+          className="workbench workbench--guided"
+          aria-label="Guided laboratory"
+        >
+          <div className="workbench__column workbench__column--hodograph">
+            {hodographColumn}
+          </div>
+
+          <div className="workbench__column workbench__column--laboratory">
+            <h2 className="app__panel-title">Storm-relative laboratory</h2>
+            <div className="laboratory-toolbar">
+              <TracerRuntimeControls
+                paused={paused}
+                timeScale={timeScale}
+                onPausedChange={setPaused}
+                onTimeScaleChange={setTimeScale}
+                onReset={handleReset}
+              />
+              <GuidedExperimentSelector
+                value={guidedExperimentId}
+                onChange={selectGuidedExperiment}
+              />
+            </div>
+            {guidedExperiment !== null && (
+              <GuidedExperimentPanel experiment={guidedExperiment} />
+            )}
+            {tracerViewport}
+          </div>
+
+          <div className="workbench__column workbench__column--inspector">
+            <TracerInspectorPanel inspection={inspection} />
+          </div>
+        </section>
+      )}
     </main>
   );
 }

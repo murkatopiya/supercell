@@ -196,17 +196,33 @@ describe("shared inspector observation wiring", () => {
     expect(tracerInspectorPanelSrc).not.toMatch(/\.sample\(/);
   });
 
-  it("places the shared inspector in a workbench column beside the laboratory", () => {
-    expect(appSrc).toMatch(/className="workbench"/);
-    expect(appSrc).toMatch(/workbench__column--hodograph/);
+  it("places the shared inspector beside the laboratory in both shells", () => {
+    expect(appSrc).toMatch(/workbench--explore/);
+    expect(appSrc).toMatch(/workbench--guided/);
+    expect(appSrc).toMatch(/workbench__column--observation/);
     expect(appSrc).toMatch(/workbench__column--laboratory/);
     expect(appSrc).toMatch(/workbench__column--inspector/);
-    const laboratory = appSrc.slice(
+
+    const exploreObservation = appSrc.slice(
+      appSrc.indexOf("workbench__column--observation"),
+      appSrc.indexOf("workbench--guided"),
+    );
+    expect(exploreObservation).toMatch(/TracerInspectorPanel/);
+    expect(exploreObservation).not.toMatch(/TracerViewport/);
+
+    const exploreViewport = appSrc.slice(
+      appSrc.indexOf("workbench__column--viewport"),
+      appSrc.indexOf("workbench__column--observation"),
+    );
+    expect(exploreViewport).toMatch(/tracerViewport/);
+    expect(exploreViewport).not.toMatch(/TracerInspectorPanel/);
+
+    const guidedLaboratory = appSrc.slice(
       appSrc.indexOf("workbench__column--laboratory"),
       appSrc.indexOf("workbench__column--inspector"),
     );
-    expect(laboratory).toMatch(/TracerViewport/);
-    expect(laboratory).not.toMatch(/TracerInspectorPanel/);
+    expect(guidedLaboratory).toMatch(/tracerViewport/);
+    expect(guidedLaboratory).not.toMatch(/TracerInspectorPanel/);
     expect(appSrc).toMatch(
       /workbench__column--inspector[\s\S]*TracerInspectorPanel/s,
     );

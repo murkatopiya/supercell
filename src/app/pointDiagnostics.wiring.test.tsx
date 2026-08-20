@@ -75,23 +75,26 @@ describe("Explore point-diagnostics App wiring", () => {
     expect(appSrc).not.toMatch(/setTimeout/);
   });
 
-  it("mounts the panel only in Explore, below Inspector, not in Guided", () => {
-    const inspectorColumn = appSrc.slice(
-      appSrc.indexOf("workbench__column--inspector"),
+  it("mounts the panel only in Explore observation dock, below Inspector, not in Guided", () => {
+    const observation = appSrc.slice(
+      appSrc.indexOf("workbench__column--observation"),
+      appSrc.indexOf("workbench--guided"),
     );
-    expect(inspectorColumn).toMatch(/TracerInspectorPanel/);
-    expect(inspectorColumn).toMatch(
-      /lab\.kind === "explore" && \(\s*<PointDiagnosticsPanel observation=\{pointDiagnostics\} \/>/s,
+    expect(observation).toMatch(/TracerInspectorPanel/);
+    expect(observation).toMatch(
+      /<PointDiagnosticsPanel observation=\{pointDiagnostics\} \/>/,
     );
-    expect(inspectorColumn.indexOf("TracerInspectorPanel")).toBeLessThan(
-      inspectorColumn.indexOf("PointDiagnosticsPanel"),
+    expect(observation.indexOf("TracerInspectorPanel")).toBeLessThan(
+      observation.indexOf("PointDiagnosticsPanel"),
     );
 
-    const laboratory = appSrc.slice(
-      appSrc.indexOf("workbench__column--laboratory"),
-      appSrc.indexOf("workbench__column--inspector"),
+    const viewport = appSrc.slice(
+      appSrc.indexOf("workbench__column--viewport"),
+      appSrc.indexOf("workbench__column--observation"),
     );
-    expect(laboratory).not.toMatch(/PointDiagnosticsPanel/);
+    expect(viewport).not.toMatch(/PointDiagnosticsPanel/);
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/PointDiagnosticsPanel/);
     expect(appSrc).not.toMatch(/GuidedPointDiagnostics/);
     expect(guidedExperimentSrc).not.toMatch(/PointDiagnostic/);
     expect(guidedExperimentSrc).not.toMatch(/tiltingTendency/);
@@ -209,11 +212,13 @@ describe("Explore point-diagnostics App wiring", () => {
     expect(appSrc).toMatch(
       /lab\.kind === "explore"\s*\?[\s\S]*inspectSelectedPointDiagnostics/s,
     );
-    const inspectorColumn = appSrc.slice(
-      appSrc.indexOf("workbench__column--inspector"),
+    const observation = appSrc.slice(
+      appSrc.indexOf("workbench__column--observation"),
+      appSrc.indexOf("workbench--guided"),
     );
-    expect(inspectorColumn).toMatch(/lab\.kind === "explore"/);
-    expect(inspectorColumn).not.toMatch(/lab\.kind === "guided"/);
+    expect(observation).toMatch(/PointDiagnosticsPanel/);
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/PointDiagnosticsPanel/);
     const guided = createGuidedLab(GuidedExperimentId.InflowToUpperOutflow);
     expect(guided.kind).toBe("guided");
   });

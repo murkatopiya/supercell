@@ -47,17 +47,18 @@ describe("App Guided teaching wiring", () => {
     expect(appSrc).toMatch(
       /guidedExperiment !== null && \(\s*<GuidedExperimentPanel/s,
     );
-    const exploreEnter = appSrc.slice(
+    const enterExplore = appSrc.slice(
       appSrc.indexOf("const enterExplore"),
       appSrc.indexOf("const enterGuided"),
     );
-    expect(exploreEnter).toMatch(/createExploreLab/);
-    expect(exploreEnter).not.toMatch(/GuidedExperimentPanel/);
-    const exploreControls = appSrc.slice(
-      appSrc.indexOf("{explore !== null &&"),
-      appSrc.indexOf("<TracerViewport"),
+    expect(enterExplore).toMatch(/createExploreLab/);
+    expect(enterExplore).not.toMatch(/GuidedExperimentPanel/);
+    const exploreShell = appSrc.slice(
+      appSrc.indexOf("workbench--explore"),
+      appSrc.indexOf("workbench--guided"),
     );
-    expect(exploreControls).not.toMatch(/GuidedExperimentSelector/);
+    expect(exploreShell).not.toMatch(/GuidedExperimentSelector/);
+    expect(exploreShell).not.toMatch(/GuidedExperimentPanel/);
   });
 
   it("returns to the last experiment and its teaching copy after Explore", () => {
@@ -78,14 +79,14 @@ describe("App Guided teaching wiring", () => {
       appSrc.indexOf("workbench__column--inspector"),
     );
     expect(laboratory).toMatch(/GuidedExperimentPanel/);
-    expect(laboratory).toMatch(/TracerViewport/);
+    expect(laboratory).toMatch(/tracerViewport/);
     const panelRender = laboratory.slice(
       laboratory.indexOf("guidedExperiment !== null"),
-      laboratory.indexOf("<TracerViewport"),
+      laboratory.indexOf("{tracerViewport}"),
     );
     expect(panelRender).not.toMatch(/selectedTracerId/);
     expect(panelRender).not.toMatch(/inspection/);
-    expect(laboratory).toMatch(/selectedTracerId=\{selectedTracerId\}/);
+    expect(appSrc).toMatch(/selectedTracerId=\{selectedTracerId\}/);
   });
 
   it("leaves the shared Inspector contract unchanged", () => {
@@ -113,7 +114,7 @@ describe("App Guided teaching wiring", () => {
     expect(inspector).toMatch(/TracerInspectorPanel/);
     expect(inspector).not.toMatch(/GuidedExperimentPanel/);
     expect(laboratory.indexOf("GuidedExperimentPanel")).toBeLessThan(
-      laboratory.indexOf("TracerViewport"),
+      laboratory.indexOf("tracerViewport"),
     );
   });
 });

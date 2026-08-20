@@ -438,19 +438,18 @@ describe("Explore Reset View App wiring", () => {
   });
 
   it("keeps Guided free of the Reset View control and documents Explore mount", () => {
-    const laboratory = appSrc.slice(
-      appSrc.indexOf("workbench__column--laboratory"),
-      appSrc.indexOf("workbench__column--inspector"),
+    const controls = appSrc.slice(
+      appSrc.indexOf("workbench__column--controls"),
+      appSrc.indexOf("workbench__column--viewport"),
     );
-    expect(laboratory).toMatch(/ExploreResetViewControl/);
-    expect(laboratory).toMatch(/onResetView=\{handleResetView\}/);
+    expect(controls).toMatch(/ExploreResetViewControl/);
+    expect(controls).toMatch(/onResetView=\{handleResetView\}/);
     expect(resetViewControlSrc).toContain("Reset View");
     expect(resetViewControlSrc).toContain(
       'aria-label="Reset camera to storm view"',
     );
     expect(resetViewControlSrc).not.toContain("disabled");
-    expect(laboratory).not.toMatch(
-      /lab\.kind === "guided"[\s\S]*ExploreResetViewControl/,
-    );
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/ExploreResetViewControl/);
   });
 });
