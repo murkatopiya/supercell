@@ -47,6 +47,17 @@ NEW PROJECT DECISION
 ANTI-CLAIM
 ```
 
+Successor post-model-class product direction:
+
+```text
+docs/architecture/31-post-model-class-product-direction-checkpoint.md
+```
+
+`31` answers what product work is earned now that the
+synthetic class is locked. This file remains the
+model-class SoT. Completing `30` does **not** start UI,
+stretching, T2, or dataset work.
+
 This document did **not** change production code.
 It does **not** create `ROADMAP.md`.
 It does **not** start a selected branch.
