@@ -2,11 +2,10 @@
 
 **Status:** ARCHITECTURE SoT
 Candidate A — diagnostic current world-vertical vorticity
-**Implementation:** Slice 2 COMPLETE
-(`DiagnosticVerticalVorticity` + canonical composition wiring).
-Slice 3 NEXT (scientific DEMO validation).
+**Implementation:** Slice 3 COMPLETE
+(`docs/research/2026-08-20-candidate-a-demo-field-validation.md`).
+Candidate A VALIDATED HEADLESS / DEMO.
 HEADLESS CAPABILITY IMPLEMENTED.
-SCIENTIFIC DEMO VALIDATION NOT STARTED.
 UI NOT STARTED.
 **Scope:** ownership, sampling, analytic-vs-numeric evaluation,
 source-field relation, composition wiring, observation
@@ -37,7 +36,8 @@ visualization tint:      UNCHANGED
 This document owns Candidate A *architecture*. Physics 23 owns
 the quantity `ω_y,current`. Slice 1 is the concrete rotation
 method. Slice 2 is the diagnostic owner and lab wiring.
-Completing this file did **not** start Slice 3.
+Slice 3 is scientific DEMO validation. Completing this file
+did **not** start stretching, T2, or `ω → V`.
 
 Keep these roles distinct:
 
@@ -1040,10 +1040,13 @@ CURRENT STACK: sample() equals rotation.worldVerticalVorticity
 ```
 
 Canonical sources from `composeDemoTracerFields`, not a second
-DTO. Suggested record: research markdown + optional headless
-sampler script / artifacts, same class as T1 validation.
+DTO. Record:
 
-UI is not required to close the physics question.
+```text
+docs/research/2026-08-20-candidate-a-demo-field-validation.md
+```
+
+**COMPLETE.** UI is not required to close the physics question.
 
 ---
 
@@ -1070,12 +1073,14 @@ construction. UI / Inspector / visualization not started.
 
 ### Slice 3 — scientific DEMO validation, no UI
 
+**COMPLETE.**
+`docs/research/2026-08-20-candidate-a-demo-field-validation.md`.
 Research-only inspection analogous to T1. Does not add
 Inspector L3 or an overlay.
 
 Headless **capability** is implemented after Slice 2.
-Treating Candidate A as scientifically CLOSED / VALIDATED
-HEADLESS, in the T1 sense, waits for Slice 3.
+Candidate A is VALIDATED HEADLESS / DEMO in the T1 sense.
+UI remains unstarted.
 
 Do not merge Slice 1 into Slice 2 unless a later
 implementation command says so. Isolated analytic zeros are
@@ -1225,8 +1230,9 @@ operands, T1 already a diagnostic sibling, DEMO rotation is
 `VerticalEnvelopeRotationField`, `VelocityField` is
 `sample → Vec3` only.
 
-This file still does **not** start Slice 3. A later
-explicit command is required for scientific DEMO validation.
+This file still does **not** start stretching, T2, `ω → V`,
+or Candidate A UI. Scientific DEMO validation is recorded in
+`docs/research/2026-08-20-candidate-a-demo-field-validation.md`.
 
 Continuity YELLOW is not a blocker.
 
@@ -1257,12 +1263,13 @@ state:              none
 UI completion:      not required
 implementation:     Slice 1 COMPLETE
                     Slice 2 COMPLETE
-                    Slice 3 NEXT
+                    Slice 3 COMPLETE
                     DiagnosticVerticalVorticity implemented
                     HEADLESS CAPABILITY IMPLEMENTED
-                    SCIENTIFIC DEMO VALIDATION NOT STARTED
+                    SCIENTIFIC DEMO VALIDATION COMPLETE
+                    docs/research/2026-08-20-candidate-a-demo-field-validation.md
+                    Candidate A VALIDATED HEADLESS / DEMO
                     UI NOT STARTED
-                    this file does not authorize Slice 3
 ```
 
 ---
@@ -1279,11 +1286,12 @@ CANDIDATE A ARCHITECTURE
   WRITTEN
   SLICE 1 COMPLETE
   SLICE 2 COMPLETE
-  SLICE 3 NEXT
+  SLICE 3 COMPLETE
   DiagnosticVerticalVorticity implemented
   HEADLESS CAPABILITY IMPLEMENTED
-  SCIENTIFIC DEMO VALIDATION NOT STARTED
-  THIS FILE DOES NOT AUTHORIZE SLICE 3
+  SCIENTIFIC DEMO VALIDATION COMPLETE
+  Candidate A VALIDATED HEADLESS / DEMO
+  UI NOT STARTED
 
 T1
   REMAINS CLOSED AS HEADLESS DIAGNOSTIC
@@ -1292,9 +1300,8 @@ STRETCHING / T2 / ω→V / Ω / V_total / UI / curl()
   UNCHANGED / NOT STARTED
 ```
 
-Do not start Slice 3 scientific DEMO validation because this
-file exists. Slice 1 (`worldVerticalVorticity`) and Slice 2
-(`DiagnosticVerticalVorticity` + lab wiring) are implemented.
+Do not start stretching, T2, `ω → V`, or Candidate A UI
+because this file exists. Slices 1–3 are complete.
 Do not start stretching, T2, full curl, or Inspector L3.
 Do not treat physics 23 or checkpoint 27 as this architecture.
 Do not treat physics 18 §18.2 as a production API.

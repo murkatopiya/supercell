@@ -12,6 +12,8 @@ Architecture of that diagnostic (not this field's velocity API):
 Candidate A Slice 1 is implemented on this type:
 `worldVerticalVorticity(position, time) → signed ω_y` [s⁻¹].
 `DiagnosticVerticalVorticity` (Slice 2 owner) is implemented.
+Scientific DEMO validation:
+`docs/research/2026-08-20-candidate-a-demo-field-validation.md`.
 This file remains the velocity-field SoT. `23` re-derives
 `ω_y^Ω` as a diagnostic contract; it does not replace §18.
 

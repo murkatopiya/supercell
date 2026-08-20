@@ -3,11 +3,9 @@
 **Status:** PHYSICS DERIVATION / DIAGNOSTIC SoT
 **Scope:** world-vertical component of curl of the CURRENT
 prescribed velocity field, in project coordinates.
-**Implementation:** Slice 2 COMPLETE
-(`DiagnosticVerticalVorticity` + canonical composition).
-Slice 3 NEXT (scientific DEMO validation).
-HEADLESS CAPABILITY IMPLEMENTED.
-SCIENTIFIC DEMO VALIDATION NOT STARTED.
+**Implementation:** Slice 3 COMPLETE.
+Candidate A VALIDATED HEADLESS / DEMO:
+`docs/research/2026-08-20-candidate-a-demo-field-validation.md`.
 This file remains the derivation SoT.
 **Architecture:** not this file. Successor architecture SoT:
 `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
@@ -1053,10 +1051,11 @@ implementation:       Slice 1 COMPLETE
                       .worldVerticalVorticity
                       Slice 2 COMPLETE
                       DiagnosticVerticalVorticity
-                      Slice 3 NEXT
+                      Slice 3 COMPLETE
                       HEADLESS CAPABILITY IMPLEMENTED
-                      SCIENTIFIC DEMO VALIDATION
-                      NOT STARTED
+                      SCIENTIFIC DEMO VALIDATION COMPLETE
+                      docs/research/2026-08-20-candidate-a-demo-field-validation.md
+                      Candidate A VALIDATED HEADLESS / DEMO
 ```
 
 ---
@@ -1075,17 +1074,18 @@ ARCHITECTURE
 IMPLEMENTATION
   SLICE 1 COMPLETE
   SLICE 2 COMPLETE
-  SLICE 3 NEXT
+  SLICE 3 COMPLETE
   DiagnosticVerticalVorticity implemented
   HEADLESS CAPABILITY IMPLEMENTED
-  SCIENTIFIC DEMO VALIDATION NOT STARTED
+  SCIENTIFIC DEMO VALIDATION COMPLETE
+  Candidate A VALIDATED HEADLESS / DEMO
 
 STRETCHING / T2 / ω→V / Ω / V_total / UI
   UNCHANGED / NOT STARTED
 ```
 
-Do not start Slice 3 scientific DEMO validation because this
-file exists. Slice 1 and Slice 2 are implemented.
+Do not start stretching, T2, or `ω → V` because this file
+exists. Slices 1–3 are complete.
 Do not treat physics `18` §18.2 as a substitute for this
 diagnostic contract: `18` remains the velocity-field SoT.
 Do not treat `27` as this derivation.

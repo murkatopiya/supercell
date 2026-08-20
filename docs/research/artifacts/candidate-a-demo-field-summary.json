@@ -1,0 +1,237 @@
+{
+  "generatedAt": "2026-08-20",
+  "commitNote": "research sampling of current DEMO Candidate A; not a runtime asset",
+  "evaluator": "DiagnosticVerticalVorticity.sample from composeDemoTracersWithObservation",
+  "rotation": {
+    "centerX": 0,
+    "centerZ": 0,
+    "angularVelocity": 0.005,
+    "sigma": 4000,
+    "baseHeight": 0,
+    "topHeight": 6500,
+    "yMid": 3250,
+    "demoCenterIsOrigin": true
+  },
+  "grid": {
+    "n": 41,
+    "halfExtentM": 12000,
+    "spacingM": 600,
+    "axes": "+X East, +Z South, +Y Up"
+  },
+  "axisSurvey": [
+    {
+      "y": -200,
+      "role": "below rotation layer",
+      "G": 0,
+      "omegaY": 0,
+      "expected": 0,
+      "t1": 0
+    },
+    {
+      "y": 0,
+      "role": "lower lid",
+      "G": 0,
+      "omegaY": 0,
+      "expected": 0,
+      "t1": 0
+    },
+    {
+      "y": 1000,
+      "role": "lower interior; physics 23 illustration",
+      "G": 0.4647231720437685,
+      "omegaY": 0.004647231720437686,
+      "expected": 0.004647231720437685,
+      "t1": 0
+    },
+    {
+      "y": 3250,
+      "role": "y_mid; G = 1",
+      "G": 1,
+      "omegaY": 0.01,
+      "expected": 0.01,
+      "t1": 0
+    },
+    {
+      "y": 4000,
+      "role": "upper-mid interior; T1 y_mid for comparison",
+      "G": 0.9350162426854148,
+      "omegaY": 0.009350162426854148,
+      "expected": 0.009350162426854148,
+      "t1": 0
+    },
+    {
+      "y": 5000,
+      "role": "upper interior",
+      "G": 0.6631226582407952,
+      "omegaY": 0.006631226582407952,
+      "expected": 0.006631226582407952,
+      "t1": 0
+    },
+    {
+      "y": 6500,
+      "role": "upper lid",
+      "G": 0,
+      "omegaY": 0,
+      "expected": 0,
+      "t1": 0
+    },
+    {
+      "y": 8000,
+      "role": "above rotation; still inside updraft",
+      "G": 0,
+      "omegaY": 0,
+      "expected": 0,
+      "t1": 0
+    },
+    {
+      "y": 9000,
+      "role": "above rotation layer",
+      "G": 0,
+      "omegaY": 0,
+      "expected": 0,
+      "t1": 0
+    }
+  ],
+  "radialContract": [
+    {
+      "rLabel": "0",
+      "r": 0,
+      "dx": 0,
+      "dz": 0,
+      "omegaY": 0.01,
+      "expected": 0.01,
+      "G": 1
+    },
+    {
+      "rLabel": "σ",
+      "r": 4000,
+      "dx": 4000,
+      "dz": 0,
+      "omegaY": 0.003032653298563167,
+      "expected": 0.003032653298563167,
+      "G": 1
+    },
+    {
+      "rLabel": "σ√2 exact r²=2σ²",
+      "r": 5656.85424949238,
+      "dx": 4000,
+      "dz": 4000,
+      "omegaY": 0,
+      "expected": 0,
+      "G": 1
+    },
+    {
+      "rLabel": "2σ",
+      "r": 8000,
+      "dx": 8000,
+      "dz": 0,
+      "omegaY": -0.0013533528323661271,
+      "expected": -0.0013533528323661271,
+      "G": 1
+    },
+    {
+      "rLabel": "3σ",
+      "r": 12000,
+      "dx": 12000,
+      "dz": 0,
+      "omegaY": -0.00038881487883848074,
+      "expected": -0.00038881487883848074,
+      "G": 1
+    },
+    {
+      "rLabel": "8σ",
+      "r": 32000,
+      "dx": 32000,
+      "dz": 0,
+      "omegaY": -3.925891320219195e-15,
+      "expected": -3.925891320219195e-15,
+      "G": 1
+    }
+  ],
+  "cardinals": [
+    {
+      "name": "+X East",
+      "dx": 4000,
+      "dz": 0,
+      "r": 4000,
+      "omegaY": 0.003032653298563167
+    },
+    {
+      "name": "-X West",
+      "dx": -4000,
+      "dz": 0,
+      "r": 4000,
+      "omegaY": 0.003032653298563167
+    },
+    {
+      "name": "+Z South",
+      "dx": 0,
+      "dz": 4000,
+      "r": 4000,
+      "omegaY": 0.003032653298563167
+    },
+    {
+      "name": "-Z North",
+      "dx": 0,
+      "dz": -4000,
+      "r": 4000,
+      "omegaY": 0.003032653298563167
+    }
+  ],
+  "time": {
+    "point": {
+      "x": 4000,
+      "y": 3050,
+      "z": -2000
+    },
+    "times": [
+      0,
+      12,
+      99,
+      3600
+    ],
+    "values": [
+      0.0019978598724341642,
+      0.0019978598724341642,
+      0.0019978598724341642,
+      0.0019978598724341642
+    ]
+  },
+  "stormMotionIndependence": {
+    "point": {
+      "x": 4000,
+      "y": 3250,
+      "z": 0
+    },
+    "omegaGround": 0.003032653298563167,
+    "omegaStorm": 0.003032653298563167,
+    "vTotalGround": {
+      "x": 14.403837644278676,
+      "y": 12.621502469276617,
+      "z": -35.56811319425267
+    },
+    "vTotalStormRelative": {
+      "x": 4.403837644278676,
+      "y": 12.621502469276617,
+      "z": -35.56811319425267
+    },
+    "stormMotion": {
+      "eastward": 10,
+      "northward": 0
+    }
+  },
+  "contrastWithT1": {
+    "candidateAAtRotationAxisMid": 0.01,
+    "t1AtRotationAxisMid": 0,
+    "candidateAAtT1CoupleY4000": 0.0032790597320791,
+    "t1AtT1CoupleY4000": 0.000023313279293671085,
+    "candidateAAtUpdraftAxisY4000": 0.009350162426854148,
+    "t1AtUpdraftAxisY4000": 0
+  },
+  "sliceYMid": {
+    "max": 0.01,
+    "min": -0.0013533486101806348
+  },
+  "identity": "DiagnosticVerticalVorticity.sample === rotation.worldVerticalVorticity at all checked points (CURRENT STACK IDENTITY, not a universal law)",
+  "passed": true
+}
