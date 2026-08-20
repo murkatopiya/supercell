@@ -990,9 +990,9 @@ entry           Phase 2 exit
 exit            F1, F2, F3-copy, F6, F7, F8 closed;
                 F4 and F5 either closed by reordering or
                 explicitly deferred to the Phase 4 verdict
-architecture    YES — one consolidation SoT listing the exact
-SoT needed      functional items and their contracts
-production      YES
+architecture    YES — `40` DECIDED (docs-only);
+SoT needed      production slices NOT STARTED
+production      YES (when commanded; not authorized by `40`)
 work
 ```
 
@@ -1196,18 +1196,15 @@ unless §9's four conditions are all satisfied and recorded.
     checkpoint?**
 
 ```text
+Historical Phase 1 successor (COMPLETE):
 docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 
-docs-only SoT that decides the M2 product default encoding,
-the fate of the remaining research encodings, the operand
-highlight's product status, and the copy contract that removes
-the dev-workbench language.
+Current Phase 3 architecture successor (DECIDED / docs-only):
+docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
 
-NOT a rendering redesign.
-NOT the UX consolidation SoT.
-NOT an overlay.
-NOT Guided airflow.
-NOT implementation.
+40 decides M1 honesty placement and M3 spatial / informational
+organization for existing V1 capabilities. It does not
+authorize production implementation.
 ```
 
 11. **Does this checkpoint authorize implementation?**
@@ -1385,7 +1382,9 @@ docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 
 Successor status: M2 product-state decision **DECIDED** in
 `39`; M2 production implementation **COMPLETE**; V1 feature
-freeze **ACTIVE**. Remaining V1 MUST work is M1, M3, M4, M5.
+freeze **ACTIVE**. M1 / M3 consolidation architecture
+**DECIDED** in `40`; M1 / M3 production implementation
+**NOT STARTED**. Remaining V1 MUST work is M1, M3, M4, M5.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1461,6 +1460,10 @@ M2 SUCCESSOR        docs/architecture/
                     39-v1-visual-airflow-product-state-architecture.md
                     M2 COMPLETE / FEATURE FREEZE ACTIVE
 
+M1/M3 SUCCESSOR     docs/architecture/
+                    40-v1-m1-m3-ux-ui-consolidation-architecture.md
+                    DECIDED / IMPLEMENTATION NOT STARTED
+
 IMPLEMENTATION
 FROM THIS FILE      NONE
 
@@ -1472,7 +1475,9 @@ CONFIDENCE          HIGH on the promise wording, on one fixed
                     environment, on preserving three Guided
                     experiments, and on no new physics
                     M2 COMPLETE via successor `39`
-                    MEDIUM on whether F4/F5 survive Phase 3
+                    M1/M3 architecture DECIDED via `40`
+                    MEDIUM on whether production slices close
+                    F4/F5 before Phase 4 playtest
 ```
 
 ---

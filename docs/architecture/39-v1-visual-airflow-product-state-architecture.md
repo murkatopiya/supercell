@@ -1005,8 +1005,15 @@ M2 production implementation status: **COMPLETE**.
 V1 feature freeze status: **ACTIVE**.
 
 Successor V1 work after freeze follows `38`: M1 / M3 →
-acceptance → audits → release. No architecture `40` is
-required to close M2.
+acceptance → audits → release. M2 itself required no
+architecture `40`. The Phase 3 M1 / M3 consolidation
+architecture is:
+
+```text
+docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
+```
+
+That file is DECIDED and does not reopen M2.
 
 ---
 
@@ -1049,5 +1056,6 @@ M2 COMPLETE           YES — all six §16 conditions PASS
 
 FEATURE FREEZE        ACTIVE at production M2 completion merge
 
-NEXT V1 WORK          M1 / M3 per `38` (inside freeze)
+NEXT V1 WORK          M1 / M3 per `38` and `40`
+                      (`40` DECIDED; production NOT STARTED)
 ```
