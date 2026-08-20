@@ -52,7 +52,8 @@ body {
 }
 
 .app__panel-title,
-.tracer-inspector__title {
+.tracer-inspector__title,
+.point-diagnostics__title {
   margin: 0 0 0.5rem;
   font-size: 1rem;
   font-weight: 600;
@@ -367,7 +368,8 @@ body {
   margin: 0;
 }
 
-.tracer-inspector__body {
+.tracer-inspector__body,
+.point-diagnostics__body {
   padding: 0.5rem 0.75rem;
   border: 1px solid #d0d7de;
   background: #ffffff;
@@ -376,14 +378,59 @@ body {
 
 .tracer-inspector__placeholder,
 .tracer-inspector__hint,
-.tracer-inspector__note {
+.tracer-inspector__note,
+.point-diagnostics__placeholder,
+.point-diagnostics__hint,
+.point-diagnostics__disclaimer p {
   margin: 0 0 0.35rem;
   color: #4a5560;
 }
 
 .tracer-inspector__hint,
-.tracer-inspector__note {
+.tracer-inspector__note,
+.point-diagnostics__hint,
+.point-diagnostics__disclaimer {
   font-size: 0.75rem;
+}
+
+.point-diagnostics {
+  margin: 1rem 0 0;
+}
+
+.point-diagnostics__label {
+  margin: 0 0 0.1rem;
+  color: #4a5560;
+}
+
+.point-diagnostics__symbol {
+  margin: 0 0 0.15rem;
+  font-weight: 600;
+}
+
+.point-diagnostics__reading {
+  margin: 0 0 0.1rem;
+}
+
+.point-diagnostics__value,
+.point-diagnostics__units {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.point-diagnostics__sign {
+  margin: 0;
+  font-weight: 600;
+}
+
+.point-diagnostics__quantity {
+  margin: 0 0 0.75rem;
+  padding: 0 0 0.65rem;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.point-diagnostics__disclaimer {
+  margin: 0;
 }
 
 .tracer-inspector__identity {

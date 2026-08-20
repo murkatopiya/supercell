@@ -1,7 +1,10 @@
 # Diagnostic Observation UI Architecture
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
-SLICE 1 COMPLETE / SLICE 2 NEXT / NOT STARTED
+SLICE 1 COMPLETE / SLICE 2 COMPLETE /
+Explore point-diagnostics v1 IMPLEMENTED /
+Guided mount DEFERRED / NOT IMPLEMENTED /
+overlay/slice NOT IMPLEMENTED
 **Scope:** point-first diagnostic *observation* UI for two
 already implemented headless capabilities: T1
 (`T_tilt,y`) and Candidate A (`ω_y,current`). Locks
@@ -15,9 +18,12 @@ remains prescribed kinematic laboratory (`30`). This file
 does not reopen `22`, `23`, `26`, `28`, `30`, or `31`.
 **Implementation:** Slice 1 COMPLETE
 (`src/interaction/PointDiagnosticObservation.ts`,
-`inspectSelectedPointDiagnostics`). Slice 2 (presentation)
-NEXT / NOT STARTED. Slice 2 implementation is out of
-scope for this SoT.
+`inspectSelectedPointDiagnostics`). Slice 2 COMPLETE
+(`src/ui/tracer/formatPointDiagnosticDisplay.ts`,
+`src/ui/tracer/PointDiagnosticsPanel.tsx`,
+Explore App observation wiring in `src/app/App.tsx`).
+Guided mount is NOT IMPLEMENTED. Overlay/slice is
+NOT IMPLEMENTED.
 
 Predecessor product-direction checkpoint:
 
@@ -28,9 +34,10 @@ docs/architecture/31-post-model-class-product-direction-checkpoint.md
 `31` selected point-first diagnostic access for T1 and
 Candidate A, Explore-primary, not L2, not overlay v1, not
 a new Guided experiment. This file is the design SoT that
-checkpoint required. Slice 1 is complete. Slice 2 remains
-NEXT / NOT STARTED. Slice 2 implementation is out of
-scope for this SoT.
+checkpoint required. Slice 1 and Slice 2 are complete.
+Explore point-diagnostics v1 is implemented. Guided mount
+remains deferred / not implemented. Overlay/slice is not
+implemented.
 
 Related contracts (not replaced):
 
@@ -63,10 +70,12 @@ DEFERRED
 ANTI-CLAIM
 ```
 
-Slice 1 implemented the headless adapter. This document
-does **not** create `ROADMAP.md`.
-Inspector L3 remains reserved as in `19` and is not started.
-Slice 2 presentation is NEXT / NOT STARTED.
+Slice 1 implemented the headless adapter. Slice 2
+implemented the Explore presentational panel and App
+observation wiring. This document does **not** create
+`ROADMAP.md`. Inspector L3 remains reserved as in `19`
+and is not started. Guided mount and overlay/slice are
+not implemented.
 
 ---
 
@@ -91,7 +100,7 @@ It does **not**:
 - add stretching, T2, prognostic `ω`, or `ω → V`;
 - change Inspector Level 2;
 - add a Guided experiment;
-- include Slice 2 presentation.
+- mount the panel on Guided.
 
 Canonical consumed capabilities (CURRENT FACT):
 
@@ -939,7 +948,14 @@ src/interaction/PointDiagnosticObservation.ts
 
 src/ui/tracer/PointDiagnosticsPanel.tsx
 src/ui/tracer/formatPointDiagnosticDisplay.ts
-  SLICE 2 — not started
+  SLICE 2 COMPLETE
+  presentational; observation in, DOM out
+
+src/app/App.tsx
+  refreshInspection samples inspectSelectedPointDiagnostics
+  on the Inspector cadence when lab.kind === "explore"
+  mounts PointDiagnosticsPanel in workbench__column--inspector
+  below TracerInspectorPanel
 ```
 
 Panel remains presentational: observation in, DOM out, no
@@ -1001,9 +1017,9 @@ which already stacks under the viewport on small widths.
 
 ## 19. Implementation slices
 
-Slice 1 is complete. Slice 2 is NEXT / NOT STARTED.
-Slice 2 implementation is out of scope for the Slice 1
-closure.
+Slice 1 is complete. Slice 2 is complete.
+Guided mount (Slice 3) is not implemented.
+Overlay/slice is not implemented.
 
 ### Slice 1 — headless observation adapter
 
@@ -1021,15 +1037,17 @@ does not change V_total
 
 ### Slice 2 — Explore presentation
 
-**NEXT. NOT STARTED.**
+**COMPLETE.**
 
 ```text
-formatPointDiagnosticDisplay
-PointDiagnosticsPanel
+src/ui/tracer/formatPointDiagnosticDisplay.ts
+src/ui/tracer/PointDiagnosticsPanel.tsx
 App: refresh sibling observation on the Inspector cadence
+     (select / completed step batch / Reset)
      mount panel only for Explore
 Inspector L1/L2 unchanged
-tests in §21 presentation subset
+tests: src/ui/tracer/PointDiagnosticsPanel.test.tsx
+       src/app/pointDiagnostics.wiring.test.tsx
 ```
 
 ### Slice 3 — Guided mount (optional, later)
@@ -1038,17 +1056,18 @@ tests in §21 presentation subset
 same panel, same adapter
 Guided catalog copy unchanged
 not a fourth experiment
-out of scope for Slice 2
+NOT IMPLEMENTED
 ```
 
-Overlay, L3, Follow, and a registry are out of scope
-for these slices.
+Overlay, L3, Follow, and a registry remain outside
+the implemented slices.
 
 ---
 
 ## 20. Testability contract
 
-Define future tests. Do not write them in this task.
+Adapter tests live with Slice 1. Presentation and Explore
+wiring tests live with Slice 2.
 
 ### 20.1 Adapter / observation
 
@@ -1111,7 +1130,6 @@ Do not duplicate physics validation already owned by
 ## 21. Explicit non-goals
 
 ```text
-Slice 2 presentation (out of scope for this SoT)
 new physics / stretching / T2 / prognostic ω
 Ω changes / V_total changes / eighth VelocityField
 Inspector L2 changes
@@ -1160,10 +1178,16 @@ They are not reopened.
 
 ```text
 Slice 1  COMPLETE
-Slice 2  NEXT / NOT STARTED
+         src/interaction/PointDiagnosticObservation.ts
+         inspectSelectedPointDiagnostics
+Slice 2  COMPLETE
+         src/ui/tracer/formatPointDiagnosticDisplay.ts
+         src/ui/tracer/PointDiagnosticsPanel.tsx
+         src/app/App.tsx Explore mount + Inspector cadence
+Explore point-diagnostics v1  IMPLEMENTED
+Guided mount                  DEFERRED / NOT IMPLEMENTED
+overlay/slice                 NOT IMPLEMENTED
 ```
-
-Slice 2 implementation is out of scope for this SoT.
 
 ---
 
@@ -1218,7 +1242,8 @@ formatting. Physics owns numbers.
 
 ### K. Slices
 
-§19. Future only.
+§19. Slice 1 and Slice 2 implemented. Guided mount and
+overlay/slice are not implemented.
 
 ---
 
@@ -1271,7 +1296,16 @@ physics:           sample existing owners only
 implementation:    Slice 1 COMPLETE
                    src/interaction/PointDiagnosticObservation.ts
                    inspectSelectedPointDiagnostics
-                   Slice 2 NEXT / NOT STARTED
+                   Slice 2 COMPLETE
+                   src/ui/tracer/formatPointDiagnosticDisplay.ts
+                   src/ui/tracer/PointDiagnosticsPanel.tsx
+                   src/app/App.tsx
+                     refreshInspection
+                     Explore-only PointDiagnosticsPanel
+                     workbench__column--inspector sibling
+                   Explore point-diagnostics v1 IMPLEMENTED
+                   Guided mount DEFERRED / NOT IMPLEMENTED
+                   overlay/slice NOT IMPLEMENTED
 ```
 
 ---
@@ -1282,13 +1316,22 @@ implementation:    Slice 1 COMPLETE
 POINT-FIRST DIAGNOSTIC OBSERVATION UI
   ARCHITECTURE WRITTEN
   SLICE 1 COMPLETE
-  SLICE 2 NEXT
+  SLICE 2 COMPLETE
+  Explore point-diagnostics v1 IMPLEMENTED
+  Guided mount DEFERRED / NOT IMPLEMENTED
+  overlay/slice NOT IMPLEMENTED
 
 P, t, SURFACE, DISPLAY, PEDAGOGY
   LOCKED HERE
 
-NOT STARTED
+IMPLEMENTED
+  inspectSelectedPointDiagnostics
+  formatPointDiagnosticDisplay
   PointDiagnosticsPanel
+  Explore App observation wiring
+
+NOT IMPLEMENTED
+  Guided mount
   Inspector L2 changes
   Inspector L3
   overlay / slice
@@ -1297,10 +1340,6 @@ NOT STARTED
   stretching / T2 / ω→V
   camera / Follow
   generic diagnostic registry
-
-SLICE 2
-  NEXT / NOT STARTED
-  out of scope for this SoT
 ```
 
 Do not rewrite closed physics or `30` / `31` decisions.

@@ -6,6 +6,7 @@ import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographO
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
 import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
 import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
+import { PointDiagnosticsPanel } from "../ui/tracer/PointDiagnosticsPanel.js";
 import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
 import {
   TracerRuntimeControls,
@@ -37,6 +38,10 @@ import {
 import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
+import {
+  inspectSelectedPointDiagnostics,
+  type PointDiagnosticObservation,
+} from "../interaction/PointDiagnosticObservation.js";
 import {
   inspectSelectedTracer,
   type TracerInspection,
@@ -126,6 +131,9 @@ export function App() {
   const [inspection, setInspection] = useState<
     TracerInspection | undefined
   >(undefined);
+  const [pointDiagnostics, setPointDiagnostics] = useState<
+    PointDiagnosticObservation | undefined
+  >(undefined);
 
   const mirrorSelection = () => {
     setSelectedTracerId(selection.selectedId);
@@ -140,12 +148,26 @@ export function App() {
         lab.velocityObservation,
       ),
     );
+    setPointDiagnostics(
+      lab.kind === "explore"
+        ? inspectSelectedPointDiagnostics(
+            lab.simulation.particles,
+            selection,
+            lab.simulation.clock.time,
+            {
+              tiltingTendency: lab.tiltingTendency,
+              currentVerticalVorticity: lab.currentVerticalVorticity,
+            },
+          )
+        : undefined,
+    );
   };
 
   const clearSelectionAndInspection = () => {
     selection.clear();
     mirrorSelection();
     setInspection(undefined);
+    setPointDiagnostics(undefined);
   };
 
   const handleReset = () => {
@@ -201,6 +223,7 @@ export function App() {
     setGuidedExperimentId(nextId);
     mirrorSelection();
     setInspection(undefined);
+    setPointDiagnostics(undefined);
     setLab(nextLab);
     setResetEpoch((epoch) => epoch + 1);
   };
@@ -356,14 +379,7 @@ export function App() {
             onTracerSelect={(tracerId) => {
               selection.select(tracerId);
               mirrorSelection();
-              setInspection(
-                inspectSelectedTracer(
-                  lab.simulation.particles,
-                  selection,
-                  lab.simulation.clock.time,
-                  lab.velocityObservation,
-                ),
-              );
+              refreshInspection();
             }}
             onSimulationAdvanced={refreshInspection}
             onPlacementAttempt={
@@ -384,6 +400,9 @@ export function App() {
 
         <div className="workbench__column workbench__column--inspector">
           <TracerInspectorPanel inspection={inspection} />
+          {lab.kind === "explore" && (
+            <PointDiagnosticsPanel observation={pointDiagnostics} />
+          )}
         </div>
       </section>
     </main>

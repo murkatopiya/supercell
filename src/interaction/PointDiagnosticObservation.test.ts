@@ -17,7 +17,6 @@ import {
 } from "./PointDiagnosticObservation.js";
 import pointDiagnosticSrc from "./PointDiagnosticObservation.ts?raw";
 import tracerInspectionSrc from "./TracerInspection.ts?raw";
-import appSrc from "../app/App.tsx?raw";
 import inspectorPanelSrc from "../ui/tracer/TracerInspectorPanel.tsx?raw";
 import guidedExperimentSrc from "../guided/GuidedExperiment.ts?raw";
 
@@ -447,15 +446,12 @@ describe("point-diagnostic sibling boundary", () => {
     expect(keys).not.toContain("currentVerticalVorticity");
   });
 
-  it("leaves TracerInspection, Inspector UI, App, and Guided catalog unwired", () => {
+  it("leaves TracerInspection, Inspector UI, and Guided catalog unwired", () => {
     expect(tracerInspectionSrc).not.toMatch(/tiltingTendency/);
     expect(tracerInspectionSrc).not.toMatch(/currentVerticalVorticity/);
     expect(tracerInspectionSrc).not.toMatch(/PointDiagnosticObservation/);
     expect(inspectorPanelSrc).not.toMatch(/PointDiagnostic/);
     expect(inspectorPanelSrc).not.toMatch(/tiltingTendency/);
-    expect(appSrc).not.toMatch(/inspectSelectedPointDiagnostics/);
-    expect(appSrc).not.toMatch(/PointDiagnosticsPanel/);
-    expect(appSrc).not.toMatch(/PointDiagnosticObservation/);
     expect(guidedExperimentSrc).not.toMatch(/tiltingTendency/);
     expect(guidedExperimentSrc).not.toMatch(/currentVerticalVorticity/);
     expect(guidedExperimentSrc).not.toMatch(/PointDiagnostic/);
