@@ -201,7 +201,7 @@ describe("Explore visual airflow interaction regressions", () => {
         ray,
       }).action,
     ).toBe("placement");
-    expect(tracerViewportSrc).toMatch(/pickVisibleTracer/);
+    expect(tracerViewportSrc).toMatch(/pickVisibleTracerAtClientPoint/);
     expect(tracerViewportSrc).not.toMatch(/pickVisibleTracerSlotIndex\([^\)]*visual/);
   });
 

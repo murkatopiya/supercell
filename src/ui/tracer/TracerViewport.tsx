@@ -324,17 +324,21 @@ export function TracerViewport({
         event.clientX - down.x,
         event.clientY - down.y,
       );
+      const rect = canvas.getBoundingClientRect();
       const ndc = pointerNdcFromClientRect(
         event.clientX,
         event.clientY,
-        canvas.getBoundingClientRect(),
+        rect,
       );
       if (ndc === null) {
         return;
       }
       const ray = scene.worldRayFromNdc(ndc.x, ndc.y);
-      const hitSlotIndex =
-        ray === null ? null : scene.pickVisibleTracer(ray);
+      const hitSlotIndex = scene.pickVisibleTracerAtClientPoint(
+        event.clientX,
+        event.clientY,
+        rect,
+      );
       const decision = resolveTracerPointerUp({
         pointerMovementPx: movement,
         hitSlotIndex,

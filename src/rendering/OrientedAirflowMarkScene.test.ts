@@ -5,13 +5,13 @@ import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityFiel
 import { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
 import { writeAdvectedOrientedAirflow } from "../visualization/observeAdvectedOrientedAirflow.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
-import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
 import { RELEASE_PREVIEW_COLOR } from "./releasePreviewMarker.js";
 import { VISUAL_AIRFLOW_ORIENTED_MARK } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
 import { OrientedAirflowMarkScene } from "./OrientedAirflowMarkScene.js";
 import orientedSrc from "./OrientedAirflowMarkScene.ts?raw";
+import tracerSceneSrc from "./TracerScene.ts?raw";
 
 function cubePopulation(
   count: number,
@@ -110,16 +110,17 @@ describe("OrientedAirflowMarkScene", () => {
     const scene = new OrientedAirflowMarkScene(1);
     scene.object.position.set(0, 0, 0);
     scene.object.updateMatrixWorld(true);
-    const ray = {
-      origin: { x: 0, y: 0, z: 10 },
-      direction: { x: 0, y: 0, z: -1 },
-    };
-    expect(pickVisibleTracerSlotIndex([{ mesh: scene.object }], ray)).toBeNull();
     const raycaster = new THREE.Raycaster(
       new THREE.Vector3(0, 0, 10),
       new THREE.Vector3(0, 0, -1),
     );
     expect(raycaster.intersectObject(scene.object, false)).toEqual([]);
+    expect(tracerSceneSrc).toMatch(
+      /pickVisibleTracerSlotAtClientPoint\(\s*this\.slots/,
+    );
+    expect(tracerSceneSrc).not.toMatch(
+      /pickVisibleTracerSlotAtClientPoint\([^\)]*oriented/,
+    );
     scene.dispose();
   });
 

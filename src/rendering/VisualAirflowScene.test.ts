@@ -5,7 +5,6 @@ import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityFiel
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
 import { RELEASE_PREVIEW_COLOR } from "./releasePreviewMarker.js";
-import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { VISUAL_AIRFLOW_MARKER } from "./visualAirflowAppearance.js";
 import { VisualAirflowScene } from "./VisualAirflowScene.js";
 import visualAirflowSceneSrc from "./VisualAirflowScene.ts?raw";
@@ -87,20 +86,19 @@ describe("VisualAirflowScene", () => {
     const scene = new VisualAirflowScene(1);
     scene.object.position.set(0, 0, 0);
     scene.object.updateMatrixWorld(true);
-    const ray = {
-      origin: { x: 0, y: 0, z: 10 },
-      direction: { x: 0, y: 0, z: -1 },
-    };
-    expect(pickVisibleTracerSlotIndex([], ray)).toBeNull();
-    expect(
-      pickVisibleTracerSlotIndex([{ mesh: scene.object }], ray),
-    ).toBeNull();
 
     const raycaster = new THREE.Raycaster(
       new THREE.Vector3(0, 0, 10),
       new THREE.Vector3(0, 0, -1),
     );
     expect(raycaster.intersectObject(scene.object, false)).toEqual([]);
+    // Product pick only scans TracerScene scientific slots, never airflow.
+    expect(tracerSceneSrc).toMatch(
+      /pickVisibleTracerSlotAtClientPoint\(\s*this\.slots/,
+    );
+    expect(tracerSceneSrc).not.toMatch(
+      /pickVisibleTracerSlotAtClientPoint\([^\)]*visualAirflow/,
+    );
     scene.dispose();
   });
 
@@ -129,9 +127,11 @@ describe("VisualAirflowScene", () => {
     expect(visualAirflowSceneSrc).not.toMatch(/readonly tracerId/);
     expect(visualAirflowSceneSrc).not.toMatch(/addTracerSlot/);
     expect(tracerSceneSrc).toMatch(/attachVisualAirflow/);
-    expect(tracerSceneSrc).toMatch(/pickVisibleTracerSlotIndex\(this\.slots/);
+    expect(tracerSceneSrc).toMatch(
+      /pickVisibleTracerSlotAtClientPoint\(\s*this\.slots/,
+    );
     expect(tracerSceneSrc).not.toMatch(
-      /pickVisibleTracerSlotIndex\([^\)]*visualAirflow/,
+      /pickVisibleTracerSlotAtClientPoint\([^\)]*visualAirflow/,
     );
   });
 });

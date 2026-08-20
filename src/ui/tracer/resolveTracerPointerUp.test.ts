@@ -92,7 +92,7 @@ describe("resolveTracerPointerUp", () => {
   });
 
   it("keeps TracerViewport off the Explore placement-gate module", () => {
-    expect(tracerViewportSrc).toMatch(/pickVisibleTracer/);
+    expect(tracerViewportSrc).toMatch(/pickVisibleTracerAtClientPoint/);
     expect(tracerViewportSrc).toMatch(/onTracerSelect/);
     expect(tracerViewportSrc).toMatch(/selectedTracerId/);
     expect(tracerViewportSrc).toMatch(/resolveTracerPointerUp/);

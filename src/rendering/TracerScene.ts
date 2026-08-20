@@ -21,7 +21,10 @@ import {
   worldRayFromCameraNdc,
   type WorldRay,
 } from "./worldRayFromCameraNdc.js";
-import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
+import {
+  pickVisibleTracerSlotAtClientPoint,
+  type CanvasCssRect,
+} from "./pickVisibleTracerSlot.js";
 import { VISUAL_AIRFLOW_DEPTH_CUE } from "./visualAirflowAppearance.js";
 import {
   copyFollowPoint,
@@ -197,7 +200,7 @@ export class TracerScene {
 
   /**
    * Attach an observe-only visual-airflow object. Not a tracer slot,
-   * not pickable via pickVisibleTracer, and not a preview marker.
+   * not pickable via pickVisibleTracerAtClientPoint, and not a preview marker.
    */
   attachVisualAirflow(object: THREE.Object3D): void {
     this.detachVisualAirflow();
@@ -245,12 +248,23 @@ export class TracerScene {
   }
 
   /**
-   * Nearest visible tracer glyph along a world ray.
+   * Screen-space pick of a visible scientific glyph center.
    * Slot index is occupancy layout, not tracerId.
-   * Preview marker is not a candidate.
+   * Preview and visual airflow are not candidates (not in slots).
+   * docs/architecture/36-explore-selection-acquisition-identity-architecture.md
    */
-  pickVisibleTracer(ray: WorldRay): number | null {
-    return pickVisibleTracerSlotIndex(this.slots, ray);
+  pickVisibleTracerAtClientPoint(
+    clientX: number,
+    clientY: number,
+    rect: CanvasCssRect,
+  ): number | null {
+    return pickVisibleTracerSlotAtClientPoint(
+      this.slots,
+      this.camera,
+      clientX,
+      clientY,
+      rect,
+    );
   }
 
   /**

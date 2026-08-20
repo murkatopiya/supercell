@@ -1,8 +1,9 @@
 # Explore Selection Acquisition and Identity Indication Architecture
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
-NO IMPLEMENTATION AUTHORIZATION /
-picking NOT IMPLEMENTED /
+SLICE 1 COMPLETE /
+SLICE 2 NOT STARTED /
+screen-space acquisition IMPLEMENTED /
 preserve-color + selection halo NOT IMPLEMENTED
 **Scope:** interaction/rendering contract for selected-tracer
 *acquisition* (easier intended pick) and *identity continuity*
@@ -13,8 +14,15 @@ Not scientific tracer recolor. Not physics. Not `ROADMAP.md`.
 remains prescribed kinematic laboratory (`30`). This file
 does not reopen `22`, `23`, `26`, `28`, `30`–`34`, or the
 ranking in `35`.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged.
+**Implementation:** Slice 1 COMPLETE
+(`src/rendering/pickVisibleTracerSlot.ts` screen-space helpers;
+`TracerScene.pickVisibleTracerAtClientPoint`;
+`TracerViewport` client-point wiring).
+`PICK_TOLERANCE_PX = 16` (CSS/canvas pixels).
+Former raycast `pickVisibleTracerSlotIndex(slots, ray)` removed;
+product acquisition is screen-space only.
+Slice 2 (preserve-color + halo) is NOT STARTED.
+Yellow selected-glyph override remains until Slice 2.
 
 Predecessor product-direction checkpoint:
 
@@ -37,8 +45,9 @@ explicit selection halo/shell)
 ```
 
 This file is the architecture SoT that checkpoint required.
-Completing this SoT does **not** start production
-implementation.
+Slice 1 (screen-space acquisition) is complete. Slice 2
+(preserve-color + selection halo) is not started. Completing
+Slice 1 does **not** start Slice 2.
 
 Related contracts (not replaced):
 
@@ -186,11 +195,12 @@ pointerup → movement = hypot(Δx, Δy)
 shouldAcceptStationaryClick
   DEFAULT_STATIONARY_CLICK_MOVEMENT_PX = 5
   (aliased as DEFAULT_PLACEMENT_CLICK_MOVEMENT_PX)
-worldRayFromCameraNdc(camera, ndc)
-TracerScene.pickVisibleTracer(ray)
-  → pickVisibleTracerSlotIndex(slots, ray)
-  → Raycaster.intersectObjects(visible glyph meshes)
-  → nearest mesh hit (depth order of Raycaster)
+worldRayFromCameraNdc(camera, ndc)     // placement only
+TracerScene.pickVisibleTracerAtClientPoint(clientX, clientY, rect)
+  → pickVisibleTracerSlotAtClientPoint(slots, camera, …)
+  → projectWorldPointToCanvasPixels (CSS px)
+  → d_px ≤ PICK_TOLERANCE_PX (16)
+  → min d_px → front-most depth → lower slot index
 resolveTracerPointerUp
   ignore if drag
   select if hitSlotIndex !== null
@@ -199,10 +209,9 @@ resolveTracerPointerUp
 tracerIdForSlot(particles, slotIndex) → selection.select
 ```
 
-There is **no** screen-space pick radius today.
-There is **no** invisible pick shell.
-Hidden meshes (`visible === false`) are skipped.
-Visual airflow occupants set `raycast = () => {}`.
+Former mesh-raycast acquisition (`pickVisibleTracerSlotIndex` +
+`Raycaster.intersectObjects`) is removed. World rays remain for
+Explore placement only.
 
 ### 2.4 Selection ownership and highlight observation
 
@@ -805,19 +814,26 @@ Inspector Tracer #N still works without 3D labels
 
 ## 19. Future implementation slices
 
-Derived from live ownership (`pickVisibleTracerSlotIndex`,
+Derived from live ownership (`pickVisibleTracerSlot*`,
 `syncSelectedTracerGlyph`, single preview mesh pattern).
-Not a license to implement from this file.
+Not a license to implement Slice 2 from this status update.
 
 ```text
-Slice 1 — screen-space acquisition
-  pure pick helper: projected centers + PICK_TOLERANCE_PX
-  TracerScene.pickVisibleTracer / viewport wiring
-  preserve stationary-click + placement precedence
-  tests from §18.1
-  no halo yet; yellow override may still exist temporarily
+Slice 1 — screen-space acquisition                 COMPLETE
+  src/rendering/pickVisibleTracerSlot.ts
+    PICK_TOLERANCE_PX = 16 (CSS/canvas pixels)
+    projectWorldPointToCanvasPixels
+    chooseScreenPickWinner
+    pickVisibleTracerSlotByScreenDistance
+    pickVisibleTracerSlotAtClientPoint
+  TracerScene.pickVisibleTracerAtClientPoint(clientX, clientY, rect)
+  TracerViewport: client point + rect → screen pick;
+    world ray retained for placement only
+  former raycast pickVisibleTracerSlotIndex REMOVED
+  tests: pickVisibleTracerSlot.test.ts (+ wiring updates)
+  no halo; yellow override still temporary
 
-Slice 2 — identity indication
+Slice 2 — identity indication                      NOT STARTED
   stop yellow glyph override
   one selection halo mesh on TracerScene
   sync with syncSelectedSlot / particle positions
@@ -866,25 +882,26 @@ recreating TracerScene on select
 
 ---
 
-## 21. Implementation authorization
+## 21. Implementation status
 
 ```text
-Does this document authorize any production implementation?
-NO.
+Slice 1 screen-space acquisition: COMPLETE
+Slice 2 preserve-color + halo:    NOT STARTED
+
+This architecture SoT does not authorize Slice 2.
+Yellow glyph override remains until Slice 2.
 ```
 
-Picking changes, halo, color-preserve wiring, Follow edits,
-and physics remain out of scope for this SoT’s own landing.
-Implementation starts only as a later explicit production
-slice against this contract — recorded here as status, not
-as workflow control of the agent.
+Former §21 “NO” applied to landing the architecture document
+itself. Slice 1 was authorized separately and is now complete.
 
 ---
 
 ## 22. Anti-claims
 
 ```text
-this file does not change src/**
+this file authorizes Slice 1 only as completed status above
+Slice 2 is not started
 screen-space pick is not a world-radius enlarge
 halo is not the pick target by default
 yellow override is not scientific encoding
@@ -961,8 +978,8 @@ Closed physics docs are not rewritten.
      no new controls
 
 11 Slices
-     1 picking  2 preserve-color + halo
-     neither authorized by this file alone
+     1 picking COMPLETE (PICK_TOLERANCE_PX = 16)
+     2 preserve-color + halo NOT STARTED
 
 12 Non-goals
      Reset View, domain, overlay, Align, physics, …

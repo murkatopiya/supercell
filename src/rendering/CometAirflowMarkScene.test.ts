@@ -5,13 +5,13 @@ import { ConstantVelocityField } from "../physics/synthetic/ConstantVelocityFiel
 import { writeAdvectedOrientedAirflow } from "../visualization/observeAdvectedOrientedAirflow.js";
 import { cometFadeFromAges } from "../visualization/cometAirflowMark.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
-import { pickVisibleTracerSlotIndex } from "./pickVisibleTracerSlot.js";
 import { CometAirflowMarkScene } from "./CometAirflowMarkScene.js";
 import cometSceneSrc from "./CometAirflowMarkScene.ts?raw";
 import { SELECTED_TRACER_GLYPH_COLOR, TRACER_COLORS } from "./tracerObserveSlot.js";
 import { OPERAND_HIGHLIGHT_PROTOTYPE_HUE } from "../visualization/operandContributionDisplay.js";
 import { VISUAL_AIRFLOW_COMET } from "./visualAirflowAppearance.js";
 import { linearRgbFromSrgbHex } from "./vertexColorSpace.js";
+import tracerSceneSrc from "./TracerScene.ts?raw";
 
 describe("CometAirflowMarkScene", () => {
   it("creates batched LineSegments with four segments per occupant", () => {
@@ -58,12 +58,12 @@ describe("CometAirflowMarkScene", () => {
       new THREE.Vector3(0, 0, -1),
     );
     expect(raycaster.intersectObject(scene.object, false)).toEqual([]);
-    expect(
-      pickVisibleTracerSlotIndex([{ mesh: scene.object }], {
-        origin: { x: 0, y: 0, z: 10 },
-        direction: { x: 0, y: 0, z: -1 },
-      }),
-    ).toBeNull();
+    expect(tracerSceneSrc).toMatch(
+      /pickVisibleTracerSlotAtClientPoint\(\s*this\.slots/,
+    );
+    expect(tracerSceneSrc).not.toMatch(
+      /pickVisibleTracerSlotAtClientPoint\([^\)]*comet/,
+    );
     expect(TRACER_COLORS).not.toContain(OPERAND_HIGHLIGHT_PROTOTYPE_HUE);
     expect(OPERAND_HIGHLIGHT_PROTOTYPE_HUE).not.toBe(
       SELECTED_TRACER_GLYPH_COLOR,
