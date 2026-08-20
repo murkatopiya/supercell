@@ -51,6 +51,7 @@ import {
   resolveSelectedTracer,
 } from "../interaction/TracerSelection.js";
 import { ExploreFollowControl } from "../ui/tracer/ExploreFollowControl.js";
+import { ExploreResetViewControl } from "../ui/tracer/ExploreResetViewControl.js";
 import {
   guidedExperimentById,
   type GuidedExperimentId,
@@ -194,6 +195,15 @@ export function App() {
     refreshInspection();
   };
 
+  /**
+   * Camera recovery only. Follow OFF first (ref + state), then scene pose.
+   * docs/architecture/37-reset-view-camera-recovery-architecture.md
+   */
+  const handleResetView = () => {
+    setFollowEnabled(false);
+    sceneHandleRef.current?.resetView();
+  };
+
   const enterExplore = () => {
     if (lab.kind === "explore") {
       return;
@@ -313,6 +323,9 @@ export function App() {
                 canFollow={followTargetResolves}
                 onFollowEnabledChange={setFollowEnabled}
               />
+            )}
+            {explore !== null && (
+              <ExploreResetViewControl onResetView={handleResetView} />
             )}
             {lab.kind === "guided" && (
               <GuidedExperimentSelector

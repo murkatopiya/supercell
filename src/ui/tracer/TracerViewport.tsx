@@ -34,6 +34,11 @@ export interface TracerViewportHandle {
   addTracerSlot(): void;
   clearTracerSlots(): void;
   syncReleasePreview(pendingSeed: TracerSeedPosition | null): void;
+  /**
+   * Restore DEEP_STORM_TRACER_VIEW via TracerScene.resetView.
+   * App turns Follow OFF before calling this.
+   */
+  resetView(): void;
   readonly tracerSlotCount: number;
 }
 
@@ -202,6 +207,9 @@ export function TracerViewport({
     },
     syncReleasePreview(pendingSeed: TracerSeedPosition | null) {
       sceneRef.current?.syncReleasePreview(pendingSeed);
+    },
+    resetView() {
+      sceneRef.current?.resetView();
     },
     get tracerSlotCount() {
       return sceneRef.current?.tracerSlotCount ?? 0;

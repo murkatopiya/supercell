@@ -2,9 +2,10 @@
 
 **Status:** ARCHITECTURE / PRODUCT SoT /
 SLICE 1 COMPLETE /
-SLICE 2 NOT STARTED /
+SLICE 2 COMPLETE /
 TracerScene.resetView IMPLEMENTED /
-Explore Reset View control NOT IMPLEMENTED
+Explore Reset View v1 IMPLEMENTED /
+Guided Reset View control NOT IMPLEMENTED
 **Scope:** interaction/camera contract for explicit
 Reset View — recovery to the canonical storm framing after
 Follow or free orbit leaves an orphaned orbit center.
@@ -17,8 +18,10 @@ selection contracts in `36`.
 **Implementation:** Slice 1 COMPLETE
 (`src/rendering/applyDeepStormTracerViewPose.ts`,
 `TracerScene.resetView()`).
-Slice 2 (Explore Reset View button + App Follow OFF wiring)
-is NOT STARTED.
+Slice 2 COMPLETE
+(`ExploreResetViewControl`, App `handleResetView`:
+Follow OFF then imperative `TracerViewportHandle.resetView()`).
+Guided Reset View control is NOT IMPLEMENTED.
 
 Predecessor selection acquisition / identity architecture:
 
@@ -477,11 +480,14 @@ Slice 1 — TracerScene.resetView geometry             COMPLETE
   tests: TracerScene.resetView.test.ts
   no App button
 
-Slice 2 — Explore control + App lifecycle            NOT STARTED
-  Reset View button in Explore laboratory-toolbar
-  App: Follow OFF then invoke resetView
-    (epoch or imperative viewport handle)
-  wiring tests from §11
+Slice 2 — Explore control + App lifecycle            COMPLETE
+  ExploreResetViewControl in Explore laboratory-toolbar
+  App handleResetView:
+    setFollowEnabled(false)  // followEnabledRef first
+    sceneHandleRef.resetView()
+  TracerViewportHandle.resetView → TracerScene.resetView
+  tests: ExploreResetViewControl.test.tsx,
+         exploreResetView.wiring.test.tsx
   Guided control not mounted
 
 Out of scope
@@ -521,9 +527,8 @@ changing DEEP_STORM_TRACER_VIEW fixture numbers
 Not a backlog commitment.
 
 ```text
-U1  Exact App↔Viewport glue (viewResetEpoch vs imperative
-    ref) — implementation choice; both must satisfy
-    Follow-OFF-before-restore
+U1  App↔Viewport glue chose imperative TracerViewportHandle.resetView
+    with followEnabledRef Follow-OFF-before-restore (not viewResetEpoch)
 U2  Whether Guided later mounts the same button — optional;
     API is shared
 U3  Whether pending Explore placement preview should cancel
@@ -537,27 +542,30 @@ U3  Whether pending Explore placement preview should cancel
 
 ```text
 Slice 1 TracerScene.resetView:     COMPLETE
-Slice 2 Explore control + App:     NOT STARTED
+Slice 2 Explore control + App:     COMPLETE
 
 Canonical pose source: DEEP_STORM_TRACER_VIEW
 Helper: applyDeepStormTracerViewPose(cameraPosition, target)
+Explore UI: ExploreResetViewControl
+App: handleResetView → Follow OFF then sceneHandleRef.resetView()
+Guided Reset View control: NOT IMPLEMENTED
 ```
-
-This architecture SoT does not authorize Slice 2.
 
 ---
 
 ## 16. Anti-claims
 
 ```text
-this file records Slice 1 COMPLETE; Slice 2 NOT STARTED
+this file records Slice 1 COMPLETE; Slice 2 COMPLETE
+Explore Reset View v1 IMPLEMENTED
+Guided Reset View control NOT IMPLEMENTED
 Reset View is not simulation Reset
 Reset View is not Clear
 Stop Following is not Reset View
 simulation Reset still must not move the camera
 Clear still must not move the camera
 auto-recenter on Follow OFF / Clear is rejected
-Reset View turns Follow OFF when it was ON (Slice 2 App wiring)
+Reset View turns Follow OFF when it was ON
 Reset View does not clear selection
 Reset View is not Align with motion
 this file is not a CameraState framework
@@ -619,7 +627,8 @@ Closed physics docs are not rewritten.
 
 9  Slices
      1 scene geometry COMPLETE (TracerScene.resetView)
-     2 Explore UI + App wiring NOT STARTED
+     2 Explore UI + App wiring COMPLETE
+       Guided control NOT IMPLEMENTED
 
 10 Non-goals
      Align, auto-center, domain, overlay, physics, …
