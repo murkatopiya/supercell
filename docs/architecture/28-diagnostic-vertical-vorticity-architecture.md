@@ -2,10 +2,12 @@
 
 **Status:** ARCHITECTURE SoT
 Candidate A — diagnostic current world-vertical vorticity
-**Implementation:** Slice 1 COMPLETE
-(`VerticalEnvelopeRotationField.worldVerticalVorticity`).
-Slice 2 NEXT.
-`DiagnosticVerticalVorticity` owner NOT IMPLEMENTED.
+**Implementation:** Slice 2 COMPLETE
+(`DiagnosticVerticalVorticity` + canonical composition wiring).
+Slice 3 NEXT (scientific DEMO validation).
+HEADLESS CAPABILITY IMPLEMENTED.
+SCIENTIFIC DEMO VALIDATION NOT STARTED.
+UI NOT STARTED.
 **Scope:** ownership, sampling, analytic-vs-numeric evaluation,
 source-field relation, composition wiring, observation
 boundaries, tests, slices
@@ -33,9 +35,9 @@ visualization tint:      UNCHANGED
 ```
 
 This document owns Candidate A *architecture*. Physics 23 owns
-the quantity `ω_y,current`. Slice 1 of the implementation is
-the concrete rotation method. Completing this file did **not**
-start Slice 2.
+the quantity `ω_y,current`. Slice 1 is the concrete rotation
+method. Slice 2 is the diagnostic owner and lab wiring.
+Completing this file did **not** start Slice 3.
 
 Keep these roles distinct:
 
@@ -379,8 +381,8 @@ Name locks world-vertical `ω_y`, not textbook `ω_z`.
 
 **Slice 1 COMPLETE.** The method exists on
 `VerticalEnvelopeRotationField`. It is still **not** on
-`VelocityField`. `DiagnosticVerticalVorticity` is still
-Slice 2.
+`VelocityField`. `DiagnosticVerticalVorticity` is Slice 2
+COMPLETE.
 
 ### 8.1 Contract of the method
 
@@ -1059,6 +1061,7 @@ No composition change.
 
 ### Slice 2 — total diagnostic + canonical wiring
 
+**COMPLETE.**
 `DiagnosticVerticalVorticity`, composition sibling,
 Explore/Guided exposure, tests `§25.2`–`§25.4`.
 
@@ -1222,8 +1225,8 @@ operands, T1 already a diagnostic sibling, DEMO rotation is
 `VerticalEnvelopeRotationField`, `VelocityField` is
 `sample → Vec3` only.
 
-This file still does **not** start Slice 2. A later
-explicit command is required for the diagnostic owner.
+This file still does **not** start Slice 3. A later
+explicit command is required for scientific DEMO validation.
 
 Continuity YELLOW is not a blocker.
 
@@ -1253,10 +1256,13 @@ C / W0 / inflow:    CURRENT-stack independent of ω_y
 state:              none
 UI completion:      not required
 implementation:     Slice 1 COMPLETE
-                    Slice 2 NEXT
-                    DiagnosticVerticalVorticity owner
-                    NOT IMPLEMENTED
-                    this file does not authorize Slice 2
+                    Slice 2 COMPLETE
+                    Slice 3 NEXT
+                    DiagnosticVerticalVorticity implemented
+                    HEADLESS CAPABILITY IMPLEMENTED
+                    SCIENTIFIC DEMO VALIDATION NOT STARTED
+                    UI NOT STARTED
+                    this file does not authorize Slice 3
 ```
 
 ---
@@ -1272,9 +1278,12 @@ CANDIDATE A ARCHITECTURE
   THIS FILE
   WRITTEN
   SLICE 1 COMPLETE
-  SLICE 2 NEXT
-  DiagnosticVerticalVorticity owner NOT IMPLEMENTED
-  THIS FILE DOES NOT AUTHORIZE SLICE 2
+  SLICE 2 COMPLETE
+  SLICE 3 NEXT
+  DiagnosticVerticalVorticity implemented
+  HEADLESS CAPABILITY IMPLEMENTED
+  SCIENTIFIC DEMO VALIDATION NOT STARTED
+  THIS FILE DOES NOT AUTHORIZE SLICE 3
 
 T1
   REMAINS CLOSED AS HEADLESS DIAGNOSTIC
@@ -1283,10 +1292,9 @@ STRETCHING / T2 / ω→V / Ω / V_total / UI / curl()
   UNCHANGED / NOT STARTED
 ```
 
-Do not implement `DiagnosticVerticalVorticity` or composition
-wiring because this file exists. Slice 1
-(`worldVerticalVorticity` on the rotation occupant) is
-already implemented.
+Do not start Slice 3 scientific DEMO validation because this
+file exists. Slice 1 (`worldVerticalVorticity`) and Slice 2
+(`DiagnosticVerticalVorticity` + lab wiring) are implemented.
 Do not start stretching, T2, full curl, or Inspector L3.
 Do not treat physics 23 or checkpoint 27 as this architecture.
 Do not treat physics 18 §18.2 as a production API.

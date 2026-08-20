@@ -3,10 +3,12 @@
 **Status:** PHYSICS DERIVATION / DIAGNOSTIC SoT
 **Scope:** world-vertical component of curl of the CURRENT
 prescribed velocity field, in project coordinates.
-**Implementation:** Slice 1 COMPLETE
-(`VerticalEnvelopeRotationField.worldVerticalVorticity`).
-Slice 2 NEXT. `DiagnosticVerticalVorticity` owner NOT
-IMPLEMENTED. This file remains the derivation SoT.
+**Implementation:** Slice 2 COMPLETE
+(`DiagnosticVerticalVorticity` + canonical composition).
+Slice 3 NEXT (scientific DEMO validation).
+HEADLESS CAPABILITY IMPLEMENTED.
+SCIENTIFIC DEMO VALIDATION NOT STARTED.
+This file remains the derivation SoT.
 **Architecture:** not this file. Successor architecture SoT:
 `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
 Candidate A direction checkpoint:
@@ -1049,9 +1051,12 @@ architecture:         docs/architecture/28
 implementation:       Slice 1 COMPLETE
                       VerticalEnvelopeRotationField
                       .worldVerticalVorticity
-                      Slice 2 NEXT
-                      DiagnosticVerticalVorticity owner
-                      NOT IMPLEMENTED
+                      Slice 2 COMPLETE
+                      DiagnosticVerticalVorticity
+                      Slice 3 NEXT
+                      HEADLESS CAPABILITY IMPLEMENTED
+                      SCIENTIFIC DEMO VALIDATION
+                      NOT STARTED
 ```
 
 ---
@@ -1069,17 +1074,18 @@ ARCHITECTURE
 
 IMPLEMENTATION
   SLICE 1 COMPLETE
-  SLICE 2 NEXT
-  DiagnosticVerticalVorticity owner NOT IMPLEMENTED
+  SLICE 2 COMPLETE
+  SLICE 3 NEXT
+  DiagnosticVerticalVorticity implemented
+  HEADLESS CAPABILITY IMPLEMENTED
+  SCIENTIFIC DEMO VALIDATION NOT STARTED
 
 STRETCHING / T2 / ω→V / Ω / V_total / UI
   UNCHANGED / NOT STARTED
 ```
 
-Do not implement `DiagnosticVerticalVorticity` or composition
-wiring because this file exists. Slice 1
-(`worldVerticalVorticity` on `VerticalEnvelopeRotationField`)
-is implemented.
+Do not start Slice 3 scientific DEMO validation because this
+file exists. Slice 1 and Slice 2 are implemented.
 Do not treat physics `18` §18.2 as a substitute for this
 diagnostic contract: `18` remains the velocity-field SoT.
 Do not treat `27` as this derivation.

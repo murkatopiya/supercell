@@ -11,10 +11,9 @@ Architecture of that diagnostic (not this field's velocity API):
 `docs/architecture/28-diagnostic-vertical-vorticity-architecture.md`.
 Candidate A Slice 1 is implemented on this type:
 `worldVerticalVorticity(position, time) → signed ω_y` [s⁻¹].
-`DiagnosticVerticalVorticity` (Slice 2 owner) is **not**
-implemented. This file remains the velocity-field SoT. `23`
-re-derives `ω_y^Ω` as a diagnostic contract; it does not
-replace §18.
+`DiagnosticVerticalVorticity` (Slice 2 owner) is implemented.
+This file remains the velocity-field SoT. `23` re-derives
+`ω_y^Ω` as a diagnostic contract; it does not replace §18.
 
 ## 1. Purpose
 
@@ -975,9 +974,9 @@ Production analytic method on this type (Slice 1):
 
     worldVerticalVorticity(position, time) → ω_y   [s⁻¹]
 
-Not on `VelocityField`. `DiagnosticVerticalVorticity` remains
-Slice 2 and is not implemented. Do not add `curl()` because
-this section exists.
+Not on `VelocityField`. `DiagnosticVerticalVorticity` is the
+Slice 2 total owner; it is not this velocity field. Do not
+add `curl()` because this section exists.
 
 ### 18.3 Horizontal vorticity from `G'`
 

@@ -2,6 +2,7 @@ import { CompositeVelocityField } from "../core/fields/CompositeVelocityField.js
 import type { VelocityField } from "../core/fields/VelocityField.js";
 import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
 import { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
+import { DiagnosticVerticalVorticity } from "../physics/diagnostics/DiagnosticVerticalVorticity.js";
 import { EnvironmentalWindField } from "../physics/environment/EnvironmentalWindField.js";
 import { StormRelativeEnvironmentalAdvectionField } from "../physics/environment/StormRelativeEnvironmentalAdvectionField.js";
 import { createDowndraftField } from "../scenario/createDowndraftField.js";
@@ -59,6 +60,12 @@ export interface DemoObservedTracerSimulation {
    * Built from the same profile and updraftField instances.
    */
   readonly tiltingTendency: DiagnosticTiltingTendency;
+  /**
+   * Sibling diagnostic of velocityObservation, not a V_total operand.
+   * Built from the same rotationField instance. Public meaning is
+   * ω_y(V_total); v1 evaluator is analytic ω_y(V_rotation).
+   */
+  readonly currentVerticalVorticity: DiagnosticVerticalVorticity;
 }
 
 function environmentalOperand(
@@ -155,8 +162,9 @@ export function demoInspectableVelocityOperands(
 /**
  * One composition pass: Simulation integrates `velocityObservation.total`,
  * which is the same CompositeVelocityField instance built from `parts`.
- * T1 observes the same profile and updraftField instances; it is not
- * a parts row and is not owned by Simulation.
+ * T1 observes the same profile and updraftField instances; Candidate A
+ * observes the same rotationField instance. Neither is a parts row
+ * and neither is owned by Simulation.
  */
 export function composeDemoTracersWithObservation(
   integrationFrame: IntegrationFrame,
@@ -166,6 +174,9 @@ export function composeDemoTracersWithObservation(
   const tiltingTendency = new DiagnosticTiltingTendency({
     profile: composed.profile,
     updraft: composed.updraftField,
+  });
+  const currentVerticalVorticity = new DiagnosticVerticalVorticity({
+    rotation: composed.rotationField,
   });
   const velocityObservation = demoInspectableVelocityOperands(composed);
   const integrator = new EulerIntegrator();
@@ -179,6 +190,7 @@ export function composeDemoTracersWithObservation(
     velocityObservation,
     integrator,
     tiltingTendency,
+    currentVerticalVorticity,
   };
 }
 

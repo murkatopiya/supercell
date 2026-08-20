@@ -11,6 +11,7 @@ import { DEMO_VISUAL_AIRFLOW_POPULATION } from "./demoVisualAirflowFixture.js";
 import { DEMO_EULERIAN_AIRFLOW_SAMPLES } from "./demoEulerianAirflowFixture.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import type { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
+import type { DiagnosticVerticalVorticity } from "../physics/diagnostics/DiagnosticVerticalVorticity.js";
 import type { Simulation } from "../simulation/Simulation.js";
 
 export interface ExploreLab {
@@ -24,6 +25,7 @@ export interface ExploreLab {
   readonly visualAirflowPopulation: VisualAirflowPopulation;
   readonly eulerianAirflowSamples: EulerianAirflowSamples;
   readonly tiltingTendency: DiagnosticTiltingTendency;
+  readonly currentVerticalVorticity: DiagnosticVerticalVorticity;
 }
 
 /**
@@ -44,11 +46,16 @@ export function composeExploreTracerSimulation(
  * Visual advection uses the same Euler instance.
  */
 export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
-  const { simulation, velocityObservation, integrator, tiltingTendency } =
-    composeDemoTracersWithObservation(
-      IntegrationFrame.StormRelativeLaboratory,
-      [],
-    );
+  const {
+    simulation,
+    velocityObservation,
+    integrator,
+    tiltingTendency,
+    currentVerticalVorticity,
+  } = composeDemoTracersWithObservation(
+    IntegrationFrame.StormRelativeLaboratory,
+    [],
+  );
   const pathHistory = new TracerPathHistory(0);
   const session = new ExploreTracerSession(simulation, pathHistory);
   const tool = new ExplorePointReleaseTool();
@@ -77,6 +84,7 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
     visualAirflowPopulation,
     eulerianAirflowSamples,
     tiltingTendency,
+    currentVerticalVorticity,
   };
 }
 
