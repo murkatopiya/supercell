@@ -426,6 +426,8 @@ export function App() {
                   }}
                   onCancel={() => {
                     explore.orchestration.cancelPending();
+                    explore.tool.placementEnabled = false;
+                    setPlacementEnabled(false);
                     setPendingSeed(null);
                   }}
                   onClear={() => {

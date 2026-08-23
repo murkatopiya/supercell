@@ -4,24 +4,25 @@
 V1 FEATURE FREEZE ACTIVE /
 M2 COMPLETE / M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
-SLICES C–G NOT STARTED /
-NO IMPLEMENTATION AUTHORIZATION
+41-1 COMPLETE /
+41-2 … 41-4 NOT STARTED /
+40 SLICES C–G NOT STARTED
 **Scope:** after live playtest of Explore Slice B, decide two
 product-surface questions without adding capability and without
 reopening frozen physics, encodings, or interaction contracts:
 (1) how the existing point-release workflow is entered and
 ranked on the Explore rail; (2) what Highlight tint currently
 means, whether Rotation sign is being mis-drawn, and what
-legibility change is freeze-legal. Docs-only. Not a rendering
+legibility change is freeze-legal. Not a rendering
 redesign. Not a new visualization. Not Guided mounts. Not
 `ROADMAP.md`.
 **Physics:** unchanged. Model class remains prescribed kinematic
 laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 Ω semantics unchanged. Inspector L2 and Point-diagnostics
 sibling relation unchanged (`19`, `32`).
-**Implementation:** none. Production `src/**` MUST remain
-unchanged. This file does not authorize 40 Slices C–G or any
-new production slice.
+**Implementation:** Slice 41-1 is COMPLETE in production
+`src/**`. Slices 41-2 … 41-4 and 40 C–G remain NOT STARTED
+and are not authorized by this status update.
 
 Predecessor M1 / M3 consolidation architecture:
 
@@ -80,8 +81,8 @@ REJECTED ALTERNATIVE
 ANTI-CLAIM
 ```
 
-This document did **not** change production code.
-It does **not** start the next implementation slice.
+This checkpoint decided the product contract. Slice 41-1 is
+COMPLETE in production. Slices 41-2 … 41-4 are NOT STARTED.
 
 ---
 
@@ -1025,7 +1026,13 @@ placement.
       Cancel → leave placement mode
       Confirm stays in placement mode (live semantics)
       Placement-mode disclosure of altitude + instruction
-      STATUS: NOT STARTED
+      STATUS: COMPLETE
+      Evidence: ExplorePointReleaseControls [Release tracer]
+      aria-pressed maps to tool.placementEnabled; checkbox
+      gone; App onCancel sets tool.placementEnabled false;
+      confirmRelease does not; idle default false.
+      Tests: ExploreActionRailControls.test.tsx 41-1 cases;
+      exploreBrowserPointRelease.acceptance.test.ts
 
 41-2  Clear tracers out of the Confirm row
       Visible occupancy label; Runtime (or occupancy)
@@ -1124,8 +1131,9 @@ HIGHLIGHT COPY        restore 39 meaning when On
 HIGHLIGHT HUE         magenta V1; palette POST-V1
 GLOW                  not V1
 FREEZE                intact; no new capability
-IMPLEMENTATION        NOT AUTHORIZED
-NEXT PRODUCTION       41-1 … 41-4 when commanded;
+IMPLEMENTATION        41-1 COMPLETE; 41-2 … 41-4 NOT STARTED;
+                      40 C–G NOT STARTED
+NEXT PRODUCTION       41-2 when commanded; then 41-3, 41-4;
                       then 40 C–G; then M5
 ```
 
@@ -1163,5 +1171,7 @@ NEXT PRODUCTION       41-1 … 41-4 when commanded;
 9. **Does this authorize implementation?**
 
 ```text
-NO.
+41-1 COMPLETE.
+41-2 … 41-4 NOT STARTED and not authorized by this status.
+40 C–G NOT STARTED.
 ```

@@ -247,6 +247,11 @@ body:has(.app--explore) {
   background: #e8eef5;
 }
 
+.explore-point-release-controls button[aria-pressed="true"] {
+  font-weight: 650;
+  background: #e8eef5;
+}
+
 .tracer-runtime-controls__button:disabled {
   cursor: default;
 }

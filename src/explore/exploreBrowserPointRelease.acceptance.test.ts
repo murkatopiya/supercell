@@ -273,6 +273,10 @@ describe("Explore browser point-release acceptance", () => {
     expect(exploreControlsSrc).toMatch(
       /Release passive tracers at a chosen altitude/,
     );
+    expect(exploreControlsSrc).toMatch(/Release tracer/);
+    expect(exploreControlsSrc).not.toMatch(/Enable placement/);
+    expect(exploreControlsSrc).toMatch(/aria-pressed=\{placementEnabled\}/);
+    expect(appSrc).toMatch(/tool\.placementEnabled = false/);
     expect(appSrc).not.toMatch(/DiagnosticProbes/);
     expect(appSrc).not.toMatch(/StoryPathlines/);
     expect(appSrc).not.toMatch(/DownwardPathline/);

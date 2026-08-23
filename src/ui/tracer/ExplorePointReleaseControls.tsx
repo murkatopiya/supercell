@@ -9,11 +9,15 @@ export interface ExplorePointReleaseControlsProps {
   onClear: () => void;
 }
 
-const PENDING_REQUIRED_REASON = "Click the ground to place a release point first.";
+const PENDING_REQUIRED_REASON =
+  "Click the ground to place a release point first.";
+const PLACEMENT_INSTRUCTION = PENDING_REQUIRED_REASON;
 
 /**
- * Explore release controls. Compact Slice B action-rail surface.
- * docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
+ * Explore release controls. Slice 41-1: [Release tracer] arms the
+ * existing placementEnabled pointer gate. Confirm/Cancel stay the
+ * pending transaction. Clear remains occupancy (41-2).
+ * docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
  */
 export function ExplorePointReleaseControls({
   altitudeM,
@@ -31,61 +35,70 @@ export function ExplorePointReleaseControls({
         Release passive tracers at a chosen altitude.
       </p>
       <div className="explore-point-release-controls__row">
-        <label className="explore-point-release-controls__field">
-          Altitude
-          <input
-            type="number"
-            min={0}
-            step={100}
-            value={Number.isFinite(altitudeM) ? altitudeM : 0}
-            onChange={(event) => {
-              const next = event.target.valueAsNumber;
-              if (!Number.isFinite(next) || next < 0) {
-                return;
-              }
-              onAltitudeChange(next);
-            }}
-          />
-          m
-        </label>
-        <label className="explore-point-release-controls__field">
-          <input
-            type="checkbox"
-            checked={placementEnabled}
-            onChange={(event) =>
-              onPlacementEnabledChange(event.currentTarget.checked)
+        <button
+          type="button"
+          className="tracer-runtime-controls__button"
+          aria-pressed={placementEnabled}
+          aria-label="Release tracer"
+          title="Enter placement mode, then click the ground to choose a point"
+          onClick={() => {
+            if (!placementEnabled) {
+              onPlacementEnabledChange(true);
             }
-          />
-          Enable placement
-        </label>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          disabled={!hasPending}
-          title={!hasPending ? PENDING_REQUIRED_REASON : undefined}
-          aria-label={
-            hasPending
-              ? "Confirm release"
-              : `Confirm release — ${PENDING_REQUIRED_REASON}`
-          }
-          onClick={onConfirm}
+          }}
         >
-          Confirm
+          Release tracer
         </button>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          disabled={!hasPending}
-          title={!hasPending ? PENDING_REQUIRED_REASON : undefined}
-          aria-label={
-            hasPending
-              ? "Cancel pending release"
-              : `Cancel pending release — ${PENDING_REQUIRED_REASON}`
-          }
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
+        {placementEnabled ? (
+          <label className="explore-point-release-controls__field">
+            Altitude
+            <input
+              type="number"
+              min={0}
+              step={100}
+              value={Number.isFinite(altitudeM) ? altitudeM : 0}
+              onChange={(event) => {
+                const next = event.target.valueAsNumber;
+                if (!Number.isFinite(next) || next < 0) {
+                  return;
+                }
+                onAltitudeChange(next);
+              }}
+            />
+            m
+          </label>
+        ) : null}
+        {placementEnabled ? (
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            disabled={!hasPending}
+            title={!hasPending ? PENDING_REQUIRED_REASON : undefined}
+            aria-label={
+              hasPending
+                ? "Confirm release"
+                : `Confirm release — ${PENDING_REQUIRED_REASON}`
+            }
+            onClick={onConfirm}
+          >
+            Confirm
+          </button>
+        ) : null}
+        {placementEnabled ? (
+          <button
+            type="button"
+            className="tracer-runtime-controls__button"
+            aria-label="Cancel placement"
+            title={
+              hasPending
+                ? "Clear pending point and leave placement mode"
+                : "Leave placement mode"
+            }
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+        ) : null}
         <button
           type="button"
           className="tracer-runtime-controls__button"
@@ -96,8 +109,8 @@ export function ExplorePointReleaseControls({
           Clear
         </button>
       </div>
-      {!hasPending ? (
-        <p className="control-disabled-reason">{PENDING_REQUIRED_REASON}</p>
+      {placementEnabled && !hasPending ? (
+        <p className="control-disabled-reason">{PLACEMENT_INSTRUCTION}</p>
       ) : null}
     </div>
   );
