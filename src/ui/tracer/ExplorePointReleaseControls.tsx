@@ -6,7 +6,6 @@ export interface ExplorePointReleaseControlsProps {
   onPlacementEnabledChange: (enabled: boolean) => void;
   onConfirm: () => void;
   onCancel: () => void;
-  onClear: () => void;
 }
 
 const PENDING_REQUIRED_REASON =
@@ -16,7 +15,7 @@ const PLACEMENT_INSTRUCTION = PENDING_REQUIRED_REASON;
 /**
  * Explore release controls. Slice 41-1: [Release tracer] arms the
  * existing placementEnabled pointer gate. Confirm/Cancel stay the
- * pending transaction. Clear remains occupancy (41-2).
+ * pending transaction. Occupancy emptying is not a release action (41-2).
  * docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
  */
 export function ExplorePointReleaseControls({
@@ -27,7 +26,6 @@ export function ExplorePointReleaseControls({
   onPlacementEnabledChange,
   onConfirm,
   onCancel,
-  onClear,
 }: ExplorePointReleaseControlsProps) {
   return (
     <div className="explore-point-release-controls">
@@ -96,18 +94,9 @@ export function ExplorePointReleaseControls({
             }
             onClick={onCancel}
           >
-            Cancel
-          </button>
-        ) : null}
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-label="Clear released tracers"
-          title="Clear released tracers (not simulation Reset or Reset View)"
-          onClick={onClear}
-        >
-          Clear
+          Cancel
         </button>
+        ) : null}
       </div>
       {placementEnabled && !hasPending ? (
         <p className="control-disabled-reason">{PLACEMENT_INSTRUCTION}</p>

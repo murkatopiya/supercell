@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
+import { ExploreClearTracersControl } from "./ExploreClearTracersControl.js";
 import { ExplorePointReleaseControls } from "./ExplorePointReleaseControls.js";
+import clearSrc from "./ExploreClearTracersControl.tsx?raw";
 import releaseSrc from "./ExplorePointReleaseControls.tsx?raw";
 import runtimeSrc from "./TracerRuntimeControls.tsx?raw";
 import resetViewSrc from "./ExploreResetViewControl.tsx?raw";
@@ -19,7 +21,6 @@ function markup(options: {
       onPlacementEnabledChange={() => {}}
       onConfirm={() => {}}
       onCancel={() => {}}
-      onClear={() => {}}
     />,
   );
 }
@@ -55,8 +56,11 @@ describe("Explore Slice B action-rail controls", () => {
     expect(runtimeSrc).toMatch(/title="Reset simulation \(not camera\)"/);
     expect(resetViewSrc).toMatch(/aria-label="Reset camera to storm view"/);
     expect(resetViewSrc).toMatch(/does not reset the simulation/);
-    expect(releaseSrc).toMatch(/aria-label="Clear released tracers"/);
-    expect(releaseSrc).toMatch(/not simulation Reset or Reset View/);
+    expect(clearSrc).toMatch(/aria-label="Clear released tracers"/);
+    expect(clearSrc).toMatch(/not simulation Reset or Reset View/);
+    expect(clearSrc).toMatch(/>\s*Clear tracers\s*</);
+    expect(releaseSrc).not.toMatch(/Clear released tracers/);
+    expect(releaseSrc).not.toMatch(/>\s*Clear\s*</);
   });
 
   it("uses short release copy instead of permanent long instructional chrome", () => {
@@ -90,7 +94,8 @@ describe("Explore 41-1 Release tracer entry", () => {
     expect(idle).not.toContain("Confirm");
     expect(idle).not.toContain("Cancel");
     expect(idle).not.toContain("Altitude");
-    expect(idle).toContain("Clear");
+    expect(idle).not.toContain("Clear tracers");
+    expect(idle).not.toContain("Clear released tracers");
 
     const placing = markup({ placementEnabled: true, hasPending: false });
     expect(placing).toContain("Confirm");
@@ -101,11 +106,15 @@ describe("Explore 41-1 Release tracer entry", () => {
     );
     expect(placing).toContain('aria-label="Cancel placement"');
     expect(placing).not.toContain("Cancel pending release");
+    expect(placing).not.toContain("Clear tracers");
+    expect(placing).not.toContain("Clear released tracers");
 
     const pending = markup({ placementEnabled: true, hasPending: true });
     expect(pending).not.toContain("control-disabled-reason");
     expect(pending).toContain('aria-label="Confirm release"');
     expect(pending).toContain('aria-label="Cancel placement"');
+    expect(pending).not.toContain("Clear tracers");
+    expect(pending).not.toContain("Clear released tracers");
   });
 
   it("wires Cancel to leave the existing placementEnabled gate and Confirm to keep it", () => {
@@ -123,7 +132,7 @@ describe("Explore 41-1 Release tracer entry", () => {
 
     const cancelHandler = appSrc.slice(
       appSrc.indexOf("onCancel={() => {"),
-      appSrc.indexOf("onClear={() => {"),
+      appSrc.indexOf("control-band--airflow"),
     );
     expect(cancelHandler).toMatch(/cancelPending\(\)/);
     expect(cancelHandler).toMatch(/tool\.placementEnabled = false/);
@@ -136,14 +145,77 @@ describe("Explore 41-1 Release tracer entry", () => {
     expect(resetHandler).not.toMatch(/setPlacementEnabled/);
     expect(resetHandler).toMatch(/resetExploreLab/);
 
-    const clearHandler = appSrc.slice(
-      appSrc.indexOf("onClear={() => {"),
-      appSrc.indexOf("control-band--airflow"),
-    );
-    expect(clearHandler).toMatch(/orchestration\.clear\(\)/);
-    expect(clearHandler).not.toMatch(/setPlacementEnabled/);
-
     expect(appSrc).toMatch(/enterExplore[\s\S]*setPlacementEnabled\(false\)/);
     expect(appSrc).toMatch(/enterGuided[\s\S]*setPlacementEnabled\(false\)/);
+  });
+});
+
+describe("Explore 41-2 Clear tracers occupancy action", () => {
+  it("places Clear tracers in Runtime, not in the Confirm/Cancel transaction", () => {
+    const occupancy = renderToStaticMarkup(
+      <ExploreClearTracersControl onClear={() => {}} />,
+    );
+    expect(occupancy).toContain("Clear tracers");
+    expect(occupancy).toContain('aria-label="Clear released tracers"');
+    expect(occupancy).not.toContain("Confirm");
+    expect(occupancy).not.toContain("Cancel");
+
+    const runtimeBand = appSrc.slice(
+      appSrc.indexOf("control-band--runtime"),
+      appSrc.indexOf("control-band--view"),
+    );
+    expect(runtimeBand).toMatch(/ExploreClearTracersControl/);
+    expect(runtimeBand).toMatch(/handleClearTracers/);
+    expect(runtimeBand).toMatch(/TracerRuntimeControls/);
+
+    const viewBand = appSrc.slice(
+      appSrc.indexOf("control-band--view"),
+      appSrc.indexOf("control-band--release"),
+    );
+    expect(viewBand).not.toMatch(/ExploreClearTracersControl/);
+    expect(viewBand).not.toMatch(/Clear tracers/);
+
+    const releaseBand = appSrc.slice(
+      appSrc.indexOf("control-band--release"),
+      appSrc.indexOf("control-band--airflow"),
+    );
+    expect(releaseBand).not.toMatch(/ExploreClearTracersControl/);
+    expect(releaseBand).not.toMatch(/onClear/);
+    expect(releaseBand).not.toMatch(/Clear tracers/);
+
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/ExploreClearTracersControl/);
+  });
+
+  it("keeps occupancy Clear semantics and does not flip placementEnabled or clock/runtime", () => {
+    const clearHandler = appSrc.slice(
+      appSrc.indexOf("const handleClearTracers"),
+      appSrc.indexOf("const enterExplore"),
+    );
+    expect(clearHandler).toMatch(/orchestration\.clear\(\)/);
+    expect(clearHandler).toMatch(/clearSelectionAndInspection\(\)/);
+    expect(clearHandler).toMatch(/setPendingSeed\(null\)/);
+    expect(clearHandler).not.toMatch(/setPlacementEnabled/);
+    expect(clearHandler).not.toMatch(/placementEnabled/);
+    expect(clearHandler).not.toMatch(/setPaused/);
+    expect(clearHandler).not.toMatch(/setTimeScale/);
+    expect(clearHandler).not.toMatch(/clock/);
+    expect(clearHandler).not.toMatch(/handleReset/);
+    expect(clearHandler).not.toMatch(/resetView/);
+    expect(clearHandler).not.toMatch(/resetExploreLab/);
+
+    const resetHandler = appSrc.slice(
+      appSrc.indexOf("const handleReset"),
+      appSrc.indexOf("const handleResetView"),
+    );
+    expect(resetHandler).toMatch(/resetExploreLab/);
+    expect(resetHandler).not.toMatch(/orchestration\.clear/);
+
+    const resetViewHandler = appSrc.slice(
+      appSrc.indexOf("const handleResetView"),
+      appSrc.indexOf("const handleClearTracers"),
+    );
+    expect(resetViewHandler).toMatch(/resetView\(\)/);
+    expect(resetViewHandler).not.toMatch(/orchestration\.clear/);
   });
 });

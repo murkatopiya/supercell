@@ -182,6 +182,8 @@ describe("Explore browser point-release acceptance", () => {
     expect(slots.clearCalls).toBe(1);
     expect(simulation.clock.time).toBe(timeBeforeClear);
     expect(slots.preview).toBeNull();
+    expect(tool.pendingSeed).toBeNull();
+    expect(tool.placementEnabled).toBe(true);
 
     tool.placementEnabled = true;
     orchestration.handlePlacementAttempt(PICK_ORIGIN, PICK_DIRECTION, 0);
@@ -192,6 +194,44 @@ describe("Explore browser point-release acceptance", () => {
     expect(slots).toBe(sceneIdentity);
     expect(simulation.clock.time).toBe(timeBeforeClear);
     expect(simulation.particles[0]!.age).toBe(0);
+  });
+
+  it("Clear drops occupancy and pending preview without leaving placement", () => {
+    const slots = new FakeSceneSlots();
+    const { simulation, pathHistory, tool, orchestration } = constantLab(slots);
+    tool.setAltitude(1000);
+
+    orchestration.clear();
+    expect(simulation.particles).toHaveLength(0);
+    expect(tool.pendingSeed).toBeNull();
+    expect(tool.placementEnabled).toBe(false);
+
+    tool.placementEnabled = true;
+    orchestration.clear();
+    expect(tool.placementEnabled).toBe(true);
+    expect(tool.pendingSeed).toBeNull();
+    orchestration.handlePlacementAttempt(PICK_ORIGIN, PICK_DIRECTION, 0);
+    expect(orchestration.confirmRelease()).toBe(true);
+    expect(simulation.particles).toHaveLength(1);
+
+    orchestration.handlePlacementAttempt(SECOND_ORIGIN, SECOND_DIRECTION, 0);
+    expect(tool.pendingSeed).toEqual({ x: 50, y: 1000, z: -4 });
+    expect(slots.preview).toEqual({ x: 50, y: 1000, z: -4 });
+    const timeBeforeClear = simulation.clock.time;
+
+    orchestration.clear();
+
+    expect(simulation.particles).toHaveLength(0);
+    expect(pathHistory.tracerCount).toBe(0);
+    expect(slots.tracerSlotCount).toBe(0);
+    expect(tool.pendingSeed).toBeNull();
+    expect(slots.preview).toBeNull();
+    expect(tool.placementEnabled).toBe(true);
+    expect(simulation.clock.time).toBe(timeBeforeClear);
+
+    orchestration.handlePlacementAttempt(PICK_ORIGIN, PICK_DIRECTION, 0);
+    expect(tool.pendingSeed).toEqual({ x: 0, y: 1000, z: 0 });
+    expect(slots.preview).toEqual({ x: 0, y: 1000, z: 0 });
   });
 
   it("does not place on OrbitControls-scale drag, miss, or disabled tool", () => {
@@ -276,6 +316,13 @@ describe("Explore browser point-release acceptance", () => {
     expect(exploreControlsSrc).toMatch(/Release tracer/);
     expect(exploreControlsSrc).not.toMatch(/Enable placement/);
     expect(exploreControlsSrc).toMatch(/aria-pressed=\{placementEnabled\}/);
+    expect(exploreControlsSrc).not.toMatch(/Clear released tracers/);
+    expect(exploreControlsSrc).not.toMatch(/onClear/);
+    expect(appSrc).toMatch(/ExploreClearTracersControl/);
+    expect(appSrc).toMatch(/handleClearTracers/);
+    expect(appSrc).toMatch(
+      /orchestration\.clear\(\);\s*clearSelectionAndInspection\(\)/s,
+    );
     expect(appSrc).toMatch(/tool\.placementEnabled = false/);
     expect(appSrc).not.toMatch(/DiagnosticProbes/);
     expect(appSrc).not.toMatch(/StoryPathlines/);

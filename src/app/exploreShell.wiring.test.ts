@@ -40,6 +40,7 @@ describe("Explore Slice A shell geometry", () => {
     );
     expect(viewport).toMatch(/tracerViewport/);
     expect(viewport).not.toMatch(/TracerRuntimeControls/);
+    expect(viewport).not.toMatch(/ExploreClearTracersControl/);
     expect(viewport).not.toMatch(/ExplorePointReleaseControls/);
     expect(viewport).not.toMatch(/VisualAirflowWorkbenchControls/);
     expect(viewport).not.toMatch(/ExploreFollowControl/);
@@ -55,6 +56,7 @@ describe("Explore Slice A shell geometry", () => {
     expect(controls).toMatch(/workbench__environment/);
     expect(controls).toMatch(/hodographColumn/);
     expect(controls).toMatch(/TracerRuntimeControls/);
+    expect(controls).toMatch(/ExploreClearTracersControl/);
     expect(controls).toMatch(/ExplorePointReleaseControls/);
   });
 

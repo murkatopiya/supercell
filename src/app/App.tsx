@@ -3,6 +3,7 @@ import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import { HodographOverlayControls } from "../ui/hodograph/HodographOverlayControls.js";
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
+import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
 import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
 import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
@@ -204,6 +205,21 @@ export function App() {
     sceneHandleRef.current?.resetView();
   };
 
+  /**
+   * Explore occupancy emptying. Clock continues. The placement
+   * gate is unchanged. Selection / Follow follow the existing
+   * clearSelectionAndInspection contract.
+   * docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md §8
+   */
+  const handleClearTracers = () => {
+    if (lab.kind !== "explore") {
+      return;
+    }
+    lab.orchestration.clear();
+    clearSelectionAndInspection();
+    setPendingSeed(null);
+  };
+
   const enterExplore = () => {
     if (lab.kind === "explore") {
       return;
@@ -380,13 +396,16 @@ export function App() {
                 aria-label="Runtime"
               >
                 <span className="control-band__label">Runtime</span>
-                <TracerRuntimeControls
-                  paused={paused}
-                  timeScale={timeScale}
-                  onPausedChange={setPaused}
-                  onTimeScaleChange={setTimeScale}
-                  onReset={handleReset}
-                />
+                <div className="control-band__row">
+                  <TracerRuntimeControls
+                    paused={paused}
+                    timeScale={timeScale}
+                    onPausedChange={setPaused}
+                    onTimeScaleChange={setTimeScale}
+                    onReset={handleReset}
+                  />
+                  <ExploreClearTracersControl onClear={handleClearTracers} />
+                </div>
               </div>
               <div
                 className="control-band control-band--view"
@@ -428,11 +447,6 @@ export function App() {
                     explore.orchestration.cancelPending();
                     explore.tool.placementEnabled = false;
                     setPlacementEnabled(false);
-                    setPendingSeed(null);
-                  }}
-                  onClear={() => {
-                    explore.orchestration.clear();
-                    clearSelectionAndInspection();
                     setPendingSeed(null);
                   }}
                 />

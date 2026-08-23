@@ -144,7 +144,7 @@ describe("Explore Reset View App wiring", () => {
   it("orders Follow OFF before resetView via followEnabledRef and imperative handle", () => {
     const handler = appSrc.slice(
       appSrc.indexOf("const handleResetView"),
-      appSrc.indexOf("const enterExplore"),
+      appSrc.indexOf("const handleClearTracers"),
     );
     expect(handler).toMatch(/setFollowEnabled\(false\)/);
     expect(handler).toMatch(/sceneHandleRef\.current\?\.resetView\(\)/);
@@ -268,7 +268,7 @@ describe("Explore Reset View App wiring", () => {
     expect(appSrc).toMatch(/const handleResetView/);
     const handler = appSrc.slice(
       appSrc.indexOf("const handleResetView"),
-      appSrc.indexOf("const enterExplore"),
+      appSrc.indexOf("const handleClearTracers"),
     );
     expect(handler).not.toMatch(/selection\.clear/);
     expect(handler).not.toMatch(/setInspection/);

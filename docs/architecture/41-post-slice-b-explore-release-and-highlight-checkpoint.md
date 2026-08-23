@@ -5,7 +5,8 @@ V1 FEATURE FREEZE ACTIVE /
 M2 COMPLETE / M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE /
-41-2 … 41-4 NOT STARTED /
+41-2 COMPLETE /
+41-3 … 41-4 NOT STARTED /
 40 SLICES C–G NOT STARTED
 **Scope:** after live playtest of Explore Slice B, decide two
 product-surface questions without adding capability and without
@@ -20,9 +21,9 @@ redesign. Not a new visualization. Not Guided mounts. Not
 laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 Ω semantics unchanged. Inspector L2 and Point-diagnostics
 sibling relation unchanged (`19`, `32`).
-**Implementation:** Slice 41-1 is COMPLETE in production
-`src/**`. Slices 41-2 … 41-4 and 40 C–G remain NOT STARTED
-and are not authorized by this status update.
+**Implementation:** Slices 41-1 and 41-2 are COMPLETE in
+production `src/**`. Slices 41-3 … 41-4 and 40 C–G remain
+NOT STARTED.
 
 Predecessor M1 / M3 consolidation architecture:
 
@@ -81,8 +82,9 @@ REJECTED ALTERNATIVE
 ANTI-CLAIM
 ```
 
-This checkpoint decided the product contract. Slice 41-1 is
-COMPLETE in production. Slices 41-2 … 41-4 are NOT STARTED.
+This checkpoint decided the product contract. Slices 41-1
+and 41-2 are COMPLETE in production. Slices 41-3 … 41-4
+are NOT STARTED.
 
 ---
 
@@ -579,11 +581,13 @@ Reset View   ExploreResetViewControl   camera pose
              visible: Reset View
              37 contract unchanged
 
-Clear        ExplorePointReleaseControls
+Clear tracers  ExploreClearTracersControl (Runtime occupancy
+             neighbor of Pause / Reset / Speed)
              aria: Clear released tracers
              title: not simulation Reset or Reset View
-             visible: Clear
+             visible: Clear tracers
              18: occupancy → 0, clock continues
+             not a Confirm / Cancel sibling (41-2)
 ```
 
 Hypothesis: *Clear is a global tracer occupancy action, not
@@ -592,9 +596,9 @@ part of the release transaction.*
 **Confirmed.** `18` §9: Clear drops exploratory occupancy;
 clock unchanged; preview hidden; not Confirm; not a
 trail-only button. Orchestration.clear() is session + slots,
-not “abort this pending pick.” Live UI nevertheless parks
-Clear in the Confirm/Cancel row, so it reads as a fourth
-transaction button.
+not “abort this pending pick.” Slice B parked Clear in the Confirm/Cancel row, so it
+read as a fourth transaction button. Slice 41-2 moved it
+to Runtime as a global occupancy action.
 
 **NEW PRODUCT DECISION:**
 
@@ -1014,9 +1018,10 @@ beyond successor pointers.
 
 ## 18. Proposed implementation slices and order
 
-Docs-only here. Production starts only when commanded.
+Slices 41-1 and 41-2 are COMPLETE in production.
+41-3 and 41-4 remain NOT STARTED.
 
-These slices should land **before `40` Slice C**, because
+These slices land **before `40` Slice C**, because
 empty-state copy must name [Release tracer], not Enable
 placement.
 
@@ -1035,9 +1040,16 @@ placement.
       exploreBrowserPointRelease.acceptance.test.ts
 
 41-2  Clear tracers out of the Confirm row
-      Visible occupancy label; Runtime (or occupancy)
-      neighbor; F7 visible-name pass if needed
-      STATUS: NOT STARTED
+      Visible occupancy label; Runtime occupancy neighbor
+      STATUS: COMPLETE
+      Evidence: ExploreClearTracersControl in the Runtime
+      band; visible label Clear tracers; Confirm/Cancel
+      row has no Clear; App handleClearTracers calls
+      orchestration.clear(), clearSelectionAndInspection,
+      and setPendingSeed(null); placementEnabled, paused,
+      and timeScale are untouched.
+      Tests: ExploreActionRailControls.test.tsx 41-2
+      cases; exploreBrowserPointRelease.acceptance.test.ts
 
 41-3  Rail hierarchy: Release band first; Runtime; View;
       secondary Airflow unchanged as secondary
@@ -1131,10 +1143,10 @@ HIGHLIGHT COPY        restore 39 meaning when On
 HIGHLIGHT HUE         magenta V1; palette POST-V1
 GLOW                  not V1
 FREEZE                intact; no new capability
-IMPLEMENTATION        41-1 COMPLETE; 41-2 … 41-4 NOT STARTED;
+IMPLEMENTATION        41-1 COMPLETE; 41-2 COMPLETE;
+                      41-3 … 41-4 NOT STARTED;
                       40 C–G NOT STARTED
-NEXT PRODUCTION       41-2 when commanded; then 41-3, 41-4;
-                      then 40 C–G; then M5
+NEXT PRODUCTION       41-3; then 41-4; then 40 C–G; then M5
 ```
 
 ---
@@ -1172,6 +1184,7 @@ NEXT PRODUCTION       41-2 when commanded; then 41-3, 41-4;
 
 ```text
 41-1 COMPLETE.
-41-2 … 41-4 NOT STARTED and not authorized by this status.
+41-2 COMPLETE.
+41-3 … 41-4 NOT STARTED.
 40 C–G NOT STARTED.
 ```
