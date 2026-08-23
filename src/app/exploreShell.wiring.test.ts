@@ -58,6 +58,18 @@ describe("Explore Slice A shell geometry", () => {
     expect(controls).toMatch(/TracerRuntimeControls/);
     expect(controls).toMatch(/ExploreClearTracersControl/);
     expect(controls).toMatch(/ExplorePointReleaseControls/);
+    expect(controls).toMatch(/ExploreFollowControl/);
+    expect(controls).toMatch(/ExploreResetViewControl/);
+    expect(controls).toMatch(/VisualAirflowWorkbenchControls/);
+    expect(controls.indexOf("control-band--release")).toBeLessThan(
+      controls.indexOf("control-band--runtime"),
+    );
+    expect(controls.indexOf("control-band--runtime")).toBeLessThan(
+      controls.indexOf("control-band--view"),
+    );
+    expect(controls.indexOf("control-band--view")).toBeLessThan(
+      controls.indexOf("control-band--airflow"),
+    );
   });
 
   it("locks Explore height-budget shell classes and viewport resize observer", () => {

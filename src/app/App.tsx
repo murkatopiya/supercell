@@ -392,6 +392,36 @@ export function App() {
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
             <div className="laboratory-toolbar laboratory-toolbar--explore">
               <div
+                className="control-band control-band--release control-band--primary"
+                aria-label="Release"
+              >
+                <span className="control-band__label">Release</span>
+                <ExplorePointReleaseControls
+                  altitudeM={altitudeM}
+                  placementEnabled={placementEnabled}
+                  hasPending={pendingSeed !== null}
+                  onAltitudeChange={(next) => {
+                    explore.tool.setAltitude(next);
+                    setAltitudeM(explore.tool.altitudeM);
+                    setPendingSeed(explore.tool.pendingSeed);
+                  }}
+                  onPlacementEnabledChange={(enabled) => {
+                    explore.tool.placementEnabled = enabled;
+                    setPlacementEnabled(enabled);
+                  }}
+                  onConfirm={() => {
+                    explore.orchestration.confirmRelease();
+                    setPendingSeed(null);
+                  }}
+                  onCancel={() => {
+                    explore.orchestration.cancelPending();
+                    explore.tool.placementEnabled = false;
+                    setPlacementEnabled(false);
+                    setPendingSeed(null);
+                  }}
+                />
+              </div>
+              <div
                 className="control-band control-band--runtime"
                 aria-label="Runtime"
               >
@@ -420,36 +450,6 @@ export function App() {
                   />
                   <ExploreResetViewControl onResetView={handleResetView} />
                 </div>
-              </div>
-              <div
-                className="control-band control-band--release"
-                aria-label="Release"
-              >
-                <span className="control-band__label">Release</span>
-                <ExplorePointReleaseControls
-                  altitudeM={altitudeM}
-                  placementEnabled={placementEnabled}
-                  hasPending={pendingSeed !== null}
-                  onAltitudeChange={(next) => {
-                    explore.tool.setAltitude(next);
-                    setAltitudeM(explore.tool.altitudeM);
-                    setPendingSeed(explore.tool.pendingSeed);
-                  }}
-                  onPlacementEnabledChange={(enabled) => {
-                    explore.tool.placementEnabled = enabled;
-                    setPlacementEnabled(enabled);
-                  }}
-                  onConfirm={() => {
-                    explore.orchestration.confirmRelease();
-                    setPendingSeed(null);
-                  }}
-                  onCancel={() => {
-                    explore.orchestration.cancelPending();
-                    explore.tool.placementEnabled = false;
-                    setPlacementEnabled(false);
-                    setPendingSeed(null);
-                  }}
-                />
               </div>
               <div
                 className="control-band control-band--airflow control-band--secondary"

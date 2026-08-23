@@ -6,7 +6,8 @@ M2 COMPLETE / M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE /
 41-2 COMPLETE /
-41-3 … 41-4 NOT STARTED /
+41-3 COMPLETE /
+41-4 NOT STARTED /
 40 SLICES C–G NOT STARTED
 **Scope:** after live playtest of Explore Slice B, decide two
 product-surface questions without adding capability and without
@@ -21,8 +22,8 @@ redesign. Not a new visualization. Not Guided mounts. Not
 laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 Ω semantics unchanged. Inspector L2 and Point-diagnostics
 sibling relation unchanged (`19`, `32`).
-**Implementation:** Slices 41-1 and 41-2 are COMPLETE in
-production `src/**`. Slices 41-3 … 41-4 and 40 C–G remain
+**Implementation:** Slices 41-1, 41-2, and 41-3 are COMPLETE
+in production `src/**`. Slice 41-4 and 40 C–G remain
 NOT STARTED.
 
 Predecessor M1 / M3 consolidation architecture:
@@ -82,9 +83,9 @@ REJECTED ALTERNATIVE
 ANTI-CLAIM
 ```
 
-This checkpoint decided the product contract. Slices 41-1
-and 41-2 are COMPLETE in production. Slices 41-3 … 41-4
-are NOT STARTED.
+This checkpoint decided the product contract. Slices 41-1,
+41-2, and 41-3 are COMPLETE in production. Slice 41-4 is
+NOT STARTED.
 
 ---
 
@@ -1018,8 +1019,8 @@ beyond successor pointers.
 
 ## 18. Proposed implementation slices and order
 
-Slices 41-1 and 41-2 are COMPLETE in production.
-41-3 and 41-4 remain NOT STARTED.
+Slices 41-1, 41-2, and 41-3 are COMPLETE in production.
+41-4 remains NOT STARTED.
 
 These slices land **before `40` Slice C**, because
 empty-state copy must name [Release tracer], not Enable
@@ -1054,7 +1055,15 @@ placement.
 41-3  Rail hierarchy: Release band first; Runtime; View;
       secondary Airflow unchanged as secondary
       Not an accordion of the whole rail
-      STATUS: NOT STARTED
+      STATUS: COMPLETE
+      Evidence: Explore toolbar order is control-band--release
+      (primary), control-band--runtime (Pause / Reset /
+      Speed + Clear tracers), control-band--view (Follow /
+      Reset View), control-band--airflow (secondary).
+      Placement disclosure stays inside the Release band.
+      Guided shell and hodograph placement are unchanged.
+      Tests: ExploreActionRailControls.test.tsx 41-3 cases;
+      exploreShell.wiring.test.ts band-order assertions
 
 41-4  Highlight compact copy restores 39 orientation /
       advection meaning whenever Highlight ≠ Off
@@ -1144,9 +1153,9 @@ HIGHLIGHT HUE         magenta V1; palette POST-V1
 GLOW                  not V1
 FREEZE                intact; no new capability
 IMPLEMENTATION        41-1 COMPLETE; 41-2 COMPLETE;
-                      41-3 … 41-4 NOT STARTED;
+                      41-3 COMPLETE; 41-4 NOT STARTED;
                       40 C–G NOT STARTED
-NEXT PRODUCTION       41-3; then 41-4; then 40 C–G; then M5
+NEXT PRODUCTION       41-4; then 40 C–G; then M5
 ```
 
 ---
@@ -1185,6 +1194,7 @@ NEXT PRODUCTION       41-3; then 41-4; then 40 C–G; then M5
 ```text
 41-1 COMPLETE.
 41-2 COMPLETE.
-41-3 … 41-4 NOT STARTED.
+41-3 COMPLETE.
+41-4 NOT STARTED.
 40 C–G NOT STARTED.
 ```

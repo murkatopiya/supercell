@@ -26,7 +26,7 @@ function markup(options: {
 }
 
 describe("Explore Slice B action-rail controls", () => {
-  it("groups Explore actions into Runtime, View, Release, and secondary Airflow bands", () => {
+  it("groups Explore actions into Release, Runtime, View, and secondary Airflow bands", () => {
     const controls = appSrc.slice(
       appSrc.indexOf("workbench__column--controls"),
       appSrc.indexOf("workbench__column--viewport"),
@@ -37,13 +37,13 @@ describe("Explore Slice B action-rail controls", () => {
     expect(controls).toMatch(/control-band--release/);
     expect(controls).toMatch(/control-band--airflow/);
     expect(controls).toMatch(/control-band--secondary/);
+    expect(controls.indexOf("control-band--release")).toBeLessThan(
+      controls.indexOf("control-band--runtime"),
+    );
     expect(controls.indexOf("control-band--runtime")).toBeLessThan(
       controls.indexOf("control-band--view"),
     );
     expect(controls.indexOf("control-band--view")).toBeLessThan(
-      controls.indexOf("control-band--release"),
-    );
-    expect(controls.indexOf("control-band--release")).toBeLessThan(
       controls.indexOf("control-band--airflow"),
     );
     expect(controls.indexOf("control-band--airflow")).toBeLessThan(
@@ -132,7 +132,7 @@ describe("Explore 41-1 Release tracer entry", () => {
 
     const cancelHandler = appSrc.slice(
       appSrc.indexOf("onCancel={() => {"),
-      appSrc.indexOf("control-band--airflow"),
+      appSrc.indexOf("control-band--runtime"),
     );
     expect(cancelHandler).toMatch(/cancelPending\(\)/);
     expect(cancelHandler).toMatch(/tool\.placementEnabled = false/);
@@ -170,14 +170,14 @@ describe("Explore 41-2 Clear tracers occupancy action", () => {
 
     const viewBand = appSrc.slice(
       appSrc.indexOf("control-band--view"),
-      appSrc.indexOf("control-band--release"),
+      appSrc.indexOf("control-band--airflow"),
     );
     expect(viewBand).not.toMatch(/ExploreClearTracersControl/);
     expect(viewBand).not.toMatch(/Clear tracers/);
 
     const releaseBand = appSrc.slice(
       appSrc.indexOf("control-band--release"),
-      appSrc.indexOf("control-band--airflow"),
+      appSrc.indexOf("control-band--runtime"),
     );
     expect(releaseBand).not.toMatch(/ExploreClearTracersControl/);
     expect(releaseBand).not.toMatch(/onClear/);
@@ -217,5 +217,95 @@ describe("Explore 41-2 Clear tracers occupancy action", () => {
     );
     expect(resetViewHandler).toMatch(/resetView\(\)/);
     expect(resetViewHandler).not.toMatch(/orchestration\.clear/);
+  });
+});
+
+describe("Explore 41-3 rail hierarchy", () => {
+  it("makes Release the first Explore band, then Runtime, View, secondary Airflow", () => {
+    const toolbar = appSrc.slice(
+      appSrc.indexOf("laboratory-toolbar--explore"),
+      appSrc.indexOf("workbench__column--viewport"),
+    );
+    expect(toolbar.indexOf("control-band--")).toBe(
+      toolbar.indexOf("control-band--release"),
+    );
+    expect(toolbar).toMatch(/control-band--release control-band--primary/);
+    expect(toolbar.indexOf("control-band--release")).toBeLessThan(
+      toolbar.indexOf("control-band--runtime"),
+    );
+    expect(toolbar.indexOf("control-band--runtime")).toBeLessThan(
+      toolbar.indexOf("control-band--view"),
+    );
+    expect(toolbar.indexOf("control-band--view")).toBeLessThan(
+      toolbar.indexOf("control-band--airflow"),
+    );
+    expect(toolbar).toMatch(/control-band--airflow control-band--secondary/);
+    expect(toolbar).not.toMatch(/<details/);
+    expect(toolbar).not.toMatch(/accordion/i);
+  });
+
+  it("keeps every existing control in its band and leaves Guided / hodograph placement unchanged", () => {
+    const releaseBand = appSrc.slice(
+      appSrc.indexOf("control-band--release"),
+      appSrc.indexOf("control-band--runtime"),
+    );
+    expect(releaseBand).toMatch(/ExplorePointReleaseControls/);
+    expect(releaseBand).not.toMatch(/TracerRuntimeControls/);
+    expect(releaseBand).not.toMatch(/ExploreClearTracersControl/);
+    expect(releaseBand).not.toMatch(/ExploreFollowControl/);
+    expect(releaseBand).not.toMatch(/ExploreResetViewControl/);
+    expect(releaseBand).not.toMatch(/VisualAirflowWorkbenchControls/);
+
+    const runtimeBand = appSrc.slice(
+      appSrc.indexOf("control-band--runtime"),
+      appSrc.indexOf("control-band--view"),
+    );
+    expect(runtimeBand).toMatch(/TracerRuntimeControls/);
+    expect(runtimeBand).toMatch(/ExploreClearTracersControl/);
+    expect(runtimeBand).not.toMatch(/ExplorePointReleaseControls/);
+    expect(runtimeBand).not.toMatch(/ExploreFollowControl/);
+    expect(runtimeBand).not.toMatch(/ExploreResetViewControl/);
+    expect(runtimeBand).not.toMatch(/VisualAirflowWorkbenchControls/);
+
+    const viewBand = appSrc.slice(
+      appSrc.indexOf("control-band--view"),
+      appSrc.indexOf("control-band--airflow"),
+    );
+    expect(viewBand).toMatch(/ExploreFollowControl/);
+    expect(viewBand).toMatch(/ExploreResetViewControl/);
+    expect(viewBand).not.toMatch(/ExplorePointReleaseControls/);
+    expect(viewBand).not.toMatch(/ExploreClearTracersControl/);
+    expect(viewBand).not.toMatch(/TracerRuntimeControls/);
+    expect(viewBand).not.toMatch(/VisualAirflowWorkbenchControls/);
+
+    const airflowBand = appSrc.slice(
+      appSrc.indexOf("control-band--airflow"),
+      appSrc.indexOf("workbench__column--viewport"),
+    );
+    expect(airflowBand).toMatch(/VisualAirflowWorkbenchControls/);
+    expect(airflowBand).toMatch(/control-band--secondary/);
+    expect(airflowBand).not.toMatch(/ExplorePointReleaseControls/);
+    expect(airflowBand).not.toMatch(/ExploreClearTracersControl/);
+    expect(airflowBand).not.toMatch(/ExploreFollowControl/);
+    expect(airflowBand).not.toMatch(/ExploreResetViewControl/);
+
+    const controls = appSrc.slice(
+      appSrc.indexOf("workbench__column--controls"),
+      appSrc.indexOf("workbench__column--viewport"),
+    );
+    expect(controls.indexOf("workbench__environment")).toBeLessThan(
+      controls.indexOf("laboratory-toolbar--explore"),
+    );
+    expect(controls.indexOf("hodographColumn")).toBeLessThan(
+      controls.indexOf("control-band--release"),
+    );
+
+    const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).not.toMatch(/control-band--release/);
+    expect(guidedShell).not.toMatch(/ExplorePointReleaseControls/);
+    expect(guidedShell).not.toMatch(/ExploreClearTracersControl/);
+    expect(guidedShell).not.toMatch(/ExploreFollowControl/);
+    expect(guidedShell).not.toMatch(/ExploreResetViewControl/);
+    expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
   });
 });

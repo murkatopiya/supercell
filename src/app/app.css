@@ -195,6 +195,10 @@ body:has(.app--explore) {
   min-width: 0;
 }
 
+.control-band--primary .control-band__label {
+  color: #24292f;
+}
+
 .control-band--secondary {
   margin-top: 0.15rem;
   padding-top: 0.45rem;
