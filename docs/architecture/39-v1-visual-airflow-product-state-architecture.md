@@ -1015,6 +1015,13 @@ docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
 
 That file is DECIDED and does not reopen M2.
 
+Post–Slice B Explore release / Highlight checkpoint
+(docs-only; does not reopen this encoding):
+
+```text
+docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
+```
+
 ---
 
 ## 21. Compact lock-in
@@ -1056,6 +1063,7 @@ M2 COMPLETE           YES — all six §16 conditions PASS
 
 FEATURE FREEZE        ACTIVE at production M2 completion merge
 
-NEXT V1 WORK          M1 / M3 per `38` and `40`
-                      (`40` DECIDED; production NOT STARTED)
+NEXT V1 WORK          M1 / M3 per `38`, `40`, and `41`
+                      (`40` Slices A/B COMPLETE; `41` docs-only
+                      DECIDED; remaining `40` C–G NOT STARTED)
 ```

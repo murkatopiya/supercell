@@ -20,6 +20,12 @@ Slice 2 runtime owner: `ExploreTracerSession`
 Creation-time helper: `assertAtmosphericTracerSeed` /
 `copyAtmosphericTracerSeed`
 (`src/simulation/assertAtmosphericTracerSeed.ts`).
+Post–Slice B product surface for the placement *gate*
+(checkbox vs primary action) is decided in
+`docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md`.
+This file still owns birth, Reset, Clear, and the pointer-gate
+semantics. `41` does not change those.
+
 Slice 3 placement: `ExplorePointReleaseTool`,
 `intersectRayWithGroundReferencePlane`,
 `shouldAcceptPlacementPick`,

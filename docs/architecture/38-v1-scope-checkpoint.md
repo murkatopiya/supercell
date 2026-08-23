@@ -1199,12 +1199,21 @@ unless §9's four conditions are all satisfied and recorded.
 Historical Phase 1 successor (COMPLETE):
 docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 
-Current Phase 3 architecture successor (DECIDED / docs-only):
+Current Phase 3 architecture successor (DECIDED):
 docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
 
+40 Slices A and B are COMPLETE in production. Slices C–G
+are NOT STARTED.
+
+Post–Slice B Explore release / Highlight checkpoint
+(DECIDED / docs-only):
+docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
+
 40 decides M1 honesty placement and M3 spatial / informational
-organization for existing V1 capabilities. It does not
-authorize production implementation.
+organization for existing V1 capabilities. 41 amends the
+Explore placement-gate product surface and Highlight compact
+copy after live Slice B playtest. Neither file authorizes
+the next production slice by itself.
 ```
 
 11. **Does this checkpoint authorize implementation?**
@@ -1383,8 +1392,10 @@ docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 Successor status: M2 product-state decision **DECIDED** in
 `39`; M2 production implementation **COMPLETE**; V1 feature
 freeze **ACTIVE**. M1 / M3 consolidation architecture
-**DECIDED** in `40`; M1 / M3 production implementation
-**NOT STARTED**. Remaining V1 MUST work is M1, M3, M4, M5.
+**DECIDED** in `40`; Slices A/B **COMPLETE**; post–Slice B
+release/Highlight surface **DECIDED** in `41` (docs-only);
+remaining `40` C–G **NOT STARTED**. Remaining V1 MUST work
+is M1, M3, M4, M5.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1462,7 +1473,9 @@ M2 SUCCESSOR        docs/architecture/
 
 M1/M3 SUCCESSOR     docs/architecture/
                     40-v1-m1-m3-ux-ui-consolidation-architecture.md
-                    DECIDED / IMPLEMENTATION NOT STARTED
+                    DECIDED / Slices A+B COMPLETE / C–G NOT STARTED
+                    41-post-slice-b-explore-release-and-highlight-checkpoint.md
+                    DECIDED / DOCS-ONLY / IMPLEMENTATION NOT STARTED
 
 IMPLEMENTATION
 FROM THIS FILE      NONE

@@ -4,7 +4,8 @@
 M2 COMPLETE / V1 FEATURE FREEZE ACTIVE /
 M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
-SLICES C–G NOT STARTED
+SLICES C–G NOT STARTED /
+SUCCESSOR 41 DECIDED (docs-only)
 **Scope:** decide how already-built V1 capabilities are
 spatially and informationally organized so a user can
 perform acceptance tasks T1–T10 with minimal unnecessary
@@ -21,6 +22,14 @@ boundary and Point-diagnostics sibling relation unchanged
 `26`, `28`, `30`–`39`.
 **Implementation:** Slice A and Slice B production work is
 COMPLETE. Slices C–G remain NOT STARTED.
+
+Post–Slice B Explore release / Highlight checkpoint
+(docs-only; amends this file’s product surface for the
+placement gate and Highlight compact copy):
+
+```text
+docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
+```
 
 Predecessor V1 visual-airflow product-state architecture:
 
@@ -375,7 +384,7 @@ Semantic groups and V1 exposure:
 | --- | --- | --- |
 | Pause / Reset / Speed | Persistent Explore + Guided | One compact runtime row |
 | Follow / Reset View | Persistent Explore | Same runtime/view row; disabled Follow states a reason |
-| Release (altitude, enable, confirm/cancel/clear) | Persistent Explore | Compact row; short empty-state pointer; long prose not permanent |
+| Release (altitude, enable, confirm/cancel/clear) | Persistent Explore | Compact row; short empty-state pointer; long prose not permanent. **Amended by `41`:** Enable placement is not a required product control; `[Release tracer]` enters the existing pointer gate. Clear tracers is occupancy, not a Confirm sibling. Band order: Release first. |
 | Airflow view (Comets / Eulerian diagnostic) | Persistent Explore product control (`39`) | Compact toggle; detail copy on demand or one short line |
 | Highlight + operand | Persistent but secondary diagnostic (`39`) | Compact; default Off; long anti-claim not a permanent multi-paragraph chrome block |
 | Depth cue | Persistent advanced aid (`39`) | Checkbox-scale; short or deferred detail |
@@ -864,11 +873,16 @@ Cosmetic polish remains POST-V1.
 19  remains Inspector L1/L2 SoT
 32  remains Point diagnostics sibling SoT
 36 / 37  remain selection and Reset View contracts
+
+41  owns post–Slice B Explore release entry, Clear grouping,
+    and Highlight compact-copy / legibility class
+    (does not reopen 18 birth semantics or 39 encoding)
 ```
 
-Successor production work: implement §19 slices only when
-explicitly commanded. Successor validation: `38` Phase 4
-acceptance playtest (M5).
+Successor production work: `41` interaction slices 41-1…41-4
+before remaining `40` Slices C–G, only when explicitly
+commanded. Successor validation: `38` Phase 4 acceptance
+playtest (M5).
 
 ---
 
@@ -892,7 +906,8 @@ USER HYPOTHESES       accepted where evidenced; not automatic
 FREEZE                intact; no new capability
 IMPLEMENTATION        Slice A COMPLETE; Slice B COMPLETE;
                       C–G NOT STARTED
-NEXT                  Slice C when commanded; then D–G;
+NEXT                  41 (docs-only) is written; production
+                      41-1…41-4 when commanded, then 40 C–G,
                       then M5 playtest
 ```
 
@@ -939,5 +954,7 @@ NEXT                  Slice C when commanded; then D–G;
 
 ```text
 Slice A and Slice B production geometry/controls are COMPLETE.
-Slices C–G remain NOT STARTED until commanded.
+Post–Slice B product-surface amendments live in `41` and are
+NOT STARTED. Slices C–G remain NOT STARTED until commanded.
+`41` interaction slices precede Slice C.
 ```
