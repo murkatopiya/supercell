@@ -24,7 +24,8 @@ Post–Slice B product surface for the placement *gate*
 (checkbox vs primary action) is decided in
 `docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md`.
 This file still owns birth, Reset, Clear, and the pointer-gate
-semantics. `41` does not change those.
+semantics. `41` does not change those. Post–41-3 Airflow /
+Environment placement (`42`) also does not change those.
 
 Slice 3 placement: `ExplorePointReleaseTool`,
 `intersectRayWithGroundReferencePlane`,

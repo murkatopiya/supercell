@@ -7,8 +7,9 @@ SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE /
 41-2 COMPLETE /
 41-3 COMPLETE /
-41-4 NOT STARTED /
-40 SLICES C–G NOT STARTED
+41-4 NOT STARTED (absorbed into 42-2) /
+40 SLICES C–G NOT STARTED /
+SUCCESSOR 42 DECIDED (docs-only)
 **Scope:** after live playtest of Explore Slice B, decide two
 product-surface questions without adding capability and without
 reopening frozen physics, encodings, or interaction contracts:
@@ -23,8 +24,9 @@ laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 Ω semantics unchanged. Inspector L2 and Point-diagnostics
 sibling relation unchanged (`19`, `32`).
 **Implementation:** Slices 41-1, 41-2, and 41-3 are COMPLETE
-in production `src/**`. Slice 41-4 and 40 C–G remain
-NOT STARTED.
+in production `src/**`. Slice 41-4 is NOT STARTED and lands
+in the `42` viewport-toolbar slice, not in the current
+Airflow rail band. 40 C–G remain NOT STARTED.
 
 Predecessor M1 / M3 consolidation architecture:
 
@@ -62,6 +64,12 @@ docs/architecture/37-reset-view-camera-recovery-architecture.md
 docs/architecture/22-perceptual-airflow-architecture.md
 ```
 
+Post–41-3 Airflow / Environment placement successor:
+
+```text
+docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
+```
+
 Accepted live head this checkpoint is written against:
 
 ```text
@@ -85,7 +93,7 @@ ANTI-CLAIM
 
 This checkpoint decided the product contract. Slices 41-1,
 41-2, and 41-3 are COMPLETE in production. Slice 41-4 is
-NOT STARTED.
+NOT STARTED; `42` owns its landing site.
 
 ---
 
@@ -521,7 +529,9 @@ system state.
 2. Runtime            Pause, Reset simulation, Speed
 3. View               Follow, Reset View
 4. Airflow view       Flow comets / Eulerian — diagnostic
-                      (39 persistent product control)
+                      (39 persistent product control; `42`
+                      moves this off the rail onto viewport
+                      chrome — not a hide)
 5. Clear tracers      occupancy action; not inside Confirm
 ```
 
@@ -530,6 +540,10 @@ Runtime, View, Airflow. Slice B ordered a running laboratory
 (Runtime first). Explore occupancy starts at zero (`18`).
 T3 is the first laboratory action. Runtime/View remain
 immediately persistent; they are not hidden.
+
+`42` later removes Airflow from this rail. Release-first,
+then Runtime, then View remain. That is not a reopen of
+this ranking.
 
 ### 7.2 Visible in placement mode (progressive)
 
@@ -552,11 +566,12 @@ On-demand <details> anti-claims
 Do not accordion Runtime, View, or Airflow view. `40`
 already rejected hiding frequent actions in a Tools menu.
 
-### 7.4 Later 40 surfaces, unchanged here
+### 7.4 Later 40 / 42 surfaces
 
 ```text
+42-1      Environment / hodograph on-demand (`40` Slice D)
+42-2      Airflow viewport toolbar + this file's 41-4 copy
 Slice C   observation empty state → select + release
-Slice D   Environment / hodograph on-demand
 Slice E   M1 identity + mode signposting
 ```
 
@@ -1004,12 +1019,19 @@ No `38` §9 freeze entry is recorded.
     placement is not a required V1 control. Band order:
     Release primary first. Clear is not a Confirm sibling.
     40 still owns M1 honesty placement, observation dock,
-    Environment on-demand, Guided local shell, Slices C–G.
+    Environment Option B, Guided local shell, Slices C/E/F/G.
+    `42` sharpens Environment size/default and moves Airflow
+    chrome off the rail.
 
 38  F1/T3 teaching “check Enable placement” is superseded
     by this primary-action contract. Freeze rule unchanged.
     38 implementation note that 40 production had not
     started is stale: Slices A/B are COMPLETE.
+
+42  owns Airflow viewport-toolbar home, Environment open
+    size / Explore default-closed, and remaining M3 order.
+    41-4 copy meaning stays this file; 41-4 landing site
+    is 42-2.
 ```
 
 Historical rankings in `21` / `24` / `35` are not rewritten
@@ -1022,9 +1044,9 @@ beyond successor pointers.
 Slices 41-1, 41-2, and 41-3 are COMPLETE in production.
 41-4 remains NOT STARTED.
 
-These slices land **before `40` Slice C**, because
-empty-state copy must name [Release tracer], not Enable
-placement.
+`42` §16 supersedes the “41-4 then 40-C then 40-D” order
+below. 41-4 does not land in the current Airflow rail
+band; it lands in 42-2 with the viewport toolbar.
 
 ```text
 41-1  Explore primary [Release tracer] ↔ placementEnabled
@@ -1069,10 +1091,12 @@ placement.
       advection meaning whenever Highlight ≠ Off
       No hue change, no glow
       STATUS: NOT STARTED
+      Landing site: `42-2` viewport toolbar, not this rail.
+      `42` §16 is the remaining production order.
 
 Then 40-C  Observation empty state pointing at selection
            and Release tracer
-Then 40-D–G as already ordered in 40
+Then 40-E–G as already ordered in 40, after 42-1 / 42-2
 Then 38 Phase 4 / M5 acceptance playtest
 ```
 
@@ -1114,7 +1138,8 @@ Rendering is not reversing prescribed Ω.
 A prettier cyan comet is not a V1 MUST.
 Glow is not a harmless CSS tweak.
 M3 may not hide Airflow view or Runtime to make Release
-  look primary.
+  look primary. `42` relocating Airflow to viewport chrome
+  is not hiding it.
 ```
 
 ---
@@ -1128,6 +1153,8 @@ M3 may not hide Airflow view or Runtime to make Release
 18  seeding / gate / Reset / Clear semantics
 41  this file: Explore release product entry, Clear
     grouping, post-B Highlight copy/legibility class
+42  Airflow chrome home, Environment surface contract,
+    41-4 landing site, remaining M3 order
 16  Explore/Guided split
 19 / 32  Inspector / Point diagnostics
 36 / 37  selection / Reset View
@@ -1146,16 +1173,20 @@ CANCEL                clear pending + leave placement
 CLEAR TRACERS         occupancy; not Confirm sibling
 RESET                 simulation; Runtime
 RESET VIEW            camera; View; 37 unchanged
-RAIL ORDER            Release, Runtime, View, Airflow
+RAIL ORDER            Release, Runtime, View
+                      (Airflow leaves the rail in `42`)
 HIGHLIGHT ENCODING    unchanged; orientation = V_total
-HIGHLIGHT COPY        restore 39 meaning when On
+HIGHLIGHT COPY        restore 39 meaning when On;
+                      landing site is `42-2`, not this rail
 HIGHLIGHT HUE         magenta V1; palette POST-V1
 GLOW                  not V1
 FREEZE                intact; no new capability
 IMPLEMENTATION        41-1 COMPLETE; 41-2 COMPLETE;
                       41-3 COMPLETE; 41-4 NOT STARTED;
                       40 C–G NOT STARTED
-NEXT PRODUCTION       41-4; then 40 C–G; then M5
+NEXT PRODUCTION       42 §16: 42-1 Environment, then 42-2
+                      (Airflow toolbar + 41-4 copy), then
+                      40 C/E/F/G, then M5
 ```
 
 ---
@@ -1195,6 +1226,7 @@ NEXT PRODUCTION       41-4; then 40 C–G; then M5
 41-1 COMPLETE.
 41-2 COMPLETE.
 41-3 COMPLETE.
-41-4 NOT STARTED.
+41-4 NOT STARTED (lands in 42-2, not the rail).
 40 C–G NOT STARTED.
+Remaining order: 42 §16.
 ```

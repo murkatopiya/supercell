@@ -991,9 +991,11 @@ exit            F1, F2, F3-copy, F6, F7, F8 closed;
                 F4 and F5 either closed by reordering or
                 explicitly deferred to the Phase 4 verdict
 architecture    YES — `40` DECIDED; Slice A–B COMPLETE;
-SoT needed      Slices C–G NOT STARTED
-production      Slice A–B COMPLETE; remaining slices when commanded
-work
+SoT needed      `41` DECIDED (41-1…41-3 COMPLETE; 41-4
+                NOT STARTED); `42` DECIDED (docs-only);
+                remaining `40` C–G and `42-1`/`42-2` NOT STARTED
+production      Slice A–B COMPLETE; 41-1…41-3 COMPLETE;
+work            remaining slices are NOT STARTED
 ```
 
 ### Phase 4 — Integrated human acceptance playtest
@@ -1203,17 +1205,23 @@ Current Phase 3 architecture successor (DECIDED):
 docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
 
 40 Slices A and B are COMPLETE in production. Slices C–G
-are NOT STARTED.
+are NOT STARTED. Remaining M3 production order is `42` §16.
 
 Post–Slice B Explore release / Highlight checkpoint
-(DECIDED / docs-only):
+(DECIDED; 41-1…41-3 COMPLETE in production; 41-4 NOT STARTED):
 docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
+
+Post–41-3 Explore Airflow / Environment placement
+(DECIDED / docs-only; production NOT STARTED):
+docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
 
 40 decides M1 honesty placement and M3 spatial / informational
 organization for existing V1 capabilities. 41 amends the
 Explore placement-gate product surface and Highlight compact
-copy after live Slice B playtest. Neither file authorizes
-the next production slice by itself.
+copy after live Slice B playtest. 42 amends Airflow chrome
+home and sharpens Environment placement after live 41-3
+playtest. None of these files include the next production
+slice by themselves.
 ```
 
 11. **Does this checkpoint authorize implementation?**
@@ -1393,9 +1401,11 @@ Successor status: M2 product-state decision **DECIDED** in
 `39`; M2 production implementation **COMPLETE**; V1 feature
 freeze **ACTIVE**. M1 / M3 consolidation architecture
 **DECIDED** in `40`; Slices A/B **COMPLETE**; post–Slice B
-release/Highlight surface **DECIDED** in `41` (docs-only);
-remaining `40` C–G **NOT STARTED**. Remaining V1 MUST work
-is M1, M3, M4, M5.
+release/Highlight surface **DECIDED** in `41` (41-1…41-3
+COMPLETE; 41-4 NOT STARTED); post–41-3 Airflow/Environment
+placement **DECIDED** in `42` (docs-only); remaining `40`
+C–G and `42-1`/`42-2` **NOT STARTED**. Remaining V1 MUST
+work is M1, M3, M4, M5.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1475,7 +1485,9 @@ M1/M3 SUCCESSOR     docs/architecture/
                     40-v1-m1-m3-ux-ui-consolidation-architecture.md
                     DECIDED / Slices A+B COMPLETE / C–G NOT STARTED
                     41-post-slice-b-explore-release-and-highlight-checkpoint.md
-                    DECIDED / DOCS-ONLY / IMPLEMENTATION NOT STARTED
+                    DECIDED / 41-1…41-3 COMPLETE / 41-4 NOT STARTED
+                    42-post-41-3-explore-airflow-and-environment-architecture.md
+                    DECIDED / DOCS-ONLY / 42-1 AND 42-2 NOT STARTED
 
 IMPLEMENTATION
 FROM THIS FILE      NONE

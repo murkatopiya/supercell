@@ -5,7 +5,8 @@ M2 COMPLETE / V1 FEATURE FREEZE ACTIVE /
 M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 SLICES C–G NOT STARTED /
-SUCCESSOR 41 DECIDED (docs-only)
+SUCCESSOR 41 DECIDED /
+SUCCESSOR 42 DECIDED (docs-only)
 **Scope:** decide how already-built V1 capabilities are
 spatially and informationally organized so a user can
 perform acceptance tasks T1–T10 with minimal unnecessary
@@ -21,14 +22,24 @@ boundary and Point-diagnostics sibling relation unchanged
 (`19`, `32`). This file does not reopen `17`, `22`, `23`,
 `26`, `28`, `30`–`39`.
 **Implementation:** Slice A and Slice B production work is
-COMPLETE. Slices C–G remain NOT STARTED.
+COMPLETE. Slices C–G remain NOT STARTED. Airflow chrome home
+and Environment size/default are amended by successor `42`;
+that file does not include production implementation.
 
 Post–Slice B Explore release / Highlight checkpoint
-(docs-only; amends this file’s product surface for the
-placement gate and Highlight compact copy):
+(amends this file’s product surface for the placement gate
+and Highlight compact copy):
 
 ```text
 docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
+```
+
+Post–41-3 Explore Airflow / Environment placement
+(docs-only; amends this file’s Airflow rail home and
+sharpens Slice D Environment size/default):
+
+```text
+docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
 ```
 
 Predecessor V1 visual-airflow product-state architecture:
@@ -385,9 +396,9 @@ Semantic groups and V1 exposure:
 | Pause / Reset / Speed | Persistent Explore + Guided | One compact runtime row |
 | Follow / Reset View | Persistent Explore | Same runtime/view row; disabled Follow states a reason |
 | Release (altitude, enable, confirm/cancel/clear) | Persistent Explore | Compact row; short empty-state pointer; long prose not permanent. **Amended by `41`:** Enable placement is not a required product control; `[Release tracer]` enters the existing pointer gate. Clear tracers is occupancy, not a Confirm sibling. Band order: Release first. |
-| Airflow view (Comets / Eulerian diagnostic) | Persistent Explore product control (`39`) | Compact toggle; detail copy on demand or one short line |
-| Highlight + operand | Persistent but secondary diagnostic (`39`) | Compact; default Off; long anti-claim not a permanent multi-paragraph chrome block |
-| Depth cue | Persistent advanced aid (`39`) | Checkbox-scale; short or deferred detail |
+| Airflow view (Comets / Eulerian diagnostic) | Persistent Explore product control (`39`) | Compact toggle; detail copy on demand or one short line. **Amended by `42`:** home is the viewport toolbar above the canvas, not the left action rail. |
+| Highlight + operand | Persistent but secondary diagnostic (`39`) | Compact; default Off; long anti-claim not a permanent multi-paragraph chrome block. **Amended by `42`:** same viewport toolbar; `41-4` copy lands there. |
+| Depth cue | Persistent advanced aid (`39`) | Checkbox-scale; short or deferred detail. **Amended by `42`:** viewport toolbar. |
 
 Consolidation rules:
 
@@ -444,6 +455,11 @@ solving the need to host frequent controls beside the scene.
 Why not D as distinct architecture: D is an allowed
 presentation of B; the contract is on-demand Environment, not
 a specific drawer widget family.
+
+Live post–41-3 size/value evidence and the Explore open-size /
+default-closed / header-affordance contract are recorded in
+`42` §9–§10. Option B is unchanged; the 260–320px action-rail
+plot is not an acceptable permanent or open size.
 
 **ANTI-CLAIM:** collapsing the hodograph is not permission to
 drop A3/T2, edit the profile, or add environments.
@@ -509,9 +525,10 @@ shared Inspector presentational component
 May differ:
 
 ```text
-Explore
+  Explore
   left/action rail or equivalent compact control band
-  release, Follow, Reset View, airflow product controls
+  release, Follow, Reset View
+  airflow product controls on compact viewport chrome (`42`)
   Point diagnostics in the observation dock
   scene-first height budget without page scroll at 1920×1080
 
@@ -629,9 +646,9 @@ T1–T10
 
 ```text
 Regions
-  Left     frequent Explore actions (runtime, view, release,
-           compact airflow / diagnostic tools)
-  Center   primary 3D viewport (class A height budget)
+  Left     frequent Explore actions (runtime, view, release)
+  Center   primary 3D viewport (class A height budget) with
+           compact airflow / diagnostic toolbar (`42`)
   Right    selected-tracer observation dock
   Chrome   mode switch + M1 identity + Environment affordance
   On demand Environment surface = hodograph + overlays
@@ -712,7 +729,9 @@ Recommend Option 2 — Explore scene-first three-band laboratory:
 
   Environment (D) = on-demand hodograph + overlays
   Airflow Highlight / Depth cue remain available as compact
-  E controls on the action rail, not a research novel.
+  E controls. **Amended by `42`:** those E controls live on
+  compact viewport chrome above the canvas, not on the
+  action rail. The rail is Release, Runtime, View.
 ```
 
 Guided retains a teaching-forward local arrangement compatible
@@ -821,6 +840,9 @@ Slice C  Observation dock (Inspector + Point diagnostics)
 Slice D  Environment on-demand surface for hodograph/overlays
          + Guided default-open policy
          STATUS: NOT STARTED
+         Contract sharpened by `42` §10 (Explore default
+         closed; usable open width; header affordance).
+         Production work is `42-1`, before remaining C/E/F/G.
 
 Slice E  M1 persistent identity + mode signposting copy
          STATUS: NOT STARTED
@@ -836,6 +858,11 @@ Slice G  Focused wiring/layout tests for the above contracts
 ```
 
 Each slice rearranges or relabels existing capability only.
+
+Remaining production order after 41-3 is owned by `42` §16:
+42-1 (this Slice D), 42-2 (Airflow viewport toolbar + 41-4
+copy), then C, E, F, G. That order supersedes C-before-D
+in this list.
 
 ---
 
@@ -877,12 +904,16 @@ Cosmetic polish remains POST-V1.
 41  owns post–Slice B Explore release entry, Clear grouping,
     and Highlight compact-copy / legibility class
     (does not reopen 18 birth semantics or 39 encoding)
+
+42  owns post–41-3 Airflow chrome home (viewport toolbar),
+    Environment size/default/affordance, 41-4 landing site,
+    and remaining M3 production order
 ```
 
-Successor production work: `41` interaction slices 41-1…41-4
-before remaining `40` Slices C–G, only when explicitly
-commanded. Successor validation: `38` Phase 4 acceptance
-playtest (M5).
+Successor production work: `42` §16 (42-1, 42-2 including
+41-4 copy, then remaining `40` C/E/F/G). This file does not
+include that implementation. Successor validation: `38`
+Phase 4 acceptance playtest (M5).
 
 ---
 
@@ -892,8 +923,11 @@ playtest (M5).
 VIEWPORT              Explore class A primary workspace
 FOLD AT 1920×1080     main Explore loop without page scroll;
                       scene + observation both available
-CONTROLS              compact action rail; copy footprint ↓
-HODOGRAPH             on-demand Environment (Option B)
+CONTROLS              compact action rail (Release, Runtime,
+                      View); Airflow on viewport chrome (`42`)
+HODOGRAPH             on-demand Environment (Option B);
+                      Explore default closed; usable open
+                      size (`42`)
 OBSERVATION           one right dock; Inspector then diagnostics;
                       region scroll, not page scroll
 GUIDED VS EXPLORE     shared chrome; different local shells;
@@ -906,9 +940,9 @@ USER HYPOTHESES       accepted where evidenced; not automatic
 FREEZE                intact; no new capability
 IMPLEMENTATION        Slice A COMPLETE; Slice B COMPLETE;
                       C–G NOT STARTED
-NEXT                  41 (docs-only) is written; production
-                      41-1…41-4 when commanded, then 40 C–G,
-                      then M5 playtest
+NEXT                  42 (docs-only) is written; remaining
+                      production order is 42 §16; this file
+                      does not include that implementation
 ```
 
 ---
@@ -928,7 +962,9 @@ NEXT                  41 (docs-only) is written; production
    selected-tracer readouts both available.
 
 4. **Where do frequent controls go?**  
-   Compact action rail / horizontal bands; diagnostic copy no
+   Compact action rail / horizontal bands for Release,
+   Runtime, and View. Airflow / Highlight / Depth cue are
+   compact viewport chrome (`42`); diagnostic copy no
    longer owns permanent height.
 
 5. **Where does the hodograph go?**  
@@ -954,7 +990,8 @@ NEXT                  41 (docs-only) is written; production
 
 ```text
 Slice A and Slice B production geometry/controls are COMPLETE.
-Post–Slice B product-surface amendments live in `41` and are
-NOT STARTED. Slices C–G remain NOT STARTED until commanded.
-`41` interaction slices precede Slice C.
+Post–Slice B product-surface amendments live in `41`
+(41-1…41-3 COMPLETE; 41-4 NOT STARTED). Post–41-3 Airflow /
+Environment placement lives in `42` and is NOT STARTED.
+Slices C–G remain NOT STARTED. Remaining order is `42` §16.
 ```

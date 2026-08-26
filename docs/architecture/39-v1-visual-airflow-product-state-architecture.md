@@ -1016,10 +1016,18 @@ docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
 That file is DECIDED and does not reopen M2.
 
 Post–Slice B Explore release / Highlight checkpoint
-(docs-only; does not reopen this encoding):
+(docs-only relative to this encoding; 41-1…41-3 COMPLETE;
+41-4 NOT STARTED):
 
 ```text
 docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
+```
+
+Post–41-3 Explore Airflow chrome home / Environment
+placement (docs-only; does not reopen this encoding):
+
+```text
+docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
 ```
 
 ---
@@ -1063,7 +1071,9 @@ M2 COMPLETE           YES — all six §16 conditions PASS
 
 FEATURE FREEZE        ACTIVE at production M2 completion merge
 
-NEXT V1 WORK          M1 / M3 per `38`, `40`, and `41`
-                      (`40` Slices A/B COMPLETE; `41` docs-only
-                      DECIDED; remaining `40` C–G NOT STARTED)
+NEXT V1 WORK          M1 / M3 per `38`, `40`, `41`, and `42`
+                      (`40` Slices A/B COMPLETE; `41-1`…`41-3`
+                      COMPLETE; `42` docs-only DECIDED;
+                      remaining `40` C–G and `42-1`/`42-2`
+                      NOT STARTED)
 ```
