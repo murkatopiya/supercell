@@ -33,28 +33,30 @@ describe("Explore Slice A shell geometry", () => {
     );
   });
 
-  it("keeps Explore controls off the viewport column", () => {
+  it("keeps Explore laboratory actions off the viewport column", () => {
     const viewport = appSrc.slice(
       appSrc.indexOf("workbench__column--viewport"),
       appSrc.indexOf("workbench__column--observation"),
     );
     expect(viewport).toMatch(/tracerViewport/);
+    expect(viewport).toMatch(/environmentSurface/);
     expect(viewport).not.toMatch(/TracerRuntimeControls/);
     expect(viewport).not.toMatch(/ExploreClearTracersControl/);
     expect(viewport).not.toMatch(/ExplorePointReleaseControls/);
     expect(viewport).not.toMatch(/VisualAirflowWorkbenchControls/);
     expect(viewport).not.toMatch(/ExploreFollowControl/);
     expect(viewport).not.toMatch(/ExploreResetViewControl/);
-    expect(viewport).not.toMatch(/HodographPanel/);
   });
 
-  it("places hodograph in the Explore controls rail until Environment Slice D", () => {
+  it("keeps the Explore action rail free of the hodograph after Environment 42-1", () => {
     const controls = appSrc.slice(
       appSrc.indexOf("workbench__column--controls"),
       appSrc.indexOf("workbench__column--viewport"),
     );
-    expect(controls).toMatch(/workbench__environment/);
-    expect(controls).toMatch(/hodographColumn/);
+    expect(controls).not.toMatch(/workbench__environment/);
+    expect(controls).not.toMatch(/hodographColumn/);
+    expect(controls).not.toMatch(/EnvironmentSurface/);
+    expect(controls).not.toMatch(/HodographPanel/);
     expect(controls).toMatch(/TracerRuntimeControls/);
     expect(controls).toMatch(/ExploreClearTracersControl/);
     expect(controls).toMatch(/ExplorePointReleaseControls/);

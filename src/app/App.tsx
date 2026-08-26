@@ -1,7 +1,7 @@
 import { useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
-import { HodographOverlayControls } from "../ui/hodograph/HodographOverlayControls.js";
-import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
+import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
+import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
@@ -97,6 +97,11 @@ export function App() {
   const [overlayVisibility, setOverlayVisibility] = useState(
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
+  /**
+   * Guided default-open; Explore closed. App boots in Guided.
+   * docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md §10.3
+   */
+  const [environmentOpen, setEnvironmentOpen] = useState(true);
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
   if (sceneSlotsRef.current === null) {
@@ -233,6 +238,7 @@ export function App() {
     setPauseVisualization(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION);
     setHighlightMode(DEFAULT_OPERAND_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
+    setEnvironmentOpen(false);
     setResetEpoch((epoch) => epoch + 1);
   };
 
@@ -248,6 +254,7 @@ export function App() {
     setPauseVisualization(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION);
     setHighlightMode(DEFAULT_OPERAND_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
+    setEnvironmentOpen(true);
     setResetEpoch((epoch) => epoch + 1);
   };
 
@@ -277,22 +284,19 @@ export function App() {
     resolveSelectedTracer(lab.simulation.particles, selection) !==
     undefined;
 
-  const hodographColumn = (
-    <>
-      <h2 className="app__panel-title">Hodograph</h2>
-      <HodographPanel
-        points={points}
-        stormMotion={DEMO_SCENARIO.stormMotion}
-        selectedHeight={DEMO_SELECTED_HEIGHT}
-        vorticityLayer={vorticityLayer}
-        streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
-        overlayVisibility={overlayVisibility}
-      />
-      <HodographOverlayControls
-        value={overlayVisibility}
-        onChange={setOverlayVisibility}
-      />
-    </>
+  const environmentSurface = (
+    <EnvironmentSurface
+      open={environmentOpen}
+      presentation={explore !== null ? "overlay" : "column"}
+      points={points}
+      stormMotion={DEMO_SCENARIO.stormMotion}
+      selectedHeight={DEMO_SELECTED_HEIGHT}
+      vorticityLayer={vorticityLayer}
+      streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
+      overlayVisibility={overlayVisibility}
+      onOverlayVisibilityChange={setOverlayVisibility}
+      onClose={() => setEnvironmentOpen(false)}
+    />
   );
 
   const tracerViewport = (
@@ -357,23 +361,29 @@ export function App() {
     <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
         <h1 className="app__title">Supercell Explorer</h1>
-        <div className="app__mode-switch lab-experience-switch">
-          <button
-            type="button"
-            className="tracer-runtime-controls__button"
-            aria-pressed={lab.kind === "guided"}
-            onClick={enterGuided}
-          >
-            Guided
-          </button>
-          <button
-            type="button"
-            className="tracer-runtime-controls__button"
-            aria-pressed={lab.kind === "explore"}
-            onClick={enterExplore}
-          >
-            Explore
-          </button>
+        <div className="app__header-tools">
+          <div className="app__mode-switch lab-experience-switch">
+            <button
+              type="button"
+              className="tracer-runtime-controls__button"
+              aria-pressed={lab.kind === "guided"}
+              onClick={enterGuided}
+            >
+              Guided
+            </button>
+            <button
+              type="button"
+              className="tracer-runtime-controls__button"
+              aria-pressed={lab.kind === "explore"}
+              onClick={enterExplore}
+            >
+              Explore
+            </button>
+          </div>
+          <EnvironmentAffordance
+            expanded={environmentOpen}
+            onToggle={() => setEnvironmentOpen((open) => !open)}
+          />
         </div>
       </header>
       <p className="app__subtitle">
@@ -388,7 +398,6 @@ export function App() {
           aria-label="Explore laboratory"
         >
           <div className="workbench__column workbench__column--controls">
-            <div className="workbench__environment">{hodographColumn}</div>
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
             <div className="laboratory-toolbar laboratory-toolbar--explore">
               <div
@@ -470,6 +479,7 @@ export function App() {
 
           <div className="workbench__column workbench__column--viewport">
             {tracerViewport}
+            {environmentSurface}
           </div>
 
           <div className="workbench__column workbench__column--observation">
@@ -479,12 +489,18 @@ export function App() {
         </section>
       ) : (
         <section
-          className="workbench workbench--guided"
+          className={
+            environmentOpen
+              ? "workbench workbench--guided"
+              : "workbench workbench--guided workbench--guided-environment-closed"
+          }
           aria-label="Guided laboratory"
         >
-          <div className="workbench__column workbench__column--hodograph">
-            {hodographColumn}
-          </div>
+          {environmentOpen ? (
+            <div className="workbench__column workbench__column--hodograph">
+              {environmentSurface}
+            </div>
+          ) : null}
 
           <div className="workbench__column workbench__column--laboratory">
             <h2 className="app__panel-title">Storm-relative laboratory</h2>

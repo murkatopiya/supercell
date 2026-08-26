@@ -244,7 +244,7 @@ describe("Explore 41-3 rail hierarchy", () => {
     expect(toolbar).not.toMatch(/accordion/i);
   });
 
-  it("keeps every existing control in its band and leaves Guided / hodograph placement unchanged", () => {
+  it("keeps every existing control in its band and leaves Guided without Explore actions", () => {
     const releaseBand = appSrc.slice(
       appSrc.indexOf("control-band--release"),
       appSrc.indexOf("control-band--runtime"),
@@ -293,12 +293,10 @@ describe("Explore 41-3 rail hierarchy", () => {
       appSrc.indexOf("workbench__column--controls"),
       appSrc.indexOf("workbench__column--viewport"),
     );
-    expect(controls.indexOf("workbench__environment")).toBeLessThan(
-      controls.indexOf("laboratory-toolbar--explore"),
-    );
-    expect(controls.indexOf("hodographColumn")).toBeLessThan(
-      controls.indexOf("control-band--release"),
-    );
+    expect(controls).not.toMatch(/workbench__environment/);
+    expect(controls).not.toMatch(/hodographColumn/);
+    expect(controls).not.toMatch(/EnvironmentSurface/);
+    expect(controls).not.toMatch(/HodographPanel/);
 
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
     expect(guidedShell).not.toMatch(/control-band--release/);

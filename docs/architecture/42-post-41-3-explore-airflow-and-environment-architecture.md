@@ -6,9 +6,9 @@ M2 COMPLETE / M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE / 41-2 COMPLETE / 41-3 COMPLETE /
 41-4 NOT STARTED (absorbed into 42-2) /
-42-1 NOT STARTED / 42-2 NOT STARTED /
-40 SLICES C–G NOT STARTED /
-THIS FILE DOES NOT INCLUDE PRODUCTION IMPLEMENTATION
+42-1 COMPLETE / 42-2 NOT STARTED /
+40 SLICE D COMPLETE (42-1) /
+40 SLICES C, E–G NOT STARTED
 **Scope:** after live playtest of Explore Slice 41-3, decide two
 placement questions for already-built V1 surfaces without adding
 capability and without reopening frozen physics, encodings, or
@@ -25,10 +25,9 @@ laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 Ω semantics unchanged. Inspector L2 and Point-diagnostics
 sibling relation unchanged (`19`, `32`). Visual-airflow encoding
 and Comets default unchanged (`39`).
-**Implementation:** this checkpoint itself does not include
-production `src/**` work. Slices 42-1 and 42-2 are NOT STARTED.
-Slice 41-4 is NOT STARTED and must not land in the current
-Airflow rail band.
+**Implementation:** Slice 42-1 is COMPLETE in production `src/**`.
+Slice 42-2 is NOT STARTED. Slice 41-4 is NOT STARTED and must
+not land in the current Airflow rail band.
 
 Predecessor post–Slice B Explore checkpoint:
 
@@ -805,7 +804,12 @@ geometry as early as possible.
       Guided: default open; may keep the current left
       hodograph column as that open surface
       This is 40 Slice D under this file's contract
-      STATUS: NOT STARTED
+      STATUS: COMPLETE
+      Evidence: header Environment affordance; Explore default
+      closed; open overlay in the viewport column at 640px
+      (floor 480px) with in-surface scroll; overlays travel
+      with HodographPanel; Guided default-open left column
+      remains; left rail has no hodograph.
 
 42-2  Airflow controls → compact viewport toolbar
       immediately above the 3D canvas
@@ -825,11 +829,9 @@ geometry as early as possible.
 
 40-G  Remaining focused wiring / layout tests
       STATUS: NOT STARTED
-      Note: 42-1 / 42-2 will need to update
-      exploreShell.wiring.test.ts (hodograph home,
-      Airflow no longer forbidden in the viewport column)
-      and ExploreActionRailControls.test.tsx (Airflow no
-      longer a left-rail band)
+      Note: 42-1 updated exploreShell / action-rail hodograph
+      home tests. 42-2 still needs to move Airflow off the
+      rail and allow it in the viewport column.
 
 Then 38 Phase 4 / M5 acceptance playtest
 ```
@@ -862,7 +864,6 @@ Why not 40-C before 42-1:
 - C does not expose desktop geometry. E1/E2 do.
 
 Each slice rearranges or relabels existing capability only.
-This file does not include those production slices.
 
 ---
 
@@ -915,7 +916,7 @@ beyond successor pointers.
 ## 18. Explicit non-goals
 
 ```text
-production implementation of 42-1 / 42-2 / 41-4 / 40 C–G
+production implementation of 42-2 / 41-4 / 40 C–G
 new release primitive
 click-to-birth without Confirm
 Explore starting cohort
@@ -937,7 +938,7 @@ README / M4 release surface
 ## 19. Anti-claims
 
 ```text
-This file does not include production implementation.
+This file does not include 42-2 or remaining 40 C–G.
 Relocating Airflow is not hiding Airflow.
 A viewport toolbar is not a return of the research workbench.
 On-demand Environment is not a missing hodograph.
@@ -998,8 +999,7 @@ FOLD                  1920×1080 Explore loop without page
                       scroll; Environment / observation
                       region-scroll only
 FREEZE                intact; no new capability
-IMPLEMENTATION        this file includes none;
-                      42-1 NOT STARTED; 42-2 NOT STARTED;
+IMPLEMENTATION        42-1 COMPLETE; 42-2 NOT STARTED;
                       41-4 NOT STARTED (absorbed by 42-2);
                       40 C–G NOT STARTED
 ```
@@ -1044,8 +1044,7 @@ IMPLEMENTATION        this file includes none;
 9. **Does this file include production implementation?**
 
 ```text
-NO.
-42-1 NOT STARTED.
+42-1 COMPLETE.
 42-2 NOT STARTED.
 41-4 NOT STARTED.
 40 C–G NOT STARTED.

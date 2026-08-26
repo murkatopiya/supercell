@@ -4,9 +4,10 @@
 M2 COMPLETE / V1 FEATURE FREEZE ACTIVE /
 M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
-SLICES C–G NOT STARTED /
+SLICE D COMPLETE (42-1) /
+SLICES C, E–G NOT STARTED /
 SUCCESSOR 41 DECIDED /
-SUCCESSOR 42 DECIDED (docs-only)
+SUCCESSOR 42 DECIDED
 **Scope:** decide how already-built V1 capabilities are
 spatially and informationally organized so a user can
 perform acceptance tasks T1–T10 with minimal unnecessary
@@ -21,10 +22,9 @@ operands. Prescribed Ω semantics unchanged. Inspector L2
 boundary and Point-diagnostics sibling relation unchanged
 (`19`, `32`). This file does not reopen `17`, `22`, `23`,
 `26`, `28`, `30`–`39`.
-**Implementation:** Slice A and Slice B production work is
-COMPLETE. Slices C–G remain NOT STARTED. Airflow chrome home
-and Environment size/default are amended by successor `42`;
-that file does not include production implementation.
+**Implementation:** Slice A, Slice B, and Slice D (via `42-1`)
+are COMPLETE. Slices C and E–G remain NOT STARTED. Airflow
+chrome home remains `42-2`.
 
 Post–Slice B Explore release / Highlight checkpoint
 (amends this file’s product surface for the placement gate
@@ -839,10 +839,12 @@ Slice C  Observation dock (Inspector + Point diagnostics)
 
 Slice D  Environment on-demand surface for hodograph/overlays
          + Guided default-open policy
-         STATUS: NOT STARTED
-         Contract sharpened by `42` §10 (Explore default
-         closed; usable open width; header affordance).
-         Production work is `42-1`, before remaining C/E/F/G.
+         STATUS: COMPLETE
+         Contract: `42` §10. Production: Slice 42-1.
+         Evidence: header Environment affordance; Explore
+         default closed; viewport overlay ≥480px / 640px
+         target; Guided default-open left column; hodograph
+         removed from the Explore action rail.
 
 Slice E  M1 persistent identity + mode signposting copy
          STATUS: NOT STARTED
@@ -939,10 +941,10 @@ RECOMMENDED LAYOUT    Option 2
 USER HYPOTHESES       accepted where evidenced; not automatic
 FREEZE                intact; no new capability
 IMPLEMENTATION        Slice A COMPLETE; Slice B COMPLETE;
-                      C–G NOT STARTED
-NEXT                  42 (docs-only) is written; remaining
-                      production order is 42 §16; this file
-                      does not include that implementation
+                      Slice D COMPLETE (42-1);
+                      C, E–G NOT STARTED; 42-2 NOT STARTED
+NEXT                  remaining production order is 42 §16
+                      (42-2, then C/E/F/G)
 ```
 
 ---
@@ -990,8 +992,9 @@ NEXT                  42 (docs-only) is written; remaining
 
 ```text
 Slice A and Slice B production geometry/controls are COMPLETE.
+Slice D / 42-1 Environment relocation is COMPLETE.
 Post–Slice B product-surface amendments live in `41`
-(41-1…41-3 COMPLETE; 41-4 NOT STARTED). Post–41-3 Airflow /
-Environment placement lives in `42` and is NOT STARTED.
-Slices C–G remain NOT STARTED. Remaining order is `42` §16.
+(41-1…41-3 COMPLETE; 41-4 NOT STARTED).
+42-2 Airflow viewport toolbar is NOT STARTED.
+Slices C and E–G remain NOT STARTED. Remaining order is `42` §16.
 ```
