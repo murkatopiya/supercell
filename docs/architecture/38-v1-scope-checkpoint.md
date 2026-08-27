@@ -1529,8 +1529,9 @@ M1/M3 SUCCESSOR     docs/architecture/
                     DECIDED / DOCS-ONLY / M5 NEXT (historical
                     order of that file)
                     47-m4-v1-closure-audit-and-plan.md
-                    DECIDED / DOCS-ONLY / M4 AUDIT; README
-                    NOT YET CREATED; V1 NOT YET CLOSED
+                    DECIDED / DOCS-ONLY / M4 AUDIT;
+                    M4-1 COMPLETE; M4-2 NOT STARTED;
+                    V1 NOT YET CLOSED
 
 IMPLEMENTATION
 FROM THIS FILE      NONE
@@ -1577,10 +1578,10 @@ PHYSICS
   UNCHANGED / CLOSED
 
 REMAINING V1 MUST
-  M4 per `47` (M4-1 README / known limits, then M4-2
-  verification / closure record)
+  M4-2 per `47` (verification / closure record)
   (M2 COMPLETE; M3 sufficient for pre-M5; M1 via T10;
-   M5-AUTHOR semantic COMPLETE; §11.3 PASS NOT CLAIMED)
+   M5-AUTHOR semantic COMPLETE; M4-1 COMPLETE;
+   §11.3 PASS NOT CLAIMED)
 ```
 
 New features, new operands, new experiments, new environments,

@@ -336,7 +336,7 @@ available and must stay in the closure limitation (`45` §5).
 
 ```text
 NOW     this classification (docs) — COMPLETE
-NEXT    M4-1 per `47` (README + known limitations)
+NEXT    M4-2 per `47` (M4-1 COMPLETE)
 NOT     M5-INDEPENDENT (still unavailable)
 NOT     src/** changes from E1–E7
 ```
@@ -390,7 +390,7 @@ E6  T2 C PASS; hodograph type = prerequisite; not blocker
 E7  T10 PASS-WITH-FRICTION; M1 Explore not earned
 FIX SET          NONE
 M5-INDEPENDENT   NOT YET AVAILABLE
-M4               audit/plan in `47`; README not yet created
+M4               M4-1 COMPLETE per `47`; M4-2 NOT STARTED
 FREEZE           ACTIVE
 IMPLEMENTATION   NONE
 ```

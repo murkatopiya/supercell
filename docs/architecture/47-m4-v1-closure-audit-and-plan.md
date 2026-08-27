@@ -2,12 +2,13 @@
 
 **Status:** M4 CLOSURE AUDIT / PLAN SoT /
 V1 FEATURE FREEZE ACTIVE /
-NO IMPLEMENTATION AUTHORIZATION /
+M4-1 COMPLETE /
+M4-2 NOT STARTED /
 M5-AUTHOR SEMANTIC COMPLETE /
 M5-INDEPENDENT NOT YET AVAILABLE /
 `38` §11.3 PASS NOT CLAIMED /
 BLOCKER-FIX SLICE NOT REQUIRED /
-README NOT YET CREATED /
+README CREATED /
 V1 NOT YET CLOSED
 **Scope:** inspect live repository state after `38`–`46`;
 define the finite M4 work that moves CURRENT HEAD to
@@ -810,6 +811,7 @@ exit            README matches §3; known-limits file
                 matches §4; tab title is not “Hodograph”;
                 Q12 and Q13 appear on the release surface;
                 no invented license
+status          COMPLETE
 tests/checks    none required beyond not touching src
 implementation  YES for the files above; NOT for src/**
   authorization
@@ -885,13 +887,13 @@ fixes from that session are **not** earned.
 ## 15. Next action
 
 ```text
-NOW     this audit / closure-plan SoT
-NEXT    M4-1 (README + known limitations + index.html title)
-THEN    M4-2 (test / typecheck / build / smoke / closure
+NOW     M4-1 COMPLETE (README + known limitations +
+        index.html title)
+NEXT    M4-2 (test / typecheck / build / smoke / closure
         record)
 NOT     src/** changes
 NOT     M5-INDEPENDENT
-NOT     README in this slice (this file plans it)
+NOT     V1 CLOSED (not declared)
 ```
 
 ---
@@ -926,13 +928,14 @@ CONCEPT vision, leftover chrome, unavailable testers.
 38  Promise, freeze, T1–T10, §11.3 PASS: UNCHANGED.
     U3 RESOLVED: README + docs/KNOWN_LIMITATIONS.md;
     no in-product panel.
-    Remaining close path: this file, then M4-1, then M4-2.
+    Remaining close path: this file, then M4-1 COMPLETE,
+    then M4-2 NOT STARTED.
 45  Protocol and forbidden wording: UNCHANGED.
     Successor for closure planning: this file.
 46  Classifications UNCHANGED. M4 audit is this file;
-    README still not authored here.
+    README authored in M4-1, not in this audit file.
 43  Sufficiency, K1–K11, prototype-close meaning:
-    UNCHANGED. Live remaining close work is M4.
+    UNCHANGED. Live remaining close work is M4-2.
 44  Reconstruction boundary UNCHANGED. V1 remaining path
     is no longer “M5 next.”
 ```
@@ -964,18 +967,21 @@ CONCEPT vision is not the shipped V1
 HEAD                    capable of prototype close after
                         docs/html/verification
 SRC CHANGE REQUIRED     NO
-README                  MANDATORY; not authored yet
-KNOWN LIMITS            separate docs/KNOWN_LIMITATIONS.md
+README                  CREATED (M4-1 COMPLETE)
+KNOWN LIMITS            docs/KNOWN_LIMITATIONS.md
 VERSION 1.0.0           NOT REQUIRED
 TAG / GH RELEASE / DEPLOY  NOT REQUIRED
-FINAL COMMANDS          test, typecheck, build
-MANUAL SMOKE            YES; finite; not M5
+FINAL COMMANDS          test, typecheck, build (M4-2)
+MANUAL SMOKE            YES; finite; not M5 (M4-2)
 A11Y BLOCKER            NONE; canvas pointer-only = limit
-Q12 / Q13               §10.4 / §10.5
-SLICES                  M4-1 then M4-2
+Q12 / Q13               §10.4 / §10.5 on the release surface
+SLICES                  M4-1 COMPLETE; M4-2 NOT STARTED
 BLOCKERS                NONE
 FREEZE                  ACTIVE
-IMPLEMENTATION          NONE in this file
+V1 CLOSED               NO
+IMPLEMENTATION          NONE in this audit file; M4-1 is
+                        README / known limits / index.html
+                        title only
 ```
 
 ---
@@ -983,7 +989,9 @@ IMPLEMENTATION          NONE in this file
 ## 20. Implementation
 
 ```text
-IMPLEMENTATION AUTHORIZATION   NO
+IMPLEMENTATION AUTHORIZATION   M4-1 YES (README,
+                               docs/KNOWN_LIMITATIONS.md,
+                               index.html title only)
 Production files changed       NONE (src/** untouched)
-Tests / typecheck / build      N/A (docs-only audit)
+Tests / typecheck / build      N/A as M4-1 exit; M4-2
 ```
