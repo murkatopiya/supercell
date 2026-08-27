@@ -10,6 +10,8 @@ M1 HONESTY CONTRACT RETAINED; 40-E NOT A PRE-M5 SLICE /
 40-C / 40-E / 40-F / 40-G NOT PRE-M5 /
 M5 IS THE NEXT V1 STEP /
 M4 FOLLOWS M5 /
+M5-AUTHOR SEMANTIC LATER RECORDED IN `46`;
+M4 CLOSURE AUDIT IS `47` /
 THIS FILE DOES NOT INCLUDE PRODUCTION IMPLEMENTATION
 **Scope:** after live 42-1, decide whether remaining scheduled
 UX/UI slices are still required for a finite V1, or whether
@@ -49,6 +51,7 @@ docs/architecture/20-guided-runtime-architecture.md
 docs/architecture/32-diagnostic-observation-ui-architecture.md
 docs/CONCEPT.md
 docs/architecture/45-m5-human-acceptance-playtest-protocol.md
+docs/architecture/47-m4-v1-closure-audit-and-plan.md
 ```
 
 Accepted live head this checkpoint is written against:
@@ -507,6 +510,14 @@ THEN    M4 audit + README / known-limits surface
 THEN    V1 CLOSED
 ```
 
+Successor M4 audit (does not change this order; records
+that M5-AUTHOR semantic completed with no blocker-fix
+slice, and that README is still absent):
+
+```text
+docs/architecture/47-m4-v1-closure-audit-and-plan.md
+```
+
 No scheduled 42-2, 40-C, 40-E, 40-F, or 40-G before M5.
 
 CONDITIONAL items in `38` §4.2 remain the only catalog from
@@ -696,6 +707,7 @@ M1 is not waived; Slice E is not the only honest form of M1.
     independent 2/3 sample remains unavailable
 46  M5-AUTHOR semantic classification; blocker-fix slice
     not required; M4 may proceed before independent humans
+47  M4 closure audit / plan; README not authored there
 ```
 
 ---
@@ -715,7 +727,8 @@ ENVIRONMENT UX        known limitation; T2 not blocked
 M5                    M5-AUTHOR semantic recorded (`46`);
                       blocker-fix slice not required;
                       M5-INDEPENDENT not available
-M4                    next (`38` M4 / `43` order)
+M4                    audit/plan in `47`; README not yet
+                      created; then M4-1 / M4-2
 V1 CLOSED             prototype close, not production-ready
 FREEZE                ACTIVE
 IMPLEMENTATION        this file includes none

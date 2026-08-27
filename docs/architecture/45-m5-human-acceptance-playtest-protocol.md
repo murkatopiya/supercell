@@ -5,7 +5,7 @@ V1 FEATURE FREEZE ACTIVE /
 NO IMPLEMENTATION AUTHORIZATION /
 M5-AUTHOR SEMANTIC SESSION RECORDED IN `46` /
 DISCOVERABILITY NOT CLAIMED /
-PLAYTEST IMPLEMENTATION NOT STARTED
+M4 CLOSURE AUDIT SUCCESSOR `47`
 **Scope:** prepare a structured, honest human acceptance
 session for the frozen V1. Recover T1–T10 against the live
 product. Define what one author dogfood session can and
@@ -68,6 +68,12 @@ Successor semantic-evidence classification:
 
 ```text
 docs/architecture/46-m5-author-semantic-evidence-classification.md
+```
+
+Successor M4 closure audit / plan:
+
+```text
+docs/architecture/47-m4-v1-closure-audit-and-plan.md
 ```
 
 ---
@@ -955,6 +961,8 @@ fixes happen after the session, freeze-legal only
 38  promise, A1–A5, T1–T10, freeze, original PASS
 43  pre-M5 sufficiency; Environment known limitation
 45  this file: how to run M5-AUTHOR; what it may claim
+46  M5-AUTHOR semantic classification
+47  M4 closure audit / plan; does not weaken T1–T10
 ```
 
 ---
@@ -975,6 +983,7 @@ PLAYTEST               M5-AUTHOR semantic recorded (`46`);
                        discoverability not claimed
 O1                     axes ≠ readable compass; wait on M5
 ENVIRONMENT            known limitation; do not redesign now
+M4 SUCCESSOR           `47`
 IMPLEMENTATION         NONE
 ```
 

@@ -15,7 +15,8 @@ remains prescribed kinematic laboratory (`30`). Exactly seven
 `VelocityField.sample(position, time) → Vec3` unchanged.
 **Implementation:** none. Docs-only. Production `src/**`
 MUST remain unchanged. V1 FEATURE FREEZE remains ACTIVE.
-M5 remains the next V1 step (`43`).
+This file is not a V1 or M5 document. Remaining V1 close
+work is M4 (`47`); M5-AUTHOR semantic is recorded (`46`).
 
 Predecessor whole-product and model-class source language:
 
@@ -37,6 +38,7 @@ Related still-binding SoTs (not replaced):
 ```text
 docs/architecture/38-v1-scope-checkpoint.md
 docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
+docs/architecture/47-m4-v1-closure-audit-and-plan.md
 docs/architecture/19-shared-tracer-inspector.md
 docs/physics/02-velocity-field-basics.md
 docs/physics/04-environmental-wind-profile.md
@@ -678,7 +680,7 @@ V_total
 VelocityField API
 current renderer
 M5 plan (`43`: current state → M5 → freeze-legal fixes
-  → M4 → V1 CLOSED)
+  → M4 → V1 CLOSED; live remaining close work is `47`)
 FEATURE FREEZE
 ```
 
@@ -786,6 +788,8 @@ physics/07     current StormMotion remains value-only;
                class A unchanged
 38 §13 DATA    consume-adapter parking; not reconstruction
 43 §19         this file does not affect the V1 / M5 path
+47             M4 closure audit; this file still does not
+               change V1 physics or freeze
 ```
 
 Historical checkpoint bodies are not rewritten as if they

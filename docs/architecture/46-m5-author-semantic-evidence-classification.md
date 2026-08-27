@@ -3,7 +3,8 @@
 **Status:** M5-AUTHOR SEMANTIC SESSION RECORDED /
 V1 FEATURE FREEZE ACTIVE /
 NO IMPLEMENTATION AUTHORIZATION /
-BLOCKER-FIX SLICE NOT REQUIRED
+BLOCKER-FIX SLICE NOT REQUIRED /
+M4 CLOSURE AUDIT SUCCESSOR `47`
 **Scope:** classify 2026-08-27 author semantic/scientific
 comprehension evidence against T1–T10, `38`, `43`, and `45`.
 Decide whether any evidence-triggered copy fix is required
@@ -334,14 +335,17 @@ available and must stay in the closure limitation (`45` §5).
 ## 8. Next action
 
 ```text
-NOW     this classification (docs)
-NEXT    M4 release/audit / known-limits surface (`38` M4,
-        `43` order), not a copy-fix implementation slice
+NOW     this classification (docs) — COMPLETE
+NEXT    M4-1 per `47` (README + known limitations)
 NOT     M5-INDEPENDENT (still unavailable)
 NOT     src/** changes from E1–E7
 ```
 
-This file does not include the M4 audit.
+M4 audit / closure plan:
+
+```text
+docs/architecture/47-m4-v1-closure-audit-and-plan.md
+```
 
 ---
 
@@ -354,6 +358,7 @@ This file does not include the M4 audit.
 43  K1 / Environment limitation UNCHANGED; M5-AUTHOR
     recorded; blocker-fix not required before M4
 T9  live disclaimer PRESERVED
+47  M4 audit / plan; README not authored in `46`
 ```
 
 ---
@@ -385,7 +390,7 @@ E6  T2 C PASS; hodograph type = prerequisite; not blocker
 E7  T10 PASS-WITH-FRICTION; M1 Explore not earned
 FIX SET          NONE
 M5-INDEPENDENT   NOT YET AVAILABLE
-M4               may proceed
+M4               audit/plan in `47`; README not yet created
 FREEZE           ACTIVE
 IMPLEMENTATION   NONE
 ```

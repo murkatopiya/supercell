@@ -23,6 +23,8 @@ reconstruction boundary is `44`; it does not change this freeze
 or the M5 path. M5-AUTHOR playtest protocol is `45`; it does
 not change T1–T10 wording or §11.3 PASS. Semantic evidence
 classification is `46` (blocker-fix slice not required).
+M4 closure audit / plan is `47` (README not authored there;
+V1 not yet closed).
 
 Predecessor Reset View / camera recovery architecture:
 
@@ -1231,6 +1233,10 @@ docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
 Post–42-1 V1 sufficiency / scope-cut (DECIDED / docs-only):
 docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 
+M4 closure audit / plan (DECIDED / docs-only; README not
+created in that file):
+docs/architecture/47-m4-v1-closure-audit-and-plan.md
+
 40 decides M1 honesty placement and M3 spatial / informational
 organization for existing V1 capabilities. 41 amends the
 Explore placement-gate product surface and Highlight compact
@@ -1346,8 +1352,8 @@ U1  RESOLVED BY `39`: M2 product default = existing Comets;
 U2  Whether F4 (viewport priority) and F5 (diagnostics fold)
     are closed by reordering inside M3 or admitted as
     CONDITIONAL after Phase 4
-U3  Whether the "what it is not / known limits" surface is a
-    README section, an in-product panel, or both
+U3  RESOLVED BY `47`: root README + docs/KNOWN_LIMITATIONS.md;
+    no in-product known-limits panel
 U4  How many testers the Phase 4 playtest ultimately uses if
     only two are available
     (`45` records a separate author-only dogfood path;
@@ -1431,9 +1437,11 @@ freeze **ACTIVE**. M1 / M3 consolidation architecture
 release/Highlight surface **DECIDED** in `41` (41-1…41-3
 COMPLETE); post–41-3 Airflow/Environment placement **DECIDED**
 in `42` (42-1 COMPLETE); sufficiency / scope-cut **DECIDED**
-in `43`. Remaining V1 MUST work before close is M5 then M4.
+in `43`. M5-AUTHOR semantic recorded in `46`; blocker-fix
+slice not required. Remaining close work is M4 per `47`
+(README + known limits, then verification / closure record).
 M3 is sufficiently complete for pre-M5. M1 remains an honesty
-contract validated by T10.
+contract validated by T10. `38` §11.3 PASS is not claimed.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1518,7 +1526,11 @@ M1/M3 SUCCESSOR     docs/architecture/
                     42-post-41-3-explore-airflow-and-environment-architecture.md
                     DECIDED / 42-1 COMPLETE / 42-2 POST-V1
                     43-post-42-1-v1-sufficiency-and-scope-cut.md
-                    DECIDED / DOCS-ONLY / M5 NEXT
+                    DECIDED / DOCS-ONLY / M5 NEXT (historical
+                    order of that file)
+                    47-m4-v1-closure-audit-and-plan.md
+                    DECIDED / DOCS-ONLY / M4 AUDIT; README
+                    NOT YET CREATED; V1 NOT YET CLOSED
 
 IMPLEMENTATION
 FROM THIS FILE      NONE
@@ -1565,8 +1577,10 @@ PHYSICS
   UNCHANGED / CLOSED
 
 REMAINING V1 MUST
-  M5 then evidence-triggered fixes, then M4
-  (M2 COMPLETE; M3 sufficient for pre-M5; M1 via T10)
+  M4 per `47` (M4-1 README / known limits, then M4-2
+  verification / closure record)
+  (M2 COMPLETE; M3 sufficient for pre-M5; M1 via T10;
+   M5-AUTHOR semantic COMPLETE; §11.3 PASS NOT CLAIMED)
 ```
 
 New features, new operands, new experiments, new environments,
