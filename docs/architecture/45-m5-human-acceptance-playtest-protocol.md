@@ -3,7 +3,9 @@
 **Status:** M5 PLAYTEST PROTOCOL SoT /
 V1 FEATURE FREEZE ACTIVE /
 NO IMPLEMENTATION AUTHORIZATION /
-PLAYTEST NOT STARTED
+M5-AUTHOR SEMANTIC SESSION RECORDED IN `46` /
+DISCOVERABILITY NOT CLAIMED /
+PLAYTEST IMPLEMENTATION NOT STARTED
 **Scope:** prepare a structured, honest human acceptance
 session for the frozen V1. Recover T1–T10 against the live
 product. Define what one author dogfood session can and
@@ -61,6 +63,12 @@ ANTI-CLAIM
 This document did **not** change production code.
 It does **not** begin the playtest.
 It does **not** weaken T1–T10 or `38` §11.3 PASS.
+
+Successor semantic-evidence classification:
+
+```text
+docs/architecture/46-m5-author-semantic-evidence-classification.md
+```
 
 ---
 
@@ -955,13 +963,16 @@ fixes happen after the session, freeze-legal only
 
 ```text
 M5-AUTHOR              executable now; this protocol
+M5-AUTHOR SEMANTIC     recorded in `46` (discoverability
+                       not claimed)
 M5-INDEPENDENT         NOT YET AVAILABLE
 M5-AI                  supplementary only
 38 §11.3 PASS          NOT CLAIMABLE from this session
 T1–T10                 unchanged; all attemptable
 FREEZE                 ACTIVE
 PRE-TEST SRC CHANGE    NONE
-PLAYTEST               NOT STARTED
+PLAYTEST               M5-AUTHOR semantic recorded (`46`);
+                       discoverability not claimed
 O1                     axes ≠ readable compass; wait on M5
 ENVIRONMENT            known limitation; do not redesign now
 IMPLEMENTATION         NONE

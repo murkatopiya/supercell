@@ -694,6 +694,8 @@ M1 is not waived; Slice E is not the only honest form of M1.
     does not affect this file’s V1 / M5 path
 45  M5-AUTHOR playtest protocol; does not weaken T1–T10;
     independent 2/3 sample remains unavailable
+46  M5-AUTHOR semantic classification; blocker-fix slice
+    not required; M4 may proceed before independent humans
 ```
 
 ---
@@ -710,9 +712,10 @@ M1                    honesty contract live in Guided;
                       40-E not pre-M5
 42-2 / 41-4           not pre-M5 MUST
 ENVIRONMENT UX        known limitation; T2 not blocked
-M5                    NEXT — run via `45` (M5-AUTHOR);
+M5                    M5-AUTHOR semantic recorded (`46`);
+                      blocker-fix slice not required;
                       M5-INDEPENDENT not available
-M4                    after M5
+M4                    next (`38` M4 / `43` order)
 V1 CLOSED             prototype close, not production-ready
 FREEZE                ACTIVE
 IMPLEMENTATION        this file includes none
