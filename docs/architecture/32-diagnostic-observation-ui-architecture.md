@@ -68,6 +68,7 @@ docs/physics/22-diagnostic-tilting-tendency.md
 docs/physics/23-diagnostic-vertical-vorticity.md
 docs/research/2026-08-20-t1-demo-field-validation.md
 docs/research/2026-08-20-candidate-a-demo-field-validation.md
+docs/architecture/52-historical-path-probe-architecture.md
 ```
 
 Keep these roles distinct:

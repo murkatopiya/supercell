@@ -66,6 +66,7 @@ docs/architecture/34-selected-tracer-follow-camera-architecture.md
 docs/rendering/01-tracer-scene.md
 docs/rendering/11-deep-storm-tracer-view.md
 docs/rendering/14-tracer-path-history.md
+docs/architecture/52-historical-path-probe-architecture.md
 ```
 
 Keep these roles distinct:

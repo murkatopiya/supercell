@@ -591,6 +591,13 @@ Allowed later, as separate commanded slices, in order §16.
 `08` remains the owner of canonical S1/S2 semantics and the story
 claim. This document owns path-history architecture only.
 
+Post-V1 historical path-sample inspection (click a recorded
+point, recompute diagnostics at that `(P, t)`, no rewind) is
+`docs/architecture/52-historical-path-probe-architecture.md`.
+Live samples in this recorder are still copied world positions
+only; `52` records that timestamps are absent and are required
+before that probe is scientifically complete.
+
 ---
 
 ## 16. Migration plan

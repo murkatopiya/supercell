@@ -21,6 +21,12 @@ docs/architecture/50-i2-goshen-sandbox-integration.md
 docs/ui/01-hodograph-panel.md
 ```
 
+Successor (path-history diagnostics, not hodograph):
+
+```text
+docs/architecture/52-historical-path-probe-architecture.md
+```
+
 Keep these roles distinct:
 
 ```text
