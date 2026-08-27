@@ -27,6 +27,13 @@ Predecessor source / reconstruction boundary:
 docs/architecture/44-long-term-source-and-reconstruction-boundary.md
 ```
 
+Successor R1 selection (closes this file's research
+gate R1; still no implementation):
+
+```text
+docs/architecture/49-r1-first-historical-reference-storm.md
+```
+
 V1 CLOSED record (do not reopen):
 
 ```text
@@ -997,26 +1004,29 @@ literacy signal (`44` §6.5), not the first adapter.
 
 ### 13.3 Exact provider is a research gate
 
-This file does **not** select University of Wyoming, IEM,
-IGRA, NCEI, or any other archive, and does not select a
-native format (text table, BUFR, CSV).
+This file does **not** itself select University of
+Wyoming, IEM, IGRA, NCEI, or a native format.
 
-Exact selection needs external research that this task
-did not perform: license, one-sounding freeze, native
-layout, height availability vs pressure-only, station
-elevation, and whether a file can live in the repository
-as a fixture.
+R1 is closed in the successor:
 
 ```text
-RESEARCH GATE R1
-  select one observed-RAOB archive/product,
-  one sounding identity, native format, license,
-  and in-repo freeze policy
-
-Do not pick an API because it is convenient.
-Implementation of an adapter is out of scope until R1
-closes in a successor research/architecture note.
+docs/architecture/49-r1-first-historical-reference-storm.md
 ```
+
+Selected first column (`49`):
+
+```text
+VORTEX2 Goshen County 5 June 2009
+NSSL1 mobile GAUS  2155 UTC inflow
+EOL dataset 114.114
+DOI 10.5065/D6CC0Z0Q
+native format ESC ASCII
+sourceClass observed-raob
+```
+
+In-repo freeze versus gitignored hash remains an I1
+recording step (`49` G4 / this file U5). Adapter
+implementation remains I1, NOT STARTED.
 
 ---
 
@@ -1177,7 +1187,8 @@ oracle.
 
 **Q18. Provider #1 class?**
 
-Observed RAOB. Exact archive: research gate R1 (§13.3).
+Observed RAOB. Exact archive / sounding: `49`
+(EOL `114.114`, Goshen NSSL1 2155 UTC, ESC).
 
 **Q19. What waits for provider #2?**
 
@@ -1221,10 +1232,10 @@ injection that must not silently swap Guided.
 **Q22. Smallest implementation slice after this SoT?**
 
 ```text
-Not implementation: research gate R1 (exact RAOB fixture).
+R1 is closed in 49.
 
-Smallest code slice after R1:
-  one adapter + frozen native fixture
+Smallest code slice (I1), NOT STARTED:
+  one ESC adapter + frozen NSSL1 2155 UTC fixture
   → EnvironmentalWindProfileRecord
   → existing EnvironmentalWindProfile
   → tests for normalize / interpolate / hodograph /
@@ -1247,12 +1258,15 @@ order for later work:
 R1  RESEARCH GATE
     exact observed-RAOB archive, one sounding, format,
     license, in-repo freeze
-    NOT STARTED
+    CLOSED in 49
+    remaining I1 obtainability: order/inspect/freeze
+    the named NSSL1 2155 UTC ESC file (49 G1–G5)
 
 I1  Adapter + frozen fixture + tests
     no live App, no DEMO edit, no Guided, no Bunkers
     NOT STARTED
-    blocked on R1
+    blocked on 49 G1–G5 obtain/inspect/freeze, not on
+    sounding identity
 
 I2  Opt-in Explore / laboratory environmental injection
     six storm operands remain DEMO
@@ -1277,8 +1291,11 @@ slices.
 
 ```text
 U1  Exact RAOB archive / product / sounding for R1
+      CLOSED in 49 (Goshen NSSL1 2155 UTC, EOL 114.114)
 U2  Height conversion method when native data are
     pressure-only (adapter policy, named in provenance)
+      first fixture is not pressure-only; 49 uses ESC
+      altitude minus launch elevation → world Y
 U3  Whether I2 uses DEMO C or a different prescribed C
     for that one case (still prescribed; 38 U5 not used
     as an estimator decision)
@@ -1286,7 +1303,8 @@ U4  Whether SRH is displayed in the sandbox UI (38 U6
     still unresolved; physics may be tested headless)
 U5  Whether the frozen native file is committed to the
     repo or gitignored with a documented hash
-      (license-dependent; R1 must answer)
+      narrowed in 49 G4; decided when the EOL EULA
+      accepted at order time is recorded
 ```
 
 Not unresolved:
@@ -1334,7 +1352,8 @@ inter-source disagreement waits for provider #2
 ```text
 this file:     provider-neutral environmental-wind
                profile contract; first historical
-               sandbox contract; RAOB class + R1 gate
+               sandbox contract; RAOB class
+49:            R1 selection; Goshen NSSL1 2155 UTC
 44:            long-term source / reconstruction
                boundary; still authoritative for that
                split
@@ -1365,7 +1384,7 @@ SANDBOX PROVES:      dirty column → normalize → hodograph
 SANDBOX DOES NOT:    make the storm real; derive Ω or C;
                      retarget Guided
 PROVIDER CLASS:      observed RAOB
-EXACT ARCHIVE:       RESEARCH GATE R1
+EXACT ARCHIVE:       49  EOL 114.114  Goshen NSSL1 2155 UTC
 PHYSICS APIs:        no change required for I1
 LIVE INJECTION:      I2 opt-in; not DEMO/Guided overwrite
 IMPLEMENTATION:      NONE
