@@ -336,7 +336,8 @@ available and must stay in the closure limitation (`45` §5).
 
 ```text
 NOW     this classification (docs) — COMPLETE
-NEXT    M4-2 per `47` (M4-1 COMPLETE)
+NEXT    none in V1; V1 CLOSED per `47` /
+        `docs/reviews/2026-08-27-v1-closed.md`
 NOT     M5-INDEPENDENT (still unavailable)
 NOT     src/** changes from E1–E7
 ```
@@ -390,7 +391,7 @@ E6  T2 C PASS; hodograph type = prerequisite; not blocker
 E7  T10 PASS-WITH-FRICTION; M1 Explore not earned
 FIX SET          NONE
 M5-INDEPENDENT   NOT YET AVAILABLE
-M4               M4-1 COMPLETE per `47`; M4-2 NOT STARTED
+M4               COMPLETE; V1 CLOSED per `47`
 FREEZE           ACTIVE
 IMPLEMENTATION   NONE
 ```

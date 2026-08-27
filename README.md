@@ -86,16 +86,15 @@ The full list is in
 
 ## Validation status
 
-**V1 CLOSED is not declared.**
-
-This V1 is a finite validation prototype with limited
+V1 is closed as a finite validation prototype with limited
 human validation. Recorded evidence is the 2026-08-27
 M5-AUTHOR semantic/scientific-comprehension session.
 Independent 2/3 target-user testing is not available.
 38 §11.3 PASS is not claimed. Discoverability is not
 independently validated.
 
-See [`docs/architecture/45-m5-human-acceptance-playtest-protocol.md`](docs/architecture/45-m5-human-acceptance-playtest-protocol.md),
+See [`docs/reviews/2026-08-27-v1-closed.md`](docs/reviews/2026-08-27-v1-closed.md),
+[`docs/architecture/45-m5-human-acceptance-playtest-protocol.md`](docs/architecture/45-m5-human-acceptance-playtest-protocol.md),
 [`docs/architecture/46-m5-author-semantic-evidence-classification.md`](docs/architecture/46-m5-author-semantic-evidence-classification.md),
 and [`docs/reviews/2026-08-27-m5-author-semantic-comprehension.md`](docs/reviews/2026-08-27-m5-author-semantic-comprehension.md).
 
@@ -127,6 +126,7 @@ version is not a scientific-validity or product-maturity claim.
 | [`docs/architecture/30-model-class-decision.md`](docs/architecture/30-model-class-decision.md) | Model class A |
 | [`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](docs/architecture/44-long-term-source-and-reconstruction-boundary.md) | Reconstruction boundary |
 | [`docs/architecture/47-m4-v1-closure-audit-and-plan.md`](docs/architecture/47-m4-v1-closure-audit-and-plan.md) | M4 closure audit / plan |
+| [`docs/reviews/2026-08-27-v1-closed.md`](docs/reviews/2026-08-27-v1-closed.md) | V1 CLOSED record |
 | [`docs/physics/`](docs/physics/) | Physics source of truth |
 | [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md) | Known limitations of current V1 |
 

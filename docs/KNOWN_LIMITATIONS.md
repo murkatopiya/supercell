@@ -57,10 +57,11 @@ fixed next. POST-V1 ideas are not listed here; see
   ([`docs/architecture/38-v1-scope-checkpoint.md`](architecture/38-v1-scope-checkpoint.md)
   §11.3): **NOT MET**. **`38` §11.3 PASS is not claimed.**
 - M5-INDEPENDENT: **NOT YET AVAILABLE**.
-- **V1 CLOSED is not declared.** Any later closure must carry
-  limited human validation. Authorized wording
+- **V1 CLOSED** as a finite validation prototype with limited
+  human validation. Authorized wording
   ([`docs/architecture/47-m4-v1-closure-audit-and-plan.md`](architecture/47-m4-v1-closure-audit-and-plan.md)
-  §10.4):
+  §10.4;
+  [`docs/reviews/2026-08-27-v1-closed.md`](reviews/2026-08-27-v1-closed.md)):
 
 ```text
 V1 is closed as a finite validation prototype with limited

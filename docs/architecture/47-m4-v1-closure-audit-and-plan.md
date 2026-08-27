@@ -3,13 +3,14 @@
 **Status:** M4 CLOSURE AUDIT / PLAN SoT /
 V1 FEATURE FREEZE ACTIVE /
 M4-1 COMPLETE /
-M4-2 NOT STARTED /
+M4-2 COMPLETE /
+M4 COMPLETE /
+V1 CLOSED /
 M5-AUTHOR SEMANTIC COMPLETE /
 M5-INDEPENDENT NOT YET AVAILABLE /
 `38` §11.3 PASS NOT CLAIMED /
 BLOCKER-FIX SLICE NOT REQUIRED /
-README CREATED /
-V1 NOT YET CLOSED
+README CREATED
 **Scope:** inspect live repository state after `38`–`46`;
 define the finite M4 work that moves CURRENT HEAD to
 **V1 CLOSED** as the completed validation prototype, not as
@@ -32,6 +33,12 @@ Predecessor M5-AUTHOR classification:
 
 ```text
 docs/architecture/46-m5-author-semantic-evidence-classification.md
+```
+
+V1 CLOSED record:
+
+```text
+docs/reviews/2026-08-27-v1-closed.md
 ```
 
 Binding V1 promise, freeze, and original PASS:
@@ -832,6 +839,7 @@ exit            npm test, typecheck, and build green;
                 Q12 and Q13; working tree clean
 tests/checks    npm test; npm run typecheck; npm run build;
                 manual smoke
+status          COMPLETE
 implementation  YES for the closure record only
   authorization
 version/tag     NOT part of the exit unless separately
@@ -887,13 +895,11 @@ fixes from that session are **not** earned.
 ## 15. Next action
 
 ```text
-NOW     M4-1 COMPLETE (README + known limitations +
-        index.html title)
-NEXT    M4-2 (test / typecheck / build / smoke / closure
-        record)
+NOW     M4-2 COMPLETE / M4 COMPLETE / V1 CLOSED
+NEXT    none in V1; POST-V1 is not started
 NOT     src/** changes
 NOT     M5-INDEPENDENT
-NOT     V1 CLOSED (not declared)
+NOT     production-ready / §11.3 PASS
 ```
 
 ---
@@ -928,8 +934,9 @@ CONCEPT vision, leftover chrome, unavailable testers.
 38  Promise, freeze, T1–T10, §11.3 PASS: UNCHANGED.
     U3 RESOLVED: README + docs/KNOWN_LIMITATIONS.md;
     no in-product panel.
-    Remaining close path: this file, then M4-1 COMPLETE,
-    then M4-2 NOT STARTED.
+    Remaining close path: this file; M4-1 COMPLETE;
+    M4-2 COMPLETE; V1 CLOSED
+    (`docs/reviews/2026-08-27-v1-closed.md`).
 45  Protocol and forbidden wording: UNCHANGED.
     Successor for closure planning: this file.
 46  Classifications UNCHANGED. M4 audit is this file;
@@ -975,13 +982,14 @@ FINAL COMMANDS          test, typecheck, build (M4-2)
 MANUAL SMOKE            YES; finite; not M5 (M4-2)
 A11Y BLOCKER            NONE; canvas pointer-only = limit
 Q12 / Q13               §10.4 / §10.5 on the release surface
-SLICES                  M4-1 COMPLETE; M4-2 NOT STARTED
+SLICES                  M4-1 COMPLETE; M4-2 COMPLETE
 BLOCKERS                NONE
 FREEZE                  ACTIVE
-V1 CLOSED               NO
-IMPLEMENTATION          NONE in this audit file; M4-1 is
-                        README / known limits / index.html
-                        title only
+V1 CLOSED               YES — validation prototype with
+                        limited human validation
+                        (`docs/reviews/2026-08-27-v1-closed.md`)
+IMPLEMENTATION          NONE in this audit file; M4-2 is
+                        verification + docs closure record
 ```
 
 ---
@@ -989,9 +997,10 @@ IMPLEMENTATION          NONE in this audit file; M4-1 is
 ## 20. Implementation
 
 ```text
-IMPLEMENTATION AUTHORIZATION   M4-1 YES (README,
-                               docs/KNOWN_LIMITATIONS.md,
-                               index.html title only)
+IMPLEMENTATION AUTHORIZATION   M4-2 YES (closure record /
+                               status pointers / README
+                               validation sentence only)
 Production files changed       NONE (src/** untouched)
-Tests / typecheck / build      N/A as M4-1 exit; M4-2
+Tests / typecheck / build      PASS (fresh M4-2)
+Manual smoke A–M               PASS
 ```

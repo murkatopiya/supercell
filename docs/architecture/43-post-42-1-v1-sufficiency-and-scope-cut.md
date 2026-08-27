@@ -727,10 +727,10 @@ ENVIRONMENT UX        known limitation; T2 not blocked
 M5                    M5-AUTHOR semantic recorded (`46`);
                       blocker-fix slice not required;
                       M5-INDEPENDENT not available
-M4                    audit/plan in `47`; M4-1 COMPLETE
-                      (README + known limits); M4-2 NOT
-                      STARTED
-V1 CLOSED             prototype close, not production-ready
+M4                    COMPLETE (`47`); M4-1 and M4-2 done
+V1 CLOSED             YES — prototype close with limited
+                      human validation; not production-ready
+                      (`docs/reviews/2026-08-27-v1-closed.md`)
 FREEZE                ACTIVE
 IMPLEMENTATION        this file includes none
 ```
