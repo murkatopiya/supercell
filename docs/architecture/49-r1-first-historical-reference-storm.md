@@ -1,11 +1,13 @@
 # R1 First Historical Reference Storm
 
 **Status:** POST-V1 RESEARCH / SELECTION SoT /
-NO IMPLEMENTATION AUTHORIZATION
+R1 CLOSED; G1–G3 CLOSED; I1 DONE; G4 OPEN
 **Scope:** close `48` research gate R1 by selecting the
 first observed-RAOB historical wind column for the
-Explorer historical sandbox. Not an adapter. Not a
-frozen production fixture. Not radar. Not
+Explorer historical sandbox, and record G1–G3 forensic
+inspection of that column as I1 implementation input.
+I1 code is in `src/data/eolNsslMgausEsc/`. Not a G4
+native-byte freeze decision. Not radar. Not
 thermodynamics. Not Bunkers. Not Guided. Not a V1
 reopen. Not observed-storm reconstruction.
 **Physics:** `48` remains the provider-neutral contract.
@@ -14,15 +16,20 @@ Model class remains prescribed kinematic laboratory
 (`30`). Exactly seven `V_total` operands. Prescribed Ω
 unchanged. DEMO knots and DEMO `C` are not modified by
 this file.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged. This file does not authorize an
-adapter, an in-repo fixture commit, a DEMO_SCENARIO
-change, a Guided retarget, Bunkers, or thermodynamics.
+**Implementation:** I1 lives in `src/data/eolNsslMgausEsc/`.
+This SoT does not change DEMO_SCENARIO, Guided, Bunkers,
+or thermodynamics. Native ESC campaign bytes remain G4.
 
 Predecessor contract:
 
 ```text
 docs/architecture/48-provider-neutral-environmental-profile-contract.md
+```
+
+I2 sandbox definition (not started):
+
+```text
+docs/architecture/50-i2-goshen-sandbox-integration.md
 ```
 
 Related still-binding SoTs (not replaced):
@@ -44,9 +51,10 @@ RESEARCH GATE
 ANTI-CLAIM
 ```
 
-This document did **not** change production code.
-It does **not** add a sounding file to `src/**` or test
-directories.
+This document's I1 input is implemented in
+`src/data/eolNsslMgausEsc/`. Native-byte freeze remains
+G4. This file does **not** add EOL campaign bytes to
+`src/**`.
 
 ---
 
@@ -107,10 +115,9 @@ recorded rather than guessed away.
 
 EOL REST (`data.eol.ucar.edu/zinc/rest/dataset/114.114`)
 returned `401 Missing API Key`. Direct file listing of
-individual VORTEX2 ESC launches was **not** possible
-without completing the interactive order. That is a
-remaining I1 obtainability step, not an identity vacuum
-for the selected sounding.
+individual VORTEX2 ESC launches was not possible without
+the interactive order. G1 completed that order. G2–G3
+inspected the delivered native file (this document §7).
 
 ### 2.2 Case literature used as identity / validation
 evidence
@@ -398,11 +405,10 @@ Model/RAP column            not observed RAOB; not
    EnKF papers as “NSSL1 2155 UTC.” Parker Table 1
    lists quality mature-storm soundings for this case
    from 2143–0105 UTC; 2155 sits inside that window.
-4. **Launch location:** southeast of the storm, about
-   **50 km south-southeast of the updraft** (EnKF
-   papers; Markowski Figs. 1 and 4 mark the point).
-   Exact lat/lon/elev are in the ESC header, not
-   inspected in R1.
+4. **Launch location:** Bushnell, Nebraska / NSSL1.
+   ESC header: −103.893°, 41.278°, launch elevation
+   **1557.9 m**. About **50 km south-southeast of the
+   updraft** (EnKF papers; Markowski Figs. 1 and 4).
 5. **Temporal proximity:** near tornadogenesis, not
    pre-convective. That is intentional: the published
    environmental column is the **inflow at maturity**,
@@ -418,18 +424,21 @@ Model/RAP column            not observed RAOB; not
    not as a reason to pick a closer tornado sounding.
 7. **Type:** special research mobile proximity sounding.
 8. **Availability today:** same EOL NSSL MGAUS dataset
-   as A (`114.114`). Identity is known from papers;
-   **bytes were not downloaded** (order form).
+   as A (`114.114`). Identity is known from papers.
+   **G1 obtained** the native concatenated ESC file for
+   2009-06-05. **G2–G3 inspected** the Bushnell/NSSL1
+   21:55:22 block (this document §7).
 9. **Archive:** NSF NCAR EOL; DOI `10.5065/D6CC0Z0Q`.
 10. **Landing:** `https://data.eol.ucar.edu/dataset/114.114`
     order form with temporal subset 20090605.
 11. **Format:** ESC ASCII.
 12. **Variables:** same as §4.1 item 12. Wind +
     thermodynamics in one file (thermo unused by `48`).
-13. **Wind coverage:** published hodograph is labeled
-    to 6 km AGL and beyond on the plot; tropopause
-    reach is expected for a successful GAUS flight.
-    Confirm at I1 file inspection.
+13. **Wind coverage:** G3: kept winds from world Y
+    **2.4 m** through **12261.8 m** (~151 mb). 0–6 km
+    AGL has no missing U/V after the pre-release row.
+    Published hodograph to 6 km AGL is inside that
+    support.
 14. **Vertical sampling:** ~1 s after Aspen processing
     (`upsonde-1s` in the ESC sample header).
 15. **QC:** EOL GAUS QC; Parker performed additional
@@ -442,10 +451,11 @@ Model/RAP column            not observed RAOB; not
 16. **Wind units:** ESC U/V in m/s; U = eastward,
     V = northward. Adapter can take U/V directly
     after QC. Speed/direction are also present.
-17. **Height:** ESC altitude meters; launch elevation
-    in header. Proposed I1 `heightDatum`:
-    `reported altitude minus launch elevation,
-    treated as world Y (implied flat ground)`.
+17. **Height:** ESC `Alt` meters; launch elevation
+    **1557.9 m** in this sounding’s header. I1
+    `heightDatum` is locked in §7–§8:
+    `world Y = round(ESC Alt − 1557.9, 1)`,
+    implied flat ground. No synthetic `Y = 0` node.
 18. **Normalization difficulty:** moderate. ESC parse +
     QC drop + 1-s density. Units are already SI
     atmospheric components — **easier than Wyoming
@@ -468,9 +478,11 @@ Model/RAP column            not observed RAOB; not
 | Fig. 2b 0–1 km SRH, 0–3 km SRH, 0–6 km shear | order-of-magnitude / sign literacy | **not** a golden Explorer test; different C, smoothing, and layer recipe |
 | EnKF papers using the same launch | confirms identity and inflow geometry | they modified the thermodynamic BL; wind profile is the raw sounding |
 
-I1 golden tests should freeze **native ESC → normalized
-eastward/northward vs height**, plus project unit/sign
-maps. Published SRH/shear numbers are labeled
+I1 default tests freeze a **committed normalized
+Goshen golden** (eastward/northward vs world Y) plus
+**committed synthetic ESC** for parser/QC. Replaying
+the native EOL `.cls` is not an `npm test` input while
+G4 is open. Published SRH/shear numbers are labeled
 cross-checks, not oracles (`48` §12).
 
 **Future value:** unmatched among the five. Dual-Doppler
@@ -546,7 +558,7 @@ canonical papers.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | A 10 May 2010 VORTEX2 | mobile research | mixed; poorly coordinated | dataset yes; **individual file not inspected** | unknown until order | moderate (ESC) | bulk outbreak summaries only | high radar | DOI yes; launch unspecified | Parker **excluded** the case; no named inflow file |
 | B 20 May 2013 Moore | operational RAOB + afternoon special | ~15–20 km, ~3 h before tornado | **Wyoming inspected; IGRA header inspected; IEM missing the special** | good mandatory/significant; missing top wind | low | skew-T / indices; not a published hodograph of U/V | radar/survey, little in-situ armada | IGRA + Wyoming identity | not a designed inflow sounding; 17Z vs 18Z label split |
-| C 5 Jun 2009 Goshen | mobile research inflow | ~50 km SSE, near tornadogenesis | dataset orderable; **bytes not downloaded** | expected high-res QC’d GAUS | moderate (ESC, 1-s, QC drop) | **published skew-T + hodograph of this launch** | **highest** | DOI + NSSL1 + 2155 UTC | EOL order/EULA; near-storm modification possible |
+| C 5 Jun 2009 Goshen | mobile research inflow | ~50 km SSE, near tornadogenesis | **G1–G3: native 2009-06-05 `.cls` obtained and inspected** | G3: 2029 GOOD U/V levels; usable to 12.26 km | moderate (ESC, 1-s, QC drop) | **published skew-T + hodograph of this launch** | **highest** | DOI + NSSL1 + 2155 UTC | G4 EULA/in-repo freeze still open; near-storm modification possible |
 | D 18 May 2010 TX Panhandle | mobile research | designed near/far | same EOL as C | high (18 Parker soundings) | moderate (ESC) | composite / pair papers, not one famous plot | high | DOI yes; which launch? | first file not pre-named |
 | E 8 Jun 2019 TORUS | mobile research | designed proximity | EOL CSV/ESC orderable | high | extra CSV format | 2024 case paper | UAS + P-3 | DOI yes | newer; second format; weaker named-column status |
 
@@ -556,7 +568,7 @@ canonical papers.
 | --- | --- | --- | --- |
 | A 10 May 2010 | Low | Low–medium | High |
 | B Moore 2013 | **High** (engineering) | Medium | Medium |
-| C Goshen 2009 | **High** (once ordered) | **High** | **High** |
+| C Goshen 2009 | **High** (G1–G3 inspected) | **High** | **High** |
 | D 18 May 2010 | Medium | High | High |
 | E TORUS 2019 | Medium | Medium | High |
 
@@ -630,8 +642,10 @@ first adapter.
 case**, after a dedicated launch-selection pass. It is
 not the first fixture.
 
-18 May 2010 is the best VORTEX2 alternate if Goshen
-NSSL1 2155 UTC fails QC at I1 inspection.
+18 May 2010 remains the best VORTEX2 alternate if
+this column were later withdrawn. G3 found the
+NSSL1 2155 UTC winds usable, so that fallback is
+not I1 input.
 
 ---
 
@@ -649,7 +663,7 @@ Defensible identity **now**:
 | Platform | NSSL1 mobile GAUS |
 | Launch timestamp | 2155 UTC 5 June 2009 (confirm `UTC Release Time` in the ESC header; seconds may differ from the rounded paper time) |
 | Location | inflow, ~50 km SSE of the updraft; header lat/lon/alt are authoritative |
-| File / record identifier | **not known until order.** Match header `Release Site Type/Site ID` containing `NSSL1` and `UTC Release Time` on 2009-06-05 ~21:55 |
+| File / record identifier | Concatenated native `NSSL_MGAUS_20090605.cls` (9 soundings). Target block header: `Bushnell/NSSL1` and `UTC Release Time` `2009, 06, 05, 21:55:22`. Adapter selects by that header identity, not by ordinal position. |
 | Format | ESC ASCII (15 header lines + data records) |
 | Citation | NSF NCAR Earth Observing Laboratory. 2010. VORTEX2: NOAA/NSSL MGAUS Radiosonde Data - EOL Sounding Composite Format. Version 1.0. NSF NCAR Earth Observing Laboratory. https://doi.org/10.5065/D6CC0Z0Q. Accessed *I1 date*. |
 | Acknowledgement | NCAR EOL / NSF, per EOL data policy |
@@ -666,90 +680,364 @@ forces ESC QC-drop + irregular 1-s levels into
   the existing EnvironmentalWindProfile
 ```
 
-**Remaining research gate (I1 obtainability, not
-identity):**
+**Obtain / inspect gates:**
 
 ```text
-G1  Complete the EOL order for 114.114, temporal
-    subset 2009-06-05 (optionally 2009-06-06 UTC
-    continuation).
-G2  Identify the NSSL1 file whose header release
-    time is 2155 UTC ± clock seconds.
-G3  Inspect wind QC flags, vertical coverage, and
-    missing U/V before freeze.
-G4  Record the EULA text accepted at order time
-    and decide in-repo commit vs gitignored hash
-    (48 U5). Dataset metadata says legal/access
-    constraints none; that is not a substitute for
-    the click-through text.
-G5  If G3 fails (unusable winds), fall back inside
-    the same case to another Parker-window inflow
-    sounding, not to a tornado-proximal launch.
-    Next case-level fallback is Moore IGRA
-    2013-05-20 17 UTC.
+G1  CLOSED. EOL order 114.114, temporal subset
+    2009-06-05, delivered native concatenated ESC
+    `NSSL_MGAUS_20090605.cls`.
+G2  CLOSED. Target block identified by header, not
+    by file ordinal: Bushnell/NSSL1,
+    UTC Release Time 2009, 06, 05, 21:55:22.
+G3  CLOSED. Wind QC, coverage, missing U/V, altitude
+    monotonicity, and datum arithmetic inspected
+    (§7.1). Column is usable. G5 is unused.
+G4  OPEN. Record the EULA text accepted at order
+    time and decide whether native ESC campaign
+    bytes may be redistributed in-repo (48 U5).
+    Dataset metadata says legal/access constraints
+    none; that is not a substitute for the
+    click-through text. I1 `npm test` does not
+    wait on this gate.
+G5  UNUSED. G3 did not fail. Fallback inside the
+    Goshen Parker window, or next case-level to
+    Moore IGRA 2013-05-20 17 UTC, is not I1 input.
 ```
 
-R1 does **not** leave “pick a VORTEX2 sounding later.”
-It leaves “download the already-named NSSL1 2155 UTC
-file.”
+R1 named the sounding. G1–G3 obtained and inspected
+it. Native-byte freeze remains G4.
+
+### 7.1 Forensic inspection of the target block
+
+**CURRENT FACT.** Inspected native file
+`NSSL_MGAUS_20090605.cls` (EOL 114.114, 2009-06-05
+subset). Companion dataset README confirms ESC:
+15-line header, 21 fields, 130-character data
+records, missing sentinels, QC codes.
+
+The delivered file is **one concatenated CLASS/ESC
+stream of 9 soundings**, not a single-launch file.
+
+| Ordinal in file | Site ID | UTC Release Time | Launch elev (m) |
+| --- | --- | --- | --- |
+| 1 | NE/NSSL2 | 2009-06-05 00:43:45 | 1665.9 |
+| 2 | Purcell/NSSL1 | 2009-06-05 01:02:23 | 1550.8 |
+| 3 | NE/NSSL2 | 2009-06-05 20:00:22 | 1452.9 |
+| 4 | WY/NSSL2 | 2009-06-05 21:43:37 | 1692.0 |
+| 5 | **Bushnell/NSSL1** | **2009-06-05 21:55:22** | **1557.9** |
+| 6 | Bushnell/NSSL1 | 2009-06-05 22:40:06 | 1575.9 |
+| 7 | WY/NSSL2 | 2009-06-05 22:42:02 | 1522.9 |
+| 8 | Dix/NSSL1 | 2009-06-05 23:35:30 | 1452.3 |
+| 9 | WY/NSSL2 | 2009-06-05 23:37:58 | 1481.6 |
+
+Ordinal 5 is the selected column. Ordinal 6 is a
+later Bushnell/NSSL1 launch and is **not** the
+fixture. Selecting “the NSSL1 sounding” or “the
+fifth block” is incorrect. I1 must match:
+
+```text
+Release Site Type/Site ID  contains NSSL1
+UTC Release Time           2009, 06, 05, 21:55:22
+```
+
+Site string on the target block is `Bushnell/NSSL1`.
+Launch location on that same header:
+
+```text
+103 53.56'W, 41 16.67'N, -103.893, 41.278, 1557.9
+```
+
+Also on that header: Vaisala RS92-SGP `083724333`;
+Aspen `upsonde-1s`; operator comment
+`M Parker/tornado formed approx 30 min after launch,
+Good Sounding`.
+
+Target data records: 2082 rows, Time −1.0 … 2080.0 s,
+exact 1 s step, each 130 characters / 21 fields.
+ESC `Alt` on valid rows 1558.8 … 13819.7 m. Last
+pressure 151.3 mb.
+
+U/V sentinels and QC on the target block:
+
+```text
+U and V missing together (9999.0), Qu=Qv=MISSING (9.0)
+  51 rows; never one-sided
+Qu/Qv GOOD (1.0)                         2029
+Qu/Qv BAD / MAYBE / ESTIMATED            0
+Qu/Qv UNCHECKED (99.0)                   2
+  both also have Alt missing (99999.0)
+Alt missing (99999.0)                    17
+```
+
+Drop policy applied to these bytes (I1 input, §8):
+missing/non-usable U or V, or missing Alt → drop.
+Kept: **2029** levels. Dropped: **53**.
+
+After that drop:
+
+```text
+no decreasing ESC Alt
+no duplicate consecutive Alt
+remaining world Y strictly increasing
+dY 3.3 … 31.9 m; no gap > 50 m
+minHeight  2.4 m
+maxHeight  12261.8 m
+first kept Time  0.0 s
+  U = -1.2 m/s, V = +0.2 m/s
+last kept Time   2080.0 s
+  U = +26.8 m/s, V = +5.7 m/s
+```
+
+`Time = -1.0` is a pre-release row (missing U/V,
+BAD P/T). It is **not** a ground-profile node and
+is dropped.
+
+`Time = 0.0` has GOOD U/V and BAD P/T. P/T are not
+consumed. The wind is kept. The 3.9 m/s northward
+jump from t=0 to t=1 is a launch transient, not a
+reason to drop t=0.
+
+0–6 km world Y has no missing U/V after t=−1. Holes
+begin at Time 1312 s (world Y ≈ 7467 m) and are
+1–3 s dropouts.
+
+Balloon GPS at the end of the flight is ~50 km from
+launch (~13 km by 6 km AGL). That is a source fact.
+It is not a horizontal sampling axis. Record
+`location` is the **header launch** lat/lon, not the
+last GPS fix.
+
+ESC `Wcmp` / `QdZ` are present and almost entirely
+UNCHECKED. They are not imported. `vertical` of the
+profile is 0.
+
+T, Td, pressure, and RH are present and unused by
+the I1 consumer object.
 
 ---
 
-## 8. Implementation handoff (I1)
+## 8. I1 implementation input
 
-I1 is **NOT STARTED**. This file does not include it.
+I1 is implemented in `src/data/eolNsslMgausEsc/`.
+This section remains the locked input for that slice.
 
-Smallest next slice:
+### 8.1 Slice
 
 ```text
-EOL order → freeze one native ESC file (or hash)
-  → NSSL/MGAUS ESC adapter
+native ESC target block (ingest path)
+  → NSSL/MGAUS ESC adapter (outside physics)
   → EnvironmentalWindProfileRecord provenance
   → existing EnvironmentalWindProfile
-  → tests
+  → tests: synthetic ESC (parser/QC) +
+    committed Goshen normalized golden (oracle)
 ```
 
-Adapter responsibilities (`48`):
+Physics constructor, interpolation, clamp, shear,
+SRH-outside-support, and hodograph helpers are
+reused. They are not rewritten for I1.
+
+### 8.2 Adapter ownership
 
 ```text
-parse 15-line ESC header (time, lat, lon, launch elev)
-drop levels with missing / QC-failed U or V
-do not invent winds; do not sort unless a named
-  tested format-repair step is required
-eastward = U, northward = V, already m/s
-vertical = 0
-height = altitude − launch elevation  (world Y)
-fail on duplicate / non-finite / <2 remaining levels
-record coverage (dropped levels, gap spans)
-ignore T, Td, RH, pressure as consumed fields
+adapter lives outside physics, app, UI, rendering,
+  Guided, and DEMO_SCENARIO
+physics does not parse ESC
+adapter constructs the existing
+  EnvironmentalWindProfile
+no AtmosphericProfileSource
+no provider interface
+no live App injection
 ```
 
-Provenance (`48` §4.2):
+Native ESC campaign bytes remain subject to G4 /
+`48` U5. They are **not** an `npm test` input.
+
+I1 default tests use:
+
+```text
+committed synthetic ESC fixtures
+  → parser, header selection, QC drop, datum math
+
+committed normalized Goshen golden
+  → EnvironmentalWindProfile / hodograph /
+    interpolation / clamp / coverage oracle
+```
+
+Replaying the real EOL `.cls` is an explicit
+integration check, not part of `npm test`, unless
+G4 later permits redistributing those native bytes.
+
+### 8.3 Target-block selection
+
+The source file contains 9 soundings. The adapter
+**must** select the target sounding by header
+identity, not by ordinal position in the file.
+
+Match:
+
+```text
+Release Site Type/Site ID  contains NSSL1
+UTC Release Time           2009, 06, 05, 21:55:22
+```
+
+Reject the later `Bushnell/NSSL1` 22:40:06 block.
+If the identity is absent or ambiguous, fail. Do
+not silently take the first or fifth sounding.
+
+### 8.4 Normalization and filtering
+
+Locked conversion:
+
+```text
+eastward  = ESC Ucmp   (already m/s)
+northward = ESC Vcmp   (already m/s)
+vertical  = 0
+world Y   = round(ESC Alt − 1557.9, 1)
+```
+
+`1557.9 m` is the target sounding header launch
+elevation (5th field of `Release Location`). I1
+reads it from that header. For this fixture the
+value is 1557.9. Rounding to 1 decimal matches ESC
+`Alt` precision.
+
+Drop a data record if any of:
+
+```text
+U or V is the missing sentinel 9999.0
+Qu or Qv is MISSING (9.0) or BAD (3.0)
+Alt is the missing sentinel 99999.0
+```
+
+Do **not**:
+
+```text
+invent a synthetic Y = 0 node
+treat Time = -1.0 as the ground-profile node
+interpolate source gaps at ingestion
+sort remaining levels as silent repair
+cut the column at 6 km or 12 km
+import Wcmp into EnvironmentalWindProfile
+put T, Td, pressure, or RH on the consumer object
+use last-GPS lat/lon as record location
+use balloon drift as a spatial sampling axis
+```
+
+Keep every remaining observed level through the end
+of the sounding (forensic maxHeight **12261.8 m**).
+DEMO laboratory knots at 6 km / 12 km are not a
+truncation rule.
+
+After filtering, `48` §7 still applies: fail on
+duplicate height, non-finite height or wind, fewer
+than two levels, or remaining heights not strictly
+increasing.
+
+Coverage to record: native data-record count, kept
+count, dropped count, minHeight, maxHeight, gap
+spans after drop. Forensic values for this fixture:
+2082 native data records, 2029 kept, 53 dropped,
+minHeight 2.4 m, maxHeight 12261.8 m, no gap > 50 m.
+
+### 8.5 Provenance record
+
+`48` §4.2 fields for this fixture:
 
 ```text
 sourceClass      observed-raob
 sourceIdentity   EOL 114.114 / DOI 10.5065/D6CC0Z0Q /
-                 NSSL1 / ESC filename
-validTime        2009-06-05 2155 UTC
-location         header lat/lon
-heightDatum      altitude minus launch elevation
-                 → world Y, implied flat ground
-coverage         min/max height, drops, gaps
+                 Bushnell/NSSL1 /
+                 UTC 2009-06-05 21:55:22 /
+                 native concatenated
+                 NSSL_MGAUS_20090605.cls
+validTime        2009-06-05 21:55:22 UTC
+location         header launch -103.893, 41.278
+                 (not balloon-end GPS)
+heightDatum      ESC Alt minus header launch
+                 elevation 1557.9 m, rounded to
+                 0.1 m → world Y, implied flat ground
+coverage         minHeight 2.4 m, maxHeight 12261.8 m,
+                 53 dropped of 2082, no gap > 50 m
 nativeUnitsNote  ESC U/V m/s meteorological
+                 (eastward / northward)
 ```
 
-Tests:
+Balloon drift (~13 km by 6 km AGL, ~50 km by burst)
+is a documented source fact in this SoT. It is not a
+profile sampling axis and not a new provenance DTO
+field.
+
+DEMO storm motion `C` remains prescribed. It does
+not become observed Goshen motion. Markowski
+C = (10.5, −1.3) m/s remains sibling evidence only
+(`48` §8.3).
+
+### 8.6 Tests (I1)
+
+**NEW PROJECT DECISION.** `npm test` must pass on a
+clean clone. It must **not** require gitignored EOL
+bytes.
+
+Three artifacts, three roles:
 
 ```text
-golden: native ESC subset → frozen normalized levels
-unit/sign: pure eastward → world.x > 0, world.z = 0
-existing interpolation / clamp / shear-SRH reject clamp
-hodograph points from imported knots
-optional literacy: Markowski Fig. 2b shape after
-  reconstructing ground-relative wind; not SRH oracle
+committed synthetic ESC
+  parser / QC / header-selection / datum contracts
+  invented bytes in ESC layout; not the Goshen flight
+
+committed normalized Goshen golden
+  downstream oracle: the 2029 kept levels and
+  coverage from §7.1
+  height / eastward / northward already in world Y
+  after the locked conversion
+  not produced at test time from native EOL bytes
+
+native NSSL_MGAUS_20090605.cls
+  source-replay integration only
+  not an npm test input while G4 is OPEN
 ```
 
-Out of I1:
+Default `npm test` covers:
+
+```text
+parser/QC: synthetic concatenated ESC → select by
+        header identity (NSSL1 + 21:55:22);
+        reject a 22:40:06 NSSL1 sibling block;
+        drop t=-1, missing U/V, missing Alt,
+        Qu/Qv MISSING/BAD; no synthetic Y=0;
+        height = round(Alt − header launch elev, 1);
+        eastward=U, northward=V, vertical=0;
+        do not interpolate source gaps
+unit/sign: ESC U → eastward → world.x > 0;
+           ESC V → northward → world.z < 0
+           (existing atmosphericVelocityToWorld)
+golden: committed normalized Goshen levels →
+        EnvironmentalWindProfile;
+        2029 levels; minHeight 2.4 m;
+        maxHeight 12261.8 m; first/last winds
+        and selected-height samples match §7.1
+invariants: that constructed profile interpolates
+        and clamps as live physics;
+        shear / SRH / soundingSegmentContainingHeight
+        still refuse clamped continuation
+hodograph: hodographPoints from the golden knots,
+        not from DEMO
+literacy only: Markowski Fig. 2b shape after
+        reconstructing ground-relative wind;
+        not an SRH oracle (48 §12)
+```
+
+Native-source verification (adapter applied to the
+real concatenated `.cls`) is **out of `npm test`**.
+It is an explicit integration check, run only when
+those bytes are present locally, or it becomes a
+default test after G4 permits redistribution of the
+native ESC.
+
+Storm motion in those tests, if any, remains
+**prescribed**.
+
+### 8.7 Out of I1
 
 ```text
 App UI / Explore injection (I2)
@@ -757,14 +1045,13 @@ DEMO_SCENARIO edits
 Guided
 Bunkers
 observed or case-specific C
-  Markowski C = (10.5, −1.3) m/s is documented
-  observed motion for later sibling provenance;
-  first sandbox C remains prescribed (48 §8.3)
 thermodynamics
 radar
 provider interface
 additional soundings
 V1 reopen
+G4 EULA / native ESC redistribution
+npm test depending on gitignored EOL bytes
 ```
 
 ---
@@ -780,12 +1067,14 @@ prescribed Ω came from observations
 the six storm-local V_total operands came from
   observations
 DEMO C is the Goshen observed storm motion
+balloon drift is a horizontal sampling axis
 the imported profile is a reconstructed storm
 agreement with 5 June 2009 validates the prescribed
   kinematic laboratory
 Parker composites are this sounding
 EnKF / dual-Doppler winds are this sounding
 Markowski SRH is an Explorer pass/fail
+gitignored EOL bytes are required for npm test
 a real environmental profile makes the storm real
 ```
 
@@ -803,21 +1092,28 @@ U1 from 48   exact RAOB archive / sounding identity
 first source class remains observed-raob
 Moore is a later curated operational case, not I1
 10 May 2010 is not the first fixture
+G1–G3        native 2009-06-05 ESC obtained;
+             Bushnell/NSSL1 21:55:22 identified
+             and inspected; winds usable
+G5           unused; G3 passed
+I1 npm test  synthetic ESC + committed Goshen
+             normalized golden; not native EOL bytes
 ```
 
 Narrowed, still open:
 
 ```text
 48 U2   first fixture is not pressure-only; height
-        is ESC altitude minus launch elevation.
-        Pressure-only conversion waits for another
-        source.
+        is round(ESC Alt − header launch elevation
+        1557.9 m, 1). Pressure-only conversion
+        waits for another source.
 48 U3   I2 C still prescribed; Goshen observed
         C = (10.5, −1.3) m/s is recorded only as
         future sibling evidence
 48 U4   SRH UI still unresolved
-48 U5   in-repo vs hash  → I1 G4 (EULA text)
-I1 G1–G5  obtain and inspect the named ESC file
+48 U5   in-repo redistribution of native ESC
+        campaign bytes → G4 (EULA text).
+        I1 `npm test` does not require those bytes.
 ```
 
 ---
@@ -828,14 +1124,27 @@ I1 G1–G5  obtain and inspect the named ESC file
 WINNER:          VORTEX2 Goshen 5 June 2009
                  NSSL1 2155 UTC inflow sounding
 ARCHIVE:         EOL 114.114  DOI 10.5065/D6CC0Z0Q
+NATIVE FILE:     concatenated NSSL_MGAUS_20090605.cls
+                 (9 soundings)
+TARGET BLOCK:    Bushnell/NSSL1
+                 2009-06-05 21:55:22 UTC
+                 launch elev 1557.9 m
 FORMAT:          ESC ASCII
 SOURCE CLASS:    observed-raob
+HEIGHT DATUM:    round(ESC Alt − 1557.9, 1) → world Y
+KEPT LEVELS:     2029; minHeight 2.4 m;
+                 maxHeight 12261.8 m
 RUNNER-UP:       OUN 20 May 2013 afternoon special
                  (IGRA 17 UTC / Wyoming 18 UTC)
 MOORE LATER:     yes, curated operational-RAOB case
 10 MAY 2010:     later campaign case; not first file
-I1:              NOT STARTED; blocked only on G1–G5
-                 obtain/inspect/freeze
-IMPLEMENTATION:  NONE in this file
+G1–G3:           CLOSED
+G4:              OPEN (native ESC redistribution)
+G5:              UNUSED
+I1:              DONE in src/data/eolNsslMgausEsc/
+I2:              NOT STARTED; defined in 50
+I1 NPM TEST:     committed synthetic ESC +
+                 committed Goshen normalized golden;
+                 not gitignored EOL bytes
 V1:              CLOSED; not reopened
 ```

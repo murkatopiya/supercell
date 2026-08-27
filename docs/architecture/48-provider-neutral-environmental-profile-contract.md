@@ -1,7 +1,7 @@
 # Provider-Neutral Environmental-Profile Contract
 
 **Status:** POST-V1 ENVIRONMENT CONTRACT SoT /
-NO IMPLEMENTATION AUTHORIZATION
+I1 DONE; I2 NOT STARTED
 **Scope:** the minimum provider-neutral environmental-wind
 profile boundary needed so the existing Explorer can later
 load **one** real historical atmospheric wind profile and
@@ -16,10 +16,11 @@ seven `V_total` operands. Prescribed Ω semantics unchanged.
 `EnvironmentalWindProfile.sampleAtHeight(height)` unchanged
 as the kinematic sampler. V1 DEMO knots and DEMO `C` are
 not modified by this file.
-**Implementation:** none. Docs-only. Production `src/**`
-MUST remain unchanged. This file does not authorize a
-provider, a download, Bunkers, a DEMO_SCENARIO change, a
-Guided retarget, or thermodynamics.
+**Implementation:** this contract file is docs-only.
+I1 is in `src/data/eolNsslMgausEsc/` (`49` §7–§8).
+This file does not authorize a provider interface,
+Bunkers, a DEMO_SCENARIO change, a Guided retarget,
+or thermodynamics.
 
 Predecessor source / reconstruction boundary:
 
@@ -28,10 +29,13 @@ docs/architecture/44-long-term-source-and-reconstruction-boundary.md
 ```
 
 Successor R1 selection (closes this file's research
-gate R1; still no implementation):
+gate R1). G1–G3 native inspect is recorded there.
+I1 is in `src/data/eolNsslMgausEsc/` (`49` §7–§8).
+I2 definition:
 
 ```text
 docs/architecture/49-r1-first-historical-reference-storm.md
+docs/architecture/50-i2-goshen-sandbox-integration.md
 ```
 
 V1 CLOSED record (do not reopen):
@@ -527,6 +531,10 @@ Either is an adapter policy and must be visible in
 provenance. This file does not add an AGL/MSL solver to
 physics.
 
+First fixture (`49`): world Y =
+`round(ESC Alt − header launch elevation 1557.9 m, 1)`.
+No synthetic `Y = 0` node.
+
 ### 4.5 Conceptual record (not implemented)
 
 ```text
@@ -948,7 +956,7 @@ Distinguish:
 
 | Kind | Role in this project |
 | --- | --- |
-| Exact regression / golden fixture | **Required.** Frozen native file → frozen normalized levels → frozen hodograph knots / selected diagnostic numbers |
+| Exact regression / golden fixture | **Required.** Frozen native file → frozen normalized levels → frozen hodograph knots / selected diagnostic numbers. First fixture (`49`): default `npm test` uses committed **synthetic ESC** for parser/QC and a committed **normalized Goshen golden** as the column oracle. EOL campaign bytes are not an `npm test` input while G4 is open. |
 | Unit / sign / coordinate checks | **Required.** Native → SI; eastward/northward → world |
 | Existing physics invariants | **Reuse.** Interpolation midpoint, clamp, shear/SRH reject clamp, Form B SRH on linear segments |
 | Adapter QC plausibility ranges | **Optional warnings** (e.g. `|V|` beyond a documented insane bound as likely unit error). Not scientific pass/fail |
@@ -1024,9 +1032,10 @@ native format ESC ASCII
 sourceClass observed-raob
 ```
 
-In-repo freeze versus gitignored hash remains an I1
-recording step (`49` G4 / this file U5). Adapter
-implementation remains I1, NOT STARTED.
+In-repo freeze versus gitignored hash remains G4 /
+this file U5. G1–G3 (obtain/identify/inspect the
+named NSSL1 2155 UTC block) are CLOSED in `49`.
+I1 adapter is in `src/data/eolNsslMgausEsc/`.
 
 ---
 
@@ -1182,8 +1191,10 @@ Guided.
 **Q17. Required validation/reference fixtures?**
 
 §12: frozen golden native→normalized file; unit/sign
-tests; existing physics invariants. Climatology is not an
-oracle.
+tests; existing physics invariants. First fixture
+(`49`): synthetic ESC + committed Goshen normalized
+golden in `npm test`; native EOL replay is not
+default CI. Climatology is not an oracle.
 
 **Q18. Provider #1 class?**
 
@@ -1232,14 +1243,19 @@ injection that must not silently swap Guided.
 **Q22. Smallest implementation slice after this SoT?**
 
 ```text
-R1 is closed in 49.
+R1 is closed in 49. G1–G3 native inspect is closed
+in 49.
 
-Smallest code slice (I1), NOT STARTED:
-  one ESC adapter + frozen NSSL1 2155 UTC fixture
+Smallest code slice (I1), DONE in
+src/data/eolNsslMgausEsc/:
+  one ESC adapter + NSSL1 2155 UTC fixture
   → EnvironmentalWindProfileRecord
   → existing EnvironmentalWindProfile
   → tests for normalize / interpolate / hodograph /
     env diagnostics / provenance
+  input locked in 49 §7–§8
+  npm test: synthetic ESC + Goshen normalized golden
+  native-byte freeze remains 49 G4 / this U5
 
 Out of that slice:
   live App injection, Guided, DEMO_SCENARIO edits,
@@ -1259,22 +1275,24 @@ R1  RESEARCH GATE
     exact observed-RAOB archive, one sounding, format,
     license, in-repo freeze
     CLOSED in 49
-    remaining I1 obtainability: order/inspect/freeze
-    the named NSSL1 2155 UTC ESC file (49 G1–G5)
+    G1–G3 obtain/inspect CLOSED in 49
+    remaining native-byte freeze: 49 G4 / this U5
 
-I1  Adapter + frozen fixture + tests
+I1  Adapter + fixture + tests
     no live App, no DEMO edit, no Guided, no Bunkers
-    NOT STARTED
-    blocked on 49 G1–G5 obtain/inspect/freeze, not on
-    sounding identity
+    DONE in src/data/eolNsslMgausEsc/
+    input locked in 49 §7–§8
+    npm test does not require gitignored EOL bytes
+    native-byte freeze remains 49 G4; sounding
+    identity and G3 usability are not open
 
 I2  Opt-in Explore / laboratory environmental injection
     six storm operands remain DEMO
-    C remains prescribed and labeled
-    honesty copy from §9.3
+    C remains prescribed DEMO C
+    honesty copy from §9.3 / 50
     Guided remains DEMO
     NOT STARTED
-    blocked on I1
+    defined in 50
 
 I3+ Curated scenarios, editable hodograph, case-specific
     prescribed C, provider #2, thermodynamics, Guided
@@ -1294,17 +1312,21 @@ U1  Exact RAOB archive / product / sounding for R1
       CLOSED in 49 (Goshen NSSL1 2155 UTC, EOL 114.114)
 U2  Height conversion method when native data are
     pressure-only (adapter policy, named in provenance)
-      first fixture is not pressure-only; 49 uses ESC
-      altitude minus launch elevation → world Y
+      first fixture is not pressure-only; 49 uses
+      round(ESC Alt − header launch elevation 1557.9 m,
+      1) → world Y
 U3  Whether I2 uses DEMO C or a different prescribed C
     for that one case (still prescribed; 38 U5 not used
     as an estimator decision)
+      CLOSED for I2 in 50: DEMO prescribed C (10, 0)
 U4  Whether SRH is displayed in the sandbox UI (38 U6
     still unresolved; physics may be tested headless)
 U5  Whether the frozen native file is committed to the
     repo or gitignored with a documented hash
       narrowed in 49 G4; decided when the EOL EULA
-      accepted at order time is recorded
+      accepted at order time is recorded.
+      I1 `npm test` does not require those bytes
+      (`49` §8.6: synthetic ESC + normalized golden).
 ```
 
 Not unresolved:
@@ -1353,7 +1375,10 @@ inter-source disagreement waits for provider #2
 this file:     provider-neutral environmental-wind
                profile contract; first historical
                sandbox contract; RAOB class
-49:            R1 selection; Goshen NSSL1 2155 UTC
+49:            R1 selection; Goshen NSSL1 2155 UTC;
+               G1–G3 forensic inspect; I1 input
+50:            I2 Explore Goshen sandbox definition;
+               I2 NOT STARTED
 44:            long-term source / reconstruction
                boundary; still authoritative for that
                split
@@ -1385,9 +1410,10 @@ SANDBOX DOES NOT:    make the storm real; derive Ω or C;
                      retarget Guided
 PROVIDER CLASS:      observed RAOB
 EXACT ARCHIVE:       49  EOL 114.114  Goshen NSSL1 2155 UTC
+                     G1–G3 CLOSED in 49; G4 OPEN
 PHYSICS APIs:        no change required for I1
-LIVE INJECTION:      I2 opt-in; not DEMO/Guided overwrite
-IMPLEMENTATION:      NONE
+LIVE INJECTION:      I2 opt-in Explore; defined in 50
+I1:                  src/data/eolNsslMgausEsc/
 V1:                  CLOSED; not reopened
 ```
 
@@ -1396,6 +1422,6 @@ V1:                  CLOSED; not reopened
 ## 22. Implementation
 
 This document does not include implementation.
-Production `src/**` remains unchanged.
-No provider, download, Bunkers, DEMO, Guided, or
-thermodynamic work is in scope.
+I1 lives in `src/data/eolNsslMgausEsc/` (`49` §7–§8).
+No provider interface, Bunkers, DEMO, Guided, or
+thermodynamic work is in this contract.
