@@ -680,7 +680,21 @@ Those last two items are not current-profile features. They are
 candidate providers behind a future **provider-neutral
 environmental-profile contract**, which is not this document
 and is not started here. They are not a 3D storm
-reconstruction. See
+reconstruction.
+
+That future contract, if it hosts more than one provider,
+may treat inter-source disagreement as a sensitivity /
+literacy signal. It must not treat that disagreement as
+complete uncertainty or as a scalar `confidence`.
+
+Storm motion remains outside this profile. A future
+environment contract must distinguish storm-motion
+**value**, **source-or-method**, **validity**, and
+**provenance**: a derived estimator (for example a
+Bunkers-type method from the profile) and an observed
+track (for example radar / cell tracking) can share a
+vector type without sharing meaning. The current
+`StormMotion` type stays value-only. See
 `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ---

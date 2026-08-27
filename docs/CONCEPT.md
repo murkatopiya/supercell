@@ -488,6 +488,15 @@ information, and limits of interpretation. This does not require
 decomposing a reconstructed velocity into the current seven
 prescribed laboratory operands.
 
+If more than one environmental source is later available, their
+disagreement may be shown as a sensitivity signal. It is not
+automatically a complete uncertainty, and it is not a scalar
+`confidence`.
+
+Storm motion, when no longer a single prescribed constant, must
+keep its method identity: a derived estimator and an observed
+storm track can share a vector type without sharing meaning.
+
 ---
 
 ## 14. Long-Term Vision

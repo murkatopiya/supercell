@@ -40,6 +40,7 @@ docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 docs/architecture/19-shared-tracer-inspector.md
 docs/physics/02-velocity-field-basics.md
 docs/physics/04-environmental-wind-profile.md
+docs/physics/07-storm-relative-wind.md
 docs/physics/12-composite-velocity-field.md
 ```
 
@@ -424,7 +425,57 @@ QC flag enumerations
 observation-operator details
 assimilation window / cost function
 that DatasetVelocityField is the uncertainty owner
+inter-source disagreement (e.g. RAOB vs analysis) as a
+  complete uncertainty budget or as scalar confidence
 ```
+
+### 6.5 Inter-source disagreement as intermediate literacy
+
+**Kind:** NEW PROJECT DECISION for the future
+provider-neutral environmental-profile contract. Not a UI.
+Not an API. Not a V1 change.
+
+If that contract ever hosts more than one provider at once
+(for example RAOB and a model analysis / reanalysis for
+comparable time and location), the **disagreement between
+those sources** may be a useful first-class
+**inter-source disagreement / sensitivity signal**.
+
+It is an **intermediate uncertainty-literacy mechanism**:
+it can teach that “the environment” is not a unique
+number, before any retrieval-scale uncertainty object
+exists.
+
+It is **not** automatically:
+
+```text
+a complete uncertainty budget
+a scalar confidence
+a substitute for method-specific retrieval uncertainty
+proof that either source is unbiased
+```
+
+Two sources may share bias, sample different spatial or
+temporal representativeness, use different vertical
+coordinates, or disagree for reasons that are not
+random error. Displaying or recording their difference
+does not by itself quantify how wrong either one is.
+
+The future environment contract SoT must therefore:
+
+```text
+allow disagreement / sensitivity to be represented as
+  itself, if multiple providers are in scope
+forbid silently collapsing that difference into
+  confidence: number or “the” uncertainty of V_env
+leave the concrete UI and comparison API undesigned
+  until that contract is written
+```
+
+This mechanism, if later adopted, lives on the
+**engineering / environment** track. It does not make
+Explorer own storm-scale reconstruction, and it does not
+change `VelocityField.sample(): Vec3`.
 
 ---
 
@@ -511,11 +562,15 @@ interpolation in the vertical
 missing levels
 QC
 time / location validity
-storm-motion source
+storm-motion value, source-or-method, validity, and
+  provenance (see §8.2)
 observed vs modeled / reanalysis provenance
 which quantities are stored vs derived
 units and meteorological conventions
 uncertainty where the source actually provides it
+inter-source disagreement / sensitivity, if more than
+  one provider is in scope (see §6.5) — not as scalar
+  confidence
 ```
 
 `physics/04` remains the SoT for the current prescribed
@@ -526,6 +581,79 @@ stay out of that current-profile scope.
 scenarios, editable hodograph, scenario editor) remains
 POST-V1 product parking. It is not this contract, and it
 is not reconstruction.
+
+`38` U5 (storm-motion **rule** vs per-scenario
+**constant** for a later curated-scenario SoT) remains a
+separate POST-V1 product-policy question. It is not
+reopened here. Provenance of `C` (§8.2) is required
+whenever storm motion can come from more than one
+epistemic class, regardless of which U5 option is later
+chosen.
+
+This file still does not include the contract, choose
+providers, or design comparison / `stormMotion` DTOs.
+
+### 8.1 Multiple providers
+
+RAOB, RAP, HRRR, and other sources remain **candidate
+providers**, not core physics, until a later evidence
+review selects otherwise.
+
+If more than one provider is later in scope, disagreement
+among them is a possible literacy/sensitivity signal
+(§6.5), not a default uncertainty type.
+
+### 8.2 Storm-motion provenance
+
+Live V1 `StormMotion` is a value-only horizontal pair
+(`physics/07`, `src/physics/environment/stormRelativeWind.ts`):
+
+```text
+{ eastward, northward }   // m/s
+```
+
+DEMO `C` is a prescribed constant. `physics/07` and `03`
+already keep Bunkers and other estimators out of the
+current subtraction map: the frame consumes a `C`; it
+does not say how `C` was obtained.
+
+That value-only shape is honest for V1. It is **not**
+sufficient for a data-driven environmental contract.
+
+**NEW PROJECT DECISION.** The future contract must be
+able to distinguish at least:
+
+```text
+value            the horizontal vector C
+source-or-method how C was obtained
+validity         time / location / applicability window
+provenance       origin identity; observed vs derived
+```
+
+The same TypeScript-shaped vector can have different
+**epistemic meanings**. At least these classes are not
+interchangeable just because both can populate
+`StormMotion`:
+
+```text
+derived C     e.g. a Bunkers-type (or other) estimator
+              computed from an environmental wind profile
+observed C    e.g. radar / cell tracking of the actual
+              storm motion
+prescribed C  the current V1 laboratory constant
+```
+
+A derived estimator answers “what motion does this
+profile imply under a named rule?” An observed track
+answers “how did this storm actually move, as measured?”
+Using one silently as the other would falsify SRH,
+storm-relative wind, and any later observed-storm
+context.
+
+The future contract SoT must record that distinction. The
+concrete DTO, factory, and UI are **not** designed here.
+Bunkers is **not** selected and **not** authorized.
+Current `StormMotion` and DEMO `C` stay unchanged.
 
 ---
 
@@ -628,7 +756,9 @@ CONCEPT §11    replace synthetic→numerical-model as the
 CONCEPT §12    Explorer is not a retrieval / reconstruction
                engine
 CONCEPT §13    long-term “explain every inference”;
-               uncertainty is not a V1 API change
+               uncertainty is not a V1 API change;
+               inter-source disagreement ≠ confidence;
+               storm-motion method identity
 CONCEPT §14    reconstructed 3D storm is not an ordinary
                vision bullet
 ARCHITECTURE §1  Explorer is a consumer of atmospheric
@@ -644,7 +774,12 @@ ARCHITECTURE §36 keep source-swap success; remove
 physics/02 §40 interpolation of an already-gridded field
                is not observational retrieval
 physics/04 §21 next environment SoT is the provider-neutral
-               contract; providers not chosen
+               contract; providers not chosen;
+               inter-source disagreement and stormMotion
+               provenance are questions for that SoT
+physics/07     current StormMotion remains value-only;
+               future C provenance is the environment
+               contract, not this subtraction map
 21 header      successor pointer to this file for the
                dataset-arrow reading of §7 / §9.E
 30 header      this file refines source-class D / U1;
@@ -672,6 +807,14 @@ this file does not design retrieval
 this file does not choose RAOB / RAP / HRRR / other providers
 this file does not include the provider-neutral environment
   contract
+this file does not design a stormMotion provenance DTO
+this file does not design an inter-source comparison UI/API
+this file does not select or implement Bunkers
+inter-source disagreement is not complete uncertainty
+inter-source disagreement is not scalar confidence
+Bunkers-type C and tracked C are not interchangeable
+  because they share a vector shape
+38 U5 is not reopened
 reconstructed 3D storm is not the next engineering milestone
 CM1 / WRF consume-adapter is not observational retrieval
 data-driven environment is not a 3D storm reconstruction
@@ -703,6 +846,8 @@ physics/02:    VelocityField meaning; dataset interpolation
                is consume, not retrieval
 physics/04:    current prescribed profile; import remains
                out of current scope
+physics/07:    value-only StormMotion subtraction map;
+               estimator vs observed C not this file
 ```
 
 ---
@@ -733,6 +878,18 @@ VELOCITYFIELD:          sample() → Vec3 UNCHANGED
 CONFIDENCE SCALAR:      NOT ADDED; not the future shape
 UNCERTAINTY:            future first-class capability;
                         shape not designed here
+INTER-SOURCE
+  DISAGREEMENT:         possible intermediate literacy /
+                        sensitivity signal if multiple
+                        environment providers exist;
+                        not complete uncertainty; not
+                        scalar confidence; no UI/API now
+STORM MOTION:           future contract must distinguish
+                        value / source-or-method /
+                        validity / provenance;
+                        derived ≠ observed ≠ prescribed C;
+                        DTO not designed; Bunkers not
+                        selected; V1 StormMotion unchanged
 
 EXPLAIN EVERY INFERENCE: long-term honesty for inferred
                         state; not seven-operand reuse
