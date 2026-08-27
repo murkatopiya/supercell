@@ -18,7 +18,9 @@ does not reopen `17`, `22`, `23`, `24`, `26`, `28`, `30`–`37`.
 **Implementation:** this checkpoint itself remains docs-only.
 M2 production closure and feature freeze are recorded via
 successor `39`. Remaining V1 path after 42-1 is `43` (M5 next;
-leftover UX slices are not pre-M5 MUST).
+leftover UX slices are not pre-M5 MUST). Long-term source /
+reconstruction boundary is `44`; it does not change this freeze
+or the M5 path.
 
 Predecessor Reset View / camera recovery architecture:
 
@@ -509,7 +511,11 @@ PHYSICS / DYNAMICS (post-V1 only inside a named later SoT)
 
 DATA / DATASETS
   dataset-backed velocity source adapter
+    (consume already-complete or already-estimated fields;
+     not observational retrieval; see `44`)
   dual-source product mode
+    (synthetic laboratory remains a mode; reconstruction
+     is a separate producer track, not this parking-lot item)
 
 PLATFORM / RELEASE
   persistence / deep-link / shareable state
@@ -1315,7 +1321,11 @@ PHYSICS / DYNAMICS
 
 DATA / DATASETS
   dataset-backed velocity source adapter
+    (consume already-complete or already-estimated fields;
+     not observational retrieval; see `44`)
   dual-source product mode
+    (synthetic laboratory remains a mode; reconstruction
+     is a separate producer track, not this parking-lot item)
 ```
 
 Items in §4.4 are **not** in this parking lot. They are out of

@@ -60,6 +60,14 @@ docs/reviews/2026-08-18-independent-project-audit.md
 docs/reviews/2026-08-19-independent-perceptual-airflow-review.md
 ```
 
+Long-term source / reconstruction boundary (does not replace
+this capability map; does not reopen V1 or M5; supersedes the
+single-arrow reading of §7 / §9.E “dataset” as the next storm):
+
+```text
+docs/architecture/44-long-term-source-and-reconstruction-boundary.md
+```
+
 Physics pause of `15` D is lifted for design in `24`.
 Revalidation in `25`: CONDITIONAL. The leading *question*
 remains tilting / stretching; the next design target is T1

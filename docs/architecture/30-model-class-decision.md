@@ -58,6 +58,14 @@ synthetic class is locked. This file remains the
 model-class SoT. Completing `30` does **not** start UI,
 stretching, T2, or dataset work.
 
+Long-term source-class / reconstruction boundary (does not
+change class A; refines class D and U1 as consume, not
+retrieve; does not start dataset work):
+
+```text
+docs/architecture/44-long-term-source-and-reconstruction-boundary.md
+```
+
 This document did **not** change production code.
 It does **not** create `ROADMAP.md`.
 It does **not** start a selected branch.

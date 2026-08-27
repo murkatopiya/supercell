@@ -10,17 +10,22 @@
 
 ## 1. Architectural Goals
 
-Supercell Explorer is expected to evolve from a small conceptual particle
-laboratory into an interactive visualization of numerical atmospheric
-simulation data.
+Supercell Explorer is a consumer of atmospheric state.
 
-The architecture must therefore support two very different stages:
+It is expected to remain useful as a prescribed conceptual
+particle laboratory, and later to visualize atmospheric fields
+from other sources when those sources actually exist: data-driven
+environmental profiles, observed-storm context, numerical model
+output, and — if independently produced — estimated or
+reconstructed fields.
 
-1. simple synthetic atmospheric fields used for learning and validation;
-2. large time-dependent atmospheric datasets produced by numerical models.
+The architecture must therefore keep visualization independent of
+how a velocity (or other field) was produced.
 
-The visualization system should not need to know which type of data source is
-currently being used.
+Reconstruction of a storm-scale 3D wind field from incomplete
+observations is not a later visualization stage of this
+architecture. It is a separate producer / research problem.
+See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 The fundamental architectural principle is:
 
@@ -52,7 +57,9 @@ The project is divided conceptually into the following layers:
 │ velocity, temperature, moisture, etc.        │
 ├───────────────────────────────────────────────┤
 │                 Data Sources                  │
-│ synthetic fields / future model datasets     │
+│ synthetic / profiles / model output /         │
+│ externally supplied estimated fields          │
+│ (Explorer consumes; it does not retrieve)     │
 └───────────────────────────────────────────────┘
 ```
 
@@ -393,17 +400,28 @@ the class name alone.
 
 # 12. Future Dataset Fields
 
-Later versions may use atmospheric simulation datasets.
+Later versions may consume atmospheric fields that already exist
+as grids or equivalent products: numerical-model output, and —
+if independently produced — estimated or reconstructed fields.
 
-The same interface should remain usable:
+The same consumer interface should remain usable:
 
 ```ts
 class DatasetVelocityField implements VelocityField {
   sample(position: Vec3, time: number): Vec3 {
-    // Interpolate numerical model data.
+    // Interpolate an already-complete or already-estimated field.
   }
 }
 ```
+
+`DatasetVelocityField` is a **consumer adapter**. It interpolates
+a field that some other producer already defined. It is not a
+retrieval method, not dual-Doppler synthesis, and not variational
+data assimilation.
+
+This sketch does not design that adapter, does not change
+`VelocityField.sample(position, time): Vec3`, and does not
+authorize implementation.
 
 The implementation may internally require:
 
@@ -420,8 +438,13 @@ From the perspective of a particle:
 
 > "What is the velocity here, now?"
 
-Whether the answer comes from an analytical function or a numerical model
-dataset is irrelevant.
+Whether the answer comes from an analytical function, a numerical
+model dataset, or an externally supplied estimate is irrelevant
+to the tracer. It is not irrelevant to scientific honesty: source
+identity, provenance, and future uncertainty / quality live
+**beside** this velocity contract, not inside the returned `Vec3`.
+
+See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ---
 
@@ -1175,13 +1198,26 @@ the project's evolution:
 
 ### Replace the atmospheric source
 
+Explorer can consume a different already-defined velocity source
+without rewriting the renderer:
+
 ```text
-SyntheticVelocityField
-        ↓
-CM1 / WRF / other dataset
+prescribed SyntheticVelocityField
+        ↓  consume-adapter, not retrieval
+CM1 / WRF / other already-complete model output
+        or
+externally supplied estimated field, if one exists
 ```
 
-without rewriting the renderer.
+That swap is an engineering consumer-port success.
+
+It is **not** the reconstruction research track
+(observations → retrieval → estimated 3D `V`). Reconstruction
+is a separate producer problem. Explorer does not own it, and
+the product remains useful if no trustworthy reconstructed
+field is ever available.
+
+See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ### Replace the renderer
 
@@ -1215,6 +1251,15 @@ For a selected tracer and timestep, the system can ultimately answer:
 
 The answer must come from inspectable atmospheric field contributions, not from
 hidden animation logic.
+
+In the prescribed laboratory those contributions are the named
+operands of `V_total`.
+
+For inferred or reconstructed state, a later source is **not**
+required to expose those seven operands. Honesty there is
+explain every inference: provenance, observed versus inferred
+distinction, method identity, available uncertainty or quality
+information, and limits of interpretation.
 
 ---
 

@@ -289,12 +289,27 @@ categories:
 
 ### Physically simulated
 
-Derived from numerical atmospheric simulation data.
+Derived from numerical atmospheric simulation data: complete or
+native output of a forward model, not an inverse estimate of that
+model.
 
 ### Conceptual / synthetic
 
 Created mathematically to demonstrate a physical mechanism while intentionally
 simplifying the real atmosphere.
+
+### Observed or inferred
+
+Derived from observations, analyses, reanalyses, or retrieval /
+inference methods rather than from a prescribed formula or from
+complete forward-model output.
+
+Observed quantities and inferred quantities must remain
+distinguishable whenever the source makes that distinction
+available.
+
+A retrieved or analyzed field must not be labeled “physically
+simulated” merely because values exist on a grid.
 
 ### Visual encoding
 
@@ -306,8 +321,13 @@ These categories must never be confused.
 
 A synthetic conceptual model must be identified as such.
 
-A visualization must never imply greater physical accuracy than its underlying
-data supports.
+A visualization must never imply greater physical accuracy,
+completeness, or certainty than its underlying data and method
+support.
+
+Long-term source classes, reconstruction ownership, and the
+boundary between consuming a field and inferring one are defined
+in `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ---
 
@@ -348,21 +368,38 @@ Development begins with simple, controlled vector fields and tracer particles.
 Individual atmospheric mechanisms are added progressively and validated in
 isolation before they are combined.
 
-Over time, the project may evolve from synthetic conceptual fields toward
-velocity and thermodynamic fields produced by numerical atmospheric models.
+Explorer is a consumer of atmospheric velocity and related state.
 
-The rendering and interaction systems should therefore remain conceptually
-independent from the source of the atmospheric data.
+Later sources may include data-driven environmental profiles,
+observed-storm context, numerical atmospheric-model output, and —
+if independently produced — externally supplied estimated or
+reconstructed fields. Those are engineering / integration stages
+for Explorer.
 
-A tracer should not care whether its velocity comes from a simple synthetic
-field or from a numerical supercell simulation.
+They are not the same work as reconstructing a storm-scale 3D
+wind field `V(x,y,z)` from incomplete observations. That
+reconstruction is an inverse / retrieval research problem, not
+the next visualization milestone, and Explorer does not own it.
 
-It asks only:
+The rendering and interaction systems should therefore remain
+conceptually independent from the source of the atmospheric data.
+
+A tracer asks only:
 
 > **What is the atmospheric velocity at this position and time?**
 
-This separation allows the physical model to become progressively more
-realistic without requiring the entire visualization system to be rebuilt.
+It does not ask how that velocity was prescribed, simulated,
+observed, or inferred. Honesty about origin belongs to source
+identity, provenance, and — when the source is inferred — to a
+future uncertainty / quality capability. It does not belong
+inside the tracer.
+
+This separation lets Explorer consume a more realistic source
+without rebuilding the visualization system. It does not promise
+that a trustworthy full-field reconstruction of a real storm
+will exist.
+
+See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ---
 
@@ -374,6 +411,10 @@ Supercell Explorer is not intended to be:
 - an operational meteorological tool;
 - a replacement for professional scientific visualization software;
 - a complete numerical atmospheric solver;
+- a storm-scale wind retrieval, dual-Doppler synthesis, or
+  variational data-assimilation system;
+- a reconstruction engine whose job is to infer complete 3D `V`
+  from incomplete observations;
 - a tornado game;
 - a storm-chasing simulator;
 - a photorealistic graphics demo;
@@ -421,6 +462,12 @@ spatial representations.
 
 Conceptual models and approximations should be explicitly identified.
 
+For inferred, analyzed, or reconstructed data, uncertainty,
+quality, and provenance should be representable as a first-class
+capability. That capability is not a scalar `confidence` bolted
+onto current `VelocityField.sample()`, and its shape is not
+chosen in V1.
+
 ### Interaction should create understanding
 
 Controls exist because they help the user investigate the system, not merely
@@ -431,6 +478,16 @@ because they are technically possible.
 Whenever possible, the visualization should help connect visible behavior to
 the physical mechanism responsible for it.
 
+In the prescribed laboratory that means: explain every motion
+from inspectable field contributions.
+
+For inferred or reconstructed state the long-term extension is:
+explain every inference — provenance, observed versus inferred
+distinction, method identity, available uncertainty or quality
+information, and limits of interpretation. This does not require
+decomposing a reconstructed velocity into the current seven
+prescribed laboratory operands.
+
 ---
 
 ## 14. Long-Term Vision
@@ -440,8 +497,12 @@ invisible structures can be investigated as one coherent atmospheric system.
 
 A mature version may combine:
 
-- numerical supercell simulation datasets;
-- three-dimensional atmospheric vector fields;
+- numerical supercell simulation datasets consumed as
+  already-complete fields;
+- data-driven environmental profiles;
+- observed-storm context;
+- three-dimensional atmospheric vector fields from a source
+  that actually provides them;
 - volumetric cloud and hydrometeor data;
 - interactive tracer particles;
 - streamlines and trajectories;
@@ -454,10 +515,22 @@ A mature version may combine:
 - educational explanations;
 - comparisons between different storm environments and structures.
 
+A reconstructed storm-scale 3D wind field from incomplete
+observations is not an ordinary item on that list. It is a
+separate research-producer problem with substantially higher
+scientific risk, unknown timeline, and no promise of success.
+Explorer remains useful without it.
+
 However, the project must grow toward this vision progressively.
 
 The existence of the long-term vision must never justify implementing future
 complexity prematurely.
+
+The existence of that vision must never be read as a roadmap in
+which reconstructed 3D storm is the next engineering stage after
+the prescribed laboratory.
+
+See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ---
 

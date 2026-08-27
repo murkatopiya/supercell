@@ -682,6 +682,8 @@ M1 is not waived; Slice E is not the only honest form of M1.
 41  release entry; Highlight meaning
 42  Environment/Airflow placement architecture; 42-1 done
 43  this file: sufficiency, scope-cut, remaining path
+44  long-term source / reconstruction boundary;
+    does not affect this file’s V1 / M5 path
 ```
 
 ---

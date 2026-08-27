@@ -676,6 +676,13 @@ It does not yet include:
 - observational sounding import;
 - numerical weather-model datasets.
 
+Those last two items are not current-profile features. They are
+candidate providers behind a future **provider-neutral
+environmental-profile contract**, which is not this document
+and is not started here. They are not a 3D storm
+reconstruction. See
+`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
+
 ---
 
 ## 22. Development rule

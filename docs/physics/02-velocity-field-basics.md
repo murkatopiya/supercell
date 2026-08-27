@@ -897,20 +897,29 @@ These fields are ideal for early project stages.
 
 ## 40. Dataset Field
 
-A numerical atmospheric model provides velocity values at discrete grid
+A numerical atmospheric model, or an externally supplied
+estimated field, may provide velocity values at discrete grid
 locations and times.
 
 The application may need to estimate velocity at arbitrary tracer positions.
 
 Conceptually:
 
-    model grid
+    already-defined grid
         ↓
     interpolation
         ↓
     V(position, time)
 
-Dataset interpolation must eventually be documented and validated separately.
+That interpolation samples a field that already exists. It is
+not observational retrieval: it does not infer storm-scale
+`V(x,y,z)` from incomplete observations.
+
+`VelocityField.sample()` remains a deterministic velocity
+abstraction. Dataset interpolation must eventually be
+documented and validated separately. Reconstruction ownership
+and uncertainty live in
+`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 
 ---
 
