@@ -40,6 +40,8 @@ describe("EnvironmentSurface", () => {
     expect(html).toContain("Hodograph");
     expect(html).toContain("aria-label=\"Ground-relative hodograph\"");
     expect(html).toContain("Hodograph overlays");
+    expect(html.match(/hodograph-panel__marker/g)).toHaveLength(5);
+    expect(html.match(/hodograph-panel__height-label/g)).toHaveLength(5);
     expect(html).toContain("Storm motion C");
     expect(html).toContain("Close Environment");
     expect(html).not.toMatch(/<section[^>]*\shidden/);

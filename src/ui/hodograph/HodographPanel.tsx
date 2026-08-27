@@ -17,7 +17,7 @@ import {
   canBuildStreamwiseCrosswiseTips,
   findExactHodographPoint,
   formatHeightMeters,
-  hodographHeightLabelIndices,
+  hodographDisplayKnotIndices,
   isZeroHorizontalVorticity,
   mapHodographPointsToScreen,
   omegaArrowEnd,
@@ -62,7 +62,10 @@ export function HodographPanel({
   const overlayVelocities = stormMotion ? [stormMotion] : [];
   const transform = buildViewTransform(points, overlayVelocities);
   const screenPoints = mapHodographPointsToScreen(points, transform);
-  const heightLabelIndices = hodographHeightLabelIndices(points);
+  const displayKnotIndices = hodographDisplayKnotIndices(
+    points,
+    selectedHeight,
+  );
   const polylinePoints = screenPoints
     .map((point) => `${point.x},${point.y}`)
     .join(" ");
@@ -440,20 +443,23 @@ export function HodographPanel({
         </g>
       ) : null}
 
-      {points.map((point, index) => {
-        const screen = screenPoints[index]!;
-        const selected = selectedPoint !== undefined && point === selectedPoint;
-        return (
-          <g key={`knot-${point.height}-${index}`}>
-            <circle
-              cx={screen.x}
-              cy={screen.y}
-              r={selected ? SELECTED_KNOT_RADIUS : KNOT_RADIUS}
-              className="hodograph-panel__marker"
-              stroke={selected ? "#0842a0" : undefined}
-              strokeWidth={selected ? 2 : undefined}
-            />
-            {heightLabelIndices.has(index) ? (
+      {[...displayKnotIndices]
+        .sort((left, right) => left - right)
+        .map((index) => {
+          const point = points[index]!;
+          const screen = screenPoints[index]!;
+          const selected =
+            selectedPoint !== undefined && point === selectedPoint;
+          return (
+            <g key={`knot-${point.height}-${index}`}>
+              <circle
+                cx={screen.x}
+                cy={screen.y}
+                r={selected ? SELECTED_KNOT_RADIUS : KNOT_RADIUS}
+                className="hodograph-panel__marker"
+                stroke={selected ? "#0842a0" : undefined}
+                strokeWidth={selected ? 2 : undefined}
+              />
               <text
                 x={screen.x + 8}
                 y={screen.y - 8}
@@ -461,10 +467,9 @@ export function HodographPanel({
               >
                 {formatHeightMeters(point.height)}
               </text>
-            ) : null}
-          </g>
-        );
-      })}
+            </g>
+          );
+        })}
 
       {showStormMotion && stormScreen ? (
         <g className="hodograph-panel__storm-motion">

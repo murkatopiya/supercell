@@ -30,6 +30,7 @@ import {
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
+import { hodographDisplayKnotIndices } from "../ui/hodograph/hodographViewTransform.js";
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import { verticalWindShearBetween } from "../physics/environment/verticalWindShear.js";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
@@ -272,16 +273,25 @@ describe("I2 Goshen Explore sandbox", () => {
     );
   });
 
-  it("thins Goshen height labels without resampling the polyline", () => {
+  it("thins Goshen display markers without resampling the polyline", () => {
     const points = hodographPoints(GOSHEN_2009_OBSERVED_RECORD.profile);
     const html = renderToStaticMarkup(
       <HodographPanel points={points} stormMotion={DEMO_SCENARIO.stormMotion} />,
     );
-    expect(html.match(/hodograph-panel__polyline/g)).toHaveLength(1);
-    expect(html.match(/hodograph-panel__marker/g)).toHaveLength(2029);
+    const displayIndices = hodographDisplayKnotIndices(points);
+    const polylineTag = html.match(/<polyline\b[^>]*>/)?.[0];
+    const polylinePoints = polylineTag?.match(/points="([^"]+)"/)?.[1] ?? "";
+    const markers = html.match(/hodograph-panel__marker/g) ?? [];
     const labels = html.match(/hodograph-panel__height-label/g) ?? [];
-    expect(labels.length).toBeGreaterThan(2);
-    expect(labels.length).toBeLessThan(30);
+
+    expect(points).toHaveLength(2029);
+    expect(html.match(/hodograph-panel__polyline/g)).toHaveLength(1);
+    expect(polylinePoints.split(" ").filter(Boolean)).toHaveLength(2029);
+    expect(markers.length).toBe(displayIndices.size);
+    expect(labels.length).toBe(markers.length);
+    expect(markers.length).toBeGreaterThan(2);
+    expect(markers.length).toBeLessThan(30);
+    expect(markers.length).toBeLessThan(points.length);
     expect(html).toContain("2.4 m");
     expect(html).toContain("12261.8 m");
   });

@@ -234,36 +234,59 @@ export function formatHeightMeters(height: number): string {
 }
 
 /**
- * Dense imported columns keep every knot on the polyline; height
- * labels are a display detail. Short DEMO columns keep every label.
+ * Dense imported columns keep every knot on the polyline.
+ * Markers and height labels share one display subset.
+ * Short DEMO columns keep every marker and label.
  */
-export const DENSE_HODOGRAPH_LABEL_THRESHOLD = 12;
+export const DENSE_HODOGRAPH_DISPLAY_THRESHOLD = 12;
 
-export function hodographHeightLabelIndices(
+export const HODOGRAPH_DISPLAY_REFERENCE_HEIGHTS_M = [
+  0, 1000, 2000, 3000, 4000, 6000, 8000, 10000, 12000,
+] as const;
+
+function nearestKnotIndex(
   points: readonly HodographPoint[],
+  targetHeight: number,
+): number {
+  let bestIndex = 0;
+  let bestDistance = Infinity;
+  for (let index = 0; index < points.length; index++) {
+    const distance = Math.abs(points[index]!.height - targetHeight);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      bestIndex = index;
+    }
+  }
+  return bestIndex;
+}
+
+export function hodographDisplayKnotIndices(
+  points: readonly HodographPoint[],
+  selectedHeight?: number,
 ): ReadonlySet<number> {
-  if (points.length <= DENSE_HODOGRAPH_LABEL_THRESHOLD) {
+  if (points.length <= DENSE_HODOGRAPH_DISPLAY_THRESHOLD) {
     return new Set(points.map((_, index) => index));
   }
 
-  const indices = new Set<number>([0, points.length - 1]);
+  const lastIndex = points.length - 1;
+  const indices = new Set<number>([0, lastIndex]);
   const minHeight = points[0]!.height;
-  const maxHeight = points[points.length - 1]!.height;
-  const firstKm = Math.ceil(minHeight / 1000);
-  const lastKm = Math.floor(maxHeight / 1000);
+  const maxHeight = points[lastIndex]!.height;
 
-  for (let km = firstKm; km <= lastKm; km++) {
-    const target = km * 1000;
-    let bestIndex = 0;
-    let bestDistance = Infinity;
-    for (let index = 0; index < points.length; index++) {
-      const distance = Math.abs(points[index]!.height - target);
-      if (distance < bestDistance) {
-        bestDistance = distance;
-        bestIndex = index;
-      }
+  for (const target of HODOGRAPH_DISPLAY_REFERENCE_HEIGHTS_M) {
+    if (target < minHeight || target > maxHeight) {
+      continue;
     }
-    indices.add(bestIndex);
+    indices.add(nearestKnotIndex(points, target));
+  }
+
+  if (selectedHeight !== undefined) {
+    const selectedIndex = points.findIndex(
+      (point) => point.height === selectedHeight,
+    );
+    if (selectedIndex >= 0) {
+      indices.add(selectedIndex);
+    }
   }
 
   return indices;

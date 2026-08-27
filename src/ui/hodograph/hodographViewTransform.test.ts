@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
 import { horizontalVorticityFromShear } from "../../physics/environment/horizontalVorticity.js";
 import { stormRelativeWind } from "../../physics/environment/stormRelativeWind.js";
 import { decomposeHorizontalVorticity } from "../../physics/environment/streamwiseCrosswiseVorticity.js";
 import { verticalWindShearBetween } from "../../physics/environment/verticalWindShear.js";
 import { EnvironmentalWindProfile } from "../../physics/environment/EnvironmentalWindProfile.js";
+import { HodographPanel } from "./HodographPanel.js";
 import {
   OMEGA_ARROW_LENGTH_PX,
   areAdjacentExactKnots,
@@ -15,7 +18,7 @@ import {
   findExactHodographPoint,
   fitEqualAspect,
   formatHeightMeters,
-  hodographHeightLabelIndices,
+  hodographDisplayKnotIndices,
   isZeroHorizontalVorticity,
   mapHodographPointsToScreen,
   omegaArrowEnd,
@@ -271,12 +274,14 @@ describe("hodographViewTransform", () => {
     });
   });
 
-  describe("hodographHeightLabelIndices", () => {
-    it("labels every knot on a short DEMO-length column", () => {
-      expect(hodographHeightLabelIndices(demoPoints)).toEqual(new Set([0, 1, 2]));
+  describe("hodographDisplayKnotIndices", () => {
+    it("includes every knot on a short DEMO-length column", () => {
+      expect(hodographDisplayKnotIndices(demoPoints)).toEqual(
+        new Set([0, 1, 2]),
+      );
     });
 
-    it("keeps endpoints and about one label per kilometre on a dense column", () => {
+    it("keeps endpoints and pedagogical nearest knots on a dense column", () => {
       const dense: HodographPoint[] = [];
       for (let i = 0; i < 50; i++) {
         dense.push({
@@ -285,11 +290,153 @@ describe("hodographViewTransform", () => {
           northward: 0,
         });
       }
-      const indices = hodographHeightLabelIndices(dense);
+      const indices = hodographDisplayKnotIndices(dense);
       expect(indices.has(0)).toBe(true);
       expect(indices.has(dense.length - 1)).toBe(true);
+      expect(indices.size).toBe(10);
       expect(indices.size).toBeLessThan(dense.length);
-      expect(indices.size).toBeGreaterThan(2);
+
+      let nearest5k = 0;
+      let nearest5kDistance = Infinity;
+      for (let index = 0; index < dense.length; index++) {
+        const distance = Math.abs(dense[index]!.height - 5000);
+        if (distance < nearest5kDistance) {
+          nearest5kDistance = distance;
+          nearest5k = index;
+        }
+      }
+      expect(indices.has(nearest5k)).toBe(false);
+    });
+
+    it("selects the nearest existing knot and labels its actual height", () => {
+      const dense: HodographPoint[] = [];
+      for (let i = 0; i < 13; i++) {
+        dense.push({
+          height: 50 + i * 100,
+          eastward: i,
+          northward: 0,
+        });
+      }
+      const indices = hodographDisplayKnotIndices(dense);
+      const nearestTo1000 = dense.reduce(
+        (best, point, index) => {
+          const distance = Math.abs(point.height - 1000);
+          return distance < best.distance
+            ? { index, distance, height: point.height }
+            : best;
+        },
+        { index: 0, distance: Infinity, height: dense[0]!.height },
+      );
+      expect(dense.some((point) => point.height === 1000)).toBe(false);
+      expect(indices.has(nearestTo1000.index)).toBe(true);
+      expect(nearestTo1000.height).toBe(950);
+      expect(formatHeightMeters(dense[nearestTo1000.index]!.height)).toBe(
+        "950 m",
+      );
+      expect(formatHeightMeters(dense[nearestTo1000.index]!.height)).not.toBe(
+        "1000 m",
+      );
+    });
+
+    it("skips an out-of-support 0 m target without inventing a knot", () => {
+      const dense: HodographPoint[] = [];
+      for (let i = 0; i < 13; i++) {
+        dense.push({
+          height: 2.4 + i * 1000,
+          eastward: i,
+          northward: 0,
+        });
+      }
+      const indices = hodographDisplayKnotIndices(dense);
+      expect(dense[0]!.height).toBe(2.4);
+      expect(dense.some((point) => point.height === 0)).toBe(false);
+      expect(indices.has(0)).toBe(true);
+      expect(
+        [...indices].some((index) => dense[index]!.height === 0),
+      ).toBe(false);
+    });
+
+    it("deduplicates two targets that share one nearest knot", () => {
+      const dense: HodographPoint[] = [];
+      for (let i = 0; i < 11; i++) {
+        dense.push({ height: i * 10, eastward: i, northward: 0 });
+      }
+      dense.push({ height: 3500, eastward: 11, northward: 0 });
+      dense.push({ height: 12000, eastward: 12, northward: 0 });
+      expect(dense).toHaveLength(13);
+
+      const indices = hodographDisplayKnotIndices(dense);
+      const midIndex = dense.findIndex((point) => point.height === 3500);
+      expect(midIndex).toBeGreaterThan(0);
+      expect(indices.has(midIndex)).toBe(true);
+      expect(
+        [...indices].filter((index) => index === midIndex),
+      ).toHaveLength(1);
+    });
+
+    it("unions an exact selectedHeight into the dense display set", () => {
+      const dense: HodographPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        dense.push({
+          height: 2.4 + i * 250,
+          eastward: i,
+          northward: 0,
+        });
+      }
+      const selectedIndex = 7;
+      const without = hodographDisplayKnotIndices(dense);
+      expect(without.has(selectedIndex)).toBe(false);
+      const withSelected = hodographDisplayKnotIndices(
+        dense,
+        dense[selectedIndex]!.height,
+      );
+      expect(withSelected.has(selectedIndex)).toBe(true);
+    });
+  });
+
+  describe("HodographPanel display markers", () => {
+    function polylineVertexCount(html: string): number {
+      const tag = html.match(/<polyline\b[^>]*>/)?.[0];
+      const points = tag?.match(/points="([^"]+)"/)?.[1];
+      if (!points) {
+        return 0;
+      }
+      return points.split(" ").filter(Boolean).length;
+    }
+
+    it("draws a marker and label on every short-column knot", () => {
+      const html = renderToStaticMarkup(
+        createElement(HodographPanel, { points: demoPoints }),
+      );
+      expect(html.match(/hodograph-panel__marker/g)).toHaveLength(
+        demoPoints.length,
+      );
+      expect(html.match(/hodograph-panel__height-label/g)).toHaveLength(
+        demoPoints.length,
+      );
+      expect(polylineVertexCount(html)).toBe(demoPoints.length);
+    });
+
+    it("keeps a full-resolution polyline while thinning dense markers", () => {
+      const dense: HodographPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        dense.push({
+          height: 2.4 + i * 250,
+          eastward: i,
+          northward: 0,
+        });
+      }
+      const html = renderToStaticMarkup(
+        createElement(HodographPanel, { points: dense }),
+      );
+      const markers = html.match(/hodograph-panel__marker/g) ?? [];
+      const labels = html.match(/hodograph-panel__height-label/g) ?? [];
+      expect(polylineVertexCount(html)).toBe(dense.length);
+      expect(markers.length).toBe(labels.length);
+      expect(markers.length).toBeLessThan(dense.length);
+      expect(markers.length).toBeGreaterThan(2);
+      expect(html).toContain("2.4 m");
+      expect(html).toContain(`${dense[dense.length - 1]!.height} m`);
     });
   });
 

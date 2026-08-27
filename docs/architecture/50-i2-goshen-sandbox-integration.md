@@ -23,6 +23,16 @@ docs/architecture/48-provider-neutral-environmental-profile-contract.md
 docs/architecture/49-r1-first-historical-reference-storm.md
 ```
 
+Successor:
+
+```text
+docs/architecture/51-dense-observed-hodograph-display.md
+```
+
+I2 thinned dense height labels and kept every imported
+knot on the scientific polyline. Per-knot markers and
+the shared display-index contract are `51`.
+
 Keep these roles distinct:
 
 ```text
@@ -253,6 +263,9 @@ I2 display: keep the polyline of imported points;
   density. Sparse labels are a panel display detail.
 ```
 
+I2 did **not** thin knot markers. Dense marker thinning
+is `51`, using the same display subset as labels.
+
 Do not downsample the `EnvironmentalWindProfile` to five
 DEMO heights.
 
@@ -309,6 +322,7 @@ switching identity rebuilds Explore lab
 | Observed Goshen profile in Explore | **I2** |
 | Honesty / provenance on Environment surface | **I2** |
 | Hodograph from imported knots + display-label thinning | **I2** |
+| Dense display markers (same subset as labels) | **51** |
 | Optional profile arg on DEMO compose / Explore lab | **I2** |
 | Observed Goshen C | LATER |
 | Bunkers C | REJECTED FOR I2 |
@@ -363,6 +377,7 @@ C:               DEMO prescribed
 STORM OPERANDS:  DEMO prescribed
 GUIDED:          DEMO, unchanged
 HODOGRAPH:       2029 imported knots; sparse labels
+DISPLAY MARKERS: 51 (same subset as labels)
 OVERLAY [0,1000]: DEMO-only; omit on Goshen
 G4:              OPEN
 IMPLEMENTATION:  Explore-only DEMO|Goshen identity;

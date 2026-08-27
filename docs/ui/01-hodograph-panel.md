@@ -240,19 +240,49 @@ Do not reorder points in the panel.
 
 ### 7.3 Knot markers
 
-Draw a marker at each mapped knot point.
+Short columns (`points.length <= 12`, including DEMO) draw
+a marker at each mapped knot point.
+
+Dense imported columns keep every knot on the polyline
+(`§7.2`). Markers are a display subset only:
+
+- the first knot;
+- the last knot;
+- the nearest existing knot to each pedagogical reference
+  height that lies inside `[minHeight, maxHeight]`;
+- the exact selected knot when `selectedHeight` matches a
+  point height.
+
+Reference heights (m):
+
+    0, 1000, 2000, 3000, 4000, 6000, 8000, 10000, 12000
+
+Equal distance chooses the smaller index. The panel does
+not interpolate a marker at a missing height and does not
+invent a synthetic knot.
+
+The display subset is defined in
+`docs/architecture/51-dense-observed-hodograph-display.md`.
+It does not resample `EnvironmentalWindProfile` or
+`HodographPoint[]`.
 
 ### 7.4 Height labels
 
-Label each knot with height in meters only.
+Label each **displayed** marker with that knot's height in
+meters only (`point.height`).
 
 Examples:
 
     0 m
     1000 m
-    2000 m
+    2.4 m
+    998.6 m
 
-Do not use kilometers in v1 labels.
+Do not substitute the pedagogical target string. Do not use
+kilometers in v1 labels.
+
+Short columns label every knot. Dense columns label only
+the display subset from `§7.3`.
 
 ---
 
@@ -339,7 +369,12 @@ Required contract checks:
 - equal aspect: equal velocity deltas map to equal pixel lengths;
 - autoscaled domain includes `(0, 0)` and all point velocities;
 - polyline vertex order matches input point order;
-- height labels are derived from `point.height` in meters.
+- dense polyline vertex count matches input point count;
+- short columns draw a marker and height label at every knot;
+- dense columns draw markers and labels only on the display
+  subset from `§7.3`;
+- height labels are derived from the displayed knot's
+  `point.height` in meters.
 
 Do not require:
 
