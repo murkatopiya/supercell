@@ -1,0 +1,10157 @@
+{
+  "levels": [
+    {
+      "height": 2.4,
+      "eastward": -1.2,
+      "northward": 0.2
+    },
+    {
+      "height": 6.1,
+      "eastward": -1.4,
+      "northward": 4.1
+    },
+    {
+      "height": 10.9,
+      "eastward": -1.6,
+      "northward": 4.6
+    },
+    {
+      "height": 16.5,
+      "eastward": -1.9,
+      "northward": 5.1
+    },
+    {
+      "height": 22.9,
+      "eastward": -2.2,
+      "northward": 5.6
+    },
+    {
+      "height": 29.8,
+      "eastward": -2.5,
+      "northward": 6.0
+    },
+    {
+      "height": 37.0,
+      "eastward": -2.8,
+      "northward": 6.5
+    },
+    {
+      "height": 44.1,
+      "eastward": -3.0,
+      "northward": 6.8
+    },
+    {
+      "height": 50.5,
+      "eastward": -3.3,
+      "northward": 7.2
+    },
+    {
+      "height": 56.3,
+      "eastward": -3.5,
+      "northward": 7.6
+    },
+    {
+      "height": 61.5,
+      "eastward": -3.6,
+      "northward": 7.9
+    },
+    {
+      "height": 66.2,
+      "eastward": -3.8,
+      "northward": 8.2
+    },
+    {
+      "height": 70.7,
+      "eastward": -3.9,
+      "northward": 8.4
+    },
+    {
+      "height": 75.6,
+      "eastward": -4.0,
+      "northward": 8.7
+    },
+    {
+      "height": 81.1,
+      "eastward": -4.1,
+      "northward": 8.8
+    },
+    {
+      "height": 87.1,
+      "eastward": -4.2,
+      "northward": 8.9
+    },
+    {
+      "height": 93.1,
+      "eastward": -4.2,
+      "northward": 9.1
+    },
+    {
+      "height": 99.0,
+      "eastward": -4.2,
+      "northward": 9.1
+    },
+    {
+      "height": 104.4,
+      "eastward": -4.2,
+      "northward": 9.2
+    },
+    {
+      "height": 109.5,
+      "eastward": -4.1,
+      "northward": 9.2
+    },
+    {
+      "height": 114.3,
+      "eastward": -4.0,
+      "northward": 9.2
+    },
+    {
+      "height": 119.1,
+      "eastward": -4.0,
+      "northward": 9.1
+    },
+    {
+      "height": 124.2,
+      "eastward": -4.0,
+      "northward": 9.0
+    },
+    {
+      "height": 129.6,
+      "eastward": -4.0,
+      "northward": 8.9
+    },
+    {
+      "height": 135.1,
+      "eastward": -4.0,
+      "northward": 8.8
+    },
+    {
+      "height": 140.8,
+      "eastward": -4.0,
+      "northward": 8.7
+    },
+    {
+      "height": 146.5,
+      "eastward": -3.9,
+      "northward": 8.5
+    },
+    {
+      "height": 152.5,
+      "eastward": -3.9,
+      "northward": 8.3
+    },
+    {
+      "height": 158.8,
+      "eastward": -3.8,
+      "northward": 8.2
+    },
+    {
+      "height": 165.3,
+      "eastward": -3.6,
+      "northward": 8.1
+    },
+    {
+      "height": 171.3,
+      "eastward": -3.4,
+      "northward": 8.0
+    },
+    {
+      "height": 176.9,
+      "eastward": -3.2,
+      "northward": 7.8
+    },
+    {
+      "height": 182.1,
+      "eastward": -3.1,
+      "northward": 7.8
+    },
+    {
+      "height": 187.4,
+      "eastward": -2.9,
+      "northward": 7.7
+    },
+    {
+      "height": 192.9,
+      "eastward": -2.8,
+      "northward": 7.6
+    },
+    {
+      "height": 198.8,
+      "eastward": -2.7,
+      "northward": 7.6
+    },
+    {
+      "height": 205.0,
+      "eastward": -2.7,
+      "northward": 7.5
+    },
+    {
+      "height": 211.2,
+      "eastward": -2.6,
+      "northward": 7.4
+    },
+    {
+      "height": 217.2,
+      "eastward": -2.5,
+      "northward": 7.3
+    },
+    {
+      "height": 222.8,
+      "eastward": -2.5,
+      "northward": 7.2
+    },
+    {
+      "height": 228.1,
+      "eastward": -2.5,
+      "northward": 7.2
+    },
+    {
+      "height": 233.0,
+      "eastward": -2.5,
+      "northward": 7.2
+    },
+    {
+      "height": 237.4,
+      "eastward": -2.5,
+      "northward": 7.2
+    },
+    {
+      "height": 241.6,
+      "eastward": -2.5,
+      "northward": 7.3
+    },
+    {
+      "height": 245.8,
+      "eastward": -2.6,
+      "northward": 7.3
+    },
+    {
+      "height": 250.2,
+      "eastward": -2.7,
+      "northward": 7.4
+    },
+    {
+      "height": 254.9,
+      "eastward": -2.8,
+      "northward": 7.4
+    },
+    {
+      "height": 259.9,
+      "eastward": -2.9,
+      "northward": 7.5
+    },
+    {
+      "height": 265.3,
+      "eastward": -2.9,
+      "northward": 7.5
+    },
+    {
+      "height": 271.0,
+      "eastward": -3.0,
+      "northward": 7.6
+    },
+    {
+      "height": 276.4,
+      "eastward": -3.0,
+      "northward": 7.6
+    },
+    {
+      "height": 281.2,
+      "eastward": -3.0,
+      "northward": 7.7
+    },
+    {
+      "height": 285.4,
+      "eastward": -3.0,
+      "northward": 7.7
+    },
+    {
+      "height": 289.3,
+      "eastward": -2.9,
+      "northward": 7.7
+    },
+    {
+      "height": 293.0,
+      "eastward": -2.8,
+      "northward": 7.8
+    },
+    {
+      "height": 296.9,
+      "eastward": -2.6,
+      "northward": 7.8
+    },
+    {
+      "height": 301.0,
+      "eastward": -2.5,
+      "northward": 7.8
+    },
+    {
+      "height": 305.4,
+      "eastward": -2.3,
+      "northward": 7.8
+    },
+    {
+      "height": 310.1,
+      "eastward": -2.2,
+      "northward": 7.8
+    },
+    {
+      "height": 315.0,
+      "eastward": -2.1,
+      "northward": 7.8
+    },
+    {
+      "height": 319.8,
+      "eastward": -2.0,
+      "northward": 7.8
+    },
+    {
+      "height": 324.5,
+      "eastward": -2.0,
+      "northward": 7.8
+    },
+    {
+      "height": 328.9,
+      "eastward": -1.9,
+      "northward": 7.9
+    },
+    {
+      "height": 333.1,
+      "eastward": -1.8,
+      "northward": 7.9
+    },
+    {
+      "height": 337.4,
+      "eastward": -1.8,
+      "northward": 8.0
+    },
+    {
+      "height": 342.1,
+      "eastward": -1.7,
+      "northward": 8.0
+    },
+    {
+      "height": 346.9,
+      "eastward": -1.7,
+      "northward": 8.1
+    },
+    {
+      "height": 352.1,
+      "eastward": -1.7,
+      "northward": 8.1
+    },
+    {
+      "height": 357.4,
+      "eastward": -1.7,
+      "northward": 8.1
+    },
+    {
+      "height": 362.7,
+      "eastward": -1.8,
+      "northward": 8.2
+    },
+    {
+      "height": 367.8,
+      "eastward": -1.8,
+      "northward": 8.2
+    },
+    {
+      "height": 372.6,
+      "eastward": -1.9,
+      "northward": 8.2
+    },
+    {
+      "height": 377.3,
+      "eastward": -1.9,
+      "northward": 8.2
+    },
+    {
+      "height": 382.0,
+      "eastward": -1.9,
+      "northward": 8.3
+    },
+    {
+      "height": 386.7,
+      "eastward": -2.0,
+      "northward": 8.3
+    },
+    {
+      "height": 391.3,
+      "eastward": -2.0,
+      "northward": 8.3
+    },
+    {
+      "height": 395.8,
+      "eastward": -2.0,
+      "northward": 8.4
+    },
+    {
+      "height": 400.1,
+      "eastward": -2.1,
+      "northward": 8.4
+    },
+    {
+      "height": 404.2,
+      "eastward": -2.1,
+      "northward": 8.4
+    },
+    {
+      "height": 408.2,
+      "eastward": -2.2,
+      "northward": 8.4
+    },
+    {
+      "height": 412.3,
+      "eastward": -2.3,
+      "northward": 8.4
+    },
+    {
+      "height": 416.5,
+      "eastward": -2.4,
+      "northward": 8.4
+    },
+    {
+      "height": 421.0,
+      "eastward": -2.4,
+      "northward": 8.3
+    },
+    {
+      "height": 425.7,
+      "eastward": -2.5,
+      "northward": 8.3
+    },
+    {
+      "height": 430.6,
+      "eastward": -2.6,
+      "northward": 8.2
+    },
+    {
+      "height": 435.6,
+      "eastward": -2.6,
+      "northward": 8.2
+    },
+    {
+      "height": 440.7,
+      "eastward": -2.7,
+      "northward": 8.2
+    },
+    {
+      "height": 445.6,
+      "eastward": -2.7,
+      "northward": 8.2
+    },
+    {
+      "height": 450.4,
+      "eastward": -2.7,
+      "northward": 8.1
+    },
+    {
+      "height": 455.2,
+      "eastward": -2.8,
+      "northward": 8.1
+    },
+    {
+      "height": 460.2,
+      "eastward": -2.8,
+      "northward": 8.1
+    },
+    {
+      "height": 465.4,
+      "eastward": -2.9,
+      "northward": 8.1
+    },
+    {
+      "height": 470.6,
+      "eastward": -2.9,
+      "northward": 8.1
+    },
+    {
+      "height": 475.9,
+      "eastward": -3.0,
+      "northward": 8.0
+    },
+    {
+      "height": 481.3,
+      "eastward": -3.0,
+      "northward": 8.0
+    },
+    {
+      "height": 486.8,
+      "eastward": -3.0,
+      "northward": 8.0
+    },
+    {
+      "height": 492.2,
+      "eastward": -3.0,
+      "northward": 8.1
+    },
+    {
+      "height": 497.6,
+      "eastward": -3.0,
+      "northward": 8.1
+    },
+    {
+      "height": 502.7,
+      "eastward": -3.0,
+      "northward": 8.1
+    },
+    {
+      "height": 507.5,
+      "eastward": -3.0,
+      "northward": 8.2
+    },
+    {
+      "height": 512.2,
+      "eastward": -3.0,
+      "northward": 8.2
+    },
+    {
+      "height": 516.8,
+      "eastward": -3.0,
+      "northward": 8.2
+    },
+    {
+      "height": 521.4,
+      "eastward": -3.0,
+      "northward": 8.2
+    },
+    {
+      "height": 526.0,
+      "eastward": -2.9,
+      "northward": 8.2
+    },
+    {
+      "height": 530.8,
+      "eastward": -2.9,
+      "northward": 8.2
+    },
+    {
+      "height": 535.7,
+      "eastward": -2.8,
+      "northward": 8.1
+    },
+    {
+      "height": 541.0,
+      "eastward": -2.7,
+      "northward": 8.1
+    },
+    {
+      "height": 546.6,
+      "eastward": -2.6,
+      "northward": 8.1
+    },
+    {
+      "height": 552.6,
+      "eastward": -2.6,
+      "northward": 8.1
+    },
+    {
+      "height": 558.6,
+      "eastward": -2.5,
+      "northward": 8.1
+    },
+    {
+      "height": 564.7,
+      "eastward": -2.5,
+      "northward": 8.1
+    },
+    {
+      "height": 570.9,
+      "eastward": -2.4,
+      "northward": 8.1
+    },
+    {
+      "height": 576.8,
+      "eastward": -2.3,
+      "northward": 8.1
+    },
+    {
+      "height": 582.3,
+      "eastward": -2.2,
+      "northward": 8.1
+    },
+    {
+      "height": 587.5,
+      "eastward": -2.1,
+      "northward": 8.1
+    },
+    {
+      "height": 592.4,
+      "eastward": -2.0,
+      "northward": 8.1
+    },
+    {
+      "height": 597.1,
+      "eastward": -1.9,
+      "northward": 8.2
+    },
+    {
+      "height": 601.8,
+      "eastward": -1.8,
+      "northward": 8.2
+    },
+    {
+      "height": 606.8,
+      "eastward": -1.7,
+      "northward": 8.1
+    },
+    {
+      "height": 612.0,
+      "eastward": -1.6,
+      "northward": 8.1
+    },
+    {
+      "height": 617.5,
+      "eastward": -1.6,
+      "northward": 8.1
+    },
+    {
+      "height": 623.1,
+      "eastward": -1.5,
+      "northward": 8.0
+    },
+    {
+      "height": 628.6,
+      "eastward": -1.5,
+      "northward": 8.0
+    },
+    {
+      "height": 633.9,
+      "eastward": -1.4,
+      "northward": 7.9
+    },
+    {
+      "height": 639.1,
+      "eastward": -1.4,
+      "northward": 7.9
+    },
+    {
+      "height": 644.2,
+      "eastward": -1.4,
+      "northward": 7.8
+    },
+    {
+      "height": 649.4,
+      "eastward": -1.4,
+      "northward": 7.8
+    },
+    {
+      "height": 654.8,
+      "eastward": -1.3,
+      "northward": 7.8
+    },
+    {
+      "height": 660.3,
+      "eastward": -1.3,
+      "northward": 7.8
+    },
+    {
+      "height": 666.0,
+      "eastward": -1.3,
+      "northward": 7.8
+    },
+    {
+      "height": 671.7,
+      "eastward": -1.3,
+      "northward": 7.8
+    },
+    {
+      "height": 677.4,
+      "eastward": -1.3,
+      "northward": 7.8
+    },
+    {
+      "height": 683.2,
+      "eastward": -1.3,
+      "northward": 7.9
+    },
+    {
+      "height": 689.0,
+      "eastward": -1.3,
+      "northward": 8.0
+    },
+    {
+      "height": 694.7,
+      "eastward": -1.3,
+      "northward": 8.0
+    },
+    {
+      "height": 700.4,
+      "eastward": -1.2,
+      "northward": 8.1
+    },
+    {
+      "height": 706.0,
+      "eastward": -1.2,
+      "northward": 8.1
+    },
+    {
+      "height": 711.5,
+      "eastward": -1.1,
+      "northward": 8.2
+    },
+    {
+      "height": 716.9,
+      "eastward": -1.1,
+      "northward": 8.2
+    },
+    {
+      "height": 722.6,
+      "eastward": -1.0,
+      "northward": 8.3
+    },
+    {
+      "height": 728.2,
+      "eastward": -1.0,
+      "northward": 8.3
+    },
+    {
+      "height": 733.7,
+      "eastward": -1.0,
+      "northward": 8.3
+    },
+    {
+      "height": 739.0,
+      "eastward": -1.1,
+      "northward": 8.4
+    },
+    {
+      "height": 744.3,
+      "eastward": -1.1,
+      "northward": 8.4
+    },
+    {
+      "height": 749.5,
+      "eastward": -1.2,
+      "northward": 8.4
+    },
+    {
+      "height": 754.7,
+      "eastward": -1.3,
+      "northward": 8.4
+    },
+    {
+      "height": 759.8,
+      "eastward": -1.4,
+      "northward": 8.4
+    },
+    {
+      "height": 764.9,
+      "eastward": -1.5,
+      "northward": 8.4
+    },
+    {
+      "height": 770.1,
+      "eastward": -1.6,
+      "northward": 8.4
+    },
+    {
+      "height": 775.3,
+      "eastward": -1.6,
+      "northward": 8.4
+    },
+    {
+      "height": 780.4,
+      "eastward": -1.6,
+      "northward": 8.4
+    },
+    {
+      "height": 785.4,
+      "eastward": -1.6,
+      "northward": 8.3
+    },
+    {
+      "height": 790.3,
+      "eastward": -1.6,
+      "northward": 8.2
+    },
+    {
+      "height": 795.0,
+      "eastward": -1.6,
+      "northward": 8.1
+    },
+    {
+      "height": 799.6,
+      "eastward": -1.6,
+      "northward": 8.0
+    },
+    {
+      "height": 804.4,
+      "eastward": -1.5,
+      "northward": 8.0
+    },
+    {
+      "height": 809.3,
+      "eastward": -1.5,
+      "northward": 7.9
+    },
+    {
+      "height": 814.4,
+      "eastward": -1.4,
+      "northward": 7.8
+    },
+    {
+      "height": 819.7,
+      "eastward": -1.4,
+      "northward": 7.8
+    },
+    {
+      "height": 825.0,
+      "eastward": -1.3,
+      "northward": 7.8
+    },
+    {
+      "height": 830.6,
+      "eastward": -1.2,
+      "northward": 7.8
+    },
+    {
+      "height": 836.6,
+      "eastward": -1.1,
+      "northward": 7.8
+    },
+    {
+      "height": 843.0,
+      "eastward": -1.0,
+      "northward": 7.8
+    },
+    {
+      "height": 849.4,
+      "eastward": -0.9,
+      "northward": 7.8
+    },
+    {
+      "height": 855.7,
+      "eastward": -0.8,
+      "northward": 7.8
+    },
+    {
+      "height": 861.7,
+      "eastward": -0.6,
+      "northward": 7.8
+    },
+    {
+      "height": 867.3,
+      "eastward": -0.6,
+      "northward": 7.8
+    },
+    {
+      "height": 873.0,
+      "eastward": -0.5,
+      "northward": 7.9
+    },
+    {
+      "height": 878.7,
+      "eastward": -0.4,
+      "northward": 7.9
+    },
+    {
+      "height": 884.4,
+      "eastward": -0.4,
+      "northward": 8.0
+    },
+    {
+      "height": 890.1,
+      "eastward": -0.3,
+      "northward": 8.1
+    },
+    {
+      "height": 895.9,
+      "eastward": -0.3,
+      "northward": 8.2
+    },
+    {
+      "height": 902.0,
+      "eastward": -0.3,
+      "northward": 8.3
+    },
+    {
+      "height": 908.3,
+      "eastward": -0.2,
+      "northward": 8.3
+    },
+    {
+      "height": 914.8,
+      "eastward": -0.2,
+      "northward": 8.4
+    },
+    {
+      "height": 921.3,
+      "eastward": -0.2,
+      "northward": 8.5
+    },
+    {
+      "height": 927.6,
+      "eastward": -0.2,
+      "northward": 8.7
+    },
+    {
+      "height": 933.7,
+      "eastward": -0.2,
+      "northward": 8.8
+    },
+    {
+      "height": 939.7,
+      "eastward": -0.1,
+      "northward": 8.9
+    },
+    {
+      "height": 945.7,
+      "eastward": -0.1,
+      "northward": 9.1
+    },
+    {
+      "height": 952.0,
+      "eastward": -0.1,
+      "northward": 9.2
+    },
+    {
+      "height": 958.7,
+      "eastward": -0.1,
+      "northward": 9.4
+    },
+    {
+      "height": 965.6,
+      "eastward": -0.1,
+      "northward": 9.6
+    },
+    {
+      "height": 972.5,
+      "eastward": -0.2,
+      "northward": 9.8
+    },
+    {
+      "height": 979.3,
+      "eastward": -0.2,
+      "northward": 9.9
+    },
+    {
+      "height": 985.8,
+      "eastward": -0.2,
+      "northward": 10.0
+    },
+    {
+      "height": 992.2,
+      "eastward": -0.2,
+      "northward": 10.1
+    },
+    {
+      "height": 998.6,
+      "eastward": -0.2,
+      "northward": 10.1
+    },
+    {
+      "height": 1005.0,
+      "eastward": -0.2,
+      "northward": 10.1
+    },
+    {
+      "height": 1011.3,
+      "eastward": -0.2,
+      "northward": 10.0
+    },
+    {
+      "height": 1017.6,
+      "eastward": -0.2,
+      "northward": 9.9
+    },
+    {
+      "height": 1023.9,
+      "eastward": -0.2,
+      "northward": 9.9
+    },
+    {
+      "height": 1030.2,
+      "eastward": -0.2,
+      "northward": 9.8
+    },
+    {
+      "height": 1036.5,
+      "eastward": -0.2,
+      "northward": 9.8
+    },
+    {
+      "height": 1042.8,
+      "eastward": -0.1,
+      "northward": 9.7
+    },
+    {
+      "height": 1048.8,
+      "eastward": -0.1,
+      "northward": 9.7
+    },
+    {
+      "height": 1054.4,
+      "eastward": 0.0,
+      "northward": 9.7
+    },
+    {
+      "height": 1059.8,
+      "eastward": 0.1,
+      "northward": 9.6
+    },
+    {
+      "height": 1065.0,
+      "eastward": 0.1,
+      "northward": 9.6
+    },
+    {
+      "height": 1070.2,
+      "eastward": 0.1,
+      "northward": 9.5
+    },
+    {
+      "height": 1075.6,
+      "eastward": 0.1,
+      "northward": 9.4
+    },
+    {
+      "height": 1081.1,
+      "eastward": 0.2,
+      "northward": 9.4
+    },
+    {
+      "height": 1086.8,
+      "eastward": 0.2,
+      "northward": 9.3
+    },
+    {
+      "height": 1092.8,
+      "eastward": 0.2,
+      "northward": 9.3
+    },
+    {
+      "height": 1099.1,
+      "eastward": 0.2,
+      "northward": 9.3
+    },
+    {
+      "height": 1105.4,
+      "eastward": 0.2,
+      "northward": 9.3
+    },
+    {
+      "height": 1111.4,
+      "eastward": 0.2,
+      "northward": 9.2
+    },
+    {
+      "height": 1117.3,
+      "eastward": 0.2,
+      "northward": 9.2
+    },
+    {
+      "height": 1123.0,
+      "eastward": 0.3,
+      "northward": 9.2
+    },
+    {
+      "height": 1128.7,
+      "eastward": 0.3,
+      "northward": 9.1
+    },
+    {
+      "height": 1134.3,
+      "eastward": 0.3,
+      "northward": 9.0
+    },
+    {
+      "height": 1139.7,
+      "eastward": 0.4,
+      "northward": 8.9
+    },
+    {
+      "height": 1144.8,
+      "eastward": 0.4,
+      "northward": 8.9
+    },
+    {
+      "height": 1149.9,
+      "eastward": 0.5,
+      "northward": 8.8
+    },
+    {
+      "height": 1155.1,
+      "eastward": 0.5,
+      "northward": 8.8
+    },
+    {
+      "height": 1160.5,
+      "eastward": 0.6,
+      "northward": 8.8
+    },
+    {
+      "height": 1166.0,
+      "eastward": 0.7,
+      "northward": 8.8
+    },
+    {
+      "height": 1171.6,
+      "eastward": 0.8,
+      "northward": 8.8
+    },
+    {
+      "height": 1176.9,
+      "eastward": 0.8,
+      "northward": 8.8
+    },
+    {
+      "height": 1182.3,
+      "eastward": 0.9,
+      "northward": 8.8
+    },
+    {
+      "height": 1187.8,
+      "eastward": 1.0,
+      "northward": 8.8
+    },
+    {
+      "height": 1193.2,
+      "eastward": 1.0,
+      "northward": 8.8
+    },
+    {
+      "height": 1198.4,
+      "eastward": 1.1,
+      "northward": 8.9
+    },
+    {
+      "height": 1203.5,
+      "eastward": 1.1,
+      "northward": 8.9
+    },
+    {
+      "height": 1208.5,
+      "eastward": 1.1,
+      "northward": 8.9
+    },
+    {
+      "height": 1213.7,
+      "eastward": 1.2,
+      "northward": 9.0
+    },
+    {
+      "height": 1219.3,
+      "eastward": 1.2,
+      "northward": 9.0
+    },
+    {
+      "height": 1225.2,
+      "eastward": 1.3,
+      "northward": 9.1
+    },
+    {
+      "height": 1231.3,
+      "eastward": 1.4,
+      "northward": 9.1
+    },
+    {
+      "height": 1237.5,
+      "eastward": 1.4,
+      "northward": 9.1
+    },
+    {
+      "height": 1243.8,
+      "eastward": 1.5,
+      "northward": 9.2
+    },
+    {
+      "height": 1250.0,
+      "eastward": 1.6,
+      "northward": 9.2
+    },
+    {
+      "height": 1256.0,
+      "eastward": 1.7,
+      "northward": 9.2
+    },
+    {
+      "height": 1261.9,
+      "eastward": 1.8,
+      "northward": 9.1
+    },
+    {
+      "height": 1267.6,
+      "eastward": 1.9,
+      "northward": 9.1
+    },
+    {
+      "height": 1273.2,
+      "eastward": 2.0,
+      "northward": 9.1
+    },
+    {
+      "height": 1278.8,
+      "eastward": 2.1,
+      "northward": 9.0
+    },
+    {
+      "height": 1284.5,
+      "eastward": 2.1,
+      "northward": 8.9
+    },
+    {
+      "height": 1290.2,
+      "eastward": 2.2,
+      "northward": 8.9
+    },
+    {
+      "height": 1295.9,
+      "eastward": 2.2,
+      "northward": 8.8
+    },
+    {
+      "height": 1301.6,
+      "eastward": 2.3,
+      "northward": 8.8
+    },
+    {
+      "height": 1307.2,
+      "eastward": 2.4,
+      "northward": 8.7
+    },
+    {
+      "height": 1312.8,
+      "eastward": 2.4,
+      "northward": 8.6
+    },
+    {
+      "height": 1318.4,
+      "eastward": 2.5,
+      "northward": 8.6
+    },
+    {
+      "height": 1324.0,
+      "eastward": 2.6,
+      "northward": 8.5
+    },
+    {
+      "height": 1329.5,
+      "eastward": 2.7,
+      "northward": 8.4
+    },
+    {
+      "height": 1334.9,
+      "eastward": 2.8,
+      "northward": 8.4
+    },
+    {
+      "height": 1340.4,
+      "eastward": 2.9,
+      "northward": 8.3
+    },
+    {
+      "height": 1345.9,
+      "eastward": 3.0,
+      "northward": 8.2
+    },
+    {
+      "height": 1351.6,
+      "eastward": 3.1,
+      "northward": 8.2
+    },
+    {
+      "height": 1357.2,
+      "eastward": 3.2,
+      "northward": 8.1
+    },
+    {
+      "height": 1362.8,
+      "eastward": 3.3,
+      "northward": 8.0
+    },
+    {
+      "height": 1368.4,
+      "eastward": 3.4,
+      "northward": 7.9
+    },
+    {
+      "height": 1373.8,
+      "eastward": 3.5,
+      "northward": 7.9
+    },
+    {
+      "height": 1379.2,
+      "eastward": 3.6,
+      "northward": 7.8
+    },
+    {
+      "height": 1384.6,
+      "eastward": 3.6,
+      "northward": 7.8
+    },
+    {
+      "height": 1390.0,
+      "eastward": 3.7,
+      "northward": 7.8
+    },
+    {
+      "height": 1395.6,
+      "eastward": 3.7,
+      "northward": 7.7
+    },
+    {
+      "height": 1401.4,
+      "eastward": 3.7,
+      "northward": 7.7
+    },
+    {
+      "height": 1407.2,
+      "eastward": 3.8,
+      "northward": 7.7
+    },
+    {
+      "height": 1412.8,
+      "eastward": 3.8,
+      "northward": 7.7
+    },
+    {
+      "height": 1418.2,
+      "eastward": 3.8,
+      "northward": 7.7
+    },
+    {
+      "height": 1423.3,
+      "eastward": 3.8,
+      "northward": 7.7
+    },
+    {
+      "height": 1428.3,
+      "eastward": 3.8,
+      "northward": 7.6
+    },
+    {
+      "height": 1433.4,
+      "eastward": 3.8,
+      "northward": 7.6
+    },
+    {
+      "height": 1438.7,
+      "eastward": 3.9,
+      "northward": 7.5
+    },
+    {
+      "height": 1444.1,
+      "eastward": 3.9,
+      "northward": 7.5
+    },
+    {
+      "height": 1449.7,
+      "eastward": 4.0,
+      "northward": 7.5
+    },
+    {
+      "height": 1455.2,
+      "eastward": 4.1,
+      "northward": 7.5
+    },
+    {
+      "height": 1460.8,
+      "eastward": 4.2,
+      "northward": 7.5
+    },
+    {
+      "height": 1466.7,
+      "eastward": 4.4,
+      "northward": 7.6
+    },
+    {
+      "height": 1472.9,
+      "eastward": 4.6,
+      "northward": 7.6
+    },
+    {
+      "height": 1479.3,
+      "eastward": 4.7,
+      "northward": 7.8
+    },
+    {
+      "height": 1485.7,
+      "eastward": 4.9,
+      "northward": 7.9
+    },
+    {
+      "height": 1491.9,
+      "eastward": 5.1,
+      "northward": 8.1
+    },
+    {
+      "height": 1497.7,
+      "eastward": 5.3,
+      "northward": 8.3
+    },
+    {
+      "height": 1503.3,
+      "eastward": 5.4,
+      "northward": 8.4
+    },
+    {
+      "height": 1508.7,
+      "eastward": 5.6,
+      "northward": 8.6
+    },
+    {
+      "height": 1514.1,
+      "eastward": 5.7,
+      "northward": 8.7
+    },
+    {
+      "height": 1519.8,
+      "eastward": 5.8,
+      "northward": 8.8
+    },
+    {
+      "height": 1525.9,
+      "eastward": 5.9,
+      "northward": 8.9
+    },
+    {
+      "height": 1532.5,
+      "eastward": 6.0,
+      "northward": 9.0
+    },
+    {
+      "height": 1539.3,
+      "eastward": 6.0,
+      "northward": 9.1
+    },
+    {
+      "height": 1546.3,
+      "eastward": 6.0,
+      "northward": 9.2
+    },
+    {
+      "height": 1552.9,
+      "eastward": 6.0,
+      "northward": 9.2
+    },
+    {
+      "height": 1559.2,
+      "eastward": 6.0,
+      "northward": 9.3
+    },
+    {
+      "height": 1565.0,
+      "eastward": 5.9,
+      "northward": 9.3
+    },
+    {
+      "height": 1570.7,
+      "eastward": 5.9,
+      "northward": 9.3
+    },
+    {
+      "height": 1576.5,
+      "eastward": 5.8,
+      "northward": 9.3
+    },
+    {
+      "height": 1582.7,
+      "eastward": 5.7,
+      "northward": 9.3
+    },
+    {
+      "height": 1589.4,
+      "eastward": 5.6,
+      "northward": 9.2
+    },
+    {
+      "height": 1596.5,
+      "eastward": 5.5,
+      "northward": 9.1
+    },
+    {
+      "height": 1603.7,
+      "eastward": 5.3,
+      "northward": 9.0
+    },
+    {
+      "height": 1610.5,
+      "eastward": 5.1,
+      "northward": 8.9
+    },
+    {
+      "height": 1617.1,
+      "eastward": 4.9,
+      "northward": 8.8
+    },
+    {
+      "height": 1623.6,
+      "eastward": 4.6,
+      "northward": 8.7
+    },
+    {
+      "height": 1630.2,
+      "eastward": 4.3,
+      "northward": 8.7
+    },
+    {
+      "height": 1636.8,
+      "eastward": 4.0,
+      "northward": 8.6
+    },
+    {
+      "height": 1643.2,
+      "eastward": 3.7,
+      "northward": 8.4
+    },
+    {
+      "height": 1649.2,
+      "eastward": 3.4,
+      "northward": 8.3
+    },
+    {
+      "height": 1654.7,
+      "eastward": 3.2,
+      "northward": 8.2
+    },
+    {
+      "height": 1659.9,
+      "eastward": 3.0,
+      "northward": 8.1
+    },
+    {
+      "height": 1665.0,
+      "eastward": 2.9,
+      "northward": 8.0
+    },
+    {
+      "height": 1670.3,
+      "eastward": 2.9,
+      "northward": 8.0
+    },
+    {
+      "height": 1675.8,
+      "eastward": 2.9,
+      "northward": 8.0
+    },
+    {
+      "height": 1681.7,
+      "eastward": 2.9,
+      "northward": 8.0
+    },
+    {
+      "height": 1688.2,
+      "eastward": 3.0,
+      "northward": 8.1
+    },
+    {
+      "height": 1695.3,
+      "eastward": 3.1,
+      "northward": 8.2
+    },
+    {
+      "height": 1702.9,
+      "eastward": 3.2,
+      "northward": 8.3
+    },
+    {
+      "height": 1710.7,
+      "eastward": 3.3,
+      "northward": 8.5
+    },
+    {
+      "height": 1718.3,
+      "eastward": 3.4,
+      "northward": 8.6
+    },
+    {
+      "height": 1725.4,
+      "eastward": 3.5,
+      "northward": 8.8
+    },
+    {
+      "height": 1732.1,
+      "eastward": 3.5,
+      "northward": 8.9
+    },
+    {
+      "height": 1738.6,
+      "eastward": 3.6,
+      "northward": 9.0
+    },
+    {
+      "height": 1745.1,
+      "eastward": 3.7,
+      "northward": 9.1
+    },
+    {
+      "height": 1751.8,
+      "eastward": 3.7,
+      "northward": 9.2
+    },
+    {
+      "height": 1758.8,
+      "eastward": 3.7,
+      "northward": 9.3
+    },
+    {
+      "height": 1766.0,
+      "eastward": 3.7,
+      "northward": 9.3
+    },
+    {
+      "height": 1773.4,
+      "eastward": 3.6,
+      "northward": 9.4
+    },
+    {
+      "height": 1780.9,
+      "eastward": 3.5,
+      "northward": 9.5
+    },
+    {
+      "height": 1788.2,
+      "eastward": 3.5,
+      "northward": 9.5
+    },
+    {
+      "height": 1795.2,
+      "eastward": 3.4,
+      "northward": 9.5
+    },
+    {
+      "height": 1802.2,
+      "eastward": 3.3,
+      "northward": 9.5
+    },
+    {
+      "height": 1809.2,
+      "eastward": 3.2,
+      "northward": 9.4
+    },
+    {
+      "height": 1816.3,
+      "eastward": 3.0,
+      "northward": 9.3
+    },
+    {
+      "height": 1823.5,
+      "eastward": 2.9,
+      "northward": 9.2
+    },
+    {
+      "height": 1830.5,
+      "eastward": 2.8,
+      "northward": 9.1
+    },
+    {
+      "height": 1837.3,
+      "eastward": 2.6,
+      "northward": 9.0
+    },
+    {
+      "height": 1843.8,
+      "eastward": 2.4,
+      "northward": 8.9
+    },
+    {
+      "height": 1850.1,
+      "eastward": 2.3,
+      "northward": 8.9
+    },
+    {
+      "height": 1856.3,
+      "eastward": 2.2,
+      "northward": 8.8
+    },
+    {
+      "height": 1862.5,
+      "eastward": 2.2,
+      "northward": 8.8
+    },
+    {
+      "height": 1868.8,
+      "eastward": 2.3,
+      "northward": 8.8
+    },
+    {
+      "height": 1875.3,
+      "eastward": 2.3,
+      "northward": 8.7
+    },
+    {
+      "height": 1881.8,
+      "eastward": 2.4,
+      "northward": 8.7
+    },
+    {
+      "height": 1888.0,
+      "eastward": 2.5,
+      "northward": 8.7
+    },
+    {
+      "height": 1894.0,
+      "eastward": 2.6,
+      "northward": 8.7
+    },
+    {
+      "height": 1899.7,
+      "eastward": 2.7,
+      "northward": 8.7
+    },
+    {
+      "height": 1905.3,
+      "eastward": 2.7,
+      "northward": 8.7
+    },
+    {
+      "height": 1911.0,
+      "eastward": 2.8,
+      "northward": 8.7
+    },
+    {
+      "height": 1917.0,
+      "eastward": 2.8,
+      "northward": 8.8
+    },
+    {
+      "height": 1923.4,
+      "eastward": 2.8,
+      "northward": 8.8
+    },
+    {
+      "height": 1930.2,
+      "eastward": 2.8,
+      "northward": 8.9
+    },
+    {
+      "height": 1937.1,
+      "eastward": 2.8,
+      "northward": 9.0
+    },
+    {
+      "height": 1944.1,
+      "eastward": 2.9,
+      "northward": 9.1
+    },
+    {
+      "height": 1951.0,
+      "eastward": 2.9,
+      "northward": 9.2
+    },
+    {
+      "height": 1957.8,
+      "eastward": 2.9,
+      "northward": 9.2
+    },
+    {
+      "height": 1964.4,
+      "eastward": 2.9,
+      "northward": 9.3
+    },
+    {
+      "height": 1971.0,
+      "eastward": 2.8,
+      "northward": 9.4
+    },
+    {
+      "height": 1977.4,
+      "eastward": 2.8,
+      "northward": 9.5
+    },
+    {
+      "height": 1983.8,
+      "eastward": 2.7,
+      "northward": 9.5
+    },
+    {
+      "height": 1990.2,
+      "eastward": 2.7,
+      "northward": 9.6
+    },
+    {
+      "height": 1996.5,
+      "eastward": 2.6,
+      "northward": 9.6
+    },
+    {
+      "height": 2003.0,
+      "eastward": 2.6,
+      "northward": 9.7
+    },
+    {
+      "height": 2009.4,
+      "eastward": 2.6,
+      "northward": 9.7
+    },
+    {
+      "height": 2015.9,
+      "eastward": 2.7,
+      "northward": 9.7
+    },
+    {
+      "height": 2022.0,
+      "eastward": 2.7,
+      "northward": 9.7
+    },
+    {
+      "height": 2027.7,
+      "eastward": 2.8,
+      "northward": 9.7
+    },
+    {
+      "height": 2033.2,
+      "eastward": 2.8,
+      "northward": 9.7
+    },
+    {
+      "height": 2038.9,
+      "eastward": 2.9,
+      "northward": 9.7
+    },
+    {
+      "height": 2044.8,
+      "eastward": 2.9,
+      "northward": 9.7
+    },
+    {
+      "height": 2051.0,
+      "eastward": 3.0,
+      "northward": 9.6
+    },
+    {
+      "height": 2057.5,
+      "eastward": 3.0,
+      "northward": 9.6
+    },
+    {
+      "height": 2064.1,
+      "eastward": 3.0,
+      "northward": 9.6
+    },
+    {
+      "height": 2070.7,
+      "eastward": 3.1,
+      "northward": 9.6
+    },
+    {
+      "height": 2077.3,
+      "eastward": 3.1,
+      "northward": 9.5
+    },
+    {
+      "height": 2083.9,
+      "eastward": 3.2,
+      "northward": 9.5
+    },
+    {
+      "height": 2090.8,
+      "eastward": 3.2,
+      "northward": 9.5
+    },
+    {
+      "height": 2097.8,
+      "eastward": 3.3,
+      "northward": 9.5
+    },
+    {
+      "height": 2104.7,
+      "eastward": 3.4,
+      "northward": 9.5
+    },
+    {
+      "height": 2111.5,
+      "eastward": 3.5,
+      "northward": 9.5
+    },
+    {
+      "height": 2118.1,
+      "eastward": 3.6,
+      "northward": 9.5
+    },
+    {
+      "height": 2124.8,
+      "eastward": 3.7,
+      "northward": 9.4
+    },
+    {
+      "height": 2131.5,
+      "eastward": 3.8,
+      "northward": 9.4
+    },
+    {
+      "height": 2138.3,
+      "eastward": 3.9,
+      "northward": 9.3
+    },
+    {
+      "height": 2145.1,
+      "eastward": 4.0,
+      "northward": 9.3
+    },
+    {
+      "height": 2151.8,
+      "eastward": 4.2,
+      "northward": 9.2
+    },
+    {
+      "height": 2158.4,
+      "eastward": 4.2,
+      "northward": 9.2
+    },
+    {
+      "height": 2164.8,
+      "eastward": 4.3,
+      "northward": 9.1
+    },
+    {
+      "height": 2170.9,
+      "eastward": 4.4,
+      "northward": 9.1
+    },
+    {
+      "height": 2177.0,
+      "eastward": 4.5,
+      "northward": 9.1
+    },
+    {
+      "height": 2183.0,
+      "eastward": 4.6,
+      "northward": 9.2
+    },
+    {
+      "height": 2189.2,
+      "eastward": 4.7,
+      "northward": 9.2
+    },
+    {
+      "height": 2195.7,
+      "eastward": 4.8,
+      "northward": 9.2
+    },
+    {
+      "height": 2202.5,
+      "eastward": 4.9,
+      "northward": 9.2
+    },
+    {
+      "height": 2209.5,
+      "eastward": 5.0,
+      "northward": 9.1
+    },
+    {
+      "height": 2216.5,
+      "eastward": 5.1,
+      "northward": 9.1
+    },
+    {
+      "height": 2223.5,
+      "eastward": 5.2,
+      "northward": 9.0
+    },
+    {
+      "height": 2230.5,
+      "eastward": 5.2,
+      "northward": 8.9
+    },
+    {
+      "height": 2237.5,
+      "eastward": 5.3,
+      "northward": 8.8
+    },
+    {
+      "height": 2244.4,
+      "eastward": 5.3,
+      "northward": 8.7
+    },
+    {
+      "height": 2251.2,
+      "eastward": 5.3,
+      "northward": 8.7
+    },
+    {
+      "height": 2258.0,
+      "eastward": 5.3,
+      "northward": 8.6
+    },
+    {
+      "height": 2264.8,
+      "eastward": 5.4,
+      "northward": 8.5
+    },
+    {
+      "height": 2271.6,
+      "eastward": 5.4,
+      "northward": 8.4
+    },
+    {
+      "height": 2278.0,
+      "eastward": 5.5,
+      "northward": 8.3
+    },
+    {
+      "height": 2284.2,
+      "eastward": 5.5,
+      "northward": 8.2
+    },
+    {
+      "height": 2290.3,
+      "eastward": 5.6,
+      "northward": 8.2
+    },
+    {
+      "height": 2296.3,
+      "eastward": 5.6,
+      "northward": 8.1
+    },
+    {
+      "height": 2302.4,
+      "eastward": 5.7,
+      "northward": 8.1
+    },
+    {
+      "height": 2308.5,
+      "eastward": 5.7,
+      "northward": 8.1
+    },
+    {
+      "height": 2315.0,
+      "eastward": 5.7,
+      "northward": 8.1
+    },
+    {
+      "height": 2321.8,
+      "eastward": 5.7,
+      "northward": 8.2
+    },
+    {
+      "height": 2328.8,
+      "eastward": 5.7,
+      "northward": 8.2
+    },
+    {
+      "height": 2335.9,
+      "eastward": 5.7,
+      "northward": 8.3
+    },
+    {
+      "height": 2343.1,
+      "eastward": 5.7,
+      "northward": 8.4
+    },
+    {
+      "height": 2350.3,
+      "eastward": 5.7,
+      "northward": 8.5
+    },
+    {
+      "height": 2357.5,
+      "eastward": 5.7,
+      "northward": 8.6
+    },
+    {
+      "height": 2364.9,
+      "eastward": 5.7,
+      "northward": 8.7
+    },
+    {
+      "height": 2372.3,
+      "eastward": 5.7,
+      "northward": 8.7
+    },
+    {
+      "height": 2379.7,
+      "eastward": 5.8,
+      "northward": 8.8
+    },
+    {
+      "height": 2387.0,
+      "eastward": 5.8,
+      "northward": 8.8
+    },
+    {
+      "height": 2394.3,
+      "eastward": 5.9,
+      "northward": 8.8
+    },
+    {
+      "height": 2401.4,
+      "eastward": 6.1,
+      "northward": 8.8
+    },
+    {
+      "height": 2408.5,
+      "eastward": 6.2,
+      "northward": 8.8
+    },
+    {
+      "height": 2415.5,
+      "eastward": 6.3,
+      "northward": 8.8
+    },
+    {
+      "height": 2422.7,
+      "eastward": 6.5,
+      "northward": 8.8
+    },
+    {
+      "height": 2429.7,
+      "eastward": 6.6,
+      "northward": 8.8
+    },
+    {
+      "height": 2436.9,
+      "eastward": 6.8,
+      "northward": 8.8
+    },
+    {
+      "height": 2444.3,
+      "eastward": 7.0,
+      "northward": 8.8
+    },
+    {
+      "height": 2451.8,
+      "eastward": 7.1,
+      "northward": 8.7
+    },
+    {
+      "height": 2459.2,
+      "eastward": 7.3,
+      "northward": 8.7
+    },
+    {
+      "height": 2466.2,
+      "eastward": 7.5,
+      "northward": 8.7
+    },
+    {
+      "height": 2472.9,
+      "eastward": 7.6,
+      "northward": 8.6
+    },
+    {
+      "height": 2479.3,
+      "eastward": 7.7,
+      "northward": 8.5
+    },
+    {
+      "height": 2485.6,
+      "eastward": 7.8,
+      "northward": 8.4
+    },
+    {
+      "height": 2492.0,
+      "eastward": 7.8,
+      "northward": 8.3
+    },
+    {
+      "height": 2498.4,
+      "eastward": 7.9,
+      "northward": 8.2
+    },
+    {
+      "height": 2504.9,
+      "eastward": 7.9,
+      "northward": 8.0
+    },
+    {
+      "height": 2511.6,
+      "eastward": 7.8,
+      "northward": 7.9
+    },
+    {
+      "height": 2518.5,
+      "eastward": 7.8,
+      "northward": 7.7
+    },
+    {
+      "height": 2525.5,
+      "eastward": 7.8,
+      "northward": 7.6
+    },
+    {
+      "height": 2532.5,
+      "eastward": 7.8,
+      "northward": 7.5
+    },
+    {
+      "height": 2539.1,
+      "eastward": 7.8,
+      "northward": 7.4
+    },
+    {
+      "height": 2545.4,
+      "eastward": 7.8,
+      "northward": 7.3
+    },
+    {
+      "height": 2551.7,
+      "eastward": 7.8,
+      "northward": 7.2
+    },
+    {
+      "height": 2558.2,
+      "eastward": 7.8,
+      "northward": 7.1
+    },
+    {
+      "height": 2564.7,
+      "eastward": 7.8,
+      "northward": 7.0
+    },
+    {
+      "height": 2571.3,
+      "eastward": 7.8,
+      "northward": 7.0
+    },
+    {
+      "height": 2578.0,
+      "eastward": 7.8,
+      "northward": 6.9
+    },
+    {
+      "height": 2584.7,
+      "eastward": 7.8,
+      "northward": 6.9
+    },
+    {
+      "height": 2591.6,
+      "eastward": 7.7,
+      "northward": 6.9
+    },
+    {
+      "height": 2598.7,
+      "eastward": 7.7,
+      "northward": 6.8
+    },
+    {
+      "height": 2605.9,
+      "eastward": 7.7,
+      "northward": 6.9
+    },
+    {
+      "height": 2613.0,
+      "eastward": 7.7,
+      "northward": 6.9
+    },
+    {
+      "height": 2620.2,
+      "eastward": 7.8,
+      "northward": 6.9
+    },
+    {
+      "height": 2627.6,
+      "eastward": 7.8,
+      "northward": 6.9
+    },
+    {
+      "height": 2635.0,
+      "eastward": 7.8,
+      "northward": 6.9
+    },
+    {
+      "height": 2642.1,
+      "eastward": 7.9,
+      "northward": 6.9
+    },
+    {
+      "height": 2649.0,
+      "eastward": 8.0,
+      "northward": 6.9
+    },
+    {
+      "height": 2655.5,
+      "eastward": 8.0,
+      "northward": 6.8
+    },
+    {
+      "height": 2661.8,
+      "eastward": 8.1,
+      "northward": 6.8
+    },
+    {
+      "height": 2668.0,
+      "eastward": 8.2,
+      "northward": 6.8
+    },
+    {
+      "height": 2674.4,
+      "eastward": 8.2,
+      "northward": 6.8
+    },
+    {
+      "height": 2680.9,
+      "eastward": 8.3,
+      "northward": 6.7
+    },
+    {
+      "height": 2687.5,
+      "eastward": 8.4,
+      "northward": 6.7
+    },
+    {
+      "height": 2694.4,
+      "eastward": 8.4,
+      "northward": 6.6
+    },
+    {
+      "height": 2701.4,
+      "eastward": 8.5,
+      "northward": 6.6
+    },
+    {
+      "height": 2708.6,
+      "eastward": 8.5,
+      "northward": 6.5
+    },
+    {
+      "height": 2715.8,
+      "eastward": 8.6,
+      "northward": 6.5
+    },
+    {
+      "height": 2723.0,
+      "eastward": 8.6,
+      "northward": 6.5
+    },
+    {
+      "height": 2730.1,
+      "eastward": 8.7,
+      "northward": 6.5
+    },
+    {
+      "height": 2737.0,
+      "eastward": 8.7,
+      "northward": 6.5
+    },
+    {
+      "height": 2744.0,
+      "eastward": 8.7,
+      "northward": 6.5
+    },
+    {
+      "height": 2750.7,
+      "eastward": 8.6,
+      "northward": 6.6
+    },
+    {
+      "height": 2757.2,
+      "eastward": 8.6,
+      "northward": 6.7
+    },
+    {
+      "height": 2763.4,
+      "eastward": 8.5,
+      "northward": 6.8
+    },
+    {
+      "height": 2769.4,
+      "eastward": 8.4,
+      "northward": 6.8
+    },
+    {
+      "height": 2775.6,
+      "eastward": 8.2,
+      "northward": 6.9
+    },
+    {
+      "height": 2782.0,
+      "eastward": 8.1,
+      "northward": 7.0
+    },
+    {
+      "height": 2788.5,
+      "eastward": 8.0,
+      "northward": 7.0
+    },
+    {
+      "height": 2795.4,
+      "eastward": 7.9,
+      "northward": 7.0
+    },
+    {
+      "height": 2802.6,
+      "eastward": 7.8,
+      "northward": 7.0
+    },
+    {
+      "height": 2809.9,
+      "eastward": 7.7,
+      "northward": 6.9
+    },
+    {
+      "height": 2817.2,
+      "eastward": 7.5,
+      "northward": 6.8
+    },
+    {
+      "height": 2824.3,
+      "eastward": 7.5,
+      "northward": 6.7
+    },
+    {
+      "height": 2831.3,
+      "eastward": 7.4,
+      "northward": 6.6
+    },
+    {
+      "height": 2838.3,
+      "eastward": 7.3,
+      "northward": 6.5
+    },
+    {
+      "height": 2845.6,
+      "eastward": 7.3,
+      "northward": 6.4
+    },
+    {
+      "height": 2852.9,
+      "eastward": 7.3,
+      "northward": 6.4
+    },
+    {
+      "height": 2860.0,
+      "eastward": 7.3,
+      "northward": 6.3
+    },
+    {
+      "height": 2867.0,
+      "eastward": 7.3,
+      "northward": 6.3
+    },
+    {
+      "height": 2873.9,
+      "eastward": 7.4,
+      "northward": 6.4
+    },
+    {
+      "height": 2880.6,
+      "eastward": 7.5,
+      "northward": 6.4
+    },
+    {
+      "height": 2887.2,
+      "eastward": 7.5,
+      "northward": 6.5
+    },
+    {
+      "height": 2893.5,
+      "eastward": 7.6,
+      "northward": 6.6
+    },
+    {
+      "height": 2899.4,
+      "eastward": 7.7,
+      "northward": 6.7
+    },
+    {
+      "height": 2905.2,
+      "eastward": 7.8,
+      "northward": 6.8
+    },
+    {
+      "height": 2910.9,
+      "eastward": 7.8,
+      "northward": 6.9
+    },
+    {
+      "height": 2916.6,
+      "eastward": 7.9,
+      "northward": 7.0
+    },
+    {
+      "height": 2922.1,
+      "eastward": 7.9,
+      "northward": 7.1
+    },
+    {
+      "height": 2927.5,
+      "eastward": 8.0,
+      "northward": 7.1
+    },
+    {
+      "height": 2933.0,
+      "eastward": 8.1,
+      "northward": 7.1
+    },
+    {
+      "height": 2938.6,
+      "eastward": 8.1,
+      "northward": 7.1
+    },
+    {
+      "height": 2944.4,
+      "eastward": 8.2,
+      "northward": 7.0
+    },
+    {
+      "height": 2950.3,
+      "eastward": 8.3,
+      "northward": 6.9
+    },
+    {
+      "height": 2956.5,
+      "eastward": 8.4,
+      "northward": 6.8
+    },
+    {
+      "height": 2962.7,
+      "eastward": 8.5,
+      "northward": 6.6
+    },
+    {
+      "height": 2968.8,
+      "eastward": 8.6,
+      "northward": 6.5
+    },
+    {
+      "height": 2974.7,
+      "eastward": 8.7,
+      "northward": 6.4
+    },
+    {
+      "height": 2980.9,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    {
+      "height": 2987.2,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    {
+      "height": 2993.6,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    {
+      "height": 3000.2,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    {
+      "height": 3006.6,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    {
+      "height": 3013.1,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    {
+      "height": 3019.9,
+      "eastward": 8.8,
+      "northward": 6.4
+    },
+    {
+      "height": 3027.1,
+      "eastward": 8.7,
+      "northward": 6.4
+    },
+    {
+      "height": 3034.7,
+      "eastward": 8.6,
+      "northward": 6.5
+    },
+    {
+      "height": 3042.7,
+      "eastward": 8.5,
+      "northward": 6.6
+    },
+    {
+      "height": 3050.5,
+      "eastward": 8.4,
+      "northward": 6.7
+    },
+    {
+      "height": 3058.1,
+      "eastward": 8.2,
+      "northward": 6.9
+    },
+    {
+      "height": 3065.3,
+      "eastward": 8.0,
+      "northward": 7.0
+    },
+    {
+      "height": 3072.1,
+      "eastward": 7.7,
+      "northward": 7.2
+    },
+    {
+      "height": 3078.6,
+      "eastward": 7.5,
+      "northward": 7.2
+    },
+    {
+      "height": 3084.9,
+      "eastward": 7.3,
+      "northward": 7.3
+    },
+    {
+      "height": 3091.1,
+      "eastward": 7.2,
+      "northward": 7.3
+    },
+    {
+      "height": 3097.1,
+      "eastward": 7.1,
+      "northward": 7.3
+    },
+    {
+      "height": 3102.7,
+      "eastward": 7.0,
+      "northward": 7.3
+    },
+    {
+      "height": 3108.1,
+      "eastward": 7.0,
+      "northward": 7.2
+    },
+    {
+      "height": 3113.8,
+      "eastward": 7.0,
+      "northward": 7.2
+    },
+    {
+      "height": 3119.7,
+      "eastward": 7.0,
+      "northward": 7.2
+    },
+    {
+      "height": 3126.2,
+      "eastward": 7.0,
+      "northward": 7.1
+    },
+    {
+      "height": 3133.2,
+      "eastward": 7.0,
+      "northward": 7.1
+    },
+    {
+      "height": 3140.7,
+      "eastward": 7.0,
+      "northward": 7.0
+    },
+    {
+      "height": 3148.3,
+      "eastward": 6.9,
+      "northward": 6.9
+    },
+    {
+      "height": 3155.6,
+      "eastward": 6.8,
+      "northward": 6.8
+    },
+    {
+      "height": 3162.2,
+      "eastward": 6.7,
+      "northward": 6.7
+    },
+    {
+      "height": 3168.1,
+      "eastward": 6.6,
+      "northward": 6.7
+    },
+    {
+      "height": 3173.3,
+      "eastward": 6.5,
+      "northward": 6.6
+    },
+    {
+      "height": 3177.9,
+      "eastward": 6.4,
+      "northward": 6.5
+    },
+    {
+      "height": 3182.4,
+      "eastward": 6.3,
+      "northward": 6.5
+    },
+    {
+      "height": 3187.1,
+      "eastward": 6.3,
+      "northward": 6.3
+    },
+    {
+      "height": 3192.2,
+      "eastward": 6.3,
+      "northward": 6.2
+    },
+    {
+      "height": 3197.8,
+      "eastward": 6.3,
+      "northward": 6.0
+    },
+    {
+      "height": 3203.7,
+      "eastward": 6.4,
+      "northward": 5.8
+    },
+    {
+      "height": 3209.6,
+      "eastward": 6.4,
+      "northward": 5.6
+    },
+    {
+      "height": 3215.1,
+      "eastward": 6.5,
+      "northward": 5.5
+    },
+    {
+      "height": 3219.9,
+      "eastward": 6.5,
+      "northward": 5.4
+    },
+    {
+      "height": 3224.3,
+      "eastward": 6.6,
+      "northward": 5.3
+    },
+    {
+      "height": 3228.6,
+      "eastward": 6.7,
+      "northward": 5.4
+    },
+    {
+      "height": 3233.1,
+      "eastward": 6.7,
+      "northward": 5.5
+    },
+    {
+      "height": 3238.2,
+      "eastward": 6.8,
+      "northward": 5.6
+    },
+    {
+      "height": 3244.2,
+      "eastward": 6.9,
+      "northward": 5.8
+    },
+    {
+      "height": 3250.6,
+      "eastward": 7.0,
+      "northward": 6.0
+    },
+    {
+      "height": 3257.3,
+      "eastward": 7.1,
+      "northward": 6.3
+    },
+    {
+      "height": 3264.0,
+      "eastward": 7.2,
+      "northward": 6.5
+    },
+    {
+      "height": 3270.6,
+      "eastward": 7.3,
+      "northward": 6.7
+    },
+    {
+      "height": 3277.0,
+      "eastward": 7.4,
+      "northward": 6.9
+    },
+    {
+      "height": 3283.2,
+      "eastward": 7.5,
+      "northward": 7.0
+    },
+    {
+      "height": 3289.4,
+      "eastward": 7.6,
+      "northward": 7.1
+    },
+    {
+      "height": 3295.4,
+      "eastward": 7.7,
+      "northward": 7.2
+    },
+    {
+      "height": 3301.3,
+      "eastward": 7.8,
+      "northward": 7.3
+    },
+    {
+      "height": 3307.2,
+      "eastward": 7.8,
+      "northward": 7.3
+    },
+    {
+      "height": 3313.2,
+      "eastward": 7.8,
+      "northward": 7.3
+    },
+    {
+      "height": 3319.3,
+      "eastward": 7.9,
+      "northward": 7.4
+    },
+    {
+      "height": 3325.5,
+      "eastward": 7.9,
+      "northward": 7.3
+    },
+    {
+      "height": 3331.9,
+      "eastward": 7.8,
+      "northward": 7.3
+    },
+    {
+      "height": 3338.3,
+      "eastward": 7.8,
+      "northward": 7.3
+    },
+    {
+      "height": 3344.7,
+      "eastward": 7.8,
+      "northward": 7.2
+    },
+    {
+      "height": 3350.8,
+      "eastward": 7.7,
+      "northward": 7.2
+    },
+    {
+      "height": 3356.6,
+      "eastward": 7.6,
+      "northward": 7.2
+    },
+    {
+      "height": 3362.2,
+      "eastward": 7.6,
+      "northward": 7.1
+    },
+    {
+      "height": 3367.7,
+      "eastward": 7.5,
+      "northward": 7.1
+    },
+    {
+      "height": 3373.3,
+      "eastward": 7.4,
+      "northward": 7.1
+    },
+    {
+      "height": 3379.0,
+      "eastward": 7.3,
+      "northward": 7.1
+    },
+    {
+      "height": 3384.9,
+      "eastward": 7.2,
+      "northward": 7.1
+    },
+    {
+      "height": 3391.0,
+      "eastward": 7.1,
+      "northward": 7.1
+    },
+    {
+      "height": 3397.0,
+      "eastward": 7.0,
+      "northward": 7.0
+    },
+    {
+      "height": 3403.0,
+      "eastward": 7.0,
+      "northward": 7.0
+    },
+    {
+      "height": 3408.8,
+      "eastward": 6.9,
+      "northward": 7.0
+    },
+    {
+      "height": 3414.7,
+      "eastward": 6.9,
+      "northward": 6.9
+    },
+    {
+      "height": 3420.8,
+      "eastward": 6.9,
+      "northward": 6.9
+    },
+    {
+      "height": 3427.4,
+      "eastward": 7.0,
+      "northward": 6.8
+    },
+    {
+      "height": 3434.2,
+      "eastward": 7.1,
+      "northward": 6.8
+    },
+    {
+      "height": 3441.0,
+      "eastward": 7.2,
+      "northward": 6.8
+    },
+    {
+      "height": 3447.5,
+      "eastward": 7.3,
+      "northward": 6.7
+    },
+    {
+      "height": 3453.7,
+      "eastward": 7.4,
+      "northward": 6.7
+    },
+    {
+      "height": 3459.7,
+      "eastward": 7.5,
+      "northward": 6.6
+    },
+    {
+      "height": 3465.6,
+      "eastward": 7.6,
+      "northward": 6.5
+    },
+    {
+      "height": 3471.4,
+      "eastward": 7.7,
+      "northward": 6.5
+    },
+    {
+      "height": 3477.3,
+      "eastward": 7.8,
+      "northward": 6.4
+    },
+    {
+      "height": 3483.4,
+      "eastward": 7.8,
+      "northward": 6.4
+    },
+    {
+      "height": 3489.8,
+      "eastward": 7.9,
+      "northward": 6.3
+    },
+    {
+      "height": 3496.4,
+      "eastward": 7.9,
+      "northward": 6.3
+    },
+    {
+      "height": 3503.2,
+      "eastward": 7.9,
+      "northward": 6.3
+    },
+    {
+      "height": 3509.9,
+      "eastward": 7.9,
+      "northward": 6.3
+    },
+    {
+      "height": 3516.5,
+      "eastward": 7.8,
+      "northward": 6.3
+    },
+    {
+      "height": 3522.8,
+      "eastward": 7.8,
+      "northward": 6.3
+    },
+    {
+      "height": 3528.9,
+      "eastward": 7.8,
+      "northward": 6.4
+    },
+    {
+      "height": 3535.0,
+      "eastward": 7.8,
+      "northward": 6.5
+    },
+    {
+      "height": 3541.3,
+      "eastward": 7.9,
+      "northward": 6.5
+    },
+    {
+      "height": 3547.7,
+      "eastward": 7.9,
+      "northward": 6.6
+    },
+    {
+      "height": 3554.2,
+      "eastward": 7.9,
+      "northward": 6.7
+    },
+    {
+      "height": 3560.7,
+      "eastward": 7.9,
+      "northward": 6.7
+    },
+    {
+      "height": 3567.1,
+      "eastward": 7.9,
+      "northward": 6.8
+    },
+    {
+      "height": 3573.6,
+      "eastward": 7.8,
+      "northward": 6.8
+    },
+    {
+      "height": 3580.2,
+      "eastward": 7.8,
+      "northward": 6.8
+    },
+    {
+      "height": 3586.8,
+      "eastward": 7.7,
+      "northward": 6.8
+    },
+    {
+      "height": 3593.4,
+      "eastward": 7.6,
+      "northward": 6.8
+    },
+    {
+      "height": 3600.0,
+      "eastward": 7.5,
+      "northward": 6.8
+    },
+    {
+      "height": 3606.1,
+      "eastward": 7.5,
+      "northward": 6.9
+    },
+    {
+      "height": 3612.0,
+      "eastward": 7.4,
+      "northward": 6.9
+    },
+    {
+      "height": 3617.5,
+      "eastward": 7.3,
+      "northward": 7.0
+    },
+    {
+      "height": 3622.9,
+      "eastward": 7.3,
+      "northward": 7.0
+    },
+    {
+      "height": 3628.3,
+      "eastward": 7.2,
+      "northward": 7.0
+    },
+    {
+      "height": 3633.6,
+      "eastward": 7.1,
+      "northward": 6.9
+    },
+    {
+      "height": 3638.9,
+      "eastward": 7.0,
+      "northward": 6.9
+    },
+    {
+      "height": 3644.3,
+      "eastward": 6.9,
+      "northward": 6.9
+    },
+    {
+      "height": 3650.0,
+      "eastward": 6.8,
+      "northward": 6.9
+    },
+    {
+      "height": 3656.0,
+      "eastward": 6.8,
+      "northward": 6.9
+    },
+    {
+      "height": 3662.0,
+      "eastward": 6.8,
+      "northward": 6.9
+    },
+    {
+      "height": 3668.0,
+      "eastward": 6.8,
+      "northward": 6.8
+    },
+    {
+      "height": 3673.8,
+      "eastward": 6.9,
+      "northward": 6.8
+    },
+    {
+      "height": 3679.4,
+      "eastward": 7.0,
+      "northward": 6.8
+    },
+    {
+      "height": 3685.0,
+      "eastward": 7.0,
+      "northward": 6.7
+    },
+    {
+      "height": 3690.8,
+      "eastward": 7.0,
+      "northward": 6.7
+    },
+    {
+      "height": 3696.6,
+      "eastward": 7.1,
+      "northward": 6.7
+    },
+    {
+      "height": 3702.5,
+      "eastward": 7.1,
+      "northward": 6.8
+    },
+    {
+      "height": 3708.2,
+      "eastward": 7.1,
+      "northward": 6.8
+    },
+    {
+      "height": 3713.8,
+      "eastward": 7.2,
+      "northward": 6.9
+    },
+    {
+      "height": 3719.5,
+      "eastward": 7.2,
+      "northward": 7.0
+    },
+    {
+      "height": 3725.4,
+      "eastward": 7.3,
+      "northward": 7.1
+    },
+    {
+      "height": 3731.8,
+      "eastward": 7.4,
+      "northward": 7.2
+    },
+    {
+      "height": 3738.4,
+      "eastward": 7.5,
+      "northward": 7.3
+    },
+    {
+      "height": 3745.0,
+      "eastward": 7.5,
+      "northward": 7.5
+    },
+    {
+      "height": 3751.4,
+      "eastward": 7.6,
+      "northward": 7.6
+    },
+    {
+      "height": 3757.7,
+      "eastward": 7.7,
+      "northward": 7.7
+    },
+    {
+      "height": 3764.0,
+      "eastward": 7.9,
+      "northward": 7.8
+    },
+    {
+      "height": 3770.4,
+      "eastward": 8.0,
+      "northward": 7.8
+    },
+    {
+      "height": 3776.9,
+      "eastward": 8.2,
+      "northward": 7.9
+    },
+    {
+      "height": 3783.3,
+      "eastward": 8.4,
+      "northward": 7.9
+    },
+    {
+      "height": 3789.6,
+      "eastward": 8.5,
+      "northward": 7.9
+    },
+    {
+      "height": 3795.9,
+      "eastward": 8.7,
+      "northward": 7.8
+    },
+    {
+      "height": 3802.1,
+      "eastward": 8.8,
+      "northward": 7.8
+    },
+    {
+      "height": 3808.3,
+      "eastward": 8.9,
+      "northward": 7.8
+    },
+    {
+      "height": 3814.3,
+      "eastward": 9.0,
+      "northward": 7.7
+    },
+    {
+      "height": 3820.2,
+      "eastward": 9.0,
+      "northward": 7.7
+    },
+    {
+      "height": 3826.3,
+      "eastward": 9.1,
+      "northward": 7.7
+    },
+    {
+      "height": 3832.7,
+      "eastward": 9.2,
+      "northward": 7.8
+    },
+    {
+      "height": 3839.4,
+      "eastward": 9.2,
+      "northward": 7.8
+    },
+    {
+      "height": 3846.5,
+      "eastward": 9.2,
+      "northward": 8.0
+    },
+    {
+      "height": 3853.7,
+      "eastward": 9.2,
+      "northward": 8.1
+    },
+    {
+      "height": 3860.8,
+      "eastward": 9.2,
+      "northward": 8.3
+    },
+    {
+      "height": 3867.7,
+      "eastward": 9.1,
+      "northward": 8.4
+    },
+    {
+      "height": 3874.0,
+      "eastward": 9.0,
+      "northward": 8.5
+    },
+    {
+      "height": 3879.8,
+      "eastward": 9.0,
+      "northward": 8.6
+    },
+    {
+      "height": 3885.3,
+      "eastward": 8.9,
+      "northward": 8.7
+    },
+    {
+      "height": 3890.6,
+      "eastward": 8.9,
+      "northward": 8.8
+    },
+    {
+      "height": 3896.1,
+      "eastward": 8.9,
+      "northward": 8.9
+    },
+    {
+      "height": 3901.7,
+      "eastward": 8.9,
+      "northward": 9.0
+    },
+    {
+      "height": 3907.9,
+      "eastward": 8.9,
+      "northward": 9.1
+    },
+    {
+      "height": 3914.5,
+      "eastward": 9.0,
+      "northward": 9.3
+    },
+    {
+      "height": 3921.6,
+      "eastward": 9.1,
+      "northward": 9.4
+    },
+    {
+      "height": 3928.9,
+      "eastward": 9.2,
+      "northward": 9.5
+    },
+    {
+      "height": 3936.2,
+      "eastward": 9.4,
+      "northward": 9.6
+    },
+    {
+      "height": 3943.2,
+      "eastward": 9.5,
+      "northward": 9.6
+    },
+    {
+      "height": 3950.0,
+      "eastward": 9.7,
+      "northward": 9.6
+    },
+    {
+      "height": 3956.5,
+      "eastward": 9.8,
+      "northward": 9.5
+    },
+    {
+      "height": 3962.8,
+      "eastward": 9.8,
+      "northward": 9.5
+    },
+    {
+      "height": 3969.0,
+      "eastward": 9.8,
+      "northward": 9.4
+    },
+    {
+      "height": 3975.1,
+      "eastward": 9.8,
+      "northward": 9.4
+    },
+    {
+      "height": 3981.1,
+      "eastward": 9.8,
+      "northward": 9.4
+    },
+    {
+      "height": 3986.8,
+      "eastward": 9.8,
+      "northward": 9.4
+    },
+    {
+      "height": 3992.1,
+      "eastward": 9.8,
+      "northward": 9.5
+    },
+    {
+      "height": 3997.2,
+      "eastward": 9.8,
+      "northward": 9.5
+    },
+    {
+      "height": 4002.4,
+      "eastward": 9.8,
+      "northward": 9.5
+    },
+    {
+      "height": 4007.9,
+      "eastward": 9.9,
+      "northward": 9.6
+    },
+    {
+      "height": 4014.0,
+      "eastward": 9.9,
+      "northward": 9.6
+    },
+    {
+      "height": 4020.5,
+      "eastward": 10.0,
+      "northward": 9.6
+    },
+    {
+      "height": 4027.4,
+      "eastward": 10.1,
+      "northward": 9.7
+    },
+    {
+      "height": 4034.5,
+      "eastward": 10.2,
+      "northward": 9.7
+    },
+    {
+      "height": 4041.6,
+      "eastward": 10.3,
+      "northward": 9.7
+    },
+    {
+      "height": 4048.7,
+      "eastward": 10.5,
+      "northward": 9.8
+    },
+    {
+      "height": 4055.7,
+      "eastward": 10.7,
+      "northward": 9.8
+    },
+    {
+      "height": 4062.2,
+      "eastward": 10.9,
+      "northward": 9.9
+    },
+    {
+      "height": 4068.2,
+      "eastward": 11.2,
+      "northward": 9.9
+    },
+    {
+      "height": 4073.4,
+      "eastward": 11.4,
+      "northward": 9.9
+    },
+    {
+      "height": 4078.1,
+      "eastward": 11.7,
+      "northward": 9.9
+    },
+    {
+      "height": 4082.7,
+      "eastward": 11.8,
+      "northward": 9.9
+    },
+    {
+      "height": 4087.5,
+      "eastward": 12.0,
+      "northward": 9.8
+    },
+    {
+      "height": 4092.5,
+      "eastward": 12.2,
+      "northward": 9.8
+    },
+    {
+      "height": 4097.8,
+      "eastward": 12.3,
+      "northward": 9.7
+    },
+    {
+      "height": 4103.2,
+      "eastward": 12.4,
+      "northward": 9.7
+    },
+    {
+      "height": 4108.5,
+      "eastward": 12.5,
+      "northward": 9.6
+    },
+    {
+      "height": 4113.8,
+      "eastward": 12.7,
+      "northward": 9.6
+    },
+    {
+      "height": 4119.4,
+      "eastward": 12.9,
+      "northward": 9.6
+    },
+    {
+      "height": 4125.5,
+      "eastward": 13.1,
+      "northward": 9.6
+    },
+    {
+      "height": 4132.0,
+      "eastward": 13.3,
+      "northward": 9.7
+    },
+    {
+      "height": 4138.6,
+      "eastward": 13.5,
+      "northward": 9.7
+    },
+    {
+      "height": 4145.1,
+      "eastward": 13.8,
+      "northward": 9.7
+    },
+    {
+      "height": 4151.4,
+      "eastward": 14.0,
+      "northward": 9.8
+    },
+    {
+      "height": 4157.9,
+      "eastward": 14.2,
+      "northward": 9.8
+    },
+    {
+      "height": 4164.5,
+      "eastward": 14.4,
+      "northward": 9.8
+    },
+    {
+      "height": 4171.5,
+      "eastward": 14.6,
+      "northward": 9.8
+    },
+    {
+      "height": 4178.4,
+      "eastward": 14.7,
+      "northward": 9.7
+    },
+    {
+      "height": 4185.1,
+      "eastward": 14.9,
+      "northward": 9.6
+    },
+    {
+      "height": 4191.2,
+      "eastward": 15.1,
+      "northward": 9.5
+    },
+    {
+      "height": 4196.4,
+      "eastward": 15.3,
+      "northward": 9.4
+    },
+    {
+      "height": 4201.0,
+      "eastward": 15.4,
+      "northward": 9.3
+    },
+    {
+      "height": 4205.0,
+      "eastward": 15.6,
+      "northward": 9.2
+    },
+    {
+      "height": 4208.9,
+      "eastward": 15.8,
+      "northward": 9.1
+    },
+    {
+      "height": 4213.0,
+      "eastward": 15.9,
+      "northward": 9.1
+    },
+    {
+      "height": 4217.3,
+      "eastward": 16.0,
+      "northward": 9.1
+    },
+    {
+      "height": 4221.8,
+      "eastward": 16.1,
+      "northward": 9.1
+    },
+    {
+      "height": 4226.5,
+      "eastward": 16.1,
+      "northward": 9.2
+    },
+    {
+      "height": 4231.1,
+      "eastward": 16.2,
+      "northward": 9.3
+    },
+    {
+      "height": 4235.8,
+      "eastward": 16.2,
+      "northward": 9.4
+    },
+    {
+      "height": 4240.5,
+      "eastward": 16.3,
+      "northward": 9.5
+    },
+    {
+      "height": 4245.2,
+      "eastward": 16.3,
+      "northward": 9.6
+    },
+    {
+      "height": 4249.9,
+      "eastward": 16.3,
+      "northward": 9.7
+    },
+    {
+      "height": 4254.6,
+      "eastward": 16.4,
+      "northward": 9.9
+    },
+    {
+      "height": 4259.3,
+      "eastward": 16.4,
+      "northward": 10.0
+    },
+    {
+      "height": 4264.1,
+      "eastward": 16.4,
+      "northward": 10.2
+    },
+    {
+      "height": 4268.9,
+      "eastward": 16.4,
+      "northward": 10.3
+    },
+    {
+      "height": 4273.8,
+      "eastward": 16.4,
+      "northward": 10.5
+    },
+    {
+      "height": 4278.6,
+      "eastward": 16.4,
+      "northward": 10.7
+    },
+    {
+      "height": 4283.4,
+      "eastward": 16.4,
+      "northward": 10.8
+    },
+    {
+      "height": 4288.1,
+      "eastward": 16.4,
+      "northward": 11.0
+    },
+    {
+      "height": 4292.9,
+      "eastward": 16.4,
+      "northward": 11.2
+    },
+    {
+      "height": 4297.9,
+      "eastward": 16.4,
+      "northward": 11.4
+    },
+    {
+      "height": 4302.9,
+      "eastward": 16.4,
+      "northward": 11.6
+    },
+    {
+      "height": 4308.1,
+      "eastward": 16.5,
+      "northward": 11.7
+    },
+    {
+      "height": 4313.4,
+      "eastward": 16.5,
+      "northward": 11.9
+    },
+    {
+      "height": 4319.0,
+      "eastward": 16.5,
+      "northward": 11.9
+    },
+    {
+      "height": 4325.0,
+      "eastward": 16.5,
+      "northward": 12.0
+    },
+    {
+      "height": 4331.3,
+      "eastward": 16.5,
+      "northward": 12.0
+    },
+    {
+      "height": 4337.8,
+      "eastward": 16.4,
+      "northward": 12.0
+    },
+    {
+      "height": 4344.0,
+      "eastward": 16.4,
+      "northward": 11.9
+    },
+    {
+      "height": 4350.0,
+      "eastward": 16.4,
+      "northward": 11.8
+    },
+    {
+      "height": 4356.0,
+      "eastward": 16.5,
+      "northward": 11.7
+    },
+    {
+      "height": 4362.0,
+      "eastward": 16.5,
+      "northward": 11.5
+    },
+    {
+      "height": 4368.3,
+      "eastward": 16.6,
+      "northward": 11.2
+    },
+    {
+      "height": 4375.0,
+      "eastward": 16.6,
+      "northward": 11.0
+    },
+    {
+      "height": 4382.0,
+      "eastward": 16.7,
+      "northward": 10.7
+    },
+    {
+      "height": 4389.2,
+      "eastward": 16.8,
+      "northward": 10.4
+    },
+    {
+      "height": 4396.3,
+      "eastward": 17.0,
+      "northward": 10.2
+    },
+    {
+      "height": 4403.3,
+      "eastward": 17.2,
+      "northward": 10.0
+    },
+    {
+      "height": 4410.0,
+      "eastward": 17.4,
+      "northward": 9.8
+    },
+    {
+      "height": 4416.4,
+      "eastward": 17.6,
+      "northward": 9.7
+    },
+    {
+      "height": 4422.5,
+      "eastward": 17.8,
+      "northward": 9.6
+    },
+    {
+      "height": 4428.6,
+      "eastward": 18.1,
+      "northward": 9.5
+    },
+    {
+      "height": 4434.9,
+      "eastward": 18.3,
+      "northward": 9.5
+    },
+    {
+      "height": 4441.5,
+      "eastward": 18.6,
+      "northward": 9.4
+    },
+    {
+      "height": 4448.6,
+      "eastward": 18.8,
+      "northward": 9.4
+    },
+    {
+      "height": 4455.9,
+      "eastward": 19.1,
+      "northward": 9.4
+    },
+    {
+      "height": 4463.4,
+      "eastward": 19.4,
+      "northward": 9.3
+    },
+    {
+      "height": 4470.7,
+      "eastward": 19.7,
+      "northward": 9.3
+    },
+    {
+      "height": 4477.5,
+      "eastward": 19.9,
+      "northward": 9.2
+    },
+    {
+      "height": 4484.1,
+      "eastward": 20.2,
+      "northward": 9.2
+    },
+    {
+      "height": 4490.7,
+      "eastward": 20.4,
+      "northward": 9.2
+    },
+    {
+      "height": 4497.3,
+      "eastward": 20.6,
+      "northward": 9.2
+    },
+    {
+      "height": 4504.2,
+      "eastward": 20.7,
+      "northward": 9.2
+    },
+    {
+      "height": 4511.3,
+      "eastward": 20.8,
+      "northward": 9.2
+    },
+    {
+      "height": 4518.6,
+      "eastward": 20.9,
+      "northward": 9.2
+    },
+    {
+      "height": 4526.0,
+      "eastward": 20.9,
+      "northward": 9.2
+    },
+    {
+      "height": 4533.7,
+      "eastward": 21.0,
+      "northward": 9.2
+    },
+    {
+      "height": 4541.3,
+      "eastward": 21.1,
+      "northward": 9.1
+    },
+    {
+      "height": 4548.5,
+      "eastward": 21.1,
+      "northward": 9.1
+    },
+    {
+      "height": 4555.3,
+      "eastward": 21.1,
+      "northward": 9.0
+    },
+    {
+      "height": 4561.8,
+      "eastward": 21.2,
+      "northward": 9.0
+    },
+    {
+      "height": 4567.9,
+      "eastward": 21.3,
+      "northward": 8.9
+    },
+    {
+      "height": 4573.8,
+      "eastward": 21.3,
+      "northward": 8.9
+    },
+    {
+      "height": 4579.4,
+      "eastward": 21.4,
+      "northward": 8.9
+    },
+    {
+      "height": 4584.9,
+      "eastward": 21.5,
+      "northward": 9.0
+    },
+    {
+      "height": 4590.3,
+      "eastward": 21.5,
+      "northward": 9.0
+    },
+    {
+      "height": 4595.7,
+      "eastward": 21.6,
+      "northward": 9.1
+    },
+    {
+      "height": 4601.2,
+      "eastward": 21.6,
+      "northward": 9.3
+    },
+    {
+      "height": 4607.2,
+      "eastward": 21.6,
+      "northward": 9.4
+    },
+    {
+      "height": 4613.6,
+      "eastward": 21.6,
+      "northward": 9.7
+    },
+    {
+      "height": 4620.5,
+      "eastward": 21.6,
+      "northward": 9.9
+    },
+    {
+      "height": 4627.7,
+      "eastward": 21.6,
+      "northward": 10.1
+    },
+    {
+      "height": 4634.8,
+      "eastward": 21.6,
+      "northward": 10.4
+    },
+    {
+      "height": 4641.4,
+      "eastward": 21.6,
+      "northward": 10.6
+    },
+    {
+      "height": 4647.3,
+      "eastward": 21.6,
+      "northward": 10.8
+    },
+    {
+      "height": 4652.7,
+      "eastward": 21.6,
+      "northward": 11.0
+    },
+    {
+      "height": 4657.8,
+      "eastward": 21.6,
+      "northward": 11.1
+    },
+    {
+      "height": 4662.9,
+      "eastward": 21.6,
+      "northward": 11.1
+    },
+    {
+      "height": 4667.9,
+      "eastward": 21.6,
+      "northward": 11.0
+    },
+    {
+      "height": 4672.8,
+      "eastward": 21.5,
+      "northward": 10.9
+    },
+    {
+      "height": 4677.7,
+      "eastward": 21.5,
+      "northward": 10.7
+    },
+    {
+      "height": 4682.7,
+      "eastward": 21.5,
+      "northward": 10.5
+    },
+    {
+      "height": 4687.9,
+      "eastward": 21.5,
+      "northward": 10.3
+    },
+    {
+      "height": 4693.7,
+      "eastward": 21.5,
+      "northward": 10.0
+    },
+    {
+      "height": 4700.0,
+      "eastward": 21.6,
+      "northward": 9.8
+    },
+    {
+      "height": 4706.9,
+      "eastward": 21.6,
+      "northward": 9.5
+    },
+    {
+      "height": 4714.3,
+      "eastward": 21.7,
+      "northward": 9.2
+    },
+    {
+      "height": 4721.7,
+      "eastward": 21.8,
+      "northward": 8.9
+    },
+    {
+      "height": 4728.5,
+      "eastward": 21.9,
+      "northward": 8.7
+    },
+    {
+      "height": 4734.7,
+      "eastward": 22.0,
+      "northward": 8.4
+    },
+    {
+      "height": 4740.4,
+      "eastward": 22.1,
+      "northward": 8.3
+    },
+    {
+      "height": 4745.9,
+      "eastward": 22.2,
+      "northward": 8.1
+    },
+    {
+      "height": 4751.6,
+      "eastward": 22.3,
+      "northward": 8.0
+    },
+    {
+      "height": 4757.7,
+      "eastward": 22.4,
+      "northward": 8.0
+    },
+    {
+      "height": 4764.0,
+      "eastward": 22.6,
+      "northward": 8.0
+    },
+    {
+      "height": 4770.2,
+      "eastward": 22.7,
+      "northward": 8.0
+    },
+    {
+      "height": 4776.4,
+      "eastward": 23.0,
+      "northward": 8.0
+    },
+    {
+      "height": 4782.8,
+      "eastward": 23.2,
+      "northward": 8.0
+    },
+    {
+      "height": 4789.8,
+      "eastward": 23.5,
+      "northward": 8.0
+    },
+    {
+      "height": 4797.3,
+      "eastward": 23.8,
+      "northward": 8.1
+    },
+    {
+      "height": 4805.2,
+      "eastward": 24.0,
+      "northward": 8.2
+    },
+    {
+      "height": 4813.4,
+      "eastward": 24.3,
+      "northward": 8.2
+    },
+    {
+      "height": 4821.8,
+      "eastward": 24.5,
+      "northward": 8.3
+    },
+    {
+      "height": 4830.5,
+      "eastward": 24.7,
+      "northward": 8.3
+    },
+    {
+      "height": 4839.1,
+      "eastward": 24.9,
+      "northward": 8.2
+    },
+    {
+      "height": 4847.5,
+      "eastward": 25.0,
+      "northward": 8.1
+    },
+    {
+      "height": 4855.7,
+      "eastward": 25.1,
+      "northward": 7.9
+    },
+    {
+      "height": 4863.6,
+      "eastward": 25.2,
+      "northward": 7.6
+    },
+    {
+      "height": 4871.2,
+      "eastward": 25.2,
+      "northward": 7.3
+    },
+    {
+      "height": 4878.7,
+      "eastward": 25.2,
+      "northward": 7.1
+    },
+    {
+      "height": 4886.0,
+      "eastward": 25.2,
+      "northward": 6.9
+    },
+    {
+      "height": 4893.0,
+      "eastward": 25.1,
+      "northward": 6.7
+    },
+    {
+      "height": 4900.2,
+      "eastward": 25.1,
+      "northward": 6.6
+    },
+    {
+      "height": 4907.7,
+      "eastward": 25.0,
+      "northward": 6.5
+    },
+    {
+      "height": 4915.5,
+      "eastward": 25.0,
+      "northward": 6.4
+    },
+    {
+      "height": 4923.3,
+      "eastward": 25.0,
+      "northward": 6.4
+    },
+    {
+      "height": 4930.9,
+      "eastward": 25.0,
+      "northward": 6.4
+    },
+    {
+      "height": 4937.8,
+      "eastward": 25.0,
+      "northward": 6.4
+    },
+    {
+      "height": 4944.0,
+      "eastward": 25.0,
+      "northward": 6.4
+    },
+    {
+      "height": 4949.7,
+      "eastward": 24.9,
+      "northward": 6.4
+    },
+    {
+      "height": 4954.9,
+      "eastward": 24.8,
+      "northward": 6.5
+    },
+    {
+      "height": 4959.7,
+      "eastward": 24.7,
+      "northward": 6.6
+    },
+    {
+      "height": 4964.3,
+      "eastward": 24.6,
+      "northward": 6.8
+    },
+    {
+      "height": 4968.8,
+      "eastward": 24.6,
+      "northward": 6.9
+    },
+    {
+      "height": 4973.2,
+      "eastward": 24.6,
+      "northward": 7.0
+    },
+    {
+      "height": 4978.0,
+      "eastward": 24.6,
+      "northward": 7.1
+    },
+    {
+      "height": 4983.0,
+      "eastward": 24.7,
+      "northward": 7.1
+    },
+    {
+      "height": 4988.4,
+      "eastward": 24.8,
+      "northward": 7.1
+    },
+    {
+      "height": 4994.2,
+      "eastward": 24.9,
+      "northward": 7.1
+    },
+    {
+      "height": 5000.5,
+      "eastward": 25.1,
+      "northward": 7.0
+    },
+    {
+      "height": 5007.3,
+      "eastward": 25.2,
+      "northward": 7.0
+    },
+    {
+      "height": 5014.1,
+      "eastward": 25.3,
+      "northward": 6.9
+    },
+    {
+      "height": 5020.6,
+      "eastward": 25.5,
+      "northward": 6.9
+    },
+    {
+      "height": 5026.6,
+      "eastward": 25.6,
+      "northward": 6.8
+    },
+    {
+      "height": 5032.1,
+      "eastward": 25.6,
+      "northward": 6.8
+    },
+    {
+      "height": 5037.4,
+      "eastward": 25.7,
+      "northward": 6.8
+    },
+    {
+      "height": 5042.5,
+      "eastward": 25.8,
+      "northward": 6.9
+    },
+    {
+      "height": 5047.9,
+      "eastward": 25.8,
+      "northward": 6.9
+    },
+    {
+      "height": 5053.2,
+      "eastward": 25.8,
+      "northward": 7.0
+    },
+    {
+      "height": 5058.7,
+      "eastward": 25.9,
+      "northward": 7.1
+    },
+    {
+      "height": 5064.1,
+      "eastward": 25.9,
+      "northward": 7.2
+    },
+    {
+      "height": 5069.6,
+      "eastward": 25.9,
+      "northward": 7.3
+    },
+    {
+      "height": 5075.0,
+      "eastward": 25.9,
+      "northward": 7.3
+    },
+    {
+      "height": 5080.4,
+      "eastward": 26.0,
+      "northward": 7.3
+    },
+    {
+      "height": 5085.6,
+      "eastward": 26.0,
+      "northward": 7.4
+    },
+    {
+      "height": 5090.7,
+      "eastward": 26.0,
+      "northward": 7.4
+    },
+    {
+      "height": 5095.8,
+      "eastward": 26.1,
+      "northward": 7.4
+    },
+    {
+      "height": 5101.1,
+      "eastward": 26.1,
+      "northward": 7.3
+    },
+    {
+      "height": 5106.6,
+      "eastward": 26.1,
+      "northward": 7.3
+    },
+    {
+      "height": 5112.3,
+      "eastward": 26.2,
+      "northward": 7.3
+    },
+    {
+      "height": 5118.2,
+      "eastward": 26.2,
+      "northward": 7.3
+    },
+    {
+      "height": 5124.1,
+      "eastward": 26.3,
+      "northward": 7.3
+    },
+    {
+      "height": 5130.0,
+      "eastward": 26.3,
+      "northward": 7.3
+    },
+    {
+      "height": 5135.8,
+      "eastward": 26.4,
+      "northward": 7.2
+    },
+    {
+      "height": 5141.4,
+      "eastward": 26.4,
+      "northward": 7.2
+    },
+    {
+      "height": 5146.9,
+      "eastward": 26.4,
+      "northward": 7.2
+    },
+    {
+      "height": 5152.1,
+      "eastward": 26.4,
+      "northward": 7.1
+    },
+    {
+      "height": 5157.2,
+      "eastward": 26.3,
+      "northward": 7.0
+    },
+    {
+      "height": 5162.3,
+      "eastward": 26.2,
+      "northward": 7.0
+    },
+    {
+      "height": 5167.4,
+      "eastward": 26.2,
+      "northward": 6.9
+    },
+    {
+      "height": 5172.5,
+      "eastward": 26.1,
+      "northward": 6.8
+    },
+    {
+      "height": 5177.7,
+      "eastward": 26.0,
+      "northward": 6.7
+    },
+    {
+      "height": 5182.8,
+      "eastward": 25.9,
+      "northward": 6.6
+    },
+    {
+      "height": 5187.9,
+      "eastward": 25.8,
+      "northward": 6.5
+    },
+    {
+      "height": 5193.0,
+      "eastward": 25.7,
+      "northward": 6.4
+    },
+    {
+      "height": 5198.2,
+      "eastward": 25.7,
+      "northward": 6.3
+    },
+    {
+      "height": 5203.4,
+      "eastward": 25.6,
+      "northward": 6.2
+    },
+    {
+      "height": 5208.5,
+      "eastward": 25.6,
+      "northward": 6.1
+    },
+    {
+      "height": 5213.6,
+      "eastward": 25.6,
+      "northward": 6.0
+    },
+    {
+      "height": 5218.7,
+      "eastward": 25.5,
+      "northward": 6.0
+    },
+    {
+      "height": 5223.8,
+      "eastward": 25.5,
+      "northward": 5.9
+    },
+    {
+      "height": 5229.4,
+      "eastward": 25.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5235.3,
+      "eastward": 25.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5241.3,
+      "eastward": 25.5,
+      "northward": 5.7
+    },
+    {
+      "height": 5247.2,
+      "eastward": 25.6,
+      "northward": 5.7
+    },
+    {
+      "height": 5252.7,
+      "eastward": 25.7,
+      "northward": 5.7
+    },
+    {
+      "height": 5257.9,
+      "eastward": 25.8,
+      "northward": 5.7
+    },
+    {
+      "height": 5263.0,
+      "eastward": 25.9,
+      "northward": 5.7
+    },
+    {
+      "height": 5268.2,
+      "eastward": 26.1,
+      "northward": 5.8
+    },
+    {
+      "height": 5273.5,
+      "eastward": 26.2,
+      "northward": 5.9
+    },
+    {
+      "height": 5278.8,
+      "eastward": 26.4,
+      "northward": 6.0
+    },
+    {
+      "height": 5284.1,
+      "eastward": 26.5,
+      "northward": 6.1
+    },
+    {
+      "height": 5289.3,
+      "eastward": 26.6,
+      "northward": 6.1
+    },
+    {
+      "height": 5294.5,
+      "eastward": 26.7,
+      "northward": 6.2
+    },
+    {
+      "height": 5299.6,
+      "eastward": 26.8,
+      "northward": 6.3
+    },
+    {
+      "height": 5304.8,
+      "eastward": 26.8,
+      "northward": 6.3
+    },
+    {
+      "height": 5310.1,
+      "eastward": 26.9,
+      "northward": 6.3
+    },
+    {
+      "height": 5315.4,
+      "eastward": 26.9,
+      "northward": 6.3
+    },
+    {
+      "height": 5320.7,
+      "eastward": 26.8,
+      "northward": 6.2
+    },
+    {
+      "height": 5325.8,
+      "eastward": 26.8,
+      "northward": 6.2
+    },
+    {
+      "height": 5330.7,
+      "eastward": 26.8,
+      "northward": 6.2
+    },
+    {
+      "height": 5335.3,
+      "eastward": 26.7,
+      "northward": 6.1
+    },
+    {
+      "height": 5339.9,
+      "eastward": 26.7,
+      "northward": 6.1
+    },
+    {
+      "height": 5344.7,
+      "eastward": 26.6,
+      "northward": 6.1
+    },
+    {
+      "height": 5349.7,
+      "eastward": 26.6,
+      "northward": 6.0
+    },
+    {
+      "height": 5354.7,
+      "eastward": 26.6,
+      "northward": 6.0
+    },
+    {
+      "height": 5359.8,
+      "eastward": 26.5,
+      "northward": 6.0
+    },
+    {
+      "height": 5364.7,
+      "eastward": 26.5,
+      "northward": 6.0
+    },
+    {
+      "height": 5369.6,
+      "eastward": 26.5,
+      "northward": 5.9
+    },
+    {
+      "height": 5374.4,
+      "eastward": 26.5,
+      "northward": 5.9
+    },
+    {
+      "height": 5379.1,
+      "eastward": 26.5,
+      "northward": 5.9
+    },
+    {
+      "height": 5383.8,
+      "eastward": 26.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5388.3,
+      "eastward": 26.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5392.7,
+      "eastward": 26.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5396.9,
+      "eastward": 26.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5401.2,
+      "eastward": 26.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5405.5,
+      "eastward": 26.5,
+      "northward": 5.8
+    },
+    {
+      "height": 5409.9,
+      "eastward": 26.4,
+      "northward": 5.8
+    },
+    {
+      "height": 5414.5,
+      "eastward": 26.4,
+      "northward": 5.8
+    },
+    {
+      "height": 5419.2,
+      "eastward": 26.4,
+      "northward": 5.8
+    },
+    {
+      "height": 5424.1,
+      "eastward": 26.4,
+      "northward": 5.8
+    },
+    {
+      "height": 5429.0,
+      "eastward": 26.4,
+      "northward": 5.9
+    },
+    {
+      "height": 5434.0,
+      "eastward": 26.4,
+      "northward": 5.9
+    },
+    {
+      "height": 5439.0,
+      "eastward": 26.4,
+      "northward": 5.9
+    },
+    {
+      "height": 5444.1,
+      "eastward": 26.4,
+      "northward": 6.0
+    },
+    {
+      "height": 5449.2,
+      "eastward": 26.4,
+      "northward": 6.0
+    },
+    {
+      "height": 5454.3,
+      "eastward": 26.4,
+      "northward": 6.1
+    },
+    {
+      "height": 5459.6,
+      "eastward": 26.5,
+      "northward": 6.2
+    },
+    {
+      "height": 5465.0,
+      "eastward": 26.5,
+      "northward": 6.2
+    },
+    {
+      "height": 5470.4,
+      "eastward": 26.5,
+      "northward": 6.3
+    },
+    {
+      "height": 5475.8,
+      "eastward": 26.6,
+      "northward": 6.3
+    },
+    {
+      "height": 5481.2,
+      "eastward": 26.6,
+      "northward": 6.4
+    },
+    {
+      "height": 5486.4,
+      "eastward": 26.7,
+      "northward": 6.4
+    },
+    {
+      "height": 5491.6,
+      "eastward": 26.8,
+      "northward": 6.5
+    },
+    {
+      "height": 5496.6,
+      "eastward": 26.9,
+      "northward": 6.5
+    },
+    {
+      "height": 5501.6,
+      "eastward": 26.9,
+      "northward": 6.5
+    },
+    {
+      "height": 5506.5,
+      "eastward": 27.0,
+      "northward": 6.5
+    },
+    {
+      "height": 5511.4,
+      "eastward": 27.0,
+      "northward": 6.5
+    },
+    {
+      "height": 5516.4,
+      "eastward": 27.1,
+      "northward": 6.5
+    },
+    {
+      "height": 5521.5,
+      "eastward": 27.1,
+      "northward": 6.5
+    },
+    {
+      "height": 5526.7,
+      "eastward": 27.2,
+      "northward": 6.5
+    },
+    {
+      "height": 5532.2,
+      "eastward": 27.3,
+      "northward": 6.4
+    },
+    {
+      "height": 5537.9,
+      "eastward": 27.4,
+      "northward": 6.4
+    },
+    {
+      "height": 5543.3,
+      "eastward": 27.5,
+      "northward": 6.3
+    },
+    {
+      "height": 5548.3,
+      "eastward": 27.6,
+      "northward": 6.3
+    },
+    {
+      "height": 5553.0,
+      "eastward": 27.8,
+      "northward": 6.3
+    },
+    {
+      "height": 5557.6,
+      "eastward": 27.9,
+      "northward": 6.2
+    },
+    {
+      "height": 5562.4,
+      "eastward": 28.0,
+      "northward": 6.2
+    },
+    {
+      "height": 5567.5,
+      "eastward": 28.1,
+      "northward": 6.2
+    },
+    {
+      "height": 5572.6,
+      "eastward": 28.2,
+      "northward": 6.2
+    },
+    {
+      "height": 5577.8,
+      "eastward": 28.3,
+      "northward": 6.2
+    },
+    {
+      "height": 5582.8,
+      "eastward": 28.3,
+      "northward": 6.2
+    },
+    {
+      "height": 5587.6,
+      "eastward": 28.4,
+      "northward": 6.2
+    },
+    {
+      "height": 5592.4,
+      "eastward": 28.4,
+      "northward": 6.2
+    },
+    {
+      "height": 5597.1,
+      "eastward": 28.4,
+      "northward": 6.2
+    },
+    {
+      "height": 5601.8,
+      "eastward": 28.4,
+      "northward": 6.2
+    },
+    {
+      "height": 5606.5,
+      "eastward": 28.4,
+      "northward": 6.2
+    },
+    {
+      "height": 5611.0,
+      "eastward": 28.4,
+      "northward": 6.1
+    },
+    {
+      "height": 5615.6,
+      "eastward": 28.3,
+      "northward": 6.2
+    },
+    {
+      "height": 5620.3,
+      "eastward": 28.2,
+      "northward": 6.2
+    },
+    {
+      "height": 5625.1,
+      "eastward": 28.2,
+      "northward": 6.2
+    },
+    {
+      "height": 5630.0,
+      "eastward": 28.1,
+      "northward": 6.2
+    },
+    {
+      "height": 5635.1,
+      "eastward": 28.0,
+      "northward": 6.3
+    },
+    {
+      "height": 5640.3,
+      "eastward": 28.0,
+      "northward": 6.3
+    },
+    {
+      "height": 5645.4,
+      "eastward": 27.9,
+      "northward": 6.3
+    },
+    {
+      "height": 5650.5,
+      "eastward": 27.9,
+      "northward": 6.3
+    },
+    {
+      "height": 5655.5,
+      "eastward": 27.9,
+      "northward": 6.3
+    },
+    {
+      "height": 5660.4,
+      "eastward": 27.8,
+      "northward": 6.4
+    },
+    {
+      "height": 5665.3,
+      "eastward": 27.8,
+      "northward": 6.4
+    },
+    {
+      "height": 5670.1,
+      "eastward": 27.8,
+      "northward": 6.4
+    },
+    {
+      "height": 5675.0,
+      "eastward": 27.8,
+      "northward": 6.4
+    },
+    {
+      "height": 5680.0,
+      "eastward": 27.8,
+      "northward": 6.4
+    },
+    {
+      "height": 5685.0,
+      "eastward": 27.8,
+      "northward": 6.4
+    },
+    {
+      "height": 5690.1,
+      "eastward": 27.8,
+      "northward": 6.5
+    },
+    {
+      "height": 5695.2,
+      "eastward": 27.8,
+      "northward": 6.5
+    },
+    {
+      "height": 5700.4,
+      "eastward": 27.8,
+      "northward": 6.5
+    },
+    {
+      "height": 5705.5,
+      "eastward": 27.8,
+      "northward": 6.5
+    },
+    {
+      "height": 5710.6,
+      "eastward": 27.9,
+      "northward": 6.6
+    },
+    {
+      "height": 5715.5,
+      "eastward": 27.9,
+      "northward": 6.6
+    },
+    {
+      "height": 5720.3,
+      "eastward": 27.9,
+      "northward": 6.7
+    },
+    {
+      "height": 5725.2,
+      "eastward": 27.9,
+      "northward": 6.8
+    },
+    {
+      "height": 5730.1,
+      "eastward": 27.9,
+      "northward": 6.8
+    },
+    {
+      "height": 5734.8,
+      "eastward": 27.9,
+      "northward": 6.9
+    },
+    {
+      "height": 5739.5,
+      "eastward": 27.9,
+      "northward": 6.9
+    },
+    {
+      "height": 5744.1,
+      "eastward": 27.9,
+      "northward": 7.0
+    },
+    {
+      "height": 5748.6,
+      "eastward": 27.9,
+      "northward": 7.0
+    },
+    {
+      "height": 5753.1,
+      "eastward": 27.9,
+      "northward": 7.0
+    },
+    {
+      "height": 5757.6,
+      "eastward": 27.9,
+      "northward": 7.0
+    },
+    {
+      "height": 5762.1,
+      "eastward": 28.0,
+      "northward": 7.0
+    },
+    {
+      "height": 5766.5,
+      "eastward": 28.0,
+      "northward": 7.0
+    },
+    {
+      "height": 5771.0,
+      "eastward": 28.0,
+      "northward": 6.9
+    },
+    {
+      "height": 5775.7,
+      "eastward": 28.1,
+      "northward": 6.9
+    },
+    {
+      "height": 5780.5,
+      "eastward": 28.1,
+      "northward": 6.9
+    },
+    {
+      "height": 5785.3,
+      "eastward": 28.1,
+      "northward": 6.9
+    },
+    {
+      "height": 5789.9,
+      "eastward": 28.0,
+      "northward": 6.9
+    },
+    {
+      "height": 5794.3,
+      "eastward": 28.0,
+      "northward": 6.8
+    },
+    {
+      "height": 5798.8,
+      "eastward": 27.9,
+      "northward": 6.8
+    },
+    {
+      "height": 5803.4,
+      "eastward": 27.8,
+      "northward": 6.8
+    },
+    {
+      "height": 5808.5,
+      "eastward": 27.8,
+      "northward": 6.8
+    },
+    {
+      "height": 5813.9,
+      "eastward": 27.7,
+      "northward": 6.8
+    },
+    {
+      "height": 5819.4,
+      "eastward": 27.6,
+      "northward": 6.7
+    },
+    {
+      "height": 5824.8,
+      "eastward": 27.6,
+      "northward": 6.7
+    },
+    {
+      "height": 5829.9,
+      "eastward": 27.5,
+      "northward": 6.7
+    },
+    {
+      "height": 5834.8,
+      "eastward": 27.5,
+      "northward": 6.7
+    },
+    {
+      "height": 5839.5,
+      "eastward": 27.5,
+      "northward": 6.7
+    },
+    {
+      "height": 5844.1,
+      "eastward": 27.5,
+      "northward": 6.7
+    },
+    {
+      "height": 5848.5,
+      "eastward": 27.6,
+      "northward": 6.7
+    },
+    {
+      "height": 5852.7,
+      "eastward": 27.6,
+      "northward": 6.8
+    },
+    {
+      "height": 5856.8,
+      "eastward": 27.7,
+      "northward": 6.8
+    },
+    {
+      "height": 5861.0,
+      "eastward": 27.8,
+      "northward": 6.8
+    },
+    {
+      "height": 5865.3,
+      "eastward": 27.9,
+      "northward": 6.7
+    },
+    {
+      "height": 5870.0,
+      "eastward": 28.1,
+      "northward": 6.7
+    },
+    {
+      "height": 5874.9,
+      "eastward": 28.2,
+      "northward": 6.6
+    },
+    {
+      "height": 5880.3,
+      "eastward": 28.4,
+      "northward": 6.5
+    },
+    {
+      "height": 5886.3,
+      "eastward": 28.5,
+      "northward": 6.4
+    },
+    {
+      "height": 5892.6,
+      "eastward": 28.7,
+      "northward": 6.3
+    },
+    {
+      "height": 5899.2,
+      "eastward": 28.8,
+      "northward": 6.2
+    },
+    {
+      "height": 5905.8,
+      "eastward": 28.9,
+      "northward": 6.2
+    },
+    {
+      "height": 5912.2,
+      "eastward": 29.0,
+      "northward": 6.2
+    },
+    {
+      "height": 5918.4,
+      "eastward": 29.1,
+      "northward": 6.2
+    },
+    {
+      "height": 5924.6,
+      "eastward": 29.1,
+      "northward": 6.3
+    },
+    {
+      "height": 5930.8,
+      "eastward": 29.0,
+      "northward": 6.5
+    },
+    {
+      "height": 5937.0,
+      "eastward": 28.9,
+      "northward": 6.7
+    },
+    {
+      "height": 5943.1,
+      "eastward": 28.8,
+      "northward": 6.9
+    },
+    {
+      "height": 5948.9,
+      "eastward": 28.6,
+      "northward": 7.1
+    },
+    {
+      "height": 5954.2,
+      "eastward": 28.4,
+      "northward": 7.3
+    },
+    {
+      "height": 5959.3,
+      "eastward": 28.2,
+      "northward": 7.5
+    },
+    {
+      "height": 5964.0,
+      "eastward": 28.0,
+      "northward": 7.6
+    },
+    {
+      "height": 5968.3,
+      "eastward": 27.9,
+      "northward": 7.8
+    },
+    {
+      "height": 5972.3,
+      "eastward": 27.7,
+      "northward": 7.9
+    },
+    {
+      "height": 5976.1,
+      "eastward": 27.6,
+      "northward": 8.0
+    },
+    {
+      "height": 5980.0,
+      "eastward": 27.6,
+      "northward": 8.2
+    },
+    {
+      "height": 5984.0,
+      "eastward": 27.6,
+      "northward": 8.3
+    },
+    {
+      "height": 5988.3,
+      "eastward": 27.6,
+      "northward": 8.4
+    },
+    {
+      "height": 5992.7,
+      "eastward": 27.6,
+      "northward": 8.5
+    },
+    {
+      "height": 5997.3,
+      "eastward": 27.6,
+      "northward": 8.6
+    },
+    {
+      "height": 6002.0,
+      "eastward": 27.7,
+      "northward": 8.6
+    },
+    {
+      "height": 6006.8,
+      "eastward": 27.7,
+      "northward": 8.6
+    },
+    {
+      "height": 6011.8,
+      "eastward": 27.8,
+      "northward": 8.6
+    },
+    {
+      "height": 6017.0,
+      "eastward": 27.8,
+      "northward": 8.6
+    },
+    {
+      "height": 6022.6,
+      "eastward": 27.9,
+      "northward": 8.5
+    },
+    {
+      "height": 6028.3,
+      "eastward": 27.9,
+      "northward": 8.4
+    },
+    {
+      "height": 6034.2,
+      "eastward": 28.0,
+      "northward": 8.4
+    },
+    {
+      "height": 6040.2,
+      "eastward": 28.1,
+      "northward": 8.3
+    },
+    {
+      "height": 6046.2,
+      "eastward": 28.2,
+      "northward": 8.2
+    },
+    {
+      "height": 6052.2,
+      "eastward": 28.3,
+      "northward": 8.1
+    },
+    {
+      "height": 6058.3,
+      "eastward": 28.4,
+      "northward": 8.0
+    },
+    {
+      "height": 6064.5,
+      "eastward": 28.5,
+      "northward": 7.9
+    },
+    {
+      "height": 6070.7,
+      "eastward": 28.6,
+      "northward": 7.8
+    },
+    {
+      "height": 6077.3,
+      "eastward": 28.7,
+      "northward": 7.7
+    },
+    {
+      "height": 6084.2,
+      "eastward": 28.8,
+      "northward": 7.6
+    },
+    {
+      "height": 6091.5,
+      "eastward": 29.0,
+      "northward": 7.5
+    },
+    {
+      "height": 6099.0,
+      "eastward": 29.1,
+      "northward": 7.4
+    },
+    {
+      "height": 6106.7,
+      "eastward": 29.3,
+      "northward": 7.3
+    },
+    {
+      "height": 6114.2,
+      "eastward": 29.4,
+      "northward": 7.3
+    },
+    {
+      "height": 6121.4,
+      "eastward": 29.6,
+      "northward": 7.3
+    },
+    {
+      "height": 6128.2,
+      "eastward": 29.6,
+      "northward": 7.3
+    },
+    {
+      "height": 6134.6,
+      "eastward": 29.7,
+      "northward": 7.4
+    },
+    {
+      "height": 6140.2,
+      "eastward": 29.6,
+      "northward": 7.5
+    },
+    {
+      "height": 6145.1,
+      "eastward": 29.6,
+      "northward": 7.6
+    },
+    {
+      "height": 6149.2,
+      "eastward": 29.4,
+      "northward": 7.7
+    },
+    {
+      "height": 6153.1,
+      "eastward": 29.3,
+      "northward": 7.8
+    },
+    {
+      "height": 6157.0,
+      "eastward": 29.2,
+      "northward": 7.9
+    },
+    {
+      "height": 6161.3,
+      "eastward": 29.1,
+      "northward": 8.0
+    },
+    {
+      "height": 6165.8,
+      "eastward": 29.0,
+      "northward": 8.2
+    },
+    {
+      "height": 6170.3,
+      "eastward": 28.9,
+      "northward": 8.3
+    },
+    {
+      "height": 6174.7,
+      "eastward": 28.8,
+      "northward": 8.5
+    },
+    {
+      "height": 6179.2,
+      "eastward": 28.7,
+      "northward": 8.6
+    },
+    {
+      "height": 6183.6,
+      "eastward": 28.6,
+      "northward": 8.7
+    },
+    {
+      "height": 6188.1,
+      "eastward": 28.5,
+      "northward": 8.8
+    },
+    {
+      "height": 6192.7,
+      "eastward": 28.4,
+      "northward": 8.9
+    },
+    {
+      "height": 6197.3,
+      "eastward": 28.4,
+      "northward": 8.9
+    },
+    {
+      "height": 6201.8,
+      "eastward": 28.3,
+      "northward": 9.0
+    },
+    {
+      "height": 6206.2,
+      "eastward": 28.3,
+      "northward": 9.1
+    },
+    {
+      "height": 6210.5,
+      "eastward": 28.3,
+      "northward": 9.1
+    },
+    {
+      "height": 6214.8,
+      "eastward": 28.3,
+      "northward": 9.2
+    },
+    {
+      "height": 6219.2,
+      "eastward": 28.4,
+      "northward": 9.2
+    },
+    {
+      "height": 6223.9,
+      "eastward": 28.4,
+      "northward": 9.2
+    },
+    {
+      "height": 6228.7,
+      "eastward": 28.5,
+      "northward": 9.3
+    },
+    {
+      "height": 6233.6,
+      "eastward": 28.6,
+      "northward": 9.3
+    },
+    {
+      "height": 6238.5,
+      "eastward": 28.6,
+      "northward": 9.4
+    },
+    {
+      "height": 6243.5,
+      "eastward": 28.6,
+      "northward": 9.4
+    },
+    {
+      "height": 6248.6,
+      "eastward": 28.7,
+      "northward": 9.5
+    },
+    {
+      "height": 6253.7,
+      "eastward": 28.7,
+      "northward": 9.6
+    },
+    {
+      "height": 6258.7,
+      "eastward": 28.8,
+      "northward": 9.6
+    },
+    {
+      "height": 6263.7,
+      "eastward": 28.9,
+      "northward": 9.7
+    },
+    {
+      "height": 6268.7,
+      "eastward": 28.9,
+      "northward": 9.9
+    },
+    {
+      "height": 6274.1,
+      "eastward": 29.0,
+      "northward": 10.0
+    },
+    {
+      "height": 6279.8,
+      "eastward": 29.1,
+      "northward": 10.1
+    },
+    {
+      "height": 6285.7,
+      "eastward": 29.1,
+      "northward": 10.2
+    },
+    {
+      "height": 6291.5,
+      "eastward": 29.2,
+      "northward": 10.3
+    },
+    {
+      "height": 6297.0,
+      "eastward": 29.2,
+      "northward": 10.3
+    },
+    {
+      "height": 6301.9,
+      "eastward": 29.2,
+      "northward": 10.4
+    },
+    {
+      "height": 6306.3,
+      "eastward": 29.3,
+      "northward": 10.4
+    },
+    {
+      "height": 6310.5,
+      "eastward": 29.3,
+      "northward": 10.5
+    },
+    {
+      "height": 6314.7,
+      "eastward": 29.4,
+      "northward": 10.5
+    },
+    {
+      "height": 6319.1,
+      "eastward": 29.5,
+      "northward": 10.6
+    },
+    {
+      "height": 6323.7,
+      "eastward": 29.6,
+      "northward": 10.6
+    },
+    {
+      "height": 6328.6,
+      "eastward": 29.8,
+      "northward": 10.6
+    },
+    {
+      "height": 6333.8,
+      "eastward": 29.9,
+      "northward": 10.7
+    },
+    {
+      "height": 6339.6,
+      "eastward": 30.1,
+      "northward": 10.7
+    },
+    {
+      "height": 6346.0,
+      "eastward": 30.3,
+      "northward": 10.7
+    },
+    {
+      "height": 6352.7,
+      "eastward": 30.5,
+      "northward": 10.8
+    },
+    {
+      "height": 6358.9,
+      "eastward": 30.7,
+      "northward": 10.8
+    },
+    {
+      "height": 6364.7,
+      "eastward": 30.9,
+      "northward": 10.8
+    },
+    {
+      "height": 6370.0,
+      "eastward": 31.1,
+      "northward": 10.8
+    },
+    {
+      "height": 6375.0,
+      "eastward": 31.2,
+      "northward": 10.9
+    },
+    {
+      "height": 6380.1,
+      "eastward": 31.3,
+      "northward": 10.9
+    },
+    {
+      "height": 6385.4,
+      "eastward": 31.4,
+      "northward": 11.0
+    },
+    {
+      "height": 6390.9,
+      "eastward": 31.4,
+      "northward": 11.0
+    },
+    {
+      "height": 6396.6,
+      "eastward": 31.3,
+      "northward": 11.1
+    },
+    {
+      "height": 6402.8,
+      "eastward": 31.2,
+      "northward": 11.2
+    },
+    {
+      "height": 6409.5,
+      "eastward": 31.2,
+      "northward": 11.2
+    },
+    {
+      "height": 6416.7,
+      "eastward": 31.1,
+      "northward": 11.2
+    },
+    {
+      "height": 6424.4,
+      "eastward": 31.0,
+      "northward": 11.3
+    },
+    {
+      "height": 6432.5,
+      "eastward": 30.9,
+      "northward": 11.3
+    },
+    {
+      "height": 6441.1,
+      "eastward": 30.9,
+      "northward": 11.4
+    },
+    {
+      "height": 6450.2,
+      "eastward": 30.9,
+      "northward": 11.4
+    },
+    {
+      "height": 6459.2,
+      "eastward": 30.8,
+      "northward": 11.6
+    },
+    {
+      "height": 6467.5,
+      "eastward": 30.8,
+      "northward": 11.7
+    },
+    {
+      "height": 6475.0,
+      "eastward": 30.8,
+      "northward": 11.8
+    },
+    {
+      "height": 6481.5,
+      "eastward": 30.8,
+      "northward": 11.9
+    },
+    {
+      "height": 6487.5,
+      "eastward": 30.8,
+      "northward": 12.0
+    },
+    {
+      "height": 6493.1,
+      "eastward": 30.8,
+      "northward": 12.0
+    },
+    {
+      "height": 6498.4,
+      "eastward": 30.9,
+      "northward": 12.0
+    },
+    {
+      "height": 6503.2,
+      "eastward": 31.1,
+      "northward": 12.1
+    },
+    {
+      "height": 6507.5,
+      "eastward": 31.2,
+      "northward": 12.1
+    },
+    {
+      "height": 6511.5,
+      "eastward": 31.4,
+      "northward": 12.1
+    },
+    {
+      "height": 6515.5,
+      "eastward": 31.5,
+      "northward": 12.1
+    },
+    {
+      "height": 6519.5,
+      "eastward": 31.6,
+      "northward": 12.2
+    },
+    {
+      "height": 6523.6,
+      "eastward": 31.7,
+      "northward": 12.2
+    },
+    {
+      "height": 6527.9,
+      "eastward": 31.7,
+      "northward": 12.2
+    },
+    {
+      "height": 6532.2,
+      "eastward": 31.6,
+      "northward": 12.2
+    },
+    {
+      "height": 6536.6,
+      "eastward": 31.6,
+      "northward": 12.2
+    },
+    {
+      "height": 6541.0,
+      "eastward": 31.6,
+      "northward": 12.1
+    },
+    {
+      "height": 6545.5,
+      "eastward": 31.6,
+      "northward": 12.1
+    },
+    {
+      "height": 6550.1,
+      "eastward": 31.6,
+      "northward": 12.1
+    },
+    {
+      "height": 6554.6,
+      "eastward": 31.6,
+      "northward": 12.0
+    },
+    {
+      "height": 6559.0,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6563.4,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6567.8,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6572.2,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6576.6,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6581.2,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6585.8,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6590.5,
+      "eastward": 31.7,
+      "northward": 12.0
+    },
+    {
+      "height": 6595.2,
+      "eastward": 31.7,
+      "northward": 11.9
+    },
+    {
+      "height": 6599.8,
+      "eastward": 31.8,
+      "northward": 11.9
+    },
+    {
+      "height": 6604.3,
+      "eastward": 31.8,
+      "northward": 11.9
+    },
+    {
+      "height": 6608.9,
+      "eastward": 31.9,
+      "northward": 11.9
+    },
+    {
+      "height": 6613.7,
+      "eastward": 31.9,
+      "northward": 11.9
+    },
+    {
+      "height": 6618.5,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6623.4,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6628.3,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6633.1,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6637.9,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6642.7,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6647.5,
+      "eastward": 32.0,
+      "northward": 11.9
+    },
+    {
+      "height": 6652.4,
+      "eastward": 32.1,
+      "northward": 12.0
+    },
+    {
+      "height": 6657.5,
+      "eastward": 32.1,
+      "northward": 12.0
+    },
+    {
+      "height": 6662.6,
+      "eastward": 32.1,
+      "northward": 12.1
+    },
+    {
+      "height": 6667.8,
+      "eastward": 32.2,
+      "northward": 12.2
+    },
+    {
+      "height": 6673.0,
+      "eastward": 32.2,
+      "northward": 12.2
+    },
+    {
+      "height": 6678.2,
+      "eastward": 32.3,
+      "northward": 12.2
+    },
+    {
+      "height": 6683.4,
+      "eastward": 32.3,
+      "northward": 12.3
+    },
+    {
+      "height": 6688.8,
+      "eastward": 32.3,
+      "northward": 12.3
+    },
+    {
+      "height": 6694.1,
+      "eastward": 32.3,
+      "northward": 12.3
+    },
+    {
+      "height": 6699.4,
+      "eastward": 32.4,
+      "northward": 12.4
+    },
+    {
+      "height": 6704.4,
+      "eastward": 32.4,
+      "northward": 12.4
+    },
+    {
+      "height": 6709.1,
+      "eastward": 32.4,
+      "northward": 12.4
+    },
+    {
+      "height": 6713.7,
+      "eastward": 32.5,
+      "northward": 12.5
+    },
+    {
+      "height": 6718.4,
+      "eastward": 32.5,
+      "northward": 12.5
+    },
+    {
+      "height": 6723.3,
+      "eastward": 32.6,
+      "northward": 12.5
+    },
+    {
+      "height": 6728.5,
+      "eastward": 32.6,
+      "northward": 12.5
+    },
+    {
+      "height": 6734.1,
+      "eastward": 32.6,
+      "northward": 12.5
+    },
+    {
+      "height": 6739.6,
+      "eastward": 32.7,
+      "northward": 12.4
+    },
+    {
+      "height": 6745.1,
+      "eastward": 32.7,
+      "northward": 12.4
+    },
+    {
+      "height": 6750.4,
+      "eastward": 32.7,
+      "northward": 12.3
+    },
+    {
+      "height": 6755.7,
+      "eastward": 32.7,
+      "northward": 12.3
+    },
+    {
+      "height": 6760.7,
+      "eastward": 32.6,
+      "northward": 12.3
+    },
+    {
+      "height": 6765.5,
+      "eastward": 32.5,
+      "northward": 12.2
+    },
+    {
+      "height": 6770.1,
+      "eastward": 32.5,
+      "northward": 12.2
+    },
+    {
+      "height": 6774.5,
+      "eastward": 32.4,
+      "northward": 12.2
+    },
+    {
+      "height": 6778.9,
+      "eastward": 32.4,
+      "northward": 12.1
+    },
+    {
+      "height": 6783.3,
+      "eastward": 32.3,
+      "northward": 12.1
+    },
+    {
+      "height": 6787.8,
+      "eastward": 32.3,
+      "northward": 12.1
+    },
+    {
+      "height": 6792.4,
+      "eastward": 32.3,
+      "northward": 12.1
+    },
+    {
+      "height": 6797.1,
+      "eastward": 32.3,
+      "northward": 12.0
+    },
+    {
+      "height": 6801.9,
+      "eastward": 32.3,
+      "northward": 12.0
+    },
+    {
+      "height": 6806.6,
+      "eastward": 32.3,
+      "northward": 12.0
+    },
+    {
+      "height": 6811.4,
+      "eastward": 32.3,
+      "northward": 12.0
+    },
+    {
+      "height": 6816.2,
+      "eastward": 32.3,
+      "northward": 12.0
+    },
+    {
+      "height": 6821.0,
+      "eastward": 32.4,
+      "northward": 12.1
+    },
+    {
+      "height": 6825.7,
+      "eastward": 32.4,
+      "northward": 12.1
+    },
+    {
+      "height": 6830.5,
+      "eastward": 32.4,
+      "northward": 12.1
+    },
+    {
+      "height": 6835.2,
+      "eastward": 32.5,
+      "northward": 12.2
+    },
+    {
+      "height": 6840.1,
+      "eastward": 32.5,
+      "northward": 12.2
+    },
+    {
+      "height": 6844.9,
+      "eastward": 32.6,
+      "northward": 12.3
+    },
+    {
+      "height": 6849.7,
+      "eastward": 32.6,
+      "northward": 12.3
+    },
+    {
+      "height": 6854.5,
+      "eastward": 32.7,
+      "northward": 12.4
+    },
+    {
+      "height": 6859.3,
+      "eastward": 32.7,
+      "northward": 12.5
+    },
+    {
+      "height": 6864.2,
+      "eastward": 32.7,
+      "northward": 12.5
+    },
+    {
+      "height": 6869.0,
+      "eastward": 32.7,
+      "northward": 12.6
+    },
+    {
+      "height": 6873.6,
+      "eastward": 32.8,
+      "northward": 12.6
+    },
+    {
+      "height": 6878.1,
+      "eastward": 32.8,
+      "northward": 12.6
+    },
+    {
+      "height": 6882.4,
+      "eastward": 32.8,
+      "northward": 12.6
+    },
+    {
+      "height": 6886.7,
+      "eastward": 32.7,
+      "northward": 12.6
+    },
+    {
+      "height": 6890.9,
+      "eastward": 32.7,
+      "northward": 12.6
+    },
+    {
+      "height": 6895.1,
+      "eastward": 32.7,
+      "northward": 12.6
+    },
+    {
+      "height": 6899.5,
+      "eastward": 32.7,
+      "northward": 12.5
+    },
+    {
+      "height": 6904.1,
+      "eastward": 32.7,
+      "northward": 12.4
+    },
+    {
+      "height": 6908.7,
+      "eastward": 32.7,
+      "northward": 12.3
+    },
+    {
+      "height": 6913.4,
+      "eastward": 32.7,
+      "northward": 12.2
+    },
+    {
+      "height": 6918.1,
+      "eastward": 32.6,
+      "northward": 12.2
+    },
+    {
+      "height": 6922.7,
+      "eastward": 32.6,
+      "northward": 12.1
+    },
+    {
+      "height": 6927.3,
+      "eastward": 32.6,
+      "northward": 12.0
+    },
+    {
+      "height": 6931.9,
+      "eastward": 32.6,
+      "northward": 11.9
+    },
+    {
+      "height": 6936.6,
+      "eastward": 32.6,
+      "northward": 11.8
+    },
+    {
+      "height": 6941.4,
+      "eastward": 32.6,
+      "northward": 11.8
+    },
+    {
+      "height": 6946.3,
+      "eastward": 32.6,
+      "northward": 11.7
+    },
+    {
+      "height": 6951.3,
+      "eastward": 32.6,
+      "northward": 11.7
+    },
+    {
+      "height": 6956.2,
+      "eastward": 32.6,
+      "northward": 11.7
+    },
+    {
+      "height": 6961.1,
+      "eastward": 32.5,
+      "northward": 11.6
+    },
+    {
+      "height": 6965.9,
+      "eastward": 32.5,
+      "northward": 11.6
+    },
+    {
+      "height": 6970.6,
+      "eastward": 32.5,
+      "northward": 11.6
+    },
+    {
+      "height": 6975.3,
+      "eastward": 32.5,
+      "northward": 11.5
+    },
+    {
+      "height": 6980.0,
+      "eastward": 32.4,
+      "northward": 11.5
+    },
+    {
+      "height": 6984.7,
+      "eastward": 32.4,
+      "northward": 11.5
+    },
+    {
+      "height": 6989.4,
+      "eastward": 32.4,
+      "northward": 11.4
+    },
+    {
+      "height": 6994.1,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 6998.9,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7003.9,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7009.0,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7014.2,
+      "eastward": 32.4,
+      "northward": 11.4
+    },
+    {
+      "height": 7019.5,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7024.6,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7029.7,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7034.6,
+      "eastward": 32.5,
+      "northward": 11.4
+    },
+    {
+      "height": 7039.5,
+      "eastward": 32.6,
+      "northward": 11.3
+    },
+    {
+      "height": 7044.2,
+      "eastward": 32.6,
+      "northward": 11.3
+    },
+    {
+      "height": 7048.7,
+      "eastward": 32.6,
+      "northward": 11.3
+    },
+    {
+      "height": 7053.2,
+      "eastward": 32.7,
+      "northward": 11.3
+    },
+    {
+      "height": 7057.5,
+      "eastward": 32.7,
+      "northward": 11.3
+    },
+    {
+      "height": 7061.9,
+      "eastward": 32.7,
+      "northward": 11.2
+    },
+    {
+      "height": 7066.5,
+      "eastward": 32.6,
+      "northward": 11.2
+    },
+    {
+      "height": 7071.3,
+      "eastward": 32.6,
+      "northward": 11.1
+    },
+    {
+      "height": 7076.1,
+      "eastward": 32.5,
+      "northward": 11.1
+    },
+    {
+      "height": 7080.9,
+      "eastward": 32.5,
+      "northward": 11.0
+    },
+    {
+      "height": 7085.6,
+      "eastward": 32.5,
+      "northward": 11.0
+    },
+    {
+      "height": 7090.1,
+      "eastward": 32.4,
+      "northward": 10.9
+    },
+    {
+      "height": 7094.6,
+      "eastward": 32.4,
+      "northward": 10.9
+    },
+    {
+      "height": 7099.1,
+      "eastward": 32.3,
+      "northward": 10.9
+    },
+    {
+      "height": 7103.6,
+      "eastward": 32.3,
+      "northward": 10.8
+    },
+    {
+      "height": 7108.2,
+      "eastward": 32.2,
+      "northward": 10.8
+    },
+    {
+      "height": 7113.0,
+      "eastward": 32.1,
+      "northward": 10.8
+    },
+    {
+      "height": 7118.1,
+      "eastward": 32.0,
+      "northward": 10.8
+    },
+    {
+      "height": 7123.2,
+      "eastward": 31.9,
+      "northward": 10.8
+    },
+    {
+      "height": 7128.4,
+      "eastward": 31.8,
+      "northward": 10.8
+    },
+    {
+      "height": 7133.6,
+      "eastward": 31.6,
+      "northward": 10.8
+    },
+    {
+      "height": 7138.9,
+      "eastward": 31.5,
+      "northward": 10.8
+    },
+    {
+      "height": 7144.1,
+      "eastward": 31.4,
+      "northward": 10.8
+    },
+    {
+      "height": 7149.3,
+      "eastward": 31.3,
+      "northward": 10.8
+    },
+    {
+      "height": 7154.2,
+      "eastward": 31.2,
+      "northward": 10.8
+    },
+    {
+      "height": 7159.2,
+      "eastward": 31.1,
+      "northward": 10.8
+    },
+    {
+      "height": 7164.3,
+      "eastward": 31.0,
+      "northward": 10.8
+    },
+    {
+      "height": 7169.6,
+      "eastward": 30.9,
+      "northward": 10.8
+    },
+    {
+      "height": 7174.8,
+      "eastward": 30.8,
+      "northward": 10.8
+    },
+    {
+      "height": 7180.1,
+      "eastward": 30.8,
+      "northward": 10.9
+    },
+    {
+      "height": 7185.5,
+      "eastward": 30.8,
+      "northward": 10.9
+    },
+    {
+      "height": 7191.0,
+      "eastward": 30.8,
+      "northward": 10.9
+    },
+    {
+      "height": 7196.5,
+      "eastward": 30.8,
+      "northward": 11.0
+    },
+    {
+      "height": 7201.8,
+      "eastward": 30.8,
+      "northward": 11.0
+    },
+    {
+      "height": 7207.1,
+      "eastward": 30.8,
+      "northward": 11.0
+    },
+    {
+      "height": 7212.2,
+      "eastward": 30.8,
+      "northward": 11.1
+    },
+    {
+      "height": 7217.5,
+      "eastward": 30.9,
+      "northward": 11.1
+    },
+    {
+      "height": 7223.0,
+      "eastward": 30.9,
+      "northward": 11.1
+    },
+    {
+      "height": 7228.4,
+      "eastward": 30.9,
+      "northward": 11.0
+    },
+    {
+      "height": 7233.9,
+      "eastward": 30.9,
+      "northward": 11.0
+    },
+    {
+      "height": 7239.3,
+      "eastward": 30.9,
+      "northward": 10.9
+    },
+    {
+      "height": 7244.6,
+      "eastward": 30.9,
+      "northward": 10.8
+    },
+    {
+      "height": 7249.9,
+      "eastward": 30.9,
+      "northward": 10.7
+    },
+    {
+      "height": 7255.2,
+      "eastward": 30.8,
+      "northward": 10.6
+    },
+    {
+      "height": 7260.4,
+      "eastward": 30.8,
+      "northward": 10.5
+    },
+    {
+      "height": 7265.5,
+      "eastward": 30.7,
+      "northward": 10.5
+    },
+    {
+      "height": 7270.6,
+      "eastward": 30.7,
+      "northward": 10.4
+    },
+    {
+      "height": 7275.8,
+      "eastward": 30.6,
+      "northward": 10.4
+    },
+    {
+      "height": 7281.0,
+      "eastward": 30.6,
+      "northward": 10.3
+    },
+    {
+      "height": 7286.3,
+      "eastward": 30.6,
+      "northward": 10.3
+    },
+    {
+      "height": 7291.6,
+      "eastward": 30.5,
+      "northward": 10.3
+    },
+    {
+      "height": 7296.8,
+      "eastward": 30.5,
+      "northward": 10.2
+    },
+    {
+      "height": 7301.8,
+      "eastward": 30.5,
+      "northward": 10.2
+    },
+    {
+      "height": 7306.8,
+      "eastward": 30.5,
+      "northward": 10.2
+    },
+    {
+      "height": 7311.8,
+      "eastward": 30.5,
+      "northward": 10.1
+    },
+    {
+      "height": 7316.8,
+      "eastward": 30.5,
+      "northward": 10.1
+    },
+    {
+      "height": 7321.8,
+      "eastward": 30.6,
+      "northward": 10.1
+    },
+    {
+      "height": 7326.8,
+      "eastward": 30.7,
+      "northward": 10.0
+    },
+    {
+      "height": 7331.5,
+      "eastward": 30.8,
+      "northward": 10.0
+    },
+    {
+      "height": 7336.1,
+      "eastward": 30.8,
+      "northward": 9.9
+    },
+    {
+      "height": 7340.6,
+      "eastward": 30.9,
+      "northward": 9.9
+    },
+    {
+      "height": 7345.3,
+      "eastward": 31.0,
+      "northward": 9.8
+    },
+    {
+      "height": 7350.3,
+      "eastward": 31.1,
+      "northward": 9.7
+    },
+    {
+      "height": 7355.6,
+      "eastward": 31.1,
+      "northward": 9.7
+    },
+    {
+      "height": 7361.2,
+      "eastward": 31.2,
+      "northward": 9.6
+    },
+    {
+      "height": 7367.2,
+      "eastward": 31.3,
+      "northward": 9.5
+    },
+    {
+      "height": 7373.2,
+      "eastward": 31.3,
+      "northward": 9.4
+    },
+    {
+      "height": 7379.0,
+      "eastward": 31.4,
+      "northward": 9.3
+    },
+    {
+      "height": 7384.5,
+      "eastward": 31.5,
+      "northward": 9.2
+    },
+    {
+      "height": 7389.6,
+      "eastward": 31.5,
+      "northward": 9.1
+    },
+    {
+      "height": 7394.5,
+      "eastward": 31.6,
+      "northward": 9.1
+    },
+    {
+      "height": 7399.3,
+      "eastward": 31.7,
+      "northward": 9.0
+    },
+    {
+      "height": 7404.0,
+      "eastward": 31.8,
+      "northward": 8.9
+    },
+    {
+      "height": 7408.7,
+      "eastward": 31.9,
+      "northward": 8.9
+    },
+    {
+      "height": 7413.3,
+      "eastward": 31.9,
+      "northward": 8.9
+    },
+    {
+      "height": 7418.0,
+      "eastward": 32.0,
+      "northward": 8.9
+    },
+    {
+      "height": 7422.7,
+      "eastward": 32.1,
+      "northward": 8.9
+    },
+    {
+      "height": 7427.5,
+      "eastward": 32.2,
+      "northward": 8.9
+    },
+    {
+      "height": 7432.5,
+      "eastward": 32.2,
+      "northward": 8.9
+    },
+    {
+      "height": 7437.7,
+      "eastward": 32.3,
+      "northward": 8.9
+    },
+    {
+      "height": 7443.0,
+      "eastward": 32.3,
+      "northward": 8.9
+    },
+    {
+      "height": 7448.5,
+      "eastward": 32.3,
+      "northward": 8.8
+    },
+    {
+      "height": 7454.4,
+      "eastward": 32.4,
+      "northward": 8.7
+    },
+    {
+      "height": 7460.6,
+      "eastward": 32.4,
+      "northward": 8.6
+    },
+    {
+      "height": 7473.9,
+      "eastward": 32.5,
+      "northward": 8.4
+    },
+    {
+      "height": 7480.9,
+      "eastward": 32.5,
+      "northward": 8.3
+    },
+    {
+      "height": 7488.2,
+      "eastward": 32.5,
+      "northward": 8.2
+    },
+    {
+      "height": 7495.6,
+      "eastward": 32.5,
+      "northward": 8.1
+    },
+    {
+      "height": 7503.1,
+      "eastward": 32.6,
+      "northward": 8.0
+    },
+    {
+      "height": 7510.6,
+      "eastward": 32.6,
+      "northward": 8.0
+    },
+    {
+      "height": 7518.5,
+      "eastward": 32.7,
+      "northward": 7.9
+    },
+    {
+      "height": 7526.2,
+      "eastward": 32.8,
+      "northward": 7.8
+    },
+    {
+      "height": 7533.6,
+      "eastward": 33.0,
+      "northward": 7.8
+    },
+    {
+      "height": 7540.5,
+      "eastward": 33.2,
+      "northward": 7.7
+    },
+    {
+      "height": 7546.8,
+      "eastward": 33.3,
+      "northward": 7.6
+    },
+    {
+      "height": 7553.1,
+      "eastward": 33.5,
+      "northward": 7.5
+    },
+    {
+      "height": 7559.8,
+      "eastward": 33.6,
+      "northward": 7.4
+    },
+    {
+      "height": 7566.5,
+      "eastward": 33.6,
+      "northward": 7.3
+    },
+    {
+      "height": 7573.2,
+      "eastward": 33.6,
+      "northward": 7.2
+    },
+    {
+      "height": 7579.9,
+      "eastward": 33.6,
+      "northward": 7.1
+    },
+    {
+      "height": 7586.6,
+      "eastward": 33.6,
+      "northward": 7.0
+    },
+    {
+      "height": 7593.3,
+      "eastward": 33.5,
+      "northward": 7.0
+    },
+    {
+      "height": 7599.9,
+      "eastward": 33.5,
+      "northward": 6.9
+    },
+    {
+      "height": 7606.1,
+      "eastward": 33.5,
+      "northward": 6.8
+    },
+    {
+      "height": 7611.7,
+      "eastward": 33.5,
+      "northward": 6.7
+    },
+    {
+      "height": 7617.0,
+      "eastward": 33.5,
+      "northward": 6.7
+    },
+    {
+      "height": 7622.0,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7627.0,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7632.1,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7637.0,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7641.8,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7646.6,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7651.3,
+      "eastward": 33.5,
+      "northward": 6.6
+    },
+    {
+      "height": 7656.1,
+      "eastward": 33.6,
+      "northward": 6.6
+    },
+    {
+      "height": 7660.8,
+      "eastward": 33.6,
+      "northward": 6.5
+    },
+    {
+      "height": 7665.5,
+      "eastward": 33.6,
+      "northward": 6.5
+    },
+    {
+      "height": 7670.2,
+      "eastward": 33.6,
+      "northward": 6.4
+    },
+    {
+      "height": 7674.9,
+      "eastward": 33.6,
+      "northward": 6.4
+    },
+    {
+      "height": 7679.7,
+      "eastward": 33.7,
+      "northward": 6.4
+    },
+    {
+      "height": 7684.7,
+      "eastward": 33.7,
+      "northward": 6.4
+    },
+    {
+      "height": 7689.9,
+      "eastward": 33.7,
+      "northward": 6.4
+    },
+    {
+      "height": 7695.1,
+      "eastward": 33.8,
+      "northward": 6.4
+    },
+    {
+      "height": 7700.3,
+      "eastward": 33.8,
+      "northward": 6.4
+    },
+    {
+      "height": 7705.5,
+      "eastward": 33.8,
+      "northward": 6.5
+    },
+    {
+      "height": 7710.6,
+      "eastward": 33.9,
+      "northward": 6.5
+    },
+    {
+      "height": 7715.6,
+      "eastward": 33.9,
+      "northward": 6.4
+    },
+    {
+      "height": 7720.9,
+      "eastward": 33.9,
+      "northward": 6.4
+    },
+    {
+      "height": 7726.1,
+      "eastward": 34.0,
+      "northward": 6.3
+    },
+    {
+      "height": 7731.3,
+      "eastward": 34.0,
+      "northward": 6.2
+    },
+    {
+      "height": 7736.4,
+      "eastward": 34.0,
+      "northward": 6.2
+    },
+    {
+      "height": 7741.4,
+      "eastward": 34.0,
+      "northward": 6.1
+    },
+    {
+      "height": 7746.4,
+      "eastward": 34.0,
+      "northward": 6.0
+    },
+    {
+      "height": 7751.6,
+      "eastward": 34.0,
+      "northward": 6.0
+    },
+    {
+      "height": 7756.9,
+      "eastward": 34.1,
+      "northward": 6.0
+    },
+    {
+      "height": 7762.1,
+      "eastward": 34.1,
+      "northward": 5.9
+    },
+    {
+      "height": 7767.4,
+      "eastward": 34.1,
+      "northward": 5.9
+    },
+    {
+      "height": 7772.5,
+      "eastward": 34.1,
+      "northward": 5.9
+    },
+    {
+      "height": 7777.5,
+      "eastward": 34.1,
+      "northward": 5.8
+    },
+    {
+      "height": 7782.3,
+      "eastward": 34.1,
+      "northward": 5.8
+    },
+    {
+      "height": 7787.1,
+      "eastward": 34.0,
+      "northward": 5.8
+    },
+    {
+      "height": 7792.0,
+      "eastward": 34.0,
+      "northward": 5.7
+    },
+    {
+      "height": 7797.0,
+      "eastward": 34.0,
+      "northward": 5.7
+    },
+    {
+      "height": 7802.0,
+      "eastward": 34.0,
+      "northward": 5.6
+    },
+    {
+      "height": 7807.2,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7812.4,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7817.7,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7822.9,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7828.1,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7833.3,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7838.5,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7843.6,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7848.5,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7853.3,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7858.1,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7867.4,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7872.1,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7876.7,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7881.4,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7886.1,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7890.9,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7895.7,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7900.7,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7905.9,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7911.1,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7916.2,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7921.3,
+      "eastward": 34.0,
+      "northward": 5.5
+    },
+    {
+      "height": 7926.1,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7930.8,
+      "eastward": 34.0,
+      "northward": 5.4
+    },
+    {
+      "height": 7935.4,
+      "eastward": 34.0,
+      "northward": 5.3
+    },
+    {
+      "height": 7940.0,
+      "eastward": 34.0,
+      "northward": 5.3
+    },
+    {
+      "height": 7944.7,
+      "eastward": 33.9,
+      "northward": 5.2
+    },
+    {
+      "height": 7949.6,
+      "eastward": 33.9,
+      "northward": 5.2
+    },
+    {
+      "height": 7954.6,
+      "eastward": 33.9,
+      "northward": 5.2
+    },
+    {
+      "height": 7959.6,
+      "eastward": 33.9,
+      "northward": 5.2
+    },
+    {
+      "height": 7964.6,
+      "eastward": 33.9,
+      "northward": 5.1
+    },
+    {
+      "height": 7969.6,
+      "eastward": 33.9,
+      "northward": 5.1
+    },
+    {
+      "height": 7974.4,
+      "eastward": 33.9,
+      "northward": 5.0
+    },
+    {
+      "height": 7979.1,
+      "eastward": 33.9,
+      "northward": 5.0
+    },
+    {
+      "height": 7984.0,
+      "eastward": 33.9,
+      "northward": 5.0
+    },
+    {
+      "height": 7988.8,
+      "eastward": 33.8,
+      "northward": 4.9
+    },
+    {
+      "height": 7993.8,
+      "eastward": 33.8,
+      "northward": 4.9
+    },
+    {
+      "height": 7998.8,
+      "eastward": 33.7,
+      "northward": 4.9
+    },
+    {
+      "height": 8003.8,
+      "eastward": 33.7,
+      "northward": 4.9
+    },
+    {
+      "height": 8008.6,
+      "eastward": 33.7,
+      "northward": 4.9
+    },
+    {
+      "height": 8013.4,
+      "eastward": 33.6,
+      "northward": 4.9
+    },
+    {
+      "height": 8018.2,
+      "eastward": 33.6,
+      "northward": 4.9
+    },
+    {
+      "height": 8023.0,
+      "eastward": 33.6,
+      "northward": 4.9
+    },
+    {
+      "height": 8027.9,
+      "eastward": 33.6,
+      "northward": 4.9
+    },
+    {
+      "height": 8032.8,
+      "eastward": 33.5,
+      "northward": 4.9
+    },
+    {
+      "height": 8037.6,
+      "eastward": 33.5,
+      "northward": 4.9
+    },
+    {
+      "height": 8042.2,
+      "eastward": 33.5,
+      "northward": 4.9
+    },
+    {
+      "height": 8046.7,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8051.1,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8055.7,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8060.4,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8065.0,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8069.6,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8074.2,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8078.8,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8083.4,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8088.0,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8092.7,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8097.6,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8102.5,
+      "eastward": 33.4,
+      "northward": 4.8
+    },
+    {
+      "height": 8107.4,
+      "eastward": 33.4,
+      "northward": 4.7
+    },
+    {
+      "height": 8112.2,
+      "eastward": 33.3,
+      "northward": 4.7
+    },
+    {
+      "height": 8116.9,
+      "eastward": 33.3,
+      "northward": 4.7
+    },
+    {
+      "height": 8121.5,
+      "eastward": 33.3,
+      "northward": 4.7
+    },
+    {
+      "height": 8126.2,
+      "eastward": 33.2,
+      "northward": 4.7
+    },
+    {
+      "height": 8131.1,
+      "eastward": 33.2,
+      "northward": 4.7
+    },
+    {
+      "height": 8136.0,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8141.0,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8146.0,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8151.1,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8156.0,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8161.0,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8165.9,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8170.6,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8175.3,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8179.9,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8184.6,
+      "eastward": 33.2,
+      "northward": 4.8
+    },
+    {
+      "height": 8189.3,
+      "eastward": 33.2,
+      "northward": 4.7
+    },
+    {
+      "height": 8194.0,
+      "eastward": 33.2,
+      "northward": 4.7
+    },
+    {
+      "height": 8198.7,
+      "eastward": 33.2,
+      "northward": 4.7
+    },
+    {
+      "height": 8203.4,
+      "eastward": 33.3,
+      "northward": 4.7
+    },
+    {
+      "height": 8208.0,
+      "eastward": 33.3,
+      "northward": 4.7
+    },
+    {
+      "height": 8212.7,
+      "eastward": 33.3,
+      "northward": 4.7
+    },
+    {
+      "height": 8217.4,
+      "eastward": 33.3,
+      "northward": 4.6
+    },
+    {
+      "height": 8222.0,
+      "eastward": 33.3,
+      "northward": 4.6
+    },
+    {
+      "height": 8231.6,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8236.7,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8241.8,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8246.9,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8252.1,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8257.2,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8262.3,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8267.2,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8276.7,
+      "eastward": 33.2,
+      "northward": 4.6
+    },
+    {
+      "height": 8281.5,
+      "eastward": 33.3,
+      "northward": 4.6
+    },
+    {
+      "height": 8286.3,
+      "eastward": 33.4,
+      "northward": 4.7
+    },
+    {
+      "height": 8291.3,
+      "eastward": 33.4,
+      "northward": 4.7
+    },
+    {
+      "height": 8296.3,
+      "eastward": 33.5,
+      "northward": 4.8
+    },
+    {
+      "height": 8301.4,
+      "eastward": 33.6,
+      "northward": 4.9
+    },
+    {
+      "height": 8306.5,
+      "eastward": 33.7,
+      "northward": 4.9
+    },
+    {
+      "height": 8311.4,
+      "eastward": 33.8,
+      "northward": 5.0
+    },
+    {
+      "height": 8316.4,
+      "eastward": 33.8,
+      "northward": 5.0
+    },
+    {
+      "height": 8321.3,
+      "eastward": 33.9,
+      "northward": 5.0
+    },
+    {
+      "height": 8326.2,
+      "eastward": 33.9,
+      "northward": 5.1
+    },
+    {
+      "height": 8331.2,
+      "eastward": 33.9,
+      "northward": 5.1
+    },
+    {
+      "height": 8336.2,
+      "eastward": 34.0,
+      "northward": 5.2
+    },
+    {
+      "height": 8341.1,
+      "eastward": 34.0,
+      "northward": 5.2
+    },
+    {
+      "height": 8345.9,
+      "eastward": 34.1,
+      "northward": 5.3
+    },
+    {
+      "height": 8350.5,
+      "eastward": 34.1,
+      "northward": 5.3
+    },
+    {
+      "height": 8355.0,
+      "eastward": 34.2,
+      "northward": 5.4
+    },
+    {
+      "height": 8359.6,
+      "eastward": 34.2,
+      "northward": 5.5
+    },
+    {
+      "height": 8364.2,
+      "eastward": 34.3,
+      "northward": 5.5
+    },
+    {
+      "height": 8369.0,
+      "eastward": 34.4,
+      "northward": 5.5
+    },
+    {
+      "height": 8373.6,
+      "eastward": 34.4,
+      "northward": 5.6
+    },
+    {
+      "height": 8378.2,
+      "eastward": 34.4,
+      "northward": 5.6
+    },
+    {
+      "height": 8382.9,
+      "eastward": 34.5,
+      "northward": 5.6
+    },
+    {
+      "height": 8387.6,
+      "eastward": 34.5,
+      "northward": 5.7
+    },
+    {
+      "height": 8392.5,
+      "eastward": 34.5,
+      "northward": 5.7
+    },
+    {
+      "height": 8397.5,
+      "eastward": 34.5,
+      "northward": 5.7
+    },
+    {
+      "height": 8402.4,
+      "eastward": 34.5,
+      "northward": 5.7
+    },
+    {
+      "height": 8407.2,
+      "eastward": 34.5,
+      "northward": 5.8
+    },
+    {
+      "height": 8416.9,
+      "eastward": 34.6,
+      "northward": 5.8
+    },
+    {
+      "height": 8421.8,
+      "eastward": 34.6,
+      "northward": 5.8
+    },
+    {
+      "height": 8426.8,
+      "eastward": 34.5,
+      "northward": 5.8
+    },
+    {
+      "height": 8431.7,
+      "eastward": 34.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8436.6,
+      "eastward": 34.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8441.5,
+      "eastward": 34.5,
+      "northward": 5.8
+    },
+    {
+      "height": 8446.3,
+      "eastward": 34.5,
+      "northward": 5.8
+    },
+    {
+      "height": 8451.1,
+      "eastward": 34.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8455.9,
+      "eastward": 34.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8460.7,
+      "eastward": 34.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8465.4,
+      "eastward": 34.6,
+      "northward": 5.9
+    },
+    {
+      "height": 8470.1,
+      "eastward": 34.6,
+      "northward": 6.0
+    },
+    {
+      "height": 8474.7,
+      "eastward": 34.6,
+      "northward": 6.0
+    },
+    {
+      "height": 8479.3,
+      "eastward": 34.7,
+      "northward": 6.0
+    },
+    {
+      "height": 8483.9,
+      "eastward": 34.7,
+      "northward": 6.0
+    },
+    {
+      "height": 8488.5,
+      "eastward": 34.7,
+      "northward": 6.0
+    },
+    {
+      "height": 8493.1,
+      "eastward": 34.8,
+      "northward": 6.0
+    },
+    {
+      "height": 8497.7,
+      "eastward": 34.8,
+      "northward": 6.0
+    },
+    {
+      "height": 8502.3,
+      "eastward": 34.8,
+      "northward": 6.0
+    },
+    {
+      "height": 8507.0,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8511.9,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8516.8,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8521.8,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8526.8,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8531.6,
+      "eastward": 34.8,
+      "northward": 5.8
+    },
+    {
+      "height": 8536.3,
+      "eastward": 34.8,
+      "northward": 5.8
+    },
+    {
+      "height": 8540.9,
+      "eastward": 34.8,
+      "northward": 5.8
+    },
+    {
+      "height": 8545.6,
+      "eastward": 34.8,
+      "northward": 5.7
+    },
+    {
+      "height": 8550.3,
+      "eastward": 34.9,
+      "northward": 5.7
+    },
+    {
+      "height": 8555.0,
+      "eastward": 34.9,
+      "northward": 5.7
+    },
+    {
+      "height": 8559.7,
+      "eastward": 34.9,
+      "northward": 5.6
+    },
+    {
+      "height": 8564.6,
+      "eastward": 34.9,
+      "northward": 5.6
+    },
+    {
+      "height": 8569.4,
+      "eastward": 34.9,
+      "northward": 5.6
+    },
+    {
+      "height": 8574.3,
+      "eastward": 35.0,
+      "northward": 5.6
+    },
+    {
+      "height": 8579.2,
+      "eastward": 35.0,
+      "northward": 5.6
+    },
+    {
+      "height": 8584.0,
+      "eastward": 35.0,
+      "northward": 5.6
+    },
+    {
+      "height": 8588.8,
+      "eastward": 35.0,
+      "northward": 5.6
+    },
+    {
+      "height": 8593.6,
+      "eastward": 35.0,
+      "northward": 5.7
+    },
+    {
+      "height": 8598.5,
+      "eastward": 35.0,
+      "northward": 5.8
+    },
+    {
+      "height": 8603.5,
+      "eastward": 35.0,
+      "northward": 5.8
+    },
+    {
+      "height": 8608.7,
+      "eastward": 34.9,
+      "northward": 5.9
+    },
+    {
+      "height": 8614.0,
+      "eastward": 34.9,
+      "northward": 6.0
+    },
+    {
+      "height": 8619.4,
+      "eastward": 34.9,
+      "northward": 6.0
+    },
+    {
+      "height": 8624.7,
+      "eastward": 34.9,
+      "northward": 6.1
+    },
+    {
+      "height": 8630.0,
+      "eastward": 34.9,
+      "northward": 6.1
+    },
+    {
+      "height": 8635.1,
+      "eastward": 34.9,
+      "northward": 6.2
+    },
+    {
+      "height": 8640.2,
+      "eastward": 34.9,
+      "northward": 6.2
+    },
+    {
+      "height": 8645.2,
+      "eastward": 34.9,
+      "northward": 6.1
+    },
+    {
+      "height": 8650.2,
+      "eastward": 34.9,
+      "northward": 6.1
+    },
+    {
+      "height": 8655.2,
+      "eastward": 34.9,
+      "northward": 6.1
+    },
+    {
+      "height": 8660.2,
+      "eastward": 34.9,
+      "northward": 6.0
+    },
+    {
+      "height": 8665.4,
+      "eastward": 34.9,
+      "northward": 6.0
+    },
+    {
+      "height": 8670.5,
+      "eastward": 34.9,
+      "northward": 5.9
+    },
+    {
+      "height": 8675.5,
+      "eastward": 34.9,
+      "northward": 5.9
+    },
+    {
+      "height": 8680.6,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8685.6,
+      "eastward": 34.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8690.9,
+      "eastward": 34.9,
+      "northward": 5.8
+    },
+    {
+      "height": 8696.4,
+      "eastward": 34.9,
+      "northward": 5.8
+    },
+    {
+      "height": 8702.2,
+      "eastward": 34.9,
+      "northward": 5.8
+    },
+    {
+      "height": 8708.0,
+      "eastward": 35.0,
+      "northward": 5.8
+    },
+    {
+      "height": 8713.5,
+      "eastward": 35.0,
+      "northward": 5.8
+    },
+    {
+      "height": 8718.6,
+      "eastward": 35.1,
+      "northward": 5.8
+    },
+    {
+      "height": 8723.7,
+      "eastward": 35.2,
+      "northward": 5.8
+    },
+    {
+      "height": 8728.9,
+      "eastward": 35.2,
+      "northward": 5.8
+    },
+    {
+      "height": 8734.3,
+      "eastward": 35.4,
+      "northward": 5.8
+    },
+    {
+      "height": 8740.2,
+      "eastward": 35.5,
+      "northward": 5.8
+    },
+    {
+      "height": 8746.5,
+      "eastward": 35.6,
+      "northward": 5.8
+    },
+    {
+      "height": 8753.2,
+      "eastward": 35.7,
+      "northward": 5.8
+    },
+    {
+      "height": 8760.1,
+      "eastward": 35.9,
+      "northward": 5.8
+    },
+    {
+      "height": 8767.1,
+      "eastward": 36.0,
+      "northward": 5.8
+    },
+    {
+      "height": 8774.1,
+      "eastward": 36.2,
+      "northward": 5.8
+    },
+    {
+      "height": 8780.8,
+      "eastward": 36.4,
+      "northward": 5.8
+    },
+    {
+      "height": 8787.5,
+      "eastward": 36.5,
+      "northward": 5.8
+    },
+    {
+      "height": 8794.5,
+      "eastward": 36.7,
+      "northward": 5.8
+    },
+    {
+      "height": 8801.5,
+      "eastward": 36.8,
+      "northward": 5.8
+    },
+    {
+      "height": 8808.5,
+      "eastward": 36.9,
+      "northward": 5.7
+    },
+    {
+      "height": 8815.6,
+      "eastward": 36.9,
+      "northward": 5.7
+    },
+    {
+      "height": 8822.7,
+      "eastward": 37.0,
+      "northward": 5.7
+    },
+    {
+      "height": 8830.0,
+      "eastward": 37.0,
+      "northward": 5.7
+    },
+    {
+      "height": 8837.6,
+      "eastward": 36.9,
+      "northward": 5.8
+    },
+    {
+      "height": 8845.2,
+      "eastward": 36.8,
+      "northward": 5.8
+    },
+    {
+      "height": 8852.4,
+      "eastward": 36.7,
+      "northward": 5.8
+    },
+    {
+      "height": 8859.5,
+      "eastward": 36.6,
+      "northward": 5.9
+    },
+    {
+      "height": 8866.3,
+      "eastward": 36.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8873.1,
+      "eastward": 36.5,
+      "northward": 5.9
+    },
+    {
+      "height": 8879.6,
+      "eastward": 36.5,
+      "northward": 6.0
+    },
+    {
+      "height": 8885.7,
+      "eastward": 36.6,
+      "northward": 6.0
+    },
+    {
+      "height": 8891.6,
+      "eastward": 36.6,
+      "northward": 6.0
+    },
+    {
+      "height": 8903.3,
+      "eastward": 36.7,
+      "northward": 6.1
+    },
+    {
+      "height": 8909.4,
+      "eastward": 36.8,
+      "northward": 6.1
+    },
+    {
+      "height": 8915.5,
+      "eastward": 36.8,
+      "northward": 6.0
+    },
+    {
+      "height": 8921.8,
+      "eastward": 36.8,
+      "northward": 6.0
+    },
+    {
+      "height": 8928.3,
+      "eastward": 36.8,
+      "northward": 5.9
+    },
+    {
+      "height": 8935.0,
+      "eastward": 36.7,
+      "northward": 5.9
+    },
+    {
+      "height": 8941.8,
+      "eastward": 36.7,
+      "northward": 5.8
+    },
+    {
+      "height": 8948.9,
+      "eastward": 36.6,
+      "northward": 5.7
+    },
+    {
+      "height": 8956.6,
+      "eastward": 36.5,
+      "northward": 5.7
+    },
+    {
+      "height": 8964.4,
+      "eastward": 36.4,
+      "northward": 5.7
+    },
+    {
+      "height": 8972.0,
+      "eastward": 36.3,
+      "northward": 5.7
+    },
+    {
+      "height": 8979.3,
+      "eastward": 36.2,
+      "northward": 5.7
+    },
+    {
+      "height": 8986.4,
+      "eastward": 36.1,
+      "northward": 5.8
+    },
+    {
+      "height": 8999.7,
+      "eastward": 36.0,
+      "northward": 6.0
+    },
+    {
+      "height": 9005.8,
+      "eastward": 36.0,
+      "northward": 6.1
+    },
+    {
+      "height": 9011.6,
+      "eastward": 35.9,
+      "northward": 6.2
+    },
+    {
+      "height": 9017.2,
+      "eastward": 35.9,
+      "northward": 6.2
+    },
+    {
+      "height": 9022.9,
+      "eastward": 35.8,
+      "northward": 6.3
+    },
+    {
+      "height": 9028.8,
+      "eastward": 35.8,
+      "northward": 6.4
+    },
+    {
+      "height": 9034.7,
+      "eastward": 35.7,
+      "northward": 6.5
+    },
+    {
+      "height": 9040.6,
+      "eastward": 35.6,
+      "northward": 6.6
+    },
+    {
+      "height": 9052.4,
+      "eastward": 35.5,
+      "northward": 6.8
+    },
+    {
+      "height": 9058.3,
+      "eastward": 35.4,
+      "northward": 6.9
+    },
+    {
+      "height": 9064.2,
+      "eastward": 35.4,
+      "northward": 7.0
+    },
+    {
+      "height": 9070.3,
+      "eastward": 35.4,
+      "northward": 7.1
+    },
+    {
+      "height": 9076.6,
+      "eastward": 35.5,
+      "northward": 7.1
+    },
+    {
+      "height": 9083.0,
+      "eastward": 35.6,
+      "northward": 7.1
+    },
+    {
+      "height": 9089.4,
+      "eastward": 35.6,
+      "northward": 7.2
+    },
+    {
+      "height": 9095.6,
+      "eastward": 35.7,
+      "northward": 7.2
+    },
+    {
+      "height": 9101.7,
+      "eastward": 35.8,
+      "northward": 7.1
+    },
+    {
+      "height": 9107.8,
+      "eastward": 35.9,
+      "northward": 7.1
+    },
+    {
+      "height": 9114.1,
+      "eastward": 35.9,
+      "northward": 7.1
+    },
+    {
+      "height": 9120.3,
+      "eastward": 36.0,
+      "northward": 7.1
+    },
+    {
+      "height": 9126.6,
+      "eastward": 36.0,
+      "northward": 7.1
+    },
+    {
+      "height": 9139.2,
+      "eastward": 36.1,
+      "northward": 7.1
+    },
+    {
+      "height": 9145.4,
+      "eastward": 36.1,
+      "northward": 7.0
+    },
+    {
+      "height": 9151.4,
+      "eastward": 36.1,
+      "northward": 7.0
+    },
+    {
+      "height": 9157.3,
+      "eastward": 36.1,
+      "northward": 6.9
+    },
+    {
+      "height": 9168.8,
+      "eastward": 36.0,
+      "northward": 6.8
+    },
+    {
+      "height": 9174.7,
+      "eastward": 36.0,
+      "northward": 6.7
+    },
+    {
+      "height": 9180.7,
+      "eastward": 35.9,
+      "northward": 6.5
+    },
+    {
+      "height": 9187.0,
+      "eastward": 35.9,
+      "northward": 6.5
+    },
+    {
+      "height": 9193.9,
+      "eastward": 35.9,
+      "northward": 6.4
+    },
+    {
+      "height": 9201.3,
+      "eastward": 35.8,
+      "northward": 6.4
+    },
+    {
+      "height": 9209.1,
+      "eastward": 35.9,
+      "northward": 6.4
+    },
+    {
+      "height": 9217.1,
+      "eastward": 36.0,
+      "northward": 6.4
+    },
+    {
+      "height": 9225.4,
+      "eastward": 36.1,
+      "northward": 6.5
+    },
+    {
+      "height": 9233.9,
+      "eastward": 36.3,
+      "northward": 6.5
+    },
+    {
+      "height": 9242.4,
+      "eastward": 36.6,
+      "northward": 6.5
+    },
+    {
+      "height": 9250.6,
+      "eastward": 37.0,
+      "northward": 6.5
+    },
+    {
+      "height": 9257.7,
+      "eastward": 37.3,
+      "northward": 6.5
+    },
+    {
+      "height": 9263.9,
+      "eastward": 37.6,
+      "northward": 6.4
+    },
+    {
+      "height": 9269.6,
+      "eastward": 37.8,
+      "northward": 6.3
+    },
+    {
+      "height": 9275.6,
+      "eastward": 38.0,
+      "northward": 6.2
+    },
+    {
+      "height": 9282.4,
+      "eastward": 38.1,
+      "northward": 6.1
+    },
+    {
+      "height": 9289.9,
+      "eastward": 38.1,
+      "northward": 6.0
+    },
+    {
+      "height": 9297.3,
+      "eastward": 38.1,
+      "northward": 6.0
+    },
+    {
+      "height": 9304.3,
+      "eastward": 38.1,
+      "northward": 6.0
+    },
+    {
+      "height": 9310.8,
+      "eastward": 38.2,
+      "northward": 6.1
+    },
+    {
+      "height": 9322.7,
+      "eastward": 38.3,
+      "northward": 6.3
+    },
+    {
+      "height": 9328.3,
+      "eastward": 38.4,
+      "northward": 6.4
+    },
+    {
+      "height": 9333.9,
+      "eastward": 38.5,
+      "northward": 6.5
+    },
+    {
+      "height": 9339.4,
+      "eastward": 38.6,
+      "northward": 6.7
+    },
+    {
+      "height": 9345.0,
+      "eastward": 38.7,
+      "northward": 6.8
+    },
+    {
+      "height": 9350.8,
+      "eastward": 38.8,
+      "northward": 7.0
+    },
+    {
+      "height": 9357.1,
+      "eastward": 38.9,
+      "northward": 7.2
+    },
+    {
+      "height": 9363.9,
+      "eastward": 39.0,
+      "northward": 7.4
+    },
+    {
+      "height": 9370.9,
+      "eastward": 39.2,
+      "northward": 7.5
+    },
+    {
+      "height": 9377.8,
+      "eastward": 39.3,
+      "northward": 7.7
+    },
+    {
+      "height": 9384.5,
+      "eastward": 39.5,
+      "northward": 7.8
+    },
+    {
+      "height": 9390.9,
+      "eastward": 39.8,
+      "northward": 7.9
+    },
+    {
+      "height": 9397.4,
+      "eastward": 40.0,
+      "northward": 8.0
+    },
+    {
+      "height": 9403.9,
+      "eastward": 40.3,
+      "northward": 8.0
+    },
+    {
+      "height": 9410.4,
+      "eastward": 40.5,
+      "northward": 7.9
+    },
+    {
+      "height": 9416.7,
+      "eastward": 40.7,
+      "northward": 7.7
+    },
+    {
+      "height": 9422.6,
+      "eastward": 40.8,
+      "northward": 7.6
+    },
+    {
+      "height": 9428.2,
+      "eastward": 40.9,
+      "northward": 7.4
+    },
+    {
+      "height": 9433.5,
+      "eastward": 40.9,
+      "northward": 7.3
+    },
+    {
+      "height": 9438.6,
+      "eastward": 40.9,
+      "northward": 7.1
+    },
+    {
+      "height": 9443.6,
+      "eastward": 40.9,
+      "northward": 7.0
+    },
+    {
+      "height": 9448.8,
+      "eastward": 40.9,
+      "northward": 6.9
+    },
+    {
+      "height": 9454.5,
+      "eastward": 40.9,
+      "northward": 6.7
+    },
+    {
+      "height": 9460.7,
+      "eastward": 40.9,
+      "northward": 6.5
+    },
+    {
+      "height": 9467.0,
+      "eastward": 41.0,
+      "northward": 6.4
+    },
+    {
+      "height": 9473.1,
+      "eastward": 41.1,
+      "northward": 6.2
+    },
+    {
+      "height": 9478.6,
+      "eastward": 41.2,
+      "northward": 6.0
+    },
+    {
+      "height": 9483.5,
+      "eastward": 41.3,
+      "northward": 5.9
+    },
+    {
+      "height": 9488.3,
+      "eastward": 41.4,
+      "northward": 5.8
+    },
+    {
+      "height": 9493.3,
+      "eastward": 41.5,
+      "northward": 5.7
+    },
+    {
+      "height": 9498.4,
+      "eastward": 41.5,
+      "northward": 5.5
+    },
+    {
+      "height": 9503.8,
+      "eastward": 41.5,
+      "northward": 5.4
+    },
+    {
+      "height": 9509.4,
+      "eastward": 41.6,
+      "northward": 5.3
+    },
+    {
+      "height": 9515.3,
+      "eastward": 41.7,
+      "northward": 5.2
+    },
+    {
+      "height": 9521.4,
+      "eastward": 41.9,
+      "northward": 5.1
+    },
+    {
+      "height": 9527.9,
+      "eastward": 42.1,
+      "northward": 5.0
+    },
+    {
+      "height": 9541.0,
+      "eastward": 42.5,
+      "northward": 5.0
+    },
+    {
+      "height": 9547.0,
+      "eastward": 42.7,
+      "northward": 4.9
+    },
+    {
+      "height": 9552.3,
+      "eastward": 42.9,
+      "northward": 4.8
+    },
+    {
+      "height": 9557.3,
+      "eastward": 43.2,
+      "northward": 4.6
+    },
+    {
+      "height": 9562.8,
+      "eastward": 43.5,
+      "northward": 4.5
+    },
+    {
+      "height": 9568.6,
+      "eastward": 43.8,
+      "northward": 4.3
+    },
+    {
+      "height": 9574.7,
+      "eastward": 44.1,
+      "northward": 4.1
+    },
+    {
+      "height": 9580.3,
+      "eastward": 44.4,
+      "northward": 4.0
+    },
+    {
+      "height": 9584.7,
+      "eastward": 44.6,
+      "northward": 3.8
+    },
+    {
+      "height": 9588.3,
+      "eastward": 44.7,
+      "northward": 3.6
+    },
+    {
+      "height": 9591.6,
+      "eastward": 44.7,
+      "northward": 3.4
+    },
+    {
+      "height": 9595.5,
+      "eastward": 44.6,
+      "northward": 3.2
+    },
+    {
+      "height": 9613.1,
+      "eastward": 43.8,
+      "northward": 2.3
+    },
+    {
+      "height": 9619.7,
+      "eastward": 43.4,
+      "northward": 2.1
+    },
+    {
+      "height": 9625.7,
+      "eastward": 42.9,
+      "northward": 1.9
+    },
+    {
+      "height": 9631.2,
+      "eastward": 42.4,
+      "northward": 1.8
+    },
+    {
+      "height": 9636.4,
+      "eastward": 41.9,
+      "northward": 1.8
+    },
+    {
+      "height": 9641.2,
+      "eastward": 41.5,
+      "northward": 1.8
+    },
+    {
+      "height": 9645.8,
+      "eastward": 41.0,
+      "northward": 1.9
+    },
+    {
+      "height": 9650.1,
+      "eastward": 40.6,
+      "northward": 2.0
+    },
+    {
+      "height": 9654.2,
+      "eastward": 40.3,
+      "northward": 2.1
+    },
+    {
+      "height": 9658.4,
+      "eastward": 40.1,
+      "northward": 2.2
+    },
+    {
+      "height": 9663.1,
+      "eastward": 39.9,
+      "northward": 2.2
+    },
+    {
+      "height": 9668.2,
+      "eastward": 39.8,
+      "northward": 2.2
+    },
+    {
+      "height": 9673.7,
+      "eastward": 39.8,
+      "northward": 2.1
+    },
+    {
+      "height": 9679.5,
+      "eastward": 39.9,
+      "northward": 2.0
+    },
+    {
+      "height": 9685.5,
+      "eastward": 39.9,
+      "northward": 2.0
+    },
+    {
+      "height": 9691.8,
+      "eastward": 40.0,
+      "northward": 2.0
+    },
+    {
+      "height": 9698.6,
+      "eastward": 40.1,
+      "northward": 2.1
+    },
+    {
+      "height": 9705.7,
+      "eastward": 40.1,
+      "northward": 2.2
+    },
+    {
+      "height": 9712.8,
+      "eastward": 40.1,
+      "northward": 2.4
+    },
+    {
+      "height": 9719.8,
+      "eastward": 40.1,
+      "northward": 2.5
+    },
+    {
+      "height": 9726.7,
+      "eastward": 40.0,
+      "northward": 2.7
+    },
+    {
+      "height": 9733.6,
+      "eastward": 39.9,
+      "northward": 2.8
+    },
+    {
+      "height": 9740.6,
+      "eastward": 39.8,
+      "northward": 2.8
+    },
+    {
+      "height": 9747.3,
+      "eastward": 39.7,
+      "northward": 2.9
+    },
+    {
+      "height": 9759.0,
+      "eastward": 39.8,
+      "northward": 2.9
+    },
+    {
+      "height": 9764.6,
+      "eastward": 39.8,
+      "northward": 2.9
+    },
+    {
+      "height": 9770.4,
+      "eastward": 39.9,
+      "northward": 3.0
+    },
+    {
+      "height": 9776.4,
+      "eastward": 40.0,
+      "northward": 3.1
+    },
+    {
+      "height": 9782.7,
+      "eastward": 40.1,
+      "northward": 3.1
+    },
+    {
+      "height": 9789.0,
+      "eastward": 40.2,
+      "northward": 3.2
+    },
+    {
+      "height": 9795.3,
+      "eastward": 40.4,
+      "northward": 3.2
+    },
+    {
+      "height": 9801.5,
+      "eastward": 40.5,
+      "northward": 3.2
+    },
+    {
+      "height": 9807.5,
+      "eastward": 40.7,
+      "northward": 3.1
+    },
+    {
+      "height": 9813.3,
+      "eastward": 40.9,
+      "northward": 3.1
+    },
+    {
+      "height": 9819.0,
+      "eastward": 41.1,
+      "northward": 3.0
+    },
+    {
+      "height": 9824.9,
+      "eastward": 41.4,
+      "northward": 2.9
+    },
+    {
+      "height": 9831.0,
+      "eastward": 41.6,
+      "northward": 2.9
+    },
+    {
+      "height": 9837.0,
+      "eastward": 41.9,
+      "northward": 2.8
+    },
+    {
+      "height": 9842.8,
+      "eastward": 42.1,
+      "northward": 2.8
+    },
+    {
+      "height": 9848.6,
+      "eastward": 42.4,
+      "northward": 2.8
+    },
+    {
+      "height": 9854.4,
+      "eastward": 42.5,
+      "northward": 2.7
+    },
+    {
+      "height": 9860.1,
+      "eastward": 42.7,
+      "northward": 2.6
+    },
+    {
+      "height": 9865.9,
+      "eastward": 42.8,
+      "northward": 2.6
+    },
+    {
+      "height": 9872.0,
+      "eastward": 42.9,
+      "northward": 2.6
+    },
+    {
+      "height": 9878.5,
+      "eastward": 42.9,
+      "northward": 2.6
+    },
+    {
+      "height": 9885.4,
+      "eastward": 42.8,
+      "northward": 2.6
+    },
+    {
+      "height": 9892.3,
+      "eastward": 42.7,
+      "northward": 2.6
+    },
+    {
+      "height": 9899.1,
+      "eastward": 42.6,
+      "northward": 2.5
+    },
+    {
+      "height": 9905.5,
+      "eastward": 42.6,
+      "northward": 2.5
+    },
+    {
+      "height": 9911.6,
+      "eastward": 42.5,
+      "northward": 2.4
+    },
+    {
+      "height": 9917.4,
+      "eastward": 42.5,
+      "northward": 2.3
+    },
+    {
+      "height": 9922.9,
+      "eastward": 42.5,
+      "northward": 2.3
+    },
+    {
+      "height": 9928.2,
+      "eastward": 42.5,
+      "northward": 2.2
+    },
+    {
+      "height": 9933.4,
+      "eastward": 42.5,
+      "northward": 2.3
+    },
+    {
+      "height": 9938.6,
+      "eastward": 42.5,
+      "northward": 2.3
+    },
+    {
+      "height": 9944.2,
+      "eastward": 42.6,
+      "northward": 2.3
+    },
+    {
+      "height": 9950.2,
+      "eastward": 42.6,
+      "northward": 2.4
+    },
+    {
+      "height": 9956.4,
+      "eastward": 42.7,
+      "northward": 2.4
+    },
+    {
+      "height": 9962.9,
+      "eastward": 42.8,
+      "northward": 2.4
+    },
+    {
+      "height": 9969.3,
+      "eastward": 43.0,
+      "northward": 2.5
+    },
+    {
+      "height": 9975.7,
+      "eastward": 43.1,
+      "northward": 2.5
+    },
+    {
+      "height": 9982.1,
+      "eastward": 43.2,
+      "northward": 2.5
+    },
+    {
+      "height": 9988.4,
+      "eastward": 43.3,
+      "northward": 2.5
+    },
+    {
+      "height": 9994.6,
+      "eastward": 43.4,
+      "northward": 2.5
+    },
+    {
+      "height": 10007.1,
+      "eastward": 43.5,
+      "northward": 2.4
+    },
+    {
+      "height": 10013.7,
+      "eastward": 43.6,
+      "northward": 2.4
+    },
+    {
+      "height": 10020.7,
+      "eastward": 43.6,
+      "northward": 2.3
+    },
+    {
+      "height": 10027.8,
+      "eastward": 43.6,
+      "northward": 2.2
+    },
+    {
+      "height": 10034.8,
+      "eastward": 43.6,
+      "northward": 2.0
+    },
+    {
+      "height": 10041.4,
+      "eastward": 43.6,
+      "northward": 1.9
+    },
+    {
+      "height": 10047.5,
+      "eastward": 43.5,
+      "northward": 1.9
+    },
+    {
+      "height": 10053.2,
+      "eastward": 43.5,
+      "northward": 1.8
+    },
+    {
+      "height": 10059.1,
+      "eastward": 43.4,
+      "northward": 1.8
+    },
+    {
+      "height": 10065.3,
+      "eastward": 43.3,
+      "northward": 1.8
+    },
+    {
+      "height": 10071.9,
+      "eastward": 43.2,
+      "northward": 1.8
+    },
+    {
+      "height": 10078.7,
+      "eastward": 43.1,
+      "northward": 1.9
+    },
+    {
+      "height": 10085.4,
+      "eastward": 43.0,
+      "northward": 1.9
+    },
+    {
+      "height": 10092.0,
+      "eastward": 42.8,
+      "northward": 2.0
+    },
+    {
+      "height": 10098.7,
+      "eastward": 42.6,
+      "northward": 2.0
+    },
+    {
+      "height": 10105.5,
+      "eastward": 42.5,
+      "northward": 1.9
+    },
+    {
+      "height": 10118.3,
+      "eastward": 42.2,
+      "northward": 1.8
+    },
+    {
+      "height": 10124.1,
+      "eastward": 42.0,
+      "northward": 1.7
+    },
+    {
+      "height": 10129.5,
+      "eastward": 41.9,
+      "northward": 1.6
+    },
+    {
+      "height": 10135.0,
+      "eastward": 41.8,
+      "northward": 1.5
+    },
+    {
+      "height": 10140.8,
+      "eastward": 41.7,
+      "northward": 1.4
+    },
+    {
+      "height": 10147.1,
+      "eastward": 41.6,
+      "northward": 1.2
+    },
+    {
+      "height": 10153.7,
+      "eastward": 41.5,
+      "northward": 1.0
+    },
+    {
+      "height": 10160.1,
+      "eastward": 41.4,
+      "northward": 0.8
+    },
+    {
+      "height": 10166.2,
+      "eastward": 41.4,
+      "northward": 0.7
+    },
+    {
+      "height": 10171.9,
+      "eastward": 41.5,
+      "northward": 0.6
+    },
+    {
+      "height": 10177.5,
+      "eastward": 41.6,
+      "northward": 0.5
+    },
+    {
+      "height": 10183.0,
+      "eastward": 41.7,
+      "northward": 0.5
+    },
+    {
+      "height": 10188.5,
+      "eastward": 41.8,
+      "northward": 0.5
+    },
+    {
+      "height": 10194.2,
+      "eastward": 41.9,
+      "northward": 0.5
+    },
+    {
+      "height": 10200.1,
+      "eastward": 42.0,
+      "northward": 0.6
+    },
+    {
+      "height": 10206.2,
+      "eastward": 42.0,
+      "northward": 0.7
+    },
+    {
+      "height": 10212.4,
+      "eastward": 42.1,
+      "northward": 0.8
+    },
+    {
+      "height": 10218.6,
+      "eastward": 42.1,
+      "northward": 1.0
+    },
+    {
+      "height": 10225.0,
+      "eastward": 42.2,
+      "northward": 1.1
+    },
+    {
+      "height": 10231.3,
+      "eastward": 42.2,
+      "northward": 1.1
+    },
+    {
+      "height": 10237.4,
+      "eastward": 42.2,
+      "northward": 1.2
+    },
+    {
+      "height": 10243.6,
+      "eastward": 42.2,
+      "northward": 1.1
+    },
+    {
+      "height": 10250.0,
+      "eastward": 42.2,
+      "northward": 1.0
+    },
+    {
+      "height": 10256.6,
+      "eastward": 42.3,
+      "northward": 0.8
+    },
+    {
+      "height": 10263.6,
+      "eastward": 42.3,
+      "northward": 0.6
+    },
+    {
+      "height": 10270.8,
+      "eastward": 42.4,
+      "northward": 0.3
+    },
+    {
+      "height": 10278.2,
+      "eastward": 42.5,
+      "northward": 0.0
+    },
+    {
+      "height": 10285.9,
+      "eastward": 42.5,
+      "northward": -0.2
+    },
+    {
+      "height": 10293.8,
+      "eastward": 42.5,
+      "northward": -0.4
+    },
+    {
+      "height": 10301.5,
+      "eastward": 42.6,
+      "northward": -0.6
+    },
+    {
+      "height": 10308.7,
+      "eastward": 42.6,
+      "northward": -0.7
+    },
+    {
+      "height": 10315.6,
+      "eastward": 42.7,
+      "northward": -0.8
+    },
+    {
+      "height": 10322.5,
+      "eastward": 42.8,
+      "northward": -0.8
+    },
+    {
+      "height": 10330.0,
+      "eastward": 43.0,
+      "northward": -0.8
+    },
+    {
+      "height": 10347.5,
+      "eastward": 43.5,
+      "northward": -0.9
+    },
+    {
+      "height": 10355.7,
+      "eastward": 43.6,
+      "northward": -1.0
+    },
+    {
+      "height": 10363.4,
+      "eastward": 43.8,
+      "northward": -1.0
+    },
+    {
+      "height": 10371.1,
+      "eastward": 43.8,
+      "northward": -1.0
+    },
+    {
+      "height": 10379.2,
+      "eastward": 43.7,
+      "northward": -0.9
+    },
+    {
+      "height": 10397.7,
+      "eastward": 43.5,
+      "northward": -0.6
+    },
+    {
+      "height": 10406.7,
+      "eastward": 43.4,
+      "northward": -0.5
+    },
+    {
+      "height": 10415.0,
+      "eastward": 43.2,
+      "northward": -0.3
+    },
+    {
+      "height": 10422.4,
+      "eastward": 43.1,
+      "northward": -0.2
+    },
+    {
+      "height": 10429.4,
+      "eastward": 42.9,
+      "northward": -0.1
+    },
+    {
+      "height": 10436.4,
+      "eastward": 42.6,
+      "northward": 0.0
+    },
+    {
+      "height": 10443.3,
+      "eastward": 42.3,
+      "northward": 0.0
+    },
+    {
+      "height": 10450.0,
+      "eastward": 42.0,
+      "northward": 0.1
+    },
+    {
+      "height": 10456.2,
+      "eastward": 41.7,
+      "northward": 0.2
+    },
+    {
+      "height": 10461.5,
+      "eastward": 41.5,
+      "northward": 0.4
+    },
+    {
+      "height": 10466.4,
+      "eastward": 41.4,
+      "northward": 0.5
+    },
+    {
+      "height": 10471.3,
+      "eastward": 41.3,
+      "northward": 0.7
+    },
+    {
+      "height": 10477.0,
+      "eastward": 41.4,
+      "northward": 0.8
+    },
+    {
+      "height": 10483.8,
+      "eastward": 41.5,
+      "northward": 0.8
+    },
+    {
+      "height": 10491.6,
+      "eastward": 41.7,
+      "northward": 0.8
+    },
+    {
+      "height": 10499.7,
+      "eastward": 41.9,
+      "northward": 0.8
+    },
+    {
+      "height": 10514.1,
+      "eastward": 42.2,
+      "northward": 0.7
+    },
+    {
+      "height": 10520.3,
+      "eastward": 42.4,
+      "northward": 0.7
+    },
+    {
+      "height": 10532.4,
+      "eastward": 42.7,
+      "northward": 0.8
+    },
+    {
+      "height": 10552.4,
+      "eastward": 43.0,
+      "northward": 1.2
+    },
+    {
+      "height": 10559.8,
+      "eastward": 43.0,
+      "northward": 1.2
+    },
+    {
+      "height": 10568.1,
+      "eastward": 43.0,
+      "northward": 1.2
+    },
+    {
+      "height": 10576.6,
+      "eastward": 43.0,
+      "northward": 1.0
+    },
+    {
+      "height": 10584.8,
+      "eastward": 42.9,
+      "northward": 0.7
+    },
+    {
+      "height": 10592.4,
+      "eastward": 42.8,
+      "northward": 0.4
+    },
+    {
+      "height": 10599.5,
+      "eastward": 42.6,
+      "northward": 0.1
+    },
+    {
+      "height": 10606.2,
+      "eastward": 42.5,
+      "northward": -0.3
+    },
+    {
+      "height": 10612.8,
+      "eastward": 42.3,
+      "northward": -0.6
+    },
+    {
+      "height": 10619.2,
+      "eastward": 42.2,
+      "northward": -0.8
+    },
+    {
+      "height": 10625.8,
+      "eastward": 42.1,
+      "northward": -1.1
+    },
+    {
+      "height": 10632.9,
+      "eastward": 42.0,
+      "northward": -1.3
+    },
+    {
+      "height": 10640.7,
+      "eastward": 42.0,
+      "northward": -1.4
+    },
+    {
+      "height": 10649.0,
+      "eastward": 42.0,
+      "northward": -1.6
+    },
+    {
+      "height": 10657.2,
+      "eastward": 41.9,
+      "northward": -1.7
+    },
+    {
+      "height": 10665.3,
+      "eastward": 41.9,
+      "northward": -1.9
+    },
+    {
+      "height": 10673.5,
+      "eastward": 41.8,
+      "northward": -2.0
+    },
+    {
+      "height": 10681.6,
+      "eastward": 41.7,
+      "northward": -2.2
+    },
+    {
+      "height": 10713.5,
+      "eastward": 40.8,
+      "northward": -2.7
+    },
+    {
+      "height": 10721.3,
+      "eastward": 40.6,
+      "northward": -2.7
+    },
+    {
+      "height": 10729.1,
+      "eastward": 40.5,
+      "northward": -2.7
+    },
+    {
+      "height": 10736.8,
+      "eastward": 40.3,
+      "northward": -2.5
+    },
+    {
+      "height": 10744.4,
+      "eastward": 40.1,
+      "northward": -2.3
+    },
+    {
+      "height": 10760.9,
+      "eastward": 39.7,
+      "northward": -1.8
+    },
+    {
+      "height": 10770.1,
+      "eastward": 39.5,
+      "northward": -1.5
+    },
+    {
+      "height": 10779.8,
+      "eastward": 39.3,
+      "northward": -1.4
+    },
+    {
+      "height": 10789.1,
+      "eastward": 39.1,
+      "northward": -1.2
+    },
+    {
+      "height": 10797.5,
+      "eastward": 38.9,
+      "northward": -1.2
+    },
+    {
+      "height": 10804.6,
+      "eastward": 38.9,
+      "northward": -1.2
+    },
+    {
+      "height": 10810.7,
+      "eastward": 38.9,
+      "northward": -1.2
+    },
+    {
+      "height": 10822.8,
+      "eastward": 39.1,
+      "northward": -1.4
+    },
+    {
+      "height": 10829.3,
+      "eastward": 39.3,
+      "northward": -1.5
+    },
+    {
+      "height": 10836.0,
+      "eastward": 39.5,
+      "northward": -1.6
+    },
+    {
+      "height": 10842.5,
+      "eastward": 39.8,
+      "northward": -1.7
+    },
+    {
+      "height": 10848.9,
+      "eastward": 40.0,
+      "northward": -1.9
+    },
+    {
+      "height": 10855.7,
+      "eastward": 40.1,
+      "northward": -2.2
+    },
+    {
+      "height": 10863.1,
+      "eastward": 40.2,
+      "northward": -2.5
+    },
+    {
+      "height": 10870.9,
+      "eastward": 40.2,
+      "northward": -2.8
+    },
+    {
+      "height": 10879.0,
+      "eastward": 40.2,
+      "northward": -3.1
+    },
+    {
+      "height": 10887.3,
+      "eastward": 40.1,
+      "northward": -3.3
+    },
+    {
+      "height": 10895.8,
+      "eastward": 40.0,
+      "northward": -3.5
+    },
+    {
+      "height": 10913.6,
+      "eastward": 39.6,
+      "northward": -3.7
+    },
+    {
+      "height": 10922.5,
+      "eastward": 39.5,
+      "northward": -3.7
+    },
+    {
+      "height": 10931.4,
+      "eastward": 39.5,
+      "northward": -3.6
+    },
+    {
+      "height": 10940.2,
+      "eastward": 39.5,
+      "northward": -3.6
+    },
+    {
+      "height": 10949.2,
+      "eastward": 39.5,
+      "northward": -3.7
+    },
+    {
+      "height": 10958.4,
+      "eastward": 39.6,
+      "northward": -3.8
+    },
+    {
+      "height": 10967.9,
+      "eastward": 39.8,
+      "northward": -3.9
+    },
+    {
+      "height": 10977.5,
+      "eastward": 39.9,
+      "northward": -4.1
+    },
+    {
+      "height": 10986.9,
+      "eastward": 40.0,
+      "northward": -4.3
+    },
+    {
+      "height": 10996.3,
+      "eastward": 40.1,
+      "northward": -4.5
+    },
+    {
+      "height": 11005.8,
+      "eastward": 40.1,
+      "northward": -4.7
+    },
+    {
+      "height": 11015.2,
+      "eastward": 40.1,
+      "northward": -4.8
+    },
+    {
+      "height": 11024.4,
+      "eastward": 40.0,
+      "northward": -4.9
+    },
+    {
+      "height": 11042.0,
+      "eastward": 40.0,
+      "northward": -5.0
+    },
+    {
+      "height": 11050.9,
+      "eastward": 40.0,
+      "northward": -5.1
+    },
+    {
+      "height": 11060.3,
+      "eastward": 40.0,
+      "northward": -5.2
+    },
+    {
+      "height": 11070.1,
+      "eastward": 40.0,
+      "northward": -5.4
+    },
+    {
+      "height": 11080.0,
+      "eastward": 39.9,
+      "northward": -5.7
+    },
+    {
+      "height": 11089.4,
+      "eastward": 39.9,
+      "northward": -5.9
+    },
+    {
+      "height": 11098.1,
+      "eastward": 39.8,
+      "northward": -6.1
+    },
+    {
+      "height": 11106.1,
+      "eastward": 39.7,
+      "northward": -6.3
+    },
+    {
+      "height": 11113.7,
+      "eastward": 39.6,
+      "northward": -6.4
+    },
+    {
+      "height": 11120.5,
+      "eastward": 39.6,
+      "northward": -6.5
+    },
+    {
+      "height": 11126.5,
+      "eastward": 39.6,
+      "northward": -6.5
+    },
+    {
+      "height": 11131.8,
+      "eastward": 39.6,
+      "northward": -6.5
+    },
+    {
+      "height": 11136.8,
+      "eastward": 39.7,
+      "northward": -6.5
+    },
+    {
+      "height": 11142.0,
+      "eastward": 39.8,
+      "northward": -6.5
+    },
+    {
+      "height": 11147.7,
+      "eastward": 39.8,
+      "northward": -6.5
+    },
+    {
+      "height": 11153.7,
+      "eastward": 39.8,
+      "northward": -6.5
+    },
+    {
+      "height": 11160.1,
+      "eastward": 39.8,
+      "northward": -6.5
+    },
+    {
+      "height": 11166.7,
+      "eastward": 39.9,
+      "northward": -6.4
+    },
+    {
+      "height": 11173.7,
+      "eastward": 39.9,
+      "northward": -6.4
+    },
+    {
+      "height": 11180.8,
+      "eastward": 40.0,
+      "northward": -6.4
+    },
+    {
+      "height": 11187.9,
+      "eastward": 40.1,
+      "northward": -6.4
+    },
+    {
+      "height": 11195.1,
+      "eastward": 40.2,
+      "northward": -6.5
+    },
+    {
+      "height": 11202.5,
+      "eastward": 40.3,
+      "northward": -6.5
+    },
+    {
+      "height": 11218.0,
+      "eastward": 40.6,
+      "northward": -6.7
+    },
+    {
+      "height": 11234.1,
+      "eastward": 40.9,
+      "northward": -7.0
+    },
+    {
+      "height": 11241.9,
+      "eastward": 41.0,
+      "northward": -7.2
+    },
+    {
+      "height": 11249.3,
+      "eastward": 41.1,
+      "northward": -7.3
+    },
+    {
+      "height": 11256.7,
+      "eastward": 41.2,
+      "northward": -7.4
+    },
+    {
+      "height": 11264.2,
+      "eastward": 41.2,
+      "northward": -7.5
+    },
+    {
+      "height": 11272.1,
+      "eastward": 41.3,
+      "northward": -7.5
+    },
+    {
+      "height": 11280.5,
+      "eastward": 41.4,
+      "northward": -7.5
+    },
+    {
+      "height": 11296.6,
+      "eastward": 41.5,
+      "northward": -7.3
+    },
+    {
+      "height": 11303.8,
+      "eastward": 41.6,
+      "northward": -7.2
+    },
+    {
+      "height": 11310.7,
+      "eastward": 41.7,
+      "northward": -7.1
+    },
+    {
+      "height": 11317.4,
+      "eastward": 41.7,
+      "northward": -7.0
+    },
+    {
+      "height": 11324.0,
+      "eastward": 41.8,
+      "northward": -6.9
+    },
+    {
+      "height": 11330.7,
+      "eastward": 41.8,
+      "northward": -6.8
+    },
+    {
+      "height": 11337.7,
+      "eastward": 41.9,
+      "northward": -6.7
+    },
+    {
+      "height": 11345.0,
+      "eastward": 42.0,
+      "northward": -6.6
+    },
+    {
+      "height": 11352.6,
+      "eastward": 42.0,
+      "northward": -6.5
+    },
+    {
+      "height": 11360.6,
+      "eastward": 42.1,
+      "northward": -6.3
+    },
+    {
+      "height": 11368.8,
+      "eastward": 42.1,
+      "northward": -6.2
+    },
+    {
+      "height": 11377.1,
+      "eastward": 42.1,
+      "northward": -6.1
+    },
+    {
+      "height": 11385.3,
+      "eastward": 42.1,
+      "northward": -6.0
+    },
+    {
+      "height": 11393.5,
+      "eastward": 42.2,
+      "northward": -5.9
+    },
+    {
+      "height": 11401.6,
+      "eastward": 42.2,
+      "northward": -5.8
+    },
+    {
+      "height": 11409.5,
+      "eastward": 42.3,
+      "northward": -5.8
+    },
+    {
+      "height": 11417.1,
+      "eastward": 42.4,
+      "northward": -5.8
+    },
+    {
+      "height": 11424.4,
+      "eastward": 42.5,
+      "northward": -5.8
+    },
+    {
+      "height": 11431.1,
+      "eastward": 42.5,
+      "northward": -5.9
+    },
+    {
+      "height": 11437.5,
+      "eastward": 42.6,
+      "northward": -6.0
+    },
+    {
+      "height": 11444.1,
+      "eastward": 42.6,
+      "northward": -6.1
+    },
+    {
+      "height": 11450.9,
+      "eastward": 42.7,
+      "northward": -6.2
+    },
+    {
+      "height": 11465.3,
+      "eastward": 42.8,
+      "northward": -6.4
+    },
+    {
+      "height": 11472.9,
+      "eastward": 42.8,
+      "northward": -6.4
+    },
+    {
+      "height": 11480.5,
+      "eastward": 42.9,
+      "northward": -6.4
+    },
+    {
+      "height": 11488.3,
+      "eastward": 43.0,
+      "northward": -6.3
+    },
+    {
+      "height": 11496.0,
+      "eastward": 43.1,
+      "northward": -6.3
+    },
+    {
+      "height": 11503.9,
+      "eastward": 43.2,
+      "northward": -6.2
+    },
+    {
+      "height": 11511.8,
+      "eastward": 43.4,
+      "northward": -6.2
+    },
+    {
+      "height": 11519.8,
+      "eastward": 43.5,
+      "northward": -6.1
+    },
+    {
+      "height": 11527.6,
+      "eastward": 43.7,
+      "northward": -6.1
+    },
+    {
+      "height": 11535.1,
+      "eastward": 43.9,
+      "northward": -6.2
+    },
+    {
+      "height": 11542.4,
+      "eastward": 44.0,
+      "northward": -6.2
+    },
+    {
+      "height": 11549.6,
+      "eastward": 44.1,
+      "northward": -6.3
+    },
+    {
+      "height": 11556.8,
+      "eastward": 44.1,
+      "northward": -6.3
+    },
+    {
+      "height": 11572.1,
+      "eastward": 44.2,
+      "northward": -6.4
+    },
+    {
+      "height": 11580.1,
+      "eastward": 44.2,
+      "northward": -6.5
+    },
+    {
+      "height": 11588.3,
+      "eastward": 44.3,
+      "northward": -6.5
+    },
+    {
+      "height": 11605.2,
+      "eastward": 44.6,
+      "northward": -6.6
+    },
+    {
+      "height": 11613.7,
+      "eastward": 44.7,
+      "northward": -6.6
+    },
+    {
+      "height": 11622.2,
+      "eastward": 44.7,
+      "northward": -6.6
+    },
+    {
+      "height": 11630.8,
+      "eastward": 44.7,
+      "northward": -6.6
+    },
+    {
+      "height": 11639.7,
+      "eastward": 44.6,
+      "northward": -6.7
+    },
+    {
+      "height": 11649.3,
+      "eastward": 44.5,
+      "northward": -6.7
+    },
+    {
+      "height": 11659.1,
+      "eastward": 44.2,
+      "northward": -6.8
+    },
+    {
+      "height": 11677.4,
+      "eastward": 43.5,
+      "northward": -6.7
+    },
+    {
+      "height": 11685.9,
+      "eastward": 43.1,
+      "northward": -6.7
+    },
+    {
+      "height": 11694.2,
+      "eastward": 42.9,
+      "northward": -6.5
+    },
+    {
+      "height": 11702.0,
+      "eastward": 42.6,
+      "northward": -6.3
+    },
+    {
+      "height": 11714.6,
+      "eastward": 42.4,
+      "northward": -5.9
+    },
+    {
+      "height": 11719.2,
+      "eastward": 42.4,
+      "northward": -5.7
+    },
+    {
+      "height": 11728.4,
+      "eastward": 42.4,
+      "northward": -5.4
+    },
+    {
+      "height": 11734.0,
+      "eastward": 42.3,
+      "northward": -5.2
+    },
+    {
+      "height": 11740.6,
+      "eastward": 42.3,
+      "northward": -5.1
+    },
+    {
+      "height": 11748.2,
+      "eastward": 42.3,
+      "northward": -5.0
+    },
+    {
+      "height": 11756.3,
+      "eastward": 42.3,
+      "northward": -5.0
+    },
+    {
+      "height": 11764.2,
+      "eastward": 42.3,
+      "northward": -4.9
+    },
+    {
+      "height": 11771.3,
+      "eastward": 42.3,
+      "northward": -4.8
+    },
+    {
+      "height": 11777.3,
+      "eastward": 42.3,
+      "northward": -4.8
+    },
+    {
+      "height": 11782.8,
+      "eastward": 42.2,
+      "northward": -4.7
+    },
+    {
+      "height": 11788.6,
+      "eastward": 42.0,
+      "northward": -4.7
+    },
+    {
+      "height": 11794.9,
+      "eastward": 41.6,
+      "northward": -4.6
+    },
+    {
+      "height": 11801.7,
+      "eastward": 41.2,
+      "northward": -4.4
+    },
+    {
+      "height": 11808.5,
+      "eastward": 40.8,
+      "northward": -4.3
+    },
+    {
+      "height": 11815.0,
+      "eastward": 40.3,
+      "northward": -4.0
+    },
+    {
+      "height": 11821.2,
+      "eastward": 39.8,
+      "northward": -3.8
+    },
+    {
+      "height": 11827.5,
+      "eastward": 39.3,
+      "northward": -3.4
+    },
+    {
+      "height": 11834.2,
+      "eastward": 38.9,
+      "northward": -3.0
+    },
+    {
+      "height": 11841.4,
+      "eastward": 38.5,
+      "northward": -2.6
+    },
+    {
+      "height": 11849.1,
+      "eastward": 38.3,
+      "northward": -2.1
+    },
+    {
+      "height": 11857.2,
+      "eastward": 38.1,
+      "northward": -1.5
+    },
+    {
+      "height": 11865.4,
+      "eastward": 38.0,
+      "northward": -1.0
+    },
+    {
+      "height": 11873.7,
+      "eastward": 37.9,
+      "northward": -0.4
+    },
+    {
+      "height": 11882.0,
+      "eastward": 37.9,
+      "northward": 0.1
+    },
+    {
+      "height": 11890.1,
+      "eastward": 37.9,
+      "northward": 0.6
+    },
+    {
+      "height": 11898.1,
+      "eastward": 37.9,
+      "northward": 1.1
+    },
+    {
+      "height": 11906.1,
+      "eastward": 38.0,
+      "northward": 1.5
+    },
+    {
+      "height": 11929.5,
+      "eastward": 38.3,
+      "northward": 2.5
+    },
+    {
+      "height": 11936.3,
+      "eastward": 38.4,
+      "northward": 2.8
+    },
+    {
+      "height": 11942.5,
+      "eastward": 38.4,
+      "northward": 2.9
+    },
+    {
+      "height": 11948.6,
+      "eastward": 38.4,
+      "northward": 3.0
+    },
+    {
+      "height": 11954.7,
+      "eastward": 38.4,
+      "northward": 2.9
+    },
+    {
+      "height": 11960.6,
+      "eastward": 38.4,
+      "northward": 2.8
+    },
+    {
+      "height": 11981.7,
+      "eastward": 37.9,
+      "northward": 1.7
+    },
+    {
+      "height": 11987.3,
+      "eastward": 37.6,
+      "northward": 1.4
+    },
+    {
+      "height": 11993.2,
+      "eastward": 37.3,
+      "northward": 1.1
+    },
+    {
+      "height": 12005.2,
+      "eastward": 36.5,
+      "northward": 0.7
+    },
+    {
+      "height": 12011.0,
+      "eastward": 36.0,
+      "northward": 0.5
+    },
+    {
+      "height": 12022.8,
+      "eastward": 35.2,
+      "northward": 0.3
+    },
+    {
+      "height": 12029.3,
+      "eastward": 34.8,
+      "northward": 0.3
+    },
+    {
+      "height": 12036.2,
+      "eastward": 34.5,
+      "northward": 0.3
+    },
+    {
+      "height": 12043.7,
+      "eastward": 34.1,
+      "northward": 0.4
+    },
+    {
+      "height": 12051.6,
+      "eastward": 33.8,
+      "northward": 0.6
+    },
+    {
+      "height": 12059.6,
+      "eastward": 33.5,
+      "northward": 0.8
+    },
+    {
+      "height": 12067.6,
+      "eastward": 33.3,
+      "northward": 0.9
+    },
+    {
+      "height": 12075.6,
+      "eastward": 33.0,
+      "northward": 1.1
+    },
+    {
+      "height": 12083.4,
+      "eastward": 32.8,
+      "northward": 1.2
+    },
+    {
+      "height": 12090.6,
+      "eastward": 32.7,
+      "northward": 1.3
+    },
+    {
+      "height": 12096.9,
+      "eastward": 32.5,
+      "northward": 1.3
+    },
+    {
+      "height": 12103.0,
+      "eastward": 32.5,
+      "northward": 1.4
+    },
+    {
+      "height": 12116.4,
+      "eastward": 32.4,
+      "northward": 1.5
+    },
+    {
+      "height": 12138.6,
+      "eastward": 32.4,
+      "northward": 1.7
+    },
+    {
+      "height": 12145.5,
+      "eastward": 32.5,
+      "northward": 1.8
+    },
+    {
+      "height": 12152.0,
+      "eastward": 32.6,
+      "northward": 1.8
+    },
+    {
+      "height": 12164.5,
+      "eastward": 32.9,
+      "northward": 1.9
+    },
+    {
+      "height": 12171.1,
+      "eastward": 33.0,
+      "northward": 1.9
+    },
+    {
+      "height": 12177.8,
+      "eastward": 33.1,
+      "northward": 2.0
+    },
+    {
+      "height": 12184.8,
+      "eastward": 33.1,
+      "northward": 2.1
+    },
+    {
+      "height": 12192.0,
+      "eastward": 33.0,
+      "northward": 2.3
+    },
+    {
+      "height": 12199.5,
+      "eastward": 32.8,
+      "northward": 2.4
+    },
+    {
+      "height": 12207.1,
+      "eastward": 32.6,
+      "northward": 2.5
+    },
+    {
+      "height": 12214.5,
+      "eastward": 32.3,
+      "northward": 2.7
+    },
+    {
+      "height": 12228.2,
+      "eastward": 31.5,
+      "northward": 3.2
+    },
+    {
+      "height": 12234.6,
+      "eastward": 31.0,
+      "northward": 3.5
+    },
+    {
+      "height": 12240.7,
+      "eastward": 30.3,
+      "northward": 3.9
+    },
+    {
+      "height": 12251.9,
+      "eastward": 28.7,
+      "northward": 4.8
+    },
+    {
+      "height": 12257.0,
+      "eastward": 27.8,
+      "northward": 5.3
+    },
+    {
+      "height": 12261.8,
+      "eastward": 26.8,
+      "northward": 5.7
+    }
+  ],
+  "coverage": {
+    "minHeight": 2.4,
+    "maxHeight": 12261.8,
+    "nativeDataRecordCount": 2082,
+    "keptLevelCount": 2029,
+    "droppedLevelCount": 53,
+    "gapSpansOver50m": []
+  }
+}
