@@ -199,10 +199,16 @@ Native controls only:
     </fieldset>
 
 Place the group next to (beside or below) the hodograph panel in the app
-layout. Product-shell placement of that pair after Explore 41-3 is the
-on-demand Environment surface, not the persistent left action rail:
+layout. Product-shell placement of that pair is the on-demand
+Environment surface (42-1 COMPLETE), not the persistent left
+action rail:
 
     docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
+
+Remaining V1 path after 42-1 is M5, not a further Environment
+chrome pass:
+
+    docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 
 No design-system components.
 

@@ -7,9 +7,10 @@ SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE /
 41-2 COMPLETE /
 41-3 COMPLETE /
-41-4 NOT STARTED (absorbed into 42-2) /
-40 SLICES C–G NOT STARTED /
-SUCCESSOR 42 DECIDED (docs-only)
+41-4 DEFERRED TO PLAYTEST (`43`) /
+40 SLICES C–G NOT PRE-M5 /
+SUCCESSOR 42 DECIDED /
+SUCCESSOR 43 DECIDED
 **Scope:** after live playtest of Explore Slice B, decide two
 product-surface questions without adding capability and without
 reopening frozen physics, encodings, or interaction contracts:
@@ -24,9 +25,9 @@ laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 Ω semantics unchanged. Inspector L2 and Point-diagnostics
 sibling relation unchanged (`19`, `32`).
 **Implementation:** Slices 41-1, 41-2, and 41-3 are COMPLETE
-in production `src/**`. Slice 41-4 is NOT STARTED and lands
-in the `42` viewport-toolbar slice, not in the current
-Airflow rail band. 40 C–G remain NOT STARTED.
+in production `src/**`. Slice 41-4 is not pre-M5 MUST (`43`:
+DEFER UNTIL PLAYTEST EVIDENCE). 40 C–G are not pre-M5 MUST.
+42-2 is POST-V1 placement architecture.
 
 Predecessor M1 / M3 consolidation architecture:
 
@@ -70,6 +71,13 @@ Post–41-3 Airflow / Environment placement successor:
 docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
 ```
 
+Post–42-1 V1 sufficiency / scope-cut (supersedes remaining
+V1 production order; 41-4 is playtest-triggered):
+
+```text
+docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
+```
+
 Accepted live head this checkpoint is written against:
 
 ```text
@@ -93,7 +101,7 @@ ANTI-CLAIM
 
 This checkpoint decided the product contract. Slices 41-1,
 41-2, and 41-3 are COMPLETE in production. Slice 41-4 is
-NOT STARTED; `42` owns its landing site.
+not pre-M5 MUST (`43`: DEFER UNTIL PLAYTEST EVIDENCE).
 
 ---
 
@@ -1019,19 +1027,21 @@ No `38` §9 freeze entry is recorded.
     placement is not a required V1 control. Band order:
     Release primary first. Clear is not a Confirm sibling.
     40 still owns M1 honesty placement, observation dock,
-    Environment Option B, Guided local shell, Slices C/E/F/G.
-    `42` sharpens Environment size/default and moves Airflow
-    chrome off the rail.
+    Environment Option B, and Guided local shell as
+    architecture. Remaining slices C/E/F/G are not pre-M5
+    MUST (`43`). `42` still owns Airflow/Environment placement
+    architecture; 42-2 is POST-V1.
 
 38  F1/T3 teaching “check Enable placement” is superseded
     by this primary-action contract. Freeze rule unchanged.
     38 implementation note that 40 production had not
     started is stale: Slices A/B are COMPLETE.
 
-42  owns Airflow viewport-toolbar home, Environment open
-    size / Explore default-closed, and remaining M3 order.
-    41-4 copy meaning stays this file; 41-4 landing site
-    is 42-2.
+42  owns Airflow viewport-toolbar home as placement
+    architecture and Environment open size / Explore
+    default-closed. 42-1 COMPLETE. 42-2 is POST-V1 (`43`).
+    41-4 copy *meaning* stays this file; compact restoration
+    is playtest-triggered, not a scheduled 42-2 landing.
 ```
 
 Historical rankings in `21` / `24` / `35` are not rewritten
@@ -1042,11 +1052,13 @@ beyond successor pointers.
 ## 18. Proposed implementation slices and order
 
 Slices 41-1, 41-2, and 41-3 are COMPLETE in production.
-41-4 remains NOT STARTED.
+41-4 is not a scheduled pre-M5 slice (`43`).
 
-`42` §16 supersedes the “41-4 then 40-C then 40-D” order
-below. 41-4 does not land in the current Airflow rail
-band; it lands in 42-2 with the viewport toolbar.
+`43` supersedes `42` §16 as the remaining *V1* order.
+This file still owns Highlight compact-copy *meaning*.
+If M5 shows testers reading tint as operand direction, restore
+the orientation/`V_total` sentence in compact chrome only —
+without a hue/glow/encoding change, and without requiring 42-2.
 
 ```text
 41-1  Explore primary [Release tracer] ↔ placementEnabled
@@ -1090,14 +1102,12 @@ band; it lands in 42-2 with the viewport toolbar.
 41-4  Highlight compact copy restores 39 orientation /
       advection meaning whenever Highlight ≠ Off
       No hue change, no glow
-      STATUS: NOT STARTED
-      Landing site: `42-2` viewport toolbar, not this rail.
-      `42` §16 is the remaining production order.
+      STATUS: DEFER UNTIL PLAYTEST EVIDENCE (`43`)
+      Not a scheduled pre-M5 slice. Compact restoration, if
+      earned, does not require 42-2.
 
-Then 40-C  Observation empty state pointing at selection
-           and Release tracer
-Then 40-E–G as already ordered in 40, after 42-1 / 42-2
-Then 38 Phase 4 / M5 acceptance playtest
+40-C / 40-E–G are not remaining V1 production (`43`).
+Next V1 step is 38 Phase 4 / M5.
 ```
 
 Each slice rearranges or relabels existing capability only.
@@ -1149,12 +1159,13 @@ M3 may not hide Airflow view or Runtime to make Release
 ```text
 38  V1 promise, MUST/CONDITIONAL, freeze, T1–T10
 39  M2 default, Highlight encoding, palette POST-V1
-40  M1/M3 spatial organization; Slices C–G still theirs
+40  M1/M3 spatial organization; remaining C–G not pre-M5 (`43`)
 18  seeding / gate / Reset / Clear semantics
 41  this file: Explore release product entry, Clear
     grouping, post-B Highlight copy/legibility class
-42  Airflow chrome home, Environment surface contract,
-    41-4 landing site, remaining M3 order
+42  Airflow chrome home (placement architecture; 42-2
+    POST-V1), Environment surface contract
+43  V1 sufficiency / remaining path after 42-1
 16  Explore/Guided split
 19 / 32  Inspector / Point diagnostics
 36 / 37  selection / Reset View
@@ -1176,17 +1187,15 @@ RESET VIEW            camera; View; 37 unchanged
 RAIL ORDER            Release, Runtime, View
                       (Airflow leaves the rail in `42`)
 HIGHLIGHT ENCODING    unchanged; orientation = V_total
-HIGHLIGHT COPY        restore 39 meaning when On;
-                      landing site is `42-2`, not this rail
+HIGHLIGHT COPY        39 meaning required when On;
+                      compact restoration is playtest-
+                      triggered (`43`), not 42-2
 HIGHLIGHT HUE         magenta V1; palette POST-V1
 GLOW                  not V1
 FREEZE                intact; no new capability
 IMPLEMENTATION        41-1 COMPLETE; 41-2 COMPLETE;
-                      41-3 COMPLETE; 41-4 NOT STARTED;
-                      40 C–G NOT STARTED
-NEXT PRODUCTION       42 §16: 42-1 Environment, then 42-2
-                      (Airflow toolbar + 41-4 copy), then
-                      40 C/E/F/G, then M5
+                      41-3 COMPLETE; 41-4 not pre-M5
+NEXT PRODUCTION       M5 per `38` §11 and `43`
 ```
 
 ---
@@ -1226,7 +1235,7 @@ NEXT PRODUCTION       42 §16: 42-1 Environment, then 42-2
 41-1 COMPLETE.
 41-2 COMPLETE.
 41-3 COMPLETE.
-41-4 NOT STARTED (lands in 42-2, not the rail).
-40 C–G NOT STARTED.
-Remaining order: 42 §16.
+41-4 not pre-M5 MUST (`43`: DEFER UNTIL PLAYTEST EVIDENCE).
+40 C–G not pre-M5 MUST.
+Remaining V1 order: `43` (M5 next).
 ```

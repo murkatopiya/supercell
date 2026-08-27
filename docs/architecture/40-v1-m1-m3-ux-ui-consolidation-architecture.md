@@ -5,9 +5,12 @@ M2 COMPLETE / V1 FEATURE FREEZE ACTIVE /
 M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 SLICE D COMPLETE (42-1) /
-SLICES C, E–G NOT STARTED /
+SLICES C / E COPY DEFERRED TO PLAYTEST (`43`) /
+SLICES F–G NOT V1 /
+42-2 POST-V1 /
 SUCCESSOR 41 DECIDED /
-SUCCESSOR 42 DECIDED
+SUCCESSOR 42 DECIDED /
+SUCCESSOR 43 DECIDED
 **Scope:** decide how already-built V1 capabilities are
 spatially and informationally organized so a user can
 perform acceptance tasks T1–T10 with minimal unnecessary
@@ -23,8 +26,9 @@ boundary and Point-diagnostics sibling relation unchanged
 (`19`, `32`). This file does not reopen `17`, `22`, `23`,
 `26`, `28`, `30`–`39`.
 **Implementation:** Slice A, Slice B, and Slice D (via `42-1`)
-are COMPLETE. Slices C and E–G remain NOT STARTED. Airflow
-chrome home remains `42-2`.
+are COMPLETE. Remaining slices C/E/F/G are not pre-M5 MUST
+(`43`). `42` still owns Airflow placement architecture;
+42-2 implementation is POST-V1.
 
 Post–Slice B Explore release / Highlight checkpoint
 (amends this file’s product surface for the placement gate
@@ -40,6 +44,13 @@ sharpens Slice D Environment size/default):
 
 ```text
 docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
+```
+
+Post–42-1 V1 sufficiency / scope-cut (remaining scheduled
+UX slices are not pre-M5 MUST; next V1 step is M5):
+
+```text
+docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 ```
 
 Predecessor V1 visual-airflow product-state architecture:
@@ -833,9 +844,9 @@ Slice B  Action-rail control consolidation + terminology +
 
 Slice C  Observation dock (Inspector + Point diagnostics)
          shared empty state + internal scroll contract
-         STATUS: NOT STARTED
-         Note: region scroll geometry landed in Slice A; shared
-         empty-state copy remains Slice C.
+         STATUS: NOT PRE-M5 (`43`: DEFER UNTIL PLAYTEST
+         EVIDENCE). Region scroll geometry landed in Slice A;
+         shared empty-state copy is not a scheduled V1 slice.
 
 Slice D  Environment on-demand surface for hodograph/overlays
          + Guided default-open policy
@@ -847,24 +858,25 @@ Slice D  Environment on-demand surface for hodograph/overlays
          removed from the Explore action rail.
 
 Slice E  M1 persistent identity + mode signposting copy
-         STATUS: NOT STARTED
+         STATUS: NOT A V1 SLICE (`43`). M1 remains a T10
+         honesty contract. Extra Explore persistence copy
+         is playtest-triggered, not this chrome pass.
 
 Slice F  Guided teaching-copy consolidation without new mounts
          and without breaking one-viewport Guided fit
-         STATUS: NOT STARTED
+         STATUS: NOT V1 (`43`: REMOVE FROM ROADMAP)
 
 Slice G  Focused wiring/layout tests for the above contracts
-         STATUS: NOT STARTED
-         Note: Slice A already ships focused shell geometry tests;
-         later slices may extend that suite.
+         STATUS: NOT V1 (`43`: REMOVE FROM ROADMAP)
+         Note: Slice A already ships focused shell geometry
+         tests; 42-1 extended that suite.
 ```
 
 Each slice rearranges or relabels existing capability only.
 
-Remaining production order after 41-3 is owned by `42` §16:
-42-1 (this Slice D), 42-2 (Airflow viewport toolbar + 41-4
-copy), then C, E, F, G. That order supersedes C-before-D
-in this list.
+`42` §16 was the remaining production order after 41-3.
+`43` supersedes that order for V1: remaining C/E/F/G and 42-2
+are not pre-M5 MUST. Next V1 step is `38` Phase 4 / M5.
 
 ---
 
@@ -907,15 +919,17 @@ Cosmetic polish remains POST-V1.
     and Highlight compact-copy / legibility class
     (does not reopen 18 birth semantics or 39 encoding)
 
-42  owns post–41-3 Airflow chrome home (viewport toolbar),
-    Environment size/default/affordance, 41-4 landing site,
-    and remaining M3 production order
+42  owns post–41-3 Airflow chrome home (viewport toolbar)
+    as placement architecture, Environment size/default/
+    affordance. 42-1 COMPLETE. 42-2 is POST-V1 (`43`).
+
+43  owns V1 sufficiency / scope-cut after 42-1; remaining
+    path is M5 then evidence-triggered fixes then M4
 ```
 
-Successor production work: `42` §16 (42-1, 42-2 including
-41-4 copy, then remaining `40` C/E/F/G). This file does not
-include that implementation. Successor validation: `38`
-Phase 4 acceptance playtest (M5).
+Successor V1 work: `43` (M5 next). This file does not include
+that playtest. Successor validation: `38` Phase 4 acceptance
+playtest (M5).
 
 ---
 
@@ -926,7 +940,9 @@ VIEWPORT              Explore class A primary workspace
 FOLD AT 1920×1080     main Explore loop without page scroll;
                       scene + observation both available
 CONTROLS              compact action rail (Release, Runtime,
-                      View); Airflow on viewport chrome (`42`)
+                      View); Airflow belongs with viewport
+                      (`42` architecture; 42-2 POST-V1;
+                      V1 still shows Airflow on the rail)
 HODOGRAPH             on-demand Environment (Option B);
                       Explore default closed; usable open
                       size (`42`)
@@ -942,9 +958,9 @@ USER HYPOTHESES       accepted where evidenced; not automatic
 FREEZE                intact; no new capability
 IMPLEMENTATION        Slice A COMPLETE; Slice B COMPLETE;
                       Slice D COMPLETE (42-1);
-                      C, E–G NOT STARTED; 42-2 NOT STARTED
-NEXT                  remaining production order is 42 §16
-                      (42-2, then C/E/F/G)
+                      C/E/F/G not pre-M5 MUST (`43`);
+                      42-2 POST-V1
+NEXT                  M5 per `38` §11 and `43`
 ```
 
 ---
@@ -994,7 +1010,7 @@ NEXT                  remaining production order is 42 §16
 Slice A and Slice B production geometry/controls are COMPLETE.
 Slice D / 42-1 Environment relocation is COMPLETE.
 Post–Slice B product-surface amendments live in `41`
-(41-1…41-3 COMPLETE; 41-4 NOT STARTED).
-42-2 Airflow viewport toolbar is NOT STARTED.
-Slices C and E–G remain NOT STARTED. Remaining order is `42` §16.
+(41-1…41-3 COMPLETE; 41-4 deferred to playtest by `43`).
+42-2 Airflow viewport toolbar is POST-V1 placement architecture.
+Slices C and E–G are not pre-M5 MUST. Next V1 step is M5 (`43`).
 ```

@@ -17,7 +17,8 @@ remains prescribed kinematic laboratory (`30`). Exactly seven
 does not reopen `17`, `22`, `23`, `24`, `26`, `28`, `30`–`37`.
 **Implementation:** this checkpoint itself remains docs-only.
 M2 production closure and feature freeze are recorded via
-successor `39`.
+successor `39`. Remaining V1 path after 42-1 is `43` (M5 next;
+leftover UX slices are not pre-M5 MUST).
 
 Predecessor Reset View / camera recovery architecture:
 
@@ -987,15 +988,16 @@ goal            M1 + M3: honesty placement, information
                 hierarchy, signposting, empty states, disabled
                 reasons, terminology, teaching-copy pass
 entry           Phase 2 exit
-exit            F1, F2, F3-copy, F6, F7, F8 closed;
-                F4 and F5 either closed by reordering or
-                explicitly deferred to the Phase 4 verdict
+exit            functional M3 sufficiently complete for
+                pre-M5 (`43`); leftover F1 / F2 / F6 are
+                playtest items, not remaining Phase 3 gates
 architecture    YES — `40` DECIDED; Slice A–B COMPLETE;
-SoT needed      `41` DECIDED (41-1…41-3 COMPLETE; 41-4
-                NOT STARTED); `42` DECIDED (docs-only);
-                remaining `40` C–G and `42-1`/`42-2` NOT STARTED
+SoT needed      `41` DECIDED (41-1…41-3 COMPLETE); `42`
+                DECIDED (42-1 COMPLETE); `43` DECIDED
+                (remaining UX slices not pre-M5 MUST)
 production      Slice A–B COMPLETE; 41-1…41-3 COMPLETE;
-work            remaining slices are NOT STARTED
+work            42-1 COMPLETE; M3 sufficiently complete
+                for pre-M5 per `43`
 ```
 
 ### Phase 4 — Integrated human acceptance playtest
@@ -1157,11 +1159,12 @@ unless §9's four conditions are all satisfied and recorded.
    `ω_y,current` at a selected parcel. Full wording in §2.1.
 
 2. **What remaining work is MUST before V1?**
-   Exactly five items: M1 persistent model-class honesty;
-   M2 product state for the visual-airflow surface;
-   M3 functional UX/UI consolidation; M4 release audit and
-   documentation; M5 recorded human acceptance playtest with
-   blocking failures fixed. No new capability is MUST.
+   The original five-item list is M1–M5. After `43`, remaining
+   work to *close* V1 is M5, then evidence-triggered freeze
+   fixes, then M4. M2 is COMPLETE. M3 is sufficiently complete
+   for pre-M5. M1 remains an honesty contract validated by
+   T10, not a scheduled chrome slice before M5. No new
+   capability is MUST.
 
 3. **Is a single fixed hodograph / environment acceptable for
    V1?**
@@ -1204,24 +1207,30 @@ docs/architecture/39-v1-visual-airflow-product-state-architecture.md
 Current Phase 3 architecture successor (DECIDED):
 docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
 
-40 Slices A and B are COMPLETE in production. Slices C–G
-are NOT STARTED. Remaining M3 production order is `42` §16.
+40 Slices A, B, and D (via 42-1) are COMPLETE. Remaining
+scheduled UX slices are not pre-M5 MUST (`43`). Next V1
+step is Phase 4 / M5.
 
 Post–Slice B Explore release / Highlight checkpoint
-(DECIDED; 41-1…41-3 COMPLETE in production; 41-4 NOT STARTED):
+(DECIDED; 41-1…41-3 COMPLETE in production; 41-4 deferred
+to playtest evidence by `43`):
 docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
 
 Post–41-3 Explore Airflow / Environment placement
-(DECIDED / docs-only; production NOT STARTED):
+(DECIDED; 42-1 COMPLETE; 42-2 POST-V1 per `43`):
 docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
+
+Post–42-1 V1 sufficiency / scope-cut (DECIDED / docs-only):
+docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 
 40 decides M1 honesty placement and M3 spatial / informational
 organization for existing V1 capabilities. 41 amends the
 Explore placement-gate product surface and Highlight compact
 copy after live Slice B playtest. 42 amends Airflow chrome
 home and sharpens Environment placement after live 41-3
-playtest. None of these files include the next production
-slice by themselves.
+playtest. 43 records that remaining scheduled UX slices are
+not required before M5. None of these files include the next
+production slice by themselves.
 ```
 
 11. **Does this checkpoint authorize implementation?**
@@ -1402,10 +1411,11 @@ Successor status: M2 product-state decision **DECIDED** in
 freeze **ACTIVE**. M1 / M3 consolidation architecture
 **DECIDED** in `40`; Slices A/B **COMPLETE**; post–Slice B
 release/Highlight surface **DECIDED** in `41` (41-1…41-3
-COMPLETE; 41-4 NOT STARTED); post–41-3 Airflow/Environment
-placement **DECIDED** in `42` (docs-only); remaining `40`
-C–G and `42-1`/`42-2` **NOT STARTED**. Remaining V1 MUST
-work is M1, M3, M4, M5.
+COMPLETE); post–41-3 Airflow/Environment placement **DECIDED**
+in `42` (42-1 COMPLETE); sufficiency / scope-cut **DECIDED**
+in `43`. Remaining V1 MUST work before close is M5 then M4.
+M3 is sufficiently complete for pre-M5. M1 remains an honesty
+contract validated by T10.
 
 Closed physics docs are not rewritten. Historical rankings in
 `21`, `24`, `31`, `33`, `35` are not silently modernized beyond
@@ -1483,11 +1493,14 @@ M2 SUCCESSOR        docs/architecture/
 
 M1/M3 SUCCESSOR     docs/architecture/
                     40-v1-m1-m3-ux-ui-consolidation-architecture.md
-                    DECIDED / Slices A+B COMPLETE / C–G NOT STARTED
+                    DECIDED / A+B+D COMPLETE / M3 sufficient
+                    for pre-M5 per 43
                     41-post-slice-b-explore-release-and-highlight-checkpoint.md
-                    DECIDED / 41-1…41-3 COMPLETE / 41-4 NOT STARTED
+                    DECIDED / 41-1…41-3 COMPLETE
                     42-post-41-3-explore-airflow-and-environment-architecture.md
-                    DECIDED / DOCS-ONLY / 42-1 AND 42-2 NOT STARTED
+                    DECIDED / 42-1 COMPLETE / 42-2 POST-V1
+                    43-post-42-1-v1-sufficiency-and-scope-cut.md
+                    DECIDED / DOCS-ONLY / M5 NEXT
 
 IMPLEMENTATION
 FROM THIS FILE      NONE
@@ -1500,9 +1513,11 @@ CONFIDENCE          HIGH on the promise wording, on one fixed
                     environment, on preserving three Guided
                     experiments, and on no new physics
                     M2 COMPLETE via successor `39`
-                    M1/M3 architecture DECIDED via `40`
-                    MEDIUM on whether production slices close
-                    F4/F5 before Phase 4 playtest
+                    M1/M3 architecture DECIDED via `40`;
+                    remaining UX slices not pre-M5 (`43`)
+                    MEDIUM on T10 if a tester never reads
+                    Guided and stays in Explore without
+                    selecting a parcel
 ```
 
 ---
@@ -1532,7 +1547,8 @@ PHYSICS
   UNCHANGED / CLOSED
 
 REMAINING V1 MUST
-  M1 / M3 / M4 / M5
+  M5 then evidence-triggered fixes, then M4
+  (M2 COMPLETE; M3 sufficient for pre-M5; M1 via T10)
 ```
 
 New features, new operands, new experiments, new environments,

@@ -1004,10 +1004,10 @@ M2 does not reopen physics, Guided, selection, Follow, or
 M2 production implementation status: **COMPLETE**.
 V1 feature freeze status: **ACTIVE**.
 
-Successor V1 work after freeze follows `38`: M1 / M3 →
-acceptance → audits → release. M2 itself required no
-architecture `40`. The Phase 3 M1 / M3 consolidation
-architecture is:
+Successor V1 work after freeze follows `38` and `43`: M5
+acceptance, then evidence-triggered fixes, then M4. M2
+itself required no architecture `40`. The Phase 3 M1 / M3
+consolidation architecture is:
 
 ```text
 docs/architecture/40-v1-m1-m3-ux-ui-consolidation-architecture.md
@@ -1017,17 +1017,25 @@ That file is DECIDED and does not reopen M2.
 
 Post–Slice B Explore release / Highlight checkpoint
 (docs-only relative to this encoding; 41-1…41-3 COMPLETE;
-41-4 NOT STARTED):
+41-4 deferred to playtest by `43`):
 
 ```text
 docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md
 ```
 
 Post–41-3 Explore Airflow chrome home / Environment
-placement (docs-only; does not reopen this encoding):
+placement (docs-only relative to this encoding; 42-1 COMPLETE;
+42-2 POST-V1 per `43`):
 
 ```text
 docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md
+```
+
+Post–42-1 V1 sufficiency / scope-cut (does not reopen this
+encoding; next V1 step is M5):
+
+```text
+docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 ```
 
 ---
@@ -1071,9 +1079,8 @@ M2 COMPLETE           YES — all six §16 conditions PASS
 
 FEATURE FREEZE        ACTIVE at production M2 completion merge
 
-NEXT V1 WORK          M1 / M3 per `38`, `40`, `41`, and `42`
-                      (`40` Slices A/B COMPLETE; `41-1`…`41-3`
-                      COMPLETE; `42` docs-only DECIDED;
-                      remaining `40` C–G and `42-1`/`42-2`
-                      NOT STARTED)
+NEXT V1 WORK          M5 per `38` §11 and `43`
+                      (`40` A/B/D COMPLETE; `42-1` COMPLETE;
+                      remaining scheduled UX slices not
+                      pre-M5 MUST)
 ```

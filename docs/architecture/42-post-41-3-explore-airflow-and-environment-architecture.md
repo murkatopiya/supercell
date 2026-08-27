@@ -5,10 +5,11 @@ V1 FEATURE FREEZE ACTIVE /
 M2 COMPLETE / M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE / 41-2 COMPLETE / 41-3 COMPLETE /
-41-4 NOT STARTED (absorbed into 42-2) /
-42-1 COMPLETE / 42-2 NOT STARTED /
+41-4 DEFERRED TO PLAYTEST (`43`) /
+42-1 COMPLETE / 42-2 POST-V1 /
 40 SLICE D COMPLETE (42-1) /
-40 SLICES C, E–G NOT STARTED
+40 SLICES C, E–G NOT PRE-M5 /
+SUCCESSOR 43 DECIDED
 **Scope:** after live playtest of Explore Slice 41-3, decide two
 placement questions for already-built V1 surfaces without adding
 capability and without reopening frozen physics, encodings, or
@@ -26,8 +27,8 @@ laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 sibling relation unchanged (`19`, `32`). Visual-airflow encoding
 and Comets default unchanged (`39`).
 **Implementation:** Slice 42-1 is COMPLETE in production `src/**`.
-Slice 42-2 is NOT STARTED. Slice 41-4 is NOT STARTED and must
-not land in the current Airflow rail band.
+Slice 42-2 remains valid placement architecture and is POST-V1
+implementation (`43`). Slice 41-4 is not pre-M5 MUST.
 
 Predecessor post–Slice B Explore checkpoint:
 
@@ -68,6 +69,13 @@ docs/architecture/22-perceptual-airflow-architecture.md
 docs/ui/01-hodograph-panel.md
 docs/ui/05-hodograph-overlay-controls.md
 docs/physics/10-hodograph-basics.md
+```
+
+Post–42-1 V1 sufficiency / scope-cut (supersedes this file’s
+§16 as remaining *V1* production order):
+
+```text
+docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
 ```
 
 Accepted live head this checkpoint is written against:
@@ -791,8 +799,12 @@ Guided mounts             none of the above
 `41` §18 (`41-4` then `40-C` then `40-D`…) and the implied
 `40` §19 order of C then D.
 
-Goal: minimize throwaway chrome and expose final desktop
-geometry as early as possible.
+`43` later supersedes *this section* as remaining V1 work.
+This file still owns Airflow/Environment *placement
+architecture*. 42-2 is not a V1 implementation obligation.
+
+Goal at the time of this file: minimize throwaway chrome and
+expose final desktop geometry as early as possible.
 
 ```text
 42-1  Environment / hodograph on-demand
@@ -814,26 +826,27 @@ geometry as early as possible.
 42-2  Airflow controls → compact viewport toolbar
       immediately above the 3D canvas
       Left rail becomes Release, Runtime, View only
-      41-4 Highlight compact copy lands here whenever
-      Highlight ≠ Off (not in the old rail band)
-      STATUS: NOT STARTED
+      STATUS: POST-V1 (`43`). Placement architecture in this
+      file remains accepted redesign input. Not pre-M5 MUST.
+      41-4 is independently playtest-triggered and does not
+      require this toolbar.
 
 40-C  Observation empty state → selection + Release tracer
-      STATUS: NOT STARTED
+      STATUS: DEFER UNTIL PLAYTEST EVIDENCE (`43`)
 
 40-E  M1 persistent identity + mode signposting
-      STATUS: NOT STARTED
+      STATUS: NOT A V1 SLICE (`43`); extra Explore honesty
+      copy is playtest-triggered, not this chrome pass
 
 40-F  Guided teaching-copy consolidation without new mounts
-      STATUS: NOT STARTED
+      STATUS: NOT V1 (`43`)
 
 40-G  Remaining focused wiring / layout tests
-      STATUS: NOT STARTED
+      STATUS: NOT V1 (`43`)
       Note: 42-1 updated exploreShell / action-rail hodograph
-      home tests. 42-2 still needs to move Airflow off the
-      rail and allow it in the viewport column.
+      home tests.
 
-Then 38 Phase 4 / M5 acceptance playtest
+Then 38 Phase 4 / M5 acceptance playtest (`43`).
 ```
 
 Why Environment before Airflow:
@@ -851,6 +864,9 @@ Why 41-4 is fused into 42-2:
 - Copy restoration in the rail would be discarded when the
   same controls move.
 - Highlight meaning belongs with the chrome that owns Highlight.
+
+`43` later unfused that V1 obligation: 42-2 is POST-V1;
+41-4 compact copy is independently playtest-triggered.
 
 Why 40-C stays after geometry:
 
@@ -871,15 +887,16 @@ Each slice rearranges or relabels existing capability only.
 
 ```text
 38  Freeze rule, one fixed environment, T1–T10, M1/M3/M4/M5
-    unchanged. Successor pointer: this file. 41-1…41-3 are
-    COMPLETE in production; 41-4 is absorbed into 42-2 and
-    remains NOT STARTED. 40 C–G remain NOT STARTED.
+    unchanged as contracts. Successor pointer: this file, then
+    `43`. 41-1…41-3 COMPLETE; 42-1 COMPLETE. Remaining scheduled
+    UX slices are not pre-M5 MUST (`43`).
 
 39  Still owns Comets default, Highlight encoding, default
     Off, six operands, anti-claims, POST-V1 palette, no
     Guided airflow. Chrome *home* of those controls is
-    amended by this file (viewport toolbar). Encoding is
-    not amended.
+    amended by this file (viewport toolbar as architecture).
+    Encoding is not amended. 42-2 implementation is POST-V1
+    (`43`); V1 may keep Airflow on the rail.
 
 40  Option 2, Environment Option B, fold/scroll, M1 header,
     observation dock, Guided local shell remain. Amended:
@@ -891,8 +908,10 @@ Each slice rearranges or relabels existing capability only.
 41  Release entry, Clear grouping, rail order Release →
     Runtime → View, Highlight encoding/copy *meaning*,
     magenta, no glow remain. Amended: Airflow is no longer
-    a left-rail band. 41-4 does not land in the rail.
-    Successor production order is this file §16.
+    required to remain a left-rail band after a later UI.
+    41-4 compact copy is playtest-triggered (`43`), not fused
+    into a V1 42-2 slice.
+    Remaining V1 order is `43`, not this file §16.
 
 18  Birth, Reset, Clear, placementEnabled gate unchanged.
     This file does not touch seeding.
@@ -916,7 +935,7 @@ beyond successor pointers.
 ## 18. Explicit non-goals
 
 ```text
-production implementation of 42-2 / 41-4 / 40 C–G
+production implementation of leftover 40 C–G as V1 MUST
 new release primitive
 click-to-birth without Confirm
 Explore starting cohort
@@ -938,7 +957,7 @@ README / M4 release surface
 ## 19. Anti-claims
 
 ```text
-This file does not include 42-2 or remaining 40 C–G.
+This file does not include 42-2 as a V1 obligation (`43`).
 Relocating Airflow is not hiding Airflow.
 A viewport toolbar is not a return of the research workbench.
 On-demand Environment is not a missing hodograph.
@@ -965,8 +984,8 @@ M3 may not invent a settings framework to make the rail
 41  Explore release entry, Clear grouping, Highlight
     compact-copy / legibility *meaning*
 42  this file: Airflow chrome home; Environment size /
-    default / affordance; 41-4 landing site; revised
-    remaining M3 order
+    default / affordance (placement architecture)
+43  V1 sufficiency / remaining path after 42-1; 42-2 POST-V1
 18  seeding / gate / Reset / Clear semantics
 16  Explore/Guided split
 19 / 32  Inspector / Point diagnostics
@@ -982,8 +1001,8 @@ M3 may not invent a settings framework to make the rail
 AIRFLOW HOME          compact toolbar above Explore canvas
 AIRFLOW RAIL          no longer a left-rail band
 HIGHLIGHT ENCODING    unchanged; orientation = V_total
-HIGHLIGHT COPY        41 §11 meaning; lands in the toolbar
-                      when Highlight ≠ Off (42-2 / 41-4)
+HIGHLIGHT COPY        41 §11 meaning; compact restoration
+                      is playtest-triggered (`43`)
 HIGHLIGHT HUE         magenta V1; palette POST-V1
 GLOW                  not V1
 HODOGRAPH HOME        on-demand Environment (40 Option B)
@@ -993,15 +1012,16 @@ ENV AFFORDANCE        header, labeled Environment
 ENV OPEN SIZE         usable; ≥ 480px at 1920×1080;
                       not the 260–320px rail
 OVERLAYS              travel with the hodograph
-LEFT RAIL             Release, Runtime, View
-OBSERVATION           right dock; 40-C still empty-state copy
+LEFT RAIL             Release, Runtime, View, plus V1 Airflow
+                      still on the rail (`43`: 42-2 POST-V1)
+OBSERVATION           right dock; 40-C playtest-triggered
 FOLD                  1920×1080 Explore loop without page
                       scroll; Environment / observation
                       region-scroll only
 FREEZE                intact; no new capability
-IMPLEMENTATION        42-1 COMPLETE; 42-2 NOT STARTED;
-                      41-4 NOT STARTED (absorbed by 42-2);
-                      40 C–G NOT STARTED
+IMPLEMENTATION        42-1 COMPLETE; 42-2 POST-V1;
+                      41-4 not pre-M5; 40 C–G not pre-M5
+NEXT                  M5 per `43`
 ```
 
 ---
@@ -1022,7 +1042,11 @@ IMPLEMENTATION        42-1 COMPLETE; 42-2 NOT STARTED;
    compact-visible only while Highlight is on.
 
 4. **What happens to 41-4?**  
-   It lands in that toolbar (42-2), not in the current rail.
+   This file fused compact restoration into 42-2 so copy
+   would not land in a soon-abandoned rail. `43` later made
+   42-2 POST-V1 and 41-4 independently playtest-triggered.
+   Compact restoration, if earned, does not require the
+   viewport toolbar. Hue/glow/encoding stay unchanged.
 
 5. **Does live evidence earn moving the hodograph?**  
    Yes. It confirms `40` Option B and adds a usable-size
@@ -1038,14 +1062,14 @@ IMPLEMENTATION        42-1 COMPLETE; 42-2 NOT STARTED;
    Yes. No new capability. No freeze entry.
 
 8. **What is the remaining production order?**  
-   42-1 Environment, then 42-2 Airflow toolbar + 41-4 copy,
-   then 40-C, 40-E, 40-F, 40-G, then M5.
+   This file’s §16 V1 tail is superseded by `43`: M5 next.
+   42-2 remains POST-V1 placement architecture.
 
 9. **Does this file include production implementation?**
 
 ```text
 42-1 COMPLETE.
-42-2 NOT STARTED.
-41-4 NOT STARTED.
-40 C–G NOT STARTED.
+42-2 POST-V1 (not a V1 obligation).
+41-4 not pre-M5 MUST.
+40 C–G not pre-M5 MUST.
 ```
