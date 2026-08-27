@@ -3,6 +3,12 @@ import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
+import { hodographPoints } from "../physics/environment/hodograph.js";
+import {
+  DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
+  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+  type ExploreEnvironmentIdentity,
+} from "../explore/exploreEnvironmentIdentity.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
 import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
@@ -32,10 +38,14 @@ import {
 } from "./createGuidedLab.js";
 import {
   DEMO_SELECTED_HEIGHT,
-  createDemoHodographPoints,
+  createDemoEnvironmentalWindProfile,
   createDemoStreamwiseCrosswiseOverlay,
   createDemoVorticityLayer,
 } from "./demoHodographFixture.js";
+import {
+  GOSHEN_2009_OBSERVED_RECORD,
+  exploreEnvironmentalWindProfile,
+} from "./goshenObservedEnvironment.js";
 import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
@@ -91,9 +101,8 @@ function createSceneSlots(
 }
 
 export function App() {
-  const points = createDemoHodographPoints();
-  const vorticityLayer = createDemoVorticityLayer();
-  const streamwiseCrosswiseOverlay = createDemoStreamwiseCrosswiseOverlay();
+  const [exploreEnvironmentIdentity, setExploreEnvironmentIdentity] =
+    useState<ExploreEnvironmentIdentity>(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY);
   const [overlayVisibility, setOverlayVisibility] = useState(
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
@@ -230,7 +239,12 @@ export function App() {
       return;
     }
     clearSelectionAndInspection();
-    setLab(createExploreLab(sceneSlotsRef.current!));
+    setLab(
+      createExploreLab(
+        sceneSlotsRef.current!,
+        exploreEnvironmentalWindProfile(exploreEnvironmentIdentity),
+      ),
+    );
     setAltitudeM(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
     setPlacementEnabled(false);
     setPendingSeed(null);
@@ -275,7 +289,33 @@ export function App() {
     setResetEpoch((epoch) => epoch + 1);
   };
 
+  const selectExploreEnvironment = (next: ExploreEnvironmentIdentity) => {
+    if (next === exploreEnvironmentIdentity) {
+      return;
+    }
+    setExploreEnvironmentIdentity(next);
+    if (lab.kind !== "explore") {
+      return;
+    }
+    clearSelectionAndInspection();
+    setLab(
+      createExploreLab(
+        sceneSlotsRef.current!,
+        exploreEnvironmentalWindProfile(next),
+      ),
+    );
+    setPendingSeed(null);
+    setResetEpoch((epoch) => epoch + 1);
+  };
+
   const explore = lab.kind === "explore" ? lab : null;
+  const goshenExploreActive =
+    explore !== null &&
+    exploreEnvironmentIdentity === EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED;
+  const activeProfile = goshenExploreActive
+    ? GOSHEN_2009_OBSERVED_RECORD.profile
+    : createDemoEnvironmentalWindProfile();
+  const points = hodographPoints(activeProfile);
   const guidedExperiment =
     lab.kind === "guided"
       ? guidedExperimentById(guidedExperimentId)
@@ -290,12 +330,26 @@ export function App() {
       presentation={explore !== null ? "overlay" : "column"}
       points={points}
       stormMotion={DEMO_SCENARIO.stormMotion}
-      selectedHeight={DEMO_SELECTED_HEIGHT}
-      vorticityLayer={vorticityLayer}
-      streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
+      selectedHeight={
+        goshenExploreActive ? undefined : DEMO_SELECTED_HEIGHT
+      }
+      vorticityLayer={
+        goshenExploreActive ? undefined : createDemoVorticityLayer()
+      }
+      streamwiseCrosswiseOverlay={
+        goshenExploreActive
+          ? undefined
+          : createDemoStreamwiseCrosswiseOverlay()
+      }
       overlayVisibility={overlayVisibility}
       onOverlayVisibilityChange={setOverlayVisibility}
       onClose={() => setEnvironmentOpen(false)}
+      environmentIdentity={
+        explore !== null ? exploreEnvironmentIdentity : undefined
+      }
+      onEnvironmentIdentityChange={
+        explore !== null ? selectExploreEnvironment : undefined
+      }
     />
   );
 

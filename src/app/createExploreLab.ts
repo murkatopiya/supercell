@@ -6,6 +6,7 @@ import { ExploreTracerSession } from "../explore/ExploreTracerSession.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
+import type { EnvironmentalWindProfile } from "../physics/environment/EnvironmentalWindProfile.js";
 import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
 import { DEMO_VISUAL_AIRFLOW_POPULATION } from "./demoVisualAirflowFixture.js";
 import { DEMO_EULERIAN_AIRFLOW_SAMPLES } from "./demoEulerianAirflowFixture.js";
@@ -44,8 +45,14 @@ export function composeExploreTracerSimulation(
  * velocityObservation holds the SAME operand instances Simulation integrates.
  * Visual airflow and Eulerian samples observe that same total field.
  * Visual advection uses the same Euler instance.
+ *
+ * Optional environmentalWindProfile replaces DEMO knots only.
+ * Storm operands and prescribed C remain DEMO. Guided does not use this.
  */
-export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
+export function createExploreLab(
+  sceneSlots: ExploreSceneSlots,
+  environmentalWindProfile?: EnvironmentalWindProfile,
+): ExploreLab {
   const {
     simulation,
     velocityObservation,
@@ -55,6 +62,7 @@ export function createExploreLab(sceneSlots: ExploreSceneSlots): ExploreLab {
   } = composeDemoTracersWithObservation(
     IntegrationFrame.StormRelativeLaboratory,
     [],
+    environmentalWindProfile,
   );
   const pathHistory = new TracerPathHistory(0);
   const session = new ExploreTracerSession(simulation, pathHistory);

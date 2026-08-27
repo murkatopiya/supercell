@@ -542,6 +542,40 @@ body:has(.app--explore) {
   margin: 0;
 }
 
+.environment-surface__identity {
+  margin: 0 0 0.65rem;
+  padding: 0.35rem 0.5rem 0.5rem;
+  border: 1px solid #d0d7de;
+}
+
+.environment-surface__identity-legend {
+  padding: 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.environment-surface__identity-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+}
+
+.environment-surface__honesty {
+  margin: 0 0 0.65rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.environment-surface__honesty p {
+  margin: 0 0 0.4rem;
+}
+
+.environment-surface__honesty p:last-child {
+  margin-bottom: 0;
+}
+
 .environment-surface--overlay {
   position: absolute;
   top: 0;

@@ -17,6 +17,7 @@ import {
   canBuildStreamwiseCrosswiseTips,
   findExactHodographPoint,
   formatHeightMeters,
+  hodographHeightLabelIndices,
   isZeroHorizontalVorticity,
   mapHodographPointsToScreen,
   omegaArrowEnd,
@@ -61,6 +62,7 @@ export function HodographPanel({
   const overlayVelocities = stormMotion ? [stormMotion] : [];
   const transform = buildViewTransform(points, overlayVelocities);
   const screenPoints = mapHodographPointsToScreen(points, transform);
+  const heightLabelIndices = hodographHeightLabelIndices(points);
   const polylinePoints = screenPoints
     .map((point) => `${point.x},${point.y}`)
     .join(" ");
@@ -451,13 +453,15 @@ export function HodographPanel({
               stroke={selected ? "#0842a0" : undefined}
               strokeWidth={selected ? 2 : undefined}
             />
-            <text
-              x={screen.x + 8}
-              y={screen.y - 8}
-              className="hodograph-panel__height-label"
-            >
-              {formatHeightMeters(point.height)}
-            </text>
+            {heightLabelIndices.has(index) ? (
+              <text
+                x={screen.x + 8}
+                y={screen.y - 8}
+                className="hodograph-panel__height-label"
+              >
+                {formatHeightMeters(point.height)}
+              </text>
+            ) : null}
           </g>
         );
       })}

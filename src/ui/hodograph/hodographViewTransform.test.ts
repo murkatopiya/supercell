@@ -15,6 +15,7 @@ import {
   findExactHodographPoint,
   fitEqualAspect,
   formatHeightMeters,
+  hodographHeightLabelIndices,
   isZeroHorizontalVorticity,
   mapHodographPointsToScreen,
   omegaArrowEnd,
@@ -267,6 +268,28 @@ describe("hodographViewTransform", () => {
       expect(formatHeightMeters(0)).toBe("0 m");
       expect(formatHeightMeters(1000)).toBe("1000 m");
       expect(formatHeightMeters(2000)).toBe("2000 m");
+    });
+  });
+
+  describe("hodographHeightLabelIndices", () => {
+    it("labels every knot on a short DEMO-length column", () => {
+      expect(hodographHeightLabelIndices(demoPoints)).toEqual(new Set([0, 1, 2]));
+    });
+
+    it("keeps endpoints and about one label per kilometre on a dense column", () => {
+      const dense: HodographPoint[] = [];
+      for (let i = 0; i < 50; i++) {
+        dense.push({
+          height: 2.4 + i * 250,
+          eastward: i,
+          northward: 0,
+        });
+      }
+      const indices = hodographHeightLabelIndices(dense);
+      expect(indices.has(0)).toBe(true);
+      expect(indices.has(dense.length - 1)).toBe(true);
+      expect(indices.size).toBeLessThan(dense.length);
+      expect(indices.size).toBeGreaterThan(2);
     });
   });
 

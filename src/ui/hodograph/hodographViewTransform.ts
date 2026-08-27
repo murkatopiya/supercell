@@ -233,6 +233,42 @@ export function formatHeightMeters(height: number): string {
   return `${height} m`;
 }
 
+/**
+ * Dense imported columns keep every knot on the polyline; height
+ * labels are a display detail. Short DEMO columns keep every label.
+ */
+export const DENSE_HODOGRAPH_LABEL_THRESHOLD = 12;
+
+export function hodographHeightLabelIndices(
+  points: readonly HodographPoint[],
+): ReadonlySet<number> {
+  if (points.length <= DENSE_HODOGRAPH_LABEL_THRESHOLD) {
+    return new Set(points.map((_, index) => index));
+  }
+
+  const indices = new Set<number>([0, points.length - 1]);
+  const minHeight = points[0]!.height;
+  const maxHeight = points[points.length - 1]!.height;
+  const firstKm = Math.ceil(minHeight / 1000);
+  const lastKm = Math.floor(maxHeight / 1000);
+
+  for (let km = firstKm; km <= lastKm; km++) {
+    const target = km * 1000;
+    let bestIndex = 0;
+    let bestDistance = Infinity;
+    for (let index = 0; index < points.length; index++) {
+      const distance = Math.abs(points[index]!.height - target);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestIndex = index;
+      }
+    }
+    indices.add(bestIndex);
+  }
+
+  return indices;
+}
+
 export function mapHodographPointsToScreen(
   points: readonly HodographPoint[],
   transform: ViewTransform,

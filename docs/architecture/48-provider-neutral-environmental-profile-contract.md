@@ -1,7 +1,7 @@
 # Provider-Neutral Environmental-Profile Contract
 
 **Status:** POST-V1 ENVIRONMENT CONTRACT SoT /
-I1 DONE; I2 NOT STARTED
+I1 DONE; I2 DONE
 **Scope:** the minimum provider-neutral environmental-wind
 profile boundary needed so the existing Explorer can later
 load **one** real historical atmospheric wind profile and
@@ -18,6 +18,7 @@ as the kinematic sampler. V1 DEMO knots and DEMO `C` are
 not modified by this file.
 **Implementation:** this contract file is docs-only.
 I1 is in `src/data/eolNsslMgausEsc/` (`49` §7–§8).
+I2 is the Explore-only Goshen identity (`50`).
 This file does not authorize a provider interface,
 Bunkers, a DEMO_SCENARIO change, a Guided retarget,
 or thermodynamics.
@@ -1377,8 +1378,8 @@ this file:     provider-neutral environmental-wind
                sandbox contract; RAOB class
 49:            R1 selection; Goshen NSSL1 2155 UTC;
                G1–G3 forensic inspect; I1 input
-50:            I2 Explore Goshen sandbox definition;
-               I2 NOT STARTED
+50:            I2 Explore Goshen sandbox;
+               I2 DONE
 44:            long-term source / reconstruction
                boundary; still authoritative for that
                split

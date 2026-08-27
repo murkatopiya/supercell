@@ -45,6 +45,33 @@ describe("EnvironmentSurface", () => {
     expect(html).not.toMatch(/<section[^>]*\shidden/);
   });
 
+  it("shows the Explore identity control only when identity is supplied", () => {
+    const guided = surfaceMarkup(true, "column");
+    expect(guided).not.toContain("Demo prescribed environment");
+    expect(guided).not.toContain("Goshen 2009 observed environment");
+    expect(guided).not.toContain("explore-environment-identity");
+
+    const explore = renderToStaticMarkup(
+      <EnvironmentSurface
+        open={true}
+        presentation="overlay"
+        points={createDemoHodographPoints()}
+        stormMotion={DEMO_SCENARIO.stormMotion}
+        selectedHeight={DEMO_SELECTED_HEIGHT}
+        vorticityLayer={createDemoVorticityLayer()}
+        streamwiseCrosswiseOverlay={createDemoStreamwiseCrosswiseOverlay()}
+        overlayVisibility={DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY}
+        onOverlayVisibilityChange={() => {}}
+        onClose={() => {}}
+        environmentIdentity="demo-prescribed"
+        onEnvironmentIdentityChange={() => {}}
+      />,
+    );
+    expect(explore).toContain("Demo prescribed environment");
+    expect(explore).toContain("Goshen 2009 observed environment");
+    expect(explore).not.toContain("NOT a simulation or reconstruction");
+  });
+
   it("is hidden when closed without dropping overlay controls from the tree", () => {
     const html = surfaceMarkup(false, "overlay");
     expect(html).toMatch(/<section[^>]*\shidden/);

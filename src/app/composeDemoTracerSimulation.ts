@@ -4,6 +4,7 @@ import { EulerIntegrator } from "../core/integrators/EulerIntegrator.js";
 import { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
 import { DiagnosticVerticalVorticity } from "../physics/diagnostics/DiagnosticVerticalVorticity.js";
 import { EnvironmentalWindField } from "../physics/environment/EnvironmentalWindField.js";
+import type { EnvironmentalWindProfile } from "../physics/environment/EnvironmentalWindProfile.js";
 import { StormRelativeEnvironmentalAdvectionField } from "../physics/environment/StormRelativeEnvironmentalAdvectionField.js";
 import { createDowndraftField } from "../scenario/createDowndraftField.js";
 import { createEnvironmentalWindProfile } from "../scenario/createEnvironmentalWindProfile.js";
@@ -84,19 +85,24 @@ function environmentalOperand(
 }
 
 /**
- * Compose DEMO tracer operands from DEMO_SCENARIO.
+ * Compose DEMO storm operands from DEMO_SCENARIO.
  *
  * IntegrationFrame selects only the environmental VelocityField operand.
  * Storm fields are identical in both modes. CompositeVelocityField does
  * not know about the frame or C.
+ *
+ * Optional environmentalWindProfile replaces only the DEMO knots.
+ * Storm factories and DEMO_SCENARIO.stormMotion stay prescribed.
  *
  * Default composition frame: GroundRelativeWindTunnel.
  * Live App.tsx selects StormRelativeLaboratory explicitly.
  */
 export function composeDemoTracerFields(
   integrationFrame: IntegrationFrame = DEFAULT_DEMO_INTEGRATION_FRAME,
+  environmentalWindProfile?: EnvironmentalWindProfile,
 ) {
-  const profile = createEnvironmentalWindProfile(DEMO_SCENARIO);
+  const profile =
+    environmentalWindProfile ?? createEnvironmentalWindProfile(DEMO_SCENARIO);
   const groundRelativeEnvironmentField = new EnvironmentalWindField(profile);
   const environmentField = environmentalOperand(
     groundRelativeEnvironmentField,
@@ -169,8 +175,12 @@ export function demoInspectableVelocityOperands(
 export function composeDemoTracersWithObservation(
   integrationFrame: IntegrationFrame,
   particles: TracerAdvectionState[],
+  environmentalWindProfile?: EnvironmentalWindProfile,
 ): DemoObservedTracerSimulation {
-  const composed = composeDemoTracerFields(integrationFrame);
+  const composed = composeDemoTracerFields(
+    integrationFrame,
+    environmentalWindProfile,
+  );
   const tiltingTendency = new DiagnosticTiltingTendency({
     profile: composed.profile,
     updraft: composed.updraftField,

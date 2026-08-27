@@ -1,6 +1,16 @@
 import { useEffect } from "react";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
 import type { StormMotion } from "../../physics/environment/stormRelativeWind.js";
+import {
+  DEMO_PRESCRIBED_ENVIRONMENT_LABEL,
+  EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+  GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
+  GOSHEN_OBSERVED_ENVIRONMENT_COPY,
+  GOSHEN_PRESCRIBED_STORM_COPY,
+  GOSHEN_SANDBOX_ANTI_CLAIM,
+  type ExploreEnvironmentIdentity,
+} from "../../explore/exploreEnvironmentIdentity.js";
 import { HodographOverlayControls } from "./HodographOverlayControls.js";
 import { HodographPanel } from "./HodographPanel.js";
 import type { HodographOverlayVisibility } from "./hodographOverlayVisibility.js";
@@ -18,12 +28,14 @@ export interface EnvironmentSurfaceProps {
   presentation: "overlay" | "column";
   points: HodographPoint[];
   stormMotion: StormMotion;
-  selectedHeight: number;
+  selectedHeight?: number;
   vorticityLayer?: HorizontalVorticityLayerOverlay;
   streamwiseCrosswiseOverlay?: StreamwiseCrosswiseVorticityOverlay;
   overlayVisibility: HodographOverlayVisibility;
   onOverlayVisibilityChange: (next: HodographOverlayVisibility) => void;
   onClose: () => void;
+  environmentIdentity?: ExploreEnvironmentIdentity;
+  onEnvironmentIdentityChange?: (next: ExploreEnvironmentIdentity) => void;
 }
 
 /**
@@ -42,6 +54,8 @@ export function EnvironmentSurface({
   overlayVisibility,
   onOverlayVisibilityChange,
   onClose,
+  environmentIdentity,
+  onEnvironmentIdentityChange,
 }: EnvironmentSurfaceProps) {
   useEffect(() => {
     if (presentation !== "overlay" || !open) {
@@ -93,6 +107,51 @@ export function EnvironmentSurface({
           Close
         </button>
       </div>
+      {environmentIdentity !== undefined && onEnvironmentIdentityChange ? (
+        <fieldset className="environment-surface__identity">
+          <legend className="environment-surface__identity-legend">
+            Environment
+          </legend>
+          <label className="environment-surface__identity-option">
+            <input
+              type="radio"
+              name="explore-environment-identity"
+              checked={
+                environmentIdentity === EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED
+              }
+              onChange={() =>
+                onEnvironmentIdentityChange(
+                  EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+                )
+              }
+            />
+            {DEMO_PRESCRIBED_ENVIRONMENT_LABEL}
+          </label>
+          <label className="environment-surface__identity-option">
+            <input
+              type="radio"
+              name="explore-environment-identity"
+              checked={
+                environmentIdentity ===
+                EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED
+              }
+              onChange={() =>
+                onEnvironmentIdentityChange(
+                  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+                )
+              }
+            />
+            {GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL}
+          </label>
+        </fieldset>
+      ) : null}
+      {environmentIdentity === EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED ? (
+        <div className="environment-surface__honesty">
+          <p>{GOSHEN_OBSERVED_ENVIRONMENT_COPY}</p>
+          <p>{GOSHEN_PRESCRIBED_STORM_COPY}</p>
+          <p>{GOSHEN_SANDBOX_ANTI_CLAIM}</p>
+        </div>
+      ) : null}
       <HodographPanel
         points={points}
         stormMotion={stormMotion}

@@ -1,6 +1,6 @@
 # I2 Goshen Explore Sandbox Integration
 
-**Status:** POST-I1 CHECKPOINT SoT / I2 NOT STARTED
+**Status:** POST-I1 CHECKPOINT SoT / I2 DONE
 **Scope:** the minimum path from completed Goshen ingestion
 (I1) to one honest Explore sandbox whose environmental
 wind is the observed NSSL1 2155 UTC column. Not a V1
@@ -11,7 +11,10 @@ platform.
 Seven `V_total` operands. Prescribed Ω and DEMO storm
 operands unchanged. DEMO `C` remains prescribed in I2.
 `EnvironmentalWindProfile.sampleAtHeight` unchanged.
-**Implementation:** this file does not include I2 code.
+**Implementation:** Explore-only DEMO|Goshen identity.
+Runtime profile is the committed golden via
+`nssl1Goshen2155Record`. Native `.cls` is not a runtime
+input. Guided and `DEMO_SCENARIO` are unchanged.
 
 Predecessor:
 
@@ -362,6 +365,7 @@ GUIDED:          DEMO, unchanged
 HODOGRAPH:       2029 imported knots; sparse labels
 OVERLAY [0,1000]: DEMO-only; omit on Goshen
 G4:              OPEN
-IMPLEMENTATION:  NONE in this file
+IMPLEMENTATION:  Explore-only DEMO|Goshen identity;
+                 committed golden, not native .cls
 V1:              CLOSED
 ```

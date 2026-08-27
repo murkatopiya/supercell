@@ -26,7 +26,7 @@ Predecessor contract:
 docs/architecture/48-provider-neutral-environmental-profile-contract.md
 ```
 
-I2 sandbox definition (not started):
+I2 sandbox (Explore-only Goshen identity):
 
 ```text
 docs/architecture/50-i2-goshen-sandbox-integration.md
