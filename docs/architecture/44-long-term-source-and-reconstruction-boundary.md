@@ -5,10 +5,11 @@ NO IMPLEMENTATION AUTHORIZATION
 **Scope:** separate the Explorer engineering / consume track
 from the storm-reconstruction research track; lock ownership,
 scientific-risk language, `VelocityField` non-change, and the
-next data-driven-environment artifact. Not a retrieval design.
-Not a `DatasetVelocityField` design. Not a provider-neutral
-environment contract. Not `ROADMAP.md`. Not a V1 or M5
-document.
+pointer to the data-driven-environment contract (`48`). Not a
+retrieval design.
+Not a `DatasetVelocityField` design. Not the
+provider-neutral environment contract (`48` is). Not
+`ROADMAP.md`. Not a V1 or M5 document.
 **Physics:** T1 and Candidate A remain CLOSED. Model class
 remains prescribed kinematic laboratory (`30`). Exactly seven
 `V_total` operands. Prescribed Ω semantics unchanged.
@@ -433,9 +434,10 @@ inter-source disagreement (e.g. RAOB vs analysis) as a
 
 ### 6.5 Inter-source disagreement as intermediate literacy
 
-**Kind:** NEW PROJECT DECISION for the future
-provider-neutral environmental-profile contract. Not a UI.
-Not an API. Not a V1 change.
+**Kind:** NEW PROJECT DECISION for the
+provider-neutral environmental-profile contract (`48`).
+Not a UI. Not an API. Not a V1 change. Not part of the
+first historical sandbox (`48`: provider #2).
 
 If that contract ever hosts more than one provider at once
 (for example RAOB and a model analysis / reanalysis for
@@ -548,11 +550,13 @@ The next SoT for that work is a **provider-neutral
 environmental-profile contract**.
 
 ```text
-that contract:     NOT STARTED
-this file:         does not include it
-providers:         candidates, not core physics, until a
-                   later evidence review selects otherwise
-implementation:    not authorized
+that contract:     docs/architecture/48-provider-neutral-environmental-profile-contract.md
+this file:         does not include it; 48 does
+providers:         first-sandbox source class is observed
+                   RAOB (`48`); exact archive remains
+                   research gate R1 in 48
+implementation:    not authorized here; 48 also does not
+                   authorize implementation
 ```
 
 The future contract SoT must answer at least:
@@ -592,14 +596,17 @@ whenever storm motion can come from more than one
 epistemic class, regardless of which U5 option is later
 chosen.
 
-This file still does not include the contract, choose
-providers, or design comparison / `stormMotion` DTOs.
+This file still does not include the contract. `48` is
+that contract. Exact archive selection and implementation
+remain out of this file.
 
 ### 8.1 Multiple providers
 
 RAOB, RAP, HRRR, and other sources remain **candidate
-providers**, not core physics, until a later evidence
-review selects otherwise.
+providers**, not core physics. `48` selects observed RAOB
+as the first-sandbox **source class** and leaves the
+exact archive as research gate R1. Additional providers
+wait for provider #2.
 
 If more than one provider is later in scope, disagreement
 among them is a possible literacy/sensitivity signal
@@ -775,13 +782,11 @@ ARCHITECTURE §36 keep source-swap success; remove
                explain-every-inference
 physics/02 §40 interpolation of an already-gridded field
                is not observational retrieval
-physics/04 §21 next environment SoT is the provider-neutral
-               contract; providers not chosen;
-               inter-source disagreement and stormMotion
-               provenance are questions for that SoT
+physics/04 §21 environmental-profile contract is `48`;
+               observed RAOB is first-sandbox source class;
+               exact archive is research gate R1 in `48`
 physics/07     current StormMotion remains value-only;
-               future C provenance is the environment
-               contract, not this subtraction map
+               C provenance is `48` §8, not this subtraction map
 21 header      successor pointer to this file for the
                dataset-arrow reading of §7 / §9.E
 30 header      this file refines source-class D / U1;
@@ -810,7 +815,7 @@ this file does not design DatasetVelocityField
 this file does not design retrieval
 this file does not choose RAOB / RAP / HRRR / other providers
 this file does not include the provider-neutral environment
-  contract
+  contract (`48` does)
 this file does not design a stormMotion provenance DTO
 this file does not design an inter-source comparison UI/API
 this file does not select or implement Bunkers
@@ -849,9 +854,10 @@ ARCHITECTURE:  consumer-port architecture; amended for
 physics/02:    VelocityField meaning; dataset interpolation
                is consume, not retrieval
 physics/04:    current prescribed profile; import remains
-               out of current scope
+               out of current-profile scope; contract is `48`
 physics/07:    value-only StormMotion subtraction map;
-               estimator vs observed C not this file
+               estimator vs observed C is `48` §8, not this file
+48:            provider-neutral environmental-profile contract
 ```
 
 ---
@@ -899,7 +905,7 @@ EXPLAIN EVERY INFERENCE: long-term honesty for inferred
                         state; not seven-operand reuse
 
 NEXT ENV ARTIFACT:      provider-neutral environmental-
-                        profile contract; NOT STARTED
+                        profile contract is `48`
 
 V1 / M5 / FREEZE:       UNCHANGED
 IMPLEMENTATION:         NONE

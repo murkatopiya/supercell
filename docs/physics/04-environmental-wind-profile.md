@@ -677,25 +677,30 @@ It does not yet include:
 - numerical weather-model datasets.
 
 Those last two items are not current-profile features. They are
-candidate providers behind a future **provider-neutral
-environmental-profile contract**, which is not this document
-and is not started here. They are not a 3D storm
-reconstruction.
+candidate providers behind the **provider-neutral
+environmental-profile contract**:
 
-That future contract, if it hosts more than one provider,
+```text
+docs/architecture/48-provider-neutral-environmental-profile-contract.md
+```
+
+They are not a 3D storm reconstruction (`44`).
+
+That contract, if it later hosts more than one provider,
 may treat inter-source disagreement as a sensitivity /
 literacy signal. It must not treat that disagreement as
-complete uncertainty or as a scalar `confidence`.
+complete uncertainty or as a scalar `confidence`. First
+sandbox source class is observed RAOB; exact archive is
+research gate R1 in `48`. Provider #2 is not started.
 
-Storm motion remains outside this profile. A future
-environment contract must distinguish storm-motion
-**value**, **source-or-method**, **validity**, and
-**provenance**: a derived estimator (for example a
-Bunkers-type method from the profile) and an observed
-track (for example radar / cell tracking) can share a
-vector type without sharing meaning. The current
-`StormMotion` type stays value-only. See
-`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
+Storm motion remains outside this profile. The environment
+contract (`48`) distinguishes storm-motion **value**,
+**source-or-method**, **validity**, and **provenance**: a
+derived estimator (for example a Bunkers-type method from
+the profile) and an observed track (for example radar /
+cell tracking) can share a vector type without sharing
+meaning. The current `StormMotion` type stays value-only.
+See `44` §8.2 and `48` §8.
 
 ---
 

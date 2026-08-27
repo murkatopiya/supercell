@@ -125,6 +125,7 @@ version is not a scientific-validity or product-maturity claim.
 | [`docs/architecture/38-v1-scope-checkpoint.md`](docs/architecture/38-v1-scope-checkpoint.md) | V1 promise |
 | [`docs/architecture/30-model-class-decision.md`](docs/architecture/30-model-class-decision.md) | Model class A |
 | [`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](docs/architecture/44-long-term-source-and-reconstruction-boundary.md) | Reconstruction boundary |
+| [`docs/architecture/48-provider-neutral-environmental-profile-contract.md`](docs/architecture/48-provider-neutral-environmental-profile-contract.md) | Post-V1 environmental-profile contract |
 | [`docs/architecture/47-m4-v1-closure-audit-and-plan.md`](docs/architecture/47-m4-v1-closure-audit-and-plan.md) | M4 closure audit / plan |
 | [`docs/reviews/2026-08-27-v1-closed.md`](docs/reviews/2026-08-27-v1-closed.md) | V1 CLOSED record |
 | [`docs/physics/`](docs/physics/) | Physics source of truth |
@@ -138,4 +139,5 @@ starts at data-driven environmental profiles, not at
 reconstructing a storm-scale 3D wind field from incomplete
 observations. Reconstruction is a separate producer /
 research problem; Explorer does not own it.
-See [`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](docs/architecture/44-long-term-source-and-reconstruction-boundary.md).
+See [`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](docs/architecture/44-long-term-source-and-reconstruction-boundary.md)
+and [`docs/architecture/48-provider-neutral-environmental-profile-contract.md`](docs/architecture/48-provider-neutral-environmental-profile-contract.md).

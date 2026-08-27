@@ -4,8 +4,10 @@ Material facts about current Supercell Explorer V1.
 These are limitations, not a promise that each item will be
 fixed next. POST-V1 ideas are not listed here; see
 [`docs/architecture/38-v1-scope-checkpoint.md`](architecture/38-v1-scope-checkpoint.md)
-§13 and
-[`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](architecture/44-long-term-source-and-reconstruction-boundary.md).
+§13,
+[`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](architecture/44-long-term-source-and-reconstruction-boundary.md),
+and
+[`docs/architecture/48-provider-neutral-environmental-profile-contract.md`](architecture/48-provider-neutral-environmental-profile-contract.md).
 
 ## A. Scientific / model
 

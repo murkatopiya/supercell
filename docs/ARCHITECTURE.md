@@ -26,6 +26,8 @@ Reconstruction of a storm-scale 3D wind field from incomplete
 observations is not a later visualization stage of this
 architecture. It is a separate producer / research problem.
 See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
+The provider-neutral environmental-wind profile contract is
+`docs/architecture/48-provider-neutral-environmental-profile-contract.md`.
 
 The fundamental architectural principle is:
 

@@ -169,14 +169,15 @@ shapes. This foundation accepts structural typing and does not add brands or
 Storm motion must not be stored as world-space `(x, y, z)`.
 
 The current type carries **value only**. That is honest for the
-prescribed V1 constant `C`. A future provider-neutral
-environmental-profile contract must distinguish at least value,
-source-or-method, validity, and provenance. A Bunkers-type
-(or other) derived `C` and an observed radar/cell-tracked `C`
-are not interchangeable because both can fill this vector
-shape. This document does not design that DTO, select Bunkers,
-or change the subtraction map. See
-`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
+prescribed V1 constant `C`. The provider-neutral
+environmental-profile contract
+(`docs/architecture/48-provider-neutral-environmental-profile-contract.md`)
+must distinguish at least value, source-or-method, validity, and
+provenance. A Bunkers-type (or other) derived `C` and an observed
+radar/cell-tracked `C` are not interchangeable because both can
+fill this vector shape. This document does not design that DTO,
+select Bunkers, or change the subtraction map. See `44` §8.2 and
+`48` §8.
 
 ---
 
@@ -432,7 +433,7 @@ It does not yet include:
 
 - `StormMotion` factory or runtime validation error type;
 - storm-motion source / method / validity / provenance metadata
-  (future environmental-profile contract; `44`);
+  (environmental-profile contract `48`; `44` §8.2);
 - profile-aware wrappers;
 - streamwise / crosswise decomposition
   (see `docs/physics/08-streamwise-crosswise-vorticity.md`);
