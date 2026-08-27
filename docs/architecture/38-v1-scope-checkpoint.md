@@ -20,7 +20,8 @@ M2 production closure and feature freeze are recorded via
 successor `39`. Remaining V1 path after 42-1 is `43` (M5 next;
 leftover UX slices are not pre-M5 MUST). Long-term source /
 reconstruction boundary is `44`; it does not change this freeze
-or the M5 path.
+or the M5 path. M5-AUTHOR playtest protocol is `45`; it does
+not change T1–T10 wording or §11.3 PASS.
 
 Predecessor Reset View / camera recovery architecture:
 
@@ -1348,6 +1349,8 @@ U3  Whether the "what it is not / known limits" surface is a
     README section, an in-product panel, or both
 U4  How many testers the Phase 4 playtest ultimately uses if
     only two are available
+    (`45` records a separate author-only dogfood path;
+     U4 remains about independent testers, not the author)
 U5  Whether the post-V1 curated-scenario SoT chooses a
     storm-motion rule or a per-scenario constant
 U6  Whether SRH ever becomes a displayed quantity
@@ -1402,6 +1405,8 @@ this file:     V1 scope checkpoint — promise, inventory,
 30:            model class — binding, not reopened
 24:            perceptual loop closed; comets provisional
 23 / 22:       perceptual airflow architecture and workbench
+45:            M5-AUTHOR playtest protocol — does not change
+               T1–T10 or §11.3 PASS
 21:            whole-product capability map
 20 / 17:       Guided runtime and catalog — catalog preserved
 19 / 18 / 16:  inspector, seeding, shell

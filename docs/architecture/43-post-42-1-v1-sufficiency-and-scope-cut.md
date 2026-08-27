@@ -48,6 +48,7 @@ docs/architecture/19-shared-tracer-inspector.md
 docs/architecture/20-guided-runtime-architecture.md
 docs/architecture/32-diagnostic-observation-ui-architecture.md
 docs/CONCEPT.md
+docs/architecture/45-m5-human-acceptance-playtest-protocol.md
 ```
 
 Accepted live head this checkpoint is written against:
@@ -639,6 +640,13 @@ V1 CLOSED is not:
 `38` “V1.0 READY” maps to **V1 CLOSED** in this sense.
 A later production shell is post-V1 work.
 
+Human-validation limitation (`45`): V1 CLOSED as a
+validation prototype may be recorded after M5-AUTHOR
+dogfood, freeze-legal fixes, and M4, **with an explicit
+statement that independent 2/3 target-user evidence is
+not available**. That closure must **not** claim `38`
+§11.3 PASS.
+
 ---
 
 ## 17. Explicit non-goals
@@ -684,6 +692,8 @@ M1 is not waived; Slice E is not the only honest form of M1.
 43  this file: sufficiency, scope-cut, remaining path
 44  long-term source / reconstruction boundary;
     does not affect this file’s V1 / M5 path
+45  M5-AUTHOR playtest protocol; does not weaken T1–T10;
+    independent 2/3 sample remains unavailable
 ```
 
 ---
@@ -700,7 +710,8 @@ M1                    honesty contract live in Guided;
                       40-E not pre-M5
 42-2 / 41-4           not pre-M5 MUST
 ENVIRONMENT UX        known limitation; T2 not blocked
-M5                    NEXT
+M5                    NEXT — run via `45` (M5-AUTHOR);
+                      M5-INDEPENDENT not available
 M4                    after M5
 V1 CLOSED             prototype close, not production-ready
 FREEZE                ACTIVE
