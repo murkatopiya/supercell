@@ -578,11 +578,21 @@ native IGRA identity and source-column usability (165/165
 wind+GPH; operational/coarse vs 1-s ESC). Those inspects do
 **not** close this item, import data, implement an adapter, or
 validate any transform.
+Flight-phase / high-frequency audit
+`2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md`
+shows the three ESC columns are native ascent-only (no post-max
+records) and share a repeatable ~17–19 s local maximum in
+background-removed U/V. That record does **not** close this item,
+choose an operator, or authorize Analysis. It reframes the open
+question from an arbitrary smoothing length toward which
+source/instrument scales are non-atmospheric or unreliable.
 Authoritative refs: `55` (gate); `53`; `54` (candidate construction);
 `48` §12; research Goshen file; research
 `2026-08-28-additional-sounding-case-selection.md` (named inputs);
 research `2026-08-28-vortex2-source-qualification.md` (#1/#3 inspect);
 research `2026-08-28-moore-oun-igra-source-qualification.md` (#2 inspect);
+research `2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md`
+(flight phase + HF wind; not a method lock);
 BL-036 (tooling evidence); BL-045 (named candidates, not imported).
 
 ---

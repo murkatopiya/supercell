@@ -1,0 +1,5560 @@
+{
+  "generatedAt": "2026-08-28",
+  "purpose": "Research-only qualification of ESC flight phase and high-frequency U/V structure. Not an Analysis operator. Not a production filter.",
+  "dropPolicy": "I1 isUsableWindRecord: drop missing U or V (9999), Qu/Qv MISSING(9) or BAD(3), missing Alt (99999). Native order preserved. Heights must be strictly increasing after drop.",
+  "pendulumLengthTable": [
+    {
+      "lengthM": 20,
+      "simplePendulumPeriodS": 8.97,
+      "note": "plausible radiosonde train length, not a VORTEX2 measured length"
+    },
+    {
+      "lengthM": 30,
+      "simplePendulumPeriodS": 10.99,
+      "note": "Dirksen et al. 2014 mention ~30 m RS92 unwinder in a ventilation estimate"
+    },
+    {
+      "lengthM": 40,
+      "simplePendulumPeriodS": 12.69,
+      "note": "plausible radiosonde train length, not a VORTEX2 measured length"
+    },
+    {
+      "lengthM": 55,
+      "simplePendulumPeriodS": 14.88,
+      "note": "RS41 Vaisala unwinder; DO NOT transfer to RS92 without qualification"
+    }
+  ],
+  "mooreControl": {
+    "present": true,
+    "note": "IGRA operational/coarse control. No ESC 1-s TIME. Do not apply RS92/Aspen assumptions. Absence of hodograph hair is not evidence of absence of pendulation; high-frequency content is unresolved.",
+    "nLevels": 165,
+    "dHeight": {
+      "n": 164,
+      "min": 5,
+      "p10": 44.9,
+      "median": 174,
+      "p90": 336.1,
+      "max": 362
+    },
+    "consecutiveDU": {
+      "n": 164,
+      "min": 0,
+      "p10": 0.1144,
+      "median": 0.8323,
+      "p90": 3.3368,
+      "max": 9.5625
+    },
+    "consecutiveDV": {
+      "n": 164,
+      "min": 0,
+      "p10": 0.0998,
+      "median": 0.8359,
+      "p90": 2.8105,
+      "max": 5.5656
+    },
+    "consecutiveSpeedJump": {
+      "n": 164,
+      "min": 0,
+      "p10": 0.3,
+      "median": 1.7321,
+      "p90": 4.1444,
+      "max": 11.0642
+    },
+    "nyquist": "no uniform 1-s series; periods near 10 s are not observable"
+  },
+  "soundings": [
+    {
+      "id": "goshen",
+      "label": "Goshen NSSL1 2009-06-05 21:55:22",
+      "identity": {
+        "siteId": "Bushnell/NSSL1",
+        "utcReleaseTime": "2009, 06, 05, 21:55:22",
+        "dataType": "NCAR GAUS/Ascending",
+        "sonde": "083724333/Vaisala RS92-SGP (ccGPS)",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+        "comments": "M Parker/tornado formed approx 30 min after launch, Good Sounding",
+        "launchElevation": 1557.9
+      },
+      "flightPhaseClass": "CLEAN ASCENT",
+      "flightPhase": {
+        "firstNative": {
+          "nativeIndex": 0,
+          "time": -1,
+          "alt": 1558.8,
+          "u": 9999,
+          "v": 9999
+        },
+        "lastNative": {
+          "nativeIndex": 2081,
+          "time": 2080,
+          "alt": 13819.7,
+          "u": 26.8,
+          "v": 5.7
+        },
+        "maximumAltitude": {
+          "nativeIndex": 2081,
+          "time": 2080,
+          "alt": 13819.7,
+          "press": 151.3,
+          "u": 26.8,
+          "v": 5.7,
+          "usable": true,
+          "isLastNativeRecord": true
+        },
+        "nativeRecordCount": 2082,
+        "postMaxNativeCount": 0,
+        "postMaxValidAltCount": 0,
+        "postMaxUsableI1Count": 0,
+        "postMaxUsableWouldBreakStrictlyIncreasing": 0,
+        "postMaxUsableBreakExamples": [],
+        "persistentlyDecreasingAfterMax": false,
+        "dAltPre": {
+          "n": 2063,
+          "min": 1.5,
+          "p10": 4.7,
+          "median": 5.7,
+          "p90": 7.4,
+          "max": 23.9
+        },
+        "dAltPost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "dTPre": {
+          "n": 2063,
+          "min": 1,
+          "p10": 1,
+          "median": 1,
+          "p90": 1,
+          "max": 3
+        },
+        "dTPost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "ascentRatePre": {
+          "n": 2063,
+          "min": 1.5,
+          "p10": 4.7,
+          "median": 5.7,
+          "p90": 7.4,
+          "max": 9.9
+        },
+        "ascentRatePost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "postAltStepSign": {
+          "negative": 0,
+          "zero": 0,
+          "positive": 0
+        },
+        "lastValidAlt": 13819.7,
+        "lastValidTime": 2080
+      },
+      "nativeVsRetainedVsGolden": {
+        "nativeRecords": 2082,
+        "i1Dropped": 53,
+        "i1Kept": 2029,
+        "productionGolden": {
+          "goldenCount": 2029,
+          "keptCount": 2029,
+          "firstGolden": {
+            "height": 2.4,
+            "eastward": -1.2,
+            "northward": 0.2
+          },
+          "lastGolden": {
+            "height": 12261.8,
+            "eastward": 26.8,
+            "northward": 5.7
+          },
+          "firstKept": {
+            "height": 2.4,
+            "u": -1.2,
+            "v": 0.2,
+            "time": 0
+          },
+          "lastKept": {
+            "height": 12261.8,
+            "u": 26.8,
+            "v": 5.7,
+            "time": 2080
+          },
+          "exactMatch": true,
+          "mismatches": [],
+          "expectedKept": 2029,
+          "expectedKeptMatch": true
+        },
+        "postMaxNative": 0,
+        "postMaxI1Usable": 0,
+        "postMaxI1UsableWouldEnterProduction": false
+      },
+      "sampling": {
+        "nKept": 2029,
+        "time": {
+          "first": 0,
+          "last": 2080,
+          "delta": {
+            "n": 2028,
+            "min": 1,
+            "p10": 1,
+            "median": 1,
+            "p90": 1,
+            "max": 4
+          },
+          "uniqueRounded": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "exact1sShare": 0.9783037475345168,
+          "exact1sCount": 1984
+        },
+        "dAlt": {
+          "n": 2028,
+          "min": 3.3,
+          "p10": 4.7,
+          "median": 5.7,
+          "p90": 7.5,
+          "max": 31.9
+        },
+        "dHeight": {
+          "n": 2028,
+          "min": 3.3,
+          "p10": 4.7,
+          "median": 5.7,
+          "p90": 7.5,
+          "max": 31.9
+        },
+        "ascentRate": {
+          "n": 2028,
+          "min": 3.3,
+          "p10": 4.7,
+          "median": 5.7,
+          "p90": 7.3,
+          "max": 9.9
+        },
+        "reportedWcmp": {
+          "n": 2029,
+          "min": 3.6,
+          "p10": 4.7,
+          "median": 5.7,
+          "p90": 7.3,
+          "max": 9.6
+        },
+        "discontinuitiesDtGt2OrDzGt20": {
+          "n": 6,
+          "examples": [
+            {
+              "fromTime": 1699,
+              "toTime": 1702,
+              "dt": 3,
+              "fromHeight": 9595.5,
+              "toHeight": 9613.1,
+              "dHeight": 17.6
+            },
+            {
+              "fromTime": 1846,
+              "toTime": 1849,
+              "dt": 3,
+              "fromHeight": 10532.4,
+              "toHeight": 10552.4,
+              "dHeight": 20
+            },
+            {
+              "fromTime": 1866,
+              "toTime": 1870,
+              "dt": 4,
+              "fromHeight": 10681.6,
+              "toHeight": 10713.5,
+              "dHeight": 31.9
+            },
+            {
+              "fromTime": 2026,
+              "toTime": 2029,
+              "dt": 3,
+              "fromHeight": 11906.1,
+              "toHeight": 11929.5,
+              "dHeight": 23.4
+            },
+            {
+              "fromTime": 2034,
+              "toTime": 2038,
+              "dt": 4,
+              "fromHeight": 11960.6,
+              "toHeight": 11981.7,
+              "dHeight": 21.1
+            },
+            {
+              "fromTime": 2058,
+              "toTime": 2061,
+              "dt": 3,
+              "fromHeight": 12116.4,
+              "toHeight": 12138.6,
+              "dHeight": 22.2
+            }
+          ]
+        }
+      },
+      "spectral": {
+        "method": {
+          "retainedDtCheck": "exact 1 s share of consecutive I1-retained TIME steps",
+          "fft": "Hann-windowed periodogram of research-only series; dt = 1 s",
+          "interpolation": "linear interpolation of U/V onto integer-second grid spanning first..last kept TIME, solely for spectral diagnostics; never written back",
+          "firstDifferences": "only consecutive retained pairs with Δt exactly 1 s; no interpolation",
+          "backgrounds": [
+            "first differences ΔU/ΔV",
+            "linear detrend of interpolated U/V",
+            "residual after centered 31-s moving average (~30 s)",
+            "residual after centered 61-s moving average (~60 s)"
+          ],
+          "welch": "256 s windows, 50% overlap, 30 s MA residual",
+          "windowedPersistence": "256 s windows, 50% overlap, 6–20 s band peak tracking"
+        },
+        "interpolation": {
+          "nGrid": 2081,
+          "observedShare": 0.975,
+          "filledShare": 0.025,
+          "t0": 0,
+          "t1": 2080
+        },
+        "firstDifferenceStats": {
+          "nExact1sPairs": 1984,
+          "dU": {
+            "n": 1984,
+            "min": -1,
+            "p10": -0.1,
+            "median": 0,
+            "p90": 0.1,
+            "max": 0.4
+          },
+          "dV": {
+            "n": 1984,
+            "min": -0.4,
+            "p10": -0.1,
+            "median": 0,
+            "p90": 0.1,
+            "max": 3.9
+          },
+          "residualSpeed": {
+            "n": 1984,
+            "min": 0,
+            "p10": 0,
+            "median": 0.1,
+            "p90": 0.2236,
+            "max": 3.9051
+          }
+        },
+        "residual30sStats": {
+          "u": {
+            "n": 2081,
+            "min": -4.4687,
+            "p10": -0.4387,
+            "median": -0.0097,
+            "p90": 0.4581,
+            "max": 2.0774
+          },
+          "v": {
+            "n": 2081,
+            "min": -6.3375,
+            "p10": -0.4226,
+            "median": -0.0065,
+            "p90": 0.3677,
+            "max": 2.4813
+          },
+          "mag": {
+            "n": 2081,
+            "min": 0.0032,
+            "p10": 0.0949,
+            "median": 0.3195,
+            "p90": 0.8757,
+            "max": 6.5714
+          }
+        },
+        "peaks": {
+          "firstDiffU": {
+            "label": "dU",
+            "band4to40s": [
+              {
+                "period": 38.902,
+                "freq": 0.02571,
+                "power": 0.208911,
+                "prominence": 131.43
+              },
+              {
+                "period": 28.754,
+                "freq": 0.03478,
+                "power": 0.190678,
+                "prominence": 119.96
+              },
+              {
+                "period": 22.044,
+                "freq": 0.04536,
+                "power": 0.187911,
+                "prominence": 118.22
+              },
+              {
+                "period": 34.807,
+                "freq": 0.02873,
+                "power": 0.171841,
+                "prominence": 108.11
+              },
+              {
+                "period": 32,
+                "freq": 0.03125,
+                "power": 0.151132,
+                "prominence": 95.08
+              },
+              {
+                "period": 27.178,
+                "freq": 0.03679,
+                "power": 0.133149,
+                "prominence": 83.77
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.542,
+                "freq": 0.05393,
+                "power": 0.077358,
+                "prominence": 50.61
+              },
+              {
+                "period": 17.558,
+                "freq": 0.05696,
+                "power": 0.05195,
+                "prominence": 33.99
+              },
+              {
+                "period": 19.262,
+                "freq": 0.05192,
+                "power": 0.041582,
+                "prominence": 27.2
+              },
+              {
+                "period": 16.13,
+                "freq": 0.062,
+                "power": 0.028213,
+                "prominence": 18.46
+              },
+              {
+                "period": 15.872,
+                "freq": 0.063,
+                "power": 0.023952,
+                "prominence": 15.67
+              },
+              {
+                "period": 11.952,
+                "freq": 0.08367,
+                "power": 0.023892,
+                "prominence": 15.63
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 48.39,
+                "freq": 0.02067,
+                "power": 0.40356,
+                "prominence": 5.08
+              },
+              {
+                "period": 50.872,
+                "freq": 0.01966,
+                "power": 0.334918,
+                "prominence": 4.21
+              },
+              {
+                "period": 42.213,
+                "freq": 0.02369,
+                "power": 0.316249,
+                "prominence": 3.98
+              },
+              {
+                "period": 60.121,
+                "freq": 0.01663,
+                "power": 0.194705,
+                "prominence": 2.45
+              }
+            ]
+          },
+          "firstDiffV": {
+            "label": "dV",
+            "band4to40s": [
+              {
+                "period": 27.944,
+                "freq": 0.03579,
+                "power": 0.308835,
+                "prominence": 187
+              },
+              {
+                "period": 33.627,
+                "freq": 0.02974,
+                "power": 0.286397,
+                "prominence": 173.42
+              },
+              {
+                "period": 25.436,
+                "freq": 0.03931,
+                "power": 0.272221,
+                "prominence": 164.83
+              },
+              {
+                "period": 22.044,
+                "freq": 0.04536,
+                "power": 0.138953,
+                "prominence": 84.14
+              },
+              {
+                "period": 19.451,
+                "freq": 0.05141,
+                "power": 0.10855,
+                "prominence": 65.73
+              },
+              {
+                "period": 35.429,
+                "freq": 0.02823,
+                "power": 0.087344,
+                "prominence": 52.89
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 19.451,
+                "freq": 0.05141,
+                "power": 0.10855,
+                "prominence": 71.88
+              },
+              {
+                "period": 16.262,
+                "freq": 0.06149,
+                "power": 0.042563,
+                "prominence": 28.18
+              },
+              {
+                "period": 12.4,
+                "freq": 0.08065,
+                "power": 0.033375,
+                "prominence": 22.1
+              },
+              {
+                "period": 15.145,
+                "freq": 0.06603,
+                "power": 0.027163,
+                "prominence": 17.99
+              },
+              {
+                "period": 10.842,
+                "freq": 0.09224,
+                "power": 0.020185,
+                "prominence": 13.37
+              },
+              {
+                "period": 13.405,
+                "freq": 0.0746,
+                "power": 0.019683,
+                "prominence": 13.03
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 42.213,
+                "freq": 0.02369,
+                "power": 0.281011,
+                "prominence": 3.73
+              },
+              {
+                "period": 50.872,
+                "freq": 0.01966,
+                "power": 0.216436,
+                "prominence": 2.87
+              },
+              {
+                "period": 58.353,
+                "freq": 0.01714,
+                "power": 0.208515,
+                "prominence": 2.77
+              },
+              {
+                "period": 70.857,
+                "freq": 0.01411,
+                "power": 0.081416,
+                "prominence": 1.08
+              }
+            ]
+          },
+          "detrendU": {
+            "label": "U-detrend",
+            "band4to40s": [
+              {
+                "period": 38.537,
+                "freq": 0.02595,
+                "power": 9.049162,
+                "prominence": 5166.09
+              },
+              {
+                "period": 32.516,
+                "freq": 0.03075,
+                "power": 3.856758,
+                "prominence": 2201.79
+              },
+              {
+                "period": 28.903,
+                "freq": 0.0346,
+                "power": 3.744592,
+                "prominence": 2137.75
+              },
+              {
+                "period": 34.683,
+                "freq": 0.02883,
+                "power": 3.002833,
+                "prominence": 1714.29
+              },
+              {
+                "period": 36.509,
+                "freq": 0.02739,
+                "power": 2.97444,
+                "prominence": 1698.08
+              },
+              {
+                "period": 27.026,
+                "freq": 0.037,
+                "power": 1.964693,
+                "prominence": 1121.63
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.58,
+                "freq": 0.05382,
+                "power": 0.47698,
+                "prominence": 134.4
+              },
+              {
+                "period": 17.487,
+                "freq": 0.05718,
+                "power": 0.401776,
+                "prominence": 113.21
+              },
+              {
+                "period": 19.092,
+                "freq": 0.05238,
+                "power": 0.327682,
+                "prominence": 92.33
+              },
+              {
+                "period": 18.254,
+                "freq": 0.05478,
+                "power": 0.131172,
+                "prominence": 36.96
+              },
+              {
+                "period": 16.386,
+                "freq": 0.06103,
+                "power": 0.118675,
+                "prominence": 33.44
+              },
+              {
+                "period": 13.088,
+                "freq": 0.07641,
+                "power": 0.111346,
+                "prominence": 31.37
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 90.478,
+                "freq": 0.01105,
+                "power": 29.845356,
+                "prominence": 4.6
+              },
+              {
+                "period": 49.548,
+                "freq": 0.02018,
+                "power": 24.735061,
+                "prominence": 3.81
+              },
+              {
+                "period": 67.129,
+                "freq": 0.0149,
+                "power": 19.92698,
+                "prominence": 3.07
+              },
+              {
+                "period": 59.457,
+                "freq": 0.01682,
+                "power": 19.905136,
+                "prominence": 3.07
+              }
+            ]
+          },
+          "detrendV": {
+            "label": "V-detrend",
+            "band4to40s": [
+              {
+                "period": 33.565,
+                "freq": 0.02979,
+                "power": 7.274452,
+                "prominence": 3712.82
+              },
+              {
+                "period": 28.122,
+                "freq": 0.03556,
+                "power": 4.789534,
+                "prominence": 2444.54
+              },
+              {
+                "period": 25.378,
+                "freq": 0.0394,
+                "power": 4.012403,
+                "prominence": 2047.9
+              },
+              {
+                "period": 35.271,
+                "freq": 0.02835,
+                "power": 3.708898,
+                "prominence": 1892.99
+              },
+              {
+                "period": 38.537,
+                "freq": 0.02595,
+                "power": 3.024804,
+                "prominence": 1543.84
+              },
+              {
+                "period": 24.482,
+                "freq": 0.04085,
+                "power": 2.257111,
+                "prominence": 1152.01
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 19.449,
+                "freq": 0.05142,
+                "power": 0.81385,
+                "prominence": 250.53
+              },
+              {
+                "period": 16.132,
+                "freq": 0.06199,
+                "power": 0.253544,
+                "prominence": 78.05
+              },
+              {
+                "period": 17.94,
+                "freq": 0.05574,
+                "power": 0.228771,
+                "prominence": 70.42
+              },
+              {
+                "period": 15.19,
+                "freq": 0.06583,
+                "power": 0.105439,
+                "prominence": 32.46
+              },
+              {
+                "period": 12.314,
+                "freq": 0.08121,
+                "power": 0.104942,
+                "prominence": 32.31
+              },
+              {
+                "period": 18.58,
+                "freq": 0.05382,
+                "power": 0.090645,
+                "prominence": 27.9
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 59.457,
+                "freq": 0.01682,
+                "power": 29.758877,
+                "prominence": 5.32
+              },
+              {
+                "period": 63.061,
+                "freq": 0.01586,
+                "power": 14.966578,
+                "prominence": 2.67
+              },
+              {
+                "period": 42.469,
+                "freq": 0.02355,
+                "power": 12.283454,
+                "prominence": 2.19
+              },
+              {
+                "period": 109.526,
+                "freq": 0.00913,
+                "power": 11.613381,
+                "prominence": 2.07
+              }
+            ]
+          },
+          "residual30sU": {
+            "label": "U-res30",
+            "band4to40s": [
+              {
+                "period": 38.537,
+                "freq": 0.02595,
+                "power": 5.448692,
+                "prominence": 3088.74
+              },
+              {
+                "period": 28.903,
+                "freq": 0.0346,
+                "power": 4.261416,
+                "prominence": 2415.7
+              },
+              {
+                "period": 32.516,
+                "freq": 0.03075,
+                "power": 3.472826,
+                "prominence": 1968.66
+              },
+              {
+                "period": 21.677,
+                "freq": 0.04613,
+                "power": 2.655232,
+                "prominence": 1505.19
+              },
+              {
+                "period": 31.53,
+                "freq": 0.03172,
+                "power": 2.517832,
+                "prominence": 1427.3
+              },
+              {
+                "period": 27.026,
+                "freq": 0.037,
+                "power": 2.463841,
+                "prominence": 1396.69
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.58,
+                "freq": 0.05382,
+                "power": 0.651234,
+                "prominence": 194.25
+              },
+              {
+                "period": 17.487,
+                "freq": 0.05718,
+                "power": 0.504635,
+                "prominence": 150.52
+              },
+              {
+                "period": 19.092,
+                "freq": 0.05238,
+                "power": 0.455636,
+                "prominence": 135.91
+              },
+              {
+                "period": 18.254,
+                "freq": 0.05478,
+                "power": 0.175772,
+                "prominence": 52.43
+              },
+              {
+                "period": 16.386,
+                "freq": 0.06103,
+                "power": 0.132532,
+                "prominence": 39.53
+              },
+              {
+                "period": 15.765,
+                "freq": 0.06343,
+                "power": 0.107617,
+                "prominence": 32.1
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 42.469,
+                "freq": 0.02355,
+                "power": 8.580936,
+                "prominence": 11.82
+              },
+              {
+                "period": 49.548,
+                "freq": 0.02018,
+                "power": 6.903158,
+                "prominence": 9.51
+              },
+              {
+                "period": 40.804,
+                "freq": 0.02451,
+                "power": 5.959185,
+                "prominence": 8.21
+              },
+              {
+                "period": 59.457,
+                "freq": 0.01682,
+                "power": 3.13604,
+                "prominence": 4.32
+              }
+            ]
+          },
+          "residual30sV": {
+            "label": "V-res30",
+            "band4to40s": [
+              {
+                "period": 33.565,
+                "freq": 0.02979,
+                "power": 6.148829,
+                "prominence": 3062.04
+              },
+              {
+                "period": 28.122,
+                "freq": 0.03556,
+                "power": 5.705877,
+                "prominence": 2841.45
+              },
+              {
+                "period": 25.378,
+                "freq": 0.0394,
+                "power": 5.459342,
+                "prominence": 2718.68
+              },
+              {
+                "period": 24.482,
+                "freq": 0.04085,
+                "power": 3.16566,
+                "prominence": 1576.46
+              },
+              {
+                "period": 35.271,
+                "freq": 0.02835,
+                "power": 2.736141,
+                "prominence": 1362.56
+              },
+              {
+                "period": 21.905,
+                "freq": 0.04565,
+                "power": 2.064275,
+                "prominence": 1027.98
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 19.449,
+                "freq": 0.05142,
+                "power": 1.156618,
+                "prominence": 353.49
+              },
+              {
+                "period": 17.94,
+                "freq": 0.05574,
+                "power": 0.296654,
+                "prominence": 90.66
+              },
+              {
+                "period": 16.132,
+                "freq": 0.06199,
+                "power": 0.273211,
+                "prominence": 83.5
+              },
+              {
+                "period": 18.58,
+                "freq": 0.05382,
+                "power": 0.122484,
+                "prominence": 37.43
+              },
+              {
+                "period": 15.19,
+                "freq": 0.06583,
+                "power": 0.100875,
+                "prominence": 30.83
+              },
+              {
+                "period": 16.919,
+                "freq": 0.05911,
+                "power": 0.096142,
+                "prominence": 29.38
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 42.469,
+                "freq": 0.02355,
+                "power": 5.537345,
+                "prominence": 6.87
+              },
+              {
+                "period": 59.457,
+                "freq": 0.01682,
+                "power": 4.611499,
+                "prominence": 5.72
+              },
+              {
+                "period": 49.548,
+                "freq": 0.02018,
+                "power": 2.684845,
+                "prominence": 3.33
+              },
+              {
+                "period": 46.244,
+                "freq": 0.02162,
+                "power": 2.372398,
+                "prominence": 2.94
+              }
+            ]
+          },
+          "residual60sU": {
+            "label": "U-res60",
+            "band4to40s": [
+              {
+                "period": 38.537,
+                "freq": 0.02595,
+                "power": 12.880932,
+                "prominence": 7241.96
+              },
+              {
+                "period": 32.516,
+                "freq": 0.03075,
+                "power": 4.389397,
+                "prominence": 2467.82
+              },
+              {
+                "period": 36.509,
+                "freq": 0.02739,
+                "power": 4.013222,
+                "prominence": 2256.33
+              },
+              {
+                "period": 34.683,
+                "freq": 0.02883,
+                "power": 3.805747,
+                "prominence": 2139.68
+              },
+              {
+                "period": 28.903,
+                "freq": 0.0346,
+                "power": 3.372827,
+                "prominence": 1896.28
+              },
+              {
+                "period": 30.159,
+                "freq": 0.03316,
+                "power": 1.633069,
+                "prominence": 918.15
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.58,
+                "freq": 0.05382,
+                "power": 0.549543,
+                "prominence": 167.16
+              },
+              {
+                "period": 17.487,
+                "freq": 0.05718,
+                "power": 0.478683,
+                "prominence": 145.61
+              },
+              {
+                "period": 19.092,
+                "freq": 0.05238,
+                "power": 0.369566,
+                "prominence": 112.42
+              },
+              {
+                "period": 18.254,
+                "freq": 0.05478,
+                "power": 0.153711,
+                "prominence": 46.76
+              },
+              {
+                "period": 16.386,
+                "freq": 0.06103,
+                "power": 0.134832,
+                "prominence": 41.01
+              },
+              {
+                "period": 15.765,
+                "freq": 0.06343,
+                "power": 0.111013,
+                "prominence": 33.77
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 49.548,
+                "freq": 0.02018,
+                "power": 33.885387,
+                "prominence": 5.96
+              },
+              {
+                "period": 42.469,
+                "freq": 0.02355,
+                "power": 28.227783,
+                "prominence": 4.96
+              },
+              {
+                "period": 59.457,
+                "freq": 0.01682,
+                "power": 21.268226,
+                "prominence": 3.74
+              },
+              {
+                "period": 40.804,
+                "freq": 0.02451,
+                "power": 17.24321,
+                "prominence": 3.03
+              }
+            ]
+          },
+          "residual60sV": {
+            "label": "V-res60",
+            "band4to40s": [
+              {
+                "period": 33.565,
+                "freq": 0.02979,
+                "power": 8.707921,
+                "prominence": 4427.61
+              },
+              {
+                "period": 35.271,
+                "freq": 0.02835,
+                "power": 4.844519,
+                "prominence": 2463.23
+              },
+              {
+                "period": 38.537,
+                "freq": 0.02595,
+                "power": 4.323551,
+                "prominence": 2198.34
+              },
+              {
+                "period": 28.122,
+                "freq": 0.03556,
+                "power": 4.103985,
+                "prominence": 2086.7
+              },
+              {
+                "period": 25.378,
+                "freq": 0.0394,
+                "power": 3.064268,
+                "prominence": 1558.05
+              },
+              {
+                "period": 24.482,
+                "freq": 0.04085,
+                "power": 1.712553,
+                "prominence": 870.76
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 19.449,
+                "freq": 0.05142,
+                "power": 0.882828,
+                "prominence": 270.82
+              },
+              {
+                "period": 16.132,
+                "freq": 0.06199,
+                "power": 0.280341,
+                "prominence": 86
+              },
+              {
+                "period": 17.94,
+                "freq": 0.05574,
+                "power": 0.271844,
+                "prominence": 83.39
+              },
+              {
+                "period": 18.58,
+                "freq": 0.05382,
+                "power": 0.105294,
+                "prominence": 32.3
+              },
+              {
+                "period": 15.19,
+                "freq": 0.06583,
+                "power": 0.104219,
+                "prominence": 31.97
+              },
+              {
+                "period": 12.314,
+                "freq": 0.08121,
+                "power": 0.103154,
+                "prominence": 31.64
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 59.457,
+                "freq": 0.01682,
+                "power": 31.559103,
+                "prominence": 7.16
+              },
+              {
+                "period": 42.469,
+                "freq": 0.02355,
+                "power": 18.177248,
+                "prominence": 4.13
+              },
+              {
+                "period": 63.061,
+                "freq": 0.01586,
+                "power": 14.085292,
+                "prominence": 3.2
+              },
+              {
+                "period": 49.548,
+                "freq": 0.02018,
+                "power": 13.223557,
+                "prominence": 3
+              }
+            ]
+          },
+          "residual30sMag": {
+            "label": "|res30|",
+            "band4to40s": [
+              {
+                "period": 16.782,
+                "freq": 0.05959,
+                "power": 1.814549,
+                "prominence": 337.72
+              },
+              {
+                "period": 17.636,
+                "freq": 0.0567,
+                "power": 1.285467,
+                "prominence": 239.25
+              },
+              {
+                "period": 15.301,
+                "freq": 0.06535,
+                "power": 1.257847,
+                "prominence": 234.11
+              },
+              {
+                "period": 19.449,
+                "freq": 0.05142,
+                "power": 0.806645,
+                "prominence": 150.13
+              },
+              {
+                "period": 38.537,
+                "freq": 0.02595,
+                "power": 0.795877,
+                "prominence": 148.13
+              },
+              {
+                "period": 18.096,
+                "freq": 0.05526,
+                "power": 0.790004,
+                "prominence": 147.03
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 16.782,
+                "freq": 0.05959,
+                "power": 1.814549,
+                "prominence": 114.54
+              },
+              {
+                "period": 17.636,
+                "freq": 0.0567,
+                "power": 1.285467,
+                "prominence": 81.14
+              },
+              {
+                "period": 15.301,
+                "freq": 0.06535,
+                "power": 1.257847,
+                "prominence": 79.4
+              },
+              {
+                "period": 19.449,
+                "freq": 0.05142,
+                "power": 0.806645,
+                "prominence": 50.92
+              },
+              {
+                "period": 18.096,
+                "freq": 0.05526,
+                "power": 0.790004,
+                "prominence": 49.87
+              },
+              {
+                "period": 15.647,
+                "freq": 0.06391,
+                "power": 0.778956,
+                "prominence": 49.17
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 77.074,
+                "freq": 0.01297,
+                "power": 3.129296,
+                "prominence": 16.47
+              },
+              {
+                "period": 46.244,
+                "freq": 0.02162,
+                "power": 1.123417,
+                "prominence": 5.91
+              },
+              {
+                "period": 99.095,
+                "freq": 0.01009,
+                "power": 0.745518,
+                "prominence": 3.92
+              },
+              {
+                "period": 65.031,
+                "freq": 0.01538,
+                "power": 0.689242,
+                "prominence": 3.63
+              }
+            ]
+          },
+          "welchU": {
+            "label": "welch-U-res30",
+            "band4to40s": [
+              {
+                "period": 25.6,
+                "freq": 0.03906,
+                "power": 2.65322,
+                "prominence": 1547.31
+              },
+              {
+                "period": 14.222,
+                "freq": 0.07031,
+                "power": 0.047858,
+                "prominence": 27.91
+              },
+              {
+                "period": 12.8,
+                "freq": 0.07813,
+                "power": 0.047419,
+                "prominence": 27.65
+              },
+              {
+                "period": 11.13,
+                "freq": 0.08984,
+                "power": 0.02848,
+                "prominence": 16.61
+              },
+              {
+                "period": 9.481,
+                "freq": 0.10547,
+                "power": 0.009583,
+                "prominence": 5.59
+              },
+              {
+                "period": 8.533,
+                "freq": 0.11719,
+                "power": 0.006847,
+                "prominence": 3.99
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 14.222,
+                "freq": 0.07031,
+                "power": 0.047858,
+                "prominence": 6
+              },
+              {
+                "period": 12.8,
+                "freq": 0.07813,
+                "power": 0.047419,
+                "prominence": 5.95
+              },
+              {
+                "period": 11.13,
+                "freq": 0.08984,
+                "power": 0.02848,
+                "prominence": 3.57
+              },
+              {
+                "period": 9.481,
+                "freq": 0.10547,
+                "power": 0.009583,
+                "prominence": 1.2
+              },
+              {
+                "period": 8.533,
+                "freq": 0.11719,
+                "power": 0.006847,
+                "prominence": 0.86
+              },
+              {
+                "period": 6.564,
+                "freq": 0.15234,
+                "power": 0.001635,
+                "prominence": 0.21
+              }
+            ],
+            "band40to120s": []
+          },
+          "welchV": {
+            "label": "welch-V-res30",
+            "band4to40s": [
+              {
+                "period": 25.6,
+                "freq": 0.03906,
+                "power": 2.916571,
+                "prominence": 1572.71
+              },
+              {
+                "period": 12.19,
+                "freq": 0.08203,
+                "power": 0.06581,
+                "prominence": 35.49
+              },
+              {
+                "period": 8.828,
+                "freq": 0.11328,
+                "power": 0.004943,
+                "prominence": 2.67
+              },
+              {
+                "period": 8,
+                "freq": 0.125,
+                "power": 0.003079,
+                "prominence": 1.66
+              },
+              {
+                "period": 4.197,
+                "freq": 0.23828,
+                "power": 0.001992,
+                "prominence": 1.07
+              },
+              {
+                "period": 5.953,
+                "freq": 0.16797,
+                "power": 0.001858,
+                "prominence": 1
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 12.19,
+                "freq": 0.08203,
+                "power": 0.06581,
+                "prominence": 12.1
+              },
+              {
+                "period": 8.828,
+                "freq": 0.11328,
+                "power": 0.004943,
+                "prominence": 0.91
+              },
+              {
+                "period": 8,
+                "freq": 0.125,
+                "power": 0.003079,
+                "prominence": 0.57
+              },
+              {
+                "period": 7.111,
+                "freq": 0.14063,
+                "power": 0.001595,
+                "prominence": 0.29
+              }
+            ],
+            "band40to120s": []
+          }
+        },
+        "welchWindows": {
+          "u": 15,
+          "v": 15,
+          "windowLen": 256
+        },
+        "autocorrFirstPositivePeak": {
+          "uRes30": {
+            "lag": 28,
+            "r": 0.0721
+          },
+          "vRes30": {
+            "lag": 28,
+            "r": 0.0151
+          },
+          "dU": {
+            "lag": 20,
+            "r": 0.1072
+          }
+        },
+        "persistence6to20s": {
+          "uRes30": {
+            "nWindows": 15,
+            "windowLenS": 256,
+            "medianTopPeriodS": 16,
+            "fractionWithin20pctOfMedian": 0.8,
+            "windows": [
+              {
+                "startTimeOffsetS": 0,
+                "topPeriodS": 16,
+                "topProminence": 11.35
+              },
+              {
+                "startTimeOffsetS": 128,
+                "topPeriodS": 15.059,
+                "topProminence": 29.07
+              },
+              {
+                "startTimeOffsetS": 256,
+                "topPeriodS": 16,
+                "topProminence": 31.03
+              },
+              {
+                "startTimeOffsetS": 384,
+                "topPeriodS": 14.222,
+                "topProminence": 47.64
+              },
+              {
+                "startTimeOffsetS": 512,
+                "topPeriodS": 16,
+                "topProminence": 11.14
+              },
+              {
+                "startTimeOffsetS": 640,
+                "topPeriodS": 17.067,
+                "topProminence": 30.67
+              },
+              {
+                "startTimeOffsetS": 768,
+                "topPeriodS": 11.636,
+                "topProminence": 7.07
+              },
+              {
+                "startTimeOffsetS": 896,
+                "topPeriodS": 12.19,
+                "topProminence": 11.25
+              },
+              {
+                "startTimeOffsetS": 1024,
+                "topPeriodS": 18.286,
+                "topProminence": 37.06
+              },
+              {
+                "startTimeOffsetS": 1152,
+                "topPeriodS": 11.636,
+                "topProminence": 5.37
+              },
+              {
+                "startTimeOffsetS": 1280,
+                "topPeriodS": 18.286,
+                "topProminence": 12.36
+              },
+              {
+                "startTimeOffsetS": 1408,
+                "topPeriodS": 18.286,
+                "topProminence": 144.86
+              },
+              {
+                "startTimeOffsetS": 1536,
+                "topPeriodS": 18.286,
+                "topProminence": 163.84
+              },
+              {
+                "startTimeOffsetS": 1664,
+                "topPeriodS": 16,
+                "topProminence": 8.19
+              },
+              {
+                "startTimeOffsetS": 1792,
+                "topPeriodS": 17.067,
+                "topProminence": 38.49
+              }
+            ]
+          },
+          "vRes30": {
+            "nWindows": 15,
+            "windowLenS": 256,
+            "medianTopPeriodS": 16,
+            "fractionWithin20pctOfMedian": 0.8,
+            "windows": [
+              {
+                "startTimeOffsetS": 0,
+                "topPeriodS": 17.067,
+                "topProminence": 68.55
+              },
+              {
+                "startTimeOffsetS": 128,
+                "topPeriodS": 18.286,
+                "topProminence": 65.67
+              },
+              {
+                "startTimeOffsetS": 256,
+                "topPeriodS": 12.19,
+                "topProminence": 16.61
+              },
+              {
+                "startTimeOffsetS": 384,
+                "topPeriodS": 15.059,
+                "topProminence": 19.47
+              },
+              {
+                "startTimeOffsetS": 512,
+                "topPeriodS": 16,
+                "topProminence": 56.58
+              },
+              {
+                "startTimeOffsetS": 640,
+                "topPeriodS": 16,
+                "topProminence": 71.59
+              },
+              {
+                "startTimeOffsetS": 768,
+                "topPeriodS": 14.222,
+                "topProminence": 37.53
+              },
+              {
+                "startTimeOffsetS": 896,
+                "topPeriodS": 16,
+                "topProminence": 19.34
+              },
+              {
+                "startTimeOffsetS": 1024,
+                "topPeriodS": 10.24,
+                "topProminence": 16.3
+              },
+              {
+                "startTimeOffsetS": 1152,
+                "topPeriodS": 15.059,
+                "topProminence": 54.99
+              },
+              {
+                "startTimeOffsetS": 1280,
+                "topPeriodS": 12.8,
+                "topProminence": 9.71
+              },
+              {
+                "startTimeOffsetS": 1408,
+                "topPeriodS": 16,
+                "topProminence": 21.16
+              },
+              {
+                "startTimeOffsetS": 1536,
+                "topPeriodS": 18.286,
+                "topProminence": 69.57
+              },
+              {
+                "startTimeOffsetS": 1664,
+                "topPeriodS": 11.636,
+                "topProminence": 18.02
+              },
+              {
+                "startTimeOffsetS": 1792,
+                "topPeriodS": 16,
+                "topProminence": 39.84
+              }
+            ]
+          }
+        },
+        "halfFlight6to20s": {
+          "uRes30": {
+            "label": "U-res30",
+            "firstHalf": [
+              {
+                "period": 19.259,
+                "freq": 0.05192,
+                "power": 0.97664,
+                "prominence": 281.29
+              },
+              {
+                "period": 18.246,
+                "freq": 0.05481,
+                "power": 0.379904,
+                "prominence": 109.42
+              },
+              {
+                "period": 17.627,
+                "freq": 0.05673,
+                "power": 0.113148,
+                "prominence": 32.59
+              }
+            ],
+            "secondHalf": [
+              {
+                "period": 18.589,
+                "freq": 0.05379,
+                "power": 1.788669,
+                "prominence": 430.48
+              },
+              {
+                "period": 15.773,
+                "freq": 0.0634,
+                "power": 0.241002,
+                "prominence": 58
+              },
+              {
+                "period": 13.177,
+                "freq": 0.07589,
+                "power": 0.159099,
+                "prominence": 38.29
+              }
+            ]
+          },
+          "vRes30": {
+            "label": "V-res30",
+            "firstHalf": [
+              {
+                "period": 16,
+                "freq": 0.0625,
+                "power": 0.397381,
+                "prominence": 123.3
+              },
+              {
+                "period": 17.931,
+                "freq": 0.05577,
+                "power": 0.3637,
+                "prominence": 112.85
+              },
+              {
+                "period": 12.381,
+                "freq": 0.08077,
+                "power": 0.129373,
+                "prominence": 40.14
+              }
+            ],
+            "secondHalf": [
+              {
+                "period": 18.589,
+                "freq": 0.05379,
+                "power": 0.669733,
+                "prominence": 135.81
+              },
+              {
+                "period": 17.948,
+                "freq": 0.05572,
+                "power": 0.506149,
+                "prominence": 102.64
+              },
+              {
+                "period": 11.83,
+                "freq": 0.08453,
+                "power": 0.26653,
+                "prominence": 54.05
+              }
+            ]
+          }
+        },
+        "rankedCandidates": [
+          {
+            "period": 19.449,
+            "hits": 1,
+            "maxProminence": 353.49
+          },
+          {
+            "period": 18.58,
+            "hits": 1,
+            "maxProminence": 194.25
+          },
+          {
+            "period": 19.451,
+            "hits": 1,
+            "maxProminence": 71.88
+          },
+          {
+            "period": 18.542,
+            "hits": 1,
+            "maxProminence": 50.61
+          },
+          {
+            "period": 12.19,
+            "hits": 1,
+            "maxProminence": 12.1
+          },
+          {
+            "period": 14.222,
+            "hits": 1,
+            "maxProminence": 6
+          }
+        ]
+      },
+      "verticalScales": [
+        {
+          "periodS": 19.449,
+          "lambdaZMedianM": 110.9,
+          "lambdaZp10M": 91.4,
+          "lambdaZp90M": 142
+        },
+        {
+          "periodS": 18.58,
+          "lambdaZMedianM": 105.9,
+          "lambdaZp10M": 87.3,
+          "lambdaZp90M": 135.6
+        },
+        {
+          "periodS": 19.451,
+          "lambdaZMedianM": 110.9,
+          "lambdaZp10M": 91.4,
+          "lambdaZp90M": 142
+        },
+        {
+          "periodS": 18.542,
+          "lambdaZMedianM": 105.7,
+          "lambdaZp10M": 87.1,
+          "lambdaZp90M": 135.4
+        }
+      ],
+      "reportedCandidate": {
+        "period": 19.449,
+        "hits": 1,
+        "maxProminence": 353.49
+      }
+    },
+    {
+      "id": "prospect",
+      "label": "Prospect Valley NSSL1 2010-05-26 22:23:46",
+      "identity": {
+        "siteId": "Mobile System/NSSL1",
+        "utcReleaseTime": "2010, 05, 26, 22:23:46",
+        "dataType": "NSSL1  MGAUS/Ascending",
+        "sonde": "101364451/Vaisala RS92-SGP (ccGPS)",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+        "comments": "G Bryan/Good sounding.  Woodrow, Good Sounding",
+        "launchElevation": 1358.9
+      },
+      "flightPhaseClass": "CLEAN ASCENT",
+      "flightPhase": {
+        "firstNative": {
+          "nativeIndex": 0,
+          "time": -1,
+          "alt": 1358.8,
+          "u": -0.2,
+          "v": 2
+        },
+        "lastNative": {
+          "nativeIndex": 2823,
+          "time": 2822,
+          "alt": 15376.8,
+          "u": 14.7,
+          "v": 18.3
+        },
+        "maximumAltitude": {
+          "nativeIndex": 2823,
+          "time": 2822,
+          "alt": 15376.8,
+          "press": 120,
+          "u": 14.7,
+          "v": 18.3,
+          "usable": true,
+          "isLastNativeRecord": true
+        },
+        "nativeRecordCount": 2824,
+        "postMaxNativeCount": 0,
+        "postMaxValidAltCount": 0,
+        "postMaxUsableI1Count": 0,
+        "postMaxUsableWouldBreakStrictlyIncreasing": 0,
+        "postMaxUsableBreakExamples": [],
+        "persistentlyDecreasingAfterMax": false,
+        "dAltPre": {
+          "n": 2813,
+          "min": 0.7,
+          "p10": 3.8,
+          "median": 4.8,
+          "p90": 6.4,
+          "max": 11.2
+        },
+        "dAltPost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "dTPre": {
+          "n": 2813,
+          "min": 1,
+          "p10": 1,
+          "median": 1,
+          "p90": 1,
+          "max": 2
+        },
+        "dTPost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "ascentRatePre": {
+          "n": 2813,
+          "min": 0.7,
+          "p10": 3.8,
+          "median": 4.8,
+          "p90": 6.4,
+          "max": 9.4
+        },
+        "ascentRatePost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "postAltStepSign": {
+          "negative": 0,
+          "zero": 0,
+          "positive": 0
+        },
+        "lastValidAlt": 15376.8,
+        "lastValidTime": 2822
+      },
+      "nativeVsRetainedVsGolden": {
+        "nativeRecords": 2824,
+        "i1Dropped": 91,
+        "i1Kept": 2733,
+        "productionGolden": {
+          "goldenCount": 2733,
+          "keptCount": 2733,
+          "firstGolden": {
+            "height": -0.1,
+            "eastward": -0.2,
+            "northward": 2
+          },
+          "lastGolden": {
+            "height": 14017.9,
+            "eastward": 14.7,
+            "northward": 18.3
+          },
+          "firstKept": {
+            "height": -0.1,
+            "u": -0.2,
+            "v": 2,
+            "time": -1
+          },
+          "lastKept": {
+            "height": 14017.9,
+            "u": 14.7,
+            "v": 18.3,
+            "time": 2822
+          },
+          "exactMatch": true,
+          "mismatches": [],
+          "expectedKept": 2733,
+          "expectedKeptMatch": true
+        },
+        "postMaxNative": 0,
+        "postMaxI1Usable": 0,
+        "postMaxI1UsableWouldEnterProduction": false
+      },
+      "sampling": {
+        "nKept": 2733,
+        "time": {
+          "first": -1,
+          "last": 2822,
+          "delta": {
+            "n": 2732,
+            "min": 1,
+            "p10": 1,
+            "median": 1,
+            "p90": 1,
+            "max": 5
+          },
+          "uniqueRounded": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "exact1sShare": 0.9747437774524158,
+          "exact1sCount": 2663
+        },
+        "dAlt": {
+          "n": 2732,
+          "min": 0.7,
+          "p10": 3.8,
+          "median": 4.8,
+          "p90": 6.5,
+          "max": 26.1
+        },
+        "dHeight": {
+          "n": 2732,
+          "min": 0.7,
+          "p10": 3.8,
+          "median": 4.8,
+          "p90": 6.5,
+          "max": 26.1
+        },
+        "ascentRate": {
+          "n": 2732,
+          "min": 0.7,
+          "p10": 3.8,
+          "median": 4.8,
+          "p90": 6.4,
+          "max": 9.4
+        },
+        "reportedWcmp": {
+          "n": 2732,
+          "min": 2.7,
+          "p10": 3.8,
+          "median": 4.8,
+          "p90": 6.3,
+          "max": 9
+        },
+        "discontinuitiesDtGt2OrDzGt20": {
+          "n": 19,
+          "examples": [
+            {
+              "fromTime": 11,
+              "toTime": 14,
+              "dt": 3,
+              "fromHeight": 55.2,
+              "toHeight": 66.8,
+              "dHeight": 11.6
+            },
+            {
+              "fromTime": 25,
+              "toTime": 28,
+              "dt": 3,
+              "fromHeight": 125.9,
+              "toHeight": 139.3,
+              "dHeight": 13.4
+            },
+            {
+              "fromTime": 1585,
+              "toTime": 1588,
+              "dt": 3,
+              "fromHeight": 7864.9,
+              "toHeight": 7884,
+              "dHeight": 19.1
+            },
+            {
+              "fromTime": 1590,
+              "toTime": 1593,
+              "dt": 3,
+              "fromHeight": 7894.9,
+              "toHeight": 7911.4,
+              "dHeight": 16.5
+            },
+            {
+              "fromTime": 1594,
+              "toTime": 1597,
+              "dt": 3,
+              "fromHeight": 7917.5,
+              "toHeight": 7936.1,
+              "dHeight": 18.6
+            },
+            {
+              "fromTime": 1655,
+              "toTime": 1658,
+              "dt": 3,
+              "fromHeight": 8267.5,
+              "toHeight": 8287.2,
+              "dHeight": 19.7
+            },
+            {
+              "fromTime": 1787,
+              "toTime": 1790,
+              "dt": 3,
+              "fromHeight": 9092.9,
+              "toHeight": 9114.2,
+              "dHeight": 21.3
+            },
+            {
+              "fromTime": 1791,
+              "toTime": 1794,
+              "dt": 3,
+              "fromHeight": 9120.9,
+              "toHeight": 9140.3,
+              "dHeight": 19.4
+            },
+            {
+              "fromTime": 1815,
+              "toTime": 1818,
+              "dt": 3,
+              "fromHeight": 9288.2,
+              "toHeight": 9309.8,
+              "dHeight": 21.6
+            },
+            {
+              "fromTime": 1820,
+              "toTime": 1823,
+              "dt": 3,
+              "fromHeight": 9323.3,
+              "toHeight": 9341.1,
+              "dHeight": 17.8
+            },
+            {
+              "fromTime": 1872,
+              "toTime": 1875,
+              "dt": 3,
+              "fromHeight": 9662.1,
+              "toHeight": 9680.7,
+              "dHeight": 18.6
+            },
+            {
+              "fromTime": 1911,
+              "toTime": 1914,
+              "dt": 3,
+              "fromHeight": 9909.5,
+              "toHeight": 9924.7,
+              "dHeight": 15.2
+            }
+          ]
+        }
+      },
+      "spectral": {
+        "method": {
+          "retainedDtCheck": "exact 1 s share of consecutive I1-retained TIME steps",
+          "fft": "Hann-windowed periodogram of research-only series; dt = 1 s",
+          "interpolation": "linear interpolation of U/V onto integer-second grid spanning first..last kept TIME, solely for spectral diagnostics; never written back",
+          "firstDifferences": "only consecutive retained pairs with Δt exactly 1 s; no interpolation",
+          "backgrounds": [
+            "first differences ΔU/ΔV",
+            "linear detrend of interpolated U/V",
+            "residual after centered 31-s moving average (~30 s)",
+            "residual after centered 61-s moving average (~60 s)"
+          ],
+          "welch": "256 s windows, 50% overlap, 30 s MA residual",
+          "windowedPersistence": "256 s windows, 50% overlap, 6–20 s band peak tracking"
+        },
+        "interpolation": {
+          "nGrid": 2824,
+          "observedShare": 0.9678,
+          "filledShare": 0.0322,
+          "t0": -1,
+          "t1": 2822
+        },
+        "firstDifferenceStats": {
+          "nExact1sPairs": 2663,
+          "dU": {
+            "n": 2663,
+            "min": -2.7,
+            "p10": -0.1,
+            "median": 0,
+            "p90": 0.1,
+            "max": 0.4
+          },
+          "dV": {
+            "n": 2663,
+            "min": -0.4,
+            "p10": -0.1,
+            "median": 0,
+            "p90": 0.1,
+            "max": 3.6
+          },
+          "residualSpeed": {
+            "n": 2663,
+            "min": 0,
+            "p10": 0,
+            "median": 0.1,
+            "p90": 0.2236,
+            "max": 4.5
+          }
+        },
+        "residual30sStats": {
+          "u": {
+            "n": 2824,
+            "min": -1.2677,
+            "p10": -0.4027,
+            "median": -0.0032,
+            "p90": 0.4226,
+            "max": 5.2406
+          },
+          "v": {
+            "n": 2824,
+            "min": -5.8844,
+            "p10": -0.385,
+            "median": 0,
+            "p90": 0.3865,
+            "max": 1.4419
+          },
+          "mag": {
+            "n": 2824,
+            "min": 0.0032,
+            "p10": 0.0917,
+            "median": 0.3192,
+            "p90": 0.7977,
+            "max": 7.8797
+          }
+        },
+        "peaks": {
+          "firstDiffU": {
+            "label": "dU",
+            "band4to40s": [
+              {
+                "period": 36.986,
+                "freq": 0.02704,
+                "power": 0.46413,
+                "prominence": 231.64
+              },
+              {
+                "period": 32.877,
+                "freq": 0.03042,
+                "power": 0.45066,
+                "prominence": 224.92
+              },
+              {
+                "period": 29.921,
+                "freq": 0.03342,
+                "power": 0.416016,
+                "prominence": 207.63
+              },
+              {
+                "period": 38.594,
+                "freq": 0.02591,
+                "power": 0.397721,
+                "prominence": 198.5
+              },
+              {
+                "period": 22.957,
+                "freq": 0.04356,
+                "power": 0.2651,
+                "prominence": 132.31
+              },
+              {
+                "period": 30.609,
+                "freq": 0.03267,
+                "power": 0.257023,
+                "prominence": 128.28
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.753,
+                "freq": 0.05633,
+                "power": 0.193573,
+                "prominence": 82.38
+              },
+              {
+                "period": 17.993,
+                "freq": 0.05558,
+                "power": 0.101524,
+                "prominence": 43.21
+              },
+              {
+                "period": 19.726,
+                "freq": 0.05069,
+                "power": 0.083073,
+                "prominence": 35.35
+              },
+              {
+                "period": 16.644,
+                "freq": 0.06008,
+                "power": 0.082694,
+                "prominence": 35.19
+              },
+              {
+                "period": 12.386,
+                "freq": 0.08074,
+                "power": 0.06023,
+                "prominence": 25.63
+              },
+              {
+                "period": 15.946,
+                "freq": 0.06271,
+                "power": 0.053402,
+                "prominence": 22.73
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 46.719,
+                "freq": 0.0214,
+                "power": 0.469219,
+                "prominence": 6.25
+              },
+              {
+                "period": 85.903,
+                "freq": 0.01164,
+                "power": 0.198938,
+                "prominence": 2.65
+              },
+              {
+                "period": 60.523,
+                "freq": 0.01652,
+                "power": 0.198685,
+                "prominence": 2.65
+              },
+              {
+                "period": 71.973,
+                "freq": 0.01389,
+                "power": 0.168809,
+                "prominence": 2.25
+              }
+            ]
+          },
+          "firstDiffV": {
+            "label": "dV",
+            "band4to40s": [
+              {
+                "period": 32.877,
+                "freq": 0.03042,
+                "power": 0.354935,
+                "prominence": 166.84
+              },
+              {
+                "period": 23.36,
+                "freq": 0.04281,
+                "power": 0.225965,
+                "prominence": 106.22
+              },
+              {
+                "period": 25.606,
+                "freq": 0.03905,
+                "power": 0.201754,
+                "prominence": 94.83
+              },
+              {
+                "period": 22.957,
+                "freq": 0.04356,
+                "power": 0.194036,
+                "prominence": 91.21
+              },
+              {
+                "period": 17.405,
+                "freq": 0.05745,
+                "power": 0.157835,
+                "prominence": 74.19
+              },
+              {
+                "period": 30.965,
+                "freq": 0.03229,
+                "power": 0.146159,
+                "prominence": 68.7
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.405,
+                "freq": 0.05745,
+                "power": 0.157835,
+                "prominence": 54
+              },
+              {
+                "period": 14.016,
+                "freq": 0.07135,
+                "power": 0.070946,
+                "prominence": 24.27
+              },
+              {
+                "period": 16.748,
+                "freq": 0.05971,
+                "power": 0.058582,
+                "prominence": 20.04
+              },
+              {
+                "period": 14.473,
+                "freq": 0.0691,
+                "power": 0.057155,
+                "prominence": 19.55
+              },
+              {
+                "period": 15.045,
+                "freq": 0.06647,
+                "power": 0.055562,
+                "prominence": 19.01
+              },
+              {
+                "period": 10.825,
+                "freq": 0.09238,
+                "power": 0.054407,
+                "prominence": 18.61
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 48.418,
+                "freq": 0.02065,
+                "power": 0.298251,
+                "prominence": 5.25
+              },
+              {
+                "period": 51.212,
+                "freq": 0.01953,
+                "power": 0.245548,
+                "prominence": 4.32
+              },
+              {
+                "period": 80.697,
+                "freq": 0.01239,
+                "power": 0.18884,
+                "prominence": 3.32
+              },
+              {
+                "period": 71.973,
+                "freq": 0.01389,
+                "power": 0.170664,
+                "prominence": 3
+              }
+            ]
+          },
+          "detrendU": {
+            "label": "U-detrend",
+            "band4to40s": [
+              {
+                "period": 36.205,
+                "freq": 0.02762,
+                "power": 16.37604,
+                "prominence": 8616.66
+              },
+              {
+                "period": 34.864,
+                "freq": 0.02868,
+                "power": 13.352017,
+                "prominence": 7025.49
+              },
+              {
+                "period": 34.024,
+                "freq": 0.02939,
+                "power": 11.880163,
+                "prominence": 6251.04
+              },
+              {
+                "period": 32.837,
+                "freq": 0.03045,
+                "power": 8.08788,
+                "prominence": 4255.64
+              },
+              {
+                "period": 27.96,
+                "freq": 0.03576,
+                "power": 5.662867,
+                "prominence": 2979.66
+              },
+              {
+                "period": 30.043,
+                "freq": 0.03329,
+                "power": 3.869478,
+                "prominence": 2036.02
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 19.748,
+                "freq": 0.05064,
+                "power": 0.852127,
+                "prominence": 232.85
+              },
+              {
+                "period": 18.702,
+                "freq": 0.05347,
+                "power": 0.833536,
+                "prominence": 227.77
+              },
+              {
+                "period": 18.219,
+                "freq": 0.05489,
+                "power": 0.713864,
+                "prominence": 195.07
+              },
+              {
+                "period": 17.987,
+                "freq": 0.05559,
+                "power": 0.567147,
+                "prominence": 154.98
+              },
+              {
+                "period": 17.65,
+                "freq": 0.05666,
+                "power": 0.565756,
+                "prominence": 154.6
+              },
+              {
+                "period": 18.953,
+                "freq": 0.05276,
+                "power": 0.512019,
+                "prominence": 139.91
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 112.96,
+                "freq": 0.00885,
+                "power": 68.315416,
+                "prominence": 9.06
+              },
+              {
+                "period": 74.316,
+                "freq": 0.01346,
+                "power": 39.396395,
+                "prominence": 5.22
+              },
+              {
+                "period": 51.345,
+                "freq": 0.01948,
+                "power": 36.808996,
+                "prominence": 4.88
+              },
+              {
+                "period": 97.379,
+                "freq": 0.01027,
+                "power": 36.742711,
+                "prominence": 4.87
+              }
+            ]
+          },
+          "detrendV": {
+            "label": "V-detrend",
+            "band4to40s": [
+              {
+                "period": 33.224,
+                "freq": 0.0301,
+                "power": 9.12947,
+                "prominence": 4733.2
+              },
+              {
+                "period": 38.685,
+                "freq": 0.02585,
+                "power": 7.11505,
+                "prominence": 3688.82
+              },
+              {
+                "period": 35.747,
+                "freq": 0.02797,
+                "power": 6.777135,
+                "prominence": 3513.63
+              },
+              {
+                "period": 34.439,
+                "freq": 0.02904,
+                "power": 5.63257,
+                "prominence": 2920.22
+              },
+              {
+                "period": 23.533,
+                "freq": 0.04249,
+                "power": 2.534353,
+                "prominence": 1313.94
+              },
+              {
+                "period": 30.366,
+                "freq": 0.03293,
+                "power": 2.372887,
+                "prominence": 1230.23
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.873,
+                "freq": 0.05595,
+                "power": 1.35712,
+                "prominence": 304.36
+              },
+              {
+                "period": 18.338,
+                "freq": 0.05453,
+                "power": 0.726375,
+                "prominence": 162.9
+              },
+              {
+                "period": 14.942,
+                "freq": 0.06693,
+                "power": 0.516494,
+                "prominence": 115.83
+              },
+              {
+                "period": 14.408,
+                "freq": 0.06941,
+                "power": 0.385772,
+                "prominence": 86.52
+              },
+              {
+                "period": 15.689,
+                "freq": 0.06374,
+                "power": 0.303914,
+                "prominence": 68.16
+              },
+              {
+                "period": 16.91,
+                "freq": 0.05914,
+                "power": 0.260571,
+                "prominence": 58.44
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 78.444,
+                "freq": 0.01275,
+                "power": 28.911798,
+                "prominence": 5.88
+              },
+              {
+                "period": 97.379,
+                "freq": 0.01027,
+                "power": 25.876078,
+                "prominence": 5.27
+              },
+              {
+                "period": 58.833,
+                "freq": 0.017,
+                "power": 24.927488,
+                "prominence": 5.07
+              },
+              {
+                "period": 88.25,
+                "freq": 0.01133,
+                "power": 23.36109,
+                "prominence": 4.75
+              }
+            ]
+          },
+          "residual30sU": {
+            "label": "U-res30",
+            "band4to40s": [
+              {
+                "period": 36.205,
+                "freq": 0.02762,
+                "power": 11.430055,
+                "prominence": 5988.85
+              },
+              {
+                "period": 34.864,
+                "freq": 0.02868,
+                "power": 10.25272,
+                "prominence": 5371.98
+              },
+              {
+                "period": 34.024,
+                "freq": 0.02939,
+                "power": 9.65447,
+                "prominence": 5058.52
+              },
+              {
+                "period": 32.837,
+                "freq": 0.03045,
+                "power": 7.179916,
+                "prominence": 3761.96
+              },
+              {
+                "period": 27.96,
+                "freq": 0.03576,
+                "power": 6.817161,
+                "prominence": 3571.89
+              },
+              {
+                "period": 30.043,
+                "freq": 0.03329,
+                "power": 4.109642,
+                "prominence": 2153.27
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 19.748,
+                "freq": 0.05064,
+                "power": 1.224446,
+                "prominence": 303.59
+              },
+              {
+                "period": 18.702,
+                "freq": 0.05347,
+                "power": 1.141226,
+                "prominence": 282.96
+              },
+              {
+                "period": 18.219,
+                "freq": 0.05489,
+                "power": 0.947999,
+                "prominence": 235.05
+              },
+              {
+                "period": 17.987,
+                "freq": 0.05559,
+                "power": 0.738715,
+                "prominence": 183.16
+              },
+              {
+                "period": 17.65,
+                "freq": 0.05666,
+                "power": 0.718457,
+                "prominence": 178.13
+              },
+              {
+                "period": 18.953,
+                "freq": 0.05276,
+                "power": 0.710205,
+                "prominence": 176.09
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 51.345,
+                "freq": 0.01948,
+                "power": 9.171597,
+                "prominence": 8.74
+              },
+              {
+                "period": 44.125,
+                "freq": 0.02266,
+                "power": 8.659568,
+                "prominence": 8.25
+              },
+              {
+                "period": 41.529,
+                "freq": 0.02408,
+                "power": 5.574246,
+                "prominence": 5.31
+              },
+              {
+                "period": 74.316,
+                "freq": 0.01346,
+                "power": 2.695189,
+                "prominence": 2.57
+              }
+            ]
+          },
+          "residual30sV": {
+            "label": "V-res30",
+            "band4to40s": [
+              {
+                "period": 33.224,
+                "freq": 0.0301,
+                "power": 7.952139,
+                "prominence": 3977.11
+              },
+              {
+                "period": 35.747,
+                "freq": 0.02797,
+                "power": 4.881214,
+                "prominence": 2441.24
+              },
+              {
+                "period": 34.439,
+                "freq": 0.02904,
+                "power": 4.460426,
+                "prominence": 2230.79
+              },
+              {
+                "period": 38.685,
+                "freq": 0.02585,
+                "power": 4.196864,
+                "prominence": 2098.98
+              },
+              {
+                "period": 23.533,
+                "freq": 0.04249,
+                "power": 3.669716,
+                "prominence": 1835.34
+              },
+              {
+                "period": 26.642,
+                "freq": 0.03754,
+                "power": 2.924734,
+                "prominence": 1462.75
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.873,
+                "freq": 0.05595,
+                "power": 1.753247,
+                "prominence": 377.09
+              },
+              {
+                "period": 18.338,
+                "freq": 0.05453,
+                "power": 0.969853,
+                "prominence": 208.6
+              },
+              {
+                "period": 14.942,
+                "freq": 0.06693,
+                "power": 0.479394,
+                "prominence": 103.11
+              },
+              {
+                "period": 14.408,
+                "freq": 0.06941,
+                "power": 0.335052,
+                "prominence": 72.06
+              },
+              {
+                "period": 15.689,
+                "freq": 0.06374,
+                "power": 0.310536,
+                "prominence": 66.79
+              },
+              {
+                "period": 16.91,
+                "freq": 0.05914,
+                "power": 0.308025,
+                "prominence": 66.25
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 49.544,
+                "freq": 0.02018,
+                "power": 4.697117,
+                "prominence": 6.38
+              },
+              {
+                "period": 58.833,
+                "freq": 0.017,
+                "power": 3.995314,
+                "prominence": 5.43
+              },
+              {
+                "period": 47.067,
+                "freq": 0.02125,
+                "power": 3.434518,
+                "prominence": 4.67
+              },
+              {
+                "period": 44.825,
+                "freq": 0.02231,
+                "power": 3.330219,
+                "prominence": 4.53
+              }
+            ]
+          },
+          "residual60sU": {
+            "label": "U-res60",
+            "band4to40s": [
+              {
+                "period": 36.205,
+                "freq": 0.02762,
+                "power": 22.012848,
+                "prominence": 11422.24
+              },
+              {
+                "period": 34.864,
+                "freq": 0.02868,
+                "power": 17.048771,
+                "prominence": 8846.43
+              },
+              {
+                "period": 34.024,
+                "freq": 0.02939,
+                "power": 14.623459,
+                "prominence": 7587.96
+              },
+              {
+                "period": 32.837,
+                "freq": 0.03045,
+                "power": 9.311919,
+                "prominence": 4831.86
+              },
+              {
+                "period": 27.96,
+                "freq": 0.03576,
+                "power": 4.795817,
+                "prominence": 2488.5
+              },
+              {
+                "period": 37.653,
+                "freq": 0.02656,
+                "power": 3.865716,
+                "prominence": 2005.88
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.702,
+                "freq": 0.05347,
+                "power": 0.956813,
+                "prominence": 281.46
+              },
+              {
+                "period": 19.748,
+                "freq": 0.05064,
+                "power": 0.901498,
+                "prominence": 265.19
+              },
+              {
+                "period": 18.219,
+                "freq": 0.05489,
+                "power": 0.839398,
+                "prominence": 246.92
+              },
+              {
+                "period": 17.65,
+                "freq": 0.05666,
+                "power": 0.674249,
+                "prominence": 198.34
+              },
+              {
+                "period": 17.987,
+                "freq": 0.05559,
+                "power": 0.6725,
+                "prominence": 197.83
+              },
+              {
+                "period": 18.953,
+                "freq": 0.05276,
+                "power": 0.578947,
+                "prominence": 170.31
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 51.345,
+                "freq": 0.01948,
+                "power": 48.535204,
+                "prominence": 6.76
+              },
+              {
+                "period": 44.125,
+                "freq": 0.02266,
+                "power": 31.748567,
+                "prominence": 4.42
+              },
+              {
+                "period": 74.316,
+                "freq": 0.01346,
+                "power": 24.649359,
+                "prominence": 3.43
+              },
+              {
+                "period": 41.529,
+                "freq": 0.02408,
+                "power": 16.869443,
+                "prominence": 2.35
+              }
+            ]
+          },
+          "residual60sV": {
+            "label": "V-res60",
+            "band4to40s": [
+              {
+                "period": 33.224,
+                "freq": 0.0301,
+                "power": 10.673271,
+                "prominence": 5481.96
+              },
+              {
+                "period": 38.685,
+                "freq": 0.02585,
+                "power": 10.17754,
+                "prominence": 5227.35
+              },
+              {
+                "period": 35.747,
+                "freq": 0.02797,
+                "power": 8.971538,
+                "prominence": 4607.92
+              },
+              {
+                "period": 34.439,
+                "freq": 0.02904,
+                "power": 7.053839,
+                "prominence": 3622.96
+              },
+              {
+                "period": 30.366,
+                "freq": 0.03293,
+                "power": 2.342246,
+                "prominence": 1203.01
+              },
+              {
+                "period": 31.378,
+                "freq": 0.03187,
+                "power": 2.298338,
+                "prominence": 1180.46
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.873,
+                "freq": 0.05595,
+                "power": 1.613129,
+                "prominence": 348.49
+              },
+              {
+                "period": 18.338,
+                "freq": 0.05453,
+                "power": 0.851228,
+                "prominence": 183.89
+              },
+              {
+                "period": 14.942,
+                "freq": 0.06693,
+                "power": 0.495268,
+                "prominence": 106.99
+              },
+              {
+                "period": 14.408,
+                "freq": 0.06941,
+                "power": 0.347785,
+                "prominence": 75.13
+              },
+              {
+                "period": 15.689,
+                "freq": 0.06374,
+                "power": 0.320541,
+                "prominence": 69.25
+              },
+              {
+                "period": 16.91,
+                "freq": 0.05914,
+                "power": 0.306031,
+                "prominence": 66.11
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 58.833,
+                "freq": 0.017,
+                "power": 26.897396,
+                "prominence": 5.12
+              },
+              {
+                "period": 49.544,
+                "freq": 0.02018,
+                "power": 22.562892,
+                "prominence": 4.3
+              },
+              {
+                "period": 78.444,
+                "freq": 0.01275,
+                "power": 15.77213,
+                "prominence": 3
+              },
+              {
+                "period": 47.067,
+                "freq": 0.02125,
+                "power": 15.06494,
+                "prominence": 2.87
+              }
+            ]
+          },
+          "residual30sMag": {
+            "label": "|res30|",
+            "band4to40s": [
+              {
+                "period": 18.953,
+                "freq": 0.05276,
+                "power": 2.143191,
+                "prominence": 309.5
+              },
+              {
+                "period": 17.987,
+                "freq": 0.05559,
+                "power": 1.713515,
+                "prominence": 247.45
+              },
+              {
+                "period": 17.54,
+                "freq": 0.05701,
+                "power": 1.450631,
+                "prominence": 209.48
+              },
+              {
+                "period": 17.012,
+                "freq": 0.05878,
+                "power": 1.279947,
+                "prominence": 184.84
+              },
+              {
+                "period": 15.265,
+                "freq": 0.06551,
+                "power": 1.238122,
+                "prominence": 178.8
+              },
+              {
+                "period": 23.731,
+                "freq": 0.04214,
+                "power": 1.14839,
+                "prominence": 165.84
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.953,
+                "freq": 0.05276,
+                "power": 2.143191,
+                "prominence": 120.35
+              },
+              {
+                "period": 17.987,
+                "freq": 0.05559,
+                "power": 1.713515,
+                "prominence": 96.22
+              },
+              {
+                "period": 17.54,
+                "freq": 0.05701,
+                "power": 1.450631,
+                "prominence": 81.46
+              },
+              {
+                "period": 17.012,
+                "freq": 0.05878,
+                "power": 1.279947,
+                "prominence": 71.87
+              },
+              {
+                "period": 15.265,
+                "freq": 0.06551,
+                "power": 1.238122,
+                "prominence": 69.53
+              },
+              {
+                "period": 19.342,
+                "freq": 0.0517,
+                "power": 1.102248,
+                "prominence": 61.9
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 100.857,
+                "freq": 0.00992,
+                "power": 3.544786,
+                "prominence": 7.29
+              },
+              {
+                "period": 56.48,
+                "freq": 0.01771,
+                "power": 1.47448,
+                "prominence": 3.03
+              },
+              {
+                "period": 76.324,
+                "freq": 0.0131,
+                "power": 1.29085,
+                "prominence": 2.66
+              },
+              {
+                "period": 91.097,
+                "freq": 0.01098,
+                "power": 1.22801,
+                "prominence": 2.53
+              }
+            ]
+          },
+          "welchU": {
+            "label": "welch-U-res30",
+            "band4to40s": [
+              {
+                "period": 11.13,
+                "freq": 0.08984,
+                "power": 0.024551,
+                "prominence": 16.53
+              },
+              {
+                "period": 5.447,
+                "freq": 0.18359,
+                "power": 0.001567,
+                "prominence": 1.06
+              },
+              {
+                "period": 5.953,
+                "freq": 0.16797,
+                "power": 0.001499,
+                "prominence": 1.01
+              },
+              {
+                "period": 4.197,
+                "freq": 0.23828,
+                "power": 0.001471,
+                "prominence": 0.99
+              },
+              {
+                "period": 6.244,
+                "freq": 0.16016,
+                "power": 0.001456,
+                "prominence": 0.98
+              },
+              {
+                "period": 4.491,
+                "freq": 0.22266,
+                "power": 0.001405,
+                "prominence": 0.95
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 11.13,
+                "freq": 0.08984,
+                "power": 0.024551,
+                "prominence": 5.06
+              },
+              {
+                "period": 6.244,
+                "freq": 0.16016,
+                "power": 0.001456,
+                "prominence": 0.3
+              },
+              {
+                "period": 7.111,
+                "freq": 0.14063,
+                "power": 0.001132,
+                "prominence": 0.23
+              }
+            ],
+            "band40to120s": []
+          },
+          "welchV": {
+            "label": "welch-V-res30",
+            "band4to40s": [
+              {
+                "period": 15.059,
+                "freq": 0.06641,
+                "power": 0.119052,
+                "prominence": 75.62
+              },
+              {
+                "period": 11.636,
+                "freq": 0.08594,
+                "power": 0.031771,
+                "prominence": 20.18
+              },
+              {
+                "period": 4.267,
+                "freq": 0.23438,
+                "power": 0.001607,
+                "prominence": 1.02
+              },
+              {
+                "period": 5.333,
+                "freq": 0.1875,
+                "power": 0.001596,
+                "prominence": 1.01
+              },
+              {
+                "period": 6.095,
+                "freq": 0.16406,
+                "power": 0.001536,
+                "prominence": 0.98
+              },
+              {
+                "period": 5.565,
+                "freq": 0.17969,
+                "power": 0.00149,
+                "prominence": 0.95
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 15.059,
+                "freq": 0.06641,
+                "power": 0.119052,
+                "prominence": 15.2
+              },
+              {
+                "period": 11.636,
+                "freq": 0.08594,
+                "power": 0.031771,
+                "prominence": 4.06
+              },
+              {
+                "period": 6.919,
+                "freq": 0.14453,
+                "power": 0.001439,
+                "prominence": 0.18
+              },
+              {
+                "period": 6.4,
+                "freq": 0.15625,
+                "power": 0.001333,
+                "prominence": 0.17
+              }
+            ],
+            "band40to120s": []
+          }
+        },
+        "welchWindows": {
+          "u": 21,
+          "v": 21,
+          "windowLen": 256
+        },
+        "autocorrFirstPositivePeak": {
+          "uRes30": {
+            "lag": 35,
+            "r": 0.1615
+          },
+          "vRes30": {
+            "lag": 40,
+            "r": 0.1645
+          },
+          "dU": {
+            "lag": 2,
+            "r": 0.6318
+          }
+        },
+        "persistence6to20s": {
+          "uRes30": {
+            "nWindows": 21,
+            "windowLenS": 256,
+            "medianTopPeriodS": 17.067,
+            "fractionWithin20pctOfMedian": 0.905,
+            "windows": [
+              {
+                "startTimeOffsetS": 0,
+                "topPeriodS": 15.059,
+                "topProminence": 65.19
+              },
+              {
+                "startTimeOffsetS": 128,
+                "topPeriodS": 18.286,
+                "topProminence": 262.96
+              },
+              {
+                "startTimeOffsetS": 256,
+                "topPeriodS": 17.067,
+                "topProminence": 34.57
+              },
+              {
+                "startTimeOffsetS": 384,
+                "topPeriodS": 16,
+                "topProminence": 25.07
+              },
+              {
+                "startTimeOffsetS": 512,
+                "topPeriodS": 15.059,
+                "topProminence": 57.91
+              },
+              {
+                "startTimeOffsetS": 640,
+                "topPeriodS": 18.286,
+                "topProminence": 194.96
+              },
+              {
+                "startTimeOffsetS": 768,
+                "topPeriodS": 17.067,
+                "topProminence": 86.76
+              },
+              {
+                "startTimeOffsetS": 896,
+                "topPeriodS": 16,
+                "topProminence": 26.07
+              },
+              {
+                "startTimeOffsetS": 1024,
+                "topPeriodS": 14.222,
+                "topProminence": 19.78
+              },
+              {
+                "startTimeOffsetS": 1152,
+                "topPeriodS": 17.067,
+                "topProminence": 40.84
+              },
+              {
+                "startTimeOffsetS": 1280,
+                "topPeriodS": 17.067,
+                "topProminence": 90.52
+              },
+              {
+                "startTimeOffsetS": 1408,
+                "topPeriodS": 15.059,
+                "topProminence": 26.14
+              },
+              {
+                "startTimeOffsetS": 1536,
+                "topPeriodS": 18.286,
+                "topProminence": 143.89
+              },
+              {
+                "startTimeOffsetS": 1664,
+                "topPeriodS": 18.286,
+                "topProminence": 655.35
+              },
+              {
+                "startTimeOffsetS": 1792,
+                "topPeriodS": 17.067,
+                "topProminence": 47.85
+              },
+              {
+                "startTimeOffsetS": 1920,
+                "topPeriodS": 16,
+                "topProminence": 44.53
+              },
+              {
+                "startTimeOffsetS": 2048,
+                "topPeriodS": 12.8,
+                "topProminence": 23.69
+              },
+              {
+                "startTimeOffsetS": 2176,
+                "topPeriodS": 18.286,
+                "topProminence": 99.25
+              },
+              {
+                "startTimeOffsetS": 2304,
+                "topPeriodS": 18.286,
+                "topProminence": 15.86
+              },
+              {
+                "startTimeOffsetS": 2432,
+                "topPeriodS": 11.13,
+                "topProminence": 4.37
+              },
+              {
+                "startTimeOffsetS": 2560,
+                "topPeriodS": 18.286,
+                "topProminence": 17.67
+              }
+            ]
+          },
+          "vRes30": {
+            "nWindows": 21,
+            "windowLenS": 256,
+            "medianTopPeriodS": 16,
+            "fractionWithin20pctOfMedian": 0.952,
+            "windows": [
+              {
+                "startTimeOffsetS": 0,
+                "topPeriodS": 15.059,
+                "topProminence": 51.53
+              },
+              {
+                "startTimeOffsetS": 128,
+                "topPeriodS": 13.474,
+                "topProminence": 25.53
+              },
+              {
+                "startTimeOffsetS": 256,
+                "topPeriodS": 15.059,
+                "topProminence": 34.21
+              },
+              {
+                "startTimeOffsetS": 384,
+                "topPeriodS": 12.8,
+                "topProminence": 14.07
+              },
+              {
+                "startTimeOffsetS": 512,
+                "topPeriodS": 16,
+                "topProminence": 101.03
+              },
+              {
+                "startTimeOffsetS": 640,
+                "topPeriodS": 17.067,
+                "topProminence": 99.55
+              },
+              {
+                "startTimeOffsetS": 768,
+                "topPeriodS": 15.059,
+                "topProminence": 44.07
+              },
+              {
+                "startTimeOffsetS": 896,
+                "topPeriodS": 18.286,
+                "topProminence": 40.79
+              },
+              {
+                "startTimeOffsetS": 1024,
+                "topPeriodS": 18.286,
+                "topProminence": 31.56
+              },
+              {
+                "startTimeOffsetS": 1152,
+                "topPeriodS": 15.059,
+                "topProminence": 37.79
+              },
+              {
+                "startTimeOffsetS": 1280,
+                "topPeriodS": 12.19,
+                "topProminence": 19.7
+              },
+              {
+                "startTimeOffsetS": 1408,
+                "topPeriodS": 17.067,
+                "topProminence": 83.35
+              },
+              {
+                "startTimeOffsetS": 1536,
+                "topPeriodS": 18.286,
+                "topProminence": 631.34
+              },
+              {
+                "startTimeOffsetS": 1664,
+                "topPeriodS": 14.222,
+                "topProminence": 53.7
+              },
+              {
+                "startTimeOffsetS": 1792,
+                "topPeriodS": 18.286,
+                "topProminence": 130.72
+              },
+              {
+                "startTimeOffsetS": 1920,
+                "topPeriodS": 17.067,
+                "topProminence": 23.56
+              },
+              {
+                "startTimeOffsetS": 2048,
+                "topPeriodS": 15.059,
+                "topProminence": 16.78
+              },
+              {
+                "startTimeOffsetS": 2176,
+                "topPeriodS": 18.286,
+                "topProminence": 38.71
+              },
+              {
+                "startTimeOffsetS": 2304,
+                "topPeriodS": 18.286,
+                "topProminence": 33.61
+              },
+              {
+                "startTimeOffsetS": 2432,
+                "topPeriodS": 18.286,
+                "topProminence": 5.77
+              },
+              {
+                "startTimeOffsetS": 2560,
+                "topPeriodS": 16,
+                "topProminence": 28.46
+              }
+            ]
+          }
+        },
+        "halfFlight6to20s": {
+          "uRes30": {
+            "label": "U-res30",
+            "firstHalf": [
+              {
+                "period": 17.65,
+                "freq": 0.05666,
+                "power": 0.577879,
+                "prominence": 246.63
+              },
+              {
+                "period": 16.045,
+                "freq": 0.06232,
+                "power": 0.30139,
+                "prominence": 128.63
+              },
+              {
+                "period": 19.611,
+                "freq": 0.05099,
+                "power": 0.265806,
+                "prominence": 113.44
+              }
+            ],
+            "secondHalf": [
+              {
+                "period": 18.827,
+                "freq": 0.05312,
+                "power": 1.152138,
+                "prominence": 421.04
+              },
+              {
+                "period": 17.873,
+                "freq": 0.05595,
+                "power": 0.746288,
+                "prominence": 272.72
+              },
+              {
+                "period": 16.81,
+                "freq": 0.05949,
+                "power": 0.35662,
+                "prominence": 130.32
+              }
+            ]
+          },
+          "vRes30": {
+            "label": "V-res30",
+            "firstHalf": [
+              {
+                "period": 18.579,
+                "freq": 0.05382,
+                "power": 0.382689,
+                "prominence": 159.6
+              },
+              {
+                "period": 15.183,
+                "freq": 0.06586,
+                "power": 0.239712,
+                "prominence": 99.97
+              },
+              {
+                "period": 16.23,
+                "freq": 0.06161,
+                "power": 0.134402,
+                "prominence": 56.05
+              }
+            ],
+            "secondHalf": [
+              {
+                "period": 17.873,
+                "freq": 0.05595,
+                "power": 0.76125,
+                "prominence": 132.94
+              },
+              {
+                "period": 19.342,
+                "freq": 0.0517,
+                "power": 0.50283,
+                "prominence": 87.81
+              },
+              {
+                "period": 14.863,
+                "freq": 0.06728,
+                "power": 0.28244,
+                "prominence": 49.32
+              }
+            ]
+          }
+        },
+        "rankedCandidates": [
+          {
+            "period": 17.873,
+            "hits": 1,
+            "maxProminence": 377.09
+          },
+          {
+            "period": 19.748,
+            "hits": 1,
+            "maxProminence": 303.59
+          },
+          {
+            "period": 17.753,
+            "hits": 1,
+            "maxProminence": 82.38
+          },
+          {
+            "period": 17.405,
+            "hits": 1,
+            "maxProminence": 54
+          },
+          {
+            "period": 15.059,
+            "hits": 1,
+            "maxProminence": 15.2
+          },
+          {
+            "period": 11.13,
+            "hits": 1,
+            "maxProminence": 5.06
+          }
+        ]
+      },
+      "verticalScales": [
+        {
+          "periodS": 17.873,
+          "lambdaZMedianM": 85.8,
+          "lambdaZp10M": 67.9,
+          "lambdaZp90M": 114.4
+        },
+        {
+          "periodS": 19.748,
+          "lambdaZMedianM": 94.8,
+          "lambdaZp10M": 75,
+          "lambdaZp90M": 126.4
+        },
+        {
+          "periodS": 17.753,
+          "lambdaZMedianM": 85.2,
+          "lambdaZp10M": 67.5,
+          "lambdaZp90M": 113.6
+        },
+        {
+          "periodS": 17.405,
+          "lambdaZMedianM": 83.5,
+          "lambdaZp10M": 66.1,
+          "lambdaZp90M": 111.4
+        }
+      ],
+      "reportedCandidate": {
+        "period": 17.873,
+        "hits": 1,
+        "maxProminence": 377.09
+      }
+    },
+    {
+      "id": "dumas",
+      "label": "Dumas/Stinnett NSSL2 2010-05-18 21:52:18",
+      "identity": {
+        "siteId": "Mobile System/NSSL2",
+        "utcReleaseTime": "2010, 05, 18, 21:52:18",
+        "dataType": "NSSL2  MGAUS/Ascending",
+        "sonde": "101364478/Vaisala RS92-SGP (ccGPS)",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+        "comments": "Matt M./none, Good Sounding",
+        "launchElevation": 1122.1
+      },
+      "flightPhaseClass": "CLEAN ASCENT",
+      "flightPhase": {
+        "firstNative": {
+          "nativeIndex": 0,
+          "time": -1,
+          "alt": 1121.6,
+          "u": 0.1,
+          "v": -1.1
+        },
+        "lastNative": {
+          "nativeIndex": 3021,
+          "time": 3020,
+          "alt": 17147.7,
+          "u": 10.6,
+          "v": -4.5
+        },
+        "maximumAltitude": {
+          "nativeIndex": 3021,
+          "time": 3020,
+          "alt": 17147.7,
+          "press": 89.2,
+          "u": 10.6,
+          "v": -4.5,
+          "usable": true,
+          "isLastNativeRecord": true
+        },
+        "nativeRecordCount": 3022,
+        "postMaxNativeCount": 0,
+        "postMaxValidAltCount": 0,
+        "postMaxUsableI1Count": 0,
+        "postMaxUsableWouldBreakStrictlyIncreasing": 0,
+        "postMaxUsableBreakExamples": [],
+        "persistentlyDecreasingAfterMax": false,
+        "dAltPre": {
+          "n": 3000,
+          "min": 2.5,
+          "p10": 4,
+          "median": 5.2,
+          "p90": 6.7,
+          "max": 19.6
+        },
+        "dAltPost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "dTPre": {
+          "n": 3000,
+          "min": 1,
+          "p10": 1,
+          "median": 1,
+          "p90": 1,
+          "max": 3
+        },
+        "dTPost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "ascentRatePre": {
+          "n": 3000,
+          "min": 1.25,
+          "p10": 4,
+          "median": 5.2,
+          "p90": 6.7,
+          "max": 10.1
+        },
+        "ascentRatePost": {
+          "n": 0,
+          "min": null,
+          "p10": null,
+          "median": null,
+          "p90": null,
+          "max": null
+        },
+        "postAltStepSign": {
+          "negative": 0,
+          "zero": 0,
+          "positive": 0
+        },
+        "lastValidAlt": 17147.7,
+        "lastValidTime": 3020
+      },
+      "nativeVsRetainedVsGolden": {
+        "nativeRecords": 3022,
+        "i1Dropped": 105,
+        "i1Kept": 2917,
+        "productionGolden": {
+          "goldenCount": 2917,
+          "keptCount": 2917,
+          "firstGolden": {
+            "height": -0.5,
+            "eastward": 0.1,
+            "northward": -1.1
+          },
+          "lastGolden": {
+            "height": 16025.6,
+            "eastward": 10.6,
+            "northward": -4.5
+          },
+          "firstKept": {
+            "height": -0.5,
+            "u": 0.1,
+            "v": -1.1,
+            "time": -1
+          },
+          "lastKept": {
+            "height": 16025.6,
+            "u": 10.6,
+            "v": -4.5,
+            "time": 3020
+          },
+          "exactMatch": true,
+          "mismatches": [],
+          "expectedKept": 2917,
+          "expectedKeptMatch": true
+        },
+        "postMaxNative": 0,
+        "postMaxI1Usable": 0,
+        "postMaxI1UsableWouldEnterProduction": false
+      },
+      "sampling": {
+        "nKept": 2917,
+        "time": {
+          "first": -1,
+          "last": 3020,
+          "delta": {
+            "n": 2916,
+            "min": 1,
+            "p10": 1,
+            "median": 1,
+            "p90": 1,
+            "max": 5
+          },
+          "uniqueRounded": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "exact1sShare": 0.9746227709190672,
+          "exact1sCount": 2842
+        },
+        "dAlt": {
+          "n": 2916,
+          "min": 2.5,
+          "p10": 4,
+          "median": 5.2,
+          "p90": 6.8,
+          "max": 36.5
+        },
+        "dHeight": {
+          "n": 2916,
+          "min": 2.5,
+          "p10": 4,
+          "median": 5.2,
+          "p90": 6.8,
+          "max": 36.5
+        },
+        "ascentRate": {
+          "n": 2916,
+          "min": 1.25,
+          "p10": 3.95,
+          "median": 5.2,
+          "p90": 6.6,
+          "max": 10.1
+        },
+        "reportedWcmp": {
+          "n": 2916,
+          "min": 2.8,
+          "p10": 4,
+          "median": 5.2,
+          "p90": 6.6,
+          "max": 9.8
+        },
+        "discontinuitiesDtGt2OrDzGt20": {
+          "n": 21,
+          "examples": [
+            {
+              "fromTime": 8,
+              "toTime": 11,
+              "dt": 3,
+              "fromHeight": 36.4,
+              "toHeight": 54.1,
+              "dHeight": 17.7
+            },
+            {
+              "fromTime": 11,
+              "toTime": 14,
+              "dt": 3,
+              "fromHeight": 54.1,
+              "toHeight": 70.4,
+              "dHeight": 16.3
+            },
+            {
+              "fromTime": 14,
+              "toTime": 18,
+              "dt": 4,
+              "fromHeight": 70.4,
+              "toHeight": 90.1,
+              "dHeight": 19.7
+            },
+            {
+              "fromTime": 1363,
+              "toTime": 1366,
+              "dt": 3,
+              "fromHeight": 7087.8,
+              "toHeight": 7109.1,
+              "dHeight": 21.3
+            },
+            {
+              "fromTime": 1562,
+              "toTime": 1565,
+              "dt": 3,
+              "fromHeight": 8375,
+              "toHeight": 8393.8,
+              "dHeight": 18.8
+            },
+            {
+              "fromTime": 1589,
+              "toTime": 1594,
+              "dt": 5,
+              "fromHeight": 8543.5,
+              "toHeight": 8574.8,
+              "dHeight": 31.3
+            },
+            {
+              "fromTime": 1612,
+              "toTime": 1615,
+              "dt": 3,
+              "fromHeight": 8698.6,
+              "toHeight": 8723.9,
+              "dHeight": 25.3
+            },
+            {
+              "fromTime": 1623,
+              "toTime": 1626,
+              "dt": 3,
+              "fromHeight": 8775.5,
+              "toHeight": 8793.7,
+              "dHeight": 18.2
+            },
+            {
+              "fromTime": 1694,
+              "toTime": 1697,
+              "dt": 3,
+              "fromHeight": 9201.4,
+              "toHeight": 9222,
+              "dHeight": 20.6
+            },
+            {
+              "fromTime": 1715,
+              "toTime": 1718,
+              "dt": 3,
+              "fromHeight": 9327.7,
+              "toHeight": 9347.3,
+              "dHeight": 19.6
+            },
+            {
+              "fromTime": 1722,
+              "toTime": 1726,
+              "dt": 4,
+              "fromHeight": 9372.1,
+              "toHeight": 9395.8,
+              "dHeight": 23.7
+            },
+            {
+              "fromTime": 1763,
+              "toTime": 1768,
+              "dt": 5,
+              "fromHeight": 9610.7,
+              "toHeight": 9637.1,
+              "dHeight": 26.4
+            }
+          ]
+        }
+      },
+      "spectral": {
+        "method": {
+          "retainedDtCheck": "exact 1 s share of consecutive I1-retained TIME steps",
+          "fft": "Hann-windowed periodogram of research-only series; dt = 1 s",
+          "interpolation": "linear interpolation of U/V onto integer-second grid spanning first..last kept TIME, solely for spectral diagnostics; never written back",
+          "firstDifferences": "only consecutive retained pairs with Δt exactly 1 s; no interpolation",
+          "backgrounds": [
+            "first differences ΔU/ΔV",
+            "linear detrend of interpolated U/V",
+            "residual after centered 31-s moving average (~30 s)",
+            "residual after centered 61-s moving average (~60 s)"
+          ],
+          "welch": "256 s windows, 50% overlap, 30 s MA residual",
+          "windowedPersistence": "256 s windows, 50% overlap, 6–20 s band peak tracking"
+        },
+        "interpolation": {
+          "nGrid": 3022,
+          "observedShare": 0.9653,
+          "filledShare": 0.0347,
+          "t0": -1,
+          "t1": 3020
+        },
+        "firstDifferenceStats": {
+          "nExact1sPairs": 2842,
+          "dU": {
+            "n": 2842,
+            "min": -0.7,
+            "p10": -0.1,
+            "median": 0,
+            "p90": 0.1,
+            "max": 0.3
+          },
+          "dV": {
+            "n": 2842,
+            "min": -0.3,
+            "p10": -0.1,
+            "median": 0,
+            "p90": 0.1,
+            "max": 0.6
+          },
+          "residualSpeed": {
+            "n": 2842,
+            "min": 0,
+            "p10": 0,
+            "median": 0.1,
+            "p90": 0.2236,
+            "max": 0.728
+          }
+        },
+        "residual30sStats": {
+          "u": {
+            "n": 3022,
+            "min": -1.8113,
+            "p10": -0.3613,
+            "median": 0.0055,
+            "p90": 0.3545,
+            "max": 3.7469
+          },
+          "v": {
+            "n": 3022,
+            "min": -6.425,
+            "p10": -0.3547,
+            "median": 0.0032,
+            "p90": 0.3418,
+            "max": 1.6742
+          },
+          "mag": {
+            "n": 3022,
+            "min": 0.0036,
+            "p10": 0.1169,
+            "median": 0.2968,
+            "p90": 0.6565,
+            "max": 7.4377
+          }
+        },
+        "peaks": {
+          "firstDiffU": {
+            "label": "dU",
+            "band4to40s": [
+              {
+                "period": 28.707,
+                "freq": 0.03483,
+                "power": 0.545265,
+                "prominence": 178.47
+              },
+              {
+                "period": 29.604,
+                "freq": 0.03378,
+                "power": 0.477352,
+                "prominence": 156.24
+              },
+              {
+                "period": 38.932,
+                "freq": 0.02569,
+                "power": 0.370474,
+                "prominence": 121.26
+              },
+              {
+                "period": 36.436,
+                "freq": 0.02745,
+                "power": 0.365725,
+                "prominence": 119.71
+              },
+              {
+                "period": 33.833,
+                "freq": 0.02956,
+                "power": 0.282727,
+                "prominence": 92.54
+              },
+              {
+                "period": 25.15,
+                "freq": 0.03976,
+                "power": 0.230408,
+                "prominence": 75.42
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 16.523,
+                "freq": 0.06052,
+                "power": 0.119497,
+                "prominence": 31.42
+              },
+              {
+                "period": 17.874,
+                "freq": 0.05595,
+                "power": 0.073476,
+                "prominence": 19.32
+              },
+              {
+                "period": 18.335,
+                "freq": 0.05454,
+                "power": 0.058495,
+                "prominence": 15.38
+              },
+              {
+                "period": 11.941,
+                "freq": 0.08374,
+                "power": 0.05651,
+                "prominence": 14.86
+              },
+              {
+                "period": 15.615,
+                "freq": 0.06404,
+                "power": 0.05088,
+                "prominence": 13.38
+              },
+              {
+                "period": 14.069,
+                "freq": 0.07108,
+                "power": 0.048118,
+                "prominence": 12.65
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 72.872,
+                "freq": 0.01372,
+                "power": 0.408143,
+                "prominence": 5.63
+              },
+              {
+                "period": 43.723,
+                "freq": 0.02287,
+                "power": 0.360928,
+                "prominence": 4.98
+              },
+              {
+                "period": 51.673,
+                "freq": 0.01935,
+                "power": 0.297314,
+                "prominence": 4.1
+              },
+              {
+                "period": 55.725,
+                "freq": 0.01795,
+                "power": 0.228873,
+                "prominence": 3.16
+              }
+            ]
+          },
+          "firstDiffV": {
+            "label": "dV",
+            "band4to40s": [
+              {
+                "period": 31.578,
+                "freq": 0.03167,
+                "power": 0.555788,
+                "prominence": 219.08
+              },
+              {
+                "period": 24.291,
+                "freq": 0.04117,
+                "power": 0.237816,
+                "prominence": 93.74
+              },
+              {
+                "period": 37.893,
+                "freq": 0.02639,
+                "power": 0.189011,
+                "prominence": 74.5
+              },
+              {
+                "period": 17.763,
+                "freq": 0.0563,
+                "power": 0.178986,
+                "prominence": 70.55
+              },
+              {
+                "period": 35.975,
+                "freq": 0.0278,
+                "power": 0.169841,
+                "prominence": 66.95
+              },
+              {
+                "period": 33.047,
+                "freq": 0.03026,
+                "power": 0.159691,
+                "prominence": 62.95
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.763,
+                "freq": 0.0563,
+                "power": 0.178986,
+                "prominence": 64.17
+              },
+              {
+                "period": 13.28,
+                "freq": 0.0753,
+                "power": 0.120974,
+                "prominence": 43.37
+              },
+              {
+                "period": 14.649,
+                "freq": 0.06826,
+                "power": 0.07256,
+                "prominence": 26.01
+              },
+              {
+                "period": 16.817,
+                "freq": 0.05947,
+                "power": 0.058725,
+                "prominence": 21.05
+              },
+              {
+                "period": 17.436,
+                "freq": 0.05735,
+                "power": 0.053976,
+                "prominence": 19.35
+              },
+              {
+                "period": 12.744,
+                "freq": 0.07847,
+                "power": 0.05363,
+                "prominence": 19.23
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 52.63,
+                "freq": 0.019,
+                "power": 0.258251,
+                "prominence": 4.59
+              },
+              {
+                "period": 43.061,
+                "freq": 0.02322,
+                "power": 0.24515,
+                "prominence": 4.36
+              },
+              {
+                "period": 47.367,
+                "freq": 0.02111,
+                "power": 0.212406,
+                "prominence": 3.77
+              },
+              {
+                "period": 66.093,
+                "freq": 0.01513,
+                "power": 0.20805,
+                "prominence": 3.7
+              }
+            ]
+          },
+          "detrendU": {
+            "label": "U-detrend",
+            "band4to40s": [
+              {
+                "period": 37.309,
+                "freq": 0.0268,
+                "power": 48.431669,
+                "prominence": 23572.06
+              },
+              {
+                "period": 33.955,
+                "freq": 0.02945,
+                "power": 11.116809,
+                "prominence": 5410.63
+              },
+              {
+                "period": 35.14,
+                "freq": 0.02846,
+                "power": 8.78426,
+                "prominence": 4275.36
+              },
+              {
+                "period": 28.781,
+                "freq": 0.03475,
+                "power": 6.32224,
+                "prominence": 3077.08
+              },
+              {
+                "period": 25.395,
+                "freq": 0.03938,
+                "power": 5.479826,
+                "prominence": 2667.07
+              },
+              {
+                "period": 30.22,
+                "freq": 0.03309,
+                "power": 4.121771,
+                "prominence": 2006.1
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 15.263,
+                "freq": 0.06552,
+                "power": 0.644103,
+                "prominence": 153.6
+              },
+              {
+                "period": 16.883,
+                "freq": 0.05923,
+                "power": 0.63038,
+                "prominence": 150.33
+              },
+              {
+                "period": 18.205,
+                "freq": 0.05493,
+                "power": 0.453589,
+                "prominence": 108.17
+              },
+              {
+                "period": 18.77,
+                "freq": 0.05328,
+                "power": 0.381647,
+                "prominence": 91.01
+              },
+              {
+                "period": 15.497,
+                "freq": 0.06453,
+                "power": 0.350016,
+                "prominence": 83.47
+              },
+              {
+                "period": 17.57,
+                "freq": 0.05692,
+                "power": 0.320627,
+                "prominence": 76.46
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 77.487,
+                "freq": 0.01291,
+                "power": 67.746303,
+                "prominence": 5.78
+              },
+              {
+                "period": 111.926,
+                "freq": 0.00893,
+                "power": 57.690264,
+                "prominence": 4.93
+              },
+              {
+                "period": 83.944,
+                "freq": 0.01191,
+                "power": 48.893215,
+                "prominence": 4.17
+              },
+              {
+                "period": 44.441,
+                "freq": 0.0225,
+                "power": 26.89004,
+                "prominence": 2.3
+              }
+            ]
+          },
+          "detrendV": {
+            "label": "V-detrend",
+            "band4to40s": [
+              {
+                "period": 39.247,
+                "freq": 0.02548,
+                "power": 21.914482,
+                "prominence": 9496.73
+              },
+              {
+                "period": 36.41,
+                "freq": 0.02747,
+                "power": 12.174135,
+                "prominence": 5275.71
+              },
+              {
+                "period": 32.848,
+                "freq": 0.03044,
+                "power": 9.676837,
+                "prominence": 4193.5
+              },
+              {
+                "period": 30.525,
+                "freq": 0.03276,
+                "power": 3.425133,
+                "prominence": 1484.3
+              },
+              {
+                "period": 24.975,
+                "freq": 0.04004,
+                "power": 3.082743,
+                "prominence": 1335.92
+              },
+              {
+                "period": 27.473,
+                "freq": 0.0364,
+                "power": 2.739352,
+                "prominence": 1187.11
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.315,
+                "freq": 0.0546,
+                "power": 0.77206,
+                "prominence": 170.62
+              },
+              {
+                "period": 17.17,
+                "freq": 0.05824,
+                "power": 0.628761,
+                "prominence": 138.96
+              },
+              {
+                "period": 19.372,
+                "freq": 0.05162,
+                "power": 0.514658,
+                "prominence": 113.74
+              },
+              {
+                "period": 12.539,
+                "freq": 0.07975,
+                "power": 0.365163,
+                "prominence": 80.7
+              },
+              {
+                "period": 17.776,
+                "freq": 0.05625,
+                "power": 0.284252,
+                "prominence": 62.82
+              },
+              {
+                "period": 17.468,
+                "freq": 0.05725,
+                "power": 0.276538,
+                "prominence": 61.11
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 107.929,
+                "freq": 0.00927,
+                "power": 86.211744,
+                "prominence": 12.75
+              },
+              {
+                "period": 68.682,
+                "freq": 0.01456,
+                "power": 44.091637,
+                "prominence": 6.52
+              },
+              {
+                "period": 53.018,
+                "freq": 0.01886,
+                "power": 38.762147,
+                "prominence": 5.73
+              },
+              {
+                "period": 57.019,
+                "freq": 0.01754,
+                "power": 31.718133,
+                "prominence": 4.69
+              }
+            ]
+          },
+          "residual30sU": {
+            "label": "U-res30",
+            "band4to40s": [
+              {
+                "period": 37.309,
+                "freq": 0.0268,
+                "power": 31.501816,
+                "prominence": 15171.23
+              },
+              {
+                "period": 33.955,
+                "freq": 0.02945,
+                "power": 9.098194,
+                "prominence": 4381.68
+              },
+              {
+                "period": 25.395,
+                "freq": 0.03938,
+                "power": 7.461708,
+                "prominence": 3593.55
+              },
+              {
+                "period": 28.781,
+                "freq": 0.03475,
+                "power": 7.262776,
+                "prominence": 3497.74
+              },
+              {
+                "period": 35.14,
+                "freq": 0.02846,
+                "power": 6.635788,
+                "prominence": 3195.79
+              },
+              {
+                "period": 23.246,
+                "freq": 0.04302,
+                "power": 5.316933,
+                "prominence": 2560.63
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 16.978,
+                "freq": 0.0589,
+                "power": 0.747771,
+                "prominence": 175.05
+              },
+              {
+                "period": 15.263,
+                "freq": 0.06552,
+                "power": 0.623879,
+                "prominence": 146.04
+              },
+              {
+                "period": 18.205,
+                "freq": 0.05493,
+                "power": 0.600402,
+                "prominence": 140.55
+              },
+              {
+                "period": 18.77,
+                "freq": 0.05328,
+                "power": 0.524837,
+                "prominence": 122.86
+              },
+              {
+                "period": 17.57,
+                "freq": 0.05692,
+                "power": 0.403543,
+                "prominence": 94.47
+              },
+              {
+                "period": 19.372,
+                "freq": 0.05162,
+                "power": 0.377515,
+                "prominence": 88.37
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 44.441,
+                "freq": 0.0225,
+                "power": 10.562425,
+                "prominence": 9.04
+              },
+              {
+                "period": 48.742,
+                "freq": 0.02052,
+                "power": 6.357902,
+                "prominence": 5.44
+              },
+              {
+                "period": 45.788,
+                "freq": 0.02184,
+                "power": 5.229108,
+                "prominence": 4.47
+              },
+              {
+                "period": 52.103,
+                "freq": 0.01919,
+                "power": 4.404777,
+                "prominence": 3.77
+              }
+            ]
+          },
+          "residual30sV": {
+            "label": "V-res30",
+            "band4to40s": [
+              {
+                "period": 39.247,
+                "freq": 0.02548,
+                "power": 12.436157,
+                "prominence": 5356.93
+              },
+              {
+                "period": 32.848,
+                "freq": 0.03044,
+                "power": 8.53112,
+                "prominence": 3674.81
+              },
+              {
+                "period": 36.41,
+                "freq": 0.02747,
+                "power": 8.384578,
+                "prominence": 3611.69
+              },
+              {
+                "period": 24.975,
+                "freq": 0.04004,
+                "power": 4.271686,
+                "prominence": 1840.05
+              },
+              {
+                "period": 30.22,
+                "freq": 0.03309,
+                "power": 3.564803,
+                "prominence": 1535.55
+              },
+              {
+                "period": 27.473,
+                "freq": 0.0364,
+                "power": 3.383538,
+                "prominence": 1457.47
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.315,
+                "freq": 0.0546,
+                "power": 1.030704,
+                "prominence": 194.91
+              },
+              {
+                "period": 17.17,
+                "freq": 0.05824,
+                "power": 0.76231,
+                "prominence": 144.15
+              },
+              {
+                "period": 19.372,
+                "freq": 0.05162,
+                "power": 0.728741,
+                "prominence": 137.81
+              },
+              {
+                "period": 17.776,
+                "freq": 0.05625,
+                "power": 0.364361,
+                "prominence": 68.9
+              },
+              {
+                "period": 17.468,
+                "freq": 0.05725,
+                "power": 0.345114,
+                "prominence": 65.26
+              },
+              {
+                "period": 19.006,
+                "freq": 0.05261,
+                "power": 0.32054,
+                "prominence": 60.61
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 53.018,
+                "freq": 0.01886,
+                "power": 8.676991,
+                "prominence": 8.39
+              },
+              {
+                "period": 44.441,
+                "freq": 0.0225,
+                "power": 5.734358,
+                "prominence": 5.55
+              },
+              {
+                "period": 57.019,
+                "freq": 0.01754,
+                "power": 5.633566,
+                "prominence": 5.45
+              },
+              {
+                "period": 68.682,
+                "freq": 0.01456,
+                "power": 3.982385,
+                "prominence": 3.85
+              }
+            ]
+          },
+          "residual60sU": {
+            "label": "U-res60",
+            "band4to40s": [
+              {
+                "period": 37.309,
+                "freq": 0.0268,
+                "power": 67.09597,
+                "prominence": 33099.14
+              },
+              {
+                "period": 33.955,
+                "freq": 0.02945,
+                "power": 13.616686,
+                "prominence": 6717.25
+              },
+              {
+                "period": 35.14,
+                "freq": 0.02846,
+                "power": 11.326405,
+                "prominence": 5587.43
+              },
+              {
+                "period": 28.781,
+                "freq": 0.03475,
+                "power": 5.635382,
+                "prominence": 2779.99
+              },
+              {
+                "period": 25.395,
+                "freq": 0.03938,
+                "power": 4.181686,
+                "prominence": 2062.87
+              },
+              {
+                "period": 30.22,
+                "freq": 0.03309,
+                "power": 4.028027,
+                "prominence": 1987.07
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 16.978,
+                "freq": 0.0589,
+                "power": 0.739828,
+                "prominence": 172.3
+              },
+              {
+                "period": 15.263,
+                "freq": 0.06552,
+                "power": 0.64461,
+                "prominence": 150.12
+              },
+              {
+                "period": 18.205,
+                "freq": 0.05493,
+                "power": 0.534208,
+                "prominence": 124.41
+              },
+              {
+                "period": 18.77,
+                "freq": 0.05328,
+                "power": 0.435972,
+                "prominence": 101.53
+              },
+              {
+                "period": 17.57,
+                "freq": 0.05692,
+                "power": 0.382143,
+                "prominence": 89
+              },
+              {
+                "period": 15.497,
+                "freq": 0.06453,
+                "power": 0.361113,
+                "prominence": 84.1
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 44.441,
+                "freq": 0.0225,
+                "power": 39.581055,
+                "prominence": 4.69
+              },
+              {
+                "period": 77.487,
+                "freq": 0.01291,
+                "power": 38.176832,
+                "prominence": 4.52
+              },
+              {
+                "period": 48.742,
+                "freq": 0.02052,
+                "power": 29.693062,
+                "prominence": 3.51
+              },
+              {
+                "period": 52.103,
+                "freq": 0.01919,
+                "power": 23.835663,
+                "prominence": 2.82
+              }
+            ]
+          },
+          "residual60sV": {
+            "label": "V-res60",
+            "band4to40s": [
+              {
+                "period": 39.247,
+                "freq": 0.02548,
+                "power": 31.6395,
+                "prominence": 13617
+              },
+              {
+                "period": 36.41,
+                "freq": 0.02747,
+                "power": 16.470726,
+                "prominence": 7088.67
+              },
+              {
+                "period": 32.848,
+                "freq": 0.03044,
+                "power": 11.205935,
+                "prominence": 4822.81
+              },
+              {
+                "period": 30.525,
+                "freq": 0.03276,
+                "power": 3.413312,
+                "prominence": 1469.02
+              },
+              {
+                "period": 24.975,
+                "freq": 0.04004,
+                "power": 2.341173,
+                "prominence": 1007.59
+              },
+              {
+                "period": 27.981,
+                "freq": 0.03574,
+                "power": 2.284833,
+                "prominence": 983.35
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 18.315,
+                "freq": 0.0546,
+                "power": 0.90514,
+                "prominence": 199.74
+              },
+              {
+                "period": 17.17,
+                "freq": 0.05824,
+                "power": 0.745084,
+                "prominence": 164.42
+              },
+              {
+                "period": 19.372,
+                "freq": 0.05162,
+                "power": 0.562865,
+                "prominence": 124.21
+              },
+              {
+                "period": 12.539,
+                "freq": 0.07975,
+                "power": 0.345307,
+                "prominence": 76.2
+              },
+              {
+                "period": 17.776,
+                "freq": 0.05625,
+                "power": 0.338442,
+                "prominence": 74.69
+              },
+              {
+                "period": 17.468,
+                "freq": 0.05725,
+                "power": 0.329456,
+                "prominence": 72.7
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 53.018,
+                "freq": 0.01886,
+                "power": 49.037732,
+                "prominence": 8.76
+              },
+              {
+                "period": 57.019,
+                "freq": 0.01754,
+                "power": 36.103708,
+                "prominence": 6.45
+              },
+              {
+                "period": 68.682,
+                "freq": 0.01456,
+                "power": 33.524186,
+                "prominence": 5.99
+              },
+              {
+                "period": 45.104,
+                "freq": 0.02217,
+                "power": 22.229786,
+                "prominence": 3.97
+              }
+            ]
+          },
+          "residual30sMag": {
+            "label": "|res30|",
+            "band4to40s": [
+              {
+                "period": 20.558,
+                "freq": 0.04864,
+                "power": 5.66022,
+                "prominence": 789.95
+              },
+              {
+                "period": 17.776,
+                "freq": 0.05625,
+                "power": 2.648436,
+                "prominence": 369.62
+              },
+              {
+                "period": 15.11,
+                "freq": 0.06618,
+                "power": 1.740953,
+                "prominence": 242.97
+              },
+              {
+                "period": 18.427,
+                "freq": 0.05427,
+                "power": 1.446425,
+                "prominence": 201.86
+              },
+              {
+                "period": 26.509,
+                "freq": 0.03772,
+                "power": 1.433527,
+                "prominence": 200.06
+              },
+              {
+                "period": 17.988,
+                "freq": 0.05559,
+                "power": 1.376267,
+                "prominence": 192.07
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 17.776,
+                "freq": 0.05625,
+                "power": 2.648436,
+                "prominence": 105.51
+              },
+              {
+                "period": 15.11,
+                "freq": 0.06618,
+                "power": 1.740953,
+                "prominence": 69.35
+              },
+              {
+                "period": 18.427,
+                "freq": 0.05427,
+                "power": 1.446425,
+                "prominence": 57.62
+              },
+              {
+                "period": 17.988,
+                "freq": 0.05559,
+                "power": 1.376267,
+                "prominence": 54.83
+              },
+              {
+                "period": 16.696,
+                "freq": 0.05989,
+                "power": 1.165819,
+                "prominence": 46.44
+              },
+              {
+                "period": 18.888,
+                "freq": 0.05295,
+                "power": 0.976974,
+                "prominence": 38.92
+              }
+            ],
+            "band40to120s": [
+              {
+                "period": 111.926,
+                "freq": 0.00893,
+                "power": 6.24446,
+                "prominence": 11.36
+              },
+              {
+                "period": 79.526,
+                "freq": 0.01257,
+                "power": 2.683889,
+                "prominence": 4.88
+              },
+              {
+                "period": 57.019,
+                "freq": 0.01754,
+                "power": 1.703189,
+                "prominence": 3.1
+              },
+              {
+                "period": 59.255,
+                "freq": 0.01688,
+                "power": 1.513722,
+                "prominence": 2.75
+              }
+            ]
+          },
+          "welchU": {
+            "label": "welch-U-res30",
+            "band4to40s": [
+              {
+                "period": 15.059,
+                "freq": 0.06641,
+                "power": 0.125243,
+                "prominence": 76.16
+              },
+              {
+                "period": 11.636,
+                "freq": 0.08594,
+                "power": 0.037135,
+                "prominence": 22.58
+              },
+              {
+                "period": 9.846,
+                "freq": 0.10156,
+                "power": 0.009276,
+                "prominence": 5.64
+              },
+              {
+                "period": 7.758,
+                "freq": 0.12891,
+                "power": 0.002439,
+                "prominence": 1.48
+              },
+              {
+                "period": 4.83,
+                "freq": 0.20703,
+                "power": 0.00203,
+                "prominence": 1.23
+              },
+              {
+                "period": 6.095,
+                "freq": 0.16406,
+                "power": 0.00176,
+                "prominence": 1.07
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 15.059,
+                "freq": 0.06641,
+                "power": 0.125243,
+                "prominence": 19.68
+              },
+              {
+                "period": 11.636,
+                "freq": 0.08594,
+                "power": 0.037135,
+                "prominence": 5.84
+              },
+              {
+                "period": 9.846,
+                "freq": 0.10156,
+                "power": 0.009276,
+                "prominence": 1.46
+              },
+              {
+                "period": 7.758,
+                "freq": 0.12891,
+                "power": 0.002439,
+                "prominence": 0.38
+              },
+              {
+                "period": 8.258,
+                "freq": 0.12109,
+                "power": 0.001669,
+                "prominence": 0.26
+              },
+              {
+                "period": 6.737,
+                "freq": 0.14844,
+                "power": 0.001038,
+                "prominence": 0.16
+              }
+            ],
+            "band40to120s": []
+          },
+          "welchV": {
+            "label": "welch-V-res30",
+            "band4to40s": [
+              {
+                "period": 12.8,
+                "freq": 0.07813,
+                "power": 0.046267,
+                "prominence": 26.62
+              },
+              {
+                "period": 11.636,
+                "freq": 0.08594,
+                "power": 0.037777,
+                "prominence": 21.74
+              },
+              {
+                "period": 9.846,
+                "freq": 0.10156,
+                "power": 0.011172,
+                "prominence": 6.43
+              },
+              {
+                "period": 8,
+                "freq": 0.125,
+                "power": 0.002485,
+                "prominence": 1.43
+              },
+              {
+                "period": 7.529,
+                "freq": 0.13281,
+                "power": 0.002154,
+                "prominence": 1.24
+              },
+              {
+                "period": 6.095,
+                "freq": 0.16406,
+                "power": 0.002035,
+                "prominence": 1.17
+              }
+            ],
+            "band6to20s": [
+              {
+                "period": 12.8,
+                "freq": 0.07813,
+                "power": 0.046267,
+                "prominence": 7.61
+              },
+              {
+                "period": 11.636,
+                "freq": 0.08594,
+                "power": 0.037777,
+                "prominence": 6.21
+              },
+              {
+                "period": 9.846,
+                "freq": 0.10156,
+                "power": 0.011172,
+                "prominence": 1.84
+              },
+              {
+                "period": 8,
+                "freq": 0.125,
+                "power": 0.002485,
+                "prominence": 0.41
+              },
+              {
+                "period": 7.529,
+                "freq": 0.13281,
+                "power": 0.002154,
+                "prominence": 0.35
+              },
+              {
+                "period": 6.737,
+                "freq": 0.14844,
+                "power": 0.00152,
+                "prominence": 0.25
+              }
+            ],
+            "band40to120s": []
+          }
+        },
+        "welchWindows": {
+          "u": 22,
+          "v": 22,
+          "windowLen": 256
+        },
+        "autocorrFirstPositivePeak": {
+          "uRes30": {
+            "lag": 37,
+            "r": 0.1663
+          },
+          "vRes30": {
+            "lag": 45,
+            "r": 0.1198
+          },
+          "dU": {
+            "lag": 2,
+            "r": 0.7628
+          }
+        },
+        "persistence6to20s": {
+          "uRes30": {
+            "nWindows": 22,
+            "windowLenS": 256,
+            "medianTopPeriodS": 16,
+            "fractionWithin20pctOfMedian": 0.818,
+            "windows": [
+              {
+                "startTimeOffsetS": 0,
+                "topPeriodS": 11.636,
+                "topProminence": 8.07
+              },
+              {
+                "startTimeOffsetS": 128,
+                "topPeriodS": 17.067,
+                "topProminence": 99.6
+              },
+              {
+                "startTimeOffsetS": 256,
+                "topPeriodS": 11.13,
+                "topProminence": 7.03
+              },
+              {
+                "startTimeOffsetS": 384,
+                "topPeriodS": 16,
+                "topProminence": 59.06
+              },
+              {
+                "startTimeOffsetS": 512,
+                "topPeriodS": 13.474,
+                "topProminence": 21.45
+              },
+              {
+                "startTimeOffsetS": 640,
+                "topPeriodS": 16,
+                "topProminence": 30.29
+              },
+              {
+                "startTimeOffsetS": 768,
+                "topPeriodS": 18.286,
+                "topProminence": 99.97
+              },
+              {
+                "startTimeOffsetS": 896,
+                "topPeriodS": 17.067,
+                "topProminence": 11.78
+              },
+              {
+                "startTimeOffsetS": 1024,
+                "topPeriodS": 17.067,
+                "topProminence": 84.38
+              },
+              {
+                "startTimeOffsetS": 1152,
+                "topPeriodS": 16,
+                "topProminence": 76.78
+              },
+              {
+                "startTimeOffsetS": 1280,
+                "topPeriodS": 11.13,
+                "topProminence": 25.16
+              },
+              {
+                "startTimeOffsetS": 1408,
+                "topPeriodS": 16,
+                "topProminence": 16.57
+              },
+              {
+                "startTimeOffsetS": 1536,
+                "topPeriodS": 15.059,
+                "topProminence": 130.41
+              },
+              {
+                "startTimeOffsetS": 1664,
+                "topPeriodS": 15.059,
+                "topProminence": 188.14
+              },
+              {
+                "startTimeOffsetS": 1792,
+                "topPeriodS": 18.286,
+                "topProminence": 92.03
+              },
+              {
+                "startTimeOffsetS": 1920,
+                "topPeriodS": 18.286,
+                "topProminence": 88.28
+              },
+              {
+                "startTimeOffsetS": 2048,
+                "topPeriodS": 17.067,
+                "topProminence": 15.45
+              },
+              {
+                "startTimeOffsetS": 2176,
+                "topPeriodS": 18.286,
+                "topProminence": 65.75
+              },
+              {
+                "startTimeOffsetS": 2304,
+                "topPeriodS": 17.067,
+                "topProminence": 71.56
+              },
+              {
+                "startTimeOffsetS": 2432,
+                "topPeriodS": 16,
+                "topProminence": 17.6
+              },
+              {
+                "startTimeOffsetS": 2560,
+                "topPeriodS": 17.067,
+                "topProminence": 13.27
+              },
+              {
+                "startTimeOffsetS": 2688,
+                "topPeriodS": 11.636,
+                "topProminence": 10.74
+              }
+            ]
+          },
+          "vRes30": {
+            "nWindows": 22,
+            "windowLenS": 256,
+            "medianTopPeriodS": 16,
+            "fractionWithin20pctOfMedian": 0.864,
+            "windows": [
+              {
+                "startTimeOffsetS": 0,
+                "topPeriodS": 11.636,
+                "topProminence": 25.53
+              },
+              {
+                "startTimeOffsetS": 128,
+                "topPeriodS": 16,
+                "topProminence": 59.98
+              },
+              {
+                "startTimeOffsetS": 256,
+                "topPeriodS": 17.067,
+                "topProminence": 29.56
+              },
+              {
+                "startTimeOffsetS": 384,
+                "topPeriodS": 17.067,
+                "topProminence": 29.4
+              },
+              {
+                "startTimeOffsetS": 512,
+                "topPeriodS": 12.8,
+                "topProminence": 30.95
+              },
+              {
+                "startTimeOffsetS": 640,
+                "topPeriodS": 17.067,
+                "topProminence": 34.84
+              },
+              {
+                "startTimeOffsetS": 768,
+                "topPeriodS": 18.286,
+                "topProminence": 82.6
+              },
+              {
+                "startTimeOffsetS": 896,
+                "topPeriodS": 17.067,
+                "topProminence": 7.36
+              },
+              {
+                "startTimeOffsetS": 1024,
+                "topPeriodS": 14.222,
+                "topProminence": 6.29
+              },
+              {
+                "startTimeOffsetS": 1152,
+                "topPeriodS": 16,
+                "topProminence": 25.39
+              },
+              {
+                "startTimeOffsetS": 1280,
+                "topPeriodS": 18.286,
+                "topProminence": 87.05
+              },
+              {
+                "startTimeOffsetS": 1408,
+                "topPeriodS": 18.286,
+                "topProminence": 96.28
+              },
+              {
+                "startTimeOffsetS": 1536,
+                "topPeriodS": 17.067,
+                "topProminence": 99.49
+              },
+              {
+                "startTimeOffsetS": 1664,
+                "topPeriodS": 18.286,
+                "topProminence": 459.07
+              },
+              {
+                "startTimeOffsetS": 1792,
+                "topPeriodS": 16,
+                "topProminence": 51.85
+              },
+              {
+                "startTimeOffsetS": 1920,
+                "topPeriodS": 16,
+                "topProminence": 14.11
+              },
+              {
+                "startTimeOffsetS": 2048,
+                "topPeriodS": 11.636,
+                "topProminence": 13.57
+              },
+              {
+                "startTimeOffsetS": 2176,
+                "topPeriodS": 12.8,
+                "topProminence": 6.19
+              },
+              {
+                "startTimeOffsetS": 2304,
+                "topPeriodS": 12.8,
+                "topProminence": 6.26
+              },
+              {
+                "startTimeOffsetS": 2432,
+                "topPeriodS": 15.059,
+                "topProminence": 9.78
+              },
+              {
+                "startTimeOffsetS": 2560,
+                "topPeriodS": 11.13,
+                "topProminence": 4.45
+              },
+              {
+                "startTimeOffsetS": 2688,
+                "topPeriodS": 17.067,
+                "topProminence": 52.21
+              }
+            ]
+          }
+        },
+        "halfFlight6to20s": {
+          "uRes30": {
+            "label": "U-res30",
+            "firstHalf": [
+              {
+                "period": 18.888,
+                "freq": 0.05295,
+                "power": 0.623653,
+                "prominence": 177.66
+              },
+              {
+                "period": 17.988,
+                "freq": 0.05559,
+                "power": 0.336182,
+                "prominence": 95.77
+              },
+              {
+                "period": 16.074,
+                "freq": 0.06221,
+                "power": 0.175022,
+                "prominence": 49.86
+              }
+            ],
+            "secondHalf": [
+              {
+                "period": 18.205,
+                "freq": 0.05493,
+                "power": 0.388451,
+                "prominence": 170.17
+              },
+              {
+                "period": 15.263,
+                "freq": 0.06552,
+                "power": 0.286288,
+                "prominence": 125.41
+              },
+              {
+                "period": 17.17,
+                "freq": 0.05824,
+                "power": 0.182112,
+                "prominence": 79.78
+              }
+            ]
+          },
+          "vRes30": {
+            "label": "V-res30",
+            "firstHalf": [
+              {
+                "period": 16.978,
+                "freq": 0.0589,
+                "power": 0.349846,
+                "prominence": 116.49
+              },
+              {
+                "period": 19.372,
+                "freq": 0.05162,
+                "power": 0.234532,
+                "prominence": 78.1
+              },
+              {
+                "period": 17.776,
+                "freq": 0.05625,
+                "power": 0.199229,
+                "prominence": 66.34
+              }
+            ],
+            "secondHalf": [
+              {
+                "period": 15.418,
+                "freq": 0.06486,
+                "power": 0.175575,
+                "prominence": 48.22
+              },
+              {
+                "period": 18.205,
+                "freq": 0.05493,
+                "power": 0.135264,
+                "prominence": 37.15
+              },
+              {
+                "period": 17.17,
+                "freq": 0.05824,
+                "power": 0.104079,
+                "prominence": 28.58
+              }
+            ]
+          }
+        },
+        "rankedCandidates": [
+          {
+            "period": 18.315,
+            "hits": 1,
+            "maxProminence": 194.91
+          },
+          {
+            "period": 16.978,
+            "hits": 1,
+            "maxProminence": 175.05
+          },
+          {
+            "period": 17.763,
+            "hits": 1,
+            "maxProminence": 64.17
+          },
+          {
+            "period": 16.523,
+            "hits": 1,
+            "maxProminence": 31.42
+          },
+          {
+            "period": 15.059,
+            "hits": 1,
+            "maxProminence": 19.68
+          },
+          {
+            "period": 12.8,
+            "hits": 1,
+            "maxProminence": 7.61
+          }
+        ]
+      },
+      "verticalScales": [
+        {
+          "periodS": 18.315,
+          "lambdaZMedianM": 95.2,
+          "lambdaZp10M": 72.3,
+          "lambdaZp90M": 120.9
+        },
+        {
+          "periodS": 16.978,
+          "lambdaZMedianM": 88.3,
+          "lambdaZp10M": 67.1,
+          "lambdaZp90M": 112.1
+        },
+        {
+          "periodS": 17.763,
+          "lambdaZMedianM": 92.4,
+          "lambdaZp10M": 70.2,
+          "lambdaZp90M": 117.2
+        },
+        {
+          "periodS": 16.523,
+          "lambdaZMedianM": 85.9,
+          "lambdaZp10M": 65.3,
+          "lambdaZp90M": 109.1
+        }
+      ],
+      "reportedCandidate": {
+        "period": 18.315,
+        "hits": 1,
+        "maxProminence": 194.91
+      }
+    }
+  ]
+}
