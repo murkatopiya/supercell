@@ -104,6 +104,16 @@ export interface TracerViewportProps {
    */
   onTracerSelect?: (tracerId: number) => void;
   /**
+   * Pathline sample pick → occupancy slot + history index.
+   * Does not replace live tracer selection.
+   */
+  onPathSampleSelect?: (slotIndex: number, historyIndex: number) => void;
+  /**
+   * World position of the inspected historical sample, or null.
+   * Presentation-only; Follow still tracks the live glyph.
+   */
+  historicalProbePosition?: Vec3 | null;
+  /**
    * After one or more fixed steps in this animation frame, once the
    * displayed particle/clock state is current. Not called when
    * consumed.steps === 0.
@@ -148,6 +158,8 @@ export function TracerViewport({
   highlightOperand = null,
   depthCueEnabled = false,
   onTracerSelect,
+  onPathSampleSelect,
+  historicalProbePosition = null,
   onSimulationAdvanced,
   followEnabledRef,
   onFollowUnavailable,
@@ -164,6 +176,8 @@ export function TracerViewport({
   );
   const onPlacementAttemptRef = useRef(onPlacementAttempt);
   const onTracerSelectRef = useRef(onTracerSelect);
+  const onPathSampleSelectRef = useRef(onPathSampleSelect);
+  const historicalProbePositionRef = useRef(historicalProbePosition);
   const onSimulationAdvancedRef = useRef(onSimulationAdvanced);
   const followEnabledSourceRef = useRef(followEnabledRef);
   const onFollowUnavailableRef = useRef(onFollowUnavailable);
@@ -182,6 +196,8 @@ export function TracerViewport({
   pendingPreviewRef.current = pendingReleasePreview;
   onPlacementAttemptRef.current = onPlacementAttempt;
   onTracerSelectRef.current = onTracerSelect;
+  onPathSampleSelectRef.current = onPathSampleSelect;
+  historicalProbePositionRef.current = historicalProbePosition;
   onSimulationAdvancedRef.current = onSimulationAdvanced;
   followEnabledSourceRef.current = followEnabledRef;
   onFollowUnavailableRef.current = onFollowUnavailable;
@@ -282,6 +298,7 @@ export function TracerViewport({
           selectedTracerIdRef.current,
         ),
       );
+      scene.syncHistoricalPathProbe(historicalProbePositionRef.current);
       const follow = viewportFollowSync({
         followEnabled: followEnabledSourceRef.current?.current === true,
         particles: simulation.particles,
@@ -356,9 +373,19 @@ export function TracerViewport({
         event.clientY,
         rect,
       );
+      const hitPathSample =
+        pathHistory === null || pathHistory === undefined
+          ? null
+          : scene.pickPathHistorySampleAtClientPoint(
+              pathHistory,
+              event.clientX,
+              event.clientY,
+              rect,
+            );
       const decision = resolveTracerPointerUp({
         pointerMovementPx: movement,
         hitSlotIndex,
+        hitPathSample,
         placementAvailable: onPlacementAttemptRef.current !== undefined,
         ray,
       });
@@ -370,6 +397,13 @@ export function TracerViewport({
         if (tracerId !== undefined) {
           onTracerSelectRef.current?.(tracerId);
         }
+        return;
+      }
+      if (decision.action === "inspect-path") {
+        onPathSampleSelectRef.current?.(
+          decision.slotIndex,
+          decision.historyIndex,
+        );
         return;
       }
       if (decision.action === "placement") {

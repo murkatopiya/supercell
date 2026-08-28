@@ -55,7 +55,7 @@ export class ExploreTracerSession {
     const owned = copyAtmosphericTracerSeed(seed);
     const particle = createTracersFromSeeds([owned])[0]!;
     this.simulation.addParticle(particle);
-    this.pathHistory.appendParticle(particle);
+    this.pathHistory.appendParticle(particle, this.simulation.clock.time);
     this.ownedSeeds.push(owned);
     this.assertAligned();
   }
@@ -67,7 +67,10 @@ export class ExploreTracerSession {
   reset(): void {
     resetTracersFromSeeds(this.simulation, this.ownedSeeds);
     this.pathHistory.clear();
-    this.pathHistory.captureInitial(this.simulation.particles);
+    this.pathHistory.captureInitial(
+      this.simulation.particles,
+      this.simulation.clock.time,
+    );
     this.assertAligned();
   }
 

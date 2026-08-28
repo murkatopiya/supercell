@@ -1,4 +1,5 @@
 import type { PointDiagnosticObservation } from "../../interaction/PointDiagnosticObservation.js";
+import type { InspectionSampleMode } from "../../interaction/HistoricalPathProbe.js";
 import {
   classifyPointDiagnosticSign,
   formatPointDiagnosticScientific,
@@ -6,6 +7,7 @@ import {
 
 export interface PointDiagnosticsPanelProps {
   observation: PointDiagnosticObservation | undefined;
+  mode?: InspectionSampleMode;
 }
 
 const TILTING_LABEL = "Vertical-vorticity tilting tendency";
@@ -22,6 +24,7 @@ const VORTICITY_UNITS = "s⁻¹";
  */
 export function PointDiagnosticsPanel({
   observation,
+  mode = "current",
 }: PointDiagnosticsPanelProps) {
   return (
     <section className="point-diagnostics" aria-label="Point diagnostics">
@@ -32,7 +35,7 @@ export function PointDiagnosticsPanel({
             Select a tracer to sample diagnostics at its current position.
           </p>
         ) : (
-          <PointDiagnosticsBody observation={observation} />
+          <PointDiagnosticsBody observation={observation} mode={mode} />
         )}
       </div>
     </section>
@@ -41,14 +44,27 @@ export function PointDiagnosticsPanel({
 
 function PointDiagnosticsBody({
   observation,
+  mode,
 }: {
   observation: PointDiagnosticObservation;
+  mode: InspectionSampleMode;
 }) {
+  const historical = mode === "historical";
   return (
     <>
+      <p
+        className={
+          historical
+            ? "point-diagnostics__mode point-diagnostics__mode--historical"
+            : "point-diagnostics__mode"
+        }
+      >
+        {historical ? "HISTORICAL PATH SAMPLE" : "CURRENT"}
+      </p>
       <p className="point-diagnostics__hint">
-        Sampled from the laboratory field at this marker. Not stored on the
-        tracer.
+        {historical
+          ? "Sampled at a past recorded position/time from the laboratory field. The tracer was not rewound."
+          : "Sampled from the laboratory field at this marker. Not stored on the tracer."}
       </p>
       <DiagnosticQuantity
         label={TILTING_LABEL}

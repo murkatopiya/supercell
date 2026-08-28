@@ -26,7 +26,7 @@ describe("TracerPathHistory", () => {
   it("captures one copied initial point per active tracer", () => {
     const particles = [particle(0, 1000, 4000), particle(0, 1000, 6000)];
     const history = new TracerPathHistory(2);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     expect(history.tracerCount).toBe(2);
     expect(history.pointsFor(0)).toEqual([{ x: 0, y: 1000, z: 4000 }]);
@@ -43,10 +43,10 @@ describe("TracerPathHistory", () => {
       particles,
     );
     const history = new TracerPathHistory(1);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
@@ -59,7 +59,7 @@ describe("TracerPathHistory", () => {
   it("stores copies, not aliases of particle.position or returned snapshots", () => {
     const particles = [particle(1, 2, 3)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.position.x = 999;
     expect(history.pointsFor(0)[0]).toEqual({ x: 1, y: 2, z: 3 });
@@ -73,12 +73,12 @@ describe("TracerPathHistory", () => {
   it("keeps chronological order with index 0 as the initial capture", () => {
     const particles = [particle(0, 0, 0)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.position = { x: 1, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
     particles[0]!.position = { x: 2, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
@@ -90,7 +90,7 @@ describe("TracerPathHistory", () => {
   it("does not append when recordAfterStep is not called", () => {
     const particles = [particle(0, 0, 0)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.position = { x: 50, y: 0, z: 0 };
 
@@ -100,10 +100,10 @@ describe("TracerPathHistory", () => {
   it("clear then captureInitial restores length 1 at the new seed", () => {
     const particles = [particle(0, 0, 0), particle(10, 0, 0)];
     const history = new TracerPathHistory(2);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     particles[0]!.position = { x: 1, y: 0, z: 0 };
     particles[1]!.position = { x: 11, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     particles[0]!.position = { x: 0, y: 1000, z: 4000 };
     particles[1]!.position = { x: 0, y: 1000, z: 6000 };
@@ -111,7 +111,7 @@ describe("TracerPathHistory", () => {
     expect(history.pointsFor(0)).toEqual([]);
     expect(history.pointsFor(1)).toEqual([]);
 
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     expect(history.pointsFor(0)).toEqual([{ x: 0, y: 1000, z: 4000 }]);
     expect(history.pointsFor(1)).toEqual([{ x: 0, y: 1000, z: 6000 }]);
   });
@@ -119,10 +119,10 @@ describe("TracerPathHistory", () => {
   it("keeps independent histories for multiple tracers", () => {
     const particles = [particle(0, 0, 0), particle(100, 0, 0)];
     const history = new TracerPathHistory(2);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.position = { x: 5, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
@@ -137,18 +137,18 @@ describe("TracerPathHistory", () => {
   it("appends on the k-th recordAfterStep when stride is k", () => {
     const particles = [particle(0, 0, 0)];
     const history = new TracerPathHistory(1, 3);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.position = { x: 1, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
     expect(history.pointsFor(0)).toHaveLength(1);
 
     particles[0]!.position = { x: 2, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
     expect(history.pointsFor(0)).toHaveLength(1);
 
     particles[0]!.position = { x: 3, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
       { x: 3, y: 0, z: 0 },
@@ -158,9 +158,9 @@ describe("TracerPathHistory", () => {
   it("defaults to stride 1", () => {
     const particles = [particle(0, 0, 0)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     particles[0]!.position = { x: 1, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
     expect(history.pointsFor(0)).toHaveLength(2);
   });
 
@@ -170,14 +170,14 @@ describe("TracerPathHistory", () => {
       particle(10, 0, 0, false),
     ];
     const history = new TracerPathHistory(2);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     expect(history.pointsFor(0)).toEqual([{ x: 0, y: 0, z: 0 }]);
     expect(history.pointsFor(1)).toEqual([]);
 
     particles[0]!.position = { x: 1, y: 0, z: 0 };
     particles[1]!.position = { x: 11, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
@@ -195,10 +195,10 @@ describe("TracerPathHistory", () => {
       { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN },
     );
     const history = new TracerPathHistory(1);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     const tracer = simulation.particles[0]!;
     expect(tracer.active).toBe(false);
@@ -221,16 +221,16 @@ describe("TracerPathHistory", () => {
       { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN },
     );
     const history = new TracerPathHistory(1);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
     const terminal = history.pointsFor(0);
 
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(simulation.particles[0]!.active).toBe(false);
     expect(history.pointsFor(0)).toEqual(terminal);
@@ -240,10 +240,10 @@ describe("TracerPathHistory", () => {
   it("does not treat y = 0 as the deactivation signal", () => {
     const particles = [particle(3, 1000, -4)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.active = false;
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     expect(history.pointsFor(0)).toEqual([
       { x: 3, y: 1000, z: -4 },
@@ -254,19 +254,19 @@ describe("TracerPathHistory", () => {
   it("appends a terminal sample even when deactivation falls off stride", () => {
     const particles = [particle(0, 0, 0)];
     const history = new TracerPathHistory(1, 3);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
 
     particles[0]!.position = { x: 1, y: 0, z: 0 };
     particles[0]!.active = false;
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
       { x: 1, y: 0, z: 0 },
     ]);
 
-    history.recordAfterStep(particles);
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
+    history.recordAfterStep(particles, 0);
     expect(history.pointsFor(0)).toHaveLength(2);
   });
 
@@ -282,10 +282,10 @@ describe("TracerPathHistory", () => {
       { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN },
     );
     const history = new TracerPathHistory(2);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(history.pointsFor(0)).toHaveLength(2);
     expect(history.pointsFor(0)[1]!.y).toBe(0);
@@ -302,16 +302,16 @@ describe("TracerPathHistory", () => {
       { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN },
     );
     const history = new TracerPathHistory(1);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     simulation.step(0.1);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
     expect(history.pointsFor(0)).toHaveLength(2);
     expect(simulation.particles[0]!.active).toBe(false);
 
     resetTracersFromSeeds(simulation, seeds);
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     expect(simulation.particles[0]!.active).toBe(true);
     expect(history.pointsFor(0)).toEqual([{ x: 0, y: 1, z: 0 }]);
@@ -321,8 +321,8 @@ describe("TracerPathHistory", () => {
     const particles = [particle(4, 5, 6)];
     const position = particles[0]!.position;
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
-    history.recordAfterStep(particles);
+    history.captureInitial(particles, 0);
+    history.recordAfterStep(particles, 0);
 
     expect(particles[0]).toEqual({
       position: { x: 4, y: 5, z: 6 },
@@ -335,11 +335,11 @@ describe("TracerPathHistory", () => {
   it("returns a fresh snapshot that later appends do not mutate", () => {
     const particles = [particle(0, 0, 0)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     const before = history.pointsFor(0);
 
     particles[0]!.position = { x: 8, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     expect(before).toEqual([{ x: 0, y: 0, z: 0 }]);
     expect(history.pointsFor(0)).toEqual([
@@ -376,12 +376,12 @@ describe("TracerPathHistory", () => {
   it("allows zero lanes and later append", () => {
     const history = new TracerPathHistory(0);
     expect(history.tracerCount).toBe(0);
-    history.captureInitial([]);
-    history.recordAfterStep([]);
+    history.captureInitial([], 0);
+    history.recordAfterStep([], 0);
     history.clear();
 
     const born = particle(3, 4, 5);
-    history.appendParticle(born);
+    history.appendParticle(born, 0);
     expect(history.tracerCount).toBe(1);
     expect(history.pointsFor(0)).toEqual([{ x: 3, y: 4, z: 5 }]);
     expect(history.pointsFor(0)[0]).not.toBe(born.position);
@@ -390,23 +390,23 @@ describe("TracerPathHistory", () => {
   it("appendParticle captures birth independently of stride and does not recapture existing lanes", () => {
     const first = particle(0, 0, 0);
     const history = new TracerPathHistory(1, 3);
-    history.captureInitial([first]);
+    history.captureInitial([first], 0);
 
     first.position = { x: 1, y: 0, z: 0 };
-    history.recordAfterStep([first]);
+    history.recordAfterStep([first], 0);
     first.position = { x: 2, y: 0, z: 0 };
-    history.recordAfterStep([first]);
+    history.recordAfterStep([first], 0);
     expect(history.pointsFor(0)).toEqual([{ x: 0, y: 0, z: 0 }]);
 
     const second = particle(50, 10, -4);
-    history.appendParticle(second);
+    history.appendParticle(second, 0);
     expect(history.tracerCount).toBe(2);
     expect(history.pointsFor(0)).toEqual([{ x: 0, y: 0, z: 0 }]);
     expect(history.pointsFor(1)).toEqual([{ x: 50, y: 10, z: -4 }]);
 
     first.position = { x: 3, y: 0, z: 0 };
     second.position = { x: 51, y: 10, z: -4 };
-    history.recordAfterStep([first, second]);
+    history.recordAfterStep([first, second], 0);
     expect(history.pointsFor(0)).toEqual([
       { x: 0, y: 0, z: 0 },
       { x: 3, y: 0, z: 0 },
@@ -419,10 +419,10 @@ describe("TracerPathHistory", () => {
 
   it("appendParticles preserves order and treats an empty batch as a no-op", () => {
     const history = new TracerPathHistory(0);
-    history.appendParticles([]);
+    history.appendParticles([], 0);
     expect(history.tracerCount).toBe(0);
 
-    history.appendParticles([particle(1, 0, 0), particle(2, 0, 0)]);
+    history.appendParticles([particle(1, 0, 0), particle(2, 0, 0)], 0);
     expect(history.tracerCount).toBe(2);
     expect(history.pointsFor(0)).toEqual([{ x: 1, y: 0, z: 0 }]);
     expect(history.pointsFor(1)).toEqual([{ x: 2, y: 0, z: 0 }]);
@@ -431,28 +431,28 @@ describe("TracerPathHistory", () => {
   it("does not invent a terminal sample for a tracer that was inactive at append", () => {
     const history = new TracerPathHistory(0);
     const bornInactive = particle(1, 2, 3, false);
-    history.appendParticle(bornInactive);
+    history.appendParticle(bornInactive, 0);
     expect(history.pointsFor(0)).toEqual([{ x: 1, y: 2, z: 3 }]);
 
     bornInactive.position = { x: 9, y: 9, z: 9 };
-    history.recordAfterStep([bornInactive]);
-    history.recordAfterStep([bornInactive]);
+    history.recordAfterStep([bornInactive], 0);
+    history.recordAfterStep([bornInactive], 0);
     expect(history.pointsFor(0)).toEqual([{ x: 1, y: 2, z: 3 }]);
   });
 
   it("clear keeps lane count; removeAllLanes drops every lane", () => {
     const particles = [particle(0, 0, 0), particle(10, 0, 0)];
     const history = new TracerPathHistory(2);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     particles[0]!.position = { x: 1, y: 0, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
 
     history.clear();
     expect(history.tracerCount).toBe(2);
     expect(history.pointsFor(0)).toEqual([]);
     expect(history.pointsFor(1)).toEqual([]);
 
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     expect(history.pointsFor(0)).toEqual([{ x: 1, y: 0, z: 0 }]);
     expect(history.pointsFor(1)).toEqual([{ x: 10, y: 0, z: 0 }]);
 
@@ -460,8 +460,62 @@ describe("TracerPathHistory", () => {
     expect(history.tracerCount).toBe(0);
     expect(() => history.pointsFor(0)).toThrow(/out of range/);
 
-    history.appendParticle(particle(7, 8, 9));
+    history.appendParticle(particle(7, 8, 9), 0);
     expect(history.tracerCount).toBe(1);
     expect(history.pointsFor(0)).toEqual([{ x: 7, y: 8, z: 9 }]);
+  });
+
+  it("stores copied position and recorded simulationTime on each sample", () => {
+    const particles = [particle(0, 0, 0)];
+    const simulation = new Simulation(
+      new ConstantVelocityField({ x: 10, y: 0, z: 0 }),
+      new EulerIntegrator(),
+      particles,
+    );
+    const history = new TracerPathHistory(1);
+    history.captureInitial(simulation.particles, simulation.clock.time);
+    expect(history.samplesFor(0)).toEqual([
+      { position: { x: 0, y: 0, z: 0 }, simulationTime: 0 },
+    ]);
+    expect(history.samplesFor(0)[0]!.position).not.toBe(
+      simulation.particles[0]!.position,
+    );
+
+    simulation.step(0.1);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
+    expect(history.samplesFor(0)[1]).toEqual({
+      position: { x: 1, y: 0, z: 0 },
+      simulationTime: 0.1,
+    });
+    expect(history.samplesFor(0)[1]!.position).not.toBe(
+      simulation.particles[0]!.position,
+    );
+
+    const snapshot = history.samplesFor(0);
+    snapshot[0]!.position.x = 99;
+    expect(history.samplesFor(0)[0]!.position).toEqual({ x: 0, y: 0, z: 0 });
+  });
+
+  it("records appendParticle time as the clock at birth, not a reconstructed index", () => {
+    const history = new TracerPathHistory(0);
+    const born = particle(3, 4, 5);
+    history.appendParticle(born, 2.4);
+    expect(history.samplesFor(0)).toEqual([
+      { position: { x: 3, y: 4, z: 5 }, simulationTime: 2.4 },
+    ]);
+  });
+
+  it("rejects non-finite simulationTime", () => {
+    const history = new TracerPathHistory(1);
+    const particles = [particle(0, 0, 0)];
+    expect(() => history.captureInitial(particles, Number.NaN)).toThrow(
+      /simulationTime must be finite/,
+    );
+    expect(() =>
+      history.recordAfterStep(particles, Number.POSITIVE_INFINITY),
+    ).toThrow(/simulationTime must be finite/);
+    expect(() => history.appendParticle(particle(1, 2, 3), Number.NaN)).toThrow(
+      /simulationTime must be finite/,
+    );
   });
 });

@@ -6,7 +6,7 @@ M2 COMPLETE / M1 + M3 DECIDED /
 SLICE A COMPLETE / SLICE B COMPLETE /
 41-1 COMPLETE / 41-2 COMPLETE / 41-3 COMPLETE /
 41-4 DEFERRED TO PLAYTEST (`43`) /
-42-1 COMPLETE / 42-2 POST-V1 /
+42-1 COMPLETE / 42-2 COMPLETE (placement; `docs/ui/08` Slice 2) /
 40 SLICE D COMPLETE (42-1) /
 40 SLICES C, E–G NOT PRE-M5 /
 SUCCESSOR 43 DECIDED
@@ -27,8 +27,11 @@ laboratory (`30`). Exactly seven `V_total` operands. Prescribed
 sibling relation unchanged (`19`, `32`). Visual-airflow encoding
 and Comets default unchanged (`39`).
 **Implementation:** Slice 42-1 is COMPLETE in production `src/**`.
-Slice 42-2 remains valid placement architecture and is POST-V1
-implementation (`43`). Slice 41-4 is not pre-M5 MUST.
+Slice 42-2 placement is COMPLETE (`docs/ui/08` Slice 2): Explore
+Airflow / Highlight / Depth cue live in `SceneToolbar` above the
+canvas; the left rail is Release | Runtime | View. Slice 41-4
+compact Highlight copy remains deferred (`43`) and is not
+closed by this placement.
 
 Predecessor post–Slice B Explore checkpoint:
 
@@ -76,6 +79,12 @@ Post–42-1 V1 sufficiency / scope-cut (supersedes this file’s
 
 ```text
 docs/architecture/43-post-42-1-v1-sufficiency-and-scope-cut.md
+```
+
+Live Airflow placement after UI polish Slice 2:
+
+```text
+docs/ui/08-scene-toolbar-and-control-states.md
 ```
 
 Accepted live head this checkpoint is written against:
@@ -219,11 +228,16 @@ laboratory-toolbar--explore
   Airflow   (secondary) VisualAirflowWorkbenchControls
 ```
 
-Wiring tests still treat the hodograph as a *temporary* rail
+Live placement after `docs/ui/08` Slice 2: Airflow /
+Highlight / Depth cue are in `SceneToolbar` above the Explore
+canvas. The left rail is Release | Runtime | View. 41-4 compact
+Highlight copy remains deferred.
+
+Wiring tests at decision time treated the hodograph as a *temporary* rail
 resident pending Environment Slice D
-(`exploreShell.wiring.test.ts`) and still require Airflow as
+(`exploreShell.wiring.test.ts`) and required Airflow as
 the last Explore band (`ExploreActionRailControls.test.tsx`
-41-3 cases). Viewport-column tests currently forbid
+41-3 cases). Viewport-column tests at that time forbade
 `VisualAirflowWorkbenchControls` in the center column.
 
 ### 3.3 Airflow product controls
@@ -826,10 +840,10 @@ expose final desktop geometry as early as possible.
 42-2  Airflow controls → compact viewport toolbar
       immediately above the 3D canvas
       Left rail becomes Release, Runtime, View only
-      STATUS: POST-V1 (`43`). Placement architecture in this
-      file remains accepted redesign input. Not pre-M5 MUST.
-      41-4 is independently playtest-triggered and does not
-      require this toolbar.
+      STATUS: COMPLETE (placement; `docs/ui/08` Slice 2).
+      Evidence: SceneToolbar in Explore viewport column;
+      VisualAirflowWorkbenchControls no longer a rail band;
+      41-4 compact Highlight copy remains deferred (`43`).
 
 40-C  Observation empty state → selection + Release tracer
       STATUS: DEFER UNTIL PLAYTEST EVIDENCE (`43`)
@@ -999,6 +1013,7 @@ M3 may not invent a settings framework to make the rail
 
 ```text
 AIRFLOW HOME          compact toolbar above Explore canvas
+                      (`docs/ui/08` Slice 2)
 AIRFLOW RAIL          no longer a left-rail band
 HIGHLIGHT ENCODING    unchanged; orientation = V_total
 HIGHLIGHT COPY        41 §11 meaning; compact restoration
@@ -1012,15 +1027,14 @@ ENV AFFORDANCE        header, labeled Environment
 ENV OPEN SIZE         usable; ≥ 480px at 1920×1080;
                       not the 260–320px rail
 OVERLAYS              travel with the hodograph
-LEFT RAIL             Release, Runtime, View, plus V1 Airflow
-                      still on the rail (`43`: 42-2 POST-V1)
+LEFT RAIL             Release, Runtime, View
 OBSERVATION           right dock; 40-C playtest-triggered
 FOLD                  1920×1080 Explore loop without page
                       scroll; Environment / observation
                       region-scroll only
 FREEZE                intact; no new capability
-IMPLEMENTATION        42-1 COMPLETE; 42-2 POST-V1;
-                      41-4 not pre-M5; 40 C–G not pre-M5
+IMPLEMENTATION        42-1 COMPLETE; 42-2 COMPLETE (placement);
+                      41-4 not closed by placement; 40 C–G not pre-M5
 NEXT                  M5 per `43`
 ```
 
@@ -1063,13 +1077,14 @@ NEXT                  M5 per `43`
 
 8. **What is the remaining production order?**  
    This file’s §16 V1 tail is superseded by `43`: M5 next.
-   42-2 remains POST-V1 placement architecture.
+   42-2 placement later landed in `docs/ui/08` Slice 2.
+   41-4 compact Highlight copy remains deferred.
 
 9. **Does this file include production implementation?**
 
 ```text
 42-1 COMPLETE.
-42-2 POST-V1 (not a V1 obligation).
-41-4 not pre-M5 MUST.
+42-2 COMPLETE (placement; `docs/ui/08` Slice 2).
+41-4 not closed by 42-2 placement.
 40 C–G not pre-M5 MUST.
 ```

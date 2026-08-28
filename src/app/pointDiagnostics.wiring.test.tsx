@@ -81,9 +81,9 @@ describe("Explore point-diagnostics App wiring", () => {
       appSrc.indexOf("workbench--guided"),
     );
     expect(observation).toMatch(/TracerInspectorPanel/);
-    expect(observation).toMatch(
-      /<PointDiagnosticsPanel observation=\{pointDiagnostics\} \/>/,
-    );
+    expect(observation).toMatch(/PointDiagnosticsPanel/);
+    expect(observation).toMatch(/observation=\{pointDiagnostics\}/);
+    expect(observation).toMatch(/mode=\{inspectionMode\}/);
     expect(observation.indexOf("TracerInspectorPanel")).toBeLessThan(
       observation.indexOf("PointDiagnosticsPanel"),
     );

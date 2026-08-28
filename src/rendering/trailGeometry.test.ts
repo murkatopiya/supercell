@@ -44,6 +44,11 @@ describe("trail geometry (no WebGLRenderer)", () => {
     expect(lines).toHaveLength(2);
     expect(lines[0]).toBeInstanceOf(THREE.Line);
     expect(lines[1]).toBeInstanceOf(THREE.Line);
+    const raycaster = new THREE.Raycaster(
+      new THREE.Vector3(0, 0, 10),
+      new THREE.Vector3(0, 0, -1),
+    );
+    expect(raycaster.intersectObject(lines[0]!, false)).toEqual([]);
     expect(lines[0]!.geometry).toBeInstanceOf(THREE.BufferGeometry);
     expect(lines[1]!.geometry).toBeInstanceOf(THREE.BufferGeometry);
   });
@@ -105,9 +110,9 @@ describe("trail geometry (no WebGLRenderer)", () => {
   it("copies snapshots and does not mutate history or particles", () => {
     const particles = [particle(0, 1000, 0)];
     const history = new TracerPathHistory(1);
-    history.captureInitial(particles);
+    history.captureInitial(particles, 0);
     particles[0]!.position = { x: 5, y: 1000, z: 0 };
-    history.recordAfterStep(particles);
+    history.recordAfterStep(particles, 0);
     const snapshot = history.pointsFor(0);
 
     const line = createTrailLine(TRACER_COLORS[0]);

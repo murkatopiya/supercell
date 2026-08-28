@@ -23,6 +23,9 @@ export function advanceLaboratoryFixedStep(
 ): void {
   const t0 = simulation.clock.time;
   simulation.step(dt);
-  options.pathHistory?.recordAfterStep(simulation.particles);
+  options.pathHistory?.recordAfterStep(
+    simulation.particles,
+    simulation.clock.time,
+  );
   options.visualAirflowPopulation?.step(dt, t0);
 }

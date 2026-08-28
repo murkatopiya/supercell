@@ -6,8 +6,8 @@ export interface EnvironmentAffordanceProps {
 }
 
 /**
- * Shared header control for the on-demand Environment surface.
- * docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md §10.2
+ * Shared in-mode control for the on-demand Environment surface.
+ * Not a top-level mode. docs/ui/07-app-navigation-and-mode-entry.md
  */
 export function EnvironmentAffordance({
   expanded,

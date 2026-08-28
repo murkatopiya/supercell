@@ -1,5 +1,7 @@
 import { useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
+import { LandingPage } from "./LandingPage.js";
+import { ModeIdentity } from "./ModeIdentity.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
@@ -17,9 +19,11 @@ import { PointDiagnosticsPanel } from "../ui/tracer/PointDiagnosticsPanel.js";
 import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
 import {
   TracerRuntimeControls,
+  DEFAULT_TRACER_TIME_SCALE,
   type TracerTimeScale,
 } from "../ui/tracer/TracerRuntimeControls.js";
 import { VisualAirflowWorkbenchControls } from "../ui/tracer/VisualAirflowWorkbenchControls.js";
+import { SceneToolbar } from "../ui/tracer/SceneToolbar.js";
 import {
   TracerViewport,
   type TracerViewportHandle,
@@ -50,17 +54,25 @@ import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointRelease
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import {
+  inspectPointDiagnosticsAt,
   inspectSelectedPointDiagnostics,
   type PointDiagnosticObservation,
 } from "../interaction/PointDiagnosticObservation.js";
 import {
   inspectSelectedTracer,
+  inspectWorldPoint,
   type TracerInspection,
 } from "../interaction/TracerInspection.js";
+import {
+  resolveHistoricalPathSample,
+  type HistoricalPathProbe,
+  type InspectionSampleMode,
+} from "../interaction/HistoricalPathProbe.js";
 import {
   TracerSelection,
   resolveSelectedTracer,
 } from "../interaction/TracerSelection.js";
+import { tracerIdForSlot } from "../ui/tracer/resolveTracerPointerUp.js";
 import { ExploreFollowControl } from "../ui/tracer/ExploreFollowControl.js";
 import { ExploreResetViewControl } from "../ui/tracer/ExploreResetViewControl.js";
 import {
@@ -80,6 +92,7 @@ import {
 } from "../visualization/operandContributionDisplay.js";
 
 type Lab = GuidedLab | ExploreLab;
+type AppSurface = "landing" | "laboratory";
 
 function createSceneSlots(
   sceneHandleRef: RefObject<TracerViewportHandle | null>,
@@ -107,10 +120,12 @@ export function App() {
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
   /**
-   * Guided default-open; Explore closed. App boots in Guided.
+   * Guided default-open; Explore closed. Applied on mode entry.
    * docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md §10.3
+   * docs/ui/07-app-navigation-and-mode-entry.md
    */
   const [environmentOpen, setEnvironmentOpen] = useState(true);
+  const [appSurface, setAppSurface] = useState<AppSurface>("landing");
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
   if (sceneSlotsRef.current === null) {
@@ -119,11 +134,11 @@ export function App() {
   const [guidedExperimentId, setGuidedExperimentId] = useState<GuidedExperimentId>(
     DEFAULT_GUIDED_EXPERIMENT_ID,
   );
-  const [lab, setLab] = useState<Lab>(() =>
-    createGuidedLab(DEFAULT_GUIDED_EXPERIMENT_ID),
-  );
+  const [lab, setLab] = useState<Lab | null>(null);
   const [paused, setPaused] = useState(false);
-  const [timeScale, setTimeScale] = useState<TracerTimeScale>(1);
+  const [timeScale, setTimeScale] = useState<TracerTimeScale>(
+    DEFAULT_TRACER_TIME_SCALE,
+  );
   const [resetEpoch, setResetEpoch] = useState(0);
   const [altitudeM, setAltitudeM] = useState(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
   const [placementEnabled, setPlacementEnabled] = useState(false);
@@ -154,6 +169,9 @@ export function App() {
   const [pointDiagnostics, setPointDiagnostics] = useState<
     PointDiagnosticObservation | undefined
   >(undefined);
+  const [historicalProbe, setHistoricalProbe] =
+    useState<HistoricalPathProbe | null>(null);
+  const historicalProbeRef = useRef<HistoricalPathProbe | null>(null);
   const followEnabledRef = useRef(false);
   const [followEnabled, setFollowEnabledState] = useState(false);
 
@@ -166,7 +184,54 @@ export function App() {
     setSelectedTracerId(selection.selectedId);
   };
 
+  const setHistoricalPathProbe = (next: HistoricalPathProbe | null) => {
+    historicalProbeRef.current = next;
+    setHistoricalProbe(next);
+  };
+
   const refreshInspection = () => {
+    if (lab === null) {
+      return;
+    }
+    const pathHistory = lab.pathHistory ?? null;
+    const probe = historicalProbeRef.current;
+    const resolved =
+      probe !== null && pathHistory !== null
+        ? resolveHistoricalPathSample(
+            lab.simulation.particles,
+            pathHistory,
+            probe,
+          )
+        : undefined;
+    if (probe !== null && resolved === undefined) {
+      setHistoricalPathProbe(null);
+    }
+    if (resolved !== undefined) {
+      setInspection(
+        inspectWorldPoint(
+          resolved.tracerId,
+          resolved.position,
+          resolved.simulationTime,
+          resolved.age,
+          resolved.active,
+          lab.velocityObservation,
+        ),
+      );
+      setPointDiagnostics(
+        lab.kind === "explore"
+          ? inspectPointDiagnosticsAt(
+              resolved.tracerId,
+              resolved.position,
+              resolved.simulationTime,
+              {
+                tiltingTendency: lab.tiltingTendency,
+                currentVerticalVorticity: lab.currentVerticalVorticity,
+              },
+            )
+          : undefined,
+      );
+      return;
+    }
     setInspection(
       inspectSelectedTracer(
         lab.simulation.particles,
@@ -192,6 +257,7 @@ export function App() {
 
   const clearSelectionAndInspection = () => {
     setFollowEnabled(false);
+    setHistoricalPathProbe(null);
     selection.clear();
     mirrorSelection();
     setInspection(undefined);
@@ -199,7 +265,11 @@ export function App() {
   };
 
   const handleReset = () => {
+    if (lab === null) {
+      return;
+    }
     setFollowEnabled(false);
+    setHistoricalPathProbe(null);
     if (lab.kind === "explore") {
       resetExploreLab(lab);
       setPendingSeed(null);
@@ -226,7 +296,7 @@ export function App() {
    * docs/architecture/41-post-slice-b-explore-release-and-highlight-checkpoint.md §8
    */
   const handleClearTracers = () => {
-    if (lab.kind !== "explore") {
+    if (lab === null || lab.kind !== "explore") {
       return;
     }
     lab.orchestration.clear();
@@ -235,7 +305,7 @@ export function App() {
   };
 
   const enterExplore = () => {
-    if (lab.kind === "explore") {
+    if (lab !== null && lab.kind === "explore") {
       return;
     }
     clearSelectionAndInspection();
@@ -253,11 +323,13 @@ export function App() {
     setHighlightMode(DEFAULT_OPERAND_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
     setEnvironmentOpen(false);
+    setTimeScale(DEFAULT_TRACER_TIME_SCALE);
+    setAppSurface("laboratory");
     setResetEpoch((epoch) => epoch + 1);
   };
 
   const enterGuided = () => {
-    if (lab.kind === "guided") {
+    if (lab !== null && lab.kind === "guided") {
       return;
     }
     clearSelectionAndInspection();
@@ -269,11 +341,13 @@ export function App() {
     setHighlightMode(DEFAULT_OPERAND_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
     setEnvironmentOpen(true);
+    setTimeScale(DEFAULT_TRACER_TIME_SCALE);
+    setAppSurface("laboratory");
     setResetEpoch((epoch) => epoch + 1);
   };
 
   const selectGuidedExperiment = (nextId: GuidedExperimentId) => {
-    if (lab.kind !== "guided") {
+    if (lab === null || lab.kind !== "guided") {
       return;
     }
     const nextLab = switchGuidedExperiment(lab, nextId, selection);
@@ -282,6 +356,7 @@ export function App() {
     }
     setGuidedExperimentId(nextId);
     setFollowEnabled(false);
+    setHistoricalPathProbe(null);
     mirrorSelection();
     setInspection(undefined);
     setPointDiagnostics(undefined);
@@ -294,7 +369,7 @@ export function App() {
       return;
     }
     setExploreEnvironmentIdentity(next);
-    if (lab.kind !== "explore") {
+    if (lab === null || lab.kind !== "explore") {
       return;
     }
     clearSelectionAndInspection();
@@ -307,6 +382,23 @@ export function App() {
     setPendingSeed(null);
     setResetEpoch((epoch) => epoch + 1);
   };
+
+  const returnToLanding = () => {
+    clearSelectionAndInspection();
+    setPendingSeed(null);
+    setPlacementEnabled(false);
+    setLab(null);
+    setAppSurface("landing");
+  };
+
+  if (appSurface === "landing" || lab === null) {
+    return (
+      <LandingPage
+        onEnterGuided={enterGuided}
+        onEnterExplore={enterExplore}
+      />
+    );
+  }
 
   const explore = lab.kind === "explore" ? lab : null;
   const goshenExploreActive =
@@ -323,6 +415,16 @@ export function App() {
   const followTargetResolves =
     resolveSelectedTracer(lab.simulation.particles, selection) !==
     undefined;
+  const historicalSample =
+    historicalProbe !== null && lab.pathHistory != null
+      ? resolveHistoricalPathSample(
+          lab.simulation.particles,
+          lab.pathHistory,
+          historicalProbe,
+        )
+      : undefined;
+  const inspectionMode: InspectionSampleMode =
+    historicalSample !== undefined ? "historical" : "current";
 
   const environmentSurface = (
     <EnvironmentSurface
@@ -366,6 +468,7 @@ export function App() {
       resetEpoch={resetEpoch}
       pendingReleasePreview={lab.kind === "explore" ? pendingSeed : null}
       selectedTracerId={selectedTracerId}
+      historicalProbePosition={historicalSample?.position ?? null}
       visualAirflowPopulation={
         lab.kind === "explore" ? lab.visualAirflowPopulation : null
       }
@@ -388,8 +491,20 @@ export function App() {
       }
       depthCueEnabled={depthCueEnabled}
       onTracerSelect={(tracerId) => {
+        setHistoricalPathProbe(null);
         selection.select(tracerId);
         mirrorSelection();
+        refreshInspection();
+      }}
+      onPathSampleSelect={(slotIndex, historyIndex) => {
+        const tracerId = tracerIdForSlot(
+          lab.simulation.particles,
+          slotIndex,
+        );
+        if (tracerId === undefined) {
+          return;
+        }
+        setHistoricalPathProbe({ tracerId, historyIndex });
         refreshInspection();
       }}
       onSimulationAdvanced={refreshInspection}
@@ -414,26 +529,11 @@ export function App() {
   return (
     <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
-        <h1 className="app__title">Supercell Explorer</h1>
+        <ModeIdentity
+          mode={explore !== null ? "Explore" : "Guided"}
+          onReturnToLanding={returnToLanding}
+        />
         <div className="app__header-tools">
-          <div className="app__mode-switch lab-experience-switch">
-            <button
-              type="button"
-              className="tracer-runtime-controls__button"
-              aria-pressed={lab.kind === "guided"}
-              onClick={enterGuided}
-            >
-              Guided
-            </button>
-            <button
-              type="button"
-              className="tracer-runtime-controls__button"
-              aria-pressed={lab.kind === "explore"}
-              onClick={enterExplore}
-            >
-              Explore
-            </button>
-          </div>
           <EnvironmentAffordance
             expanded={environmentOpen}
             onToggle={() => setEnvironmentOpen((open) => !open)}
@@ -497,7 +597,10 @@ export function App() {
                     onTimeScaleChange={setTimeScale}
                     onReset={handleReset}
                   />
-                  <ExploreClearTracersControl onClear={handleClearTracers} />
+                  <ExploreClearTracersControl
+                    tracerCount={explore.simulation.particles.length}
+                    onClear={handleClearTracers}
+                  />
                 </div>
               </div>
               <div
@@ -514,31 +617,33 @@ export function App() {
                   <ExploreResetViewControl onResetView={handleResetView} />
                 </div>
               </div>
-              <div
-                className="control-band control-band--airflow control-band--secondary"
-                aria-label="Airflow"
-              >
-                <span className="control-band__label">Airflow</span>
-                <VisualAirflowWorkbenchControls
-                  mode={workbenchMode}
-                  highlightMode={highlightMode}
-                  depthCueEnabled={depthCueEnabled}
-                  onModeChange={setWorkbenchMode}
-                  onHighlightModeChange={setHighlightMode}
-                  onDepthCueChange={setDepthCueEnabled}
-                />
-              </div>
             </div>
           </div>
 
           <div className="workbench__column workbench__column--viewport">
+            <SceneToolbar>
+              <VisualAirflowWorkbenchControls
+                mode={workbenchMode}
+                highlightMode={highlightMode}
+                depthCueEnabled={depthCueEnabled}
+                onModeChange={setWorkbenchMode}
+                onHighlightModeChange={setHighlightMode}
+                onDepthCueChange={setDepthCueEnabled}
+              />
+            </SceneToolbar>
             {tracerViewport}
             {environmentSurface}
           </div>
 
           <div className="workbench__column workbench__column--observation">
-            <TracerInspectorPanel inspection={inspection} />
-            <PointDiagnosticsPanel observation={pointDiagnostics} />
+            <TracerInspectorPanel
+              inspection={inspection}
+              mode={inspectionMode}
+            />
+            <PointDiagnosticsPanel
+              observation={pointDiagnostics}
+              mode={inspectionMode}
+            />
           </div>
         </section>
       ) : (
@@ -578,7 +683,10 @@ export function App() {
           </div>
 
           <div className="workbench__column workbench__column--inspector">
-            <TracerInspectorPanel inspection={inspection} />
+            <TracerInspectorPanel
+              inspection={inspection}
+              mode={inspectionMode}
+            />
           </div>
         </section>
       )}

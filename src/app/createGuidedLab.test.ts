@@ -216,7 +216,7 @@ describe("resetGuidedLab", () => {
       const tracerIds = lab.simulation.particles.map((particle) => particle.tracerId);
       selection.select(tracerIds[0]!);
       lab.simulation.step(DEMO_SCENARIO.simulation.timestep);
-      lab.pathHistory?.recordAfterStep(lab.simulation.particles);
+      lab.pathHistory?.recordAfterStep(lab.simulation.particles, lab.simulation.clock.time);
       expect(lab.simulation.clock.time).toBeGreaterThan(0);
 
       resetGuidedLab(lab);
@@ -286,7 +286,7 @@ describe("App Guided experiment wiring", () => {
       /useState<GuidedExperimentId>\(\s*DEFAULT_GUIDED_EXPERIMENT_ID/,
     );
     expect(appSrc).toMatch(
-      /createGuidedLab\(DEFAULT_GUIDED_EXPERIMENT_ID\)/,
+      /enterGuided[\s\S]*createGuidedLab\(guidedExperimentId\)/s,
     );
     expect(appSrc).toMatch(/guidedExperimentId/);
     expect(appSrc).not.toMatch(/selectedPedagogy/);

@@ -50,23 +50,25 @@ function copyVec3(value: Vec3): Vec3 {
 }
 
 /**
- * Sample current post-step state: particle.position at the given time.
- * Does not mutate particle, fields, clock, or selection.
+ * Sample model velocity at an explicit world point and laboratory time.
+ * Does not mutate fields, clock, or selection.
  */
-export function inspectTracer(
-  particle: TracerParticle,
+export function inspectWorldPoint(
+  tracerId: number,
+  position: Vec3,
   time: number,
+  age: number,
+  active: boolean,
   observation: InspectableVelocityOperands,
 ): TracerInspection {
-  const position = particle.position;
   const vTotal = copyVec3(observation.total.sample(position, time));
   const inspection: TracerInspection = {
-    tracerId: particle.tracerId,
+    tracerId,
     time,
     position: copyVec3(position),
     altitude: position.y,
-    age: particle.age,
-    active: particle.active,
+    age,
+    active,
     vTotal,
     speed: Math.hypot(vTotal.x, vTotal.y, vTotal.z),
   };
@@ -83,6 +85,25 @@ export function inspectTracer(
       velocity: copyVec3(part.field.sample(position, time)),
     })),
   };
+}
+
+/**
+ * Sample current post-step state: particle.position at the given time.
+ * Does not mutate particle, fields, clock, or selection.
+ */
+export function inspectTracer(
+  particle: TracerParticle,
+  time: number,
+  observation: InspectableVelocityOperands,
+): TracerInspection {
+  return inspectWorldPoint(
+    particle.tracerId,
+    particle.position,
+    time,
+    particle.age,
+    particle.active,
+    observation,
+  );
 }
 
 /**

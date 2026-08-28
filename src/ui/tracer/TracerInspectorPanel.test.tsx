@@ -66,6 +66,8 @@ describe("TracerInspectorPanel", () => {
     expect(html).toContain("3.00, 4.00, 12.00");
     expect(html).toContain("13.00");
     expect(html).toContain("World: X East, Y Up, Z South");
+    expect(html).toContain("CURRENT");
+    expect(html).not.toContain("HISTORICAL PATH SAMPLE");
     expect(html).not.toContain("u, v, w");
     expect(html).not.toContain("Ground-relative environmental wind");
   });
@@ -122,6 +124,21 @@ describe("TracerInspectorPanel", () => {
       />,
     );
     expect(html).toContain("futureMechanism");
+  });
+
+  it("labels HISTORICAL PATH SAMPLE without redesigning Level 1/2 rows", () => {
+    const html = renderToStaticMarkup(
+      <TracerInspectorPanel
+        inspection={inspectionFixture()}
+        mode="historical"
+      />,
+    );
+    expect(html).toContain("HISTORICAL PATH SAMPLE");
+    expect(html).toContain("Past recorded position/time");
+    expect(html).toContain("The tracer was not rewound");
+    expect(html).toContain("Tracer #2");
+    expect(html).toContain("Why this motion?");
+    expect(html).not.toContain(">CURRENT<");
   });
 
   it("does not put Guided pedagogy or meteorological u/v/w into the shared panel", () => {

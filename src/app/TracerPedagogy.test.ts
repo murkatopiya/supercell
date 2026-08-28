@@ -44,7 +44,7 @@ function advanceRecordedSteps(
   );
   for (let i = 0; i < consumed.steps; i++) {
     simulation.step(DEMO_SCENARIO.simulation.timestep);
-    pathHistory?.recordAfterStep(simulation.particles);
+    pathHistory?.recordAfterStep(simulation.particles, simulation.clock.time);
   }
   return consumed;
 }
@@ -272,7 +272,7 @@ describe("TracerPedagogy", () => {
     )!;
 
     simulation.step(DEMO_SCENARIO.simulation.timestep);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(history.pointsFor(0)).toHaveLength(2);
     expect(history.pointsFor(1)).toHaveLength(2);
@@ -292,7 +292,7 @@ describe("TracerPedagogy", () => {
 
     for (let i = 0; i < 50; i++) {
       simulation.step(DEMO_SCENARIO.simulation.timestep);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
 
     expect(simulation.particles[0]!.active).toBe(true);
@@ -357,13 +357,13 @@ describe("TracerPedagogy", () => {
 
     for (let i = 0; i < 20; i++) {
       simulation.step(DEMO_SCENARIO.simulation.timestep);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     expect(history.pointsFor(0).length).toBeGreaterThan(1);
 
     resetTracersFromSeeds(simulation, seeds);
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     expect(simulation.clock.time).toBe(0);
     expect(simulation.particles.map((particle) => particle.position)).toEqual(
@@ -476,7 +476,7 @@ describe("TracerPedagogy", () => {
 
     while (particle.active && t < maxTime - 1e-12) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       t += dt;
     }
 
@@ -496,7 +496,7 @@ describe("TracerPedagogy", () => {
 
     for (let i = 0; i < 20; i++) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     expect(history.pointsFor(0)).toHaveLength(terminalLength);
     expect(particle.active).toBe(false);
@@ -519,13 +519,13 @@ describe("TracerPedagogy", () => {
 
     for (let i = 0; i < 20; i++) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     expect(history.pointsFor(0).length).toBeGreaterThan(1);
 
     resetTracersFromSeeds(simulation, seeds);
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     expect(simulation.clock.time).toBe(0);
     expect(simulation.particles).toHaveLength(1);
@@ -552,14 +552,14 @@ describe("TracerPedagogy", () => {
 
     while (simulation.particles[0]!.active) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     expect(simulation.particles[0]!.active).toBe(false);
     expect(history.pointsFor(0).length).toBeGreaterThan(1);
 
     resetTracersFromSeeds(simulation, seeds);
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     expect(simulation.clock.time).toBe(0);
     expect(simulation.particles).toHaveLength(1);
@@ -695,13 +695,13 @@ describe("TracerPedagogy", () => {
 
     for (let i = 0; i < 20; i++) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     expect(history.pointsFor(0).length).toBeGreaterThan(1);
 
     resetTracersFromSeeds(simulation, seeds);
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
 
     expect(simulation.clock.time).toBe(0);
     expect(simulation.particles).toHaveLength(1);

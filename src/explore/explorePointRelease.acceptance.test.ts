@@ -22,7 +22,7 @@ describe("Explore point-release acceptance", () => {
 
     for (let i = 0; i < 10; i++) {
       simulation.step(dt);
-      pathHistory.recordAfterStep(simulation.particles);
+      pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     const timeAtP1 = simulation.clock.time;
     expect(timeAtP1).toBeCloseTo(1, 12);
@@ -40,9 +40,9 @@ describe("Explore point-release acceptance", () => {
     expect(pathHistory.pointsFor(0)).toEqual([{ x: 0, y: 100, z: 0 }]);
 
     simulation.step(dt);
-    pathHistory.recordAfterStep(simulation.particles);
+    pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
     simulation.step(dt);
-    pathHistory.recordAfterStep(simulation.particles);
+    pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(p1.position).toEqual({ x: 2, y: 100, z: 0 });
     expect(p1.age).toBeCloseTo(2 * dt, 12);
@@ -68,7 +68,7 @@ describe("Explore point-release acceptance", () => {
     expect(p1.position).toEqual({ x: 2, y: 100, z: 0 });
 
     simulation.step(dt);
-    pathHistory.recordAfterStep(simulation.particles);
+    pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(p1.position).toEqual({ x: 3, y: 100, z: 0 });
     expect(p2.position).toEqual({ x: 51, y: 200, z: -4 });
@@ -100,7 +100,7 @@ describe("Explore point-release acceptance", () => {
     ]);
 
     simulation.step(dt);
-    pathHistory.recordAfterStep(simulation.particles);
+    pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
     const timeBeforeClear = simulation.clock.time;
     expect(timeBeforeClear).toBeCloseTo(dt, 12);
     expect(simulation.particles[0]!.position.x).toBeCloseTo(1, 12);

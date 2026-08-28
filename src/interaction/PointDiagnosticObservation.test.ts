@@ -11,6 +11,7 @@ import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import type { Vec3 } from "../core/math/Vec3.js";
 import { TracerSelection } from "./TracerSelection.js";
 import {
+  inspectPointDiagnosticsAt,
   inspectSelectedPointDiagnostics,
   type PointDiagnosticSampleSource,
   type PointDiagnosticSources,
@@ -444,6 +445,34 @@ describe("point-diagnostic sibling boundary", () => {
     expect(keys).toEqual([...DEMO_VELOCITY_CONTRIBUTION_KEYS]);
     expect(keys).not.toContain("tiltingTendency");
     expect(keys).not.toContain("currentVerticalVorticity");
+  });
+
+  it("inspectPointDiagnosticsAt samples recorded (P, t) without moving the live tracer", () => {
+    const lab = createExploreLab(fakeSlots());
+    lab.session.releasePoint(SEED);
+    lab.simulation.step(DT);
+    const live = lab.simulation.particles[0]!;
+    const livePosition = { ...live.position };
+    const recorded = labSources(lab);
+    const historical = { x: 10, y: 20, z: 30 };
+    const recordedTime = 7.5;
+    const observation = inspectPointDiagnosticsAt(
+      live.tracerId,
+      historical,
+      recordedTime,
+      recorded.sources,
+    );
+
+    expect(observation.position).toEqual(historical);
+    expect(observation.time).toBe(recordedTime);
+    expect(recorded.tilting.calls).toEqual([
+      { position: historical, time: recordedTime },
+    ]);
+    expect(recorded.vorticity.calls).toEqual([
+      { position: historical, time: recordedTime },
+    ]);
+    expect(live.position).toEqual(livePosition);
+    expect(lab.simulation.clock.time).toBe(DT);
   });
 
   it("leaves TracerInspection, Inspector UI, and Guided catalog unwired", () => {

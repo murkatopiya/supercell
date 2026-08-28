@@ -45,6 +45,7 @@ export function createGuidedLab(id: GuidedExperimentId): GuidedLab {
     pathHistory: createDemoPathHistory(
       policy.pedagogy,
       simulation.particles,
+      simulation.clock.time,
     ),
     velocityObservation,
     keepInactiveGlyphs: policy.keepInactiveGlyphs,
@@ -61,7 +62,10 @@ export function resetGuidedLab(lab: GuidedLab): void {
   const policy = guidedExperimentCompositionFor(lab.experimentId);
   resetTracersFromSeeds(lab.simulation, policy.seeds);
   lab.pathHistory?.clear();
-  lab.pathHistory?.captureInitial(lab.simulation.particles);
+  lab.pathHistory?.captureInitial(
+    lab.simulation.particles,
+    lab.simulation.clock.time,
+  );
 }
 
 /**

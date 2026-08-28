@@ -2,6 +2,9 @@ export const TRACER_TIME_SCALES = [1, 5, 10, 20] as const;
 
 export type TracerTimeScale = (typeof TRACER_TIME_SCALES)[number];
 
+/** UI/runtime session default. Not a physics constant. */
+export const DEFAULT_TRACER_TIME_SCALE: TracerTimeScale = 5;
+
 export interface TracerRuntimeControlsProps {
   paused: boolean;
   timeScale: TracerTimeScale;

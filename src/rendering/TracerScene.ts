@@ -20,6 +20,12 @@ import {
   selectionHaloRadiusM,
   syncSelectionHaloMarker,
 } from "./selectionHaloMarker.js";
+import {
+  createHistoricalPathProbeMarker,
+  disposeHistoricalPathProbeMarker,
+  historicalProbeMarkerRadiusM,
+  syncHistoricalPathProbeMarker,
+} from "./historicalPathProbeMarker.js";
 import type { Vec3 } from "../core/math/Vec3.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import {
@@ -30,6 +36,10 @@ import {
   pickVisibleTracerSlotAtClientPoint,
   type CanvasCssRect,
 } from "./pickVisibleTracerSlot.js";
+import {
+  pickPathHistorySampleAtClientPoint,
+  type PathHistorySampleHit,
+} from "./pickPathHistorySample.js";
 import { VISUAL_AIRFLOW_DEPTH_CUE } from "./visualAirflowAppearance.js";
 import {
   copyFollowPoint,
@@ -86,6 +96,7 @@ export class TracerScene {
   private readonly slots: TracerObserveSlot[] = [];
   private preview: THREE.Mesh | undefined;
   private selectionHalo: THREE.Mesh | undefined;
+  private historicalProbeMarker: THREE.Mesh | undefined;
   private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
   private followPoint: { x: number; y: number; z: number } | null = null;
@@ -280,6 +291,46 @@ export class TracerScene {
   }
 
   /**
+   * Screen-space pick of a stored path-history sample.
+   * Empty lanes are not candidates. Does not pick glyphs.
+   * docs/architecture/52-historical-path-probe-architecture.md
+   */
+  pickPathHistorySampleAtClientPoint(
+    pathHistory: TracerPathHistory,
+    clientX: number,
+    clientY: number,
+    rect: CanvasCssRect,
+  ): PathHistorySampleHit | null {
+    return pickPathHistorySampleAtClientPoint(
+      pathHistory,
+      this.camera,
+      clientX,
+      clientY,
+      rect,
+    );
+  }
+
+  /**
+   * Observe the historical path-sample marker. Null hides it.
+   * Live selection halo is a separate mesh and is not moved.
+   */
+  syncHistoricalPathProbe(position: Vec3 | null): void {
+    if (position === null) {
+      if (this.historicalProbeMarker !== undefined) {
+        syncHistoricalPathProbeMarker(this.historicalProbeMarker, null);
+      }
+      return;
+    }
+    if (this.historicalProbeMarker === undefined) {
+      this.historicalProbeMarker = createHistoricalPathProbeMarker(
+        historicalProbeMarkerRadiusM(DEEP_STORM_TRACER_VIEW.sphereRadiusM),
+      );
+      this.scene.add(this.historicalProbeMarker);
+    }
+    syncHistoricalPathProbeMarker(this.historicalProbeMarker, position);
+  }
+
+  /**
    * Make `position` the OrbitControls target, preserving the current
    * camera-to-target world offset. Copies the point; no tracer identity.
    * docs/architecture/34-selected-tracer-follow-camera-architecture.md
@@ -387,10 +438,10 @@ export class TracerScene {
       disposeReleasePreviewMarker(this.preview);
       this.preview = undefined;
     }
-    if (this.selectionHalo !== undefined) {
-      this.scene.remove(this.selectionHalo);
-      disposeSelectionHaloMarker(this.selectionHalo);
-      this.selectionHalo = undefined;
+    if (this.historicalProbeMarker !== undefined) {
+      this.scene.remove(this.historicalProbeMarker);
+      disposeHistoricalPathProbeMarker(this.historicalProbeMarker);
+      this.historicalProbeMarker = undefined;
     }
     this.sharedGeometry.dispose();
     this.renderer.dispose();

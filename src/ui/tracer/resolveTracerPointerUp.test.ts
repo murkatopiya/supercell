@@ -41,6 +41,31 @@ describe("resolveTracerPointerUp", () => {
     });
   });
 
+  it("prefers a path sample over placement and loses to a glyph", () => {
+    expect(
+      resolveTracerPointerUp({
+        pointerMovementPx: 0,
+        hitSlotIndex: null,
+        hitPathSample: { slotIndex: 0, historyIndex: 3 },
+        placementAvailable: true,
+        ray: RAY,
+      }),
+    ).toEqual({
+      action: "inspect-path",
+      slotIndex: 0,
+      historyIndex: 3,
+    });
+    expect(
+      resolveTracerPointerUp({
+        pointerMovementPx: 0,
+        hitSlotIndex: 1,
+        hitPathSample: { slotIndex: 0, historyIndex: 3 },
+        placementAvailable: true,
+        ray: RAY,
+      }),
+    ).toEqual({ action: "select", slotIndex: 1 });
+  });
+
   it("still selects in Guided when placement is unavailable", () => {
     expect(
       resolveTracerPointerUp({
@@ -93,7 +118,9 @@ describe("resolveTracerPointerUp", () => {
 
   it("keeps TracerViewport off the Explore placement-gate module", () => {
     expect(tracerViewportSrc).toMatch(/pickVisibleTracerAtClientPoint/);
+    expect(tracerViewportSrc).toMatch(/pickPathHistorySampleAtClientPoint/);
     expect(tracerViewportSrc).toMatch(/onTracerSelect/);
+    expect(tracerViewportSrc).toMatch(/onPathSampleSelect/);
     expect(tracerViewportSrc).toMatch(/selectedTracerId/);
     expect(tracerViewportSrc).toMatch(/resolveTracerPointerUp/);
     expect(tracerViewportSrc).not.toMatch(/shouldAcceptPlacementPick/);

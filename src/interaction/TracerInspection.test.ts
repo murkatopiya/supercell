@@ -23,6 +23,7 @@ import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestrat
 import {
   inspectSelectedTracer,
   inspectTracer,
+  inspectWorldPoint,
   type InspectableVelocityOperands,
 } from "./TracerInspection.js";
 import tracerInspectionSrc from "./TracerInspection.ts?raw";
@@ -229,6 +230,37 @@ describe("TracerInspection adapter", () => {
     expect(resolveSelectedTracer(simulation.particles, selection)).toBe(
       particle,
     );
+  });
+
+  it("inspectWorldPoint samples recorded (P, t) and does not use the live glyph or clock", () => {
+    const simulation = new Simulation(
+      new ConstantVelocityField({ x: 0, y: 0, z: 0 }),
+      new EulerIntegrator(),
+      [draft(9, 9, 9)],
+    );
+    simulation.step(0.1);
+    const live = simulation.particles[0]!;
+    const total = new RecordingField({ x: 3, y: 0, z: 0 });
+    const part = new RecordingField({ x: 1, y: 0, z: 0 });
+    const historical = { x: 100, y: 200, z: 300 };
+    const recordedTime = 4.2;
+    const inspection = inspectWorldPoint(
+      live.tracerId,
+      historical,
+      recordedTime,
+      1.5,
+      live.active,
+      { total, parts: [{ key: "part", field: part }] },
+    );
+
+    expect(inspection.position).toEqual(historical);
+    expect(inspection.time).toBe(recordedTime);
+    expect(inspection.age).toBe(1.5);
+    expect(inspection.altitude).toBe(200);
+    expect(total.calls).toEqual([{ position: historical, time: recordedTime }]);
+    expect(part.calls).toEqual([{ position: historical, time: recordedTime }]);
+    expect(live.position).not.toEqual(historical);
+    expect(simulation.clock.time).toBe(0.1);
   });
 
   it("returns undefined for no selection or a missing selected id", () => {

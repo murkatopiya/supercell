@@ -132,7 +132,7 @@ describe("DEMO sixth-operand downdraft wiring", () => {
 
     for (let s = 0; s < steps; s++) {
       simulation.step(DT);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       for (let i = 0; i < 2; i++) {
         const p = simulation.particles[i]!;
         if (!p.active) stayedActive = false;

@@ -253,12 +253,13 @@ export function demoKeepInactiveGlyphs(pedagogy: TracerPedagogy): boolean {
 export function createDemoPathHistory(
   pedagogy: TracerPedagogy,
   particles: readonly TracerParticle[],
+  time = 0,
 ): TracerPathHistory | null {
   if (!demoTrailsEnabled(pedagogy)) {
     return null;
   }
   const history = new TracerPathHistory(particles.length, 1);
-  history.captureInitial(particles);
+  history.captureInitial(particles, time);
   return history;
 }
 

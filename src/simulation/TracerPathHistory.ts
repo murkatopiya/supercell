@@ -5,13 +5,40 @@ function copyVec3(position: Vec3): Vec3 {
   return { x: position.x, y: position.y, z: position.z };
 }
 
+function assertFiniteTime(time: number): void {
+  if (!Number.isFinite(time)) {
+    throw new Error("simulationTime must be finite");
+  }
+}
+
+function storedTime(time: number): number {
+  return time === 0 ? 0 : time;
+}
+
+function copySample(sample: PathHistorySample): PathHistorySample {
+  return {
+    position: copyVec3(sample.position),
+    simulationTime: sample.simulationTime,
+  };
+}
+
+/**
+ * One recorded pathline vertex. Position is a world copy; time is the
+ * laboratory clock at the sampling boundary.
+ * docs/architecture/52-historical-path-probe-architecture.md
+ */
+export interface PathHistorySample {
+  readonly position: Vec3;
+  readonly simulationTime: number;
+}
+
 /**
  * Three-free path-history recorder.
  * Observes particles after completed Simulation.step; does not own physics.
  */
 export class TracerPathHistory {
   private readonly stride: number;
-  private readonly histories: Vec3[][];
+  private readonly histories: PathHistorySample[][];
   private readonly observedActive: boolean[];
   private stepsSinceCapture = 0;
 
@@ -39,18 +66,28 @@ export class TracerPathHistory {
    * Inactive particles still receive that birth point once.
    * `observedActive` is set to the particle's current flag so a later
    * `recordAfterStep` does not invent a terminal transition.
+   * `time` is the laboratory clock at capture (birth).
    */
-  appendParticle(particle: TracerAdvectionState): void {
-    this.histories.push([copyVec3(particle.position)]);
+  appendParticle(particle: TracerAdvectionState, time: number): void {
+    assertFiniteTime(time);
+    this.histories.push([
+      {
+        position: copyVec3(particle.position),
+        simulationTime: storedTime(time),
+      },
+    ]);
     this.observedActive.push(particle.active);
   }
 
   /**
    * Append an ordered batch of lanes. Empty batch is a no-op.
    */
-  appendParticles(particles: readonly TracerAdvectionState[]): void {
+  appendParticles(
+    particles: readonly TracerAdvectionState[],
+    time: number,
+  ): void {
     for (const particle of particles) {
-      this.appendParticle(particle);
+      this.appendParticle(particle, time);
     }
   }
 
@@ -58,16 +95,25 @@ export class TracerPathHistory {
    * Copy current positions as the first point of each active tracer.
    * Call after construct or clear(); does not invent samples from time.
    * Not the late-birth path — use appendParticle when the cohort grows.
+   * `time` is the laboratory clock at capture.
    */
-  captureInitial(particles: readonly TracerAdvectionState[]): void {
+  captureInitial(
+    particles: readonly TracerAdvectionState[],
+    time: number,
+  ): void {
+    assertFiniteTime(time);
     this.assertParticleCount(particles);
+    const simulationTime = storedTime(time);
     for (let i = 0; i < particles.length; i++) {
       const particle = particles[i]!;
       this.observedActive[i] = particle.active;
       if (!particle.active) {
         continue;
       }
-      this.histories[i]!.push(copyVec3(particle.position));
+      this.histories[i]!.push({
+        position: copyVec3(particle.position),
+        simulationTime,
+      });
     }
     this.stepsSinceCapture = 0;
   }
@@ -80,18 +126,27 @@ export class TracerPathHistory {
    * observation and is inactive now appends once (terminal accepted
    * position), including off-stride. Already-inactive particles do not
    * append. Lifecycle uses the last observed `active` flag only.
+   * `time` is post-step clock.time (same t Inspector uses).
    */
-  recordAfterStep(particles: readonly TracerAdvectionState[]): void {
+  recordAfterStep(
+    particles: readonly TracerAdvectionState[],
+    time: number,
+  ): void {
+    assertFiniteTime(time);
     this.assertParticleCount(particles);
     this.stepsSinceCapture += 1;
     const onStride = this.stepsSinceCapture % this.stride === 0;
+    const simulationTime = storedTime(time);
     for (let i = 0; i < particles.length; i++) {
       const particle = particles[i]!;
       const wasActive = this.observedActive[i]!;
       const isActive = particle.active;
       const becameInactive = wasActive && !isActive;
       if (becameInactive || (isActive && onStride)) {
-        this.histories[i]!.push(copyVec3(particle.position));
+        this.histories[i]!.push({
+          position: copyVec3(particle.position),
+          simulationTime,
+        });
       }
       this.observedActive[i] = isActive;
     }
@@ -120,17 +175,25 @@ export class TracerPathHistory {
   }
 
   /**
-   * Read-only snapshot of one tracer's path. Copied points; not the
-   * internal array and not particle.position aliases.
+   * Read-only copied world positions for trail drawing.
+   * Not particle.position aliases. Time lives on samplesFor.
    */
   pointsFor(index: number): readonly Vec3[] {
+    return this.samplesFor(index).map((sample) => sample.position);
+  }
+
+  /**
+   * Read-only snapshot of one tracer's path samples.
+   * Copied points and times; not the internal array.
+   */
+  samplesFor(index: number): readonly PathHistorySample[] {
     const history = this.histories[index];
     if (history === undefined) {
       throw new Error(
         `TracerPathHistory: tracer index ${index} out of range`,
       );
     }
-    return history.map(copyVec3);
+    return history.map(copySample);
   }
 
   private assertParticleCount(particles: readonly TracerAdvectionState[]): void {

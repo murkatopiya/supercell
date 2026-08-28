@@ -4,6 +4,7 @@ import type { WorldRay } from "../../rendering/worldRayFromCameraNdc.js";
 
 export type TracerPointerUpResult =
   | { action: "select"; slotIndex: number }
+  | { action: "inspect-path"; slotIndex: number; historyIndex: number }
   | {
       action: "placement";
       origin: Vec3;
@@ -13,12 +14,14 @@ export type TracerPointerUpResult =
   | { action: "ignore" };
 
 /**
- * Stationary left-click policy: glyph hit wins over Explore placement.
+ * Stationary left-click policy: glyph hit wins over path sample,
+ * path sample wins over Explore placement.
  * Orbit-scale movement selects nothing and places nothing.
  */
 export function resolveTracerPointerUp(input: {
   pointerMovementPx: number;
   hitSlotIndex: number | null;
+  hitPathSample?: { slotIndex: number; historyIndex: number } | null;
   placementAvailable: boolean;
   ray: WorldRay | null;
 }): TracerPointerUpResult {
@@ -30,6 +33,13 @@ export function resolveTracerPointerUp(input: {
   }
   if (input.hitSlotIndex !== null) {
     return { action: "select", slotIndex: input.hitSlotIndex };
+  }
+  if (input.hitPathSample !== undefined && input.hitPathSample !== null) {
+    return {
+      action: "inspect-path",
+      slotIndex: input.hitPathSample.slotIndex,
+      historyIndex: input.hitPathSample.historyIndex,
+    };
   }
   if (input.placementAvailable) {
     return {

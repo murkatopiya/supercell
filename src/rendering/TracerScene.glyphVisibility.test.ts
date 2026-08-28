@@ -110,7 +110,7 @@ describe("keepInactiveGlyphs observe policy", () => {
 
     while (p.active) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
 
     const keep = demoKeepInactiveGlyphs(TracerPedagogy.DownwardPathline);
@@ -132,7 +132,7 @@ describe("keepInactiveGlyphs observe policy", () => {
 
     for (let i = 0; i < 20; i++) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       syncObservedTracerGlyph(mesh, p, keep);
     }
     expect(p.active).toBe(false);
@@ -146,7 +146,7 @@ describe("keepInactiveGlyphs observe policy", () => {
       DEMO_SCENARIO.simulation.downwardPathlineSeeds,
     );
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
     syncObservedTracerGlyph(mesh, p, keep);
 
     expect(p.active).toBe(true);
@@ -180,7 +180,7 @@ describe("keepInactiveGlyphs observe policy", () => {
 
     while (p.active && t < maxTime - 1e-12) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       t += dt;
     }
 
@@ -195,7 +195,7 @@ describe("keepInactiveGlyphs observe policy", () => {
 
     for (let i = 0; i < 20; i++) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       syncObservedTracerGlyph(mesh, p, keep);
     }
     expect(history.pointsFor(0)).toHaveLength(terminalLength);
@@ -207,7 +207,7 @@ describe("keepInactiveGlyphs observe policy", () => {
       demoSeedsForPedagogy(TracerPedagogy.NearGroundOutflowPathline),
     );
     history.clear();
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
     syncObservedTracerGlyph(mesh, p, keep);
 
     expect(p.active).toBe(true);

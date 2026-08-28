@@ -83,7 +83,7 @@ describe("guidedExperimentComposition", () => {
 
   it("leaves live Guided lab creation to createGuidedLab(id)", () => {
     expect(appSrc).toMatch(/createGuidedLab\(guidedExperimentId\)/);
-    expect(appSrc).toMatch(/createGuidedLab\(DEFAULT_GUIDED_EXPERIMENT_ID\)/);
+    expect(appSrc).toMatch(/DEFAULT_GUIDED_EXPERIMENT_ID/);
     expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
     expect(appSrc).not.toMatch(/pedagogyForGuidedExperiment/);
     expect(appSrc).not.toMatch(/guidedExperimentCompositionFor/);

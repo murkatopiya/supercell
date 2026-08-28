@@ -40,6 +40,28 @@ function copyVec3(value: Vec3): Vec3 {
 }
 
 /**
+ * Sample both diagnostics at an explicit world point and laboratory time.
+ * Does not mutate diagnostics, clock, or selection.
+ */
+export function inspectPointDiagnosticsAt(
+  tracerId: number,
+  position: Vec3,
+  time: number,
+  sources: PointDiagnosticSources,
+): PointDiagnosticObservation {
+  return {
+    tracerId,
+    time,
+    position: copyVec3(position),
+    tiltingTendency: sources.tiltingTendency.sample(position, time),
+    currentVerticalVorticity: sources.currentVerticalVorticity.sample(
+      position,
+      time,
+    ),
+  };
+}
+
+/**
  * Sample both diagnostics at the selected particle's current position
  * and the caller-supplied laboratory time (must be clock.time).
  * No selection or a missing id yields undefined — never a fake or partial payload.
@@ -56,15 +78,10 @@ export function inspectSelectedPointDiagnostics(
     return undefined;
   }
 
-  const position = particle.position;
-  return {
-    tracerId: particle.tracerId,
+  return inspectPointDiagnosticsAt(
+    particle.tracerId,
+    particle.position,
     time,
-    position: copyVec3(position),
-    tiltingTendency: sources.tiltingTendency.sample(position, time),
-    currentVerticalVorticity: sources.currentVerticalVorticity.sample(
-      position,
-      time,
-    ),
-  };
+    sources,
+  );
 }

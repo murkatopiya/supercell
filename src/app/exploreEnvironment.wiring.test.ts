@@ -11,14 +11,16 @@ import { VIEWBOX_WIDTH } from "../ui/hodograph/hodographViewTransform.js";
  * docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md §10 / §16
  */
 describe("Explore 42-1 Environment surface", () => {
-  it("places a shared Environment affordance in the header, not the action rail", () => {
+  it("places Environment affordance in laboratory mode chrome, not the action rail", () => {
     const header = appSrc.slice(
       appSrc.indexOf("app__header"),
       appSrc.indexOf("app__subtitle"),
     );
     expect(header).toMatch(/EnvironmentAffordance/);
-    expect(header).toMatch(/aria-pressed=\{lab\.kind === "guided"\}/);
-    expect(header).toMatch(/aria-pressed=\{lab\.kind === "explore"\}/);
+    expect(header).toMatch(/ModeIdentity/);
+    expect(header).not.toMatch(/app__mode-switch/);
+    expect(header).not.toMatch(/aria-pressed=\{lab\.kind === "guided"\}/);
+    expect(header).not.toMatch(/aria-pressed=\{lab\.kind === "explore"\}/);
 
     const controls = appSrc.slice(
       appSrc.indexOf("workbench__column--controls"),
@@ -58,7 +60,8 @@ describe("Explore 42-1 Environment surface", () => {
     expect(viewport).not.toMatch(/TracerRuntimeControls/);
     expect(viewport).not.toMatch(/ExplorePointReleaseControls/);
     expect(viewport).not.toMatch(/ExploreFollowControl/);
-    expect(viewport).not.toMatch(/VisualAirflowWorkbenchControls/);
+    expect(viewport).toMatch(/SceneToolbar/);
+    expect(viewport).toMatch(/VisualAirflowWorkbenchControls/);
   });
 
   it("does not duplicate hodograph surfaces across Explore and Guided shells", () => {

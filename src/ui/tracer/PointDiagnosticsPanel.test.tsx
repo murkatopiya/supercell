@@ -218,6 +218,24 @@ describe("PointDiagnosticsPanel", () => {
     expect(html).not.toContain("explains the chimney");
   });
 
+  it("labels HISTORICAL PATH SAMPLE and past-recorded sampling copy", () => {
+    const html = renderToStaticMarkup(
+      <PointDiagnosticsPanel
+        observation={observationFixture()}
+        mode="historical"
+      />,
+    );
+    expect(html).toContain("HISTORICAL PATH SAMPLE");
+    expect(html).toContain(
+      "Sampled at a past recorded position/time from the laboratory field.",
+    );
+    expect(html).toContain("The tracer was not rewound.");
+    expect(html).toContain("T_tilt,y");
+    expect(html).not.toContain(
+      "Sampled from the laboratory field at this marker.",
+    );
+  });
+
   it("is presentational only: no field sampling, simulation, or diagnostic owners", () => {
     expect(panelSrc).not.toMatch(/\.sample\(/);
     expect(panelSrc).not.toMatch(/DiagnosticTiltingTendency/);

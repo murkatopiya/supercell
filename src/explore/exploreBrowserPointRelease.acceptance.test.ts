@@ -10,6 +10,7 @@ import { ExplorePointReleaseTool } from "./ExplorePointReleaseTool.js";
 import { ExploreTracerSession } from "./ExploreTracerSession.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
 import appSrc from "../app/App.tsx?raw";
+import landingSrc from "../app/LandingPage.tsx?raw";
 import tracerViewportSrc from "../ui/tracer/TracerViewport.tsx?raw";
 import simulationSrc from "../simulation/Simulation.ts?raw";
 import tracerSceneSrc from "../rendering/TracerScene.ts?raw";
@@ -80,7 +81,7 @@ describe("Explore browser point-release acceptance", () => {
 
     for (let i = 0; i < 10; i++) {
       simulation.step(dt);
-      pathHistory.recordAfterStep(simulation.particles);
+      pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     const timeAtP1 = simulation.clock.time;
     expect(timeAtP1).toBeCloseTo(1, 12);
@@ -111,7 +112,7 @@ describe("Explore browser point-release acceptance", () => {
     expect(pathHistory.pointsFor(0)).toEqual([{ x: 0, y: 1000, z: 0 }]);
 
     simulation.step(dt);
-    pathHistory.recordAfterStep(simulation.particles);
+    pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
     expect(simulation.particles[0]!.position).toEqual({
       x: 1,
       y: 1000,
@@ -168,7 +169,7 @@ describe("Explore browser point-release acceptance", () => {
     expect(pathHistory.pointsFor(1)).toEqual([{ x: 50, y: 1000, z: -4 }]);
 
     simulation.step(dt);
-    pathHistory.recordAfterStep(simulation.particles);
+    pathHistory.recordAfterStep(simulation.particles, simulation.clock.time);
     const timeBeforeClear = simulation.clock.time;
     const sceneIdentity = slots;
 
@@ -297,19 +298,22 @@ describe("Explore browser point-release acceptance", () => {
   it("zero-particle stepping remains aligned", () => {
     const lab = createExploreLab(new FakeSceneSlots());
     lab.simulation.step(0.1);
-    lab.pathHistory.recordAfterStep(lab.simulation.particles);
+    lab.pathHistory.recordAfterStep(lab.simulation.particles, lab.simulation.clock.time);
     expect(lab.simulation.particles).toHaveLength(0);
     expect(lab.pathHistory.tracerCount).toBe(0);
     expect(lab.simulation.clock.time).toBeCloseTo(0.1, 12);
   });
 
-  it("wires Explore entry beside Guided without a pedagogy selector or ScenarioConfig writes", () => {
+  it("wires Explore entry from landing without a pedagogy selector or ScenarioConfig writes", () => {
     expect(appSrc).toMatch(/createExploreLab/);
     expect(appSrc).toMatch(/ExplorePointReleaseOrchestration/);
     expect(appSrc).toMatch(/createGuidedLab/);
     expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
-    expect(appSrc).toMatch(/>\s*Guided\s*</);
-    expect(appSrc).toMatch(/>\s*Explore\s*</);
+    expect(appSrc).toMatch(/<LandingPage/);
+    expect(appSrc).toMatch(/onEnterExplore=\{enterExplore\}/);
+    expect(appSrc).toMatch(/onEnterGuided=\{enterGuided\}/);
+    expect(landingSrc).toMatch(/>\s*Guided\s*</);
+    expect(landingSrc).toMatch(/>\s*Explore\s*</);
     expect(exploreControlsSrc).toMatch(
       /Release passive tracers at a chosen altitude/,
     );

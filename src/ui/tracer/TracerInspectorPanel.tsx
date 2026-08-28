@@ -1,4 +1,5 @@
 import type { TracerInspection } from "../../interaction/TracerInspection.js";
+import type { InspectionSampleMode } from "../../interaction/HistoricalPathProbe.js";
 import {
   formatInspectorMeters,
   formatInspectorSeconds,
@@ -9,6 +10,7 @@ import { labelForContribution } from "./tracerContributionLabels.js";
 
 export interface TracerInspectorPanelProps {
   inspection: TracerInspection | undefined;
+  mode?: InspectionSampleMode;
 }
 
 function contributionSpeed(velocity: { x: number; y: number; z: number }): number {
@@ -19,7 +21,10 @@ function contributionSpeed(velocity: { x: number; y: number; z: number }): numbe
  * Shared Explore/Guided read-only inspector. Presentational only.
  * docs/architecture/19-shared-tracer-inspector.md
  */
-export function TracerInspectorPanel({ inspection }: TracerInspectorPanelProps) {
+export function TracerInspectorPanel({
+  inspection,
+  mode = "current",
+}: TracerInspectorPanelProps) {
   return (
     <section className="tracer-inspector" aria-label="Tracer inspector">
       <h3 className="tracer-inspector__title">Inspector</h3>
@@ -29,21 +34,43 @@ export function TracerInspectorPanel({ inspection }: TracerInspectorPanelProps) 
             Select a tracer to inspect its motion.
           </p>
         ) : (
-          <InspectionBody inspection={inspection} />
+          <InspectionBody inspection={inspection} mode={mode} />
         )}
       </div>
     </section>
   );
 }
 
-function InspectionBody({ inspection }: { inspection: TracerInspection }) {
+function InspectionBody({
+  inspection,
+  mode,
+}: {
+  inspection: TracerInspection;
+  mode: InspectionSampleMode;
+}) {
   const contributions = inspection.contributions;
+  const historical = mode === "historical";
   return (
     <>
+      <p
+        className={
+          historical
+            ? "tracer-inspector__mode tracer-inspector__mode--historical"
+            : "tracer-inspector__mode"
+        }
+      >
+        {historical ? "HISTORICAL PATH SAMPLE" : "CURRENT"}
+      </p>
       <h4 className="tracer-inspector__section-title">Motion</h4>
       <p className="tracer-inspector__identity">
         Tracer #{inspection.tracerId}
       </p>
+      {historical ? (
+        <p className="tracer-inspector__hint">
+          Past recorded position/time. Diagnostics are recomputed from the
+          laboratory field at that marker. The tracer was not rewound.
+        </p>
+      ) : null}
       <p className="tracer-inspector__hint">World: X East, Y Up, Z South</p>
       <dl className="tracer-inspector__rows">
         <InspectorRow

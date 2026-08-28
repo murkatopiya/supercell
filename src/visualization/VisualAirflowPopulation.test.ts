@@ -321,7 +321,7 @@ describe("VisualAirflowPopulation independence", () => {
       tracerDomain: ATMOSPHERIC_TRACER_DOMAIN,
     });
     const history = new TracerPathHistory(1);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
     const population = createPopulation(
       field,
       cubeConfig({

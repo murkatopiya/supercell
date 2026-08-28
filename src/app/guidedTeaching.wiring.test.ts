@@ -91,7 +91,7 @@ describe("App Guided teaching wiring", () => {
 
   it("leaves the shared Inspector contract unchanged", () => {
     expect(appSrc).toMatch(
-      /<TracerInspectorPanel inspection=\{inspection\} \/>/,
+      /<TracerInspectorPanel\s+inspection=\{inspection\}\s+mode=\{inspectionMode\}\s+\/>/,
     );
     expect(appSrc).not.toMatch(/GuidedTracerInspector/);
     expect(inspectorSrc).not.toMatch(/GuidedExperimentDefinition/);

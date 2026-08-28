@@ -224,7 +224,7 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
 
     for (let s = 0; s < steps; s++) {
       simulation.step(DT);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       for (let i = 0; i < 2; i++) {
         const p = simulation.particles[i]!;
         if (!p.active) stayedActive = false;
@@ -271,7 +271,7 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
 
     while (particle.active && t < 800 - 1e-12) {
       simulation.step(DT);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
       t += DT;
     }
 
@@ -289,7 +289,7 @@ describe("DEMO seventh-operand near-ground outflow wiring", () => {
     expect(history.pointsFor(0)[terminalLength - 1]).toEqual(particle.position);
     for (let i = 0; i < 20; i++) {
       simulation.step(DT);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
     expect(history.pointsFor(0)).toHaveLength(terminalLength);
     expect(particle.active).toBe(false);

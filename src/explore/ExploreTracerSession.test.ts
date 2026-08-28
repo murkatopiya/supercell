@@ -47,13 +47,18 @@ describe("ExploreTracerSession", () => {
   });
 
   it("does not step on release; the tracer stays at its seed until the next step", () => {
-    const { simulation, session } = emptyLab();
-    simulation.step(0.3);
+    const { simulation, session, pathHistory } = emptyLab();
     const t = simulation.clock.time;
     session.releasePoint({ x: 7, y: 8, z: 9 });
     expect(simulation.clock.time).toBe(t);
     expect(simulation.particles[0]!.position).toEqual({ x: 7, y: 8, z: 9 });
     expect(simulation.particles[0]!.age).toBe(0);
+    expect(pathHistory.samplesFor(0)[0]!.simulationTime).toBe(t);
+    expect(pathHistory.samplesFor(0)[0]!.position).toEqual({
+      x: 7,
+      y: 8,
+      z: 9,
+    });
   });
 
   it("owns seed copies so caller mutation cannot rewrite Reset", () => {

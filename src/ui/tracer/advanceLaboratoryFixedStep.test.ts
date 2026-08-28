@@ -176,10 +176,12 @@ describe("advanceLaboratoryFixedStep", () => {
       { position: { x: 0, y: 1, z: 0 }, age: 0, active: true },
     ]);
     const history = new TracerPathHistory(1);
-    history.captureInitial(simulation.particles);
+    history.captureInitial(simulation.particles, simulation.clock.time);
     advanceLaboratoryFixedStep(simulation, 0.5, { pathHistory: history });
     expect(history.pointsFor(0)).toHaveLength(2);
     expect(history.pointsFor(0)[1]).toEqual(simulation.particles[0]!.position);
+    expect(history.samplesFor(0)[0]!.simulationTime).toBe(0);
+    expect(history.samplesFor(0)[1]!.simulationTime).toBe(0.5);
   });
 
   it("does not switch the live path to RK2", () => {
@@ -201,6 +203,9 @@ describe("advanceLaboratoryFixedStep", () => {
     );
     expect(advanceLaboratoryFixedStepSrc).toMatch(
       /pathHistory\?\.recordAfterStep/,
+    );
+    expect(advanceLaboratoryFixedStepSrc).toMatch(
+      /recordAfterStep\(\s*simulation\.particles,\s*simulation\.clock\.time/,
     );
   });
 });

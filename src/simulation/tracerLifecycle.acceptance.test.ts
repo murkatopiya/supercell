@@ -53,7 +53,7 @@ describe("dynamic tracer lifecycle acceptance", () => {
 
     for (let i = 0; i < 10; i++) {
       simulation.step(dt);
-      history.recordAfterStep(simulation.particles);
+      history.recordAfterStep(simulation.particles, simulation.clock.time);
     }
 
     const timeAtBirth = simulation.clock.time;
@@ -61,7 +61,7 @@ describe("dynamic tracer lifecycle acceptance", () => {
 
     const p1 = particle(0, 100, 0);
     simulation.addParticle(p1);
-    history.appendParticle(p1);
+    history.appendParticle(p1, timeAtBirth);
     slots.push(createTracerObserveSlot(slots.length, sharedGeometry, { trails: true }));
 
     expect(simulation.clock.time).toBe(timeAtBirth);
@@ -73,7 +73,7 @@ describe("dynamic tracer lifecycle acceptance", () => {
     expect(slots).toHaveLength(1);
 
     simulation.step(dt);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(p1.position).toEqual({ x: 1, y: 100, z: 0 });
     expect(p1.age).toBeCloseTo(dt, 12);
@@ -87,7 +87,7 @@ describe("dynamic tracer lifecycle acceptance", () => {
     const timeAtP2 = simulation.clock.time;
     const p2 = particle(50, 200, 0);
     simulation.addParticle(p2);
-    history.appendParticle(p2);
+    history.appendParticle(p2, timeAtP2);
     slots.push(createTracerObserveSlot(slots.length, sharedGeometry, { trails: true }));
 
     expect(simulation.clock.time).toBe(timeAtP2);
@@ -99,7 +99,7 @@ describe("dynamic tracer lifecycle acceptance", () => {
     expect(slots).toHaveLength(2);
 
     simulation.step(dt);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
 
     expect(p1.position).toEqual({ x: 2, y: 100, z: 0 });
     expect(p2.position).toEqual({ x: 51, y: 200, z: 0 });
@@ -129,7 +129,7 @@ describe("dynamic tracer lifecycle acceptance", () => {
     expect(simulation.clock.time).toBe(timeBeforeClear);
 
     simulation.step(dt);
-    history.recordAfterStep(simulation.particles);
+    history.recordAfterStep(simulation.particles, simulation.clock.time);
     expect(simulation.clock.time).toBeCloseTo(timeBeforeClear + dt, 12);
     expect(simulation.particles).toHaveLength(0);
     expect(history.tracerCount).toBe(0);
@@ -175,10 +175,10 @@ describe("dynamic tracer lifecycle acceptance", () => {
       }
 
       simulation.step(dt);
-      history?.recordAfterStep(simulation.particles);
+      history?.recordAfterStep(simulation.particles, simulation.clock.time);
       resetTracersFromSeeds(simulation, seeds);
       history?.clear();
-      history?.captureInitial(simulation.particles);
+      history?.captureInitial(simulation.particles, simulation.clock.time);
 
       expect(simulation.clock.time).toBe(0);
       expect(simulation.particles).toHaveLength(count);

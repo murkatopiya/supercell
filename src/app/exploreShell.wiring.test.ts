@@ -43,7 +43,8 @@ describe("Explore Slice A shell geometry", () => {
     expect(viewport).not.toMatch(/TracerRuntimeControls/);
     expect(viewport).not.toMatch(/ExploreClearTracersControl/);
     expect(viewport).not.toMatch(/ExplorePointReleaseControls/);
-    expect(viewport).not.toMatch(/VisualAirflowWorkbenchControls/);
+    expect(viewport).toMatch(/SceneToolbar/);
+    expect(viewport).toMatch(/VisualAirflowWorkbenchControls/);
     expect(viewport).not.toMatch(/ExploreFollowControl/);
     expect(viewport).not.toMatch(/ExploreResetViewControl/);
   });
@@ -62,15 +63,13 @@ describe("Explore Slice A shell geometry", () => {
     expect(controls).toMatch(/ExplorePointReleaseControls/);
     expect(controls).toMatch(/ExploreFollowControl/);
     expect(controls).toMatch(/ExploreResetViewControl/);
-    expect(controls).toMatch(/VisualAirflowWorkbenchControls/);
+    expect(controls).not.toMatch(/VisualAirflowWorkbenchControls/);
+    expect(controls).not.toMatch(/control-band--airflow/);
     expect(controls.indexOf("control-band--release")).toBeLessThan(
       controls.indexOf("control-band--runtime"),
     );
     expect(controls.indexOf("control-band--runtime")).toBeLessThan(
       controls.indexOf("control-band--view"),
-    );
-    expect(controls.indexOf("control-band--view")).toBeLessThan(
-      controls.indexOf("control-band--airflow"),
     );
   });
 
