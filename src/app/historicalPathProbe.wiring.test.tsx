@@ -98,7 +98,7 @@ describe("historical path probe App wiring", () => {
     );
     expect(envSwitch).toMatch(/clearSelectionAndInspection/);
     expect(envSwitch).toMatch(/createExploreLab/);
-    expect(appSrc).toMatch(/EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED/);
+    expect(envSwitch).toMatch(/exploreEnvironmentalWindProfile\(next\)/);
   });
 
   it("glyph select clears the probe; path select does not birth or replace Follow target", () => {

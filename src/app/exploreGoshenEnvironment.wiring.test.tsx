@@ -257,13 +257,13 @@ describe("I2 Goshen Explore sandbox", () => {
       verticalWindShearBetween(GOSHEN_2009_OBSERVED_RECORD.profile, 0, 1000),
     ).toThrow();
     expect(appSrc).toMatch(
-      /goshenExploreActive\s*\?\s*undefined\s*:\s*createDemoVorticityLayer\(\)/,
+      /observedExploreActive\s*\?\s*undefined\s*:\s*createDemoVorticityLayer\(\)/,
     );
     expect(appSrc).toMatch(
-      /goshenExploreActive\s*\?\s*undefined\s*:\s*createDemoStreamwiseCrosswiseOverlay\(\)/,
+      /observedExploreActive\s*\?\s*undefined\s*:\s*createDemoStreamwiseCrosswiseOverlay\(\)/,
     );
     expect(appSrc).toMatch(
-      /goshenExploreActive \? undefined : DEMO_SELECTED_HEIGHT/,
+      /observedExploreActive \? undefined : DEMO_SELECTED_HEIGHT/,
     );
     expect(appSrc).not.toMatch(/createDemoVorticityLayer\(.*Goshen/s);
   });

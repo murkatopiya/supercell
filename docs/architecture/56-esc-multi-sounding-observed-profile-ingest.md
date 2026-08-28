@@ -13,9 +13,9 @@ Dumas/Stinnett   NSSL2 2010-05-18 21:52:18
 ```
 
 Not a provider interface. Not IGRA. Not Moore. Not
-Explore injection. Not Analysis / smoothing. Not new
-production goldens in this file. Not a V1 reopen. Not
-reconstruction. Not Bunkers. Not Guided.
+Analysis / smoothing. Not new production goldens in
+this file. Not a V1 reopen. Not reconstruction. Not
+Bunkers. Not Guided.
 **Physics:** unchanged. `EnvironmentalWindProfile`
 invariants and interpolation stay `04` / `48`. I1
 normalization semantics stay `49` §8. Source vs analysis
@@ -24,7 +24,9 @@ file.
 **Implementation:** Goshen, Prospect Valley, and
 Dumas/Stinnett named wrappers and committed normalized
 goldens exist in `src/data/eolNsslMgausEsc/`. This SoT
-does not include Explore injection, IGRA, or Analysis.
+does not include IGRA or Analysis. Explore selection of
+the three source records is a separate composition
+slice on the I2 environment identity.
 
 Predecessor:
 
@@ -88,8 +90,9 @@ and not an Analysis transform.
 
 This file extracts the Goshen-specific seams so named
 wrappers reuse the same mechanics. Goshen, Prospect,
-and Dumas source ingest follow that path. Explore
-injection, IGRA, and Analysis remain out of this SoT.
+and Dumas source ingest follow that path. IGRA and
+Analysis remain out of this SoT. Explore selection of
+these source records is not ingest work.
 
 ---
 
@@ -442,8 +445,16 @@ adapter.
 ```
 
 Native EOL bytes remain gitignored (`data/`). `npm test`
-does not require them. Explore environment registry,
-Analysis profile, and BL-037 remain separate.
+does not require them. Analysis profile and BL-037 remain
+separate. Explore consumes the committed goldens through
+the existing Explore environment identity:
+
+```text
+demo-prescribed
+goshen-2009-observed
+prospect-valley-2010-observed
+dumas-2010-observed
+```
 
 ---
 
@@ -461,8 +472,10 @@ incompatibility. Negative first heights and NSSL2 vs
 NSSL1 are spec/data facts, not a new drop policy.
 
 This acceptance is an architecture decision. Goshen,
-Prospect, and Dumas source ingest follow it. It is
-not implementation of Moore, Explore, or Analysis.
+Prospect, and Dumas source ingest follow it. Explore
+selection of those same source records is a separate
+composition slice on the I2 environment identity.
+It is not implementation of Moore or Analysis.
 
 ---
 
@@ -480,6 +493,11 @@ SELECTOR:        spec-driven; fail 0 or >1; never ordinal
 GOSHEN WRAPPER:  kept
 PROSPECT:        named wrapper + normalized golden DONE
 DUMAS:           named wrapper + normalized golden DONE
+EXPLORE IDS:     demo-prescribed;
+                 goshen-2009-observed;
+                 prospect-valley-2010-observed;
+                 dumas-2010-observed
+                 (I2 identity mechanism; not this ingest)
 I1 SEMANTICS:    unchanged; Goshen golden remains oracle
 MOORE/IGRA:      excluded; sibling adapter later
 PROVIDER API:    still rejected (48 Q5)
@@ -493,5 +511,6 @@ V1:              CLOSED; not reopened
 
 Goshen, Prospect, and Dumas source ingest live in
 `src/data/eolNsslMgausEsc/`. Native campaign bytes are
-not committed. Explore registry, IGRA, and Analysis
-are out of this SoT.
+not committed. IGRA and Analysis are out of this SoT.
+Explore identities for the three committed source
+records live on the existing I2 environment mechanism.

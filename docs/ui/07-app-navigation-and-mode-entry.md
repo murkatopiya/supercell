@@ -117,7 +117,9 @@ Supercell Explorer
   │     ├── experiment catalog (existing GuidedExperimentId)
   │     └── Environment       (hodograph + overlays; default open)
   └── Explore               (top-level mode)
-        ├── environment identity (demo prescribed | Goshen observed)
+        ├── environment identity (demo prescribed |
+        │     Goshen 2009 | Prospect Valley 2010 |
+        │     Dumas 2010 observed)
         └── Environment       (hodograph + overlays; default closed)
 ```
 
@@ -277,9 +279,10 @@ After this pass:
   selection (`40` T2 / `42` affordance contract);
 - Guided may keep Environment default-open;
 - Explore may keep Environment default-closed;
-- Explore environment **identity** (demo prescribed vs Goshen
-  observed) stays inside the Environment surface, as today
-  (`EnvironmentSurface` radios). It does not move to landing.
+- Explore environment **identity** (demo prescribed vs
+  Goshen / Prospect Valley / Dumas observed) stays inside
+  the Environment surface, as today (`EnvironmentSurface`
+  radios). It does not move to landing.
 
 Guided experiment selection stays inside Guided
 (`GuidedExperimentSelector`). It is not a top-level mode and

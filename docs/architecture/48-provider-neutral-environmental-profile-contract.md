@@ -18,7 +18,8 @@ as the kinematic sampler. V1 DEMO knots and DEMO `C` are
 not modified by this file.
 **Implementation:** this contract file is docs-only.
 I1 is in `src/data/eolNsslMgausEsc/` (`49` §7–§8).
-I2 is the Explore-only Goshen identity (`50`).
+I2 is the Explore-only environment identity (`50`),
+later extended to Prospect and Dumas observed columns.
 This file does not authorize a provider interface,
 Bunkers, a DEMO_SCENARIO change, a Guided retarget,
 or thermodynamics.
@@ -1305,7 +1306,9 @@ I2  Opt-in Explore / laboratory environmental injection
     C remains prescribed DEMO C
     honesty copy from §9.3 / 50
     Guided remains DEMO
-    NOT STARTED
+    DONE in 50 as Explore DEMO | Goshen
+    later extended to Prospect and Dumas observed
+    identities on the same Explore mechanism
     defined in 50
 
 I3+ Curated scenarios, editable hodograph, case-specific
@@ -1392,7 +1395,9 @@ this file:     provider-neutral environmental-wind
 49:            R1 selection; Goshen NSSL1 2155 UTC;
                G1–G3 forensic inspect; I1 input
 50:            I2 Explore Goshen sandbox;
-               I2 DONE
+               I2 DONE; later Explore identities
+               Prospect and Dumas use the same
+               environment mechanism
 56:            ESC family multi-sounding ingest;
                GATE ACCEPTED; Prospect and Dumas DONE
 44:            long-term source / reconstruction
@@ -1429,6 +1434,12 @@ EXACT ARCHIVE:       49  EOL 114.114  Goshen NSSL1 2155 UTC
                      G1–G3 CLOSED in 49; G4 OPEN
 PHYSICS APIs:        no change required for I1
 LIVE INJECTION:      I2 opt-in Explore; defined in 50
+                     Explore identities:
+                       demo-prescribed
+                       goshen-2009-observed
+                       prospect-valley-2010-observed
+                       dumas-2010-observed
+                     Guided remains DEMO
 I1:                  src/data/eolNsslMgausEsc/
 ESC FAMILY:          56; spec + generic mechanics;
                      Prospect and Dumas DONE;

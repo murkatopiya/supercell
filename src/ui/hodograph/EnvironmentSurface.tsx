@@ -2,13 +2,8 @@ import { useEffect, type RefObject } from "react";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
 import type { StormMotion } from "../../physics/environment/stormRelativeWind.js";
 import {
-  DEMO_PRESCRIBED_ENVIRONMENT_LABEL,
-  EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
-  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
-  GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
-  GOSHEN_OBSERVED_ENVIRONMENT_COPY,
-  GOSHEN_PRESCRIBED_STORM_COPY,
-  GOSHEN_SANDBOX_ANTI_CLAIM,
+  EXPLORE_ENVIRONMENT_OPTIONS,
+  exploreEnvironmentHonesty,
   type ExploreEnvironmentIdentity,
 } from "../../explore/exploreEnvironmentIdentity.js";
 import { HodographOverlayControls } from "./HodographOverlayControls.js";
@@ -86,6 +81,10 @@ export function EnvironmentSurface({
   }, [open, onClose]);
 
   const autoscale = buildViewTransform(points, [stormMotion]);
+  const honesty =
+    environmentIdentity !== undefined
+      ? exploreEnvironmentHonesty(environmentIdentity)
+      : undefined;
 
   return (
     <HodographWorkspace
@@ -103,44 +102,27 @@ export function EnvironmentSurface({
           <legend className="environment-surface__identity-legend">
             Environment
           </legend>
-          <label className="environment-surface__identity-option">
-            <input
-              type="radio"
-              name="explore-environment-identity"
-              checked={
-                environmentIdentity === EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED
-              }
-              onChange={() =>
-                onEnvironmentIdentityChange(
-                  EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
-                )
-              }
-            />
-            {DEMO_PRESCRIBED_ENVIRONMENT_LABEL}
-          </label>
-          <label className="environment-surface__identity-option">
-            <input
-              type="radio"
-              name="explore-environment-identity"
-              checked={
-                environmentIdentity ===
-                EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED
-              }
-              onChange={() =>
-                onEnvironmentIdentityChange(
-                  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
-                )
-              }
-            />
-            {GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL}
-          </label>
+          {EXPLORE_ENVIRONMENT_OPTIONS.map((option) => (
+            <label
+              key={option.identity}
+              className="environment-surface__identity-option"
+            >
+              <input
+                type="radio"
+                name="explore-environment-identity"
+                checked={environmentIdentity === option.identity}
+                onChange={() => onEnvironmentIdentityChange(option.identity)}
+              />
+              {option.label}
+            </label>
+          ))}
         </fieldset>
       ) : null}
-      {environmentIdentity === EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED ? (
+      {honesty !== undefined ? (
         <div className="environment-surface__honesty">
-          <p>{GOSHEN_OBSERVED_ENVIRONMENT_COPY}</p>
-          <p>{GOSHEN_PRESCRIBED_STORM_COPY}</p>
-          <p>{GOSHEN_SANDBOX_ANTI_CLAIM}</p>
+          <p>{honesty.observed}</p>
+          <p>{honesty.prescribed}</p>
+          <p>{honesty.antiClaim}</p>
         </div>
       ) : null}
       <div className="hodograph-workspace__plot">

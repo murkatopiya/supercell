@@ -24,13 +24,20 @@ import panelSrc from "./HodographPanel.tsx?raw";
 import affordanceSrc from "./EnvironmentAffordance.tsx?raw";
 import type { HodographPanelGeometry } from "./hodographPanelGeometry.js";
 import type { HodographPlotView } from "./hodographPlotView.js";
+import {
+  DEMO_PRESCRIBED_ENVIRONMENT_LABEL,
+  DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL,
+  GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
+  PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL,
+  type ExploreEnvironmentIdentity,
+} from "../../explore/exploreEnvironmentIdentity.js";
 
 const boundsElementRef = { current: null };
 
 function surfaceMarkup(
   open: boolean,
   extras: {
-    environmentIdentity?: "demo-prescribed" | "goshen-2009-observed";
+    environmentIdentity?: ExploreEnvironmentIdentity;
     panelGeometry?: HodographPanelGeometry;
     plotView?: HodographPlotView;
   } = {},
@@ -76,15 +83,19 @@ describe("EnvironmentSurface", () => {
 
   it("shows the Explore identity control only when identity is supplied", () => {
     const guided = surfaceMarkup(true);
-    expect(guided).not.toContain("Demo prescribed environment");
-    expect(guided).not.toContain("Goshen 2009 observed environment");
+    expect(guided).not.toContain(DEMO_PRESCRIBED_ENVIRONMENT_LABEL);
+    expect(guided).not.toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
+    expect(guided).not.toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(guided).not.toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain("explore-environment-identity");
 
     const explore = surfaceMarkup(true, {
       environmentIdentity: "demo-prescribed",
     });
-    expect(explore).toContain("Demo prescribed environment");
-    expect(explore).toContain("Goshen 2009 observed environment");
+    expect(explore).toContain(DEMO_PRESCRIBED_ENVIRONMENT_LABEL);
+    expect(explore).toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
     expect(explore).not.toContain("NOT a simulation or reconstruction");
   });
 

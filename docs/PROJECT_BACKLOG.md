@@ -97,7 +97,7 @@ They are listed so they are not re-queued from old compact lock-ins.
 
 | Old claim | Successor fact |
 | --- | --- |
-| `48` §17 / `49` compact: I2 NOT STARTED | `50`: I2 DONE |
+| `48` §17 / `49` compact: I2 NOT STARTED | `50`: I2 DONE; Explore later also binds Prospect and Dumas on the same identity |
 | `22` / `21`: camera pan / Follow / Reset View NOT STARTED | `34` Follow, `37` Reset View implemented; unlabeled OrbitControls pan already exists. Remaining item is only a **designed product pan control** in `38` §13 |
 | `22` / `26` / `28` / physics `22`–`23`: diagnostic UI NOT STARTED | Explore Point diagnostics implemented (`32`). Guided mount remains POST-V1 (`38` §13) |
 | `48` U1 / R1 archive identity | CLOSED in `49` |
@@ -780,9 +780,13 @@ does not authorize that adapter.
 ESC family ingest for #1/#3 is designed in `56`
 (spec + generic mechanics + named wrappers).
 Prospect (#1) and Dumas (#3) source ingest and
-normalized goldens are DONE. Moore/IGRA remains a
-sibling adapter, not `56`. `56` does not close BL-037
-and does not authorize Analysis.
+normalized goldens are DONE. Those same source records
+are selectable Explore observed environments on the
+I2 identity mechanism (`goshen-2009-observed`,
+`prospect-valley-2010-observed`, `dumas-2010-observed`).
+That product wiring does not close this item.
+Moore/IGRA remains a sibling adapter, not `56`. `56`
+does not close BL-037 and does not authorize Analysis.
 
 Return when: a later Moore/IGRA ingest slice is
 designed, or a later BL-037 validation slice is
@@ -849,7 +853,9 @@ ARCHITECTURE §30:
 38 / 47 / reviews/2026-08-27-v1-closed.md:
                V1 CLOSED; §11.3 PASS not claimed
 44:            consume vs reconstruction boundary
-48 / 49 / 50:  environment contract; R1; I2 DONE; G4 OPEN
+48 / 49 / 50:  environment contract; R1; I2 DONE; G4 OPEN;
+               Explore identities DEMO + Goshen + Prospect
+               + Dumas; Guided remains DEMO
 51:            dense hodograph display COMPLETE
 52:            historical path probe first slice IMPLEMENTED
 53:            source vs analysis distinction ACCEPTED
@@ -868,7 +874,8 @@ research 2026-08-28-moore-oun-igra-source-qualification.md:
 56:            ESC multi-sounding source ingest
                architecture; GATE ACCEPTED;
                Prospect and Dumas goldens DONE;
-               Moore excluded
+               Moore excluded; Explore identities
+               consume those source records separately
 BL-010 / BL-037:
                implementation blocked on 55 + generalization
                research; BL-037 not closed by source qualification

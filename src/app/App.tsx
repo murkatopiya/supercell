@@ -13,7 +13,6 @@ import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.j
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import {
   DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
-  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
   type ExploreEnvironmentIdentity,
 } from "../explore/exploreEnvironmentIdentity.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
@@ -54,10 +53,7 @@ import {
   createDemoStreamwiseCrosswiseOverlay,
   createDemoVorticityLayer,
 } from "./demoHodographFixture.js";
-import {
-  GOSHEN_2009_OBSERVED_RECORD,
-  exploreEnvironmentalWindProfile,
-} from "./goshenObservedEnvironment.js";
+import { exploreEnvironmentalWindProfile } from "./goshenObservedEnvironment.js";
 import { DEFAULT_EXPLORE_POINT_ALTITUDE_M } from "../explore/ExplorePointReleaseTool.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
@@ -534,12 +530,13 @@ export function App() {
   }
 
   const explore = lab.kind === "explore" ? lab : null;
-  const goshenExploreActive =
-    explore !== null &&
-    exploreEnvironmentIdentity === EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED;
-  const activeProfile = goshenExploreActive
-    ? GOSHEN_2009_OBSERVED_RECORD.profile
-    : createDemoEnvironmentalWindProfile();
+  const observedProfile =
+    explore !== null
+      ? exploreEnvironmentalWindProfile(exploreEnvironmentIdentity)
+      : undefined;
+  const observedExploreActive = observedProfile !== undefined;
+  const activeProfile =
+    observedProfile ?? createDemoEnvironmentalWindProfile();
   const points = hodographPoints(activeProfile);
   const guidedExperiment =
     lab.kind === "guided"
@@ -565,13 +562,13 @@ export function App() {
       points={points}
       stormMotion={DEMO_SCENARIO.stormMotion}
       selectedHeight={
-        goshenExploreActive ? undefined : DEMO_SELECTED_HEIGHT
+        observedExploreActive ? undefined : DEMO_SELECTED_HEIGHT
       }
       vorticityLayer={
-        goshenExploreActive ? undefined : createDemoVorticityLayer()
+        observedExploreActive ? undefined : createDemoVorticityLayer()
       }
       streamwiseCrosswiseOverlay={
-        goshenExploreActive
+        observedExploreActive
           ? undefined
           : createDemoStreamwiseCrosswiseOverlay()
       }
