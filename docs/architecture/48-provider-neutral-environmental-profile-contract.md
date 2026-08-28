@@ -1312,7 +1312,7 @@ IGRA observed-profile ingest architecture: 57
     sibling adapter behind the same record contract
     GATE ACCEPTED; named worldY sort
     Moore wrapper + golden DONE in src/data/igra/
-    Explore Moore still out of 57; not Analysis
+    Explore identity moore-2013-observed on I2; not Analysis
     not a provider interface; not BL-015
     shared record/coverage types:
     src/data/environmentalWindProfileRecord/
@@ -1323,7 +1323,7 @@ I2  Opt-in Explore / laboratory environmental injection
     honesty copy from §9.3 / 50
     Guided remains DEMO
     DONE in 50 as Explore DEMO | Goshen
-    later extended to Prospect and Dumas observed
+    later extended to Prospect, Dumas, and Moore observed
     identities on the same Explore mechanism
     defined in 50
 
@@ -1457,6 +1457,7 @@ LIVE INJECTION:      I2 opt-in Explore; defined in 50
                        goshen-2009-observed
                        prospect-valley-2010-observed
                        dumas-2010-observed
+                       moore-2013-observed
                      Guided remains DEMO
 I1:                  src/data/eolNsslMgausEsc/
 ESC FAMILY:          56; spec + generic mechanics;
@@ -1464,7 +1465,8 @@ ESC FAMILY:          56; spec + generic mechanics;
                      not a provider interface; not IGRA
 IGRA FAMILY:         57; sibling adapter; GATE ACCEPTED;
                      named stable sort by worldY;
-                     Moore ingest NOT IMPLEMENTED
+                     Moore ingest DONE in src/data/igra/;
+                     Explore identity moore-2013-observed
 V1:                  CLOSED; not reopened
 ```
 

@@ -28,6 +28,7 @@ import {
   DEMO_PRESCRIBED_ENVIRONMENT_LABEL,
   DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL,
   GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
+  MOORE_2013_OBSERVED_ENVIRONMENT_LABEL,
   PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL,
   type ExploreEnvironmentIdentity,
 } from "../../explore/exploreEnvironmentIdentity.js";
@@ -87,6 +88,7 @@ describe("EnvironmentSurface", () => {
     expect(guided).not.toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(guided).not.toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain("explore-environment-identity");
 
     const explore = surfaceMarkup(true, {
@@ -96,6 +98,7 @@ describe("EnvironmentSurface", () => {
     expect(explore).toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
     expect(explore).toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
     expect(explore).toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
     expect(explore).not.toContain("NOT a simulation or reconstruction");
   });
 

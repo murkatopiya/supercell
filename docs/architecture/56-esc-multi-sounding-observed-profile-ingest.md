@@ -496,7 +496,8 @@ DUMAS:           named wrapper + normalized golden DONE
 EXPLORE IDS:     demo-prescribed;
                  goshen-2009-observed;
                  prospect-valley-2010-observed;
-                 dumas-2010-observed
+                 dumas-2010-observed;
+                 moore-2013-observed
                  (I2 identity mechanism; not this ingest)
 I1 SEMANTICS:    unchanged; Goshen golden remains oracle
 MOORE/IGRA:      excluded from this family; sibling

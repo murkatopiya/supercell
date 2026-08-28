@@ -10,6 +10,7 @@ import { createGuidedLab } from "./createGuidedLab.js";
 import {
   DUMAS_2010_OBSERVED_RECORD,
   GOSHEN_2009_OBSERVED_RECORD,
+  MOORE_2013_OBSERVED_RECORD,
   PROSPECT_VALLEY_2010_OBSERVED_RECORD,
   exploreEnvironmentalWindProfile,
   exploreObservedEnvironmentRecord,
@@ -26,10 +27,14 @@ import {
   EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
   EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
   EXPLORE_ENVIRONMENT_IDENTITIES,
+  EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
   EXPLORE_ENVIRONMENT_OPTIONS,
   EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
   GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
   GOSHEN_PRESCRIBED_STORM_COPY,
+  MOORE_2013_OBSERVED_ENVIRONMENT_LABEL,
+  MOORE_OBSERVED_ENVIRONMENT_COPY,
+  MOORE_SANDBOX_ANTI_CLAIM,
   PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL,
   PROSPECT_VALLEY_OBSERVED_ENVIRONMENT_COPY,
   PROSPECT_VALLEY_SANDBOX_ANTI_CLAIM,
@@ -68,8 +73,10 @@ function fakeSlots(): ExploreSceneSlots {
 const INTERIOR = { x: -2000, y: 2000, z: 0 };
 
 function environmentSurfaceHtml(
-  identity: typeof EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED
-    | typeof EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
+  identity:
+    | typeof EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED
+    | typeof EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED
+    | typeof EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
 ) {
   const record = exploreObservedEnvironmentRecord(identity)!;
   return renderToStaticMarkup(
@@ -117,12 +124,13 @@ function expectThinnedObservedHodograph(
 }
 
 describe("Explore observed environments", () => {
-  it("registers DEMO plus three observed Explore identities", () => {
+  it("registers DEMO plus four observed Explore identities", () => {
     expect(EXPLORE_ENVIRONMENT_IDENTITIES).toEqual([
       EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
       EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
       EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
       EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
+      EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
     ]);
     expect(EXPLORE_ENVIRONMENT_OPTIONS.map((option) => option.identity)).toEqual(
       [...EXPLORE_ENVIRONMENT_IDENTITIES],
@@ -132,6 +140,7 @@ describe("Explore observed environments", () => {
       GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
       PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL,
       DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL,
+      MOORE_2013_OBSERVED_ENVIRONMENT_LABEL,
     ]);
     expect(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY).toBe(
       EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
@@ -148,10 +157,14 @@ describe("Explore observed environments", () => {
     const dumas = exploreObservedEnvironmentRecord(
       EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
     );
+    const moore = exploreObservedEnvironmentRecord(
+      EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
+    );
 
     expect(goshen).toBe(GOSHEN_2009_OBSERVED_RECORD);
     expect(prospect).toBe(PROSPECT_VALLEY_2010_OBSERVED_RECORD);
     expect(dumas).toBe(DUMAS_2010_OBSERVED_RECORD);
+    expect(moore).toBe(MOORE_2013_OBSERVED_RECORD);
     expect(
       exploreObservedEnvironmentRecord(EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED),
     ).toBeUndefined();
@@ -167,6 +180,21 @@ describe("Explore observed environments", () => {
     expect(dumas?.provenance.validTime).toBe("2010-05-18 21:52:18 UTC");
     expect(dumas?.provenance.sourceIdentity).not.toMatch(/22:04:18/);
     expect(dumas?.provenance.sourceIdentity).not.toMatch(/forward-flank/i);
+
+    expect(moore?.provenance.sourceClass).toBe("observed-raob");
+    expect(moore?.provenance.sourceIdentity).toContain("USM00072357");
+    expect(moore?.provenance.validTime).toContain("16:51");
+    expect(moore?.provenance.validTime).toContain("HOUR 17");
+    expect(moore?.provenance.validTime.includes("18 UTC")).toBe(false);
+    expect(moore?.provenance.location).toEqual({
+      latitude: 35.1808,
+      longitude: -97.4378,
+    });
+    expect(moore?.provenance.heightDatum).toContain("345");
+    expect(moore?.provenance.heightDatum).toContain("344.9 m is not");
+    expect(moore?.profile.minHeight).toBe(0);
+    expect(moore?.profile.maxHeight).toBe(30700);
+    expect(moore?.profile.levelHeights()).toHaveLength(165);
 
     expect(goshen?.profile.minHeight).toBe(2.4);
     expect(goshen?.profile.levelHeights()).toHaveLength(2029);
@@ -188,7 +216,7 @@ describe("Explore observed environments", () => {
     );
     expect(createGuidedLabSrc).not.toMatch(/environmentalWindProfile/);
     expect(createGuidedLabSrc).not.toMatch(
-      /goshen|prospect|dumas|nssl1|nssl2/i,
+      /goshen|prospect|dumas|moore|igra|oun|nssl1|nssl2/i,
     );
 
     const prospectLab = createExploreLab(
@@ -201,12 +229,20 @@ describe("Explore observed environments", () => {
       fakeSlots(),
       exploreEnvironmentalWindProfile(EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED),
     );
+    const mooreLab = createExploreLab(
+      fakeSlots(),
+      exploreEnvironmentalWindProfile(EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED),
+    );
     expect(prospectLab.tiltingTendency.profile).toBe(
       PROSPECT_VALLEY_2010_OBSERVED_RECORD.profile,
     );
     expect(dumasLab.tiltingTendency.profile).toBe(
       DUMAS_2010_OBSERVED_RECORD.profile,
     );
+    expect(mooreLab.tiltingTendency.profile).toBe(
+      MOORE_2013_OBSERVED_RECORD.profile,
+    );
+    expect(mooreLab.tiltingTendency.profile.levelHeights()).toHaveLength(165);
   });
 
   it("rebuilds Explore so profile, hodograph, and env diagnostics stay on one identity", () => {
@@ -219,27 +255,39 @@ describe("Explore observed environments", () => {
     const dumasProfile = exploreEnvironmentalWindProfile(
       EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
     )!;
+    const mooreProfile = exploreEnvironmentalWindProfile(
+      EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
+    )!;
     const goshenLab = createExploreLab(fakeSlots(), goshenProfile);
     const prospectLab = createExploreLab(fakeSlots(), prospectProfile);
     const dumasLab = createExploreLab(fakeSlots(), dumasProfile);
+    const mooreLab = createExploreLab(fakeSlots(), mooreProfile);
 
     expect(goshenLab.simulation).not.toBe(prospectLab.simulation);
     expect(prospectLab.simulation).not.toBe(dumasLab.simulation);
+    expect(mooreLab.simulation).not.toBe(dumasLab.simulation);
     expect(goshenLab.tiltingTendency.profile).toBe(goshenProfile);
     expect(prospectLab.tiltingTendency.profile).toBe(prospectProfile);
     expect(dumasLab.tiltingTendency.profile).toBe(dumasProfile);
+    expect(mooreLab.tiltingTendency.profile).toBe(mooreProfile);
 
     const goshenPoints = hodographPoints(goshenLab.tiltingTendency.profile);
     const prospectPoints = hodographPoints(
       prospectLab.tiltingTendency.profile,
     );
     const dumasPoints = hodographPoints(dumasLab.tiltingTendency.profile);
+    const moorePoints = hodographPoints(mooreLab.tiltingTendency.profile);
     expect(goshenPoints).toHaveLength(2029);
     expect(prospectPoints).toHaveLength(2733);
     expect(dumasPoints).toHaveLength(2917);
+    expect(moorePoints).toHaveLength(165);
+    expect(moorePoints[0]!.height).toBe(0);
+    expect(moorePoints[moorePoints.length - 1]!.height).toBe(30700);
     expect(prospectPoints).not.toEqual(goshenPoints);
     expect(dumasPoints).not.toEqual(goshenPoints);
     expect(dumasPoints).not.toEqual(prospectPoints);
+    expect(moorePoints).not.toEqual(dumasPoints);
+    expect(moorePoints).not.toEqual(goshenPoints);
     expect(prospectPoints).not.toEqual(createDemoHodographPoints());
 
     const goshenAdvection = goshenLab.velocityObservation.parts!.find(
@@ -251,17 +299,28 @@ describe("Explore observed environments", () => {
     const dumasAdvection = dumasLab.velocityObservation.parts!.find(
       (part) => part.key === "environmentAdvection",
     )!.field.sample(INTERIOR, 0);
+    const mooreAdvection = mooreLab.velocityObservation.parts!.find(
+      (part) => part.key === "environmentAdvection",
+    )!.field.sample(INTERIOR, 0);
     expect(prospectAdvection).not.toEqual(goshenAdvection);
     expect(dumasAdvection).not.toEqual(goshenAdvection);
     expect(dumasAdvection).not.toEqual(prospectAdvection);
+    expect(mooreAdvection).not.toEqual(dumasAdvection);
+    expect(mooreAdvection).not.toEqual(goshenAdvection);
     expect(prospectLab.tiltingTendency.sample(INTERIOR, 0)).not.toBe(
       goshenLab.tiltingTendency.sample(INTERIOR, 0),
     );
     expect(dumasLab.tiltingTendency.sample(INTERIOR, 0)).not.toBe(
       prospectLab.tiltingTendency.sample(INTERIOR, 0),
     );
+    expect(mooreLab.tiltingTendency.sample(INTERIOR, 0)).not.toBe(
+      dumasLab.tiltingTendency.sample(INTERIOR, 0),
+    );
     expect(prospectLab.velocityObservation.total.sample(INTERIOR, 0)).not.toEqual(
       goshenLab.velocityObservation.total.sample(INTERIOR, 0),
+    );
+    expect(mooreLab.velocityObservation.total.sample(INTERIOR, 0)).not.toEqual(
+      dumasLab.velocityObservation.total.sample(INTERIOR, 0),
     );
   });
 
@@ -292,12 +351,15 @@ describe("Explore observed environments", () => {
     );
   });
 
-  it("shows Prospect and Dumas as selectable observed environments with honesty copy", () => {
+  it("shows Prospect, Dumas, and Moore as selectable observed environments with honesty copy", () => {
     const prospectHtml = environmentSurfaceHtml(
       EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
     );
     const dumasHtml = environmentSurfaceHtml(
       EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
+    );
+    const mooreHtml = environmentSurfaceHtml(
+      EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
     );
 
     expect(prospectHtml).toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
@@ -315,9 +377,22 @@ describe("Explore observed environments", () => {
     expect(dumasHtml).not.toMatch(/reconstructs the Dumas/i);
     expect(dumasHtml).not.toMatch(/the real Dumas storm/i);
     expect(dumasHtml).not.toMatch(/observed storm motion/i);
+
+    expect(mooreHtml).toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
+    expect(mooreHtml).toContain(MOORE_OBSERVED_ENVIRONMENT_COPY);
+    expect(mooreHtml).toContain(GOSHEN_PRESCRIBED_STORM_COPY);
+    expect(mooreHtml).toContain(MOORE_SANDBOX_ANTI_CLAIM);
+    expect(mooreHtml).toContain("16:51");
+    expect(mooreHtml).toContain("IGRA");
+    expect(mooreHtml).not.toMatch(/18 UTC/);
+    expect(mooreHtml).not.toMatch(/Wyoming/i);
+    expect(mooreHtml).not.toMatch(/reconstructs the Moore/i);
+    expect(mooreHtml).not.toMatch(/the real Moore storm/i);
+    expect(mooreHtml).not.toMatch(/tornado/i);
+    expect(mooreHtml).not.toMatch(/observed storm motion/i);
   });
 
-  it("thins Prospect and Dumas markers without resampling the source polyline", () => {
+  it("thins Prospect, Dumas, and Moore markers without resampling the source polyline", () => {
     expectThinnedObservedHodograph(
       PROSPECT_VALLEY_2010_OBSERVED_RECORD.profile,
       "-0.1 m",
@@ -327,6 +402,11 @@ describe("Explore observed environments", () => {
       DUMAS_2010_OBSERVED_RECORD.profile,
       "-0.5 m",
       "16025.6 m",
+    );
+    expectThinnedObservedHodograph(
+      MOORE_2013_OBSERVED_RECORD.profile,
+      "0 m",
+      "30700 m",
     );
   });
 });

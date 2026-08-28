@@ -347,23 +347,23 @@ Authoritative refs: `44` §7 / §10; `ARCHITECTURE` §36.
 ### BL-021 — Moore curated operational-RAOB case
 
 Category: DATA
-Status: DEFERRED (LATER)
+Status: PARTIAL (Explore source identity DONE; not a reconstructed
+Moore storm; C remains prescribed DEMO)
 Origin: `49` runner-up / compact lock-in; `50` §11
 Why retained: OUN 20 May 2013 afternoon special is the recorded
-runner-up and a later curated operational-RAOB case, not I1/I2
-input. G5 fallback to Moore was unused because G3 passed.
-The same column is also BL-045 validation candidate #2 (sampling
-class). Those roles stay distinct: this item is a later **product**
-case pointer; BL-045 is a validation-input pointer. Neither imports
-data. `57` is source-ingest architecture only and does not
-start this product case.
-Return when: a later curated-case SoT, after Goshen sandbox lessons.
-`57` accepts IGRA source ingest architecture only. It does
-not start this product case and does not add Explore Moore.
+runner-up operational-RAOB case. Source ingest is `57` /
+`src/data/igra/`. Explore identity `moore-2013-observed`
+consumes that observed environmental wind profile on the
+existing I2 mechanism. Storm-local operands and storm
+motion `C` remain prescribed DEMO. This is not a
+reconstruction of the Moore supercell and is not Analysis.
+The same column remains BL-045 validation candidate #2.
+Return when: a later curated-case SoT that would change
+storm-motion policy, Guided pinning, or Analysis — not
+because Explore identity is missing.
 Authoritative refs: `49` §11; `50` §11; BL-045; `57`; research
 `2026-08-28-additional-sounding-case-selection.md`;
 `2026-08-28-moore-oun-igra-source-qualification.md`
-(validation-input inspect; does not start this product case).
 
 ### BL-022 — I3+ curated scenarios / editable hodograph / Guided re-pinning
 
@@ -729,7 +729,8 @@ Authoritative refs: `44` entire; `ARCHITECTURE` §1 / §36.
 Category: DATA
 Status: DEFERRED (candidates named; #1/#3 ESC goldens DONE;
 #2 IGRA architecture 57 ACCEPTED; Moore adapter + golden
-DONE; Explore Moore not implemented; bytes not imported)
+DONE; Explore identity `moore-2013-observed` DONE; bytes not
+imported)
 Origin: CHAT/KNOWLEDGE GAP, sanctioned 2026-08-28; `49` later-case
 mentions; concatenated ESC sibling blocks (`49` §7.1); selection
 research 2026-08-28
@@ -749,7 +750,7 @@ only Goshen 2155. Named **validation candidates** (research
     identity + source column CONFIRMED (IGRA native)
     ingest architecture 57 GATE ACCEPTED
     named wrapper + normalized golden DONE
-    Explore NOT implemented
+    Explore identity `moore-2013-observed` DONE
     native bytes not committed
 #3  Dumas/Stinnett 2010-05-18 NSSL2 21:52:18
     EOL 114.114     slot A (tornadic near-inflow)
@@ -783,9 +784,10 @@ source facts, not fixtures.
 A later operational-RAOB adapter for #2 is designed as
 architecture in `57` (sibling of `56`; named worldY sort).
 Moore named wrapper and normalized golden are DONE in
-`src/data/igra/`. Native bytes stay gitignored. That
-ingest does not add Explore Moore and is not BL-015
-product provider #2.
+`src/data/igra/`. Native bytes stay gitignored. Explore
+identity `moore-2013-observed` consumes that source record
+on the I2 mechanism. That product wiring does not close
+BL-037 and is not BL-015 product provider #2.
 
 ESC family ingest for #1/#3 is designed in `56`
 (spec + generic mechanics + named wrappers).
@@ -796,13 +798,13 @@ I2 identity mechanism (`goshen-2009-observed`,
 `prospect-valley-2010-observed`, `dumas-2010-observed`).
 That product wiring does not close this item.
 Moore/IGRA ingest architecture is `57` (GATE ACCEPTED).
-Moore named wrapper and golden are DONE; Explore identity
-remains separate. `56` / `57` do not close BL-037 and do
-not authorize Analysis.
+Moore named wrapper, golden, and Explore identity
+`moore-2013-observed` are DONE. `56` / `57` do not close
+BL-037 and do not authorize Analysis.
 
-Return when: Explore Moore (BL-021) is authorized, or a
-later BL-037 validation slice is explicitly authorized.
-Obtaining files is not implementation of Analysis.
+Return when: a later BL-037 validation slice is
+explicitly authorized. Obtaining files is not
+implementation of Analysis.
 Authoritative refs: `56`; `57`; research
 `2026-08-28-additional-sounding-case-selection.md`;
 `2026-08-28-vortex2-source-qualification.md`;
@@ -827,7 +829,7 @@ Authoritative refs: `56`; `57`; research
 | C. Markowski 88/167 not oracle | standing constraint | |
 | D. Community sounding-analysis tooling | BL-036 | RESEARCH NEEDED; not a method choice |
 | D. Generalization / scale / bin phase / not only Goshen | BL-037 | one combined research item |
-| D. Extra soundings as validation candidates | BL-045 | named; #1/#3 ESC goldens DONE; #2 Moore IGRA adapter + golden DONE; Explore Moore not; bytes not imported |
+| D. Extra soundings as validation candidates | BL-045 | named; #1/#3 ESC goldens DONE; #2 Moore IGRA adapter + golden + Explore identity DONE; bytes not imported |
 | E. Reproduction as case study | BL-040 | interesting possibility; no product requirement |
 | F. Storm-motion provenance | BL-013, BL-014, BL-032, BL-041 | prescribed vs derived vs observed kept distinct |
 | G. Provider #2 / disagreement | BL-015, BL-016 | |
@@ -866,7 +868,7 @@ ARCHITECTURE §30:
 44:            consume vs reconstruction boundary
 48 / 49 / 50:  environment contract; R1; I2 DONE; G4 OPEN;
                Explore identities DEMO + Goshen + Prospect
-               + Dumas; Guided remains DEMO
+               + Dumas + Moore; Guided remains DEMO
 51:            dense hodograph display COMPLETE
 52:            historical path probe first slice IMPLEMENTED
 53:            source vs analysis distinction ACCEPTED
@@ -882,7 +884,8 @@ research 2026-08-28-vortex2-source-qualification.md:
 research 2026-08-28-moore-oun-igra-source-qualification.md:
                #2 IGRA identity + source column audited;
                57 GATE ACCEPTED; Moore wrapper + golden
-               DONE; Explore / Analysis still NO
+               DONE; Explore identity moore-2013-observed
+               DONE; Analysis still NO
 56:            ESC multi-sounding source ingest
                architecture; GATE ACCEPTED;
                Prospect and Dumas goldens DONE;
@@ -892,8 +895,9 @@ research 2026-08-28-moore-oun-igra-source-qualification.md:
 57:            IGRA observed-profile ingest
                architecture; GATE ACCEPTED;
                Moore wrapper + golden DONE in
-               src/data/igra/; Explore NOT
-               implemented; not BL-015; not Analysis
+               src/data/igra/; Explore identity
+               moore-2013-observed on I2; not BL-015;
+               not Analysis
 BL-010 / BL-037:
                implementation blocked on 55 + generalization
                research; BL-037 not closed by source qualification

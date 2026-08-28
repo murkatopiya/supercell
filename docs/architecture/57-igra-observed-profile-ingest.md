@@ -1,7 +1,7 @@
 # IGRA Observed-Profile Ingest Architecture
 
 **Status:** ARCHITECTURE SoT / GATE ACCEPTED /
-MOORE SOURCE INGEST DONE; EXPLORE MOORE NOT IN THIS FILE
+MOORE SOURCE INGEST DONE; EXPLORE MOORE ON I2 IDENTITY
 **Scope:** the minimum architecture for a sibling IGRA v2.2
 observed-RAOB adapter that can emit the existing
 provider-neutral `EnvironmentalWindProfileRecord`, using
@@ -24,8 +24,10 @@ analysis stays `53` / `54` / `55`; BL-037 remains out of
 this file.
 **Implementation:** Moore named wrapper, tests, and
 committed normalized golden live in `src/data/igra/`.
-Native POR bytes remain gitignored. This SoT does not
-include Explore Moore or Analysis.
+Explore identity `moore-2013-observed` uses that record
+on the existing I2 environment mechanism. Native POR
+bytes remain gitignored. This SoT does not include
+Analysis.
 
 Predecessor:
 
@@ -626,9 +628,10 @@ construct the spec. Native POR bytes remain gitignored.
 normalized golden
 `src/data/igra/fixtures/ounMoore20130520.normalized.json`.
 
-Explore identity for Moore is **out of this SoT** (BL-021
-product case; BL-045 validation pointer). This file does
-not add `moore-2013-observed` to Explore.
+Explore identity `moore-2013-observed` consumes the
+committed golden through the existing I2 environment
+mechanism. Guided remains DEMO. This file does not
+contain Explore wiring.
 
 ---
 
@@ -640,7 +643,8 @@ not add `moore-2013-observed` to Explore.
 2. IGRA parser + Moore named wrapper + tests/golden
    DONE in src/data/igra/; native bytes not committed
 3. Explore Moore environment identity
-   out of this SoT (BL-021); Guided remains DEMO
+   DONE on the existing I2 mechanism (`moore-2013-observed`);
+   Guided remains DEMO
 4. Analysis / BL-037 / BL-010
    not authorized; 100 m bin-mean is not universal on
    IGRA spacing (qualification §6)
@@ -676,7 +680,7 @@ and is not Analysis.
 ```text
 this architecture file does not contain the parser
 this file does not commit native IGRA bytes
-this file does not add an Explore Moore option
+this file does not contain Explore wiring
 this file does not retarget Guided
 this file does not wire published storm motion
 this file does not reconstruct the 2013 Moore storm
@@ -718,7 +722,7 @@ ORDERING:        B; named stable sort by worldY
 DUPLICATES:      fail; do not average
 COVERAGE:        48 shape; 50 m gaps remain; Moore will be verbose
 C / STORM:       prescribed laboratory; not observed Moore C
-EXPLORE:         not in this file
+EXPLORE:         moore-2013-observed on I2; Guided remains DEMO
 GOLDEN / SRC:    src/data/igra/; native POR gitignored
 V1:              CLOSED; not reopened
 ```
@@ -760,5 +764,6 @@ Explore / Analysis in this file         excluded
 Moore source ingest lives in `src/data/igra/`. The
 committed golden is
 `src/data/igra/fixtures/ounMoore20130520.normalized.json`.
-Native POR bytes remain gitignored. Moore Explore
-identity and Analysis remain out of this SoT.
+Native POR bytes remain gitignored. Explore identity
+`moore-2013-observed` consumes that record on the I2
+mechanism. Analysis remains out of this SoT.

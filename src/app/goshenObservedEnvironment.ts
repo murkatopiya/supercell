@@ -9,10 +9,13 @@ import {
   nssl2Dumas215218Record,
 } from "../data/eolNsslMgausEsc/toEnvironmentalWindProfileRecord.js";
 import type { EscNormalizedGolden } from "../data/eolNsslMgausEsc/types.js";
+import mooreGoldenJson from "../data/igra/fixtures/ounMoore20130520.normalized.json";
+import { ounMoore20130520Record } from "../data/igra/ingestOunMoore20130520Igra.js";
 import {
   EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
   EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
   EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+  EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
   EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
   type ExploreEnvironmentIdentity,
 } from "../explore/exploreEnvironmentIdentity.js";
@@ -20,10 +23,11 @@ import {
 const goshenGolden = goshenGoldenJson as EscNormalizedGolden;
 const prospectGolden = prospectGoldenJson as EscNormalizedGolden;
 const dumasGolden = dumasGoldenJson as EscNormalizedGolden;
+const mooreGolden = mooreGoldenJson as EscNormalizedGolden;
 
 /**
  * Explore observed columns boot from committed goldens.
- * Native ESC campaign bytes are not a runtime input.
+ * Native ESC / IGRA bytes are not a runtime input.
  */
 export const GOSHEN_2009_OBSERVED_RECORD: EnvironmentalWindProfileRecord =
   nssl1Goshen2155Record(goshenGolden.levels, goshenGolden.coverage, {
@@ -47,11 +51,18 @@ export const DUMAS_2010_OBSERVED_RECORD: EnvironmentalWindProfileRecord =
     longitude: -101.973,
   });
 
+export const MOORE_2013_OBSERVED_RECORD: EnvironmentalWindProfileRecord =
+  ounMoore20130520Record(mooreGolden.levels, mooreGolden.coverage, {
+    latitude: 35.1808,
+    longitude: -97.4378,
+  });
+
 const OBSERVED_RECORDS = {
   [EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED]: GOSHEN_2009_OBSERVED_RECORD,
   [EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED]:
     PROSPECT_VALLEY_2010_OBSERVED_RECORD,
   [EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED]: DUMAS_2010_OBSERVED_RECORD,
+  [EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED]: MOORE_2013_OBSERVED_RECORD,
 } as const;
 
 export function exploreObservedEnvironmentRecord(
