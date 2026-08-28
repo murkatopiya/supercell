@@ -1,7 +1,8 @@
 # ESC Multi-Sounding Observed-Profile Ingest Architecture
 
 **Status:** ARCHITECTURE SoT / GATE ACCEPTED /
-PROSPECT AND DUMAS INGEST NOT STARTED
+GOSHEN AND PROSPECT SOURCE INGEST DONE /
+DUMAS INGEST NOT STARTED
 **Scope:** the minimum generalization of the existing EOL
 NSSL/MGAUS ESC adapter so three already-qualified observed
 columns can share one ingest family:
@@ -21,9 +22,11 @@ invariants and interpolation stay `04` / `48`. I1
 normalization semantics stay `49` §8. Source vs analysis
 split stays `53`; `54`/`55`/BL-037 remain out of this
 file.
-**Implementation:** this file does not include `src/**`
-changes. Goshen I1 remains the live adapter. Prospect
-and Dumas ingest are NOT STARTED.
+**Implementation:** Goshen remains the named I1 wrapper.
+Prospect Valley named wrapper and committed normalized
+golden exist in `src/data/eolNsslMgausEsc/`. Dumas ingest
+is NOT STARTED. This SoT does not include Explore
+injection, IGRA, or Analysis.
 
 Predecessor:
 
@@ -85,9 +88,9 @@ The scientific need is **additional source columns** for
 later BL-037 validation inputs, not a second provider
 and not an Analysis transform.
 
-This file extracts the Goshen-specific seams so later
-named wrappers can reuse the same mechanics. It does
-not authorize those wrappers in `src/**`.
+This file extracts the Goshen-specific seams so named
+wrappers reuse the same mechanics. Prospect is on that
+path. Dumas is not started here.
 
 ---
 
@@ -190,8 +193,8 @@ parseEscConcatenated(text)
 Named public wrappers remain the product surface:
 
 ```text
-ingestNssl1Goshen2155Esc          EXISTS; stays
-ingestNssl1ProspectValley222346Esc  NOT STARTED
+ingestNssl1Goshen2155Esc            DONE
+ingestNssl1ProspectValley222346Esc  DONE
 ingestNssl2Dumas215218Esc           NOT STARTED
 ```
 
@@ -325,10 +328,9 @@ heightDatum     ESC Alt minus header launch elevation 1557.9 m,
 nativeUnitsNote ESC U/V m/s meteorological (eastward / northward)
 ```
 
-Prospect and Dumas provenance strings are written when
-those wrappers are implemented. They are not invented
-here beyond the identity lock already recorded in the
-VORTEX2 qualification research.
+Prospect provenance is locked on
+`NSSL1_PROSPECT_VALLEY_222346_SPEC`. Dumas provenance
+strings are written when that wrapper is implemented.
 
 ---
 
@@ -428,19 +430,17 @@ adapter.
 
 ---
 
-## 10. Intended next implementation slices
-
-These slices are **not** included in this document.
+## 10. Implementation slices
 
 ```text
 1. Refactor live ESC mechanics to take EscObservedSoundingSpec
-   without changing Goshen golden or I1 semantics
-2. Prospect Valley named wrapper + tests/golden
-3. Dumas/Stinnett named wrapper + tests/golden
+   without changing Goshen golden or I1 semantics     DONE
+2. Prospect Valley named wrapper + tests/golden       DONE
+3. Dumas/Stinnett named wrapper + tests/golden        NOT STARTED
 ```
 
 Native EOL bytes remain gitignored (`data/`). `npm test`
-must not require them. Explore environment registry,
+does not require them. Explore environment registry,
 Analysis profile, and BL-037 remain separate.
 
 ---
@@ -458,9 +458,9 @@ Prospect and Dumas did not reveal a semantic
 incompatibility. Negative first heights and NSSL2 vs
 NSSL1 are spec/data facts, not a new drop policy.
 
-This acceptance is an architecture decision. It is not
-implementation of Prospect, Dumas, Moore, Explore, or
-Analysis.
+This acceptance is an architecture decision. Prospect
+source ingest follows it. It is not implementation of
+Dumas, Moore, Explore, or Analysis.
 
 ---
 
@@ -476,11 +476,12 @@ DATUM:           option B; exact 0.1 m match; then
                  round(Alt − locked elevation, 1)
 SELECTOR:        spec-driven; fail 0 or >1; never ordinal
 GOSHEN WRAPPER:  kept
-I1 SEMANTICS:    unchanged; golden remains oracle
+PROSPECT:        named wrapper + normalized golden DONE
+I1 SEMANTICS:    unchanged; Goshen golden remains oracle
 MOORE/IGRA:      excluded; sibling adapter later
 PROVIDER API:    still rejected (48 Q5)
 ANALYSIS:        still 53/54/55; BL-037 not this file
-PROSPECT/DUMAS:  NOT STARTED
+DUMAS:           NOT STARTED
 V1:              CLOSED; not reopened
 ```
 
@@ -488,7 +489,7 @@ V1:              CLOSED; not reopened
 
 ## 13. Implementation
 
-This document does not include implementation.
-Production `src/**` remains unchanged by this SoT.
-No new goldens, no native bytes, no Explore registry,
-no IGRA adapter, no Analysis profile.
+Goshen and Prospect source ingest live in
+`src/data/eolNsslMgausEsc/`. Native campaign bytes are
+not committed. Dumas, Explore registry, IGRA, and
+Analysis are out of this SoT.

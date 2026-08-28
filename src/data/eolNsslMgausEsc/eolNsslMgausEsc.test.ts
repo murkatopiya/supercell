@@ -1,15 +1,23 @@
 import { describe, expect, it } from "vitest";
 import { atmosphericVelocityToWorld } from "../../core/math/AtmosphericVelocity.js";
 import { ingestNssl1Goshen2155Esc } from "./ingestNssl1Goshen2155Esc.js";
+import { ingestNssl1ProspectValley222346Esc } from "./ingestNssl1ProspectValley222346Esc.js";
 import { parseEscConcatenated } from "./parseEscConcatenated.js";
+import { NSSL1_PROSPECT_VALLEY_222346_SPEC } from "./escObservedSoundingSpec.js";
+import { selectEscSounding } from "./selectEscSounding.js";
 import { selectTargetSounding } from "./selectTargetSounding.js";
 import { EscAdapterError } from "./types.js";
 import {
   SYNTHETIC_AMBIGUOUS_2155_ESC,
+  SYNTHETIC_AMBIGUOUS_PROSPECT_ESC,
   SYNTHETIC_CONCATENATED_ESC,
   SYNTHETIC_DUPLICATE_HEIGHT_ESC,
   SYNTHETIC_ONLY_2240_ESC,
+  SYNTHETIC_ONLY_PROSPECT_SIBLING_ESC,
+  SYNTHETIC_PROSPECT_CONCATENATED_ESC,
   SYNTHETIC_SINGLE_KEPT_LEVEL_ESC,
+  SYNTHETIC_WRONG_GOSHEN_ELEVATION_ESC,
+  SYNTHETIC_WRONG_PROSPECT_ELEVATION_ESC,
 } from "./fixtures/syntheticEsc.js";
 
 describe("NSSL/MGAUS ESC adapter (synthetic fixtures)", () => {
@@ -117,5 +125,77 @@ describe("NSSL/MGAUS ESC adapter (synthetic fixtures)", () => {
     expect(() =>
       ingestNssl1Goshen2155Esc(SYNTHETIC_SINGLE_KEPT_LEVEL_ESC),
     ).toThrow(/fewer than 2/);
+  });
+
+  it("fails when the selected header launch elevation does not match the locked datum", () => {
+    expect(() =>
+      ingestNssl1Goshen2155Esc(SYNTHETIC_WRONG_GOSHEN_ELEVATION_ESC),
+    ).toThrow(EscAdapterError);
+    expect(() =>
+      ingestNssl1Goshen2155Esc(SYNTHETIC_WRONG_GOSHEN_ELEVATION_ESC),
+    ).toThrow(/launch elevation must be 1557\.9/);
+  });
+});
+
+describe("Prospect Valley NSSL1 22:23:46 ESC ingest (synthetic fixtures)", () => {
+  it("selects the 22:23:46 NSSL1 block by spec identity, not ordinal", () => {
+    const blocks = parseEscConcatenated(SYNTHETIC_PROSPECT_CONCATENATED_ESC);
+    expect(blocks).toHaveLength(3);
+
+    const selected = selectEscSounding(
+      blocks,
+      NSSL1_PROSPECT_VALLEY_222346_SPEC,
+    );
+    expect(selected.header.siteId).toBe("Mobile System/NSSL1");
+    expect(selected.header.utcReleaseTime).toBe("2010, 05, 26, 22:23:46");
+    expect(selected.header.launchElevation).toBe(1358.9);
+    expect(selected.header.latitude).toBe(40.002);
+    expect(selected.header.longitude).toBe(-103.594);
+  });
+
+  it("rejects a same-day NSSL1 sibling and an NSSL2 decoy", () => {
+    expect(() =>
+      ingestNssl1ProspectValley222346Esc(SYNTHETIC_ONLY_PROSPECT_SIBLING_ESC),
+    ).toThrow(EscAdapterError);
+    expect(() =>
+      ingestNssl1ProspectValley222346Esc(SYNTHETIC_ONLY_PROSPECT_SIBLING_ESC),
+    ).toThrow(/no sounding with NSSL1/);
+  });
+
+  it("fails when the 22:23:46 identity is ambiguous", () => {
+    expect(() =>
+      ingestNssl1ProspectValley222346Esc(SYNTHETIC_AMBIGUOUS_PROSPECT_ESC),
+    ).toThrow(/more than one/);
+  });
+
+  it("fails when the locked Prospect launch elevation does not match", () => {
+    expect(() =>
+      ingestNssl1ProspectValley222346Esc(
+        SYNTHETIC_WRONG_PROSPECT_ELEVATION_ESC,
+      ),
+    ).toThrow(/launch elevation must be 1358\.9/);
+  });
+
+  it("keeps a usable t=-1 first height at -0.1 m and does not invent Y=0", () => {
+    const record = ingestNssl1ProspectValley222346Esc(
+      SYNTHETIC_PROSPECT_CONCATENATED_ESC,
+    );
+    const heights = record.profile.levelHeights();
+
+    expect(heights[0]).toBe(-0.1);
+    expect(heights.includes(0)).toBe(false);
+    expect(record.profile.minHeight).toBe(-0.1);
+    expect(record.profile.sampleAtHeight(-0.1)).toEqual({
+      eastward: -0.2,
+      northward: 2.0,
+      vertical: 0,
+    });
+    expect(record.provenance.location).toEqual({
+      latitude: 40.002,
+      longitude: -103.594,
+    });
+    expect(record.provenance.validTime).toBe("2010-05-26 22:23:46 UTC");
+    expect(record.provenance.sourceIdentity).toContain("Mobile System/NSSL1");
+    expect(record.provenance.heightDatum).toContain("1358.9");
   });
 });

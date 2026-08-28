@@ -1,3 +1,4 @@
+import type { EscObservedSoundingSpec } from "./escObservedSoundingSpec.js";
 import {
   COVERAGE_GAP_THRESHOLD_M,
   ESC_MISSING_ALTITUDE,
@@ -5,7 +6,6 @@ import {
   ESC_QC_BAD,
   ESC_QC_MISSING,
   EscAdapterError,
-  NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M,
   type EnvironmentalWindProfileCoverage,
   type EscDataRecord,
   type EscSoundingBlock,
@@ -50,14 +50,17 @@ function gapSpansOver50m(
   return spans;
 }
 
-export function normalizeEscWindColumn(block: EscSoundingBlock): {
+export function normalizeEscWindColumn(
+  block: EscSoundingBlock,
+  spec: EscObservedSoundingSpec,
+): {
   levels: NormalizedWindLevel[];
   coverage: EnvironmentalWindProfileCoverage;
 } {
   const launchElevation = block.header.launchElevation;
-  if (launchElevation !== NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M) {
+  if (launchElevation !== spec.expectedLaunchElevationM) {
     throw new EscAdapterError(
-      `NSSL1 2155 UTC launch elevation must be ${NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M}, got ${launchElevation}`,
+      `${spec.utcReleaseTime} launch elevation must be ${spec.expectedLaunchElevationM}, got ${launchElevation}`,
     );
   }
 
@@ -67,10 +70,12 @@ export function normalizeEscWindColumn(block: EscSoundingBlock): {
       continue;
     }
 
-    const height = roundToTenth(
-      record.alt - NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M,
-    );
-    if (!Number.isFinite(height) || !Number.isFinite(record.u) || !Number.isFinite(record.v)) {
+    const height = roundToTenth(record.alt - spec.expectedLaunchElevationM);
+    if (
+      !Number.isFinite(height) ||
+      !Number.isFinite(record.u) ||
+      !Number.isFinite(record.v)
+    ) {
       throw new EscAdapterError("normalized height or wind is not finite");
     }
 

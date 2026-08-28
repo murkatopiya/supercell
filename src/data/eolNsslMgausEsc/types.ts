@@ -1,5 +1,8 @@
-export const NSSL1_GOSHEN_2155_UTC = "2009, 06, 05, 21:55:22";
-export const NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M = 1557.9;
+export {
+  NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M,
+  NSSL1_GOSHEN_2155_UTC,
+} from "./escObservedSoundingSpec.js";
+export type { EscObservedSoundingSpec } from "./escObservedSoundingSpec.js";
 
 export const ESC_MISSING_WIND = 9999.0;
 export const ESC_MISSING_ALTITUDE = 99999.0;
@@ -58,10 +61,12 @@ export interface EnvironmentalWindProfileCoverage {
   gapSpansOver50m: HeightGapSpan[];
 }
 
-export interface GoshenNormalizedGolden {
+export interface EscNormalizedGolden {
   levels: NormalizedWindLevel[];
   coverage: EnvironmentalWindProfileCoverage;
 }
+
+export type GoshenNormalizedGolden = EscNormalizedGolden;
 
 export interface EnvironmentalWindProfileProvenance {
   sourceClass: "observed-raob";

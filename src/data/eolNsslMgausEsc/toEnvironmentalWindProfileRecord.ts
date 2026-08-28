@@ -1,5 +1,10 @@
 import { EnvironmentalWindProfile } from "../../physics/environment/EnvironmentalWindProfile.js";
 import type { EnvironmentalWindProfileRecord } from "./EnvironmentalWindProfileRecord.js";
+import {
+  NSSL1_GOSHEN_2155_SPEC,
+  NSSL1_PROSPECT_VALLEY_222346_SPEC,
+  type EscObservedSoundingSpec,
+} from "./escObservedSoundingSpec.js";
 import type {
   EnvironmentalWindProfileCoverage,
   EscHeader,
@@ -7,13 +12,11 @@ import type {
 } from "./types.js";
 
 export const NSSL1_GOSHEN_2155_SOURCE_IDENTITY =
-  "EOL 114.114 / DOI 10.5065/D6CC0Z0Q / Bushnell/NSSL1 / UTC 2009-06-05 21:55:22 / native concatenated NSSL_MGAUS_20090605.cls";
-
+  NSSL1_GOSHEN_2155_SPEC.sourceIdentity;
 export const NSSL1_GOSHEN_2155_HEIGHT_DATUM =
-  "ESC Alt minus header launch elevation 1557.9 m, rounded to 0.1 m → world Y, implied flat ground";
-
+  NSSL1_GOSHEN_2155_SPEC.heightDatum;
 export const NSSL1_GOSHEN_2155_NATIVE_UNITS_NOTE =
-  "ESC U/V m/s meteorological (eastward / northward)";
+  NSSL1_GOSHEN_2155_SPEC.nativeUnitsNote;
 
 export function environmentalWindProfileFromNormalizedLevels(
   levels: readonly NormalizedWindLevel[],
@@ -30,7 +33,8 @@ export function environmentalWindProfileFromNormalizedLevels(
   );
 }
 
-export function nssl1Goshen2155Record(
+export function observedEscRecord(
+  spec: EscObservedSoundingSpec,
   levels: readonly NormalizedWindLevel[],
   coverage: EnvironmentalWindProfileCoverage,
   location: Pick<EscHeader, "latitude" | "longitude">,
@@ -39,15 +43,36 @@ export function nssl1Goshen2155Record(
     profile: environmentalWindProfileFromNormalizedLevels(levels),
     provenance: {
       sourceClass: "observed-raob",
-      sourceIdentity: NSSL1_GOSHEN_2155_SOURCE_IDENTITY,
-      validTime: "2009-06-05 21:55:22 UTC",
+      sourceIdentity: spec.sourceIdentity,
+      validTime: spec.validTime,
       location: {
         latitude: location.latitude,
         longitude: location.longitude,
       },
-      heightDatum: NSSL1_GOSHEN_2155_HEIGHT_DATUM,
+      heightDatum: spec.heightDatum,
       coverage,
-      nativeUnitsNote: NSSL1_GOSHEN_2155_NATIVE_UNITS_NOTE,
+      nativeUnitsNote: spec.nativeUnitsNote,
     },
   };
+}
+
+export function nssl1Goshen2155Record(
+  levels: readonly NormalizedWindLevel[],
+  coverage: EnvironmentalWindProfileCoverage,
+  location: Pick<EscHeader, "latitude" | "longitude">,
+): EnvironmentalWindProfileRecord {
+  return observedEscRecord(NSSL1_GOSHEN_2155_SPEC, levels, coverage, location);
+}
+
+export function nssl1ProspectValley222346Record(
+  levels: readonly NormalizedWindLevel[],
+  coverage: EnvironmentalWindProfileCoverage,
+  location: Pick<EscHeader, "latitude" | "longitude">,
+): EnvironmentalWindProfileRecord {
+  return observedEscRecord(
+    NSSL1_PROSPECT_VALLEY_222346_SPEC,
+    levels,
+    coverage,
+    location,
+  );
 }

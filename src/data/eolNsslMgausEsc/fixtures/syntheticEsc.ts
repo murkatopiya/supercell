@@ -171,3 +171,80 @@ export const SYNTHETIC_SINGLE_KEPT_LEVEL_ESC = [
   }),
   dataLine({ time: 0, u: 1.0, v: 1.0, alt: 1560.3, qu: 1.0, qv: 1.0 }),
 ].join("\n");
+
+export const SYNTHETIC_WRONG_GOSHEN_ELEVATION_ESC = [
+  headerBlock({
+    siteId: "Bushnell/NSSL1",
+    utc: "2009, 06, 05, 21:55:22",
+    lon: -103.893,
+    lat: 41.278,
+    elev: 1558.0,
+  }),
+  dataLine({ time: 0, u: -1.2, v: 0.2, alt: 1560.3, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: 10.0, v: 4.0, alt: 1570.0, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+const prospectTarget = [
+  headerBlock({
+    siteId: "Mobile System/NSSL1",
+    utc: "2010, 05, 26, 22:23:46",
+    lon: -103.594,
+    lat: 40.002,
+    elev: 1358.9,
+  }),
+  dataLine({ time: -1, u: -0.2, v: 2.0, alt: 1358.8, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 0, u: -2.9, v: 5.6, alt: 1359.5, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 2, u: -4.0, v: 6.6, alt: 1366.5, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+const prospectSiblingNssl1 = [
+  headerBlock({
+    siteId: "Mobile System/NSSL1",
+    utc: "2010, 05, 26, 23:20:45",
+    lon: -103.638,
+    lat: 39.988,
+    elev: 1392.9,
+  }),
+  dataLine({ time: 0, u: 1.0, v: 1.0, alt: 1400.0, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: 2.0, v: 2.0, alt: 1410.0, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+const prospectDecoyNssl2 = [
+  headerBlock({
+    siteId: "Mobile System/NSSL2",
+    utc: "2010, 05, 26, 22:19:19",
+    lon: -104.735,
+    lat: 40.0,
+    elev: 1544.0,
+  }),
+  dataLine({ time: 0, u: 8.0, v: 8.0, alt: 1550.0, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: 9.0, v: 9.0, alt: 1560.0, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+export const SYNTHETIC_PROSPECT_CONCATENATED_ESC = [
+  prospectDecoyNssl2,
+  prospectTarget,
+  prospectSiblingNssl1,
+].join("\n");
+
+export const SYNTHETIC_ONLY_PROSPECT_SIBLING_ESC = [
+  prospectDecoyNssl2,
+  prospectSiblingNssl1,
+].join("\n");
+
+export const SYNTHETIC_AMBIGUOUS_PROSPECT_ESC = [
+  prospectTarget,
+  prospectTarget,
+].join("\n");
+
+export const SYNTHETIC_WRONG_PROSPECT_ELEVATION_ESC = [
+  headerBlock({
+    siteId: "Mobile System/NSSL1",
+    utc: "2010, 05, 26, 22:23:46",
+    lon: -103.594,
+    lat: 40.002,
+    elev: 1359.0,
+  }),
+  dataLine({ time: -1, u: -0.2, v: 2.0, alt: 1358.8, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 0, u: -2.9, v: 5.6, alt: 1359.5, qu: 1.0, qv: 1.0 }),
+].join("\n");
