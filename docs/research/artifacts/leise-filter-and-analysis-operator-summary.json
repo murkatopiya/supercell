@@ -1,0 +1,1721 @@
+{
+  "generatedAt": "2026-08-28",
+  "purpose": "Reconstruct Leise T5FLTR (NSTEP=5) and compare analysis-operator responses. Not a production filter selection.",
+  "citation": {
+    "original": "Leise, J. A., 1981: NOAA Tech. Memo. ERL WPL-82. FORTRAN T5FLTR dated 8/80.",
+    "cedricSource": "NCAR/RadarAnalysisTools cedric/trunk/T5FLTR.f (Jim Leise 8/80 comments intact)",
+    "cedricManual": "CEDRIC User Manual, September 2009, FILTER command, data.eol.ucar.edu cedric.2009sep_doc.pdf",
+    "markowski": "Markowski et al. 2012 MWR Part I Fig. 2b caption (5-step) and methods (3-step suppresses ≤8Δ)",
+    "cai2005": "Cai 2005 MWR: cutoff 2^m Δ; wavelength 2^{m+1} Δ damped ~24%"
+  },
+  "algorithm": {
+    "stencil": [
+      -0.0625,
+      0.25,
+      0.625,
+      0.25,
+      -0.0625
+    ],
+    "boundary": "half-sample mirror (repeat-endpoint): y[-1]=y[0], y[-2]=y[1]",
+    "nstepMeaning": "NSTEP pyramid of 2*NSTEP-1 five-point passes; strides 1..2^(N-1)..1",
+    "stridesN5": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      8,
+      4,
+      2,
+      1
+    ],
+    "stopbandSamples": "≥ 2^NSTEP grid points/cycle (Leise comment; CEDRIC first zero)",
+    "passbandSamples": "≤ 2^(NSTEP+2) in Leise comment; |H|(2^{N+1})≈0.75^k depending on pyramid",
+    "uniformSpacingRequired": true,
+    "uAndVIndependent": true,
+    "zeroPhase": true,
+    "previousProxyNote": "docs/research/sample-goshen-2155-hodograph-reproduction.ts used two-way 1-2-1, frozen ends. That is NOT T5FLTR."
+  },
+  "transferChecks": [
+    {
+      "wavelengthSamples": 4,
+      "analytic": 0,
+      "empiricalMid": 0,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 8,
+      "analytic": 0,
+      "empiricalMid": 0,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 16,
+      "analytic": 0,
+      "empiricalMid": 0,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 18,
+      "analytic": 0.002324,
+      "empiricalMid": 0.002324,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 19,
+      "analytic": 0.009311,
+      "empiricalMid": 0.009311,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 32,
+      "analytic": 0,
+      "empiricalMid": 0,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 64,
+      "analytic": 0.715955,
+      "empiricalMid": 0.715955,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 100,
+      "analytic": 0.938417,
+      "empiricalMid": 0.938417,
+      "absDiff": 0
+    },
+    {
+      "wavelengthSamples": 128,
+      "analytic": 0.975528,
+      "empiricalMid": 0.975528,
+      "absDiff": 0
+    }
+  ],
+  "leise5GainAtSelectedWavelengths": {
+    "samples2": 0,
+    "samples16": 0,
+    "samples18": 0.002323872536717679,
+    "samples19": 0.009311344366859172,
+    "samples32": 0,
+    "samples64": 0.7159554030505527,
+    "samples128": 0.975528285642836
+  },
+  "domainMap": [
+    {
+      "id": "goshen",
+      "medianAscent": 5.7,
+      "equivalentVerticalM": [
+        96.9,
+        102.6,
+        108.3
+      ],
+      "leise5NativeIndexStopbandM": 182.4,
+      "leise5On5mStopbandM": 160,
+      "leise5On5mEquivalentPeriodS": 28.07,
+      "boxcar100mEquivalentPeriodS": 17.54
+    },
+    {
+      "id": "prospect",
+      "medianAscent": 4.8,
+      "equivalentVerticalM": [
+        81.6,
+        86.4,
+        91.2
+      ],
+      "leise5NativeIndexStopbandM": 153.6,
+      "leise5On5mStopbandM": 160,
+      "leise5On5mEquivalentPeriodS": 33.33,
+      "boxcar100mEquivalentPeriodS": 20.83
+    },
+    {
+      "id": "dumas",
+      "medianAscent": 5.2,
+      "equivalentVerticalM": [
+        88.4,
+        93.6,
+        98.8
+      ],
+      "leise5NativeIndexStopbandM": 166.4,
+      "leise5On5mStopbandM": 160,
+      "leise5On5mEquivalentPeriodS": 30.77,
+      "boxcar100mEquivalentPeriodS": 19.23
+    }
+  ],
+  "fir": {
+    "type": "symmetric Hamming-windowed sinc FIR, unity DC gain",
+    "taps": 41,
+    "fc_cyclesPerSample": 0.05,
+    "designGrid": "5 m height",
+    "cutoffWavelengthM": 100,
+    "phase": "linear / zero after centering"
+  },
+  "boxcar": {
+    "sliding": "21-point on 5 m grid = 105 m, nearest odd length to 100 m",
+    "binMean": "architecture 54 candidate: 100 m AGL bins, mean of member knots"
+  },
+  "stormMotionForComparison": {
+    "eastward": 10.5,
+    "northward": -1.3
+  },
+  "stormMotionNote": "Published Goshen C is used for ALL cases so operator-to-operator SRH is comparable. It is NOT observed storm motion for Prospect, Dumas, or Moore.",
+  "cases": {
+    "goshen": {
+      "label": "Goshen NSSL1 2009-06-05 21:55:22",
+      "n": 2029,
+      "dHeight": {
+        "n": 2028,
+        "min": 3.3,
+        "median": 5.7,
+        "p90": 7.5,
+        "max": 31.9,
+        "mean": 6.045069
+      },
+      "medianAscentAssumed": 5.7,
+      "operators": {
+        "raw": {
+          "name": "raw",
+          "n": 2029,
+          "hMin": 2.4,
+          "hMax": 12261.8,
+          "firstKnot": {
+            "height": 2.4,
+            "eastward": -1.2,
+            "northward": 0.2
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 2.4,
+              "h1": 1000,
+              "srh": 132.65,
+              "bulkMagnitude": 9.9504,
+              "shearMagnitude": 0.00997432
+            },
+            "near0to3": {
+              "h0": 2.4,
+              "h1": 3000,
+              "srh": 197.93,
+              "bulkMagnitude": 11.7137,
+              "shearMagnitude": 0.00390768
+            },
+            "near0to6": {
+              "h0": 2.4,
+              "h1": 6000,
+              "srh": 397.329,
+              "bulkMagnitude": 30.0552,
+              "shearMagnitude": 0.0050112
+            }
+          },
+          "omega": {
+            "n": 2028,
+            "min": 0,
+            "median": 0.019231,
+            "p90": 0.037785,
+            "max": 1.055439,
+            "mean": 0.020435
+          },
+          "arcLength0to6": 121.0809
+        },
+        "leise5_nativeIndex": {
+          "name": "leise5_nativeIndex_T5FLTR",
+          "n": 2029,
+          "hMin": 2.4,
+          "hMax": 12261.8,
+          "firstKnot": {
+            "height": 2.4,
+            "eastward": -2.1712,
+            "northward": 4.3611
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 2.4,
+              "h1": 1000,
+              "srh": 85.857,
+              "bulkMagnitude": 5.5149,
+              "shearMagnitude": 0.00552816
+            },
+            "near0to3": {
+              "h0": 2.4,
+              "h1": 3000,
+              "srh": 153.847,
+              "bulkMagnitude": 10.6738,
+              "shearMagnitude": 0.00356077
+            },
+            "near0to6": {
+              "h0": 2.4,
+              "h1": 6000,
+              "srh": 383.597,
+              "bulkMagnitude": 30.593,
+              "shearMagnitude": 0.00510087
+            }
+          },
+          "omega": {
+            "n": 2028,
+            "min": 0.000083,
+            "median": 0.008456,
+            "p90": 0.020318,
+            "max": 0.222116,
+            "mean": 0.010657
+          },
+          "arcLength0to6": 58.7916,
+          "domain": "sample-index (≈1 s if ESC dt=1 s)",
+          "stopbandSamples": 32,
+          "stopbandEquivalentM": 182.4
+        },
+        "leise5_regular5m": {
+          "name": "leise5_regular5m_T5FLTR",
+          "n": 2453,
+          "hMin": 2.4,
+          "hMax": 12261.8,
+          "firstKnot": {
+            "height": 2.4,
+            "eastward": -2.0882,
+            "northward": 4.2468
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 2.4,
+              "h1": 1000,
+              "srh": 88.441,
+              "bulkMagnitude": 5.7697,
+              "shearMagnitude": 0.00578359
+            },
+            "near0to3": {
+              "h0": 2.4,
+              "h1": 3000,
+              "srh": 156.426,
+              "bulkMagnitude": 10.8542,
+              "shearMagnitude": 0.00362097
+            },
+            "near0to6": {
+              "h0": 2.4,
+              "h1": 6000,
+              "srh": 382.242,
+              "bulkMagnitude": 30.5079,
+              "shearMagnitude": 0.00508669
+            }
+          },
+          "omega": {
+            "n": 2452,
+            "min": 0.000206,
+            "median": 0.009928,
+            "p90": 0.023804,
+            "max": 0.164557,
+            "mean": 0.012051
+          },
+          "arcLength0to6": 64.8855,
+          "domain": "uniform height 5 m, research linear resample",
+          "stopbandM": 160,
+          "equivalentPeriodS": 28.07
+        },
+        "boxcar21_regular5m": {
+          "name": "boxcar21_regular5m_105m",
+          "n": 2453,
+          "hMin": 2.4,
+          "hMax": 12261.8,
+          "firstKnot": {
+            "height": 2.4,
+            "eastward": -2.2912,
+            "northward": 5.3199
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 2.4,
+              "h1": 1000,
+              "srh": 76.426,
+              "bulkMagnitude": 4.958,
+              "shearMagnitude": 0.00496991
+            },
+            "near0to3": {
+              "h0": 2.4,
+              "h1": 3000,
+              "srh": 144.461,
+              "bulkMagnitude": 10.9961,
+              "shearMagnitude": 0.00366831
+            },
+            "near0to6": {
+              "h0": 2.4,
+              "h1": 6000,
+              "srh": 357.86,
+              "bulkMagnitude": 30.3357,
+              "shearMagnitude": 0.00505798
+            }
+          },
+          "omega": {
+            "n": 2452,
+            "min": 0,
+            "median": 0.011491,
+            "p90": 0.026516,
+            "max": 0.090175,
+            "mean": 0.013835
+          },
+          "arcLength0to6": 78.2913,
+          "domain": "uniform height 5 m",
+          "widthM": 105
+        },
+        "firHamming41_regular5m": {
+          "name": "firHamming41_fc5over100_regular5m",
+          "n": 2453,
+          "hMin": 2.4,
+          "hMax": 12261.8,
+          "firstKnot": {
+            "height": 2.4,
+            "eastward": -1.7189,
+            "northward": 4.0207
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 2.4,
+              "h1": 1000,
+              "srh": 90.108,
+              "bulkMagnitude": 6.1721,
+              "shearMagnitude": 0.00618692
+            },
+            "near0to3": {
+              "h0": 2.4,
+              "h1": 3000,
+              "srh": 156.862,
+              "bulkMagnitude": 10.7705,
+              "shearMagnitude": 0.00359304
+            },
+            "near0to6": {
+              "h0": 2.4,
+              "h1": 6000,
+              "srh": 358.897,
+              "bulkMagnitude": 29.7288,
+              "shearMagnitude": 0.00495679
+            }
+          },
+          "omega": {
+            "n": 2452,
+            "min": 0.000162,
+            "median": 0.013724,
+            "p90": 0.032907,
+            "max": 0.101993,
+            "mean": 0.017216
+          },
+          "arcLength0to6": 99.08,
+          "domain": "uniform height 5 m",
+          "fc": "0.05 cycles/sample ≡ 100 m wavelength on 5 m grid",
+          "taps": 41
+        },
+        "binMean100m": {
+          "name": "binMean100m_AGL",
+          "n": 123,
+          "hMin": 50.6,
+          "hMax": 12236.975,
+          "firstKnot": {
+            "height": 50.6,
+            "eastward": -3.0778,
+            "northward": 6.8222
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 50.6,
+              "h1": 1000,
+              "srh": 59.995,
+              "bulkMagnitude": 3.9683,
+              "shearMagnitude": 0.00417978
+            },
+            "near0to3": {
+              "h0": 50.6,
+              "h1": 3000,
+              "srh": 128.468,
+              "bulkMagnitude": 11.3013,
+              "shearMagnitude": 0.00383172
+            },
+            "near0to6": {
+              "h0": 50.6,
+              "h1": 6000,
+              "srh": 359.447,
+              "bulkMagnitude": 31.3613,
+              "shearMagnitude": 0.00527133
+            }
+          },
+          "omega": {
+            "n": 122,
+            "min": 0.001162,
+            "median": 0.010273,
+            "p90": 0.022954,
+            "max": 0.05038,
+            "mean": 0.01225
+          },
+          "arcLength0to6": 66.0635,
+          "domain": "height bins, no interpolation of empty bins",
+          "dz": 100
+        }
+      },
+      "spectralNativeIndex": {
+        "raw": {
+          "u16to20": {
+            "n": 26,
+            "sum": 4.86742818,
+            "peakPeriod": 17.356,
+            "peakPower": 0.80974386
+          },
+          "v16to20": {
+            "n": 26,
+            "sum": 5.03904819,
+            "peakPeriod": 19.505,
+            "peakPower": 1.08784988
+          },
+          "u6to20": {
+            "n": 239,
+            "sum": 6.98192964,
+            "peakPeriod": 17.356,
+            "peakPower": 0.80974386
+          },
+          "v6to20": {
+            "n": 239,
+            "sum": 7.08443751,
+            "peakPeriod": 19.505,
+            "peakPower": 1.08784988
+          },
+          "u25to40": {
+            "n": 30,
+            "sum": 49.76388266,
+            "peakPeriod": 29.257,
+            "peakPower": 4.06179279
+          }
+        },
+        "leise5": {
+          "u16to20": {
+            "n": 26,
+            "sum": 0.00028436,
+            "peakPeriod": 19.692,
+            "peakPower": 0.00006689
+          },
+          "v16to20": {
+            "n": 26,
+            "sum": 0.00070012,
+            "peakPeriod": 19.505,
+            "peakPower": 0.00023712
+          },
+          "u6to20": {
+            "n": 239,
+            "sum": 0.00040282,
+            "peakPeriod": 19.692,
+            "peakPower": 0.00006689
+          },
+          "v6to20": {
+            "n": 239,
+            "sum": 0.00079857,
+            "peakPeriod": 19.505,
+            "peakPower": 0.00023712
+          },
+          "u25to40": {
+            "n": 30,
+            "sum": 0.13824053,
+            "peakPeriod": 39.385,
+            "peakPower": 0.04277372
+          }
+        },
+        "u16to20Ratio": 0.000058,
+        "v16to20Ratio": 0.000139
+      },
+      "spectralHeight5m": {
+        "raw": {
+          "u90to110": {
+            "n": 41,
+            "sum": 8.60349078,
+            "peakPeriod": 107.789,
+            "peakPower": 1.03840467
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 47.01273383,
+            "peakPeriod": 120.471,
+            "peakPower": 3.29752809
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 5.2068955,
+            "peakPeriod": 499.512,
+            "peakPower": 0.741097
+          }
+        },
+        "leise5": {
+          "u90to110": {
+            "n": 41,
+            "sum": 0.01130767,
+            "peakPeriod": 107.789,
+            "peakPower": 0.00247028
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 0.1563072,
+            "peakPeriod": 120.471,
+            "peakPower": 0.01754877
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 4.55845553,
+            "peakPeriod": 499.512,
+            "peakPower": 0.65051262
+          }
+        },
+        "boxcar21": {
+          "u90to110": {
+            "n": 41,
+            "sum": 0.02503599,
+            "peakPeriod": 90.22,
+            "peakPower": 0.00282371
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 1.29678298,
+            "peakPeriod": 137.45,
+            "peakPower": 0.13258873
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 4.49968698,
+            "peakPeriod": 499.512,
+            "peakPower": 0.63855835
+          }
+        },
+        "fir41": {
+          "u90to110": {
+            "n": 41,
+            "sum": 2.38292609,
+            "peakPeriod": 107.789,
+            "peakPower": 0.34375799
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 19.03152289,
+            "peakPeriod": 120.471,
+            "peakPower": 1.49631081
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 5.1306858,
+            "peakPeriod": 499.512,
+            "peakPower": 0.73020987
+          }
+        },
+        "u90to110_leiseRatio": 0.001314,
+        "u90to110_boxcarRatio": 0.00291,
+        "u90to110_firRatio": 0.276972
+      },
+      "publishedGoshenExternal": {
+        "srh0to1": 88,
+        "srh0to3": 167,
+        "bulk0to6": 29,
+        "note": "Fig. 2b inset for the SMOOTH curve. Not a tuning target."
+      }
+    },
+    "prospect": {
+      "label": "Prospect Valley NSSL1 2010-05-26 22:23:46",
+      "n": 2733,
+      "dHeight": {
+        "n": 2732,
+        "min": 0.7,
+        "median": 4.8,
+        "p90": 6.5,
+        "max": 26.1,
+        "mean": 5.13104
+      },
+      "medianAscentAssumed": 4.8,
+      "operators": {
+        "raw": {
+          "name": "raw",
+          "n": 2733,
+          "hMin": -0.1,
+          "hMax": 14017.9,
+          "firstKnot": {
+            "height": -0.1,
+            "eastward": -0.2,
+            "northward": 2
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.1,
+              "h1": 1000,
+              "srh": 130.776,
+              "bulkMagnitude": 12.3372,
+              "shearMagnitude": 0.01233599
+            },
+            "near0to3": {
+              "h0": -0.1,
+              "h1": 3000,
+              "srh": 361.843,
+              "bulkMagnitude": 15.4534,
+              "shearMagnitude": 0.00515097
+            },
+            "near0to6": {
+              "h0": -0.1,
+              "h1": 6000,
+              "srh": 464.835,
+              "bulkMagnitude": 15.5815,
+              "shearMagnitude": 0.00259688
+            }
+          },
+          "omega": {
+            "n": 2732,
+            "min": 0,
+            "median": 0.023256,
+            "p90": 0.047085,
+            "max": 6.428571,
+            "mean": 0.027024
+          },
+          "arcLength0to6": 144.749
+        },
+        "leise5_nativeIndex": {
+          "name": "leise5_nativeIndex_T5FLTR",
+          "n": 2733,
+          "hMin": -0.1,
+          "hMax": 14017.9,
+          "firstKnot": {
+            "height": -0.1,
+            "eastward": -3.9929,
+            "northward": 6.4028
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.1,
+              "h1": 1000,
+              "srh": 102.149,
+              "bulkMagnitude": 6.9938,
+              "shearMagnitude": 0.00699308
+            },
+            "near0to3": {
+              "h0": -0.1,
+              "h1": 3000,
+              "srh": 315.28,
+              "bulkMagnitude": 14.0302,
+              "shearMagnitude": 0.00467656
+            },
+            "near0to6": {
+              "h0": -0.1,
+              "h1": 6000,
+              "srh": 415.761,
+              "bulkMagnitude": 17.6585,
+              "shearMagnitude": 0.00294303
+            }
+          },
+          "omega": {
+            "n": 2732,
+            "min": 0.000366,
+            "median": 0.011126,
+            "p90": 0.024571,
+            "max": 1.594569,
+            "mean": 0.014801
+          },
+          "arcLength0to6": 66.2771,
+          "domain": "sample-index (≈1 s if ESC dt=1 s)",
+          "stopbandSamples": 32,
+          "stopbandEquivalentM": 153.6
+        },
+        "leise5_regular5m": {
+          "name": "leise5_regular5m_T5FLTR",
+          "n": 2805,
+          "hMin": -0.1,
+          "hMax": 14017.9,
+          "firstKnot": {
+            "height": -0.1,
+            "eastward": -3.7899,
+            "northward": 6.0555
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.1,
+              "h1": 1000,
+              "srh": 104.606,
+              "bulkMagnitude": 7.3242,
+              "shearMagnitude": 0.00732349
+            },
+            "near0to3": {
+              "h0": -0.1,
+              "h1": 3000,
+              "srh": 321.076,
+              "bulkMagnitude": 14.0737,
+              "shearMagnitude": 0.00469109
+            },
+            "near0to6": {
+              "h0": -0.1,
+              "h1": 6000,
+              "srh": 421.315,
+              "bulkMagnitude": 17.525,
+              "shearMagnitude": 0.00292078
+            }
+          },
+          "omega": {
+            "n": 2804,
+            "min": 0.000595,
+            "median": 0.011707,
+            "p90": 0.023573,
+            "max": 0.223439,
+            "mean": 0.013754
+          },
+          "arcLength0to6": 67.6888,
+          "domain": "uniform height 5 m, research linear resample",
+          "stopbandM": 160,
+          "equivalentPeriodS": 33.33
+        },
+        "boxcar21_regular5m": {
+          "name": "boxcar21_regular5m_105m",
+          "n": 2805,
+          "hMin": -0.1,
+          "hMax": 14017.9,
+          "firstKnot": {
+            "height": -0.1,
+            "eastward": -4.885,
+            "northward": 7.3172
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.1,
+              "h1": 1000,
+              "srh": 97.28,
+              "bulkMagnitude": 5.8095,
+              "shearMagnitude": 0.00580889
+            },
+            "near0to3": {
+              "h0": -0.1,
+              "h1": 3000,
+              "srh": 313.063,
+              "bulkMagnitude": 14.1334,
+              "shearMagnitude": 0.00471096
+            },
+            "near0to6": {
+              "h0": -0.1,
+              "h1": 6000,
+              "srh": 413.567,
+              "bulkMagnitude": 18.3699,
+              "shearMagnitude": 0.0030616
+            }
+          },
+          "omega": {
+            "n": 2804,
+            "min": 0.000249,
+            "median": 0.013782,
+            "p90": 0.028134,
+            "max": 0.117734,
+            "mean": 0.015973
+          },
+          "arcLength0to6": 83.4366,
+          "domain": "uniform height 5 m",
+          "widthM": 105
+        },
+        "firHamming41_regular5m": {
+          "name": "firHamming41_fc5over100_regular5m",
+          "n": 2805,
+          "hMin": -0.1,
+          "hMax": 14017.9,
+          "firstKnot": {
+            "height": -0.1,
+            "eastward": -3.5968,
+            "northward": 6.0196
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.1,
+              "h1": 1000,
+              "srh": 103.509,
+              "bulkMagnitude": 7.2538,
+              "shearMagnitude": 0.00725306
+            },
+            "near0to3": {
+              "h0": -0.1,
+              "h1": 3000,
+              "srh": 327.338,
+              "bulkMagnitude": 14.0211,
+              "shearMagnitude": 0.00467355
+            },
+            "near0to6": {
+              "h0": -0.1,
+              "h1": 6000,
+              "srh": 430.342,
+              "bulkMagnitude": 17.3006,
+              "shearMagnitude": 0.00288339
+            }
+          },
+          "omega": {
+            "n": 2804,
+            "min": 0.000176,
+            "median": 0.01752,
+            "p90": 0.03634,
+            "max": 0.116173,
+            "mean": 0.020099
+          },
+          "arcLength0to6": 112.4834,
+          "domain": "uniform height 5 m",
+          "fc": "0.05 cycles/sample ≡ 100 m wavelength on 5 m grid",
+          "taps": 41
+        },
+        "binMean100m": {
+          "name": "binMean100m_AGL",
+          "n": 141,
+          "hMin": 49.738,
+          "hMax": 14009.28,
+          "firstKnot": {
+            "height": 49.738,
+            "eastward": -6.2875,
+            "northward": 8.7437
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 49.74,
+              "h1": 1000,
+              "srh": 87.04,
+              "bulkMagnitude": 4.3334,
+              "shearMagnitude": 0.00456025
+            },
+            "near0to3": {
+              "h0": 49.74,
+              "h1": 3000,
+              "srh": 299.669,
+              "bulkMagnitude": 14.5524,
+              "shearMagnitude": 0.00493259
+            },
+            "near0to6": {
+              "h0": 49.74,
+              "h1": 6000,
+              "srh": 397.57,
+              "bulkMagnitude": 19.7252,
+              "shearMagnitude": 0.00331502
+            }
+          },
+          "omega": {
+            "n": 140,
+            "min": 0.001717,
+            "median": 0.011558,
+            "p90": 0.025149,
+            "max": 0.074595,
+            "mean": 0.01439
+          },
+          "arcLength0to6": 72.713,
+          "domain": "height bins, no interpolation of empty bins",
+          "dz": 100
+        }
+      },
+      "spectralNativeIndex": {
+        "raw": {
+          "u16to20": {
+            "n": 52,
+            "sum": 28.15700195,
+            "peakPeriod": 18.963,
+            "peakPower": 1.786737
+          },
+          "v16to20": {
+            "n": 52,
+            "sum": 25.98109104,
+            "peakPeriod": 19.692,
+            "peakPower": 1.85237377
+          },
+          "u6to20": {
+            "n": 478,
+            "sum": 37.3868767,
+            "peakPeriod": 18.963,
+            "peakPower": 1.786737
+          },
+          "v6to20": {
+            "n": 478,
+            "sum": 38.47261084,
+            "peakPeriod": 19.692,
+            "peakPower": 1.85237377
+          },
+          "u25to40": {
+            "n": 61,
+            "sum": 219.88340979,
+            "peakPeriod": 38.642,
+            "peakPower": 14.03956248
+          }
+        },
+        "leise5": {
+          "u16to20": {
+            "n": 52,
+            "sum": 0.00191687,
+            "peakPeriod": 19.883,
+            "peakPower": 0.00024895
+          },
+          "v16to20": {
+            "n": 52,
+            "sum": 0.00323892,
+            "peakPeriod": 19.692,
+            "peakPower": 0.00059325
+          },
+          "u6to20": {
+            "n": 478,
+            "sum": 0.00237396,
+            "peakPeriod": 19.883,
+            "peakPower": 0.00024895
+          },
+          "v6to20": {
+            "n": 478,
+            "sum": 0.00355976,
+            "peakPeriod": 19.692,
+            "peakPower": 0.00059325
+          },
+          "u25to40": {
+            "n": 61,
+            "sum": 0.6299116,
+            "peakPeriod": 38.642,
+            "peakPower": 0.13950901
+          }
+        },
+        "u16to20Ratio": 0.000068,
+        "v16to20Ratio": 0.000125
+      },
+      "spectralHeight5m": {
+        "raw": {
+          "u90to110": {
+            "n": 41,
+            "sum": 22.75031212,
+            "peakPeriod": 107.225,
+            "peakPower": 3.51502909
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 62.8815503,
+            "peakPeriod": 107.225,
+            "peakPower": 3.51502909
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 12.65097749,
+            "peakPeriod": 426.667,
+            "peakPower": 1.543979
+          }
+        },
+        "leise5": {
+          "u90to110": {
+            "n": 41,
+            "sum": 0.04160297,
+            "peakPeriod": 107.225,
+            "peakPower": 0.00750155
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 0.16584458,
+            "peakPeriod": 119.766,
+            "peakPower": 0.01033726
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 10.71427682,
+            "peakPeriod": 426.667,
+            "peakPower": 1.21654847
+          }
+        },
+        "boxcar21": {
+          "u90to110": {
+            "n": 41,
+            "sum": 0.04532811,
+            "peakPeriod": 91.022,
+            "peakPower": 0.00518705
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 1.6473857,
+            "peakPeriod": 138.378,
+            "peakPower": 0.19651041
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 10.7207674,
+            "peakPeriod": 426.667,
+            "peakPower": 1.25587938
+          }
+        },
+        "fir41": {
+          "u90to110": {
+            "n": 41,
+            "sum": 6.88593699,
+            "peakPeriod": 107.225,
+            "peakPower": 1.13529825
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 23.31728228,
+            "peakPeriod": 132.987,
+            "peakPower": 1.42557949
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 12.43715664,
+            "peakPeriod": 426.667,
+            "peakPower": 1.5106487
+          }
+        },
+        "u90to110_leiseRatio": 0.001829,
+        "u90to110_boxcarRatio": 0.001992,
+        "u90to110_firRatio": 0.302674
+      },
+      "publishedGoshenExternal": null
+    },
+    "dumas": {
+      "label": "Dumas/Stinnett NSSL2 2010-05-18 21:52:18",
+      "n": 2917,
+      "dHeight": {
+        "n": 2916,
+        "min": 2.5,
+        "median": 5.2,
+        "p90": 6.8,
+        "max": 36.5,
+        "mean": 5.495919
+      },
+      "medianAscentAssumed": 5.2,
+      "operators": {
+        "raw": {
+          "name": "raw",
+          "n": 2917,
+          "hMin": -0.5,
+          "hMax": 16025.6,
+          "firstKnot": {
+            "height": -0.5,
+            "eastward": 0.1,
+            "northward": -1.1
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.5,
+              "h1": 1000,
+              "srh": 246.75,
+              "bulkMagnitude": 13.6115,
+              "shearMagnitude": 0.01360474
+            },
+            "near0to3": {
+              "h0": -0.5,
+              "h1": 3000,
+              "srh": 374.01,
+              "bulkMagnitude": 21.691,
+              "shearMagnitude": 0.00722913
+            },
+            "near0to6": {
+              "h0": -0.5,
+              "h1": 6000,
+              "srh": 565.969,
+              "bulkMagnitude": 26.5852,
+              "shearMagnitude": 0.00443049
+            }
+          },
+          "omega": {
+            "n": 2916,
+            "min": 0,
+            "median": 0.020833,
+            "p90": 0.041409,
+            "max": 1.776288,
+            "mean": 0.022506
+          },
+          "arcLength0to6": 123.1247
+        },
+        "leise5_nativeIndex": {
+          "name": "leise5_nativeIndex_T5FLTR",
+          "n": 2917,
+          "hMin": -0.5,
+          "hMax": 16025.6,
+          "firstKnot": {
+            "height": -0.5,
+            "eastward": -2.7387,
+            "northward": 3.867
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.5,
+              "h1": 1000,
+              "srh": 193.566,
+              "bulkMagnitude": 10.4129,
+              "shearMagnitude": 0.01040766
+            },
+            "near0to3": {
+              "h0": -0.5,
+              "h1": 3000,
+              "srh": 317.437,
+              "bulkMagnitude": 19.0681,
+              "shearMagnitude": 0.00635498
+            },
+            "near0to6": {
+              "h0": -0.5,
+              "h1": 6000,
+              "srh": 514.745,
+              "bulkMagnitude": 27.2577,
+              "shearMagnitude": 0.00454257
+            }
+          },
+          "omega": {
+            "n": 2916,
+            "min": 0.00025,
+            "median": 0.012521,
+            "p90": 0.026866,
+            "max": 0.426522,
+            "mean": 0.014538
+          },
+          "arcLength0to6": 72.2166,
+          "domain": "sample-index (≈1 s if ESC dt=1 s)",
+          "stopbandSamples": 32,
+          "stopbandEquivalentM": 166.4
+        },
+        "leise5_regular5m": {
+          "name": "leise5_regular5m_T5FLTR",
+          "n": 3207,
+          "hMin": -0.5,
+          "hMax": 16025.6,
+          "firstKnot": {
+            "height": -0.5,
+            "eastward": -2.7114,
+            "northward": 3.5009
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.5,
+              "h1": 1000,
+              "srh": 199.366,
+              "bulkMagnitude": 10.6456,
+              "shearMagnitude": 0.01064033
+            },
+            "near0to3": {
+              "h0": -0.5,
+              "h1": 3000,
+              "srh": 322.745,
+              "bulkMagnitude": 19.2712,
+              "shearMagnitude": 0.00642266
+            },
+            "near0to6": {
+              "h0": -0.5,
+              "h1": 6000,
+              "srh": 520.607,
+              "bulkMagnitude": 27.343,
+              "shearMagnitude": 0.00455678
+            }
+          },
+          "omega": {
+            "n": 3206,
+            "min": 0.000645,
+            "median": 0.01306,
+            "p90": 0.025633,
+            "max": 0.212725,
+            "mean": 0.014705
+          },
+          "arcLength0to6": 74.0938,
+          "domain": "uniform height 5 m, research linear resample",
+          "stopbandM": 160,
+          "equivalentPeriodS": 30.77
+        },
+        "boxcar21_regular5m": {
+          "name": "boxcar21_regular5m_105m",
+          "n": 3207,
+          "hMin": -0.5,
+          "hMax": 16025.6,
+          "firstKnot": {
+            "height": -0.5,
+            "eastward": -3.5217,
+            "northward": 4.9084
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.5,
+              "h1": 1000,
+              "srh": 182.774,
+              "bulkMagnitude": 9.9148,
+              "shearMagnitude": 0.00990986
+            },
+            "near0to3": {
+              "h0": -0.5,
+              "h1": 3000,
+              "srh": 307.145,
+              "bulkMagnitude": 18.8286,
+              "shearMagnitude": 0.00627516
+            },
+            "near0to6": {
+              "h0": -0.5,
+              "h1": 6000,
+              "srh": 502.55,
+              "bulkMagnitude": 27.8392,
+              "shearMagnitude": 0.00463948
+            }
+          },
+          "omega": {
+            "n": 3206,
+            "min": 0,
+            "median": 0.014227,
+            "p90": 0.029189,
+            "max": 0.109481,
+            "mean": 0.01598
+          },
+          "arcLength0to6": 80.8508,
+          "domain": "uniform height 5 m",
+          "widthM": 105
+        },
+        "firHamming41_regular5m": {
+          "name": "firHamming41_fc5over100_regular5m",
+          "n": 3207,
+          "hMin": -0.5,
+          "hMax": 16025.6,
+          "firstKnot": {
+            "height": -0.5,
+            "eastward": -2.6863,
+            "northward": 3.1813
+          },
+          "layers": {
+            "near0to1": {
+              "h0": -0.5,
+              "h1": 1000,
+              "srh": 201.398,
+              "bulkMagnitude": 10.72,
+              "shearMagnitude": 0.0107146
+            },
+            "near0to3": {
+              "h0": -0.5,
+              "h1": 3000,
+              "srh": 327.041,
+              "bulkMagnitude": 19.5574,
+              "shearMagnitude": 0.00651805
+            },
+            "near0to6": {
+              "h0": -0.5,
+              "h1": 6000,
+              "srh": 519.737,
+              "bulkMagnitude": 27.4966,
+              "shearMagnitude": 0.00458239
+            }
+          },
+          "omega": {
+            "n": 3206,
+            "min": 0.000186,
+            "median": 0.016579,
+            "p90": 0.03412,
+            "max": 0.119061,
+            "mean": 0.018757
+          },
+          "arcLength0to6": 98.2679,
+          "domain": "uniform height 5 m",
+          "fc": "0.05 cycles/sample ≡ 100 m wavelength on 5 m grid",
+          "taps": 41
+        },
+        "binMean100m": {
+          "name": "binMean100m_AGL",
+          "n": 161,
+          "hMin": 37.864,
+          "hMax": 16013.667,
+          "firstKnot": {
+            "height": 37.864,
+            "eastward": -3.7364,
+            "northward": 5.6636
+          },
+          "layers": {
+            "near0to1": {
+              "h0": 37.86,
+              "h1": 1000,
+              "srh": 173.149,
+              "bulkMagnitude": 9.6084,
+              "shearMagnitude": 0.00998656
+            },
+            "near0to3": {
+              "h0": 37.86,
+              "h1": 3000,
+              "srh": 296.929,
+              "bulkMagnitude": 18.4331,
+              "shearMagnitude": 0.00622292
+            },
+            "near0to6": {
+              "h0": 37.86,
+              "h1": 6000,
+              "srh": 495.548,
+              "bulkMagnitude": 27.8673,
+              "shearMagnitude": 0.00467405
+            }
+          },
+          "omega": {
+            "n": 160,
+            "min": 0.001041,
+            "median": 0.013136,
+            "p90": 0.02568,
+            "max": 0.058481,
+            "mean": 0.014726
+          },
+          "arcLength0to6": 72.2124,
+          "domain": "height bins, no interpolation of empty bins",
+          "dz": 100
+        }
+      },
+      "spectralNativeIndex": {
+        "raw": {
+          "u16to20": {
+            "n": 52,
+            "sum": 30.07415938,
+            "peakPeriod": 18.534,
+            "peakPower": 2.66147593
+          },
+          "v16to20": {
+            "n": 52,
+            "sum": 33.93047228,
+            "peakPeriod": 19.692,
+            "peakPower": 2.57885758
+          },
+          "u6to20": {
+            "n": 478,
+            "sum": 52.80399577,
+            "peakPeriod": 18.534,
+            "peakPower": 2.66147593
+          },
+          "v6to20": {
+            "n": 478,
+            "sum": 49.12208698,
+            "peakPeriod": 19.692,
+            "peakPower": 2.57885758
+          },
+          "u25to40": {
+            "n": 61,
+            "sum": 281.11162092,
+            "peakPeriod": 31.267,
+            "peakPower": 15.05113195
+          }
+        },
+        "leise5": {
+          "u16to20": {
+            "n": 52,
+            "sum": 0.00400219,
+            "peakPeriod": 19.98,
+            "peakPower": 0.00099711
+          },
+          "v16to20": {
+            "n": 52,
+            "sum": 0.00361213,
+            "peakPeriod": 19.692,
+            "peakPower": 0.00080645
+          },
+          "u6to20": {
+            "n": 478,
+            "sum": 0.00507675,
+            "peakPeriod": 19.98,
+            "peakPower": 0.00099711
+          },
+          "v6to20": {
+            "n": 478,
+            "sum": 0.00420421,
+            "peakPeriod": 19.692,
+            "peakPower": 0.00080645
+          },
+          "u25to40": {
+            "n": 61,
+            "sum": 0.41832521,
+            "peakPeriod": 25.6,
+            "peakPower": 0.04071992
+          }
+        },
+        "u16to20Ratio": 0.000133,
+        "v16to20Ratio": 0.000106
+      },
+      "spectralHeight5m": {
+        "raw": {
+          "u90to110": {
+            "n": 41,
+            "sum": 11.39100936,
+            "peakPeriod": 101.891,
+            "peakPower": 0.76256482
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 52.66410888,
+            "peakPeriod": 134.737,
+            "peakPower": 3.18338871
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 14.11719959,
+            "peakPeriod": 417.959,
+            "peakPower": 1.74773734
+          }
+        },
+        "leise5": {
+          "u90to110": {
+            "n": 41,
+            "sum": 0.00812605,
+            "peakPeriod": 109.519,
+            "peakPower": 0.0014592
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 0.1236934,
+            "peakPeriod": 126.42,
+            "peakPower": 0.01035805
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 12.07188165,
+            "peakPeriod": 417.959,
+            "peakPower": 1.36276551
+          }
+        },
+        "boxcar21": {
+          "u90to110": {
+            "n": 41,
+            "sum": 0.06453543,
+            "peakPeriod": 91.839,
+            "peakPower": 0.00725814
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 1.80280644,
+            "peakPeriod": 134.737,
+            "peakPower": 0.22063585
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 12.04288518,
+            "peakPeriod": 417.959,
+            "peakPower": 1.41470396
+          }
+        },
+        "fir41": {
+          "u90to110": {
+            "n": 41,
+            "sum": 2.71147674,
+            "peakPeriod": 101.891,
+            "peakPower": 0.20427405
+          },
+          "u60to140": {
+            "n": 195,
+            "sum": 19.33496394,
+            "peakPeriod": 134.737,
+            "peakPower": 1.82821218
+          },
+          "u400to800": {
+            "n": 26,
+            "sum": 13.88841636,
+            "peakPeriod": 417.959,
+            "peakPower": 1.7089662
+          }
+        },
+        "u90to110_leiseRatio": 0.000713,
+        "u90to110_boxcarRatio": 0.005665,
+        "u90to110_firRatio": 0.238037
+      },
+      "publishedGoshenExternal": null
+    }
+  },
+  "moore": {
+    "label": "Moore OUN IGRA 2013-05-20",
+    "n": 165,
+    "dHeight": {
+      "n": 164,
+      "min": 5,
+      "median": 174,
+      "p90": 336.1,
+      "max": 362,
+      "mean": 187.195122
+    },
+    "leise5_nativeIndex": {
+      "mathematicallyFeasible": true,
+      "minN": 80,
+      "n": 165,
+      "stopbandIfAppliedAsIndex": "32 native levels, not 32×100 m",
+      "medianDz": 174,
+      "stopbandEquivalentMedianM": 5568,
+      "note": "NSTEP=5 on 165 irregular RAOB levels is a sample-index operator. It is not a 100 m filter. Applying it pretends native Δz is the analysis scale."
+    },
+    "binMean100m": {
+      "name": "binMean100m_AGL",
+      "n": 144,
+      "hMin": 40.5,
+      "hMax": 30700,
+      "firstKnot": {
+        "height": 40.5,
+        "eastward": 0.6142,
+        "northward": 6.2698
+      },
+      "layers": {
+        "near0to1": {
+          "h0": 40.5,
+          "h1": 1000,
+          "srh": 141.952,
+          "bulkMagnitude": 10.291,
+          "shearMagnitude": 0.01072541
+        },
+        "near0to3": {
+          "h0": 40.5,
+          "h1": 3000,
+          "srh": 147.605,
+          "bulkMagnitude": 17.0036,
+          "shearMagnitude": 0.00574543
+        },
+        "near0to6": {
+          "h0": 40.5,
+          "h1": 6000,
+          "srh": 345.143,
+          "bulkMagnitude": 26.2972,
+          "shearMagnitude": 0.00441264
+        }
+      },
+      "omega": {
+        "n": 143,
+        "min": 0.000559,
+        "median": 0.009694,
+        "p90": 0.026253,
+        "max": 0.041993,
+        "mean": 0.012213
+      },
+      "arcLength0to6": 60.4497,
+      "possibleBins": 307,
+      "emittedKnots": 144,
+      "skippedEmptyBins": 163,
+      "note": "Empty bins skipped. Output spacing remains O(median 174 m), not 100 m. 100 m is finer than the source."
+    },
+    "regular5mLeise": {
+      "wouldInventSubgrid": true,
+      "nAfterLinearResample": 6141,
+      "note": "Linear interpolation to 5 m then Leise-5 would fabricate ~20 knots per native gap. Fake precision. Not run as a candidate metric source."
+    },
+    "operators": {
+      "raw": {
+        "name": "raw",
+        "n": 165,
+        "hMin": 0,
+        "hMax": 30700,
+        "firstKnot": {
+          "height": 0,
+          "eastward": 0.4445,
+          "northward": 5.0806
+        },
+        "layers": {
+          "near0to1": {
+            "h0": 0,
+            "h1": 1000,
+            "srh": 154.962,
+            "bulkMagnitude": 11.1638,
+            "shearMagnitude": 0.01116384
+          },
+          "near0to3": {
+            "h0": 0,
+            "h1": 3000,
+            "srh": 150.374,
+            "bulkMagnitude": 17.8105,
+            "shearMagnitude": 0.00593684
+          },
+          "near0to6": {
+            "h0": 0,
+            "h1": 6000,
+            "srh": 348.286,
+            "bulkMagnitude": 26.8751,
+            "shearMagnitude": 0.00447918
+          }
+        },
+        "omega": {
+          "n": 164,
+          "min": 0,
+          "median": 0.010634,
+          "p90": 0.028523,
+          "max": 0.043871,
+          "mean": 0.013392
+        },
+        "arcLength0to6": 63.4046
+      }
+    }
+  },
+  "transferSelected": [
+    {
+      "wavelengthSamples": 2,
+      "leise5": 0,
+      "leise1": 0,
+      "boxcar20": -3.898171832519376e-17,
+      "boxcar21": 0.03031522725559911,
+      "fir41_fc0p05": 0.00019330949038013102
+    },
+    {
+      "wavelengthSamples": 4,
+      "leise5": 0,
+      "leise1": 0.75,
+      "boxcar20": 3.898171832519376e-17,
+      "boxcar21": -0.04287220553129077,
+      "fir41_fc0p05": 0.00034543390973505164
+    },
+    {
+      "wavelengthSamples": 8,
+      "leise5": 0,
+      "leise1": 0.9785533905932737,
+      "boxcar20": 0.12732395447351627,
+      "boxcar21": 0.1120304719395053,
+      "fir41_fc0p05": 0.000011478105917626963
+    },
+    {
+      "wavelengthSamples": 16,
+      "leise5": 0,
+      "leise1": 0.998551418607325,
+      "boxcar20": -0.18006326323142122,
+      "boxcar21": -0.20164952202461237,
+      "fir41_fc0p05": 0.24599210758806583
+    },
+    {
+      "wavelengthSamples": 18,
+      "leise5": 0.002323872536717679,
+      "leise1": 0.999090755003082,
+      "boxcar20": -0.09798155360510163,
+      "boxcar21": -0.13641852265019602,
+      "fir41_fc0p05": 0.3791083865490505
+    },
+    {
+      "wavelengthSamples": 19,
+      "leise5": 0.009311344366859172,
+      "leise1": 0.9992660571757681,
+      "boxcar20": -0.04977248103379163,
+      "boxcar21": -0.09351171288776776,
+      "fir41_fc0p05": 0.4404222877794117
+    },
+    {
+      "wavelengthSamples": 20,
+      "leise5": 0.022151698709315878,
+      "leise1": 0.9994011338507084,
+      "boxcar20": 3.8981718325193755e-17,
+      "boxcar21": -0.04742346358302669,
+      "fir41_fc0p05": 0.49680945707901414
+    },
+    {
+      "wavelengthSamples": 21,
+      "leise5": 0.03882115114009902,
+      "leise1": 0.9995065561035712,
+      "boxcar20": 0.049813708122268034,
+      "boxcar21": 3.8981718325193755e-17,
+      "fir41_fc0p05": 0.5479636157870691
+    },
+    {
+      "wavelengthSamples": 32,
+      "leise5": 0,
+      "leise1": 0.9999076986377043,
+      "boxcar20": 0.4705279821459223,
+      "boxcar21": 0.4277702968042509,
+      "fir41_fc0p05": 0.8482680710215834
+    },
+    {
+      "wavelengthSamples": 40,
+      "leise5": 0.13830256326294113,
+      "leise1": 0.9999621057606747,
+      "boxcar20": 0.6366197723675814,
+      "boxcar21": 0.6044355105433143,
+      "fir41_fc0p05": 0.9193626580409475
+    },
+    {
+      "wavelengthSamples": 64,
+      "leise5": 0.7159554030505527,
+      "leise1": 0.9999942032856948,
+      "boxcar20": 0.8469279925033719,
+      "boxcar21": 0.8320716075451965,
+      "fir41_fc0p05": 0.9779401515377601
+    },
+    {
+      "wavelengthSamples": 100,
+      "leise5": 0.9384173886634062,
+      "leise1": 0.9999990265498262,
+      "boxcar20": 0.935489283788639,
+      "boxcar21": 0.929020830902483,
+      "fir41_fc0p05": 0.9927496197693867
+    },
+    {
+      "wavelengthSamples": 105,
+      "leise5": 0.9485389167658798,
+      "leise1": 0.9999991990911379,
+      "boxcar20": 0.9413793037282089,
+      "boxcar21": 0.935489283788639,
+      "fir41_fc0p05": 0.9935341981003132
+    },
+    {
+      "wavelengthSamples": 128,
+      "leise5": 0.975528285642836,
+      "leise1": 0.9999996372685617,
+      "boxcar20": 0.9603215465375593,
+      "boxcar21": 0.9563085255244722,
+      "fir41_fc0p05": 0.9958897885194137
+    }
+  ]
+}

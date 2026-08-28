@@ -594,6 +594,16 @@ show that the ~17–19 s line is a generated filter artifact.
 Published 1-s ESC winds are therefore not independent atmospheric
 samples, and not a fully reconstructed raw GPS derivative either.
 That record does **not** close this item or authorize Analysis.
+Leise / operator-response comparison
+`2026-08-28-leise-filter-and-analysis-operator-comparison.md`
+recovers CEDRIC `T5FLTR` NSTEP=5 (5-pt stencil, dyadic pyramid,
+mirror ends; `|H|(18 samples)=0.002`) and shows that a 5-step
+Leise **strongly attenuates** the ESC ~17–19 s line if applied in
+the 1-s / 5 m domain. It is **not** a 100 m cutoff. Markowski’s
+Fig. 2b **grid remains unstated** (reconstruction PARTIAL). A 100 m
+bin-mean / boxcar is a baseline only. A universal 100 m operator is
+**not** supported across ESC vs Moore. That record does **not**
+close this item, select a production filter, or authorize Analysis.
 Authoritative refs: `55` (gate); `53`; `54` (candidate construction);
 `48` §12; research Goshen file; research
 `2026-08-28-additional-sounding-case-selection.md` (named inputs);
@@ -603,6 +613,8 @@ research `2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md`
 (flight phase + HF wind; not a method lock);
 research `2026-08-28-esc-wind-processing-pipeline-audit.md`
 (processing pipeline; not a method lock);
+research `2026-08-28-leise-filter-and-analysis-operator-comparison.md`
+(T5FLTR reconstruction + operator comparison; not a method lock);
 BL-036 (tooling evidence); BL-045 (named candidates, not imported).
 
 ---
