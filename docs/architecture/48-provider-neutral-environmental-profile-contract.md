@@ -39,6 +39,13 @@ docs/architecture/49-r1-first-historical-reference-storm.md
 docs/architecture/50-i2-goshen-sandbox-integration.md
 ```
 
+ESC family multi-sounding ingest (same adapter; not
+provider #2; not IGRA):
+
+```text
+docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
+```
+
 V1 CLOSED record (do not reopen):
 
 ```text
@@ -1287,6 +1294,12 @@ I1  Adapter + fixture + tests
     native-byte freeze remains 49 G4; sounding
     identity and G3 usability are not open
 
+ESC family multi-sounding ingest architecture: 56
+    extract identity / datum / provenance from
+    Goshen-specific seams; I1 semantics preserved
+    Prospect/Dumas implementation NOT STARTED
+    not a provider interface; not IGRA; not Analysis
+
 I2  Opt-in Explore / laboratory environmental injection
     six storm operands remain DEMO
     C remains prescribed DEMO C
@@ -1380,6 +1393,8 @@ this file:     provider-neutral environmental-wind
                G1–G3 forensic inspect; I1 input
 50:            I2 Explore Goshen sandbox;
                I2 DONE
+56:            ESC family multi-sounding ingest;
+               GATE ACCEPTED; Prospect/Dumas NOT STARTED
 44:            long-term source / reconstruction
                boundary; still authoritative for that
                split
@@ -1415,6 +1430,9 @@ EXACT ARCHIVE:       49  EOL 114.114  Goshen NSSL1 2155 UTC
 PHYSICS APIs:        no change required for I1
 LIVE INJECTION:      I2 opt-in Explore; defined in 50
 I1:                  src/data/eolNsslMgausEsc/
+ESC FAMILY:          56; spec + generic mechanics;
+                     Prospect/Dumas NOT STARTED;
+                     not a provider interface; not IGRA
 V1:                  CLOSED; not reopened
 ```
 

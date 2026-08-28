@@ -32,6 +32,12 @@ Evidence that motivated `54`, still evidence not oracle:
 docs/research/2026-08-27-goshen-2155-hodograph-reproduction.md
 ```
 
+Related (ESC source-column family ingest; not this gate):
+
+```text
+docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
+```
+
 Keep these roles distinct:
 
 ```text

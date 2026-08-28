@@ -724,7 +724,8 @@ Authoritative refs: `44` entire; `ARCHITECTURE` §1 / §36.
 ### BL-045 — Additional soundings as independent validation candidates
 
 Category: DATA
-Status: DEFERRED (candidates named; not imported)
+Status: DEFERRED (candidates named; ESC ingest architecture
+in `56`; bytes not imported)
 Origin: CHAT/KNOWLEDGE GAP, sanctioned 2026-08-28; `49` later-case
 mentions; concatenated ESC sibling blocks (`49` §7.1); selection
 research 2026-08-28
@@ -770,9 +771,19 @@ source facts, not fixtures.
 A later operational-RAOB adapter for #2 is not designed here and
 is not BL-015 product provider #2. Confirming native IGRA identity
 does not authorize that adapter.
-Return when: a later ingest / BL-037 validation slice is explicitly
-authorized. Obtaining files is not implementation of Analysis.
-Authoritative refs: research
+
+ESC family ingest for #1/#3 is designed in `56`
+(spec + generic mechanics + named wrappers). That
+architecture is docs-only. Prospect/Dumas
+implementation is NOT STARTED. Moore/IGRA remains a
+sibling adapter, not `56`. `56` does not close BL-037
+and does not authorize Analysis.
+
+Return when: a later Prospect/Dumas ESC ingest slice
+(`56`) is implemented, or a later BL-037 validation
+slice is explicitly authorized. Obtaining files is not
+implementation of Analysis.
+Authoritative refs: `56`; research
 `2026-08-28-additional-sounding-case-selection.md`;
 `2026-08-28-vortex2-source-qualification.md`;
 `2026-08-28-moore-oun-igra-source-qualification.md`; `49` §7.1 / §11;
@@ -796,7 +807,7 @@ Authoritative refs: research
 | C. Markowski 88/167 not oracle | standing constraint | |
 | D. Community sounding-analysis tooling | BL-036 | RESEARCH NEEDED; not a method choice |
 | D. Generalization / scale / bin phase / not only Goshen | BL-037 | one combined research item |
-| D. Extra soundings as validation candidates | BL-045 | named; #1/#2/#3 native identity confirmed; bytes not imported |
+| D. Extra soundings as validation candidates | BL-045 | named; #1/#2/#3 native identity confirmed; bytes not imported; ESC ingest architecture `56`; Prospect/Dumas NOT STARTED |
 | E. Reproduction as case study | BL-040 | interesting possibility; no product requirement |
 | F. Storm-motion provenance | BL-013, BL-014, BL-032, BL-041 | prescribed vs derived vs observed kept distinct |
 | G. Provider #2 / disagreement | BL-015, BL-016 | |
@@ -849,6 +860,9 @@ research 2026-08-28-vortex2-source-qualification.md:
 research 2026-08-28-moore-oun-igra-source-qualification.md:
                #2 IGRA identity + source column audited;
                adapter / Analysis still NO
+56:            ESC multi-sounding source ingest
+               architecture; GATE ACCEPTED;
+               Prospect/Dumas NOT STARTED; Moore excluded
 BL-010 / BL-037:
                implementation blocked on 55 + generalization
                research; BL-037 not closed by source qualification

@@ -32,6 +32,13 @@ I2 sandbox (Explore-only Goshen identity):
 docs/architecture/50-i2-goshen-sandbox-integration.md
 ```
 
+ESC family multi-sounding ingest (same I1 mechanics;
+additional observed ESC cases; not IGRA):
+
+```text
+docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
+```
+
 Related still-binding SoTs (not replaced):
 
 ```text

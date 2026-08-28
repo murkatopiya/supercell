@@ -45,6 +45,12 @@ Successor (epistemic status of that construction):
 docs/architecture/55-analysis-profile-generalization-gate.md
 ```
 
+Related (additional ESC **source** columns; not analysis):
+
+```text
+docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
+```
+
 Keep these roles distinct:
 
 ```text
