@@ -28,6 +28,9 @@ architecture. It is a separate producer / research problem.
 See `docs/architecture/44-long-term-source-and-reconstruction-boundary.md`.
 The provider-neutral environmental-wind profile contract is
 `docs/architecture/48-provider-neutral-environmental-profile-contract.md`.
+Deferred and open work already recorded in SoT is indexed in
+`docs/PROJECT_BACKLOG.md`. That file is a memory/index, not
+implementation authorization, and not `ROADMAP.md`.
 
 The fundamental architectural principle is:
 
@@ -990,7 +993,8 @@ docs/
 ├── CONCEPT.md
 ├── ARCHITECTURE.md
 ├── PHYSICS.md
-├── ROADMAP.md
+├── PROJECT_BACKLOG.md   // deferred-work index; not authorization
+├── ROADMAP.md            // not present; not created by the backlog
 │
 ├── physics/
 │   ├── 00-coordinate-system.md
@@ -1014,6 +1018,63 @@ Important architectural or physical decisions must be documented.
 
 Undocumented historical decisions must not later be reconstructed from memory
 and presented as facts.
+
+### Deferred-work index
+
+`docs/PROJECT_BACKLOG.md` is the canonical memory/index of
+consciously deferred work, unresolved gates, research questions,
+and retained possibilities.
+
+```text
+BACKLOG ≠ AUTHORIZATION.
+```
+
+The backlog does not replace physics or architecture SoT. Presence
+of an item does not authorize implementation, does not promote an
+idea to an accepted decision, and does not reopen CLOSED / FROZEN
+work. If the backlog conflicts with a domain SoT, the domain SoT
+wins.
+
+Backlog item IDs (`BL-XXX`) are stable. They are not renumbered
+after closure. Closed items keep ID, final status, and evidence
+rather than being deleted for list hygiene.
+
+Each meaningful research, architecture, implementation, or
+validation slice reconciles this index:
+
+**BEFORE**
+
+1. Check the backlog for items related to the current task.
+2. Read those items’ authoritative refs.
+3. Do not treat the backlog as a substitute for SoT.
+
+**DURING**
+
+4. If a new consciously deferred task, unresolved question, future
+   capability, or important retained possibility appears, do not
+   leave it only in a terminal, chat, or final report.
+5. Either add or update a backlog item, or record in the slice’s
+   durable report why it was **not** promoted to the backlog.
+
+**AFTER**
+
+6. Reconcile related backlog items.
+7. If an item was implemented, researched/answered, closed,
+   superseded, rejected, or is no longer relevant — update its
+   status (keep the ID).
+8. If the work produced a new deferred tail — record it.
+9. Keep authoritative refs pointing at the new SoT, research, or
+   implementation evidence.
+
+Forbidden:
+
+- treating the backlog as physics truth;
+- implementing an item only because it exists in the backlog;
+- promoting a speculative item to accepted architecture without a
+  corresponding decision/SoT;
+- leaving a finished item OPEN indefinitely;
+- deleting a historically useful item only to keep the list short,
+  when CLOSED / SUPERSEDED better preserves provenance.
 
 ---
 
@@ -1069,8 +1130,12 @@ Cursor must not independently:
 - change coordinate conventions;
 - change physical units;
 - combine atmospheric mechanisms without specification;
-- implement future roadmap features without explicit instruction;
+- implement future roadmap or backlog features without explicit instruction;
 - modify physical behavior to improve visuals.
+
+`docs/PROJECT_BACKLOG.md` is an index of deferred work. It is not
+authorization to implement those items. Reconciliation rules are
+in §30.
 
 If required physical behavior is not documented, implementation must stop until
 the specification exists.

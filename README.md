@@ -130,10 +130,14 @@ version is not a scientific-validity or product-maturity claim.
 | [`docs/reviews/2026-08-27-v1-closed.md`](docs/reviews/2026-08-27-v1-closed.md) | V1 CLOSED record |
 | [`docs/physics/`](docs/physics/) | Physics source of truth |
 | [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md) | Known limitations of current V1 |
+| [`docs/PROJECT_BACKLOG.md`](docs/PROJECT_BACKLOG.md) | Index of deferred / open work; not implementation authorization |
 
 ## Future direction
 
 `docs/CONCEPT.md` is long-term vision, not a V1 backlog.
+Deferred work is indexed in
+[`docs/PROJECT_BACKLOG.md`](docs/PROJECT_BACKLOG.md)
+(not authorization).
 If later engineering continues, the Explorer consume track
 starts at data-driven environmental profiles, not at
 reconstructing a storm-scale 3D wind field from incomplete

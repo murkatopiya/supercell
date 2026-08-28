@@ -3,6 +3,8 @@
 Material facts about current Supercell Explorer V1.
 These are limitations, not a promise that each item will be
 fixed next. POST-V1 ideas are not listed here; see
+[`docs/PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md)
+(index only; not authorization),
 [`docs/architecture/38-v1-scope-checkpoint.md`](architecture/38-v1-scope-checkpoint.md)
 §13,
 [`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](architecture/44-long-term-source-and-reconstruction-boundary.md),
