@@ -21,12 +21,12 @@ export const WORLD_CARDINAL_DIRECTIONS: Readonly<
 const LABEL_HEIGHT_M = 80;
 const ORIGIN_CROSS_LIFT_M = 0.5;
 const ORIGIN_DISC_RADIUS_M = 90;
-const DISTANCE_LABEL_OFFSET_M = 280;
+const DISTANCE_LABEL_OFFSET_M = 360;
 
 /** Screen-constant sprite scales. Not metres; sizeAttenuation is off. */
-const CARDINAL_SPRITE_SCALE = { x: 0.13, y: 0.13 };
-const METRIC_SPRITE_SCALE = { x: 0.26, y: 0.065 };
-const ORIGIN_SPRITE_SCALE = { x: 0.07, y: 0.07 };
+const CARDINAL_SPRITE_SCALE = { x: 0.072, y: 0.072 };
+const METRIC_SPRITE_SCALE = { x: 0.12, y: 0.03 };
+const ORIGIN_SPRITE_SCALE = { x: 0.038, y: 0.038 };
 
 type LabelKind = "cardinal" | "metric" | "origin";
 
@@ -227,7 +227,7 @@ function createLabelTexture(text: string, kind: LabelKind): THREE.CanvasTexture 
       kind === "origin" ? "700 72px sans-serif" : "700 58px sans-serif";
     context.lineWidth = 12;
     context.strokeStyle = "rgba(12, 16, 24, 0.92)";
-    context.fillStyle = "#e4edf6";
+    context.fillStyle = "#c8d4e0";
   }
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
