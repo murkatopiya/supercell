@@ -178,22 +178,29 @@ Origin: `53` (source vs analysis distinction **ACCEPTED**);
 `55` (qualifies `54`: candidate, not implementation
 authorization);
 `58` (source-class-aware Analysis **contract**; no
-production transform selected)
+production transform **authorized**);
+research `2026-08-28-high-resolution-esc-analysis-transform-decision.md`
+(ESC-class transform **research-selected**; not authorized)
 Why retained: source 1-s ESC segments are unsuitable for
 local `ω_h` / `T_tilt` as environmental diagnostics (`53`).
 An analysis column remains a deferred capability. `54`
 records AGL bin-mean, Δz = 100 m as the first Goshen-derived
 **candidate**. `58` rejects a universal numerical operator
-and requires a declared sampling-class transform. Neither
-`54`, `55`, `58`, nor this backlog line authorizes
-implementation.
-Return when: a production Analysis transform is **selected
-and validated** (BL-046) **and** a later implementation
-slice is explicitly authorized. Do not implement the `54`
-candidate solely because it is written there. Do not treat
-`58` as implementation authorization. Do not retune to
-Fig. 2b 88 / 167. Do not mutate the source golden. Do not
-silently replace Explore `V_env`.
+and requires a declared sampling-class transform. Research
+BL-046 **names** a high-resolution ESC candidate
+(`esc-hr-time-hamming-sinc-lowpass` v0.1-research,
+time-domain Hamming-sinc FIR, λ_c = 40 s). That research
+decision is **not** implementation authorization.
+Neither `54`, `55`, `58`, BL-046, nor this backlog line
+authorizes implementation.
+Return when: a later architecture / authorization gate
+**accepts** the BL-046 candidate (or names a replacement)
+**and** an implementation slice is explicitly authorized.
+Do not implement from the research report alone. Do not
+implement the `54` candidate solely because it is written
+there. Do not treat `58` as implementation authorization.
+Do not retune to Fig. 2b 88 / 167. Do not mutate the source
+golden. Do not silently replace Explore `V_env`.
 Authoritative refs:
 [`docs/architecture/53-goshen-2155-source-versus-analysis-profile.md`](architecture/53-goshen-2155-source-versus-analysis-profile.md);
 [`docs/architecture/54-storm-scale-analysis-wind-profile.md`](architecture/54-storm-scale-analysis-wind-profile.md)
@@ -202,7 +209,9 @@ Authoritative refs:
 (epistemic status);
 [`docs/architecture/58-source-class-aware-analysis-profile-contract.md`](architecture/58-source-class-aware-analysis-profile-contract.md)
 (contract; implementation blocked);
-this index BL-037, BL-046.
+[`docs/research/2026-08-28-high-resolution-esc-analysis-transform-decision.md`](research/2026-08-28-high-resolution-esc-analysis-transform-decision.md)
+(research-selected ESC candidate; not authorization);
+this index BL-037 (CLOSED), BL-046.
 
 ### BL-011 — Dense-column storm-scale overlays consume analysis
 
@@ -538,62 +547,11 @@ reused or cited as external evidence. Not: copy a tool by reputation.
 Not: find a path to Markowski 88. Not: choose a production method in
 this item.
 Return when: a research record exists. That record is evidence for
-BL-037, not a method lock.
+sampling-class Analysis policy (`58` / BL-046), not a method lock.
 Authoritative refs: this index; research
 `2026-08-27-goshen-2155-hodograph-reproduction.md` §7 (NSHARP vs
 Form B as a **paper** unknown, not this survey); `48` §12; `54` §6
 (Leise clone already rejected).
-
-### BL-037 — Analysis-transform generalization / validation
-
-Category: RESEARCH
-Status: RESEARCH ADVANCED / NOT CLOSED
-Origin: `55` (authoritative gate); CHAT/KNOWLEDGE GAP, sanctioned
-2026-08-28
-Why retained: `55` asked whether any candidate Analysis transform
-can be a **general-purpose numerical policy**, rather than a
-Goshen-specific treatment. Source-class research has now answered
-that **universal-operator** question: **NOT SUPPORTED**. Architecture
-`58` records the source-class-aware contract. This item is **not
-CLOSED** because a production transform is still not selected, and
-the original checklist’s remaining operator-validation work belongs
-to the selection gate (BL-046), not to a silent closure here.
-Goshen remains a validation / reference case, **not** the owner of
-an algorithm. Method choice, if any, is cross-case scientific
-stability and defensibility, **not** closeness to published 88 / 167.
-
-Answered by existing research + `58`:
-
-- independent high-resolution ESC cases (Goshen, Prospect, Dumas)
-- a different sampling class (Moore IGRA, median Δz ~174 m)
-- CLEAN ASCENT; repeatable ~17–19 s ESC signature
-- processing may reshape but does not explain origin
-- T5FLTR-5 reconstructed; not a 100 m cutoff; Fig. 2b grid unknown
-- universal 100 m / identical numerical operator **rejected**
-
-Still not this item’s job: choose the ESC operator; implement
-Analysis; close BL-010.
-
-Return when: remaining production-transform selection and
-validation are owned (BL-046) and this item is explicitly closed
-against `58`. Do not treat `58` as BL-010 authorization.
-Case-selection substep (inputs only): research
-`2026-08-28-additional-sounding-case-selection.md` names three
-validation columns plus one backup (BL-045).
-`2026-08-28-vortex2-source-qualification.md` confirms #1/#3 native
-ESC identity and source-column usability.
-`2026-08-28-moore-oun-igra-source-qualification.md` confirms #2
-native IGRA identity and source-column usability.
-Flight-phase / high-frequency audit
-`2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md`.
-Processing-pipeline audit
-`2026-08-28-esc-wind-processing-pipeline-audit.md`.
-Leise / operator-response comparison
-`2026-08-28-leise-filter-and-analysis-operator-comparison.md`.
-Contract: `58`.
-Authoritative refs: `58` (contract); `55` (qualification);
-`53`; `54` (candidate construction); `48` §12; research files
-above; BL-046 (remaining selection); BL-036; BL-045.
 
 ---
 
@@ -812,9 +770,9 @@ Moore named wrapper, golden, and Explore identity
 `moore-2013-observed` are DONE. `56` / `57` do not close
 BL-037 and do not authorize Analysis.
 
-Return when: a later BL-037 validation slice is
-explicitly authorized. Obtaining files is not
-implementation of Analysis.
+Return when: BL-046 / later Analysis validation re-uses these
+named columns. Obtaining files is not implementation of
+Analysis.
 Authoritative refs: `56`; `57`; research
 `2026-08-28-additional-sounding-case-selection.md`;
 `2026-08-28-vortex2-source-qualification.md`;
@@ -824,26 +782,32 @@ Authoritative refs: `56`; `57`; research
 ### BL-046 — High-resolution ESC Analysis transform selection / validation
 
 Category: RESEARCH
-Status: RESEARCH NEEDED
+Status: RESEARCH DECISION COMPLETE / IMPLEMENTATION BLOCKED
 Origin: `58` after BL-037 source-class research
 Why retained: Architecture `58` defines the Analysis contract and
-rejects a universal numerical operator. It **does not** select a
-production transform for `high-resolution-mobile-esc`. Remaining
-decision: choose and validate an ESC-class reliability transform
-(or explicitly decide Source-only for some diagnostics) under `58`
-§9–§15. Candidates may include T5FLTR-style low-pass, a transparent
-height-domain low-pass, or another characterized operator. `54`
-100 m bin-mean remains baseline only. Coarse RAOB (Moore) is a
-compatibility / non-applicability check, not an ESC-filter target.
-Not: clone Fig. 2b Leise. Not: tune to 88 / 167. Not: implement
-Analysis (that is BL-010 after this item).
-Return when: a bounded decision SoT names a transform (or names
-none) with the `58` validation package on Goshen / Prospect / Dumas
-and a Moore non-applicability statement. That decision still does
-not implement BL-010 until an implementation slice is authorized.
+rejects a universal numerical operator. Research
+`2026-08-28-high-resolution-esc-analysis-transform-decision.md`
+**selects** a high-resolution-mobile-esc candidate:
+
+```text
+esc-hr-time-hamming-sinc-lowpass v0.1-research
+domain: TIME
+operator: Hamming-sinc FIR, λ_c = 40 s, 81 taps
+output: filtered winds on original Source heights
+Moore: NON-APPLICABLE
+```
+
+That research decision does **not** authorize implementation.
+A later architecture / authorization gate must accept (or
+replace) this specification before BL-010.
+Return when: that authorization gate exists **and** an
+implementation slice is explicitly commanded. Do not
+implement from this backlog line or from the research report.
 Authoritative refs: `58`; `55`; `54`; research
+`2026-08-28-high-resolution-esc-analysis-transform-decision.md`;
 `2026-08-28-leise-filter-and-analysis-operator-comparison.md`;
-BL-037 (universal-operator question answered); BL-010 (blocked).
+BL-037 (CLOSED: universal-operator question answered);
+BL-010 (blocked).
 
 ---
 
@@ -856,14 +820,15 @@ BL-037 (universal-operator question answered); BL-010 (blocked).
 | B. Explicit height probe / nearest actual knot | BL-026 | sanctioned gap; not `51` display-index |
 | B. ω_h / streamwise overlays on dense observed | BL-011 | blocked on validated analysis column; not DEMO `[0,1000]` |
 | B. Silent DEMO `[0,1000]` | standing constraint | already decided against |
-| C. Analysis profile | BL-010 | NOT STARTED / BLOCKED on `58` + BL-046 |
+| C. Analysis profile | BL-010 | NOT STARTED / BLOCKED on authorization of BL-046 candidate |
 | C. Source vs analysis distinction | `53` | ACCEPTED |
-| C. Analysis contract | `58` | ACCEPTED; no production transform |
+| C. Analysis contract | `58` | ACCEPTED; production transform not authorized |
 | C. `54` 100 m bin-mean | `54` + `55` + `58` | first candidate / ESC baseline; not universal default |
-| C. Operator still needs selection | BL-046, BL-031 | ESC transform selection (`58` / BL-046) vs Fig. 2b labeled discrepancy (BL-031) |
+| C. ESC transform research selection | BL-046 | RESEARCH DECISION COMPLETE; time-domain FIR 40 s named; implementation blocked |
+| C. Fig. 2b labeled discrepancy | BL-031 | after an Analysis column exists |
 | C. Markowski 88/167 not oracle | standing constraint | |
 | D. Community sounding-analysis tooling | BL-036 | RESEARCH NEEDED; not a method choice |
-| D. Generalization / universal operator | BL-037 | RESEARCH ADVANCED; universal operator NOT SUPPORTED; not CLOSED |
+| D. Generalization / universal operator | BL-037 | CLOSED; universal operator NOT SUPPORTED; contract is `58` |
 | D. Extra soundings as validation candidates | BL-045 | named; #1/#3 ESC goldens DONE; #2 Moore IGRA adapter + golden + Explore identity DONE; bytes not imported |
 | E. Reproduction as case study | BL-040 | interesting possibility; no product requirement |
 | F. Storm-motion provenance | BL-013, BL-014, BL-032, BL-041 | prescribed vs derived vs observed kept distinct |
@@ -881,7 +846,24 @@ are not merged. 10 May 2010 is not a BL-045 validation input.
 
 ## Closed / superseded BL index
 
-No `BL-*` IDs are CLOSED yet.
+### BL-037 — Analysis-transform generalization / validation
+
+Category: RESEARCH
+Status: CLOSED
+Origin: `55`; sanctioned 2026-08-28
+Closed because: the generalization question `55` asked is
+answered. A single identical numerical operator applied to every
+`EnvironmentalWindProfile` is **NOT SUPPORTED**. Architecture `58`
+is the contract. Remaining ESC-class operator **selection** was
+owned by BL-046 and is now a research decision (time-domain
+Hamming-sinc FIR, λ_c = 40 s). This item does **not** authorize
+implementation (BL-010 remains BLOCKED).
+Evidence: `58`; research
+`2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md`;
+`2026-08-28-esc-wind-processing-pipeline-audit.md`;
+`2026-08-28-leise-filter-and-analysis-operator-comparison.md`;
+`2026-08-28-high-resolution-esc-analysis-transform-decision.md`;
+BL-046; BL-045 validation columns.
 
 The [superseded status notes](#superseded-status-notes-do-not-revive)
 above are historical SoT claims, not retired backlog items.
@@ -913,8 +895,12 @@ ARCHITECTURE §30:
 55:            qualifies 54 — candidate, not production
                policy; implementation NOT AUTHORIZED
 58:            source-class-aware Analysis contract
-               ACCEPTED; no production transform;
-               implementation BLOCKED
+               ACCEPTED; production transform not
+               authorized; implementation BLOCKED
+research 2026-08-28-high-resolution-esc-analysis-transform-decision.md:
+               ESC-class transform RESEARCH-SELECTED
+               (time-domain Hamming-sinc FIR, λ_c = 40 s);
+               not implementation authorization
 research 2026-08-28-additional-sounding-case-selection.md:
                BL-045 validation inputs named; not imported
 research 2026-08-28-vortex2-source-qualification.md:
@@ -944,13 +930,16 @@ research 2026-08-28-leise-filter-and-analysis-operator-comparison.md:
                moore-2013-observed on I2; not BL-015;
                not Analysis
 BL-010:
-               implementation blocked on 58 + BL-046
+               implementation blocked pending
+               architecture authorization of the
+               BL-046 research candidate
 BL-037:
-               RESEARCH ADVANCED; universal operator
-               NOT SUPPORTED; not CLOSED
+               CLOSED; universal operator NOT SUPPORTED;
+               contract is 58; ESC operator named in BL-046
 BL-046:
-               remaining ESC transform selection /
-               validation; not implementation
+               RESEARCH DECISION COMPLETE;
+               time-domain FIR 40 s named;
+               implementation still BLOCKED
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:
