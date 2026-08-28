@@ -1,17 +1,21 @@
 # Source-Class-Aware Analysis Profile Contract
 
 **Status:** ARCHITECTURE ACCEPTED / ANALYSIS CONTRACT DEFINED /
-PRODUCTION TRANSFORM SELECTION NOT YET AUTHORIZED /
-IMPLEMENTATION BLOCKED
+HIGH-RESOLUTION ESC PRODUCTION TRANSFORM SPECIFIED IN 59 /
+IMPLEMENTATION AUTHORIZATION LIVES IN 59
 **Scope:** the Source → Analysis contract after BL-037
 source-class research. Not a production filter. Not an
 Analysis implementation. Not a Source rewrite. Not a
 hodograph production change. Not Bunkers. Not observed
 sandbox `C`. Not a V1 reopen. Not a provider interface.
+Successor `59` specifies the high-resolution ESC
+operator and records the Analysis-column
+implementation verdict. This file remains the contract.
 **Physics:** unchanged. `EnvironmentalWindProfile` and
 diagnostic APIs remain profile-agnostic consumers.
-**Implementation:** none. Production `src/**` MUST remain
-unchanged.
+**Implementation:** none in this file. Production `src/**`
+is not changed by this contract. ESC Analysis-column
+authorization is `59`, not this file.
 
 Predecessor (split and qualification, not replaced):
 
@@ -39,6 +43,13 @@ docs/research/2026-08-28-moore-oun-igra-source-qualification.md
 docs/research/2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md
 docs/research/2026-08-28-esc-wind-processing-pipeline-audit.md
 docs/research/2026-08-28-leise-filter-and-analysis-operator-comparison.md
+docs/research/2026-08-28-high-resolution-esc-analysis-transform-decision.md
+```
+
+ESC-class production transform (not this file):
+
+```text
+docs/architecture/59-high-resolution-esc-time-domain-analysis-integration.md
 ```
 
 Index (not SoT):
@@ -459,10 +470,16 @@ source / instrument / processing-scale structure below a
 storm-scale wind structure (0–1 km curvature, 0–6 km
 shear, named kinks that survive a low-pass).
 
-This file authorizes that **category of future research /
-selection**. It does **not** select the operator.
+This file authorizes that **category**. It does **not**
+itself select the operator.
 
-Research candidates, none selected:
+Successor `59` specifies the high-resolution ESC
+production transform (time-domain Hamming-sinc FIR,
+λ_c = 40 s) and owns Analysis-column authorization for
+that class. Coarse-operational-raob remains outside
+that operator.
+
+Research candidates recorded here as the then-open set:
 
 ```text
 Leise / T5FLTR-style low-pass
@@ -473,8 +490,8 @@ another explicitly characterized offline operator
 
 100 m bin-mean is **not** rejected as a Goshen-derived
 baseline construction. It is **rejected as a universal
-default**. Production selection is a subsequent bounded
-decision (backlog BL-046), not this gate.
+default**. High-resolution ESC production selection is
+successor `59` (after BL-046 research), not this gate.
 
 ---
 
@@ -720,7 +737,8 @@ D9  Source visualization remains available and must not
     be silently replaced by Analysis.
 
 D10 No production Analysis transform is selected by this
-    architecture gate.
+    architecture gate. Successor `59` specifies the
+    high-resolution ESC operator.
 ```
 
 ---
@@ -730,12 +748,14 @@ D10 No production Analysis transform is selected by this
 ```text
 ARCHITECTURE ACCEPTED
 ANALYSIS CONTRACT DEFINED
-PRODUCTION TRANSFORM SELECTION NOT YET AUTHORIZED
-IMPLEMENTATION BLOCKED
+ESC PRODUCTION TRANSFORM SPECIFIED IN 59
+IMPLEMENTATION AUTHORIZATION LIVES IN 59
 ```
 
-This file does **not** authorize BL-010. Writing the
-contract is not implementation.
+This file remains the Analysis contract. It does **not**
+itself implement BL-010. Successor `59` specifies the
+ESC-class production transform and records the
+Analysis-column implementation verdict.
 
 ---
 
@@ -755,16 +775,18 @@ UNIVERSAL 100 m:   NOT a default
                    generalization now informed
 LEISE:             T5FLTR known; Fig. 2b grid unknown;
                    not production
-ESC:               category of later reliability
-                   transform allowed; operator not chosen
+ESC:               production transform specified in 59
+                   (time-domain Hamming-sinc FIR, λ_c = 40 s)
 RAOB:              no automatic ESC filter
 NO FAKE RESOLUTION: normative
 C / SRH:           Analysis does not own C;
                    88 is not a tuning target
 HODOGRAPH:         Source polyline stays; Analysis
                    overlay if/when labeled
-IMPLEMENTATION:    NOT AUTHORIZED; BLOCKED
-SELECTION GATE:    BL-046
+IMPLEMENTATION:    ESC Analysis column authorization lives
+                   in 59; this file does not implement it
+SELECTION GATE:    BL-046 research complete; integration
+                   gate is 59
 V1:                CLOSED; not reopened
 ```
 

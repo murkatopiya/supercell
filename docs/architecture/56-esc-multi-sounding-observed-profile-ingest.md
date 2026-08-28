@@ -19,8 +19,8 @@ Bunkers. Not Guided.
 **Physics:** unchanged. `EnvironmentalWindProfile`
 invariants and interpolation stay `04` / `48`. I1
 normalization semantics stay `49` §8. Source vs analysis
-split stays `53`; `54`/`55`/`58`/BL-010 remain out of this
-file.
+split stays `53`; `54`/`55`/`58`/`59` and BL-010 remain
+out of this file.
 **Implementation:** Goshen, Prospect Valley, and
 Dumas/Stinnett named wrappers and committed normalized
 goldens exist in `src/data/eolNsslMgausEsc/`. This SoT
@@ -58,6 +58,7 @@ docs/architecture/54-storm-scale-analysis-wind-profile.md
 docs/architecture/55-analysis-profile-generalization-gate.md
 docs/architecture/57-igra-observed-profile-ingest.md
 docs/architecture/58-source-class-aware-analysis-profile-contract.md
+docs/architecture/59-high-resolution-esc-time-domain-analysis-integration.md
 ```
 
 Keep these roles distinct:
@@ -106,6 +107,7 @@ these source records is not ingest work.
 | --- | --- |
 | `parseEscConcatenated` / 15-line header / 21-field records | FORMAT-GENERIC |
 | `EscHeader`, `EscDataRecord`, `EscSoundingBlock` | FORMAT-GENERIC |
+| `EscDataRecord.time` | FORMAT-GENERIC parse; discarded by `normalizeEscWindColumn`; Analysis TIME carrier is `59` |
 | `EscAdapterError` | FORMAT-GENERIC |
 | ESC missing U/V `9999`, missing Alt `99999` | ESC-FAMILY-GENERIC |
 | QC MISSING `9` / BAD `3` (`isUsableWindRecord`) | ESC-FAMILY-GENERIC |
@@ -368,6 +370,14 @@ Do not sort. Do not deduplicate by averaging. Do not
 drop the first usable point. Do not change QC. Do not
 tune to published SRH.
 
+I1 Source projection remains V(h). Native ESC TIME is
+parsed on `EscDataRecord` and currently discarded at
+normalization. That discard is a Source-projection fact,
+not a claim that TIME is absent from the native product.
+The ESC measurement-record TIME carrier for Analysis is
+specified in `59`. It must not rewrite Source winds or
+heights.
+
 Prospect/Dumas research showing the same family
 characteristics is **validation evidence**, not
 permission to alter I1.
@@ -506,7 +516,8 @@ MOORE/IGRA:      excluded from this family; sibling
                  Moore wrapper + golden live in
                  src/data/igra/, not here
 PROVIDER API:    still rejected (48 Q5)
-ANALYSIS:        still 53/54/55/`58`; BL-010 blocked;
+ANALYSIS:        still 53/54/55/`58`; ESC operator and
+                 Analysis-column authorization in `59`;
                  not this file
 V1:              CLOSED; not reopened
 ```
@@ -524,3 +535,5 @@ re-exports them. IGRA ingest is `57` /
 remains out of this SoT.
 Explore identities for the three committed source
 records live on the existing I2 environment mechanism.
+Analysis TIME retention and the production transform are
+`59`; they are not this ingest family rewrite.
