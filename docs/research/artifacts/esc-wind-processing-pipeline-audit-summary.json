@@ -1,0 +1,317 @@
+{
+  "generatedAt": "2026-08-28",
+  "purpose": "Research-only: could processing generate or reshape the ~17–19 s ESC U/V signature? Not an Analysis operator.",
+  "interpolationNote": "Linear interpolation onto integer seconds solely for spectral/cross-spectral diagnostics; never written back.",
+  "illustrativeFilter": [
+    {
+      "wavelengthS": 0,
+      "note": "no smoother; gain = 1",
+      "gainAt18s": 1,
+      "gainAt11s": 1,
+      "gainAt40s": 1
+    },
+    {
+      "wavelengthS": 10,
+      "note": "illustrative boxcar/MA low-pass |sinc(W/T)|, NOT an Aspen B-spline clone",
+      "gainAt18s": 0.564,
+      "gainAt11s": 0.099,
+      "gainAt40s": 0.9
+    },
+    {
+      "wavelengthS": 20,
+      "note": "illustrative boxcar/MA low-pass |sinc(W/T)|, NOT an Aspen B-spline clone",
+      "gainAt18s": 0.098,
+      "gainAt11s": 0.095,
+      "gainAt40s": 0.637
+    },
+    {
+      "wavelengthS": 30,
+      "note": "illustrative boxcar/MA low-pass |sinc(W/T)|, NOT an Aspen B-spline clone",
+      "gainAt18s": 0.165,
+      "gainAt11s": 0.088,
+      "gainAt40s": 0.3
+    },
+    {
+      "wavelengthS": 40,
+      "note": "illustrative boxcar/MA low-pass |sinc(W/T)|, NOT an Aspen B-spline clone",
+      "gainAt18s": 0.092,
+      "gainAt11s": 0.08,
+      "gainAt40s": 0
+    }
+  ],
+  "soundings": [
+    {
+      "id": "goshen",
+      "label": "Goshen NSSL1 2009-06-05 21:55:22",
+      "identity": {
+        "siteId": "Bushnell/NSSL1",
+        "utcReleaseTime": "2009, 06, 05, 21:55:22",
+        "dataType": "NCAR GAUS/Ascending",
+        "sonde": "083724333/Vaisala RS92-SGP (ccGPS)",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s"
+      },
+      "interpolation": {
+        "n": 2081,
+        "observedShare": 0.975
+      },
+      "welchCross": {
+        "nWindows": 15,
+        "windowLenS": 256,
+        "overlap": 0.5
+      },
+      "positionPrecision": {
+        "printedDecimalsLikely": 3,
+        "minNonzeroDlonDeg": 0.000999999999990564,
+        "minNonzeroDlonMApprox": 83.4,
+        "cannotRecover1sWindFromPosition": "ESC lon/lat print precision is too coarse for an independent 1-s wind derivative"
+      },
+      "peaks6to20s": {
+        "u": {
+          "period": 18.58,
+          "power": 0.65123,
+          "halfPower": {
+            "periodLoS": 18.58,
+            "periodHiS": 18.75,
+            "widthS": 0.17
+          }
+        },
+        "v": {
+          "period": 19.449,
+          "power": 1.15662,
+          "halfPower": {
+            "periodLoS": 19.27,
+            "periodHiS": 19.63,
+            "widthS": 0.36
+          }
+        }
+      },
+      "crossSpectrumAtUPeak": {
+        "period": 18.286,
+        "coherence": 0.06,
+        "phaseDeg": -106
+      },
+      "coherencePhase": {
+        "band16to20s": {
+          "n": 4,
+          "meanCoherence": 0.082,
+          "coherenceWeightedPhaseDeg": -176.3
+        },
+        "band6to20s": {
+          "n": 30,
+          "meanCoherence": 0.094,
+          "coherenceWeightedPhaseDeg": -105.5
+        }
+      },
+      "harmonics": {
+        "halfPeriod": {
+          "period": 9.14,
+          "coherence": 0.011,
+          "powerU": 0.00732
+        },
+        "doublePeriod": {
+          "period": 36.57,
+          "coherence": 0.058,
+          "powerU": 2.60291
+        },
+        "near32sPowerU": 2.50555,
+        "peakUPower": 0.65123,
+        "ratio32sToPeakU": 3.85
+      },
+      "residualXcorrMax": {
+        "lagS": -9,
+        "r": 0.1628
+      },
+      "windowedAmplitude": {
+        "nWindows": 15,
+        "fractionNearHint": 0.8,
+        "residualRms": {
+          "first": 0.657,
+          "mid": 0.406,
+          "last": 0.858
+        }
+      }
+    },
+    {
+      "id": "prospect",
+      "label": "Prospect Valley NSSL1 2010-05-26 22:23:46",
+      "identity": {
+        "siteId": "Mobile System/NSSL1",
+        "utcReleaseTime": "2010, 05, 26, 22:23:46",
+        "dataType": "NSSL1  MGAUS/Ascending",
+        "sonde": "101364451/Vaisala RS92-SGP (ccGPS)",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s"
+      },
+      "interpolation": {
+        "n": 2824,
+        "observedShare": 0.9678
+      },
+      "welchCross": {
+        "nWindows": 21,
+        "windowLenS": 256,
+        "overlap": 0.5
+      },
+      "positionPrecision": {
+        "printedDecimalsLikely": 3,
+        "minNonzeroDlonDeg": 0.000999999999990564,
+        "minNonzeroDlonMApprox": 85,
+        "cannotRecover1sWindFromPosition": "ESC lon/lat print precision is too coarse for an independent 1-s wind derivative"
+      },
+      "peaks6to20s": {
+        "u": {
+          "period": 19.748,
+          "power": 1.22445,
+          "halfPower": {
+            "periodLoS": 19.75,
+            "periodHiS": 19.89,
+            "widthS": 0.14
+          }
+        },
+        "v": {
+          "period": 17.873,
+          "power": 1.75325,
+          "halfPower": {
+            "periodLoS": 17.76,
+            "periodHiS": 18.1,
+            "widthS": 0.34
+          }
+        }
+      },
+      "crossSpectrumAtUPeak": {
+        "period": 19.692,
+        "coherence": 0.043,
+        "phaseDeg": -58.2
+      },
+      "coherencePhase": {
+        "band16to20s": {
+          "n": 4,
+          "meanCoherence": 0.188,
+          "coherenceWeightedPhaseDeg": -109.9
+        },
+        "band6to20s": {
+          "n": 30,
+          "meanCoherence": 0.119,
+          "coherenceWeightedPhaseDeg": -130.4
+        }
+      },
+      "harmonics": {
+        "halfPeriod": {
+          "period": 9.85,
+          "coherence": 0.287,
+          "powerU": 0.00946
+        },
+        "doublePeriod": {
+          "period": 36.57,
+          "coherence": 0.049,
+          "powerU": 4.52477
+        },
+        "near32sPowerU": 0.68549,
+        "peakUPower": 1.22445,
+        "ratio32sToPeakU": 0.56
+      },
+      "residualXcorrMax": {
+        "lagS": -15,
+        "r": 0.1209
+      },
+      "windowedAmplitude": {
+        "nWindows": 21,
+        "fractionNearHint": 0.857,
+        "residualRms": {
+          "first": 0.968,
+          "mid": 0.475,
+          "last": 0.27
+        }
+      }
+    },
+    {
+      "id": "dumas",
+      "label": "Dumas/Stinnett NSSL2 2010-05-18 21:52:18",
+      "identity": {
+        "siteId": "Mobile System/NSSL2",
+        "utcReleaseTime": "2010, 05, 18, 21:52:18",
+        "dataType": "NSSL2  MGAUS/Ascending",
+        "sonde": "101364478/Vaisala RS92-SGP (ccGPS)",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s"
+      },
+      "interpolation": {
+        "n": 3022,
+        "observedShare": 0.9653
+      },
+      "welchCross": {
+        "nWindows": 22,
+        "windowLenS": 256,
+        "overlap": 0.5
+      },
+      "positionPrecision": {
+        "printedDecimalsLikely": 3,
+        "minNonzeroDlonDeg": 0.000999999999990564,
+        "minNonzeroDlonMApprox": 90.2,
+        "cannotRecover1sWindFromPosition": "ESC lon/lat print precision is too coarse for an independent 1-s wind derivative"
+      },
+      "peaks6to20s": {
+        "u": {
+          "period": 16.978,
+          "power": 0.74777,
+          "halfPower": {
+            "periodLoS": 16.79,
+            "periodHiS": 17.07,
+            "widthS": 0.28
+          }
+        },
+        "v": {
+          "period": 18.315,
+          "power": 1.0307,
+          "halfPower": {
+            "periodLoS": 18.2,
+            "periodHiS": 18.54,
+            "widthS": 0.34
+          }
+        }
+      },
+      "crossSpectrumAtUPeak": {
+        "period": 17.067,
+        "coherence": 0.051,
+        "phaseDeg": 157.1
+      },
+      "coherencePhase": {
+        "band16to20s": {
+          "n": 4,
+          "meanCoherence": 0.101,
+          "coherenceWeightedPhaseDeg": -154.5
+        },
+        "band6to20s": {
+          "n": 30,
+          "meanCoherence": 0.056,
+          "coherenceWeightedPhaseDeg": -155.4
+        }
+      },
+      "harmonics": {
+        "halfPeriod": {
+          "period": 8.53,
+          "coherence": 0.003,
+          "powerU": 0.00162
+        },
+        "doublePeriod": {
+          "period": 32,
+          "coherence": 0.001,
+          "powerU": 1.70237
+        },
+        "near32sPowerU": 0.40242,
+        "peakUPower": 0.74777,
+        "ratio32sToPeakU": 0.54
+      },
+      "residualXcorrMax": {
+        "lagS": -6,
+        "r": 0.0736
+      },
+      "windowedAmplitude": {
+        "nWindows": 22,
+        "fractionNearHint": 0.818,
+        "residualRms": {
+          "first": 0.843,
+          "mid": 0.485,
+          "last": 0.44
+        }
+      }
+    }
+  ]
+}

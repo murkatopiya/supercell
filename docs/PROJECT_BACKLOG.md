@@ -586,6 +586,14 @@ background-removed U/V. That record does **not** close this item,
 choose an operator, or authorize Analysis. It reframes the open
 question from an arbitrary smoothing length toward which
 source/instrument scales are non-atmospheric or unreliable.
+Processing-pipeline audit
+`2026-08-28-esc-wind-processing-pipeline-audit.md`
+finds that Aspen/GAUS/RS92 processing can reshape spectra but
+does **not** recover a VORTEX2 `WindSmoothWL` and does **not**
+show that the ~17–19 s line is a generated filter artifact.
+Published 1-s ESC winds are therefore not independent atmospheric
+samples, and not a fully reconstructed raw GPS derivative either.
+That record does **not** close this item or authorize Analysis.
 Authoritative refs: `55` (gate); `53`; `54` (candidate construction);
 `48` §12; research Goshen file; research
 `2026-08-28-additional-sounding-case-selection.md` (named inputs);
@@ -593,6 +601,8 @@ research `2026-08-28-vortex2-source-qualification.md` (#1/#3 inspect);
 research `2026-08-28-moore-oun-igra-source-qualification.md` (#2 inspect);
 research `2026-08-28-esc-flight-phase-and-high-frequency-wind-audit.md`
 (flight phase + HF wind; not a method lock);
+research `2026-08-28-esc-wind-processing-pipeline-audit.md`
+(processing pipeline; not a method lock);
 BL-036 (tooling evidence); BL-045 (named candidates, not imported).
 
 ---
