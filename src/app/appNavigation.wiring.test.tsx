@@ -2,9 +2,6 @@ import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { App } from "./App.js";
 import appSrc from "./App.tsx?raw";
-import {
-  HOW_IT_WORKS_UNAVAILABLE_REASON,
-} from "./LandingPage.js";
 
 /**
  * Slice 1 — landing / mode identity / Environment hierarchy.
@@ -20,7 +17,8 @@ describe("App navigation Slice 1", () => {
     expect(html).toContain("prepared supercell scenario");
     expect(html).toContain("release tracers yourself");
     expect(html).toContain("How It Works");
-    expect(html).toContain(HOW_IT_WORKS_UNAVAILABLE_REASON);
+    expect(html).not.toContain("disabled");
+    expect(html).not.toContain("role=\"dialog\"");
     expect(html).not.toContain("Storm-relative laboratory");
     expect(html).not.toContain("aria-label=\"Explore laboratory\"");
     expect(html).not.toContain("aria-label=\"Guided laboratory\"");
@@ -35,6 +33,7 @@ describe("App navigation Slice 1", () => {
     expect(appSrc).toMatch(/<LandingPage/);
     expect(appSrc).toMatch(/onEnterGuided=\{enterGuided\}/);
     expect(appSrc).toMatch(/onEnterExplore=\{enterExplore\}/);
+    expect(appSrc).toMatch(/onOpenHowItWorks=\{openHowItWorks\}/);
     expect(appSrc).toMatch(
       /enterGuided[\s\S]*createGuidedLab\(guidedExperimentId\)/s,
     );

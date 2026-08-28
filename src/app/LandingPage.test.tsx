@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
-  HOW_IT_WORKS_UNAVAILABLE_REASON,
   LANDING_EXPLORE_COPY,
   LANDING_GUIDED_COPY,
   LandingPage,
@@ -11,7 +10,11 @@ import landingSrc from "./LandingPage.tsx?raw";
 describe("LandingPage", () => {
   it("presents Guided and Explore as alternative mode buttons with How It Works", () => {
     const html = renderToStaticMarkup(
-      <LandingPage onEnterGuided={() => {}} onEnterExplore={() => {}} />,
+      <LandingPage
+        onEnterGuided={() => {}}
+        onEnterExplore={() => {}}
+        onOpenHowItWorks={() => {}}
+      />,
     );
     expect(html).toContain("Supercell Explorer");
     expect(html).toContain("landing-mode-card");
@@ -27,13 +30,19 @@ describe("LandingPage", () => {
     expect(html).not.toContain("Storm-relative laboratory");
   });
 
-  it("reserves How It Works as a disabled entry, not a third mode", () => {
+  it("exposes How It Works as an active help entry, not a third mode", () => {
     const html = renderToStaticMarkup(
-      <LandingPage onEnterGuided={() => {}} onEnterExplore={() => {}} />,
+      <LandingPage
+        onEnterGuided={() => {}}
+        onEnterExplore={() => {}}
+        onOpenHowItWorks={() => {}}
+      />,
     );
     expect(html).toContain("aria-label=\"How It Works\"");
-    expect(html).toContain("disabled");
-    expect(html).toContain(HOW_IT_WORKS_UNAVAILABLE_REASON);
+    expect(html).toContain("aria-haspopup=\"dialog\"");
+    expect(html).not.toContain("disabled");
     expect(html).not.toContain("aria-pressed");
+    expect(landingSrc).toContain("onOpenHowItWorks");
+    expect(landingSrc).not.toContain("HOW_IT_WORKS_UNAVAILABLE_REASON");
   });
 });

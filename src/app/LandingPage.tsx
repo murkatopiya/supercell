@@ -4,12 +4,11 @@ export const LANDING_GUIDED_COPY =
 export const LANDING_EXPLORE_COPY =
   "Choose an environment, release tracers yourself, and compare how atmospheric setups change their trajectories.";
 
-export const HOW_IT_WORKS_UNAVAILABLE_REASON =
-  "How It Works opens in a later slice.";
-
 export interface LandingPageProps {
   onEnterGuided: () => void;
   onEnterExplore: () => void;
+  onOpenHowItWorks: (trigger: HTMLButtonElement) => void;
+  howItWorksOpen?: boolean;
 }
 
 /**
@@ -19,6 +18,8 @@ export interface LandingPageProps {
 export function LandingPage({
   onEnterGuided,
   onEnterExplore,
+  onOpenHowItWorks,
+  howItWorksOpen = false,
 }: LandingPageProps) {
   return (
     <main className="app app--landing">
@@ -62,9 +63,10 @@ export function LandingPage({
       <button
         type="button"
         className="tracer-runtime-controls__button landing__how-it-works"
-        disabled
-        title={HOW_IT_WORKS_UNAVAILABLE_REASON}
         aria-label="How It Works"
+        aria-haspopup="dialog"
+        aria-expanded={howItWorksOpen}
+        onClick={(event) => onOpenHowItWorks(event.currentTarget)}
       >
         How It Works
       </button>

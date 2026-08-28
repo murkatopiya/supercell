@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
+import { HowItWorksAffordance } from "./HowItWorksAffordance.js";
+import { HowItWorksSurface } from "./HowItWorksSurface.js";
+import type { HowItWorksContext } from "./howItWorksContent.js";
 import { LandingPage } from "./LandingPage.js";
 import { ModeIdentity } from "./ModeIdentity.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
@@ -141,6 +144,10 @@ export function App() {
   );
   const hodographHostRef = useRef<HTMLDivElement | null>(null);
   const [appSurface, setAppSurface] = useState<AppSurface>("landing");
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
+  const howItWorksTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const howItWorksOpenRef = useRef(false);
+  howItWorksOpenRef.current = howItWorksOpen;
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
   if (sceneSlotsRef.current === null) {
@@ -370,6 +377,9 @@ export function App() {
       return;
     }
     const onKeyDown = (event: KeyboardEvent) => {
+      if (howItWorksOpenRef.current) {
+        return;
+      }
       const action = matchExploreAuthoringHistoryShortcut(event);
       if (action === null) {
         return;
@@ -475,6 +485,31 @@ export function App() {
     syncAuthoringHistoryButtons(null);
   };
 
+  const openHowItWorks = (trigger: HTMLButtonElement) => {
+    howItWorksTriggerRef.current = trigger;
+    setHowItWorksOpen(true);
+  };
+
+  const closeHowItWorks = () => {
+    setHowItWorksOpen(false);
+  };
+
+  const howItWorksContext: HowItWorksContext =
+    appSurface === "landing" || lab === null
+      ? "landing"
+      : lab.kind === "explore"
+        ? "explore"
+        : "guided";
+
+  const howItWorksSurface = (
+    <HowItWorksSurface
+      open={howItWorksOpen}
+      context={howItWorksContext}
+      onClose={closeHowItWorks}
+      returnFocusRef={howItWorksTriggerRef}
+    />
+  );
+
   const returnToLanding = () => {
     clearSelectionAndInspection();
     setPendingSeed(null);
@@ -486,10 +521,15 @@ export function App() {
 
   if (appSurface === "landing" || lab === null) {
     return (
-      <LandingPage
-        onEnterGuided={enterGuided}
-        onEnterExplore={enterExplore}
-      />
+      <>
+        <LandingPage
+          onEnterGuided={enterGuided}
+          onEnterExplore={enterExplore}
+          onOpenHowItWorks={openHowItWorks}
+          howItWorksOpen={howItWorksOpen}
+        />
+        {howItWorksSurface}
+      </>
     );
   }
 
@@ -560,7 +600,7 @@ export function App() {
         lab.kind === "explore" ? false : lab.keepInactiveGlyphs
       }
       timestep={DEMO_SCENARIO.simulation.timestep}
-      paused={paused}
+      paused={paused || howItWorksOpen}
       timeScale={timeScale}
       resetEpoch={resetEpoch}
       pendingReleasePreview={lab.kind === "explore" ? pendingSeed : null}
@@ -625,6 +665,7 @@ export function App() {
   );
 
   return (
+    <>
     <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
         <ModeIdentity
@@ -635,6 +676,10 @@ export function App() {
           <EnvironmentAffordance
             expanded={environmentOpen}
             onToggle={() => setEnvironmentOpen((open) => !open)}
+          />
+          <HowItWorksAffordance
+            expanded={howItWorksOpen}
+            onOpen={openHowItWorks}
           />
         </div>
       </header>
@@ -805,6 +850,8 @@ export function App() {
         </section>
       )}
     </main>
+    {howItWorksSurface}
+    </>
   );
 }
 
