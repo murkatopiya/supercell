@@ -1,7 +1,7 @@
 # Storm-Scale Analysis Wind Profile
 
-**Status:** CONSTRUCTION SoT / NOT IMPLEMENTED /
-epistemic status qualified in `55`
+**Status:** CONSTRUCTION RECORD / NOT IMPLEMENTED /
+first candidate; not a universal Analysis default (`58`)
 **Scope:** how a storm-scale **analysis** wind profile
 is derived from a high-frequency observed mobile
 sounding, so that smoothing is a named vertical-scale
@@ -10,6 +10,7 @@ choice, provenance-preserving, and suitable for SRH,
 Not a golden rewrite. Not I1 drop-t=0. Not a Fig. 2b
 Leise clone. Not sandbox observed `C`. Not radar. Not
 thermodynamics. Not reconstruction. Not a DEMO change.
+Not a universal operator for every source sampling class.
 **Physics:** `EnvironmentalWindProfile`,
 `verticalWindShearBetween`, `horizontalVorticityFromShear`,
 `stormRelativeHelicityBetween`, streamwise/crosswise,
@@ -45,6 +46,14 @@ construction):
 
 ```text
 docs/architecture/55-analysis-profile-generalization-gate.md
+```
+
+Analysis contract after source-class research. This file
+remains the first-candidate **construction record**. It
+is not a universal Analysis default:
+
+```text
+docs/architecture/58-source-class-aware-analysis-profile-contract.md
 ```
 
 Keep these roles distinct:
@@ -383,6 +392,8 @@ Goshen tracers are not observed Goshen parcels
 SOURCE:            unchanged 2029-knot golden; keep t=0
 OPERATOR:          AGL bin-mean; Δz = 100 m;
                    knot = (mean h, mean u, mean v)
+                   FIRST CANDIDATE for high-rate ESC;
+                   NOT a universal Analysis default (`58`)
 WHY 100 m:         quantization + pendulum floor,
                    0–1 km still resolved
 TRANSIENT:         diluted in first bin; not deleted
@@ -393,7 +404,8 @@ SRH / ω_h / ŝĉ / T_tilt (storm-scale): ANALYSIS
 FIG 2b NUMBERS:    labeled check, not oracle
 DEMO:              no analysis profile
 IMPLEMENTATION:    not included
-EPISTEMIC STATUS:  qualified in `55` — candidate
-                   pending generalization; this file
-                   does not authorize implementation
+EPISTEMIC STATUS:  qualified in `55` — first candidate,
+                   not a universal default; Analysis
+                   contract is `58`; this file does not
+                   authorize implementation
 ```

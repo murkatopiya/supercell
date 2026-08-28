@@ -4,9 +4,13 @@
 ANALYSIS PROFILE IMPLEMENTATION BLOCKED
 **Scope:** qualify the epistemic status of `54` after the
 generalization question. Not a new operator. Not a
-rejection of 100 m AGL bin-mean. Not an analysis-profile
+rejection of 100 m AGL bin-mean as a Goshen-derived
+first candidate. Not an analysis-profile
 implementation. Not a V1 reopen. Not Bunkers. Not
 observed sandbox `C`. Not a golden rewrite.
+Successor `58` records the source-class-aware contract
+that this gate required; it does not lift the
+implementation block.
 **Physics:** unchanged. Source vs analysis split (`53`)
 unchanged. `EnvironmentalWindProfile` and diagnostic APIs
 unchanged.
@@ -36,6 +40,13 @@ Related (ESC source-column family ingest; not this gate):
 
 ```text
 docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
+```
+
+Successor (Analysis contract after this gate’s research;
+implementation still blocked):
+
+```text
+docs/architecture/58-source-class-aware-analysis-profile-contract.md
 ```
 
 Keep these roles distinct:
@@ -171,9 +182,14 @@ Markowski Fig. 2b 88 / 167 / 29 remain **external
 validation benchmarks**, not a tuning oracle (`48` §12,
 `53` §7, `54` §10).
 
-This file does not run that research. A later research
-record may **accept, qualify, or replace** the `54`
-candidate. Until then, implementation stays blocked.
+This file does not run that research. Later research
+records informed successor `58`: a universal numerical
+operator is **not** supported; Analysis must be
+sampling-class-aware. `58` defines that contract. It
+does **not** select a production transform and does
+**not** authorize implementation. Until a later
+selection/validation gate is passed, implementation
+stays blocked.
 
 ---
 
@@ -190,10 +206,11 @@ binning vs smoothing
 any other filter
 ```
 
-Those remain future research (BL-036 / BL-037). `54` §6
-already rejected cloning an unspecified 5-step Leise;
-that rejection stands and is not a selection of bin-mean
-as production policy.
+Those remain future selection research (BL-036 / BL-046),
+not this qualification file. `58` does not choose them.
+`54` §6 already rejected cloning an unspecified 5-step
+Leise; that rejection stands and is not a selection of
+bin-mean as production policy.
 
 ---
 
@@ -203,21 +220,29 @@ as production policy.
 53   source vs analysis distinction     ACCEPTED
 54   first concrete candidate
      (AGL bin-mean, Δz = 100 m)         CONSTRUCTION RECORD
+                                        not a universal default
 55   this file                          QUALIFIES 54
                                         candidate, not production
                                         policy; implementation blocked
+58   source-class-aware contract        ACCEPTED; no operator chosen
 BL-037
-     generalization / validation        RESEARCH GATE
+     generalization / validation        RESEARCH ADVANCED;
+                                        universal-operator question
+                                        answered (NOT SUPPORTED)
+BL-046
+     ESC transform selection            remaining decision
 BL-010
      analysis-profile implementation    NOT STARTED / BLOCKED
-                                        on 55 + BL-037
+                                        on 58 + BL-046
 ```
 
 If a later document conflicts with this qualification
 about **whether `54` authorizes implementation**, this
-file wins for that epistemic question. `54` remains the
-construction record of the candidate. `53` remains the
-split.
+file still wins for that epistemic question until an
+explicit implementation SoT exists. Successor `58` wins
+for **whether a universal 100 m operator is Analysis
+policy** (it is not). `54` remains the construction
+record of the first candidate. `53` remains the split.
 
 Backlog items point here. They do not create this
 status.
@@ -229,13 +254,15 @@ status.
 ```text
 SPLIT:             53 ACCEPTED
 CANDIDATE:         54 AGL bin-mean, Δz = 100 m
-                   (Goshen-derived; not withdrawn)
-PRODUCTION POLICY: NOT YET VALIDATED
+                   (Goshen-derived; not withdrawn;
+                    not a universal default — `58`)
+PRODUCTION POLICY: NOT A UNIVERSAL OPERATOR (`58`)
 IMPLEMENTATION:    NOT AUTHORIZED; BLOCKED
-GATE:              BL-037
+GATE:              `58` contract; BL-046 selection
 BENCHMARKS:        Fig. 2b 88 / 167 / 29 external;
                    not a tuning oracle
-NO NEW OPERATOR:   none selected
+NO NEW OPERATOR:   none selected here
+SUCCESSOR:         `58`
 54 REWRITE:        none
 V1:                CLOSED; not reopened
 ```

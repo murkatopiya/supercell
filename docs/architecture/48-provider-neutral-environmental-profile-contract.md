@@ -54,6 +54,14 @@ architecture; not Explore; not Analysis):
 docs/architecture/57-igra-observed-profile-ingest.md
 ```
 
+Source vs Analysis split and later Analysis contract
+(not this file; not implementation):
+
+```text
+docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
+docs/architecture/58-source-class-aware-analysis-profile-contract.md
+```
+
 V1 CLOSED record (do not reopen):
 
 ```text
@@ -1467,6 +1475,9 @@ IGRA FAMILY:         57; sibling adapter; GATE ACCEPTED;
                      named stable sort by worldY;
                      Moore ingest DONE in src/data/igra/;
                      Explore identity moore-2013-observed
+ANALYSIS:            53 split ACCEPTED; contract `58`;
+                     no universal 100 m operator;
+                     implementation BLOCKED
 V1:                  CLOSED; not reopened
 ```
 

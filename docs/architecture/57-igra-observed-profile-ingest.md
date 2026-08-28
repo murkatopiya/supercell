@@ -20,8 +20,8 @@ framework. Not a V1 reopen. Not reconstruction of the
 2013 Moore storm.
 **Physics:** unchanged. `EnvironmentalWindProfile`
 invariants and interpolation stay `04` / `48`. Source vs
-analysis stays `53` / `54` / `55`; BL-037 remains out of
-this file.
+analysis stays `53` / `54` / `55` / `58`; BL-010 remains
+blocked. This file does not authorize Analysis.
 **Implementation:** Moore named wrapper, tests, and
 committed normalized golden live in `src/data/igra/`.
 Explore identity `moore-2013-observed` uses that record
@@ -58,6 +58,7 @@ Related, not replaced:
 docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
 docs/architecture/54-storm-scale-analysis-wind-profile.md
 docs/architecture/55-analysis-profile-generalization-gate.md
+docs/architecture/58-source-class-aware-analysis-profile-contract.md
 docs/physics/04-environmental-wind-profile.md
 docs/physics/00-coordinate-system.md
 ```
@@ -645,9 +646,10 @@ contain Explore wiring.
 3. Explore Moore environment identity
    DONE on the existing I2 mechanism (`moore-2013-observed`);
    Guided remains DEMO
-4. Analysis / BL-037 / BL-010
-   not authorized; 100 m bin-mean is not universal on
-   IGRA spacing (qualification §6)
+4. Analysis / BL-010
+   not authorized; `58` forbids treating 100 m as a
+   universal operator on IGRA spacing; this ingest
+   does not implement Analysis
 ```
 
 Native IGRA bytes are not an `npm test` input.
@@ -724,6 +726,8 @@ COVERAGE:        48 shape; 50 m gaps remain; Moore will be verbose
 C / STORM:       prescribed laboratory; not observed Moore C
 EXPLORE:         moore-2013-observed on I2; Guided remains DEMO
 GOLDEN / SRC:    src/data/igra/; native POR gitignored
+ANALYSIS:        `58`; no automatic ESC-scale filter;
+                 implementation BLOCKED
 V1:              CLOSED; not reopened
 ```
 

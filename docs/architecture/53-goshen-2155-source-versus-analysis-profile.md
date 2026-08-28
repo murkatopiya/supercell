@@ -45,6 +45,13 @@ Successor (epistemic status of that construction):
 docs/architecture/55-analysis-profile-generalization-gate.md
 ```
 
+Analysis contract after source-class research (not an
+implementation; not a filter selection):
+
+```text
+docs/architecture/58-source-class-aware-analysis-profile-contract.md
+```
+
 Related (additional ESC **source** columns; not analysis):
 
 ```text
@@ -259,11 +266,15 @@ FIG 2b:            SR; C=(10.5,−1.3); black=Leise-5;
 0–1 km SRH:        source 133; published 88; gap =
                    3.7 m launch transient
 ANALYSIS PROFILE:  construction recorded in `54`;
-                   not implemented
+                   contract in `58`; not implemented
 SANDBOX C:         still DEMO (10, 0)
 PHYSICS:           unchanged
 IMPLEMENTATION:    not included
 EPISTEMIC STATUS:  `55` — candidate pending
-                   generalization; `54` does not
-                   authorize implementation
+                   generalization; `58` — source-class
+                   contract; neither authorizes
+                   implementation
+LEISE:             T5FLTR reconstructed in later
+                   research; Fig. 2b grid still unknown;
+                   not a production operator (`58`)
 ```

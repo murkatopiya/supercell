@@ -19,7 +19,7 @@ Bunkers. Not Guided.
 **Physics:** unchanged. `EnvironmentalWindProfile`
 invariants and interpolation stay `04` / `48`. I1
 normalization semantics stay `49` §8. Source vs analysis
-split stays `53`; `54`/`55`/BL-037 remain out of this
+split stays `53`; `54`/`55`/`58`/BL-010 remain out of this
 file.
 **Implementation:** Goshen, Prospect Valley, and
 Dumas/Stinnett named wrappers and committed normalized
@@ -57,6 +57,7 @@ docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
 docs/architecture/54-storm-scale-analysis-wind-profile.md
 docs/architecture/55-analysis-profile-generalization-gate.md
 docs/architecture/57-igra-observed-profile-ingest.md
+docs/architecture/58-source-class-aware-analysis-profile-contract.md
 ```
 
 Keep these roles distinct:
@@ -505,7 +506,8 @@ MOORE/IGRA:      excluded from this family; sibling
                  Moore wrapper + golden live in
                  src/data/igra/, not here
 PROVIDER API:    still rejected (48 Q5)
-ANALYSIS:        still 53/54/55; BL-037 not this file
+ANALYSIS:        still 53/54/55/`58`; BL-010 blocked;
+                 not this file
 V1:              CLOSED; not reopened
 ```
 
