@@ -2,7 +2,8 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 PRODUCTION TRANSFORM SPECIFIED /
-IMPLEMENTATION AUTHORIZED
+IMPLEMENTATION AUTHORIZED /
+COLUMN CORE IMPLEMENTED
 **Scope:** the production integration / authorization gate
 for the BL-046 high-resolution ESC Analysis transform.
 Not a Source rewrite. Not a provider framework. Not
@@ -13,11 +14,11 @@ replacement of Source. Not Moore. Not a V1 reopen.
 provider-neutral wind versus height (`04`, `48`). This
 file does not add measurement TIME to that kinematic
 object.
-**Implementation:** this file authorizes a later
-Analysis-column implementation slice. It does not
-include `src/**` work. Diagnostic rewiring, hodograph
-overlay, and Explore/Guided consumption are out of
-that authorized slice.
+**Implementation:** Analysis-column core is implemented
+headless in `src/data/escHrTimeAnalysis/` with the ESC
+TIME carrier in `src/data/eolNsslMgausEsc/`. Diagnostic
+rewiring, hodograph overlay, and Explore/Guided
+consumption remain out of that authorized slice.
 
 Predecessor (contract; not replaced):
 
@@ -1182,8 +1183,8 @@ HODOGRAPH:         Source polyline stays
 54 / LEISE:        not this operator
 BL-046:            research decision complete
 BL-037:            CLOSED
-BL-010:            implementation authorized;
-                   not implemented by this file
+BL-010:            COLUMN CORE IMPLEMENTED (headless);
+                   consumers not wired
 V1:                CLOSED; not reopened
 ```
 
@@ -1191,8 +1192,13 @@ V1:                CLOSED; not reopened
 
 ## 31. Implementation
 
-This document does not include implementation.
-Production `src/**` is unchanged by this slice.
-BL-010 is the authorized Analysis-column slice.
-Diagnostic, hodograph, and Explore/Guided work are
-outside BL-010 unless a later SoT says otherwise.
+Analysis-column core is implemented headless:
+
+```text
+src/data/eolNsslMgausEsc/     TIME-bearing measurement record
+src/data/escHrTimeAnalysis/    v1 transform, support, provenance
+```
+
+Source V(h) goldens and `EnvironmentalWindProfile` remain
+unchanged. Diagnostic rewiring, hodograph overlay, and
+Explore/Guided consumption are outside this column core.

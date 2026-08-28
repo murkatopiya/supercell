@@ -172,7 +172,7 @@ Authoritative refs: `48` U2; `49` §10.
 ### BL-010 — Storm-scale analysis wind profile (implementation)
 
 Category: PHYSICS
-Status: NOT STARTED / IMPLEMENTATION AUTHORIZED
+Status: PARTIAL / COLUMN CORE IMPLEMENTED
 Origin: `53` (source vs analysis distinction **ACCEPTED**);
 `54` (first concrete candidate construction);
 `55` (qualifies `54`: candidate, not implementation
@@ -183,27 +183,16 @@ Analysis-column implementation **authorized**);
 research `2026-08-28-high-resolution-esc-analysis-transform-decision.md`
 (ESC-class transform **research-selected**; not itself
 authorization)
-Why retained: source 1-s ESC segments are unsuitable for
-local `ω_h` / `T_tilt` as environmental diagnostics (`53`).
-An analysis column remains a deferred capability until
-implemented. `54` records AGL bin-mean, Δz = 100 m as the
-first Goshen-derived **candidate**. `58` rejects a universal
-numerical operator and requires a declared sampling-class
-transform. Research BL-046 **names** a high-resolution ESC
-candidate (`esc-hr-time-hamming-sinc-lowpass` v0.1-research,
-time-domain Hamming-sinc FIR, λ_c = 40 s). Architecture `59`
-**accepts** that scientific selection as production
-`esc-hr-time-hamming-sinc-lowpass / v1`, freezes TIME / gap /
-boundary / provenance semantics, and **authorizes** the
-Analysis-column implementation. This backlog line does **not**
-implement. Diagnostic rewiring, hodograph overlay, and Explore
-Source replacement remain outside this item (`59` §27).
-Return when: the authorized Analysis-column slice is
-implemented. Do not implement the `54` candidate as
-production. Do not treat `58` or BL-046 as the operator
-specification. Do not retune to Fig. 2b 88 / 167. Do not
-mutate the source golden winds/heights. Do not silently
-replace Explore `V_env`.
+Why retained: the headless Analysis column exists
+(`src/data/escHrTimeAnalysis/`, ESC TIME carrier in
+`src/data/eolNsslMgausEsc/`). Diagnostic rewiring, hodograph
+overlay, Explore Source replacement, and Guided consumption
+remain unwired (`59` §27).
+Return when: a later slice is authorized to consume the
+column. Do not treat column core as diagnostic/UI completion.
+Do not implement the `54` candidate as production. Do not retune
+to Fig. 2b 88 / 167. Do not mutate the source golden winds/heights.
+Do not silently replace Explore `V_env`.
 Authoritative refs:
 [`docs/architecture/53-goshen-2155-source-versus-analysis-profile.md`](architecture/53-goshen-2155-source-versus-analysis-profile.md);
 [`docs/architecture/54-storm-scale-analysis-wind-profile.md`](architecture/54-storm-scale-analysis-wind-profile.md)
@@ -829,12 +818,12 @@ BL-010 (implementation authorized / not started).
 | B. Explicit height probe / nearest actual knot | BL-026 | sanctioned gap; not `51` display-index |
 | B. ω_h / streamwise overlays on dense observed | BL-011 | blocked on validated analysis column; not DEMO `[0,1000]` |
 | B. Silent DEMO `[0,1000]` | standing constraint | already decided against |
-| C. Analysis profile | BL-010 | NOT STARTED / IMPLEMENTATION AUTHORIZED by `59`; not implemented |
+| C. Analysis profile | BL-010 | PARTIAL / COLUMN CORE IMPLEMENTED; consumers not wired |
 | C. Source vs analysis distinction | `53` | ACCEPTED |
 | C. Analysis contract | `58` | ACCEPTED; ESC production transform specified in `59` |
 | C. `54` 100 m bin-mean | `54` + `55` + `58` | first candidate / ESC baseline; not universal default |
 | C. ESC transform research selection | BL-046 | RESEARCH DECISION COMPLETE; time-domain FIR 40 s named |
-| C. ESC time-domain integration | `59` | ARCHITECTURE ACCEPTED; production transform specified; column implementation authorized |
+| C. ESC time-domain integration | `59` | ARCHITECTURE ACCEPTED; COLUMN CORE IMPLEMENTED; consumers not wired |
 | C. Fig. 2b labeled discrepancy | BL-031 | after an Analysis column exists |
 | C. Markowski 88/167 not oracle | standing constraint | |
 | D. Community sounding-analysis tooling | BL-036 | RESEARCH NEEDED; not a method choice |
@@ -945,8 +934,8 @@ research 2026-08-28-leise-filter-and-analysis-operator-comparison.md:
                moore-2013-observed on I2; not BL-015;
                not Analysis
 BL-010:
-               NOT STARTED / IMPLEMENTATION AUTHORIZED
-               by 59; not implemented
+               PARTIAL / COLUMN CORE IMPLEMENTED;
+               consumers not wired
 BL-037:
                CLOSED; universal operator NOT SUPPORTED;
                contract is 58; ESC operator named in BL-046;
