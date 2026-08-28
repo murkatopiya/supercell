@@ -248,3 +248,67 @@ export const SYNTHETIC_WRONG_PROSPECT_ELEVATION_ESC = [
   dataLine({ time: -1, u: -0.2, v: 2.0, alt: 1358.8, qu: 1.0, qv: 1.0 }),
   dataLine({ time: 0, u: -2.9, v: 5.6, alt: 1359.5, qu: 1.0, qv: 1.0 }),
 ].join("\n");
+
+const dumasTarget = [
+  headerBlock({
+    siteId: "Mobile System/NSSL2",
+    utc: "2010, 05, 18, 21:52:18",
+    lon: -101.973,
+    lat: 35.691,
+    elev: 1122.1,
+  }),
+  dataLine({ time: -1, u: 0.1, v: -1.1, alt: 1121.6, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: -2.5, v: 2.5, alt: 1124.1, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 3, u: -3.2, v: 3.9, alt: 1131.9, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+const dumasForwardFlankNssl1 = [
+  headerBlock({
+    siteId: "Mobile System  mi E Hartley/NSSL1",
+    utc: "2010, 05, 18, 22:04:18",
+    lon: -102.213,
+    lat: 35.867,
+    elev: 1159.0,
+  }),
+  dataLine({ time: 0, u: 4.0, v: 4.0, alt: 1165.0, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: 5.0, v: 5.0, alt: 1175.0, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+const dumasSiblingNssl2 = [
+  headerBlock({
+    siteId: "Mobile System/NSSL2",
+    utc: "2010, 05, 18, 22:56:22",
+    lon: -101.65,
+    lat: 36.01,
+    elev: 1023.2,
+  }),
+  dataLine({ time: 0, u: 6.0, v: 6.0, alt: 1030.0, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: 7.0, v: 7.0, alt: 1040.0, qu: 1.0, qv: 1.0 }),
+].join("\n");
+
+export const SYNTHETIC_DUMAS_CONCATENATED_ESC = [
+  dumasForwardFlankNssl1,
+  dumasTarget,
+  dumasSiblingNssl2,
+].join("\n");
+
+export const SYNTHETIC_ONLY_DUMAS_SIBLING_ESC = [
+  dumasForwardFlankNssl1,
+  dumasSiblingNssl2,
+].join("\n");
+
+export const SYNTHETIC_AMBIGUOUS_DUMAS_ESC = [dumasTarget, dumasTarget].join(
+  "\n",
+);
+
+export const SYNTHETIC_WRONG_DUMAS_ELEVATION_ESC = [
+  headerBlock({
+    siteId: "Mobile System/NSSL2",
+    utc: "2010, 05, 18, 21:52:18",
+    lon: -101.973,
+    lat: 35.691,
+    elev: 1122.2,
+  }),
+  dataLine({ time: -1, u: 0.1, v: -1.1, alt: 1121.6, qu: 1.0, qv: 1.0 }),
+  dataLine({ time: 1, u: -2.5, v: 2.5, alt: 1124.1, qu: 1.0, qv: 1.0 }),
+].join("\n");

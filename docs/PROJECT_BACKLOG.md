@@ -724,8 +724,8 @@ Authoritative refs: `44` entire; `ARCHITECTURE` §1 / §36.
 ### BL-045 — Additional soundings as independent validation candidates
 
 Category: DATA
-Status: DEFERRED (candidates named; #1 ESC golden DONE;
-bytes not imported; Dumas NOT STARTED)
+Status: DEFERRED (candidates named; #1/#3 ESC goldens DONE;
+#2 IGRA adapter not designed; bytes not imported)
 Origin: CHAT/KNOWLEDGE GAP, sanctioned 2026-08-28; `49` later-case
 mentions; concatenated ESC sibling blocks (`49` §7.1); selection
 research 2026-08-28
@@ -747,6 +747,9 @@ only Goshen 2155. Named **validation candidates** (research
 #3  Dumas/Stinnett 2010-05-18 NSSL2 21:52:18
     EOL 114.114     slot A (tornadic near-inflow)
     identity LOCKED; source column audited
+    ESC named wrapper + normalized golden DONE
+    native bytes not committed
+    not a forward-flank sounding
 #4  12 May 2010 Weatherford  backup only
 ```
 
@@ -776,13 +779,13 @@ does not authorize that adapter.
 
 ESC family ingest for #1/#3 is designed in `56`
 (spec + generic mechanics + named wrappers).
-Prospect (#1) source ingest and normalized golden
-are DONE. Dumas (#3) is NOT STARTED. Moore/IGRA
-remains a sibling adapter, not `56`. `56` does not
-close BL-037 and does not authorize Analysis.
+Prospect (#1) and Dumas (#3) source ingest and
+normalized goldens are DONE. Moore/IGRA remains a
+sibling adapter, not `56`. `56` does not close BL-037
+and does not authorize Analysis.
 
-Return when: a later Dumas ESC ingest slice (`56`)
-is implemented, or a later BL-037 validation slice is
+Return when: a later Moore/IGRA ingest slice is
+designed, or a later BL-037 validation slice is
 explicitly authorized. Obtaining files is not
 implementation of Analysis.
 Authoritative refs: `56`; research
@@ -809,7 +812,7 @@ Authoritative refs: `56`; research
 | C. Markowski 88/167 not oracle | standing constraint | |
 | D. Community sounding-analysis tooling | BL-036 | RESEARCH NEEDED; not a method choice |
 | D. Generalization / scale / bin phase / not only Goshen | BL-037 | one combined research item |
-| D. Extra soundings as validation candidates | BL-045 | named; #1 ESC golden DONE; #2/#3 native identity confirmed; bytes not imported; Dumas NOT STARTED |
+| D. Extra soundings as validation candidates | BL-045 | named; #1/#3 ESC goldens DONE; #2 native identity confirmed; bytes not imported; Moore adapter NOT designed |
 | E. Reproduction as case study | BL-040 | interesting possibility; no product requirement |
 | F. Storm-motion provenance | BL-013, BL-014, BL-032, BL-041 | prescribed vs derived vs observed kept distinct |
 | G. Provider #2 / disagreement | BL-015, BL-016 | |
@@ -864,7 +867,7 @@ research 2026-08-28-moore-oun-igra-source-qualification.md:
                adapter / Analysis still NO
 56:            ESC multi-sounding source ingest
                architecture; GATE ACCEPTED;
-               Prospect golden DONE; Dumas NOT STARTED;
+               Prospect and Dumas goldens DONE;
                Moore excluded
 BL-010 / BL-037:
                implementation blocked on 55 + generalization

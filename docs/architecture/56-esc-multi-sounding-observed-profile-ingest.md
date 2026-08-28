@@ -1,8 +1,7 @@
 # ESC Multi-Sounding Observed-Profile Ingest Architecture
 
 **Status:** ARCHITECTURE SoT / GATE ACCEPTED /
-GOSHEN AND PROSPECT SOURCE INGEST DONE /
-DUMAS INGEST NOT STARTED
+GOSHEN, PROSPECT, AND DUMAS SOURCE INGEST DONE
 **Scope:** the minimum generalization of the existing EOL
 NSSL/MGAUS ESC adapter so three already-qualified observed
 columns can share one ingest family:
@@ -22,11 +21,10 @@ invariants and interpolation stay `04` / `48`. I1
 normalization semantics stay `49` §8. Source vs analysis
 split stays `53`; `54`/`55`/BL-037 remain out of this
 file.
-**Implementation:** Goshen remains the named I1 wrapper.
-Prospect Valley named wrapper and committed normalized
-golden exist in `src/data/eolNsslMgausEsc/`. Dumas ingest
-is NOT STARTED. This SoT does not include Explore
-injection, IGRA, or Analysis.
+**Implementation:** Goshen, Prospect Valley, and
+Dumas/Stinnett named wrappers and committed normalized
+goldens exist in `src/data/eolNsslMgausEsc/`. This SoT
+does not include Explore injection, IGRA, or Analysis.
 
 Predecessor:
 
@@ -89,8 +87,9 @@ later BL-037 validation inputs, not a second provider
 and not an Analysis transform.
 
 This file extracts the Goshen-specific seams so named
-wrappers reuse the same mechanics. Prospect is on that
-path. Dumas is not started here.
+wrappers reuse the same mechanics. Goshen, Prospect,
+and Dumas source ingest follow that path. Explore
+injection, IGRA, and Analysis remain out of this SoT.
 
 ---
 
@@ -195,7 +194,7 @@ Named public wrappers remain the product surface:
 ```text
 ingestNssl1Goshen2155Esc            DONE
 ingestNssl1ProspectValley222346Esc  DONE
-ingestNssl2Dumas215218Esc           NOT STARTED
+ingestNssl2Dumas215218Esc           DONE
 ```
 
 Each wrapper binds one frozen spec. Callers of Goshen
@@ -330,7 +329,9 @@ nativeUnitsNote ESC U/V m/s meteorological (eastward / northward)
 
 Prospect provenance is locked on
 `NSSL1_PROSPECT_VALLEY_222346_SPEC`. Dumas provenance
-strings are written when that wrapper is implemented.
+is locked on `NSSL2_DUMAS_215218_SPEC`. The Dumas
+identity is the near-inflow NSSL2 21:52:18 column,
+not the forward-flank NSSL1 22:04:18 sibling.
 
 ---
 
@@ -391,7 +392,8 @@ CASE SPEC
 
 NAMED WRAPPER
   ingestNssl1Goshen2155Esc
-  later Prospect / Dumas ingest functions
+  ingestNssl1ProspectValley222346Esc
+  ingestNssl2Dumas215218Esc
 ```
 
 Renaming `selectTargetSounding` without passing a spec
@@ -436,7 +438,7 @@ adapter.
 1. Refactor live ESC mechanics to take EscObservedSoundingSpec
    without changing Goshen golden or I1 semantics     DONE
 2. Prospect Valley named wrapper + tests/golden       DONE
-3. Dumas/Stinnett named wrapper + tests/golden        NOT STARTED
+3. Dumas/Stinnett named wrapper + tests/golden        DONE
 ```
 
 Native EOL bytes remain gitignored (`data/`). `npm test`
@@ -458,9 +460,9 @@ Prospect and Dumas did not reveal a semantic
 incompatibility. Negative first heights and NSSL2 vs
 NSSL1 are spec/data facts, not a new drop policy.
 
-This acceptance is an architecture decision. Prospect
-source ingest follows it. It is not implementation of
-Dumas, Moore, Explore, or Analysis.
+This acceptance is an architecture decision. Goshen,
+Prospect, and Dumas source ingest follow it. It is
+not implementation of Moore, Explore, or Analysis.
 
 ---
 
@@ -477,11 +479,11 @@ DATUM:           option B; exact 0.1 m match; then
 SELECTOR:        spec-driven; fail 0 or >1; never ordinal
 GOSHEN WRAPPER:  kept
 PROSPECT:        named wrapper + normalized golden DONE
+DUMAS:           named wrapper + normalized golden DONE
 I1 SEMANTICS:    unchanged; Goshen golden remains oracle
 MOORE/IGRA:      excluded; sibling adapter later
 PROVIDER API:    still rejected (48 Q5)
 ANALYSIS:        still 53/54/55; BL-037 not this file
-DUMAS:           NOT STARTED
 V1:              CLOSED; not reopened
 ```
 
@@ -489,7 +491,7 @@ V1:              CLOSED; not reopened
 
 ## 13. Implementation
 
-Goshen and Prospect source ingest live in
+Goshen, Prospect, and Dumas source ingest live in
 `src/data/eolNsslMgausEsc/`. Native campaign bytes are
-not committed. Dumas, Explore registry, IGRA, and
-Analysis are out of this SoT.
+not committed. Explore registry, IGRA, and Analysis
+are out of this SoT.

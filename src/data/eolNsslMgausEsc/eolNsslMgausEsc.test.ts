@@ -2,20 +2,28 @@ import { describe, expect, it } from "vitest";
 import { atmosphericVelocityToWorld } from "../../core/math/AtmosphericVelocity.js";
 import { ingestNssl1Goshen2155Esc } from "./ingestNssl1Goshen2155Esc.js";
 import { ingestNssl1ProspectValley222346Esc } from "./ingestNssl1ProspectValley222346Esc.js";
+import { ingestNssl2Dumas215218Esc } from "./ingestNssl2Dumas215218Esc.js";
 import { parseEscConcatenated } from "./parseEscConcatenated.js";
-import { NSSL1_PROSPECT_VALLEY_222346_SPEC } from "./escObservedSoundingSpec.js";
+import {
+  NSSL1_PROSPECT_VALLEY_222346_SPEC,
+  NSSL2_DUMAS_215218_SPEC,
+} from "./escObservedSoundingSpec.js";
 import { selectEscSounding } from "./selectEscSounding.js";
 import { selectTargetSounding } from "./selectTargetSounding.js";
 import { EscAdapterError } from "./types.js";
 import {
   SYNTHETIC_AMBIGUOUS_2155_ESC,
+  SYNTHETIC_AMBIGUOUS_DUMAS_ESC,
   SYNTHETIC_AMBIGUOUS_PROSPECT_ESC,
   SYNTHETIC_CONCATENATED_ESC,
+  SYNTHETIC_DUMAS_CONCATENATED_ESC,
   SYNTHETIC_DUPLICATE_HEIGHT_ESC,
   SYNTHETIC_ONLY_2240_ESC,
+  SYNTHETIC_ONLY_DUMAS_SIBLING_ESC,
   SYNTHETIC_ONLY_PROSPECT_SIBLING_ESC,
   SYNTHETIC_PROSPECT_CONCATENATED_ESC,
   SYNTHETIC_SINGLE_KEPT_LEVEL_ESC,
+  SYNTHETIC_WRONG_DUMAS_ELEVATION_ESC,
   SYNTHETIC_WRONG_GOSHEN_ELEVATION_ESC,
   SYNTHETIC_WRONG_PROSPECT_ELEVATION_ESC,
 } from "./fixtures/syntheticEsc.js";
@@ -197,5 +205,62 @@ describe("Prospect Valley NSSL1 22:23:46 ESC ingest (synthetic fixtures)", () =>
     expect(record.provenance.validTime).toBe("2010-05-26 22:23:46 UTC");
     expect(record.provenance.sourceIdentity).toContain("Mobile System/NSSL1");
     expect(record.provenance.heightDatum).toContain("1358.9");
+  });
+});
+
+describe("Dumas/Stinnett NSSL2 21:52:18 ESC ingest (synthetic fixtures)", () => {
+  it("selects the 21:52:18 NSSL2 block by spec identity, not ordinal", () => {
+    const blocks = parseEscConcatenated(SYNTHETIC_DUMAS_CONCATENATED_ESC);
+    expect(blocks).toHaveLength(3);
+
+    const selected = selectEscSounding(blocks, NSSL2_DUMAS_215218_SPEC);
+    expect(selected.header.siteId).toBe("Mobile System/NSSL2");
+    expect(selected.header.utcReleaseTime).toBe("2010, 05, 18, 21:52:18");
+    expect(selected.header.launchElevation).toBe(1122.1);
+    expect(selected.header.latitude).toBe(35.691);
+    expect(selected.header.longitude).toBe(-101.973);
+  });
+
+  it("rejects a forward-flank NSSL1 sibling and a later NSSL2 decoy", () => {
+    expect(() =>
+      ingestNssl2Dumas215218Esc(SYNTHETIC_ONLY_DUMAS_SIBLING_ESC),
+    ).toThrow(EscAdapterError);
+    expect(() =>
+      ingestNssl2Dumas215218Esc(SYNTHETIC_ONLY_DUMAS_SIBLING_ESC),
+    ).toThrow(/no sounding with NSSL2/);
+  });
+
+  it("fails when the 21:52:18 identity is ambiguous", () => {
+    expect(() =>
+      ingestNssl2Dumas215218Esc(SYNTHETIC_AMBIGUOUS_DUMAS_ESC),
+    ).toThrow(/more than one/);
+  });
+
+  it("fails when the locked Dumas launch elevation does not match", () => {
+    expect(() =>
+      ingestNssl2Dumas215218Esc(SYNTHETIC_WRONG_DUMAS_ELEVATION_ESC),
+    ).toThrow(/launch elevation must be 1122\.1/);
+  });
+
+  it("keeps a usable t=-1 first height at -0.5 m and does not invent Y=0", () => {
+    const record = ingestNssl2Dumas215218Esc(SYNTHETIC_DUMAS_CONCATENATED_ESC);
+    const heights = record.profile.levelHeights();
+
+    expect(heights[0]).toBe(-0.5);
+    expect(heights.includes(0)).toBe(false);
+    expect(record.profile.minHeight).toBe(-0.5);
+    expect(record.profile.sampleAtHeight(-0.5)).toEqual({
+      eastward: 0.1,
+      northward: -1.1,
+      vertical: 0,
+    });
+    expect(record.provenance.location).toEqual({
+      latitude: 35.691,
+      longitude: -101.973,
+    });
+    expect(record.provenance.validTime).toBe("2010-05-18 21:52:18 UTC");
+    expect(record.provenance.sourceIdentity).toContain("Mobile System/NSSL2");
+    expect(record.provenance.heightDatum).toContain("1122.1");
+    expect(record.provenance.sourceIdentity).not.toMatch(/forward-flank/i);
   });
 });

@@ -3,6 +3,7 @@ import type { EnvironmentalWindProfileRecord } from "./EnvironmentalWindProfileR
 import {
   NSSL1_GOSHEN_2155_SPEC,
   NSSL1_PROSPECT_VALLEY_222346_SPEC,
+  NSSL2_DUMAS_215218_SPEC,
   type EscObservedSoundingSpec,
 } from "./escObservedSoundingSpec.js";
 import type {
@@ -75,4 +76,12 @@ export function nssl1ProspectValley222346Record(
     coverage,
     location,
   );
+}
+
+export function nssl2Dumas215218Record(
+  levels: readonly NormalizedWindLevel[],
+  coverage: EnvironmentalWindProfileCoverage,
+  location: Pick<EscHeader, "latitude" | "longitude">,
+): EnvironmentalWindProfileRecord {
+  return observedEscRecord(NSSL2_DUMAS_215218_SPEC, levels, coverage, location);
 }

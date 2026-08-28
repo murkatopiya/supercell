@@ -1297,7 +1297,7 @@ I1  Adapter + fixture + tests
 ESC family multi-sounding ingest architecture: 56
     extract identity / datum / provenance from
     Goshen-specific seams; I1 semantics preserved
-    Prospect source ingest DONE; Dumas NOT STARTED
+    Prospect and Dumas source ingest DONE
     not a provider interface; not IGRA; not Analysis
 
 I2  Opt-in Explore / laboratory environmental injection
@@ -1394,7 +1394,7 @@ this file:     provider-neutral environmental-wind
 50:            I2 Explore Goshen sandbox;
                I2 DONE
 56:            ESC family multi-sounding ingest;
-               GATE ACCEPTED; Prospect DONE; Dumas NOT STARTED
+               GATE ACCEPTED; Prospect and Dumas DONE
 44:            long-term source / reconstruction
                boundary; still authoritative for that
                split
@@ -1431,7 +1431,7 @@ PHYSICS APIs:        no change required for I1
 LIVE INJECTION:      I2 opt-in Explore; defined in 50
 I1:                  src/data/eolNsslMgausEsc/
 ESC FAMILY:          56; spec + generic mechanics;
-                     Prospect DONE; Dumas NOT STARTED;
+                     Prospect and Dumas DONE;
                      not a provider interface; not IGRA
 V1:                  CLOSED; not reopened
 ```

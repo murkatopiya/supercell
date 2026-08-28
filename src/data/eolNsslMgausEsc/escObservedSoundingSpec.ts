@@ -35,6 +35,18 @@ export const NSSL1_PROSPECT_VALLEY_222346_SPEC: EscObservedSoundingSpec = {
   nativeUnitsNote: ESC_NATIVE_UNITS_NOTE,
 };
 
+export const NSSL2_DUMAS_215218_SPEC: EscObservedSoundingSpec = {
+  siteIdIncludes: "NSSL2",
+  utcReleaseTime: "2010, 05, 18, 21:52:18",
+  expectedLaunchElevationM: 1122.1,
+  sourceIdentity:
+    "EOL 114.114 / DOI 10.5065/D6CC0Z0Q / Mobile System/NSSL2 / UTC 2010-05-18 21:52:18 / native concatenated NSSL_MGAUS_20100518.cls",
+  validTime: "2010-05-18 21:52:18 UTC",
+  heightDatum:
+    "ESC Alt minus header launch elevation 1122.1 m, rounded to 0.1 m → world Y, implied flat ground",
+  nativeUnitsNote: ESC_NATIVE_UNITS_NOTE,
+};
+
 export const NSSL1_GOSHEN_2155_UTC = NSSL1_GOSHEN_2155_SPEC.utcReleaseTime;
 export const NSSL1_GOSHEN_2155_LAUNCH_ELEVATION_M =
   NSSL1_GOSHEN_2155_SPEC.expectedLaunchElevationM;
