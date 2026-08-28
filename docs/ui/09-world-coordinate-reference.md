@@ -9,7 +9,7 @@ live cursor HUD. Experiment reproducibility, not decoration.
 add a second world system, does not pick in screen-space
 metres, and does not snap seeds to the grid.
 **Implementation:** Slice 3 COMPLETE in production `src/**`.
-Slice 4 tracer hover remains NOT STARTED (`10`).
+Slice 4 tracer hover is COMPLETE (`10`).
 
 Predecessors:
 

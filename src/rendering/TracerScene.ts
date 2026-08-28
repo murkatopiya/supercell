@@ -21,6 +21,14 @@ import {
   syncSelectionHaloMarker,
 } from "./selectionHaloMarker.js";
 import {
+  createHoverHaloMarker,
+  disposeHoverHaloMarker,
+  hoverHaloRadiusM,
+  persistHoveredSlotIndex,
+  resolveHoverHaloObservation,
+  syncHoverHaloMarker,
+} from "./hoverHaloMarker.js";
+import {
   createHistoricalPathProbeMarker,
   disposeHistoricalPathProbeMarker,
   historicalProbeMarkerRadiusM,
@@ -101,9 +109,11 @@ export class TracerScene {
   private readonly slots: TracerObserveSlot[] = [];
   private preview: THREE.Mesh | undefined;
   private selectionHalo: THREE.Mesh | undefined;
+  private hoverHalo: THREE.Mesh | undefined;
   private historicalProbeMarker: THREE.Mesh | undefined;
   private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
+  private hoveredOccupancyIndex: number | null = null;
   private followPoint: { x: number; y: number; z: number } | null = null;
   private depthCueEnabled = false;
   private readonly coordinateReference: THREE.Group;
@@ -201,7 +211,9 @@ export class TracerScene {
     }
     this.slots.length = 0;
     this.selectedSlotIndex = null;
+    this.hoveredOccupancyIndex = null;
     this.observeSelectionHalo();
+    this.observeHoverHalo();
   }
 
   /**
@@ -389,6 +401,20 @@ export class TracerScene {
   syncSelectedSlot(slotIndex: number | null): void {
     this.selectedSlotIndex = slotIndex;
     this.observeSelectionHalo();
+    this.observeHoverHalo();
+  }
+
+  /**
+   * Transient hover occupancy. Not product selection and not a tracerId.
+   * docs/ui/10-tracer-interaction-affordance.md
+   */
+  get hoveredSlotIndex(): number | null {
+    return this.hoveredOccupancyIndex;
+  }
+
+  syncHoveredSlot(slotIndex: number | null): void {
+    this.hoveredOccupancyIndex = slotIndex;
+    this.observeHoverHalo();
   }
 
   setSize(width: number, height: number): void {
@@ -410,7 +436,14 @@ export class TracerScene {
     for (let i = n; i < this.slots.length; i++) {
       this.slots[i]!.mesh.visible = false;
     }
+    const hovered = this.hoveredOccupancyIndex;
+    const hoveredSlot = hovered === null ? undefined : this.slots[hovered];
+    this.hoveredOccupancyIndex = persistHoveredSlotIndex(
+      hovered,
+      hoveredSlot !== undefined && hoveredSlot.mesh.visible,
+    );
     this.observeSelectionHalo();
+    this.observeHoverHalo();
   }
 
   /**
@@ -446,6 +479,11 @@ export class TracerScene {
     this.controls.dispose();
     this.detachVisualAirflow();
     this.clearTracerSlots();
+    if (this.hoverHalo !== undefined) {
+      this.scene.remove(this.hoverHalo);
+      disposeHoverHaloMarker(this.hoverHalo);
+      this.hoverHalo = undefined;
+    }
     if (this.preview !== undefined) {
       this.scene.remove(this.preview);
       disposeReleasePreviewMarker(this.preview);
@@ -490,5 +528,35 @@ export class TracerScene {
       visible: slot.mesh.visible,
       position: slot.mesh.position,
     });
+  }
+
+  /**
+   * Weaker than the selection halo. Hidden when the hovered slot is
+   * also selected. Not a pick candidate.
+   */
+  private observeHoverHalo(): void {
+    const hovered = this.hoveredOccupancyIndex;
+    const slot = hovered === null ? undefined : this.slots[hovered];
+    const observation = resolveHoverHaloObservation({
+      hoveredSlotIndex: hovered,
+      selectedSlotIndex: this.selectedSlotIndex,
+      hoveredGlyph:
+        slot === undefined
+          ? undefined
+          : {
+              visible: slot.mesh.visible,
+              position: slot.mesh.position,
+            },
+    });
+    if (this.hoverHalo === undefined) {
+      if (observation === null) {
+        return;
+      }
+      this.hoverHalo = createHoverHaloMarker(
+        hoverHaloRadiusM(DEEP_STORM_TRACER_VIEW.sphereRadiusM),
+      );
+      this.scene.add(this.hoverHalo);
+    }
+    syncHoverHaloMarker(this.hoverHalo, observation);
   }
 }

@@ -28,6 +28,10 @@ import {
   resolveTracerPointerUp,
   tracerIdForSlot,
 } from "./resolveTracerPointerUp.js";
+import {
+  canvasCursorForTracerHover,
+  resolveTracerHover,
+} from "./resolveTracerHover.js";
 import { viewportFollowSync } from "./viewportFollowSync.js";
 import {
   GROUND_CURSOR_UNAVAILABLE,
@@ -374,12 +378,49 @@ export function TracerViewport({
       }
     };
 
+    const pickTracerHits = (clientX: number, clientY: number) => {
+      const rect = canvas.getBoundingClientRect();
+      const hitSlotIndex = scene.pickVisibleTracerAtClientPoint(
+        clientX,
+        clientY,
+        rect,
+      );
+      const hitPathSample =
+        pathHistory === null || pathHistory === undefined
+          ? null
+          : scene.pickPathHistorySampleAtClientPoint(
+              pathHistory,
+              clientX,
+              clientY,
+              rect,
+            );
+      return { rect, hitSlotIndex, hitPathSample };
+    };
+
+    const applyHoverFromClientPoint = (clientX: number, clientY: number) => {
+      const { hitSlotIndex, hitPathSample } = pickTracerHits(
+        clientX,
+        clientY,
+      );
+      const hover = resolveTracerHover({ hitSlotIndex, hitPathSample });
+      scene.syncHoveredSlot(hover?.slotIndex ?? null);
+      canvas.style.cursor = canvasCursorForTracerHover(hover !== null);
+    };
+
     const onPointerMove = (event: PointerEvent) => {
       writeGroundCursorHud(event.clientX, event.clientY);
+      if (pointerDown !== null) {
+        scene.syncHoveredSlot(null);
+        canvas.style.cursor = canvasCursorForTracerHover(false);
+        return;
+      }
+      applyHoverFromClientPoint(event.clientX, event.clientY);
     };
 
     const onPointerLeave = () => {
       clearGroundCursorHud();
+      scene.syncHoveredSlot(null);
+      canvas.style.cursor = canvasCursorForTracerHover(false);
     };
 
     const onPointerDown = (event: PointerEvent) => {
@@ -407,7 +448,10 @@ export function TracerViewport({
         event.clientX - down.x,
         event.clientY - down.y,
       );
-      const rect = canvas.getBoundingClientRect();
+      const { rect, hitSlotIndex, hitPathSample } = pickTracerHits(
+        event.clientX,
+        event.clientY,
+      );
       const ndc = pointerNdcFromClientRect(
         event.clientX,
         event.clientY,
@@ -417,20 +461,6 @@ export function TracerViewport({
         return;
       }
       const ray = scene.worldRayFromNdc(ndc.x, ndc.y);
-      const hitSlotIndex = scene.pickVisibleTracerAtClientPoint(
-        event.clientX,
-        event.clientY,
-        rect,
-      );
-      const hitPathSample =
-        pathHistory === null || pathHistory === undefined
-          ? null
-          : scene.pickPathHistorySampleAtClientPoint(
-              pathHistory,
-              event.clientX,
-              event.clientY,
-              rect,
-            );
       const decision = resolveTracerPointerUp({
         pointerMovementPx: movement,
         hitSlotIndex,
@@ -446,22 +476,19 @@ export function TracerViewport({
         if (tracerId !== undefined) {
           onTracerSelectRef.current?.(tracerId);
         }
-        return;
-      }
-      if (decision.action === "inspect-path") {
+      } else if (decision.action === "inspect-path") {
         onPathSampleSelectRef.current?.(
           decision.slotIndex,
           decision.historyIndex,
         );
-        return;
-      }
-      if (decision.action === "placement") {
+      } else if (decision.action === "placement") {
         onPlacementAttemptRef.current?.(
           decision.origin,
           decision.direction,
           decision.pointerMovementPx,
         );
       }
+      applyHoverFromClientPoint(event.clientX, event.clientY);
     };
 
     const onPointerCancel = (event: PointerEvent) => {
@@ -541,6 +568,11 @@ export function TracerViewport({
       }
 
       sync();
+      if (pointerDown === null) {
+        canvas.style.cursor = canvasCursorForTracerHover(
+          scene.hoveredSlotIndex !== null,
+        );
+      }
       scene.render();
       frameId = requestAnimationFrame(tick);
     };
