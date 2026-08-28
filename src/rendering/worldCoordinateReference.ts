@@ -18,10 +18,17 @@ export const WORLD_CARDINAL_DIRECTIONS: Readonly<
   N: { x: 0, z: -1 },
 };
 
-const LABEL_HEIGHT_M = 40;
+const LABEL_HEIGHT_M = 80;
 const ORIGIN_CROSS_LIFT_M = 0.5;
 const ORIGIN_DISC_RADIUS_M = 90;
 const DISTANCE_LABEL_OFFSET_M = 280;
+
+/** Screen-constant sprite scales. Not metres; sizeAttenuation is off. */
+const CARDINAL_SPRITE_SCALE = { x: 0.13, y: 0.13 };
+const METRIC_SPRITE_SCALE = { x: 0.26, y: 0.065 };
+const ORIGIN_SPRITE_SCALE = { x: 0.07, y: 0.07 };
+
+type LabelKind = "cardinal" | "metric" | "origin";
 
 export function cardinalWorldPosition(
   cardinal: WorldCardinal,
@@ -42,7 +49,12 @@ export function createWorldCoordinateReference(
   const group = new THREE.Group();
   group.name = WORLD_COORDINATE_REFERENCE_NAME;
 
-  const grid = new THREE.GridHelper(gridSizeM, gridDivisions, 0x8a9bb0, 0x3d4a5a);
+  const grid = new THREE.GridHelper(
+    gridSizeM,
+    gridDivisions,
+    0x3a4554,
+    0x2a3340,
+  );
   disableRaycast(grid);
   group.add(grid);
 
@@ -50,19 +62,21 @@ export function createWorldCoordinateReference(
   const cellM = gridSizeM / gridDivisions;
   group.add(createOriginCross(halfExtentM));
   group.add(createOriginDisc());
-  group.add(createWorldLabelSprite("0", 0.18, 0.12, {
-    x: 180,
-    y: LABEL_HEIGHT_M,
-    z: 180,
-  }));
+  group.add(
+    createWorldLabelSprite("0", "origin", ORIGIN_SPRITE_SCALE, {
+      x: 180,
+      y: LABEL_HEIGHT_M,
+      z: 180,
+    }),
+  );
 
   (Object.keys(WORLD_CARDINAL_DIRECTIONS) as WorldCardinal[]).forEach(
     (cardinal) => {
       group.add(
         createWorldLabelSprite(
           cardinal,
-          0.55,
-          0.32,
+          "cardinal",
+          CARDINAL_SPRITE_SCALE,
           cardinalWorldPosition(cardinal, halfExtentM),
         ),
       );
@@ -73,18 +87,28 @@ export function createWorldCoordinateReference(
   for (let i = 1; i <= lastLabeledCell; i++) {
     const metres = i * cellM;
     group.add(
-      createWorldLabelSprite(distanceMarkCopy("E", metres), 0.42, 0.2, {
-        x: metres,
-        y: LABEL_HEIGHT_M,
-        z: DISTANCE_LABEL_OFFSET_M,
-      }),
+      createWorldLabelSprite(
+        distanceMarkCopy("E", metres),
+        "metric",
+        METRIC_SPRITE_SCALE,
+        {
+          x: metres,
+          y: LABEL_HEIGHT_M,
+          z: DISTANCE_LABEL_OFFSET_M,
+        },
+      ),
     );
     group.add(
-      createWorldLabelSprite(distanceMarkCopy("N", metres), 0.42, 0.2, {
-        x: DISTANCE_LABEL_OFFSET_M,
-        y: LABEL_HEIGHT_M,
-        z: -metres,
-      }),
+      createWorldLabelSprite(
+        distanceMarkCopy("N", metres),
+        "metric",
+        METRIC_SPRITE_SCALE,
+        {
+          x: DISTANCE_LABEL_OFFSET_M,
+          y: LABEL_HEIGHT_M,
+          z: -metres,
+        },
+      ),
     );
   }
 
@@ -127,7 +151,7 @@ function createOriginCross(halfExtentM: number): THREE.LineSegments {
     new THREE.Vector3(0, ORIGIN_CROSS_LIFT_M, halfExtentM),
   ]);
   const material = new THREE.LineBasicMaterial({
-    color: 0xc5d4e4,
+    color: 0xe8f1fa,
     fog: false,
   });
   const lines = new THREE.LineSegments(geometry, material);
@@ -159,43 +183,56 @@ function createOriginDisc(): THREE.Mesh {
 
 function createWorldLabelSprite(
   text: string,
-  scaleXKm: number,
-  scaleYKm: number,
+  kind: LabelKind,
+  scale: { x: number; y: number },
   position: { x: number; y: number; z: number },
 ): THREE.Sprite {
-  const texture = createLabelTexture(text);
+  const texture = createLabelTexture(text, kind);
   const material = new THREE.SpriteMaterial({
     map: texture,
     transparent: true,
-    depthTest: true,
+    depthTest: false,
+    depthWrite: false,
     fog: false,
-    sizeAttenuation: true,
+    sizeAttenuation: false,
   });
   const sprite = new THREE.Sprite(material);
   sprite.position.set(position.x, position.y, position.z);
-  sprite.scale.set(scaleXKm * 1000, scaleYKm * 1000, 1);
+  sprite.scale.set(scale.x, scale.y, 1);
+  sprite.renderOrder = kind === "cardinal" ? 3 : 2;
   sprite.name = `worldCoordinateLabel:${text}`;
   disableRaycast(sprite);
   return sprite;
 }
 
-function createLabelTexture(text: string): THREE.CanvasTexture {
+function createLabelTexture(text: string, kind: LabelKind): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 128;
+  const isCardinal = kind === "cardinal";
+  canvas.width = isCardinal ? 256 : 512;
+  canvas.height = isCardinal ? 256 : 128;
   const context = canvas.getContext("2d");
   if (context === null) {
     throw new Error("2D canvas context is required for coordinate labels");
   }
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.font = "700 56px sans-serif";
   context.textAlign = "center";
   context.textBaseline = "middle";
-  context.lineWidth = 10;
-  context.strokeStyle = "rgba(16, 22, 32, 0.9)";
-  context.strokeText(text, 128, 64);
-  context.fillStyle = "#f2f6fa";
-  context.fillText(text, 128, 64);
+  if (isCardinal) {
+    context.font = "800 148px sans-serif";
+    context.lineWidth = 18;
+    context.strokeStyle = "rgba(10, 14, 22, 0.95)";
+    context.fillStyle = "#ffffff";
+  } else {
+    context.font =
+      kind === "origin" ? "700 72px sans-serif" : "700 58px sans-serif";
+    context.lineWidth = 12;
+    context.strokeStyle = "rgba(12, 16, 24, 0.92)";
+    context.fillStyle = "#e4edf6";
+  }
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  context.strokeText(text, cx, cy);
+  context.fillText(text, cx, cy);
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
   return texture;

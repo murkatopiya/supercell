@@ -182,6 +182,12 @@ Labels sit on the ground plane (or just above it). They are
 not a screen-locked compass widget that ignores camera
 azimuth. If the user orbits, E remains +X.
 
+Slice 3.1: cardinal and metric labels are sprites with
+`sizeAttenuation: false`, so they keep a readable screen size
+at the default overview without enlarging world metres. Grid
+cell meaning is unchanged. Cardinals are stronger than metric
+marks.
+
 RGB `AxesHelper` is **not** the user-facing legend. Slice 3
 removed it from `TracerScene`. Cardinals, distance marks, and
 the origin ring are the orientation teaching. `axisSizeM`

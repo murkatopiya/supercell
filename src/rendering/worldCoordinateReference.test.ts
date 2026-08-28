@@ -18,8 +18,9 @@ describe("world coordinate cardinal mapping", () => {
 
   it("keeps labels on the ground-reference plane and disables picking", () => {
     expect(cardinalWorldPosition("E", 5000).y).toBeGreaterThan(0);
-    expect(helperSrc).toMatch(/new THREE\.GridHelper\(gridSizeM, gridDivisions/);
+    expect(helperSrc).toMatch(/new THREE\.GridHelper\(/);
     expect(helperSrc).toMatch(/object\.raycast = \(\) => \{\}/);
+    expect(helperSrc).toMatch(/sizeAttenuation: false/);
     expect(helperSrc).not.toMatch(/AxesHelper/);
   });
 });
