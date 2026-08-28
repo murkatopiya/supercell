@@ -29,7 +29,7 @@ export function ExploreClearTracersControl({
   return (
     <button
       type="button"
-      className="tracer-runtime-controls__button"
+      className="ui-button tracer-runtime-controls__button"
       aria-label="Clear released tracers"
       disabled={disabled}
       title={

@@ -22,6 +22,7 @@ export function HodographOverlayControls({
 
       <label className="hodograph-overlay-controls__option">
         <input
+          className="ui-check"
           type="checkbox"
           checked={value.stormMotion}
           onChange={(event) => {
@@ -37,6 +38,7 @@ export function HodographOverlayControls({
 
       <label className="hodograph-overlay-controls__option">
         <input
+          className="ui-check"
           type="checkbox"
           checked={value.stormRelativeWind}
           disabled={vsrDisabled}
@@ -52,6 +54,7 @@ export function HodographOverlayControls({
 
       <label className="hodograph-overlay-controls__option">
         <input
+          className="ui-check"
           type="checkbox"
           checked={value.horizontalVorticity}
           onChange={(event) => {
@@ -67,6 +70,7 @@ export function HodographOverlayControls({
 
       <label className="hodograph-overlay-controls__option">
         <input
+          className="ui-check"
           type="checkbox"
           checked={value.streamwiseCrosswise}
           disabled={scDisabled}

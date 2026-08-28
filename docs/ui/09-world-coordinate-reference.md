@@ -50,7 +50,8 @@ Origin                 modest ring + brighter center cross + `0`
 Compass widget         none; N/E/S/W are world-space labels
 Distance marks         E +1..+4 km along +X; N +1..+4 km along −Z
 Cursor HUD             E/N from ray ∩ y = 0; unavailable → —
-Grid control           SceneToolbar, App-owned, default on
+Grid control           TracerViewport overlay (top-left),
+                       App-owned, default on
 HUD vs Grid            HUD remains when the grid is hidden
 Explore pick datum     unchanged: ray ∩ y = 0 → (x, z)
 Inspector position     unchanged: world (x, y, z), altitude = y
@@ -71,7 +72,7 @@ In this SoT:
 - distance marks in metres / kilometres;
 - marked reference origin;
 - live cursor HUD in atmospheric laboratory labels;
-- optional visibility toggle on the scene toolbar (`08`);
+- optional visibility toggle on the TracerViewport overlay;
 - Guided and Explore share the same layer.
 
 Out of scope for the first implementation slice:
@@ -298,10 +299,12 @@ presentation group.
 
 Default: **on**.
 
-The scene toolbar (`08`) hosts `CoordinateReferenceControl`
-(`Grid`). Grid + cardinals + distance marks + origin hide
-together. The cursor HUD stays visible when the grid is hidden:
-it is a readout of the pick datum, not a drawing of the pad.
+The TracerViewport overlay hosts `CoordinateReferenceControl`
+(`Grid`) in the top-left corner of the 3D scene. Grid +
+cardinals + distance marks + origin hide together. The cursor
+HUD stays visible when the grid is hidden: it is a readout
+of the pick datum, not a drawing of the pad. HUD remains
+bottom-left and non-interactive.
 
 ---
 
@@ -321,6 +324,7 @@ the plane). Do not add snap as a convenience.
 | World axes / units | `physics/00` | observe only |
 | Grid extents (fixture) | `DEEP_STORM_TRACER_VIEW` | observe / present |
 | Cursor world point | ray ∩ y = 0 | HUD displays |
+| Grid visibility | App session state | TracerViewport overlay (top-left) |
 | Explore seed y | altitude control | HUD may display |
 | Camera | OrbitControls / Follow (`34`/`37`) | does not redefine axes |
 
@@ -356,7 +360,7 @@ labeled world grid on y = 0
 N/E/S/W and distance marks
 origin mark
 cursor HUD (E/N from ground pick; optional release altitude)
-grid visibility on scene toolbar
+grid visibility on TracerViewport overlay (top-left)
 shared Guided + Explore
 ```
 
@@ -376,8 +380,10 @@ src/rendering/TracerScene.ts
   createWorldCoordinateReference; no AxesHelper
 src/ui/tracer/TracerViewport.tsx
   HUD overlay, pointer-events: none
+  Grid overlay, top-left
 src/app/App.tsx
   coordinateReferenceVisible default true
+  CoordinateReferenceControl on TracerViewport overlay
 ```
 
 ---

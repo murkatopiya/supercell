@@ -106,9 +106,9 @@ initial   x=12, y=12, width=480, height=420 relative to the
           laboratory viewport host, then adopted to
           position:fixed window coordinates on first layout
 min       width 360, height 280
-max       width 720, height 640, and ≤ browser window
+max       browser window (no smaller product cap)
 drag      header only; buttons / inputs / fieldsets excluded
-resize    south-east handle
+resize    east edge, south edge, and south-east corner
 bounds    browser window, not the 3D column
           the panel may hang off any edge;
           at least HODOGRAPH_HEADER_GRAB_PX (44) of the
@@ -159,7 +159,7 @@ Zoom/pan do not mutate that array.
 ```text
 header buttons / Close     click; never starts panel drag
 header empty surface       drag panel
-resize handle              resize panel
+resize edges / corner     resize panel
 SVG plot pointer drag      pan plot view
 SVG plot wheel             zoom plot view (preventDefault on the SVG)
 wheel outside the SVG      ordinary page / chrome behavior

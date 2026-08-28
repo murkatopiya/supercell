@@ -38,6 +38,9 @@ describe("GuidedExperimentSelector", () => {
     expect(selectorSrc).not.toMatch(/demonstrates/);
     expect(selectorSrc).not.toMatch(/doesNotMean/);
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guidedShell).toMatch(
+      /laboratory-toolbar laboratory-toolbar--guided/,
+    );
     expect(guidedShell).toMatch(/<GuidedExperimentSelector/);
     expect(guidedShell).toMatch(/onChange=\{selectGuidedExperiment\}/);
     expect(guidedShell).toMatch(/GuidedExperimentPanel/);

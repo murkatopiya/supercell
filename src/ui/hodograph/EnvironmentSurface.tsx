@@ -108,6 +108,7 @@ export function EnvironmentSurface({
               className="environment-surface__identity-option"
             >
               <input
+                className="ui-check"
                 type="radio"
                 name="explore-environment-identity"
                 checked={environmentIdentity === option.identity}

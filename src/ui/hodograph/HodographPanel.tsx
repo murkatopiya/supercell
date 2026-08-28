@@ -154,6 +154,13 @@ export function HodographPanel({
     points,
     selectedHeight,
   );
+  const displayedKnots = [...displayKnotIndices]
+    .sort((left, right) => left - right)
+    .map((index) => ({
+      index,
+      point: points[index]!,
+      screen: screenPoints[index]!,
+    }));
   const polylinePoints = screenPoints
     .map((point) => `${point.x},${point.y}`)
     .join(" ");
@@ -597,31 +604,19 @@ export function HodographPanel({
         </g>
       ) : null}
 
-      {[...displayKnotIndices]
-        .sort((left, right) => left - right)
-        .map((index) => {
-          const point = points[index]!;
-          const screen = screenPoints[index]!;
+      {displayedKnots.map(({ index, point, screen }) => {
           const selected =
             selectedPoint !== undefined && point === selectedPoint;
           return (
-            <g key={`knot-${point.height}-${index}`}>
-              <circle
-                cx={screen.x}
-                cy={screen.y}
-                r={selected ? SELECTED_KNOT_RADIUS : KNOT_RADIUS}
-                className="hodograph-panel__marker"
-                stroke={selected ? "#0842a0" : undefined}
-                strokeWidth={selected ? 2 : undefined}
-              />
-              <text
-                x={screen.x + 8}
-                y={screen.y - 8}
-                className="hodograph-panel__height-label"
-              >
-                {formatHeightMeters(point.height)}
-              </text>
-            </g>
+            <circle
+              key={`knot-${point.height}-${index}`}
+              cx={screen.x}
+              cy={screen.y}
+              r={selected ? SELECTED_KNOT_RADIUS : KNOT_RADIUS}
+              className="hodograph-panel__marker"
+              stroke={selected ? "#0842a0" : undefined}
+              strokeWidth={selected ? 2 : undefined}
+            />
           );
         })}
 
@@ -656,6 +651,17 @@ export function HodographPanel({
         r={2.5}
         className="hodograph-panel__origin"
       />
+
+      {displayedKnots.map(({ index, point, screen }) => (
+        <text
+          key={`height-${point.height}-${index}`}
+          x={screen.x + 8}
+          y={screen.y - 8}
+          className="hodograph-panel__height-label"
+        >
+          {formatHeightMeters(point.height)}
+        </text>
+      ))}
       </g>
     </svg>
   );

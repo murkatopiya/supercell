@@ -14,6 +14,7 @@ export interface LandingPageProps {
 /**
  * First-run mode choice. Does not construct a laboratory.
  * docs/ui/07-app-navigation-and-mode-entry.md
+ * Visual treatment: docs/ui/14-visual-design-foundation.md
  */
 export function LandingPage({
   onEnterGuided,
@@ -24,7 +25,7 @@ export function LandingPage({
   return (
     <main className="app app--landing">
       <header className="landing__header">
-        <h1 className="app__title">Supercell Explorer</h1>
+        <h1 className="app__title ui-type-app-title">Supercell Explorer</h1>
         <p className="landing__lede">
           A storm-relative laboratory for watching prescribed supercell
           airflow with tracers and a ground-relative hodograph.
@@ -33,7 +34,7 @@ export function LandingPage({
       <section className="landing__modes" aria-label="Choose a mode">
         <button
           type="button"
-          className="landing-mode-card"
+          className="ui-card landing-mode-card"
           aria-labelledby="landing-guided-title"
           aria-describedby="landing-guided-copy"
           onClick={onEnterGuided}
@@ -47,7 +48,7 @@ export function LandingPage({
         </button>
         <button
           type="button"
-          className="landing-mode-card"
+          className="ui-card landing-mode-card"
           aria-labelledby="landing-explore-title"
           aria-describedby="landing-explore-copy"
           onClick={onEnterExplore}
@@ -62,7 +63,7 @@ export function LandingPage({
       </section>
       <button
         type="button"
-        className="tracer-runtime-controls__button landing__how-it-works"
+        className="ui-button ui-button--subtle landing__how-it-works"
         aria-label="How It Works"
         aria-haspopup="dialog"
         aria-expanded={howItWorksOpen}

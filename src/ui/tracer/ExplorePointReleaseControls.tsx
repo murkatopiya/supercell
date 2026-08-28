@@ -35,7 +35,7 @@ export function ExplorePointReleaseControls({
       <div className="explore-point-release-controls__row">
         <button
           type="button"
-          className="tracer-runtime-controls__button"
+          className="ui-button ui-button--primary ui-button--toggle tracer-runtime-controls__button"
           aria-pressed={placementEnabled}
           aria-label="Release tracer"
           title="Enter placement mode, then click the ground to choose a point"
@@ -51,6 +51,7 @@ export function ExplorePointReleaseControls({
           <label className="explore-point-release-controls__field">
             Altitude
             <input
+              className="ui-input"
               type="number"
               min={0}
               step={100}
@@ -69,7 +70,7 @@ export function ExplorePointReleaseControls({
         {placementEnabled ? (
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button tracer-runtime-controls__button"
             disabled={!hasPending}
             title={!hasPending ? PENDING_REQUIRED_REASON : undefined}
             aria-label={
@@ -85,7 +86,7 @@ export function ExplorePointReleaseControls({
         {placementEnabled ? (
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--subtle tracer-runtime-controls__button"
             aria-label="Cancel placement"
             title={
               hasPending

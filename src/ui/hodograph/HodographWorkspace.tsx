@@ -82,7 +82,11 @@ export function HodographWorkspace({
   children,
 }: HodographWorkspaceProps) {
   const headerDragRef = useRef<{ lastX: number; lastY: number } | null>(null);
-  const resizeDragRef = useRef<{ lastX: number; lastY: number } | null>(null);
+  const resizeDragRef = useRef<{
+    lastX: number;
+    lastY: number;
+    axis: "east" | "south" | "south-east";
+  } | null>(null);
   const geometryRef = useRef(geometry);
   geometryRef.current = geometry;
 
@@ -150,28 +154,40 @@ export function HodographWorkspace({
     headerDragRef.current = null;
   };
 
-  const onResizePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+  const onResizePointerDown = (
+    event: PointerEvent<HTMLDivElement>,
+    axis: "east" | "south" | "south-east",
+  ) => {
     if (event.button !== 0) {
       return;
     }
     event.preventDefault();
     event.stopPropagation();
     event.currentTarget.setPointerCapture(event.pointerId);
-    resizeDragRef.current = { lastX: event.clientX, lastY: event.clientY };
+    resizeDragRef.current = {
+      lastX: event.clientX,
+      lastY: event.clientY,
+      axis,
+    };
   };
 
   const onResizePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (resizeDragRef.current === null) {
       return;
     }
-    const dWidth = event.clientX - resizeDragRef.current.lastX;
-    const dHeight = event.clientY - resizeDragRef.current.lastY;
-    resizeDragRef.current = { lastX: event.clientX, lastY: event.clientY };
+    const dx = event.clientX - resizeDragRef.current.lastX;
+    const dy = event.clientY - resizeDragRef.current.lastY;
+    resizeDragRef.current = {
+      lastX: event.clientX,
+      lastY: event.clientY,
+      axis: resizeDragRef.current.axis,
+    };
+    const axis = resizeDragRef.current.axis;
     onGeometryChange(
       resizePanelFromSouthEast(
         geometryRef.current,
-        dWidth,
-        dHeight,
+        axis === "south" ? 0 : dx,
+        axis === "east" ? 0 : dy,
         readWindowBounds(),
       ),
     );
@@ -187,7 +203,7 @@ export function HodographWorkspace({
   return (
     <section
       id="environment-surface"
-      className="hodograph-workspace environment-surface environment-surface--overlay"
+      className="hodograph-workspace environment-surface environment-surface--overlay ui-floating-panel"
       hidden={!open}
       aria-label="Environment"
       style={{
@@ -208,7 +224,7 @@ export function HodographWorkspace({
         <div className="hodograph-workspace__view-controls">
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--subtle tracer-runtime-controls__button"
             aria-label="Zoom out hodograph"
             onClick={() => {
               onPlotViewChange(
@@ -224,7 +240,7 @@ export function HodographWorkspace({
           </button>
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--subtle tracer-runtime-controls__button"
             aria-label="Zoom in hodograph"
             onClick={() => {
               onPlotViewChange(
@@ -240,7 +256,7 @@ export function HodographWorkspace({
           </button>
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--subtle tracer-runtime-controls__button"
             aria-label="Reset hodograph view"
             onClick={() => {
               onPlotViewChange(resetHodographPlotView());
@@ -251,7 +267,7 @@ export function HodographWorkspace({
         </div>
         <button
           type="button"
-          className="tracer-runtime-controls__button"
+          className="ui-button ui-button--subtle tracer-runtime-controls__button"
           aria-label="Close Environment"
           onClick={onClose}
         >
@@ -260,12 +276,31 @@ export function HodographWorkspace({
       </header>
       <div className="hodograph-workspace__body">{children}</div>
       <div
-        className="hodograph-workspace__resize"
-        onPointerDown={onResizePointerDown}
+        className="hodograph-workspace__resize hodograph-workspace__resize--east"
+        onPointerDown={(event) => onResizePointerDown(event, "east")}
         onPointerMove={onResizePointerMove}
         onPointerUp={endResizeDrag}
         onPointerCancel={endResizeDrag}
         title="Resize hodograph panel"
+        aria-label="Resize hodograph from the right edge"
+      />
+      <div
+        className="hodograph-workspace__resize hodograph-workspace__resize--south"
+        onPointerDown={(event) => onResizePointerDown(event, "south")}
+        onPointerMove={onResizePointerMove}
+        onPointerUp={endResizeDrag}
+        onPointerCancel={endResizeDrag}
+        title="Resize hodograph panel"
+        aria-label="Resize hodograph from the bottom edge"
+      />
+      <div
+        className="hodograph-workspace__resize hodograph-workspace__resize--south-east"
+        onPointerDown={(event) => onResizePointerDown(event, "south-east")}
+        onPointerMove={onResizePointerMove}
+        onPointerUp={endResizeDrag}
+        onPointerCancel={endResizeDrag}
+        title="Resize hodograph panel"
+        aria-label="Resize hodograph from the bottom-right corner"
       />
     </section>
   );

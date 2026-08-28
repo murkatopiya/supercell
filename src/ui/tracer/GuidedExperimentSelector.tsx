@@ -24,6 +24,7 @@ export function GuidedExperimentSelector({
     <label className="guided-experiment-selector">
       Experiment
       <select
+        className="ui-select"
         value={value}
         onChange={(event) => {
           const next = event.target.value;

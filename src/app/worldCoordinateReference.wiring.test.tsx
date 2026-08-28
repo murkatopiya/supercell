@@ -21,16 +21,20 @@ describe("Slice 3 world coordinate reference wiring", () => {
     expect(appSrc).toMatch(
       /onVisibleChange=\{setCoordinateReferenceVisible\}/,
     );
+    expect(appSrc).toMatch(
+      /overlay=\{[\s\S]*CoordinateReferenceControl/,
+    );
 
     const exploreToolbar = appSrc.slice(
       appSrc.indexOf("workbench__column--viewport"),
       appSrc.indexOf("workbench__column--observation"),
     );
-    expect(exploreToolbar).toMatch(/CoordinateReferenceControl/);
+    expect(exploreToolbar).not.toMatch(/CoordinateReferenceControl/);
     expect(exploreToolbar).toMatch(/VisualAirflowWorkbenchControls/);
 
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
-    expect(guidedShell).toMatch(/CoordinateReferenceControl/);
+    expect(guidedShell).not.toMatch(/CoordinateReferenceControl/);
+    expect(guidedShell).not.toMatch(/SceneToolbar/);
     expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
 
     const html = renderToStaticMarkup(
@@ -51,6 +55,7 @@ describe("Slice 3 world coordinate reference wiring", () => {
   it("keeps the HUD as a non-interactive readout of ray ∩ y = 0", () => {
     expect(tracerViewportSrc).toMatch(/groundCursorHudFromClientPoint/);
     expect(tracerViewportSrc).toMatch(/worldRayFromNdc/);
+    expect(tracerViewportSrc).toMatch(/className="tracer-viewport__overlay"/);
     expect(tracerViewportSrc).toMatch(/className="tracer-viewport__hud"/);
     expect(tracerViewportSrc).toMatch(/pointerEvents: "none"/);
     expect(tracerViewportSrc).toMatch(/aria-label="Ground cursor"/);

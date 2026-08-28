@@ -94,7 +94,7 @@ export function HowItWorksSurface({
           <button
             ref={closeButtonRef}
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--subtle tracer-runtime-controls__button"
             onClick={() => onCloseRef.current()}
           >
             Close

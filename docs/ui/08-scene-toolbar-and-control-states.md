@@ -9,7 +9,8 @@ placement and disabled reflection.
 state (`docs/rendering/02-tracer-runtime-controls.md`). This
 file does not put `5×` into physics semantics or enlarge `dt`.
 **Implementation:** Slice 2 COMPLETE in production `src/**`.
-Slice 3 world-grid / HUD remains NOT STARTED (`09`).
+Slice 3 world-grid / HUD is COMPLETE (`09`). The Grid toggle
+is on the `TracerViewport` overlay, not in `SceneToolbar`.
 
 Predecessors:
 
@@ -53,9 +54,12 @@ allowed scales              1 | 5 | 10 | 20   (unchanged)
 Explore control bands       Release | Runtime | View
 Airflow home                SceneToolbar above Explore canvas
                             (42-2 placement COMPLETE)
-Guided scene toolbar        absent until `09` grid toggle
-Guided laboratory toolbar   Runtime + experiment selector
-                            (no airflow, no Follow, no Clear)
+Guided scene toolbar        absent (Grid is on-viewport overlay)
+Guided laboratory toolbar   Runtime + Speed + experiment
+                            on one row (no airflow, no Follow,
+                            no Clear)
+Grid control                TracerViewport overlay, top-left;
+                            App-owned, default on
 Clear tracers               disabled when occupancy === 0
 Follow                      disabled without resolvable selection
                             (reason shown)
@@ -80,8 +84,9 @@ workbenchMode / highlightMode / depthCueEnabled
 `SceneToolbar` is a presentational wrapper. It does not own
 those flags.
 
-Grid visibility is reserved for this toolbar (`09`) and is
-not present as a control.
+Grid visibility is App session state (`09`). The control is
+the `TracerViewport` overlay (`CoordinateReferenceControl`),
+not a SceneToolbar child.
 
 ---
 
@@ -92,8 +97,8 @@ In this SoT:
 - a scene toolbar visually attached to `TracerViewport`;
 - move existing Explore airflow presentation controls onto
   that toolbar (`42` §6);
-- reserve the same toolbar for the world-grid visibility
-  toggle (`09`);
+- world-grid visibility toggle lives on the viewport
+  overlay (`09`), not in this toolbar;
 - disabled-state pass over existing buttons;
 - default `timeScale = 5` in Guided and Explore.
 
@@ -159,24 +164,22 @@ Depth cue        checkbox
 Same defaults, copy, and encodings as `39` / Slice B. This
 pass relocates them.
 
-Later (`09`): grid visibility toggle.
+Grid visibility is not in this toolbar (`09`).
 
 ### 5.3 Guided contents
 
-Guided has no airflow population and no airflow toolbar.
+Guided has no airflow population and no SceneToolbar.
 
-When `09` lands, Guided may show **only** the grid visibility
-control on a thin scene toolbar. Do not use that as permission
-to mount Comets, Highlight, or Depth cue in Guided.
-
-Until `09`, Guided has an absent scene toolbar. Do not mount
-Comets, Highlight, or Depth cue in Guided.
+Grid visibility is on the TracerViewport overlay (`09`),
+shared with Explore. That is not permission to mount Comets,
+Highlight, or Depth cue in Guided.
 
 ### 5.4 Shared primitive
 
-One presentational toolbar wrapper around the viewport is
-allowed. Explore and Guided pass different slots. Do not fork
-two viewport implementations.
+Explore mounts one presentational `SceneToolbar` above the
+viewport for airflow presentation. Guided does not. Grid is
+a TracerViewport overlay in both modes. Do not fork two
+viewport implementations.
 
 ---
 
@@ -273,7 +276,7 @@ offering it as an active action.
 | Concern | Owner | UI role |
 | --- | --- | --- |
 | Scene presentation (airflow mode, highlight, depth cue) | App session state (existing) | scene toolbar observes / writes presentation flags only |
-| Grid visibility | App or viewport presentation state (`09`) | scene toolbar |
+| Grid visibility | App session state (`09`) | TracerViewport overlay |
 | `paused`, `timeScale` | App session state | Runtime band; default 5 |
 | Explore occupancy | `ExploreTracerSession` / `Simulation.particles` | Clear tracers **reads** count |
 | Pending seed / placement | `ExplorePointReleaseTool` | Confirm/Cancel **read** |
@@ -304,7 +307,8 @@ physics, or tracer identities.
   both modes;
 - Explore airflow controls are wired in the viewport column,
   not in the left rail Airflow band;
-- Guided still has no airflow toolbar;
+- Guided still has no airflow toolbar and no SceneToolbar;
+- Grid is on the TracerViewport overlay, not SceneToolbar;
 - Clear tracers is `disabled` at occupancy 0 and enabled at
   occupancy ≥ 1;
 - existing Follow / Confirm disabled tests remain green;
@@ -323,9 +327,8 @@ disabled Clear tracers at occupancy 0
 default timeScale = 5
 ```
 
-Grid toggle implementation waits for `09` (Slice 3) unless a
-disabled placeholder would confuse users — then omit it until
-`09`.
+Grid toggle lives on the TracerViewport overlay (`09`).
+SceneToolbar is Explore airflow presentation only.
 
 Slice 2 is COMPLETE.
 

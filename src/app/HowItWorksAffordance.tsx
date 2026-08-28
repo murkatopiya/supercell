@@ -14,7 +14,7 @@ export function HowItWorksAffordance({
   return (
     <button
       type="button"
-      className="tracer-runtime-controls__button how-it-works-affordance"
+      className="ui-button ui-button--subtle tracer-runtime-controls__button how-it-works-affordance"
       aria-label="How It Works"
       aria-haspopup="dialog"
       aria-expanded={expanded}

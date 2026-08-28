@@ -1,4 +1,10 @@
-import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
+import {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  type ReactNode,
+  type Ref,
+} from "react";
 import { TracerScene } from "../../rendering/TracerScene.js";
 import { VisualAirflowWorkbenchScene } from "../../rendering/VisualAirflowWorkbenchScene.js";
 import {
@@ -145,6 +151,10 @@ export interface TracerViewportProps {
   onFollowUnavailable?: () => void;
   /** Imperative observe-slot / preview access. Does not recreate the scene. */
   sceneHandleRef?: Ref<TracerViewportHandle | null>;
+  /**
+   * On-viewport chrome (Grid). Independent of the ground-cursor HUD.
+   */
+  overlay?: ReactNode;
 }
 
 /**
@@ -178,6 +188,7 @@ export function TracerViewport({
   followEnabledRef,
   onFollowUnavailable,
   sceneHandleRef,
+  overlay,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hudEastRef = useRef<HTMLSpanElement>(null);
@@ -609,6 +620,9 @@ export function TracerViewport({
   return (
     <div className="tracer-viewport">
       <canvas ref={canvasRef} className="tracer-viewport__canvas" />
+      {overlay != null ? (
+        <div className="tracer-viewport__overlay">{overlay}</div>
+      ) : null}
       <div
         className="tracer-viewport__hud"
         aria-label="Ground cursor"

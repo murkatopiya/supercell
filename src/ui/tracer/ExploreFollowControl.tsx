@@ -23,7 +23,7 @@ export function ExploreFollowControl({
       <div className="tracer-runtime-controls__group tracer-runtime-controls__group--runtime">
         <button
           type="button"
-          className="tracer-runtime-controls__button"
+          className="ui-button ui-button--toggle tracer-runtime-controls__button"
           aria-label={
             canFollow
               ? "Follow selected tracer"

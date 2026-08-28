@@ -22,7 +22,7 @@ export function ExploreAuthoringHistoryControls({
     <div className="control-band__row">
       <button
         type="button"
-        className="tracer-runtime-controls__button"
+      className="ui-button ui-button--subtle tracer-runtime-controls__button"
         aria-label="Undo last tracer release"
         disabled={!canUndo}
         title={canUndo ? "Undo last tracer release" : UNDO_EMPTY_REASON}
@@ -32,7 +32,7 @@ export function ExploreAuthoringHistoryControls({
       </button>
       <button
         type="button"
-        className="tracer-runtime-controls__button"
+        className="ui-button ui-button--subtle tracer-runtime-controls__button"
         aria-label="Redo tracer release"
         disabled={!canRedo}
         title={canRedo ? "Redo tracer release" : REDO_EMPTY_REASON}

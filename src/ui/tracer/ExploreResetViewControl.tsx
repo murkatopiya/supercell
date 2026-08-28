@@ -15,7 +15,7 @@ export function ExploreResetViewControl({
       <div className="tracer-runtime-controls__group tracer-runtime-controls__group--runtime">
         <button
           type="button"
-          className="tracer-runtime-controls__button"
+          className="ui-button tracer-runtime-controls__button"
           aria-label="Reset camera to storm view"
           title="Reset camera to storm view (does not reset the simulation)"
           onClick={onResetView}

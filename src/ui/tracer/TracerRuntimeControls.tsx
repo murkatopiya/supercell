@@ -29,14 +29,14 @@ export function TracerRuntimeControls({
       <div className="tracer-runtime-controls__group tracer-runtime-controls__group--runtime">
         <button
           type="button"
-          className="tracer-runtime-controls__button"
+          className="ui-button tracer-runtime-controls__button"
           onClick={() => onPausedChange(!paused)}
         >
           {paused ? "Resume" : "Pause"}
         </button>
         <button
           type="button"
-          className="tracer-runtime-controls__button"
+          className="ui-button tracer-runtime-controls__button"
           aria-label="Reset simulation"
           title="Reset simulation (not camera)"
           onClick={onReset}
@@ -45,10 +45,13 @@ export function TracerRuntimeControls({
         </button>
       </div>
       <fieldset className="tracer-runtime-controls__scales">
-        <legend className="tracer-runtime-controls__legend">Speed</legend>
+        <legend className="tracer-runtime-controls__legend">
+          <span>Speed</span>
+        </legend>
         {TRACER_TIME_SCALES.map((scale) => (
           <label key={scale} className="tracer-runtime-controls__scale">
             <input
+              className="ui-check"
               type="radio"
               name="tracer-time-scale"
               checked={timeScale === scale}

@@ -68,7 +68,7 @@ export function VisualAirflowWorkbenchControls({
         <div className="visual-airflow-workbench-controls__row">
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--toggle tracer-runtime-controls__button"
             aria-pressed={mode === "advected-comet"}
             title={FLOW_COMETS_COPY}
             onClick={() => onModeChange("advected-comet")}
@@ -77,7 +77,7 @@ export function VisualAirflowWorkbenchControls({
           </button>
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--toggle tracer-runtime-controls__button"
             aria-pressed={mode === "eulerian-oriented"}
             title={EULERIAN_DIRECTIONS_COPY}
             onClick={() => onModeChange("eulerian-oriented")}
@@ -106,7 +106,7 @@ export function VisualAirflowWorkbenchControls({
           </span>
           <button
             type="button"
-            className="tracer-runtime-controls__button"
+            className="ui-button ui-button--toggle tracer-runtime-controls__button"
             aria-pressed={highlightMode === "off"}
             title={HIGHLIGHT_COPY}
             onClick={() => onHighlightModeChange("off")}
@@ -116,7 +116,7 @@ export function VisualAirflowWorkbenchControls({
           <label className="visual-airflow-workbench-controls__field">
             Operand
             <select
-              className="visual-airflow-workbench-controls__select"
+              className="ui-select visual-airflow-workbench-controls__select"
               aria-label="Highlighted storm operand"
               title={HIGHLIGHT_COPY}
               value={highlightMode === "off" ? "" : highlightMode}
@@ -144,6 +144,7 @@ export function VisualAirflowWorkbenchControls({
             title={DEPTH_CUE_COPY}
           >
             <input
+              className="ui-check"
               type="checkbox"
               checked={depthCueEnabled}
               onChange={(event) =>

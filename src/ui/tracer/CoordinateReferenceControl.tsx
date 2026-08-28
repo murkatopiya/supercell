@@ -14,7 +14,7 @@ export function CoordinateReferenceControl({
   return (
     <button
       type="button"
-      className="tracer-runtime-controls__button"
+      className="ui-button ui-button--toggle tracer-runtime-controls__button"
       aria-pressed={visible}
       aria-label="World coordinate grid"
       onClick={() => onVisibleChange(!visible)}

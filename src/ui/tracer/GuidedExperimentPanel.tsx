@@ -19,7 +19,7 @@ export function GuidedExperimentPanel({
   experiment,
 }: GuidedExperimentPanelProps) {
   return (
-    <section className="guided-experiment-panel" aria-label="Guided experiment">
+    <section className="guided-experiment-panel ui-panel ui-panel--info" aria-label="Guided experiment">
       <h3 className="guided-experiment-panel__title">{experiment.title}</h3>
       <p className="guided-experiment-panel__honesty">
         {GUIDED_LABORATORY_HONESTY}

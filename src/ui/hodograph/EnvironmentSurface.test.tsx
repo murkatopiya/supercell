@@ -137,6 +137,9 @@ describe("HodographWorkspace chrome", () => {
     expect(html).toContain("aria-label=\"Reset hodograph view\"");
     expect(html).toContain("hodograph-workspace__header");
     expect(html).toContain("hodograph-workspace__resize");
+    expect(html).toContain("hodograph-workspace__resize--east");
+    expect(html).toContain("hodograph-workspace__resize--south");
+    expect(html).toContain("hodograph-workspace__resize--south-east");
     expect(html).toContain("title=\"Resize hodograph panel\"");
     expect(workspaceSrc).toMatch(/isHeaderDragExcludedTarget/);
     expect(workspaceSrc).toMatch(/setPointerCapture/);

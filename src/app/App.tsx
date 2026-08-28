@@ -645,6 +645,12 @@ export function App() {
       onSimulationAdvanced={refreshInspection}
       followEnabledRef={followEnabledRef}
       onFollowUnavailable={() => setFollowEnabled(false)}
+      overlay={
+        <CoordinateReferenceControl
+          visible={coordinateReferenceVisible}
+          onVisibleChange={setCoordinateReferenceVisible}
+        />
+      }
       onPlacementAttempt={
         explore === null
           ? undefined
@@ -773,10 +779,6 @@ export function App() {
 
           <div className="workbench__column workbench__column--viewport">
             <SceneToolbar>
-              <CoordinateReferenceControl
-                visible={coordinateReferenceVisible}
-                onVisibleChange={setCoordinateReferenceVisible}
-              />
               <VisualAirflowWorkbenchControls
                 mode={workbenchMode}
                 highlightMode={highlightMode}
@@ -810,7 +812,7 @@ export function App() {
         >
           <div className="workbench__column workbench__column--laboratory">
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
-            <div className="laboratory-toolbar">
+            <div className="laboratory-toolbar laboratory-toolbar--guided">
               <TracerRuntimeControls
                 paused={paused}
                 timeScale={timeScale}
@@ -826,12 +828,6 @@ export function App() {
             {guidedExperiment !== null && (
               <GuidedExperimentPanel experiment={guidedExperiment} />
             )}
-            <SceneToolbar>
-              <CoordinateReferenceControl
-                visible={coordinateReferenceVisible}
-                onVisibleChange={setCoordinateReferenceVisible}
-              />
-            </SceneToolbar>
             <div className="workbench__hodograph-host" ref={hodographHostRef}>
               {tracerViewport}
               {environmentSurface}

@@ -426,6 +426,18 @@ describe("hodographViewTransform", () => {
       expect(polylineVertexCount(html)).toBe(demoPoints.length);
     });
 
+    it("paints height labels after the polyline and markers", () => {
+      const html = renderToStaticMarkup(
+        createElement(HodographPanel, { points: demoPoints }),
+      );
+      const polylineIndex = html.indexOf("hodograph-panel__polyline");
+      const markerIndex = html.indexOf("hodograph-panel__marker");
+      const labelIndex = html.indexOf("hodograph-panel__height-label");
+      expect(polylineIndex).toBeGreaterThan(-1);
+      expect(markerIndex).toBeGreaterThan(polylineIndex);
+      expect(labelIndex).toBeGreaterThan(markerIndex);
+    });
+
     it("keeps axis titles and diagnostic drawing inside the plot-space camera", () => {
       const html = renderToStaticMarkup(
         createElement(HodographPanel, {

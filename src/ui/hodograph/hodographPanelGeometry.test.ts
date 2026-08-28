@@ -4,8 +4,6 @@ import {
   dragPanelByDelta,
   HODOGRAPH_HEADER_GRAB_PX,
   HODOGRAPH_HEADER_HEIGHT_PX,
-  HODOGRAPH_PANEL_MAX_HEIGHT_PX,
-  HODOGRAPH_PANEL_MAX_WIDTH_PX,
   HODOGRAPH_PANEL_MIN_HEIGHT_PX,
   HODOGRAPH_PANEL_MIN_WIDTH_PX,
   INITIAL_HODOGRAPH_PANEL_GEOMETRY,
@@ -102,12 +100,26 @@ describe("hodographPanelGeometry", () => {
       5000,
       viewport,
     );
-    expect(tooBig.width).toBe(
-      Math.min(HODOGRAPH_PANEL_MAX_WIDTH_PX, viewport.width),
+    expect(tooBig.width).toBe(viewport.width);
+    expect(tooBig.height).toBe(viewport.height);
+
+    const eastOnly = resizePanelFromSouthEast(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      80,
+      0,
+      viewport,
     );
-    expect(tooBig.height).toBe(
-      Math.min(HODOGRAPH_PANEL_MAX_HEIGHT_PX, viewport.height),
+    expect(eastOnly.width).toBe(560);
+    expect(eastOnly.height).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.height);
+
+    const southOnly = resizePanelFromSouthEast(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      0,
+      60,
+      viewport,
     );
+    expect(southOnly.width).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width);
+    expect(southOnly.height).toBe(480);
     expect(plotView.userScale).toBe(3);
     expect(plotView.panEastward).toBe(0);
   });

@@ -11,7 +11,7 @@ export interface SceneToolbarProps {
  */
 export function SceneToolbar({ children }: SceneToolbarProps) {
   return (
-    <div className="scene-toolbar" role="toolbar" aria-label="Scene">
+    <div className="scene-toolbar ui-scene-chrome" role="toolbar" aria-label="Scene">
       {children}
     </div>
   );

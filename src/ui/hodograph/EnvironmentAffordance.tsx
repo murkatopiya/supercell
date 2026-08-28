@@ -16,7 +16,7 @@ export function EnvironmentAffordance({
   return (
     <button
       type="button"
-      className="tracer-runtime-controls__button environment-affordance"
+      className="ui-button tracer-runtime-controls__button environment-affordance"
       aria-label="Environment"
       aria-expanded={expanded}
       aria-controls={ENVIRONMENT_SURFACE_ID}

@@ -17,8 +17,6 @@ export interface ViewportBounds {
 
 export const HODOGRAPH_PANEL_MIN_WIDTH_PX = 360;
 export const HODOGRAPH_PANEL_MIN_HEIGHT_PX = 280;
-export const HODOGRAPH_PANEL_MAX_WIDTH_PX = 720;
-export const HODOGRAPH_PANEL_MAX_HEIGHT_PX = 640;
 export const HODOGRAPH_HEADER_GRAB_PX = 44;
 /** Approximate header band; used so a grab strip can remain on-screen. */
 export const HODOGRAPH_HEADER_HEIGHT_PX = 52;
@@ -54,8 +52,10 @@ export function panelGeometriesEqual(
 }
 
 /**
- * Keep size within min/max. The panel may hang off any edge of the
- * browser viewport; at least a header grab strip stays reachable.
+ * Keep size at least the documented minimum. There is no separate
+ * product max: the panel may grow up to the browser window.
+ * The panel may hang off any edge; at least a header grab strip
+ * stays reachable.
  */
 export function clampPanelGeometry(
   geometry: HodographPanelGeometry,
@@ -68,16 +68,17 @@ export function clampPanelGeometry(
     ? Math.max(0, viewport.height)
     : 0;
 
-  const maxWidth =
-    viewportWidth > 0
-      ? Math.max(1, Math.min(HODOGRAPH_PANEL_MAX_WIDTH_PX, viewportWidth))
-      : HODOGRAPH_PANEL_MAX_WIDTH_PX;
+  const maxWidth = viewportWidth > 0 ? viewportWidth : Number.POSITIVE_INFINITY;
   const maxHeight =
-    viewportHeight > 0
-      ? Math.max(1, Math.min(HODOGRAPH_PANEL_MAX_HEIGHT_PX, viewportHeight))
-      : HODOGRAPH_PANEL_MAX_HEIGHT_PX;
-  const minWidth = Math.min(HODOGRAPH_PANEL_MIN_WIDTH_PX, maxWidth);
-  const minHeight = Math.min(HODOGRAPH_PANEL_MIN_HEIGHT_PX, maxHeight);
+    viewportHeight > 0 ? viewportHeight : Number.POSITIVE_INFINITY;
+  const minWidth =
+    Number.isFinite(maxWidth)
+      ? Math.min(HODOGRAPH_PANEL_MIN_WIDTH_PX, maxWidth)
+      : HODOGRAPH_PANEL_MIN_WIDTH_PX;
+  const minHeight =
+    Number.isFinite(maxHeight)
+      ? Math.min(HODOGRAPH_PANEL_MIN_HEIGHT_PX, maxHeight)
+      : HODOGRAPH_PANEL_MIN_HEIGHT_PX;
 
   const width = clampNumber(geometry.width, minWidth, maxWidth);
   const height = clampNumber(geometry.height, minHeight, maxHeight);

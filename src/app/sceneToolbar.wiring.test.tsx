@@ -62,8 +62,8 @@ describe("Slice 2 scene toolbar and session defaults", () => {
     expect(controls).toMatch(/ExploreFollowControl/);
 
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
-    expect(guidedShell).toMatch(/SceneToolbar/);
-    expect(guidedShell).toMatch(/CoordinateReferenceControl/);
+    expect(guidedShell).not.toMatch(/SceneToolbar/);
+    expect(guidedShell).not.toMatch(/CoordinateReferenceControl/);
     expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
   });
 

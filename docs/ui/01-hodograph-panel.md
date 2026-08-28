@@ -284,6 +284,11 @@ kilometers in v1 labels.
 Short columns label every knot. Dense columns label only
 the display subset from `§7.3`.
 
+Height labels paint after the polyline, overlays, and knot
+markers. They use a white halo so the meter strings stay
+readable when the curve crosses a label. Label values and
+offsets are unchanged.
+
 ---
 
 ## 8. Ticks
