@@ -56,6 +56,7 @@ Related, not replaced:
 docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
 docs/architecture/54-storm-scale-analysis-wind-profile.md
 docs/architecture/55-analysis-profile-generalization-gate.md
+docs/architecture/57-igra-observed-profile-ingest.md
 ```
 
 Keep these roles distinct:
@@ -422,11 +423,10 @@ non-monotonic native file order
   2013-05-20 17 UTC / RELTIME 1651 column
 ```
 
-Its ingest, if later designed, is a **sibling adapter**
-behind the same provider-neutral
-`EnvironmentalWindProfileRecord` boundary (`48`).
-This ESC family must not be distorted to anticipate
-IGRA sorting, pressure reconstruction, or
+Its ingest architecture is `57`. That sibling adapter
+is not this ESC family, not a provider interface, and
+not BL-015. This ESC family must not be distorted to
+anticipate IGRA sorting, pressure reconstruction, or
 direction/speed mapping.
 
 BL-045 candidate #2 remains a validation-input pointer
@@ -499,7 +499,9 @@ EXPLORE IDS:     demo-prescribed;
                  dumas-2010-observed
                  (I2 identity mechanism; not this ingest)
 I1 SEMANTICS:    unchanged; Goshen golden remains oracle
-MOORE/IGRA:      excluded; sibling adapter later
+MOORE/IGRA:      excluded from this family; sibling
+                 architecture 57 GATE ACCEPTED;
+                 Moore wrapper not implemented here
 PROVIDER API:    still rejected (48 Q5)
 ANALYSIS:        still 53/54/55; BL-037 not this file
 V1:              CLOSED; not reopened
@@ -511,6 +513,7 @@ V1:              CLOSED; not reopened
 
 Goshen, Prospect, and Dumas source ingest live in
 `src/data/eolNsslMgausEsc/`. Native campaign bytes are
-not committed. IGRA and Analysis are out of this SoT.
+not committed. IGRA ingest architecture is `57` and is
+not this family. Analysis remains out of this SoT.
 Explore identities for the three committed source
 records live on the existing I2 environment mechanism.

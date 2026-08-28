@@ -39,6 +39,13 @@ additional observed ESC cases; not IGRA):
 docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
 ```
 
+IGRA observed-profile ingest (sibling adapter; not this
+ESC family):
+
+```text
+docs/architecture/57-igra-observed-profile-ingest.md
+```
+
 Related still-binding SoTs (not replaced):
 
 ```text

@@ -47,6 +47,13 @@ provider #2; not IGRA):
 docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
 ```
 
+IGRA observed-profile ingest (sibling adapter; Moore
+architecture; not Explore; not Analysis):
+
+```text
+docs/architecture/57-igra-observed-profile-ingest.md
+```
+
 V1 CLOSED record (do not reopen):
 
 ```text
@@ -1301,6 +1308,12 @@ ESC family multi-sounding ingest architecture: 56
     Prospect and Dumas source ingest DONE
     not a provider interface; not IGRA; not Analysis
 
+IGRA observed-profile ingest architecture: 57
+    sibling adapter behind the same record contract
+    GATE ACCEPTED; named worldY sort; Moore wrapper
+    NOT IMPLEMENTED; not Explore; not Analysis
+    not a provider interface; not BL-015
+
 I2  Opt-in Explore / laboratory environmental injection
     six storm operands remain DEMO
     C remains prescribed DEMO C
@@ -1400,6 +1413,8 @@ this file:     provider-neutral environmental-wind
                environment mechanism
 56:            ESC family multi-sounding ingest;
                GATE ACCEPTED; Prospect and Dumas DONE
+57:            IGRA observed-profile ingest;
+               GATE ACCEPTED; Moore wrapper not implemented
 44:            long-term source / reconstruction
                boundary; still authoritative for that
                split
@@ -1444,6 +1459,9 @@ I1:                  src/data/eolNsslMgausEsc/
 ESC FAMILY:          56; spec + generic mechanics;
                      Prospect and Dumas DONE;
                      not a provider interface; not IGRA
+IGRA FAMILY:         57; sibling adapter; GATE ACCEPTED;
+                     named stable sort by worldY;
+                     Moore ingest NOT IMPLEMENTED
 V1:                  CLOSED; not reopened
 ```
 
