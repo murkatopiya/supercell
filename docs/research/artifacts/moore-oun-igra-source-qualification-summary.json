@@ -1,0 +1,282 @@
+{
+  "file": "data/Moore/USM00072357-data.txt",
+  "formatSourceOfRecord": "data/Moore/igra2-data-format.txt (IGRA v2.2, 19 January 2023)",
+  "stationList": {
+    "source": "https://www.ncei.noaa.gov/pub/data/igra/igra2-station-list.txt",
+    "line": "USM00072357 35.1808 -97.4378 344.9 OK NORMAN/MAX WESTHEIMER A; OK. 1974 2026 28199",
+    "elevationM": 344.9,
+    "name": "NORMAN/MAX WESTHEIMER A; OK.",
+    "firstYear": 1974,
+    "lastYear": 2026
+  },
+  "neighborsOn20130520": [
+    {
+      "hour": 12,
+      "reltime": 1108,
+      "numlev": 155,
+      "pSrc": "ncdc6301",
+      "npSrc": "ncdc6301",
+      "lat": 35.1808,
+      "lon": -97.4378,
+      "nParsed": 155
+    },
+    {
+      "hour": 17,
+      "reltime": 1651,
+      "numlev": 165,
+      "pSrc": "ncdc6301",
+      "npSrc": "ncdc6301",
+      "lat": 35.1808,
+      "lon": -97.4378,
+      "nParsed": 165
+    }
+  ],
+  "adjacentHeadersNotSelected": [
+    {
+      "date": "2013-05-21",
+      "hour": 0,
+      "reltime": 2304,
+      "numlev": 167,
+      "pSrc": "ncdc6301",
+      "npSrc": "ncdc6301"
+    },
+    {
+      "date": "2013-05-21",
+      "hour": 12,
+      "reltime": 1200,
+      "numlev": 191,
+      "pSrc": "ncdc6301",
+      "npSrc": "ncdc6301"
+    }
+  ],
+  "targetHeaderRaw": "#USM00072357 2013 05 20 17 1651  165 ncdc6301 ncdc6301  351808  -974378",
+  "targetHeader": {
+    "raw": "#USM00072357 2013 05 20 17 1651  165 ncdc6301 ncdc6301  351808  -974378",
+    "headrec": "#",
+    "id": "USM00072357",
+    "year": 2013,
+    "month": 5,
+    "day": 20,
+    "hour": 17,
+    "reltime": 1651,
+    "numlev": 165,
+    "pSrc": "ncdc6301",
+    "npSrc": "ncdc6301",
+    "latRaw": 351808,
+    "lonRaw": -974378,
+    "lat": 35.1808,
+    "lon": -97.4378
+  },
+  "auditStationElev345": {
+    "header": {
+      "raw": "#USM00072357 2013 05 20 17 1651  165 ncdc6301 ncdc6301  351808  -974378",
+      "headrec": "#",
+      "id": "USM00072357",
+      "year": 2013,
+      "month": 5,
+      "day": 20,
+      "hour": 17,
+      "reltime": 1651,
+      "numlev": 165,
+      "pSrc": "ncdc6301",
+      "npSrc": "ncdc6301",
+      "latRaw": 351808,
+      "lonRaw": -974378,
+      "lat": 35.1808,
+      "lon": -97.4378
+    },
+    "stationElevUsed": 345,
+    "nativeNumlev": 165,
+    "parsedLevels": 165,
+    "categories": {
+      "A_validGph": 165,
+      "B_noGphWithPressure": 0,
+      "C_nonPressure": 94,
+      "D_surface": 1,
+      "E_has8888": 0,
+      "F_has9999": 94,
+      "usableWindDir": 165,
+      "usableWindSpd": 165,
+      "usableWindBoth": 165,
+      "usableGph": 165,
+      "usableWindAndGph": 165
+    },
+    "kept": {
+      "n": 165,
+      "typeCounts": {
+        "non-pressure/other": 94,
+        "other-pressure/other": 56,
+        "other-pressure/surface": 1,
+        "standard-pressure/other": 14
+      },
+      "minWorldY": 0,
+      "maxWorldY": 30589,
+      "first": {
+        "lvltyp1": "other-pressure",
+        "lvltyp2": "surface",
+        "etime": 0,
+        "etimeLabel": "0:00",
+        "pressPa": 96638,
+        "gph": 345,
+        "worldY": 0,
+        "wdir": 185,
+        "wspdTenths": 51,
+        "speed": 5.1,
+        "eastward": 0.44449428801305546,
+        "northward": 5.080592960267902,
+        "pflag": "A",
+        "zflag": " "
+      },
+      "last": {
+        "lvltyp1": "non-pressure",
+        "lvltyp2": "other",
+        "etime": 9500,
+        "etimeLabel": "95:00",
+        "pressPa": -9999,
+        "gph": 30934,
+        "worldY": 30589,
+        "wdir": 229,
+        "wspdTenths": 42,
+        "speed": 4.2,
+        "eastward": 3.169780236935641,
+        "northward": 2.7554479217601324,
+        "pflag": " ",
+        "zflag": " "
+      },
+      "n0to200": 2,
+      "n0to500": 5,
+      "n0to1000": 7,
+      "n0to3000": 24,
+      "n0to6000": 38,
+      "nBelow0": 0
+    },
+    "dropped": {
+      "n": 0,
+      "reasonCounts": {},
+      "typeCounts": {},
+      "samplesMissingGphWithWind": [],
+      "samplesMissingWindWithGph": []
+    },
+    "dY": {
+      "n": 164,
+      "min": -30338,
+      "p10": 108.3,
+      "median": 329.5,
+      "p90": 618.9000000000003,
+      "max": 1710,
+      "decreasing": 1,
+      "duplicate": 0,
+      "inversions": [
+        {
+          "from": 30700,
+          "to": 362,
+          "delta": -30338,
+          "fromGph": 31045,
+          "toGph": 707,
+          "fromEtime": "95:16",
+          "toEtime": "1:00",
+          "fromType": "other-pressure/other",
+          "toType": "non-pressure/other"
+        }
+      ],
+      "gapsOver50Count": 157,
+      "gapsOver100Count": 148,
+      "gapsOver250Count": 134
+    },
+    "sortedByGphIfNamed": {
+      "note": "NOT an accepted adapter step; diagnostic only",
+      "minWorldY": 0,
+      "maxWorldY": 30700,
+      "dYmin": 5,
+      "dYp10": 44.900000000000006,
+      "dYmedian": 174,
+      "dYp90": 336.1,
+      "dYmax": 362,
+      "nEqualAfterSort": 0,
+      "nNegativeAfterSort": 0,
+      "gapsOver50": 144,
+      "gapsOver100": 119,
+      "gapsOver250": 54,
+      "n0to200": 2,
+      "n0to500": 5,
+      "n0to1000": 7,
+      "n0to3000": 24,
+      "n0to6000": 38
+    },
+    "etime": {
+      "present": 165,
+      "missing9999": 0,
+      "qaRemoved8888": 0,
+      "notOnAllLevels": false
+    },
+    "resolution": {
+      "wdirIntegerDegrees": true,
+      "wspdTenthsMs": true,
+      "uniqueWdirKept": 84,
+      "uniqueWspdTenthsKept": 124
+    },
+    "surface": [
+      {
+        "lvltyp1": "other-pressure",
+        "etime": 0,
+        "press": 96638,
+        "gph": 345,
+        "wdir": 185,
+        "wspd": 51,
+        "worldYIfElev": 0
+      }
+    ],
+    "lowLevelKept": [
+      {
+        "worldY": 0,
+        "gph": 345,
+        "wdir": 185,
+        "speed": 5.1,
+        "eastward": 0.44,
+        "northward": 5.08,
+        "etimeLabel": "0:00",
+        "type": "other-pressure/surface"
+      },
+      {
+        "worldY": 81,
+        "gph": 426,
+        "wdir": 186,
+        "speed": 7.5,
+        "eastward": 0.78,
+        "northward": 7.46,
+        "etimeLabel": "0:16",
+        "type": "other-pressure/other"
+      },
+      {
+        "worldY": 385,
+        "gph": 730,
+        "wdir": 186,
+        "speed": 8.2,
+        "eastward": 0.86,
+        "northward": 8.16,
+        "etimeLabel": "1:04",
+        "type": "standard-pressure/other"
+      },
+      {
+        "worldY": 493,
+        "gph": 838,
+        "wdir": 194,
+        "speed": 8.5,
+        "eastward": 2.06,
+        "northward": 8.25,
+        "etimeLabel": "1:23",
+        "type": "other-pressure/other"
+      },
+      {
+        "worldY": 362,
+        "gph": 707,
+        "wdir": 186,
+        "speed": 8.2,
+        "eastward": 0.86,
+        "northward": 8.16,
+        "etimeLabel": "1:00",
+        "type": "non-pressure/other"
+      }
+    ]
+  }
+}

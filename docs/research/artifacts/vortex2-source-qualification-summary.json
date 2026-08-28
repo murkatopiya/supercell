@@ -1,0 +1,1429 @@
+{
+  "files": {
+    "goshen": {
+      "path": "data/114.114 Goshen/NSSL_MGAUS_20090605.cls",
+      "nBlocks": 9
+    },
+    "prospect": {
+      "path": "data/114.114 2010-05-26/NSSL_MGAUS_20100526.cls",
+      "nBlocks": 9,
+      "all": [
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 1,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 26, 00:26:40",
+          "hhmmss": "00:26:40",
+          "longitude": -102.332,
+          "latitude": 38.764,
+          "launchElevation": 1268.5,
+          "comments": "dahl/none, Good Sounding",
+          "sonde": "101374338/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3977
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 2,
+          "siteId": "Mobile System/NSSL1",
+          "utcReleaseTime": "2010, 05, 26, 00:32:24",
+          "hhmmss": "00:32:24",
+          "longitude": -100.946,
+          "latitude": 39.278,
+          "launchElevation": 950.5,
+          "comments": "Graylen Boone/Mingo, Good Sounding",
+          "sonde": "101364459/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3875
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 3,
+          "siteId": "Mobile System/NSSL1",
+          "utcReleaseTime": "2010, 05, 26, 19:58:01",
+          "hhmmss": "19:58:01",
+          "longitude": -104.991,
+          "latitude": 40.44,
+          "launchElevation": 1550.3,
+          "comments": "Graylen Boone/Loveland, Good Sounding",
+          "sonde": "101364449/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3508
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 4,
+          "siteId": "Mobile System/NSSL1",
+          "utcReleaseTime": "2010, 05, 26, 21:09:45",
+          "hhmmss": "21:09:45",
+          "longitude": -104.243,
+          "latitude": 40.329,
+          "launchElevation": 1357.6,
+          "comments": "Graylen Boone/Lost sounding at ~100 mb when laptop battery was drained.  Good sounding, Good Sounding",
+          "sonde": "101364866/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2911
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 5,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 26, 21:09:47",
+          "hhmmss": "21:09:47",
+          "longitude": -104.64,
+          "latitude": 40.401,
+          "launchElevation": 1409.1,
+          "comments": "dahl/none, Good Sounding",
+          "sonde": "101374085/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3493
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 6,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 26, 22:19:19",
+          "hhmmss": "22:19:19",
+          "longitude": -104.735,
+          "latitude": 40,
+          "launchElevation": 1544,
+          "comments": "dahl/none, Good Sounding",
+          "sonde": "101354182/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3187
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 7,
+          "siteId": "Mobile System/NSSL1",
+          "utcReleaseTime": "2010, 05, 26, 22:23:46",
+          "hhmmss": "22:23:46",
+          "longitude": -103.594,
+          "latitude": 40.002,
+          "launchElevation": 1358.9,
+          "comments": "G Bryan/Good sounding.  Woodrow, Good Sounding",
+          "sonde": "101364451/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2824
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 8,
+          "siteId": "Mobile System/NSSL1",
+          "utcReleaseTime": "2010, 05, 26, 23:20:45",
+          "hhmmss": "23:20:45",
+          "longitude": -103.638,
+          "latitude": 39.988,
+          "launchElevation": 1392.9,
+          "comments": "Graylen Boone/Good sounding. Target storm to WNW. Woodrow, Good Sounding",
+          "sonde": "101364868/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2817
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100526.cls",
+          "ordinal": 9,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 26, 23:20:50",
+          "hhmmss": "23:20:50",
+          "longitude": -104.377,
+          "latitude": 40.074,
+          "launchElevation": 1478.1,
+          "comments": "dahl/none, Good Sounding",
+          "sonde": "101374096/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2765
+        }
+      ]
+    },
+    "dumasNssl": {
+      "path": "data/114.114 2010-05-18/NSSL_MGAUS_20100518.cls",
+      "nBlocks": 9,
+      "all": [
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 1,
+          "siteId": "Mobile System  NM/NSSL1",
+          "utcReleaseTime": "2010, 05, 18, 01:52:34",
+          "hhmmss": "01:52:34",
+          "longitude": -104.522,
+          "latitude": 33.464,
+          "launchElevation": 1083.8,
+          "comments": "Dahl/none, Good Sounding",
+          "sonde": "101374320/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 5801
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 2,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 18, 17:00:01",
+          "hhmmss": "17:00:01",
+          "longitude": -103.14,
+          "latitude": 34.395,
+          "launchElevation": 1287.7,
+          "comments": "/",
+          "sonde": "101364470/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 4393
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 3,
+          "siteId": "Mobile System/NSSL1",
+          "utcReleaseTime": "2010, 05, 18, 20:48:43",
+          "hhmmss": "20:48:43",
+          "longitude": -102.331,
+          "latitude": 35.679,
+          "launchElevation": 1151.7,
+          "comments": "G Bryan/Channing, Good Sounding",
+          "sonde": "101374263/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3909
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 4,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 18, 21:52:18",
+          "hhmmss": "21:52:18",
+          "longitude": -101.973,
+          "latitude": 35.691,
+          "launchElevation": 1122.1,
+          "comments": "Matt M./none, Good Sounding",
+          "sonde": "101364478/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3022
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 5,
+          "siteId": "Mobile System  mi E Hartley/NSSL1",
+          "utcReleaseTime": "2010, 05, 18, 22:04:18",
+          "hhmmss": "22:04:18",
+          "longitude": -102.213,
+          "latitude": 35.867,
+          "launchElevation": 1159,
+          "comments": "G Bryan/Forward flank launch, none",
+          "sonde": "101374287/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 1780
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 6,
+          "siteId": "Mobile System  miles south of Dumas/NSSL1",
+          "utcReleaseTime": "2010, 05, 18, 22:55:19",
+          "hhmmss": "22:55:19",
+          "longitude": -101.96,
+          "latitude": 35.759,
+          "launchElevation": 1090.8,
+          "comments": "G Bryan/Launch site ~5 mi S Dumas, Good Sounding",
+          "sonde": "101374295/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 1201
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 7,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 18, 22:56:22",
+          "hhmmss": "22:56:22",
+          "longitude": -101.65,
+          "latitude": 36.01,
+          "launchElevation": 1023.2,
+          "comments": "Matt M./Sonde lost comms around 310 mb for unknown reasons., Good Sounding",
+          "sonde": "101364464/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 1490
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 8,
+          "siteId": "Mobile System/NSSL2",
+          "utcReleaseTime": "2010, 05, 18, 23:38:20",
+          "hhmmss": "23:38:20",
+          "longitude": -101.221,
+          "latitude": 36.082,
+          "launchElevation": 953.7,
+          "comments": "Matt M./none, Good Sounding",
+          "sonde": "101364482/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3198
+        },
+        {
+          "source": "114.114 NSSL_MGAUS_20100518.cls",
+          "ordinal": 9,
+          "siteId": "Mobile System  mi S Sanford/NSSL1",
+          "utcReleaseTime": "2010, 05, 18, 23:53:56",
+          "hhmmss": "23:53:56",
+          "longitude": -101.52,
+          "latitude": 35.708,
+          "launchElevation": 896.9,
+          "comments": "G Bryan/Borger, Good Sounding",
+          "sonde": "101374303/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2443
+        }
+      ]
+    },
+    "dumasNcar": {
+      "path": "data/114.115 2010-05-18/NCAR_MGAUS_20100518.cls",
+      "nBlocks": 6,
+      "all": [
+        {
+          "source": "114.115 NCAR_MGAUS_20100518.cls",
+          "ordinal": 1,
+          "siteId": "Mobile System  Prestorm @ 1930 UTC/NCAR2",
+          "utcReleaseTime": "2010, 05, 18, 19:33:16",
+          "hhmmss": "19:33:16",
+          "longitude": -102.409,
+          "latitude": 35.195,
+          "launchElevation": 1222.4,
+          "comments": "casey L/good souinding, Good Sounding",
+          "sonde": "094663411/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3403
+        },
+        {
+          "source": "114.115 NCAR_MGAUS_20100518.cls",
+          "ordinal": 2,
+          "siteId": "Mobile System/NCAR1",
+          "utcReleaseTime": "2010, 05, 18, 21:59:46",
+          "hhmmss": "21:59:46",
+          "longitude": -102.323,
+          "latitude": 35.716,
+          "launchElevation": 1180.8,
+          "comments": "Adam French/Burst at 550 mb, Good Sounding",
+          "sonde": "101364864/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 828
+        },
+        {
+          "source": "114.115 NCAR_MGAUS_20100518.cls",
+          "ordinal": 3,
+          "siteId": "Mobile System  E of Forward Flank @ 2220 UTC/NCAR2",
+          "utcReleaseTime": "2010, 05, 18, 22:16:06",
+          "hhmmss": "22:16:06",
+          "longitude": -101.811,
+          "latitude": 35.866,
+          "launchElevation": 1074.2,
+          "comments": "casey L/good sounding, Good Sounding",
+          "sonde": "094620168/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2089
+        },
+        {
+          "source": "114.115 NCAR_MGAUS_20100518.cls",
+          "ordinal": 4,
+          "siteId": "Mobile System  Far Inflow @ 23 UTC/NCAR2",
+          "utcReleaseTime": "2010, 05, 18, 22:57:48",
+          "hhmmss": "22:57:48",
+          "longitude": -101.468,
+          "latitude": 35.827,
+          "launchElevation": 989.6,
+          "comments": "casey L/good sounding, Good Sounding",
+          "sonde": "094663419/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 2311
+        },
+        {
+          "source": "114.115 NCAR_MGAUS_20100518.cls",
+          "ordinal": 5,
+          "siteId": "Mobile System/NCAR1",
+          "utcReleaseTime": "2010, 05, 18, 23:40:32",
+          "hhmmss": "23:40:32",
+          "longitude": -102.09,
+          "latitude": 35.866,
+          "launchElevation": 1150.1,
+          "comments": "Adam French/rear flank cut above 100 mb for next launch, Good Sounding",
+          "sonde": "101364865/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 3012
+        },
+        {
+          "source": "114.115 NCAR_MGAUS_20100518.cls",
+          "ordinal": 6,
+          "siteId": "Mobile System  Far Inflow @ 2345 UTC/NCAR2",
+          "utcReleaseTime": "2010, 05, 18, 23:44:29",
+          "hhmmss": "23:44:29",
+          "longitude": -101.061,
+          "latitude": 35.531,
+          "launchElevation": 1004.6,
+          "comments": "casey L/signal lost at 800 mb, Good Sounding",
+          "sonde": "094630681/Vaisala RS92-SGP (ccGPS)",
+          "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+          "nRecords": 202
+        }
+      ]
+    }
+  },
+  "prospectValleyIdentityConfirmed": {
+    "expected": "NSSL1 2010-05-26 22:23:46",
+    "found": "Mobile System/NSSL1 / 2010, 05, 26, 22:23:46"
+  },
+  "dumasWindow2130to2230": [
+    {
+      "source": "114.114 NSSL_MGAUS_20100518.cls",
+      "ordinal": 4,
+      "siteId": "Mobile System/NSSL2",
+      "utcReleaseTime": "2010, 05, 18, 21:52:18",
+      "hhmmss": "21:52:18",
+      "longitude": -101.973,
+      "latitude": 35.691,
+      "launchElevation": 1122.1,
+      "comments": "Matt M./none, Good Sounding",
+      "sonde": "101364478/Vaisala RS92-SGP (ccGPS)",
+      "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+      "nRecords": 3022,
+      "distanceToDumasKm": 19,
+      "bearingFromDumas": 3.1410068305753605,
+      "southOfDumas": true
+    },
+    {
+      "source": "114.115 NCAR_MGAUS_20100518.cls",
+      "ordinal": 2,
+      "siteId": "Mobile System/NCAR1",
+      "utcReleaseTime": "2010, 05, 18, 21:59:46",
+      "hhmmss": "21:59:46",
+      "longitude": -102.323,
+      "latitude": 35.716,
+      "launchElevation": 1180.8,
+      "comments": "Adam French/Burst at 550 mb, Good Sounding",
+      "sonde": "101364864/Vaisala RS92-SGP (ccGPS)",
+      "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+      "nRecords": 828,
+      "distanceToDumasKm": 35.5,
+      "bearingFromDumas": -1.9653642005015777,
+      "southOfDumas": true
+    },
+    {
+      "source": "114.114 NSSL_MGAUS_20100518.cls",
+      "ordinal": 5,
+      "siteId": "Mobile System  mi E Hartley/NSSL1",
+      "utcReleaseTime": "2010, 05, 18, 22:04:18",
+      "hhmmss": "22:04:18",
+      "longitude": -102.213,
+      "latitude": 35.867,
+      "launchElevation": 1159,
+      "comments": "G Bryan/Forward flank launch, none",
+      "sonde": "101374287/Vaisala RS92-SGP (ccGPS)",
+      "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+      "nRecords": 1780,
+      "distanceToDumasKm": 21.6,
+      "bearingFromDumas": -1.548707381495604,
+      "southOfDumas": false
+    },
+    {
+      "source": "114.115 NCAR_MGAUS_20100518.cls",
+      "ordinal": 3,
+      "siteId": "Mobile System  E of Forward Flank @ 2220 UTC/NCAR2",
+      "utcReleaseTime": "2010, 05, 18, 22:16:06",
+      "hhmmss": "22:16:06",
+      "longitude": -101.811,
+      "latitude": 35.866,
+      "launchElevation": 1074.2,
+      "comments": "casey L/good sounding, Good Sounding",
+      "sonde": "094620168/Vaisala RS92-SGP (ccGPS)",
+      "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+      "nRecords": 2089,
+      "distanceToDumasKm": 14.6,
+      "bearingFromDumas": 1.5442757109548726,
+      "southOfDumas": false
+    }
+  ],
+  "nssl2_215218_present": true,
+  "audits": {
+    "goshen2155": {
+      "label": "Goshen NSSL1 2009-06-05 21:55:22",
+      "identity": {
+        "siteId": "Bushnell/NSSL1",
+        "utcReleaseTime": "2009, 06, 05, 21:55:22",
+        "locationRaw": "103 53.56'W, 41 16.67'N, -103.893, 41.278, 1557.9",
+        "longitude": -103.893,
+        "latitude": 41.278,
+        "launchElevation": 1557.9,
+        "sonde": "083724333/Vaisala RS92-SGP (ccGPS)",
+        "referenceLaunch": "Manual Entry/21:51:34.94",
+        "comments": "M Parker/tornado formed approx 30 min after launch, Good Sounding",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+        "dataType": "NCAR GAUS/Ascending",
+        "projectId": "VORTEX2",
+        "nominalReleaseTime": "2009, 06, 05, 21:55:22"
+      },
+      "records": {
+        "n": 2082,
+        "widthCounts": {
+          "130": 2082
+        },
+        "time": {
+          "timeMin": -1,
+          "timeMax": 2080,
+          "nRecords": 2082,
+          "stepUnique": [
+            1
+          ],
+          "exact1sShare": 1
+        },
+        "lastPressureMb": 151.3
+      },
+      "qc": {
+        "windPairCounts": {
+          "GOOD/GOOD": 2029,
+          "MISSING/MISSING": 51,
+          "UNCHECKED/UNCHECKED": 2
+        },
+        "missingUVTogether": 51,
+        "oneSidedUV": 0,
+        "missingAlt": 17
+      },
+      "dropPolicy": "I1 isUsableWindRecord: drop missing U or V, Qu/Qv MISSING(9) or BAD(3), missing Alt",
+      "kept": {
+        "n": 2029,
+        "dropped": 53,
+        "minHeight": 2.4,
+        "maxHeight": 12261.8,
+        "firstKept": {
+          "time": 0,
+          "height": 2.4,
+          "eastward": -1.2,
+          "northward": 0.2,
+          "alt": 1560.3,
+          "qu": 1,
+          "qv": 1
+        },
+        "lastKept": {
+          "time": 2080,
+          "height": 12261.8,
+          "eastward": 26.8,
+          "northward": 5.7,
+          "alt": 13819.7,
+          "qu": 1,
+          "qv": 1
+        },
+        "decreasingHeightPairs": 0,
+        "duplicateHeightPairs": 0
+      },
+      "dY": {
+        "n": 2028,
+        "min": 3.3,
+        "p10": 4.7,
+        "median": 5.7,
+        "p90": 7.5,
+        "max": 31.9,
+        "gapsOver50m": []
+      },
+      "lowLevel": {
+        "nKept0to200": 36,
+        "nKept0to500": 98,
+        "first20s": [
+          {
+            "time": 0,
+            "height": 2.4,
+            "eastward": -1.2,
+            "northward": 0.2
+          },
+          {
+            "time": 1,
+            "height": 6.1,
+            "eastward": -1.4,
+            "northward": 4.1
+          },
+          {
+            "time": 2,
+            "height": 10.9,
+            "eastward": -1.6,
+            "northward": 4.6
+          },
+          {
+            "time": 3,
+            "height": 16.5,
+            "eastward": -1.9,
+            "northward": 5.1
+          },
+          {
+            "time": 4,
+            "height": 22.9,
+            "eastward": -2.2,
+            "northward": 5.6
+          },
+          {
+            "time": 5,
+            "height": 29.8,
+            "eastward": -2.5,
+            "northward": 6
+          },
+          {
+            "time": 6,
+            "height": 37,
+            "eastward": -2.8,
+            "northward": 6.5
+          },
+          {
+            "time": 7,
+            "height": 44.1,
+            "eastward": -3,
+            "northward": 6.8
+          },
+          {
+            "time": 8,
+            "height": 50.5,
+            "eastward": -3.3,
+            "northward": 7.2
+          },
+          {
+            "time": 9,
+            "height": 56.3,
+            "eastward": -3.5,
+            "northward": 7.6
+          },
+          {
+            "time": 10,
+            "height": 61.5,
+            "eastward": -3.6,
+            "northward": 7.9
+          },
+          {
+            "time": 11,
+            "height": 66.2,
+            "eastward": -3.8,
+            "northward": 8.2
+          },
+          {
+            "time": 12,
+            "height": 70.7,
+            "eastward": -3.9,
+            "northward": 8.4
+          },
+          {
+            "time": 13,
+            "height": 75.6,
+            "eastward": -4,
+            "northward": 8.7
+          },
+          {
+            "time": 14,
+            "height": 81.1,
+            "eastward": -4.1,
+            "northward": 8.8
+          },
+          {
+            "time": 15,
+            "height": 87.1,
+            "eastward": -4.2,
+            "northward": 8.9
+          },
+          {
+            "time": 16,
+            "height": 93.1,
+            "eastward": -4.2,
+            "northward": 9.1
+          },
+          {
+            "time": 17,
+            "height": 99,
+            "eastward": -4.2,
+            "northward": 9.1
+          },
+          {
+            "time": 18,
+            "height": 104.4,
+            "eastward": -4.2,
+            "northward": 9.2
+          },
+          {
+            "time": 19,
+            "height": 109.5,
+            "eastward": -4.1,
+            "northward": 9.2
+          },
+          {
+            "time": 20,
+            "height": 114.3,
+            "eastward": -4,
+            "northward": 9.2
+          }
+        ],
+        "launchJumpT0T1": {
+          "t0": {
+            "time": 0,
+            "height": 2.4,
+            "eastward": -1.2,
+            "northward": 0.2,
+            "alt": 1560.3,
+            "qu": 1,
+            "qv": 1
+          },
+          "t1": {
+            "time": 1,
+            "height": 6.1,
+            "eastward": -1.4,
+            "northward": 4.1,
+            "alt": 1564,
+            "qu": 1,
+            "qv": 1
+          },
+          "dU": -0.2,
+          "dV": 3.9,
+          "dSpd": 3.9
+        },
+        "largestConsecDvIn0to200m": [
+          {
+            "time0": 0,
+            "time1": 1,
+            "height0": 2.4,
+            "height1": 6.1,
+            "dU": -0.2,
+            "dV": 3.9,
+            "dSpd": 3.9
+          },
+          {
+            "time0": 2,
+            "time1": 3,
+            "height0": 10.9,
+            "height1": 16.5,
+            "dU": -0.3,
+            "dV": 0.5,
+            "dSpd": 0.6
+          },
+          {
+            "time0": 3,
+            "time1": 4,
+            "height0": 16.5,
+            "height1": 22.9,
+            "dU": -0.3,
+            "dV": 0.5,
+            "dSpd": 0.6
+          },
+          {
+            "time0": 5,
+            "time1": 6,
+            "height0": 29.8,
+            "height1": 37,
+            "dU": -0.3,
+            "dV": 0.5,
+            "dSpd": 0.6
+          },
+          {
+            "time0": 1,
+            "time1": 2,
+            "height0": 6.1,
+            "height1": 10.9,
+            "dU": -0.2,
+            "dV": 0.5,
+            "dSpd": 0.5
+          }
+        ]
+      },
+      "quantization": {
+        "uniqueU": 415,
+        "uniqueV": 191,
+        "uStepCounts": {
+          "0.1": 354,
+          "0.2": 45,
+          "0.3": 15
+        },
+        "note": "ESC U/V have 0.1 m/s printed precision"
+      },
+      "sourceKnotsNearest": {
+        "0": {
+          "height": 2.4,
+          "eastward": -1.2,
+          "northward": 0.2,
+          "spd": 1.2,
+          "dirFrom": 99.5,
+          "time": 0
+        },
+        "200": {
+          "height": 198.8,
+          "eastward": -2.7,
+          "northward": 7.6,
+          "spd": 8.1,
+          "dirFrom": 160.4,
+          "time": 35
+        },
+        "500": {
+          "height": 497.6,
+          "eastward": -3,
+          "northward": 8.1,
+          "spd": 8.6,
+          "dirFrom": 159.7,
+          "time": 97
+        },
+        "1000": {
+          "height": 998.6,
+          "eastward": -0.2,
+          "northward": 10.1,
+          "spd": 10.1,
+          "dirFrom": 178.9,
+          "time": 187
+        },
+        "3000": {
+          "height": 3000.2,
+          "eastward": 8.8,
+          "northward": 6.3,
+          "spd": 10.8,
+          "dirFrom": 234.4,
+          "time": 503
+        },
+        "6000": {
+          "height": 6002,
+          "eastward": 27.7,
+          "northward": 8.6,
+          "spd": 29,
+          "dirFrom": 252.8,
+          "time": 1026
+        }
+      },
+      "sourceBulkShear": {
+        "0-1km": {
+          "fromHeight": 2.4,
+          "toHeight": 998.6,
+          "dU": 1,
+          "dV": 9.9,
+          "magnitude": 10,
+          "fromDir": 99.5,
+          "toDir": 178.9
+        },
+        "0-3km": {
+          "fromHeight": 2.4,
+          "toHeight": 3000.2,
+          "dU": 10,
+          "dV": 6.1,
+          "magnitude": 11.7,
+          "fromDir": 99.5,
+          "toDir": 234.4
+        },
+        "0-6km": {
+          "fromHeight": 2.4,
+          "toHeight": 6002,
+          "dU": 28.9,
+          "dV": 8.4,
+          "magnitude": 30.1,
+          "fromDir": 99.5,
+          "toDir": 252.8
+        }
+      }
+    },
+    "prospectValley222346": {
+      "label": "Prospect Valley NSSL1 2010-05-26 22:23:46",
+      "identity": {
+        "siteId": "Mobile System/NSSL1",
+        "utcReleaseTime": "2010, 05, 26, 22:23:46",
+        "locationRaw": "103 35.62'W, 40 00.09'N, -103.594, 40.002, 1358.9",
+        "longitude": -103.594,
+        "latitude": 40.002,
+        "launchElevation": 1358.9,
+        "sonde": "101364451/Vaisala RS92-SGP (ccGPS)",
+        "referenceLaunch": "Manual Entry/22:19:58.36",
+        "comments": "G Bryan/Good sounding.  Woodrow, Good Sounding",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+        "dataType": "NSSL1  MGAUS/Ascending",
+        "projectId": "VORTEX2",
+        "nominalReleaseTime": "2010, 05, 26, 22:23:46"
+      },
+      "records": {
+        "n": 2824,
+        "widthCounts": {
+          "130": 2824
+        },
+        "time": {
+          "timeMin": -1,
+          "timeMax": 2822,
+          "nRecords": 2824,
+          "stepUnique": [
+            1
+          ],
+          "exact1sShare": 1
+        },
+        "lastPressureMb": 120
+      },
+      "qc": {
+        "windPairCounts": {
+          "GOOD/GOOD": 2733,
+          "MISSING/MISSING": 91
+        },
+        "missingUVTogether": 91,
+        "oneSidedUV": 0,
+        "missingAlt": 9
+      },
+      "dropPolicy": "I1 isUsableWindRecord: drop missing U or V, Qu/Qv MISSING(9) or BAD(3), missing Alt",
+      "kept": {
+        "n": 2733,
+        "dropped": 91,
+        "minHeight": -0.1,
+        "maxHeight": 14017.9,
+        "firstKept": {
+          "time": -1,
+          "height": -0.1,
+          "eastward": -0.2,
+          "northward": 2,
+          "alt": 1358.8,
+          "qu": 1,
+          "qv": 1
+        },
+        "lastKept": {
+          "time": 2822,
+          "height": 14017.9,
+          "eastward": 14.7,
+          "northward": 18.3,
+          "alt": 15376.8,
+          "qu": 1,
+          "qv": 1
+        },
+        "decreasingHeightPairs": 0,
+        "duplicateHeightPairs": 0
+      },
+      "dY": {
+        "n": 2732,
+        "min": 0.7,
+        "p10": 3.8,
+        "median": 4.8,
+        "p90": 6.5,
+        "max": 26.1,
+        "gapsOver50m": []
+      },
+      "lowLevel": {
+        "nKept0to200": 34,
+        "nKept0to500": 88,
+        "first20s": [
+          {
+            "time": 0,
+            "height": 0.6,
+            "eastward": -2.9,
+            "northward": 5.6
+          },
+          {
+            "time": 2,
+            "height": 7.6,
+            "eastward": -4,
+            "northward": 6.6
+          },
+          {
+            "time": 4,
+            "height": 17.7,
+            "eastward": -4.9,
+            "northward": 7.5
+          },
+          {
+            "time": 5,
+            "height": 23.4,
+            "eastward": -5.3,
+            "northward": 7.8
+          },
+          {
+            "time": 7,
+            "height": 35.4,
+            "eastward": -6.1,
+            "northward": 8.5
+          },
+          {
+            "time": 8,
+            "height": 41.1,
+            "eastward": -6.4,
+            "northward": 8.8
+          },
+          {
+            "time": 9,
+            "height": 46.3,
+            "eastward": -6.7,
+            "northward": 9.1
+          },
+          {
+            "time": 11,
+            "height": 55.2,
+            "eastward": -7.2,
+            "northward": 9.6
+          },
+          {
+            "time": 14,
+            "height": 66.8,
+            "eastward": -7.8,
+            "northward": 10.2
+          },
+          {
+            "time": 15,
+            "height": 70.8,
+            "eastward": -8,
+            "northward": 10.3
+          },
+          {
+            "time": 16,
+            "height": 75.3,
+            "eastward": -8.1,
+            "northward": 10.5
+          },
+          {
+            "time": 17,
+            "height": 80.3,
+            "eastward": -8.2,
+            "northward": 10.6
+          },
+          {
+            "time": 18,
+            "height": 85.8,
+            "eastward": -8.2,
+            "northward": 10.8
+          },
+          {
+            "time": 19,
+            "height": 91.7,
+            "eastward": -8.3,
+            "northward": 10.9
+          },
+          {
+            "time": 20,
+            "height": 97.9,
+            "eastward": -8.3,
+            "northward": 11.1
+          }
+        ],
+        "launchJumpT0T1": {
+          "t0": {
+            "time": 0,
+            "height": 0.6,
+            "eastward": -2.9,
+            "northward": 5.6,
+            "alt": 1359.5,
+            "qu": 1,
+            "qv": 1
+          },
+          "t1": null,
+          "note": "t=0 or t=1 not both kept"
+        },
+        "largestConsecDvIn0to200m": [
+          {
+            "time0": -1,
+            "time1": 0,
+            "height0": -0.1,
+            "height1": 0.6,
+            "dU": -2.7,
+            "dV": 3.6,
+            "dSpd": 4.5
+          },
+          {
+            "time0": 0,
+            "time1": 2,
+            "height0": 0.6,
+            "height1": 7.6,
+            "dU": -1.1,
+            "dV": 1,
+            "dSpd": 1.5
+          },
+          {
+            "time0": 2,
+            "time1": 4,
+            "height0": 7.6,
+            "height1": 17.7,
+            "dU": -0.9,
+            "dV": 0.9,
+            "dSpd": 1.3
+          },
+          {
+            "time0": 5,
+            "time1": 7,
+            "height0": 23.4,
+            "height1": 35.4,
+            "dU": -0.8,
+            "dV": 0.7,
+            "dSpd": 1.1
+          },
+          {
+            "time0": 11,
+            "time1": 14,
+            "height0": 55.2,
+            "height1": 66.8,
+            "dU": -0.6,
+            "dV": 0.6,
+            "dSpd": 0.8
+          }
+        ]
+      },
+      "quantization": {
+        "uniqueU": 307,
+        "uniqueV": 172,
+        "uStepCounts": {
+          "0.1": 288,
+          "0.2": 17,
+          "0.4": 1
+        },
+        "note": "ESC U/V have 0.1 m/s printed precision"
+      },
+      "sourceKnotsNearest": {
+        "0": {
+          "height": -0.1,
+          "eastward": -0.2,
+          "northward": 2,
+          "spd": 2,
+          "dirFrom": 174.3,
+          "time": -1
+        },
+        "200": {
+          "height": 201.1,
+          "eastward": -8.2,
+          "northward": 10.8,
+          "spd": 13.6,
+          "dirFrom": 142.8,
+          "time": 41
+        },
+        "500": {
+          "height": 502,
+          "eastward": -8.3,
+          "northward": 12.1,
+          "spd": 14.7,
+          "dirFrom": 145.6,
+          "time": 96
+        },
+        "1000": {
+          "height": 1000.2,
+          "eastward": -6.5,
+          "northward": 12.6,
+          "spd": 14.2,
+          "dirFrom": 152.7,
+          "time": 191
+        },
+        "3000": {
+          "height": 3001.4,
+          "eastward": 6.2,
+          "northward": 16.1,
+          "spd": 17.3,
+          "dirFrom": 201.1,
+          "time": 604
+        },
+        "6000": {
+          "height": 5999,
+          "eastward": 13.3,
+          "northward": 9.8,
+          "spd": 16.5,
+          "dirFrom": 233.6,
+          "time": 1265
+        }
+      },
+      "sourceBulkShear": {
+        "0-1km": {
+          "fromHeight": -0.1,
+          "toHeight": 1000.2,
+          "dU": -6.3,
+          "dV": 10.6,
+          "magnitude": 12.3,
+          "fromDir": 174.3,
+          "toDir": 152.7
+        },
+        "0-3km": {
+          "fromHeight": -0.1,
+          "toHeight": 3001.4,
+          "dU": 6.4,
+          "dV": 14.1,
+          "magnitude": 15.5,
+          "fromDir": 174.3,
+          "toDir": 201.1
+        },
+        "0-6km": {
+          "fromHeight": -0.1,
+          "toHeight": 5999,
+          "dU": 13.5,
+          "dV": 7.8,
+          "magnitude": 15.6,
+          "fromDir": 174.3,
+          "toDir": 233.6
+        }
+      }
+    },
+    "dumasNssl2_215218": {
+      "label": "Dumas NSSL2 2010-05-18 21:52:18",
+      "identity": {
+        "siteId": "Mobile System/NSSL2",
+        "utcReleaseTime": "2010, 05, 18, 21:52:18",
+        "locationRaw": "101 58.35'W, 35 41.43'N, -101.973, 35.691, 1122.1",
+        "longitude": -101.973,
+        "latitude": 35.691,
+        "launchElevation": 1122.1,
+        "sonde": "101364478/Vaisala RS92-SGP (ccGPS)",
+        "referenceLaunch": "Manual Entry/21:47:08.08",
+        "comments": "Matt M./none, Good Sounding",
+        "postProcessing": "Aspen Version 2.8.1.8, Configuration upsonde-1s",
+        "dataType": "NSSL2  MGAUS/Ascending",
+        "projectId": "VORTEX2",
+        "nominalReleaseTime": "2010, 05, 18, 21:52:18"
+      },
+      "records": {
+        "n": 3022,
+        "widthCounts": {
+          "130": 3022
+        },
+        "time": {
+          "timeMin": -1,
+          "timeMax": 3020,
+          "nRecords": 3022,
+          "stepUnique": [
+            1
+          ],
+          "exact1sShare": 1
+        },
+        "lastPressureMb": 89.2
+      },
+      "qc": {
+        "windPairCounts": {
+          "GOOD/GOOD": 2917,
+          "MISSING/MISSING": 104,
+          "UNCHECKED/UNCHECKED": 1
+        },
+        "missingUVTogether": 104,
+        "oneSidedUV": 0,
+        "missingAlt": 20
+      },
+      "dropPolicy": "I1 isUsableWindRecord: drop missing U or V, Qu/Qv MISSING(9) or BAD(3), missing Alt",
+      "kept": {
+        "n": 2917,
+        "dropped": 105,
+        "minHeight": -0.5,
+        "maxHeight": 16025.6,
+        "firstKept": {
+          "time": -1,
+          "height": -0.5,
+          "eastward": 0.1,
+          "northward": -1.1,
+          "alt": 1121.6,
+          "qu": 1,
+          "qv": 1
+        },
+        "lastKept": {
+          "time": 3020,
+          "height": 16025.6,
+          "eastward": 10.6,
+          "northward": -4.5,
+          "alt": 17147.7,
+          "qu": 1,
+          "qv": 1
+        },
+        "decreasingHeightPairs": 0,
+        "duplicateHeightPairs": 0
+      },
+      "dY": {
+        "n": 2916,
+        "min": 2.5,
+        "p10": 4,
+        "median": 5.2,
+        "p90": 6.8,
+        "max": 36.5,
+        "gapsOver50m": []
+      },
+      "lowLevel": {
+        "nKept0to200": 29,
+        "nKept0to500": 83,
+        "first20s": [
+          {
+            "time": 1,
+            "height": 2,
+            "eastward": -2.5,
+            "northward": 2.5
+          },
+          {
+            "time": 3,
+            "height": 9.8,
+            "eastward": -3.2,
+            "northward": 3.9
+          },
+          {
+            "time": 4,
+            "height": 14.5,
+            "eastward": -3.5,
+            "northward": 4.5
+          },
+          {
+            "time": 5,
+            "height": 19.5,
+            "eastward": -3.8,
+            "northward": 5.1
+          },
+          {
+            "time": 6,
+            "height": 24.9,
+            "eastward": -4,
+            "northward": 5.7
+          },
+          {
+            "time": 8,
+            "height": 36.4,
+            "eastward": -4.4,
+            "northward": 6.7
+          },
+          {
+            "time": 11,
+            "height": 54.1,
+            "eastward": -4.8,
+            "northward": 7.9
+          },
+          {
+            "time": 14,
+            "height": 70.4,
+            "eastward": -5,
+            "northward": 8.7
+          },
+          {
+            "time": 18,
+            "height": 90.1,
+            "eastward": -5,
+            "northward": 9.2
+          },
+          {
+            "time": 19,
+            "height": 95.3,
+            "eastward": -5,
+            "northward": 9.2
+          }
+        ],
+        "launchJumpT0T1": {
+          "t0": null,
+          "t1": {
+            "time": 1,
+            "height": 2,
+            "eastward": -2.5,
+            "northward": 2.5,
+            "alt": 1124.1,
+            "qu": 1,
+            "qv": 1
+          },
+          "note": "t=0 or t=1 not both kept"
+        },
+        "largestConsecDvIn0to200m": [
+          {
+            "time0": -1,
+            "time1": 1,
+            "height0": -0.5,
+            "height1": 2,
+            "dU": -2.6,
+            "dV": 3.6,
+            "dSpd": 4.4
+          },
+          {
+            "time0": 1,
+            "time1": 3,
+            "height0": 2,
+            "height1": 9.8,
+            "dU": -0.7,
+            "dV": 1.4,
+            "dSpd": 1.6
+          },
+          {
+            "time0": 8,
+            "time1": 11,
+            "height0": 36.4,
+            "height1": 54.1,
+            "dU": -0.4,
+            "dV": 1.2,
+            "dSpd": 1.3
+          },
+          {
+            "time0": 6,
+            "time1": 8,
+            "height0": 24.9,
+            "height1": 36.4,
+            "dU": -0.4,
+            "dV": 1,
+            "dSpd": 1.1
+          },
+          {
+            "time0": 11,
+            "time1": 14,
+            "height0": 54.1,
+            "height1": 70.4,
+            "dU": -0.2,
+            "dV": 0.8,
+            "dSpd": 0.8
+          }
+        ]
+      },
+      "quantization": {
+        "uniqueU": 418,
+        "uniqueV": 262,
+        "uStepCounts": {
+          "0.1": 394,
+          "0.2": 19,
+          "0.3": 4
+        },
+        "note": "ESC U/V have 0.1 m/s printed precision"
+      },
+      "sourceKnotsNearest": {
+        "0": {
+          "height": -0.5,
+          "eastward": 0.1,
+          "northward": -1.1,
+          "spd": 1.1,
+          "dirFrom": 354.8,
+          "time": -1
+        },
+        "200": {
+          "height": 199.9,
+          "eastward": -3.6,
+          "northward": 8.2,
+          "spd": 9,
+          "dirFrom": 156.3,
+          "time": 38
+        },
+        "500": {
+          "height": 500.5,
+          "eastward": -1.5,
+          "northward": 11.3,
+          "spd": 11.4,
+          "dirFrom": 172.4,
+          "time": 93
+        },
+        "1000": {
+          "height": 1000.1,
+          "eastward": 3,
+          "northward": 12.2,
+          "spd": 12.6,
+          "dirFrom": 193.8,
+          "time": 182
+        },
+        "3000": {
+          "height": 3001.5,
+          "eastward": 10,
+          "northward": 18.2,
+          "spd": 20.8,
+          "dirFrom": 208.8,
+          "time": 622
+        },
+        "6000": {
+          "height": 5998.1,
+          "eastward": 23.6,
+          "northward": 11.3,
+          "spd": 26.2,
+          "dirFrom": 244.4,
+          "time": 1184
+        }
+      },
+      "sourceBulkShear": {
+        "0-1km": {
+          "fromHeight": -0.5,
+          "toHeight": 1000.1,
+          "dU": 2.9,
+          "dV": 13.3,
+          "magnitude": 13.6,
+          "fromDir": 354.8,
+          "toDir": 193.8
+        },
+        "0-3km": {
+          "fromHeight": -0.5,
+          "toHeight": 3001.5,
+          "dU": 9.9,
+          "dV": 19.3,
+          "magnitude": 21.7,
+          "fromDir": 354.8,
+          "toDir": 208.8
+        },
+        "0-6km": {
+          "fromHeight": -0.5,
+          "toHeight": 5998.1,
+          "dU": 23.5,
+          "dV": 12.4,
+          "magnitude": 26.6,
+          "fromDir": 354.8,
+          "toDir": 244.4
+        }
+      }
+    }
+  }
+}

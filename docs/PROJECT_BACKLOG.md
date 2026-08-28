@@ -352,8 +352,15 @@ Origin: `49` runner-up / compact lock-in; `50` §11
 Why retained: OUN 20 May 2013 afternoon special is the recorded
 runner-up and a later curated operational-RAOB case, not I1/I2
 input. G5 fallback to Moore was unused because G3 passed.
+The same column is also BL-045 validation candidate #2 (sampling
+class). Those roles stay distinct: this item is a later **product**
+case pointer; BL-045 is a validation-input pointer. Neither imports
+data or authorizes an adapter.
 Return when: a later curated-case SoT, after Goshen sandbox lessons.
-Authoritative refs: `49` §11; `50` §11.
+Authoritative refs: `49` §11; `50` §11; BL-045; research
+`2026-08-28-additional-sounding-case-selection.md`;
+`2026-08-28-moore-oun-igra-source-qualification.md`
+(validation-input inspect; does not start this product case).
 
 ### BL-022 — I3+ curated scenarios / editable hodograph / Guided re-pinning
 
@@ -558,9 +565,22 @@ Future checks (one research program, not five backlog items):
 Return when: a research record answers the question. That answer may
 accept, qualify, or replace the `54` candidate. This item does not
 choose a method and does not authorize BL-010.
+Case-selection substep (inputs only, not this gate): research
+`2026-08-28-additional-sounding-case-selection.md` names three
+future validation columns plus one backup (BL-045).
+`2026-08-28-vortex2-source-qualification.md` confirms #1/#3 native
+ESC identity and source-column usability.
+`2026-08-28-moore-oun-igra-source-qualification.md` confirms #2
+native IGRA identity and source-column usability (165/165
+wind+GPH; operational/coarse vs 1-s ESC). Those inspects do
+**not** close this item, import data, implement an adapter, or
+validate any transform.
 Authoritative refs: `55` (gate); `53`; `54` (candidate construction);
-`48` §12; research Goshen file; BL-036 (tooling evidence);
-BL-045 (possible cases, not selected fixtures).
+`48` §12; research Goshen file; research
+`2026-08-28-additional-sounding-case-selection.md` (named inputs);
+research `2026-08-28-vortex2-source-qualification.md` (#1/#3 inspect);
+research `2026-08-28-moore-oun-igra-source-qualification.md` (#2 inspect);
+BL-036 (tooling evidence); BL-045 (named candidates, not imported).
 
 ---
 
@@ -635,9 +655,13 @@ Status: DEFERRED
 Origin: `49` compact lock-in
 Why retained: recorded as a later campaign case, not the first
 fixture.
+The 2026-08-28 sounding-selection research **rejected** this day as
+a BL-045 validation input (Parker excluded it; no named inflow
+launch). It remains a later **product** campaign pointer only.
 Return when: after Moore / Goshen lessons, if a campaign-RAOB SoT
 wants a second VORTEX2-class column.
-Authoritative refs: `49` §11.
+Authoritative refs: `49` §11; research
+`2026-08-28-additional-sounding-case-selection.md` §11.
 
 ### BL-043 — POST-V1 product parking remainder (`38` §13)
 
@@ -700,21 +724,59 @@ Authoritative refs: `44` entire; `ARCHITECTURE` §1 / §36.
 ### BL-045 — Additional soundings as independent validation candidates
 
 Category: DATA
-Status: DEFERRED
+Status: DEFERRED (candidates named; not imported)
 Origin: CHAT/KNOWLEDGE GAP, sanctioned 2026-08-28; `49` later-case
-mentions; concatenated ESC sibling blocks (`49` §7.1)
+mentions; concatenated ESC sibling blocks (`49` §7.1); selection
+research 2026-08-28
 Why retained: generalization (BL-037) needs independent columns, not
-only Goshen 2155. Other sounding cases may later serve as
-**validation fixtures / cases**. No specific sounding is selected
-here. BL-021 (Moore) and BL-042 (10 May 2010) remain later **product**
-case pointers, not mandatory validation datasets. Other blocks in
-`NSSL_MGAUS_20090605.cls` are source facts, not fixtures. Do not
-import, commit, or require them now.
-Return when: BL-037 (or a later research SoT) names cases. Naming a
-case as a validation candidate is not a production-dataset decision
-and not I1/I2 work.
-Authoritative refs: `49` §7.1 / §11; `50` §11; BL-021; BL-042;
-BL-037.
+only Goshen 2155. Named **validation candidates** (research
+`2026-08-28-additional-sounding-case-selection.md`):
+
+```text
+#1  Prospect Valley 2010-05-26 NSSL1 22:23:46
+    EOL 114.114     slots A+C
+    identity + source column CONFIRMED
+#2  OUN afternoon special 2013-05-20
+    IGRA USM00072357 17 UTC / release 1651
+    (Wyoming 18 UTC label)   slot B
+    identity + source column CONFIRMED (IGRA native)
+    adapter NOT designed / NOT authorized
+#3  Dumas/Stinnett 2010-05-18 NSSL2 21:52:18
+    EOL 114.114     slot A (tornadic near-inflow)
+    identity LOCKED; source column audited
+#4  12 May 2010 Weatherford  backup only
+```
+
+Native ESC and IGRA bytes stay in gitignored `data/`. They are not
+production fixtures and are not committed.
+Source qualification:
+[`docs/research/2026-08-28-vortex2-source-qualification.md`](research/2026-08-28-vortex2-source-qualification.md)
+(#1/#3);
+[`docs/research/2026-08-28-moore-oun-igra-source-qualification.md`](research/2026-08-28-moore-oun-igra-source-qualification.md)
+(#2).
+
+Naming a case as a validation candidate is not a
+production-dataset decision, not I1/I2 work, not adapter
+authorization, and not BL-037 closure. Do not import, commit, or
+require the bytes now.
+
+BL-021 (Moore) remains a later **product** case pointer. Dual role
+with candidate #2 is allowed; the roles stay distinct.
+BL-042 (10 May 2010) remains a later **product** campaign pointer
+and is **not** a validation input (Parker exclusion; no named
+inflow launch). Other blocks in `NSSL_MGAUS_20090605.cls` remain
+source facts, not fixtures.
+
+A later operational-RAOB adapter for #2 is not designed here and
+is not BL-015 product provider #2. Confirming native IGRA identity
+does not authorize that adapter.
+Return when: a later ingest / BL-037 validation slice is explicitly
+authorized. Obtaining files is not implementation of Analysis.
+Authoritative refs: research
+`2026-08-28-additional-sounding-case-selection.md`;
+`2026-08-28-vortex2-source-qualification.md`;
+`2026-08-28-moore-oun-igra-source-qualification.md`; `49` §7.1 / §11;
+`50` §11; BL-021; BL-042; BL-037.
 
 ---
 
@@ -734,7 +796,7 @@ BL-037.
 | C. Markowski 88/167 not oracle | standing constraint | |
 | D. Community sounding-analysis tooling | BL-036 | RESEARCH NEEDED; not a method choice |
 | D. Generalization / scale / bin phase / not only Goshen | BL-037 | one combined research item |
-| D. Extra soundings as validation candidates | BL-045 | possibility; no sounding selected |
+| D. Extra soundings as validation candidates | BL-045 | named; #1/#2/#3 native identity confirmed; bytes not imported |
 | E. Reproduction as case study | BL-040 | interesting possibility; no product requirement |
 | F. Storm-motion provenance | BL-013, BL-014, BL-032, BL-041 | prescribed vs derived vs observed kept distinct |
 | G. Provider #2 / disagreement | BL-015, BL-016 | |
@@ -744,7 +806,8 @@ BL-037.
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
-They are not merged into BL-045.
+Moore is also BL-045 candidate #2 (validation input). Those roles
+are not merged. 10 May 2010 is not a BL-045 validation input.
 
 ---
 
@@ -778,9 +841,17 @@ ARCHITECTURE §30:
                Δz = 100 m); NOT IMPLEMENTED
 55:            qualifies 54 — candidate pending
                generalization; implementation NOT AUTHORIZED
+research 2026-08-28-additional-sounding-case-selection.md:
+               BL-045 validation inputs named; not imported
+research 2026-08-28-vortex2-source-qualification.md:
+               #1/#3 ESC identity + source column audited;
+               Analysis implementation still NO
+research 2026-08-28-moore-oun-igra-source-qualification.md:
+               #2 IGRA identity + source column audited;
+               adapter / Analysis still NO
 BL-010 / BL-037:
                implementation blocked on 55 + generalization
-               research
+               research; BL-037 not closed by source qualification
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:

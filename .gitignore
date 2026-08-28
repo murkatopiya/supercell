@@ -1,3 +1,6 @@
+# Local sounding archives (native ESC/IGRA bytes; do not push)
+/data/
+
 # Dependencies
 node_modules/
 
