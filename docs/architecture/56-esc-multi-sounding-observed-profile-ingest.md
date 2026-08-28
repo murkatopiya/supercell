@@ -501,7 +501,8 @@ EXPLORE IDS:     demo-prescribed;
 I1 SEMANTICS:    unchanged; Goshen golden remains oracle
 MOORE/IGRA:      excluded from this family; sibling
                  architecture 57 GATE ACCEPTED;
-                 Moore wrapper not implemented here
+                 Moore wrapper + golden live in
+                 src/data/igra/, not here
 PROVIDER API:    still rejected (48 Q5)
 ANALYSIS:        still 53/54/55; BL-037 not this file
 V1:              CLOSED; not reopened
@@ -513,7 +514,10 @@ V1:              CLOSED; not reopened
 
 Goshen, Prospect, and Dumas source ingest live in
 `src/data/eolNsslMgausEsc/`. Native campaign bytes are
-not committed. IGRA ingest architecture is `57` and is
-not this family. Analysis remains out of this SoT.
+not committed. Provider-neutral record/coverage types
+live in `src/data/environmentalWindProfileRecord/`; ESC
+re-exports them. IGRA ingest is `57` /
+`src/data/igra/` and is not this family. Analysis
+remains out of this SoT.
 Explore identities for the three committed source
 records live on the existing I2 environment mechanism.

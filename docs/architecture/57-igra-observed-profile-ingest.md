@@ -1,7 +1,7 @@
 # IGRA Observed-Profile Ingest Architecture
 
 **Status:** ARCHITECTURE SoT / GATE ACCEPTED /
-MOORE SOURCE INGEST NOT IMPLEMENTED
+MOORE SOURCE INGEST DONE; EXPLORE MOORE NOT IN THIS FILE
 **Scope:** the minimum architecture for a sibling IGRA v2.2
 observed-RAOB adapter that can emit the existing
 provider-neutral `EnvironmentalWindProfileRecord`, using
@@ -12,18 +12,20 @@ named case:
 USM00072357  2013-05-20  HOUR 17  RELTIME 1651  NUMLEV 165
 ```
 
-Not a production parser. Not a Moore golden. Not Explore
-injection. Not Analysis / smoothing. Not pressure→height
-reconstruction. Not interpolation. Not Bunkers. Not
-observed storm motion. Not Guided. Not BL-015 provider #2.
-Not a generic atmospheric provider framework. Not a V1
-reopen. Not reconstruction of the 2013 Moore storm.
+Not Explore injection. Not Analysis / smoothing. Not
+pressure→height reconstruction. Not interpolation. Not
+Bunkers. Not observed storm motion. Not Guided. Not
+BL-015 provider #2. Not a generic atmospheric provider
+framework. Not a V1 reopen. Not reconstruction of the
+2013 Moore storm.
 **Physics:** unchanged. `EnvironmentalWindProfile`
 invariants and interpolation stay `04` / `48`. Source vs
 analysis stays `53` / `54` / `55`; BL-037 remains out of
 this file.
-**Implementation:** this file does not include production
-code, a committed IGRA golden, or an Explore Moore option.
+**Implementation:** Moore named wrapper, tests, and
+committed normalized golden live in `src/data/igra/`.
+Native POR bytes remain gitignored. This SoT does not
+include Explore Moore or Analysis.
 
 Predecessor:
 
@@ -83,7 +85,8 @@ height column. `48` §7 already forbids silent sort inside
 physics and allows a **named, tested adapter step** that
 documents sort as format repair before construction.
 
-This file is that named policy. It does not implement it.
+This file is that named policy. Production ingest is in
+`src/data/igra/`.
 
 Scientific framing for any later Moore consumer:
 
@@ -599,17 +602,19 @@ That list is verbose and honest. Large gaps remain
 interpolation across known endpoints, not extra observation
 (`48` §7).
 
-The TypeScript coverage type currently lives next to the
-ESC adapter. That is an implementation-module fact, not a
-reason to import ESC parse types into IGRA. A later code
-slice may reuse the *shape* or extract it; this file does
-not redesign coverage.
+Provider-neutral coverage / provenance / record types live
+in `src/data/environmentalWindProfileRecord/`. ESC
+re-exports the same shape; IGRA imports it directly. The
+shape is unchanged. ESC `gapSpansOver50m` still rounds
+deltas to 0.1 m; IGRA uses integer-metre `toHeight −
+fromHeight` because GPH and the 345 m datum are integers.
+This is not a shared ingest framework.
 
 ---
 
 ## 13. First named wrapper
 
-When implemented (not in this file):
+Named wrapper:
 
 ```text
 ingestOunMoore20130520Igra
@@ -617,8 +622,9 @@ ingestOunMoore20130520Igra
 
 binds one frozen `IgraObservedSoundingSpec`. Callers do not
 construct the spec. Native POR bytes remain gitignored.
-`npm test` must use synthetic IGRA text plus a committed
-normalized golden, same pattern as ESC I1 / `56`.
+`npm test` uses synthetic IGRA text plus the committed
+normalized golden
+`src/data/igra/fixtures/ounMoore20130520.normalized.json`.
 
 Explore identity for Moore is **out of this SoT** (BL-021
 product case; BL-045 validation pointer). This file does
@@ -630,9 +636,9 @@ not add `moore-2013-observed` to Explore.
 
 ```text
 1. This architecture (ordering, datum, identity, conversion)
-   DONE in this file; no src/**
+   DONE in this file
 2. IGRA parser + Moore named wrapper + tests/golden
-   NOT STARTED; not included here
+   DONE in src/data/igra/; native bytes not committed
 3. Explore Moore environment identity
    out of this SoT (BL-021); Guided remains DEMO
 4. Analysis / BL-037 / BL-010
@@ -659,18 +665,17 @@ as atmospheric structure, with a named stable sort by
 FROM-direction conversion, and identity keys are locked
 from the qualification inspect.
 
-Acceptance is an architecture decision. It is not a parser,
-not a golden, not Explore wiring, and not Analysis.
+Acceptance is an architecture decision. Production ingest
+is in `src/data/igra/`. This file is not Explore wiring
+and is not Analysis.
 
 ---
 
 ## 16. Anti-claims
 
 ```text
-this file does not include production implementation
-this file does not add src/**
+this architecture file does not contain the parser
 this file does not commit native IGRA bytes
-this file does not create a Moore golden
 this file does not add an Explore Moore option
 this file does not retarget Guided
 this file does not wire published storm motion
@@ -714,7 +719,7 @@ DUPLICATES:      fail; do not average
 COVERAGE:        48 shape; 50 m gaps remain; Moore will be verbose
 C / STORM:       prescribed laboratory; not observed Moore C
 EXPLORE:         not in this file
-GOLDEN / SRC:    not in this file
+GOLDEN / SRC:    src/data/igra/; native POR gitignored
 V1:              CLOSED; not reopened
 ```
 
@@ -729,8 +734,9 @@ U1  A later IGRA sounding whose inversion is a true balloon
     an ascent reconstruction.
 U2  Calm with missing WDIR (not seen on Moore). Current rule:
     drop. Not a special keep.
-U3  Coverage TypeScript currently lives beside ESC. Shape
-    reuse vs extract is an implementation detail.
+U3  Coverage TypeScript shape is shared via
+    `src/data/environmentalWindProfileRecord/`; ESC and
+    IGRA remain sibling adapters.
 U4  Native POR freeze / license (analogous to ESC G4) is
     not decided here. npm test must not require those bytes.
 ```
@@ -751,7 +757,8 @@ Explore / Analysis in this file         excluded
 
 ## 19. Implementation
 
-This document does not include implementation.
-Production `src/**` remains unchanged.
-Moore Explore identity, IGRA goldens, and Analysis remain
-out of this SoT.
+Moore source ingest lives in `src/data/igra/`. The
+committed golden is
+`src/data/igra/fixtures/ounMoore20130520.normalized.json`.
+Native POR bytes remain gitignored. Moore Explore
+identity and Analysis remain out of this SoT.

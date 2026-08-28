@@ -1310,9 +1310,12 @@ ESC family multi-sounding ingest architecture: 56
 
 IGRA observed-profile ingest architecture: 57
     sibling adapter behind the same record contract
-    GATE ACCEPTED; named worldY sort; Moore wrapper
-    NOT IMPLEMENTED; not Explore; not Analysis
+    GATE ACCEPTED; named worldY sort
+    Moore wrapper + golden DONE in src/data/igra/
+    Explore Moore still out of 57; not Analysis
     not a provider interface; not BL-015
+    shared record/coverage types:
+    src/data/environmentalWindProfileRecord/
 
 I2  Opt-in Explore / laboratory environmental injection
     six storm operands remain DEMO
