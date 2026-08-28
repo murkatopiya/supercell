@@ -84,6 +84,15 @@ export class Simulation {
     this.nextTracerId = FIRST_TRACER_ID;
   }
 
+  /**
+   * Drop the last occupancy particle. Clock, field, remaining particles,
+   * and the identity counter are unchanged. Empty occupancy is a no-op.
+   * Does not reuse the removed tracerId on the next addParticle.
+   */
+  removeLastParticle(): TracerParticle | undefined {
+    return this.particles.pop();
+  }
+
   step(dt: number): void {
     const time = this.clock.time;
 

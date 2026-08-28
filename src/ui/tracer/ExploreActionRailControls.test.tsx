@@ -184,7 +184,7 @@ describe("Explore 41-2 Clear tracers occupancy action", () => {
   it("keeps occupancy Clear semantics and does not flip placementEnabled or clock/runtime", () => {
     const clearHandler = appSrc.slice(
       appSrc.indexOf("const handleClearTracers"),
-      appSrc.indexOf("const enterExplore"),
+      appSrc.indexOf("const handleExploreUndo"),
     );
     expect(clearHandler).toMatch(/orchestration\.clear\(\)/);
     expect(clearHandler).toMatch(/clearSelectionAndInspection\(\)/);
@@ -241,6 +241,7 @@ describe("Explore 41-3 rail hierarchy", () => {
       appSrc.indexOf("control-band--runtime"),
     );
     expect(releaseBand).toMatch(/ExplorePointReleaseControls/);
+    expect(releaseBand).toMatch(/ExploreAuthoringHistoryControls/);
     expect(releaseBand).not.toMatch(/TracerRuntimeControls/);
     expect(releaseBand).not.toMatch(/ExploreClearTracersControl/);
     expect(releaseBand).not.toMatch(/ExploreFollowControl/);
@@ -254,6 +255,7 @@ describe("Explore 41-3 rail hierarchy", () => {
     expect(runtimeBand).toMatch(/TracerRuntimeControls/);
     expect(runtimeBand).toMatch(/ExploreClearTracersControl/);
     expect(runtimeBand).not.toMatch(/ExplorePointReleaseControls/);
+    expect(runtimeBand).not.toMatch(/ExploreAuthoringHistoryControls/);
     expect(runtimeBand).not.toMatch(/ExploreFollowControl/);
     expect(runtimeBand).not.toMatch(/ExploreResetViewControl/);
     expect(runtimeBand).not.toMatch(/VisualAirflowWorkbenchControls/);
@@ -283,6 +285,7 @@ describe("Explore 41-3 rail hierarchy", () => {
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
     expect(guidedShell).not.toMatch(/control-band--release/);
     expect(guidedShell).not.toMatch(/ExplorePointReleaseControls/);
+    expect(guidedShell).not.toMatch(/ExploreAuthoringHistoryControls/);
     expect(guidedShell).not.toMatch(/ExploreClearTracersControl/);
     expect(guidedShell).not.toMatch(/ExploreFollowControl/);
     expect(guidedShell).not.toMatch(/ExploreResetViewControl/);

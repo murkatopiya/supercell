@@ -61,6 +61,9 @@ Follow                      disabled without resolvable selection
                             (reason shown)
 Confirm                     disabled without pending seed
                             (reason shown)
+Undo / Redo                 Explore Release band (`13`);
+                            disabled when the matching stack
+                            is empty
 Cancel                      enabled while placement is on
 Reset View                  always enabled
 Reset (simulation)          always enabled; preserves paused
@@ -115,7 +118,7 @@ corrects.
 | Home | Changes | Examples |
 | --- | --- | --- |
 | **Scene toolbar** | presentation of the 3D drawing | airflow view (comets / Eulerian), Highlight, Depth cue, world-grid visibility (`09`) |
-| **Laboratory action rail / Guided toolbar** | session and occupancy | Release, Pause, Reset, Speed, Clear tracers, Follow, Reset View, Guided experiment |
+| **Laboratory action rail / Guided toolbar** | session and occupancy | Release, Undo/Redo authoring (`13`), Pause, Reset, Speed, Clear tracers, Follow, Reset View, Guided experiment |
 | **Environment surface** | environmental reference | hodograph, overlay checkboxes, Explore environment identity |
 
 Follow and Reset View stay **View** (camera), not scene
@@ -220,6 +223,8 @@ rules.
 | Clear tracers | Explore occupancy = 0 (`simulation.particles.length === 0` or equivalent live slot count) | nothing to clear |
 | Follow | no resolvable selected tracer | already implemented |
 | Confirm | no pending seed | already implemented |
+| Undo | Explore authoring undo stack empty (`13`) | Nothing to undo |
+| Redo | Explore authoring redo stack empty (`13`) | Nothing to redo |
 | Storm-relative wind overlay checkbox | parent overlay gate (`05`) | already implemented |
 | Streamwise/crosswise overlay checkbox | parent overlay gate (`06`) | already implemented |
 

@@ -89,7 +89,8 @@ describe("Explore Slice A shell geometry", () => {
 
   it("keeps Guided on a separate shell without Explore action-rail regions", () => {
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
-    expect(guidedShell).toMatch(/workbench__column--hodograph/);
+    expect(guidedShell).not.toMatch(/workbench__column--hodograph/);
+    expect(guidedShell).toMatch(/workbench__hodograph-host/);
     expect(guidedShell).toMatch(/workbench__column--laboratory/);
     expect(guidedShell).toMatch(/workbench__column--inspector/);
     expect(guidedShell).not.toMatch(/workbench__column--controls/);

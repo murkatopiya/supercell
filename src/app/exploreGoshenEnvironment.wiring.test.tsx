@@ -30,6 +30,8 @@ import {
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
+import { INITIAL_HODOGRAPH_PANEL_GEOMETRY } from "../ui/hodograph/hodographPanelGeometry.js";
+import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.js";
 import { hodographDisplayKnotIndices } from "../ui/hodograph/hodographViewTransform.js";
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import { verticalWindShearBetween } from "../physics/environment/verticalWindShear.js";
@@ -44,6 +46,11 @@ function fakeSlots(): ExploreSceneSlots {
     },
     addTracerSlot() {
       tracerSlotCount += 1;
+    },
+    removeLastTracerSlot() {
+      if (tracerSlotCount > 0) {
+        tracerSlotCount -= 1;
+      }
     },
     clearTracerSlots() {
       tracerSlotCount = 0;
@@ -218,12 +225,16 @@ describe("I2 Goshen Explore sandbox", () => {
     const html = renderToStaticMarkup(
       <EnvironmentSurface
         open={true}
-        presentation="overlay"
         points={hodographPoints(GOSHEN_2009_OBSERVED_RECORD.profile)}
         stormMotion={DEMO_SCENARIO.stormMotion}
         overlayVisibility={DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY}
         onOverlayVisibilityChange={() => {}}
         onClose={() => {}}
+        panelGeometry={INITIAL_HODOGRAPH_PANEL_GEOMETRY}
+        onPanelGeometryChange={() => {}}
+        plotView={DEFAULT_HODOGRAPH_PLOT_VIEW}
+        onPlotViewChange={() => {}}
+        boundsElementRef={{ current: null }}
         environmentIdentity={EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED}
         onEnvironmentIdentityChange={() => {}}
       />,

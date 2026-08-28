@@ -26,6 +26,7 @@ import {
   padVelocityDomain,
   plotRectFromViewBox,
   resolveVorticityLayer,
+  screenToVelocity,
   segmentVelocityMidpoint,
   streamwiseCrosswiseTips,
   velocityTicks,
@@ -156,6 +157,14 @@ describe("hodographViewTransform", () => {
       const b = velocityToScreen(0, 10, transform);
       expect(b.y).toBeLessThan(a.y);
       expect(b.x).toBeCloseTo(a.x);
+    });
+
+    it("round-trips velocity through screen coordinates", () => {
+      const transform = buildViewTransform(demoPoints);
+      const screen = velocityToScreen(12.5, -3, transform);
+      const back = screenToVelocity(screen.x, screen.y, transform);
+      expect(back.eastward).toBeCloseTo(12.5);
+      expect(back.northward).toBeCloseTo(-3);
     });
 
     it("maps equal velocity deltas to equal pixel lengths", () => {

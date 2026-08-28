@@ -114,6 +114,29 @@ describe("ExploreTracerSession", () => {
     expect(session.seeds).toHaveLength(1);
   });
 
+  it("removeLastRelease drops the last seed without rewinding remaining tracers or the clock", () => {
+    const { simulation, pathHistory, session } = emptyLab();
+    session.releasePoint({ x: 1, y: 2, z: 3 });
+    session.releasePoint({ x: 4, y: 5, z: 6 });
+    simulation.step(0.2);
+    const clock = simulation.clock.time;
+    const kept = {
+      tracerId: simulation.particles[0]!.tracerId,
+      position: { ...simulation.particles[0]!.position },
+    };
+
+    const removed = session.removeLastRelease();
+    expect(removed?.seed).toEqual({ x: 4, y: 5, z: 6 });
+    expect(simulation.clock.time).toBe(clock);
+    expect(simulation.particles).toHaveLength(1);
+    expect(pathHistory.tracerCount).toBe(1);
+    expect(session.seeds).toEqual([{ x: 1, y: 2, z: 3 }]);
+    expect(simulation.particles[0]!.tracerId).toBe(kept.tracerId);
+    expect(simulation.particles[0]!.position).toEqual(kept.position);
+    expect(session.removeLastRelease()?.seed).toEqual({ x: 1, y: 2, z: 3 });
+    expect(session.removeLastRelease()).toBeNull();
+  });
+
   it("does not import ScenarioConfig, pedagogy, curated seeds, or TracerScene", () => {
     expect(exploreTracerSessionSrc).not.toMatch(/DEMO_SCENARIO/);
     expect(exploreTracerSessionSrc).not.toMatch(/ScenarioConfig/);

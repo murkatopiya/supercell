@@ -28,6 +28,12 @@ class FakeSceneSlots implements ExploreSceneSlots {
     this.addCalls += 1;
   }
 
+  removeLastTracerSlot(): void {
+    if (this.tracerSlotCount > 0) {
+      this.tracerSlotCount -= 1;
+    }
+  }
+
   clearTracerSlots(): void {
     this.tracerSlotCount = 0;
     this.clearCalls += 1;

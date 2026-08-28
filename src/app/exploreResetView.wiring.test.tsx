@@ -36,6 +36,11 @@ function fakeSlots(): ExploreSceneSlots {
     addTracerSlot() {
       tracerSlotCount += 1;
     },
+    removeLastTracerSlot() {
+      if (tracerSlotCount > 0) {
+        tracerSlotCount -= 1;
+      }
+    },
     clearTracerSlots() {
       tracerSlotCount = 0;
     },

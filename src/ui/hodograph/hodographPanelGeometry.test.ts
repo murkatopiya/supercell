@@ -1,0 +1,114 @@
+import { describe, expect, it } from "vitest";
+import {
+  clampPanelGeometry,
+  dragPanelByDelta,
+  HODOGRAPH_HEADER_GRAB_PX,
+  HODOGRAPH_PANEL_MAX_HEIGHT_PX,
+  HODOGRAPH_PANEL_MAX_WIDTH_PX,
+  HODOGRAPH_PANEL_MIN_HEIGHT_PX,
+  HODOGRAPH_PANEL_MIN_WIDTH_PX,
+  INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+  resizePanelFromSouthEast,
+} from "./hodographPanelGeometry.js";
+import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "./hodographPlotView.js";
+
+const viewport = { width: 900, height: 700 };
+
+describe("hodographPanelGeometry", () => {
+  it("starts at the documented initial placement over the viewport host", () => {
+    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY).toEqual({
+      x: 12,
+      y: 12,
+      width: 480,
+      height: 420,
+    });
+    const clamped = clampPanelGeometry(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      viewport,
+    );
+    expect(clamped).toEqual(INITIAL_HODOGRAPH_PANEL_GEOMETRY);
+  });
+
+  it("panel drag changes only position and cannot hide the header", () => {
+    const plotView = DEFAULT_HODOGRAPH_PLOT_VIEW;
+    const moved = dragPanelByDelta(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      40,
+      25,
+      viewport,
+    );
+    expect(moved).toEqual({
+      x: 52,
+      y: 37,
+      width: INITIAL_HODOGRAPH_PANEL_GEOMETRY.width,
+      height: INITIAL_HODOGRAPH_PANEL_GEOMETRY.height,
+    });
+    expect(plotView).toEqual(DEFAULT_HODOGRAPH_PLOT_VIEW);
+
+    const lost = dragPanelByDelta(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      -4000,
+      4000,
+      viewport,
+    );
+    expect(lost.x).toBe(
+      HODOGRAPH_HEADER_GRAB_PX - INITIAL_HODOGRAPH_PANEL_GEOMETRY.width,
+    );
+    expect(lost.y).toBe(viewport.height - HODOGRAPH_HEADER_GRAB_PX);
+    expect(lost.x + lost.width).toBeGreaterThanOrEqual(HODOGRAPH_HEADER_GRAB_PX);
+    expect(lost.y).toBeLessThan(viewport.height);
+  });
+
+  it("resize respects min/max and does not change plot view state", () => {
+    const plotView = { ...DEFAULT_HODOGRAPH_PLOT_VIEW, userScale: 3 };
+    const grown = resizePanelFromSouthEast(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      80,
+      60,
+      viewport,
+    );
+    expect(grown.width).toBe(560);
+    expect(grown.height).toBe(480);
+    expect(grown.x).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.x);
+    expect(grown.y).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.y);
+
+    const tooSmall = resizePanelFromSouthEast(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      -500,
+      -500,
+      viewport,
+    );
+    expect(tooSmall.width).toBe(HODOGRAPH_PANEL_MIN_WIDTH_PX);
+    expect(tooSmall.height).toBe(HODOGRAPH_PANEL_MIN_HEIGHT_PX);
+
+    const tooBig = resizePanelFromSouthEast(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      5000,
+      5000,
+      viewport,
+    );
+    expect(tooBig.width).toBe(
+      Math.min(HODOGRAPH_PANEL_MAX_WIDTH_PX, viewport.width),
+    );
+    expect(tooBig.height).toBe(
+      Math.min(HODOGRAPH_PANEL_MAX_HEIGHT_PX, viewport.height),
+    );
+    expect(plotView.userScale).toBe(3);
+    expect(plotView.panEastward).toBe(0);
+  });
+
+  it("re-clamps after a smaller window so the panel stays reachable", () => {
+    const hanging = {
+      x: 800,
+      y: 600,
+      width: 480,
+      height: 420,
+    };
+    const next = clampPanelGeometry(hanging, { width: 500, height: 360 });
+    expect(next.x + HODOGRAPH_HEADER_GRAB_PX).toBeLessThanOrEqual(500);
+    expect(next.y).toBeLessThanOrEqual(360 - HODOGRAPH_HEADER_GRAB_PX);
+    expect(next.y).toBeGreaterThanOrEqual(0);
+    expect(next.width).toBeLessThanOrEqual(500);
+    expect(next.height).toBeLessThanOrEqual(360);
+  });
+});

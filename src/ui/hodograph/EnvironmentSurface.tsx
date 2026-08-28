@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type RefObject } from "react";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
 import type { StormMotion } from "../../physics/environment/stormRelativeWind.js";
 import {
@@ -13,19 +13,23 @@ import {
 } from "../../explore/exploreEnvironmentIdentity.js";
 import { HodographOverlayControls } from "./HodographOverlayControls.js";
 import { HodographPanel } from "./HodographPanel.js";
+import { HodographWorkspace } from "./HodographWorkspace.js";
 import type { HodographOverlayVisibility } from "./hodographOverlayVisibility.js";
+import type { HodographPanelGeometry } from "./hodographPanelGeometry.js";
+import { HODOGRAPH_PANEL_MIN_WIDTH_PX } from "./hodographPanelGeometry.js";
+import type { HodographPlotView } from "./hodographPlotView.js";
 import {
-  VIEWBOX_WIDTH,
+  buildViewTransform,
   type HorizontalVorticityLayerOverlay,
   type StreamwiseCrosswiseVorticityOverlay,
 } from "./hodographViewTransform.js";
 
 export const ENVIRONMENT_SURFACE_ID = "environment-surface";
-export const ENVIRONMENT_OVERLAY_MIN_WIDTH_PX = 480;
+/** @deprecated Slice 5: use HODOGRAPH_PANEL_MIN_WIDTH_PX. */
+export const ENVIRONMENT_OVERLAY_MIN_WIDTH_PX = HODOGRAPH_PANEL_MIN_WIDTH_PX;
 
 export interface EnvironmentSurfaceProps {
   open: boolean;
-  presentation: "overlay" | "column";
   points: HodographPoint[];
   stormMotion: StormMotion;
   selectedHeight?: number;
@@ -34,18 +38,22 @@ export interface EnvironmentSurfaceProps {
   overlayVisibility: HodographOverlayVisibility;
   onOverlayVisibilityChange: (next: HodographOverlayVisibility) => void;
   onClose: () => void;
+  panelGeometry: HodographPanelGeometry;
+  onPanelGeometryChange: (next: HodographPanelGeometry) => void;
+  plotView: HodographPlotView;
+  onPlotViewChange: (next: HodographPlotView) => void;
+  boundsElementRef: RefObject<HTMLElement | null>;
   environmentIdentity?: ExploreEnvironmentIdentity;
   onEnvironmentIdentityChange?: (next: ExploreEnvironmentIdentity) => void;
 }
 
 /**
- * On-demand Environment surface: existing hodograph + overlay controls.
- * Overlay presentation is Explore-only; column is Guided's local open home.
- * docs/architecture/42-post-41-3-explore-airflow-and-environment-architecture.md §10
+ * On-demand Environment surface: shared floating hodograph workspace
+ * for Guided and Explore. Mode extras (identity radios) stay here.
+ * docs/ui/11-floating-hodograph-workspace.md
  */
 export function EnvironmentSurface({
   open,
-  presentation,
   points,
   stormMotion,
   selectedHeight,
@@ -54,11 +62,16 @@ export function EnvironmentSurface({
   overlayVisibility,
   onOverlayVisibilityChange,
   onClose,
+  panelGeometry,
+  onPanelGeometryChange,
+  plotView,
+  onPlotViewChange,
+  boundsElementRef,
   environmentIdentity,
   onEnvironmentIdentityChange,
 }: EnvironmentSurfaceProps) {
   useEffect(() => {
-    if (presentation !== "overlay" || !open) {
+    if (!open) {
       return;
     }
     const onKeyDown = (event: KeyboardEvent) => {
@@ -70,43 +83,21 @@ export function EnvironmentSurface({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open, presentation, onClose]);
+  }, [open, onClose]);
 
-  const className =
-    presentation === "overlay"
-      ? "environment-surface environment-surface--overlay"
-      : "environment-surface environment-surface--column";
-
-  const overlayStyle =
-    presentation === "overlay"
-      ? {
-          width: VIEWBOX_WIDTH,
-          maxWidth: "100%",
-          maxHeight: "100%",
-          overflowX: "hidden" as const,
-          overflowY: "auto" as const,
-        }
-      : undefined;
+  const autoscale = buildViewTransform(points, [stormMotion]);
 
   return (
-    <section
-      id={ENVIRONMENT_SURFACE_ID}
-      className={className}
-      hidden={!open}
-      aria-label="Environment"
-      style={overlayStyle}
+    <HodographWorkspace
+      open={open}
+      geometry={panelGeometry}
+      onGeometryChange={onPanelGeometryChange}
+      plotView={plotView}
+      onPlotViewChange={onPlotViewChange}
+      autoscale={autoscale}
+      onClose={onClose}
+      boundsElementRef={boundsElementRef}
     >
-      <div className="environment-surface__header">
-        <h2 className="app__panel-title">Hodograph</h2>
-        <button
-          type="button"
-          className="tracer-runtime-controls__button"
-          aria-label="Close Environment"
-          onClick={onClose}
-        >
-          Close
-        </button>
-      </div>
       {environmentIdentity !== undefined && onEnvironmentIdentityChange ? (
         <fieldset className="environment-surface__identity">
           <legend className="environment-surface__identity-legend">
@@ -152,18 +143,22 @@ export function EnvironmentSurface({
           <p>{GOSHEN_SANDBOX_ANTI_CLAIM}</p>
         </div>
       ) : null}
-      <HodographPanel
-        points={points}
-        stormMotion={stormMotion}
-        selectedHeight={selectedHeight}
-        vorticityLayer={vorticityLayer}
-        streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
-        overlayVisibility={overlayVisibility}
-      />
+      <div className="hodograph-workspace__plot">
+        <HodographPanel
+          points={points}
+          stormMotion={stormMotion}
+          selectedHeight={selectedHeight}
+          vorticityLayer={vorticityLayer}
+          streamwiseCrosswiseOverlay={streamwiseCrosswiseOverlay}
+          overlayVisibility={overlayVisibility}
+          plotView={plotView}
+          onPlotViewChange={onPlotViewChange}
+        />
+      </div>
       <HodographOverlayControls
         value={overlayVisibility}
         onChange={onOverlayVisibilityChange}
       />
-    </section>
+    </HodographWorkspace>
   );
 }

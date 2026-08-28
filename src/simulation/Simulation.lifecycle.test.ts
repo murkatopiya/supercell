@@ -105,6 +105,39 @@ describe("Simulation particle lifecycle", () => {
     expect(born.age).toBeCloseTo(0.1, 12);
   });
 
+  it("removeLastParticle drops only the last occupancy and keeps the clock and identity counter", () => {
+    const simulation = new Simulation(
+      new ConstantVelocityField({ x: 10, y: 0, z: 0 }),
+      new EulerIntegrator(),
+      [],
+    );
+    const first = particle(0, 0, 0);
+    const second = particle(5, 0, 0);
+    simulation.addParticle(first);
+    simulation.addParticle(second);
+    simulation.step(0.1);
+    const clock = simulation.clock.time;
+    const firstBefore = {
+      position: { ...first.position },
+      age: first.age,
+    };
+
+    expect(simulation.removeLastParticle()).toBe(second);
+    expect(simulation.particles).toEqual([first]);
+    expect(simulation.clock.time).toBe(clock);
+    expect(first.position).toEqual(firstBefore.position);
+    expect(first.age).toBe(firstBefore.age);
+
+    const born = particle(9, 9, 9);
+    simulation.addParticle(born);
+    expect(simulation.particles[1]!.tracerId).toBe(3);
+
+    expect(simulation.removeLastParticle()).toBe(born);
+    expect(simulation.removeLastParticle()).toBe(first);
+    expect(simulation.removeLastParticle()).toBeUndefined();
+    expect(simulation.particles).toHaveLength(0);
+  });
+
   it("does not import history, renderer, UI, or pedagogy", () => {
     expect(simulationSrc).not.toMatch(/TracerPathHistory/);
     expect(simulationSrc).not.toMatch(/TracerScene/);

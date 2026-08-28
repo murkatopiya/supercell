@@ -23,6 +23,11 @@ function fakeSlots(): ExploreSceneSlots {
     addTracerSlot() {
       tracerSlotCount += 1;
     },
+    removeLastTracerSlot() {
+      if (tracerSlotCount > 0) {
+        tracerSlotCount -= 1;
+      }
+    },
     clearTracerSlots() {
       tracerSlotCount = 0;
     },
@@ -43,6 +48,8 @@ describe("createExploreLab", () => {
     expect(lab.tool.pendingSeed).toBeNull();
     expect(lab.tool.placementEnabled).toBe(false);
     expect(lab.tool.altitudeM).toBe(1000);
+    expect(lab.orchestration.canUndo).toBe(false);
+    expect(lab.orchestration.canRedo).toBe(false);
     expect(lab.velocityObservation.parts).toHaveLength(7);
     expect(lab.visualAirflowPopulation.occupantCount).toBeGreaterThan(0);
     expect(

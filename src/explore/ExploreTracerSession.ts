@@ -61,6 +61,30 @@ export class ExploreTracerSession {
   }
 
   /**
+   * Drop the last user release: last seed, last particle, last history
+   * lane. Clock unchanged. Remaining tracers keep current state.
+   * Empty occupancy is a no-op.
+   */
+  removeLastRelease(): {
+    seed: TracerSeedPosition;
+    tracerId: number;
+  } | null {
+    if (this.ownedSeeds.length === 0) {
+      return null;
+    }
+    const seed = this.ownedSeeds.pop()!;
+    const particle = this.simulation.removeLastParticle();
+    this.pathHistory.removeLastLane();
+    this.assertAligned();
+    if (particle === undefined) {
+      throw new ExploreTracerSessionError(
+        "ExploreTracerSession: last seed had no matching particle",
+      );
+    }
+    return { seed, tracerId: particle.tracerId };
+  }
+
+  /**
    * Replay the current Explore seed list as a simultaneous cohort at t = 0.
    * Zero seeds: clock → 0, occupancy stays empty. Does not fabricate a tracer.
    */

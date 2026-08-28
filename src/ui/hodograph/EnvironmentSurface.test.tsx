@@ -10,16 +10,34 @@ import {
 import { EnvironmentAffordance } from "./EnvironmentAffordance.js";
 import { EnvironmentSurface } from "./EnvironmentSurface.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "./hodographOverlayVisibility.js";
+import {
+  HODOGRAPH_PANEL_MIN_HEIGHT_PX,
+  HODOGRAPH_PANEL_MIN_WIDTH_PX,
+  INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+} from "./hodographPanelGeometry.js";
+import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "./hodographPlotView.js";
 import { VIEWBOX_WIDTH } from "./hodographViewTransform.js";
 import { ENVIRONMENT_OVERLAY_MIN_WIDTH_PX } from "./EnvironmentSurface.js";
 import surfaceSrc from "./EnvironmentSurface.tsx?raw";
+import workspaceSrc from "./HodographWorkspace.tsx?raw";
+import panelSrc from "./HodographPanel.tsx?raw";
 import affordanceSrc from "./EnvironmentAffordance.tsx?raw";
+import type { HodographPanelGeometry } from "./hodographPanelGeometry.js";
+import type { HodographPlotView } from "./hodographPlotView.js";
 
-function surfaceMarkup(open: boolean, presentation: "overlay" | "column") {
+const boundsElementRef = { current: null };
+
+function surfaceMarkup(
+  open: boolean,
+  extras: {
+    environmentIdentity?: "demo-prescribed" | "goshen-2009-observed";
+    panelGeometry?: HodographPanelGeometry;
+    plotView?: HodographPlotView;
+  } = {},
+) {
   return renderToStaticMarkup(
     <EnvironmentSurface
       open={open}
-      presentation={presentation}
       points={createDemoHodographPoints()}
       stormMotion={DEMO_SCENARIO.stormMotion}
       selectedHeight={DEMO_SELECTED_HEIGHT}
@@ -28,13 +46,22 @@ function surfaceMarkup(open: boolean, presentation: "overlay" | "column") {
       overlayVisibility={DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY}
       onOverlayVisibilityChange={() => {}}
       onClose={() => {}}
+      panelGeometry={extras.panelGeometry ?? INITIAL_HODOGRAPH_PANEL_GEOMETRY}
+      onPanelGeometryChange={() => {}}
+      plotView={extras.plotView ?? DEFAULT_HODOGRAPH_PLOT_VIEW}
+      onPlotViewChange={() => {}}
+      boundsElementRef={boundsElementRef}
+      environmentIdentity={extras.environmentIdentity}
+      onEnvironmentIdentityChange={
+        extras.environmentIdentity !== undefined ? () => {} : undefined
+      }
     />,
   );
 }
 
 describe("EnvironmentSurface", () => {
   it("shows hodograph and overlays when open", () => {
-    const html = surfaceMarkup(true, "overlay");
+    const html = surfaceMarkup(true);
     expect(html).toContain("id=\"environment-surface\"");
     expect(html).toContain("aria-label=\"Environment\"");
     expect(html).toContain("Hodograph");
@@ -48,55 +75,75 @@ describe("EnvironmentSurface", () => {
   });
 
   it("shows the Explore identity control only when identity is supplied", () => {
-    const guided = surfaceMarkup(true, "column");
+    const guided = surfaceMarkup(true);
     expect(guided).not.toContain("Demo prescribed environment");
     expect(guided).not.toContain("Goshen 2009 observed environment");
     expect(guided).not.toContain("explore-environment-identity");
 
-    const explore = renderToStaticMarkup(
-      <EnvironmentSurface
-        open={true}
-        presentation="overlay"
-        points={createDemoHodographPoints()}
-        stormMotion={DEMO_SCENARIO.stormMotion}
-        selectedHeight={DEMO_SELECTED_HEIGHT}
-        vorticityLayer={createDemoVorticityLayer()}
-        streamwiseCrosswiseOverlay={createDemoStreamwiseCrosswiseOverlay()}
-        overlayVisibility={DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY}
-        onOverlayVisibilityChange={() => {}}
-        onClose={() => {}}
-        environmentIdentity="demo-prescribed"
-        onEnvironmentIdentityChange={() => {}}
-      />,
-    );
+    const explore = surfaceMarkup(true, {
+      environmentIdentity: "demo-prescribed",
+    });
     expect(explore).toContain("Demo prescribed environment");
     expect(explore).toContain("Goshen 2009 observed environment");
     expect(explore).not.toContain("NOT a simulation or reconstruction");
   });
 
   it("is hidden when closed without dropping overlay controls from the tree", () => {
-    const html = surfaceMarkup(false, "overlay");
+    const html = surfaceMarkup(false);
     expect(html).toMatch(/<section[^>]*\shidden/);
     expect(html).toContain("Hodograph overlays");
     expect(html).toContain("aria-label=\"Ground-relative hodograph\"");
+    expect(html).toContain("left:12px");
+    expect(html).toContain("width:480px");
   });
 
-  it("uses overlay vs column presentation classes", () => {
-    expect(surfaceMarkup(true, "overlay")).toContain(
-      "environment-surface--overlay",
-    );
-    expect(surfaceMarkup(true, "column")).toContain(
-      "environment-surface--column",
-    );
-    expect(surfaceMarkup(true, "column")).not.toContain(
-      "environment-surface--overlay",
-    );
+  it("uses the shared floating workspace for Guided and Explore", () => {
+    const guided = surfaceMarkup(true);
+    const explore = surfaceMarkup(true, {
+      environmentIdentity: "demo-prescribed",
+    });
+    expect(guided).toContain("hodograph-workspace");
+    expect(explore).toContain("hodograph-workspace");
+    expect(guided).toContain("environment-surface--overlay");
+    expect(explore).toContain("environment-surface--overlay");
+    expect(surfaceSrc).toMatch(/HodographWorkspace/);
+    expect(surfaceSrc).not.toMatch(/GuidedFloatingHodograph/);
+    expect(surfaceSrc).not.toMatch(/ExploreFloatingHodograph/);
   });
 
-  it("closes overlay presentation on Escape", () => {
-    expect(surfaceSrc).toMatch(/presentation !== "overlay"/);
+  it("closes the floating workspace on Escape", () => {
+    expect(surfaceSrc).toMatch(/if \(!open\)/);
     expect(surfaceSrc).toMatch(/event\.key === "Escape"/);
     expect(surfaceSrc).toMatch(/onClose\(\)/);
+  });
+});
+
+describe("HodographWorkspace chrome", () => {
+  it("exposes zoom controls, reset, drag header, and a resize handle", () => {
+    const html = surfaceMarkup(true);
+    expect(html).toContain("aria-label=\"Zoom out hodograph\"");
+    expect(html).toContain("aria-label=\"Zoom in hodograph\"");
+    expect(html).toContain("aria-label=\"Reset hodograph view\"");
+    expect(html).toContain("hodograph-workspace__header");
+    expect(html).toContain("hodograph-workspace__resize");
+    expect(html).toContain("title=\"Resize hodograph panel\"");
+    expect(workspaceSrc).toMatch(/isHeaderDragExcludedTarget/);
+    expect(workspaceSrc).toMatch(/setPointerCapture/);
+    expect(workspaceSrc).toMatch(/releasePointerCapture/);
+    expect(workspaceSrc).toMatch(/dragPanelByDelta/);
+    expect(workspaceSrc).toMatch(/resizePanelFromSouthEast/);
+    expect(workspaceSrc).toMatch(/resetHodographPlotView/);
+    expect(workspaceSrc).not.toMatch(/setHodographPanelGeometry/);
+  });
+
+  it("keeps plot pan/zoom on the SVG, not the header", () => {
+    expect(panelSrc).toMatch(/onPlotViewChange/);
+    expect(panelSrc).toMatch(/addEventListener\("wheel"/);
+    expect(panelSrc).toMatch(/passive: false/);
+    expect(panelSrc).toMatch(/panHodographPlotView/);
+    expect(panelSrc).toMatch(/applyHodographPlotView/);
+    expect(workspaceSrc).not.toMatch(/panHodographPlotView/);
+    expect(workspaceSrc).toMatch(/onHeaderPointerDown/);
   });
 });
 
@@ -118,11 +165,15 @@ describe("EnvironmentAffordance", () => {
 });
 
 describe("Environment surface size contract", () => {
-  it("keeps overlay CSS width at the 640 logical viewBox with a 480px floor", () => {
+  it("keeps the logical SVG viewBox and a readable min panel size", () => {
     expect(VIEWBOX_WIDTH).toBe(640);
-    expect(ENVIRONMENT_OVERLAY_MIN_WIDTH_PX).toBe(480);
-    expect(surfaceMarkup(true, "overlay")).toContain("width:640px");
-    expect(surfaceMarkup(true, "overlay")).toContain("overflow-y:auto");
-    expect(surfaceMarkup(true, "column")).not.toContain("width:640px");
+    expect(HODOGRAPH_PANEL_MIN_WIDTH_PX).toBe(360);
+    expect(HODOGRAPH_PANEL_MIN_HEIGHT_PX).toBe(280);
+    expect(ENVIRONMENT_OVERLAY_MIN_WIDTH_PX).toBe(360);
+    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width).toBe(480);
+    expect(surfaceMarkup(true)).toContain("width:480px");
+    expect(surfaceMarkup(true)).toContain("height:420px");
+    expect(surfaceMarkup(true)).toContain("left:12px");
+    expect(surfaceMarkup(true)).toContain("top:12px");
   });
 });

@@ -40,6 +40,7 @@ import {
 
 export interface TracerViewportHandle {
   addTracerSlot(): void;
+  removeLastTracerSlot(): void;
   clearTracerSlots(): void;
   syncReleasePreview(pendingSeed: TracerSeedPosition | null): void;
   /**
@@ -234,6 +235,9 @@ export function TracerViewport({
   useImperativeHandle(sceneHandleRef ?? localSceneHandleRef, () => ({
     addTracerSlot() {
       sceneRef.current?.addTracerSlot();
+    },
+    removeLastTracerSlot() {
+      sceneRef.current?.removeLastTracerSlot();
     },
     clearTracerSlots() {
       sceneRef.current?.clearTracerSlots();

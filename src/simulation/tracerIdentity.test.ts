@@ -161,6 +161,19 @@ describe("Simulation tracer identity", () => {
     expect(idsOf(simulation)).toEqual([1]);
   });
 
+  it("removeLastParticle does not reuse the removed tracerId", () => {
+    const simulation = new Simulation(
+      new ConstantVelocityField({ x: 0, y: 0, z: 0 }),
+      new EulerIntegrator(),
+      [draft(0, 0, 0), draft(1, 0, 0)],
+    );
+    expect(idsOf(simulation)).toEqual([1, 2]);
+    simulation.removeLastParticle();
+    expect(idsOf(simulation)).toEqual([1]);
+    simulation.addParticle(draft(2, 0, 0));
+    expect(idsOf(simulation)).toEqual([1, 3]);
+  });
+
   it("a new Simulation has its own identity scope starting at 1", () => {
     const first = new Simulation(
       new ConstantVelocityField({ x: 0, y: 0, z: 0 }),

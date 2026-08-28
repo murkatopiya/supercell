@@ -175,6 +175,18 @@ export class TracerPathHistory {
   }
 
   /**
+   * Drop the last occupancy lane. Empty history is a no-op.
+   * Does not rewind remaining lanes or the global stride counter.
+   */
+  removeLastLane(): void {
+    if (this.histories.length === 0) {
+      return;
+    }
+    this.histories.pop();
+    this.observedActive.pop();
+  }
+
+  /**
    * Read-only copied world positions for trail drawing.
    * Not particle.position aliases. Time lives on samplesFor.
    */

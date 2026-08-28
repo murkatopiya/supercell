@@ -144,9 +144,11 @@ describe("dynamic tracer lifecycle acceptance", () => {
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\bappendParticle\b/);
     expect(composeDemoTracerSimulationSrc).not.toMatch(/\bremoveAllLanes\b/);
     expect(appSrc).not.toMatch(/\baddParticle\b/);
+    expect(appSrc).not.toMatch(/\bremoveLastParticle\b/);
     expect(appSrc).toMatch(/\baddTracerSlot\b/);
     expect(tracerViewportSrc).not.toMatch(/\baddParticle\b/);
     expect(tracerViewportSrc).toMatch(/\baddTracerSlot\b/);
+    expect(tracerViewportSrc).toMatch(/\bremoveLastTracerSlot\b/);
     expect(tracerViewportSrc).toMatch(/\bclearTracerSlots\b/);
   });
 

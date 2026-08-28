@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
 import type { StormMotion } from "../../physics/environment/stormRelativeWind.js";
 import {
@@ -8,6 +9,14 @@ import {
   isStreamwiseCrosswiseDrawn,
   type HodographOverlayVisibility,
 } from "./hodographOverlayVisibility.js";
+import {
+  applyHodographPlotView,
+  DEFAULT_HODOGRAPH_PLOT_VIEW,
+  HODOGRAPH_ZOOM_STEP,
+  panHodographPlotView,
+  zoomHodographPlotView,
+  type HodographPlotView,
+} from "./hodographPlotView.js";
 import {
   OMEGA_ARROW_LENGTH_PX,
   VIEWBOX_HEIGHT,
@@ -23,12 +32,14 @@ import {
   omegaArrowEnd,
   omegaScreenUnitDirection,
   resolveVorticityLayer,
+  screenToVelocity,
   segmentVelocityMidpoint,
   streamwiseCrosswiseTips,
   velocityTicks,
   velocityToScreen,
   type HorizontalVorticityLayerOverlay,
   type StreamwiseCrosswiseVorticityOverlay,
+  type ViewTransform,
 } from "./hodographViewTransform.js";
 
 export type { HorizontalVorticityLayerOverlay, StreamwiseCrosswiseVorticityOverlay };
@@ -44,11 +55,31 @@ export interface HodographPanelProps {
   streamwiseCrosswiseOverlay?: StreamwiseCrosswiseVorticityOverlay;
   /** Draw gates only; does not affect domain/transform. */
   overlayVisibility?: HodographOverlayVisibility;
+  /** Velocity-space camera. Default is v1 autoscale. */
+  plotView?: HodographPlotView;
+  /** When set, wheel zooms and pointer-drag pans the plot (not the panel). */
+  onPlotViewChange?: (next: HodographPlotView) => void;
 }
 
 const STORM_MOTION_DIAMOND_HALF = 6;
 const KNOT_RADIUS = 4;
 const SELECTED_KNOT_RADIUS = 6;
+
+function clientPointToSvg(
+  svg: SVGSVGElement,
+  clientX: number,
+  clientY: number,
+): { x: number; y: number } | null {
+  const ctm = svg.getScreenCTM();
+  if (!ctm) {
+    return null;
+  }
+  const point = svg.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  const local = point.matrixTransform(ctm.inverse());
+  return { x: local.x, y: local.y };
+}
 
 export function HodographPanel({
   points,
@@ -57,10 +88,57 @@ export function HodographPanel({
   vorticityLayer,
   streamwiseCrosswiseOverlay,
   overlayVisibility = DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
+  plotView = DEFAULT_HODOGRAPH_PLOT_VIEW,
+  onPlotViewChange,
 }: HodographPanelProps) {
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const panRef = useRef<{ lastX: number; lastY: number } | null>(null);
+  const plotViewRef = useRef(plotView);
+  const autoscaleRef = useRef<ViewTransform | null>(null);
+  const transformRef = useRef<ViewTransform | null>(null);
+  plotViewRef.current = plotView;
+
   // Stable viewport: transform uses data presence, not visibility flags.
   const overlayVelocities = stormMotion ? [stormMotion] : [];
-  const transform = buildViewTransform(points, overlayVelocities);
+  const autoscale = buildViewTransform(points, overlayVelocities);
+  const transform = applyHodographPlotView(autoscale, plotView);
+  autoscaleRef.current = autoscale;
+  transformRef.current = transform;
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg || onPlotViewChange === undefined) {
+      return;
+    }
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const currentTransform = transformRef.current;
+      const currentAutoscale = autoscaleRef.current;
+      if (!currentTransform || !currentAutoscale) {
+        return;
+      }
+      const local = clientPointToSvg(svg, event.clientX, event.clientY);
+      if (!local) {
+        return;
+      }
+      const focus = screenToVelocity(local.x, local.y, currentTransform);
+      const factor =
+        event.deltaY < 0 ? HODOGRAPH_ZOOM_STEP : 1 / HODOGRAPH_ZOOM_STEP;
+      onPlotViewChange(
+        zoomHodographPlotView({
+          view: plotViewRef.current,
+          factor,
+          autoscale: currentAutoscale,
+          focus,
+        }),
+      );
+    };
+    svg.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      svg.removeEventListener("wheel", onWheel);
+    };
+  }, [onPlotViewChange]);
   const screenPoints = mapHodographPointsToScreen(points, transform);
   const displayKnotIndices = hodographDisplayKnotIndices(
     points,
@@ -215,10 +293,64 @@ export function HodographPanel({
 
   return (
     <svg
-      className="hodograph-panel"
+      ref={svgRef}
+      className={
+        onPlotViewChange
+          ? "hodograph-panel hodograph-panel--interactive"
+          : "hodograph-panel"
+      }
       viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Ground-relative hodograph"
+      onPointerDown={(event) => {
+        if (onPlotViewChange === undefined || event.button !== 0) {
+          return;
+        }
+        event.currentTarget.setPointerCapture(event.pointerId);
+        panRef.current = { lastX: event.clientX, lastY: event.clientY };
+      }}
+      onPointerMove={(event) => {
+        if (onPlotViewChange === undefined || panRef.current === null) {
+          return;
+        }
+        const svg = svgRef.current;
+        const currentTransform = transformRef.current;
+        if (!svg || !currentTransform) {
+          return;
+        }
+        const last = clientPointToSvg(
+          svg,
+          panRef.current.lastX,
+          panRef.current.lastY,
+        );
+        const next = clientPointToSvg(svg, event.clientX, event.clientY);
+        if (!last || !next) {
+          return;
+        }
+        const deltaEastward = (next.x - last.x) / currentTransform.scale;
+        const deltaNorthward = -((next.y - last.y) / currentTransform.scale);
+        panRef.current = { lastX: event.clientX, lastY: event.clientY };
+        onPlotViewChange(
+          panHodographPlotView(
+            plotViewRef.current,
+            -deltaEastward,
+            -deltaNorthward,
+          ),
+        );
+      }}
+      onPointerUp={(event) => {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+        panRef.current = null;
+      }}
+      onPointerCancel={(event) => {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+        panRef.current = null;
+      }}
     >
       <rect
         x={0}

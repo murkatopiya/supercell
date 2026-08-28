@@ -234,6 +234,25 @@ body:has(.app--explore) {
   min-height: 0;
 }
 
+.workbench__hodograph-host {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+.app--explore .workbench__column--viewport .workbench__hodograph-host {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.app--explore .workbench__hodograph-host .tracer-viewport {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+}
+
 .scene-toolbar {
   flex: 0 0 auto;
   display: flex;
@@ -248,7 +267,7 @@ body:has(.app--explore) {
   min-width: 0;
 }
 
-.app--explore .workbench__column--viewport .scene-toolbar + .tracer-viewport {
+.app--explore .workbench__column--viewport .scene-toolbar + .workbench__hodograph-host .tracer-viewport {
   border-top: none;
 }
 
@@ -303,7 +322,7 @@ body:has(.app--explore) {
   margin-top: 0.35rem;
 }
 
-.workbench--guided .workbench__column--laboratory .scene-toolbar + .tracer-viewport {
+.workbench--guided .workbench__column--laboratory .scene-toolbar + .workbench__hodograph-host .tracer-viewport {
   border-top: none;
 }
 
@@ -629,6 +648,13 @@ body:has(.app--explore) {
   border: 1px solid #d0d7de;
 }
 
+.hodograph-panel--interactive {
+  cursor: grab;
+  touch-action: none;
+  height: 100%;
+  max-width: none;
+}
+
 .hodograph-panel__background {
   fill: #ffffff;
 }
@@ -678,6 +704,9 @@ body:has(.app--explore) {
   padding: 0.5rem 0.75rem;
   border: 1px solid #d0d7de;
   background: #ffffff;
+  flex: 0 0 auto;
+  overflow: auto;
+  max-height: 8.5rem;
 }
 
 .hodograph-overlay-controls__option {
@@ -686,12 +715,89 @@ body:has(.app--explore) {
 }
 
 /*
- * Slice 42-1: on-demand Environment. Overlay is Explore viewport-local;
- * logical SVG is 640×480 (hodographViewTransform VIEWBOX_*). Floor 480px
- * at the 1920×1080 target. Surface scroll, not page scroll.
+ * Slice 5: floating hodograph workspace over the laboratory viewport host.
+ * Panel geometry is inline (left/top/width/height). Plot view is independent.
+ * docs/ui/11-floating-hodograph-workspace.md
  */
 .environment-surface {
   min-width: 0;
+}
+
+.environment-surface--overlay,
+.hodograph-workspace {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.5rem 0.65rem 0.75rem;
+  border: 1px solid #d0d7de;
+  background: #f3f5f7;
+}
+
+.hodograph-workspace[hidden] {
+  display: none;
+}
+
+.hodograph-workspace__header {
+  cursor: grab;
+  flex: 0 0 auto;
+  user-select: none;
+  touch-action: none;
+}
+
+.hodograph-workspace__header:active {
+  cursor: grabbing;
+}
+
+.hodograph-workspace__view-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.hodograph-workspace__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hodograph-workspace__plot {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 140px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.hodograph-workspace__plot .hodograph-panel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.hodograph-workspace__resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 50%,
+      #8c959f 50%,
+      #8c959f 62%,
+      transparent 62%
+    );
 }
 
 .environment-surface__header {
@@ -705,12 +811,16 @@ body:has(.app--explore) {
 
 .environment-surface__header .app__panel-title {
   margin: 0;
+  flex: 1 1 auto;
 }
 
 .environment-surface__identity {
   margin: 0 0 0.65rem;
   padding: 0.35rem 0.5rem 0.5rem;
   border: 1px solid #d0d7de;
+  flex: 0 0 auto;
+  overflow: auto;
+  max-height: 7.5rem;
 }
 
 .environment-surface__identity-legend {
@@ -731,6 +841,9 @@ body:has(.app--explore) {
   margin: 0 0 0.65rem;
   font-size: 0.8rem;
   line-height: 1.35;
+  flex: 0 0 auto;
+  overflow: auto;
+  max-height: 6.5rem;
 }
 
 .environment-surface__honesty p {
@@ -739,21 +852,6 @@ body:has(.app--explore) {
 
 .environment-surface__honesty p:last-child {
   margin-bottom: 0;
-}
-
-.environment-surface--overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  box-sizing: border-box;
-  min-width: 480px;
-  max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 0.5rem 0.65rem 0.75rem;
-  border: 1px solid #d0d7de;
-  background: #f3f5f7;
 }
 
 .environment-surface--column {
@@ -1051,13 +1149,14 @@ body:has(.app--explore) {
     overflow: visible;
   }
 
+  .app--explore .workbench__hodograph-host .tracer-viewport,
   .app--explore .workbench__column--viewport .tracer-viewport {
     flex: none;
     height: 420px;
   }
 
-  .environment-surface--overlay {
-    min-width: 0;
-    width: 100%;
+  .environment-surface--overlay,
+  .hodograph-workspace {
+    max-width: 100%;
   }
 }

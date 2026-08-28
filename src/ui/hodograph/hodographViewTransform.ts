@@ -204,6 +204,22 @@ export function velocityToScreen(
 }
 
 /**
+ * Inverse of velocityToScreen. Screen coordinates are logical SVG units.
+ */
+export function screenToVelocity(
+  x: number,
+  y: number,
+  transform: ViewTransform,
+): VelocitySample {
+  return {
+    eastward:
+      transform.eastwardMin + (x - transform.offsetX) / transform.scale,
+    northward:
+      transform.northwardMax - (y - transform.offsetY) / transform.scale,
+  };
+}
+
+/**
  * Minimal deterministic ticks for a closed velocity interval.
  * Step depends only on span thresholds (same domain → same ticks).
  */

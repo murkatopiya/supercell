@@ -465,6 +465,19 @@ describe("TracerPathHistory", () => {
     expect(history.pointsFor(0)).toEqual([{ x: 7, y: 8, z: 9 }]);
   });
 
+  it("removeLastLane drops only the last occupancy lane", () => {
+    const history = new TracerPathHistory(0);
+    history.appendParticle(particle(1, 0, 0), 0);
+    history.appendParticle(particle(2, 0, 0), 0);
+    history.removeLastLane();
+    expect(history.tracerCount).toBe(1);
+    expect(history.pointsFor(0)).toEqual([{ x: 1, y: 0, z: 0 }]);
+    history.removeLastLane();
+    expect(history.tracerCount).toBe(0);
+    history.removeLastLane();
+    expect(history.tracerCount).toBe(0);
+  });
+
   it("stores copied position and recorded simulationTime on each sample", () => {
     const particles = [particle(0, 0, 0)];
     const simulation = new Simulation(

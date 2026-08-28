@@ -97,8 +97,9 @@ export function syncObservedTracerGlyph(
  * Observes particle positions and optional path-history; never writes simulation state.
  *
  * Construction `tracerCount` is initial occupancy, including zero, not a
- * permanent ceiling. Use addTracerSlot / clearTracerSlots to grow or empty
- * tracer resources without recreating camera, OrbitControls, the
+ * permanent ceiling. Use addTracerSlot / removeLastTracerSlot /
+ * clearTracerSlots to grow, shrink last occupancy, or empty tracer
+ * resources without recreating camera, OrbitControls, the
  * world coordinate-reference layer, or renderer.
  */
 export class TracerScene {
@@ -185,6 +186,36 @@ export class TracerScene {
       this.scene.add(slot.trail);
     }
     this.slots.push(slot);
+  }
+
+  /**
+   * Dispose the last glyph/trail and drop slot count by one.
+   * Empty occupancy is a no-op. Does not recreate camera or renderer.
+   */
+  removeLastTracerSlot(): void {
+    const slot = this.slots.pop();
+    if (slot === undefined) {
+      return;
+    }
+    this.scene.remove(slot.mesh);
+    if (slot.trail !== undefined) {
+      this.scene.remove(slot.trail);
+    }
+    disposeTracerObserveSlot(slot);
+    if (
+      this.selectedSlotIndex !== null &&
+      this.selectedSlotIndex >= this.slots.length
+    ) {
+      this.selectedSlotIndex = null;
+    }
+    if (
+      this.hoveredOccupancyIndex !== null &&
+      this.hoveredOccupancyIndex >= this.slots.length
+    ) {
+      this.hoveredOccupancyIndex = null;
+    }
+    this.observeSelectionHalo();
+    this.observeHoverHalo();
   }
 
   /** Append `count` slots. Empty count is a no-op. */

@@ -81,6 +81,7 @@ function fakeSlots(): ExploreSceneSlots {
     tracerSlotCount: 0,
     addTracerSlot() {},
     clearTracerSlots() {},
+    removeLastTracerSlot() {},
     syncReleasePreview() {},
   };
 }

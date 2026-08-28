@@ -56,7 +56,8 @@ describe("Explore 42-1 Environment surface", () => {
     );
     expect(viewport).toMatch(/tracerViewport/);
     expect(viewport).toMatch(/environmentSurface/);
-    expect(appSrc).toMatch(/presentation=\{explore !== null \? "overlay" : "column"\}/);
+    expect(viewport).toMatch(/workbench__hodograph-host/);
+    expect(appSrc).toMatch(/boundsElementRef=\{hodographHostRef\}/);
     expect(viewport).not.toMatch(/TracerRuntimeControls/);
     expect(viewport).not.toMatch(/ExplorePointReleaseControls/);
     expect(viewport).not.toMatch(/ExploreFollowControl/);
@@ -65,17 +66,19 @@ describe("Explore 42-1 Environment surface", () => {
   });
 
   it("does not duplicate hodograph surfaces across Explore and Guided shells", () => {
-    expect(appSrc.match(/HodographPanel/g)).toBeNull();
-    expect(appSrc.match(/HodographOverlayControls/g)).toBeNull();
+    expect(appSrc).not.toMatch(/import \{ HodographPanel/);
+    expect(appSrc).not.toMatch(/<HodographPanel/);
+    expect(appSrc).not.toMatch(/HodographOverlayControls/);
     expect(surfaceSrc.match(/<HodographPanel/g)).toHaveLength(1);
     expect(surfaceSrc.match(/<HodographOverlayControls/g)).toHaveLength(1);
     expect(appSrc.match(/\{environmentSurface\}/g)).toHaveLength(2);
   });
 
-  it("keeps Guided default-open as the local hodograph column", () => {
+  it("keeps Guided default-open as a floating workspace over the laboratory viewport", () => {
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
-    expect(guidedShell).toMatch(/workbench__column--hodograph/);
+    expect(guidedShell).not.toMatch(/workbench__column--hodograph/);
     expect(guidedShell).toMatch(/environmentSurface/);
+    expect(guidedShell).toMatch(/workbench__hodograph-host/);
     expect(guidedShell).toMatch(/workbench--guided-environment-closed/);
     expect(guidedShell).not.toMatch(/ExplorePointReleaseControls/);
     expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
@@ -83,11 +86,11 @@ describe("Explore 42-1 Environment surface", () => {
     expect(guidedShell).not.toMatch(/PointDiagnosticsPanel/);
   });
 
-  it("scrolls the Environment overlay in-surface and does not reopen Explore page scroll", () => {
+  it("keeps the Environment overlay in the viewport host without reopening Explore page scroll", () => {
     expect(VIEWBOX_WIDTH).toBe(640);
-    expect(ENVIRONMENT_OVERLAY_MIN_WIDTH_PX).toBe(480);
-    expect(surfaceSrc).toMatch(/width: VIEWBOX_WIDTH/);
-    expect(surfaceSrc).toMatch(/overflowY: "auto"/);
+    expect(ENVIRONMENT_OVERLAY_MIN_WIDTH_PX).toBe(360);
+    expect(surfaceSrc).toMatch(/HodographWorkspace/);
+    expect(surfaceSrc).toMatch(/panelGeometry/);
     expect(appSrc).toMatch(/app app--explore/);
     expect(appSrc).toMatch(/workbench workbench--explore/);
   });

@@ -1,5 +1,6 @@
 import type { Vec3 } from "../core/math/Vec3.js";
 import type { TracerSeedPosition } from "../simulation/createTracersFromSeeds.js";
+import { ExploreTracerAuthoringHistory } from "./ExploreTracerAuthoringHistory.js";
 import type { ExplorePointReleaseTool } from "./ExplorePointReleaseTool.js";
 import type { ExploreTracerSession } from "./ExploreTracerSession.js";
 import { shouldAcceptPlacementPick } from "./shouldAcceptPlacementPick.js";
@@ -10,6 +11,7 @@ import { shouldAcceptPlacementPick } from "./shouldAcceptPlacementPick.js";
  */
 export interface ExploreSceneSlots {
   addTracerSlot(): void;
+  removeLastTracerSlot(): void;
   clearTracerSlots(): void;
   syncReleasePreview(pendingSeed: TracerSeedPosition | null): void;
   readonly tracerSlotCount: number;
@@ -25,11 +27,21 @@ export interface ExploreSceneSlots {
  * docs/architecture/18-explore-arbitrary-seeding.md
  */
 export class ExplorePointReleaseOrchestration {
+  readonly authoringHistory = new ExploreTracerAuthoringHistory();
+
   constructor(
     readonly session: ExploreTracerSession,
     readonly tool: ExplorePointReleaseTool,
     private readonly scene: ExploreSceneSlots,
   ) {}
+
+  get canUndo(): boolean {
+    return this.authoringHistory.canUndo;
+  }
+
+  get canRedo(): boolean {
+    return this.authoringHistory.canRedo;
+  }
 
   /**
    * Gate with shouldAcceptPlacementPick, then XZ-plane pick.
@@ -64,8 +76,43 @@ export class ExplorePointReleaseOrchestration {
     }
     this.session.releasePoint(pending);
     this.scene.addTracerSlot();
+    this.authoringHistory.recordAdd(pending);
     this.tool.cancelPending();
     this.scene.syncReleasePreview(null);
+    return true;
+  }
+
+  /**
+   * Remove the last successful Add tracer. Clock unchanged.
+   * Remaining tracers keep current advection state.
+   */
+  undoLastAdd(): { seed: TracerSeedPosition; tracerId: number } | null {
+    if (!this.authoringHistory.canUndo) {
+      return null;
+    }
+    const removed = this.session.removeLastRelease();
+    if (removed === null) {
+      return null;
+    }
+    this.authoringHistory.undo();
+    this.scene.removeLastTracerSlot();
+    return removed;
+  }
+
+  /**
+   * Repeat the undone Add tracer command at the current clock.
+   * Births a new runtime identity. Does not restore the old trajectory.
+   */
+  redoLastAdd(): boolean {
+    if (!this.authoringHistory.canRedo) {
+      return false;
+    }
+    const command = this.authoringHistory.redo();
+    if (command === null) {
+      return false;
+    }
+    this.session.releasePoint(command.seed);
+    this.scene.addTracerSlot();
     return true;
   }
 
@@ -91,6 +138,7 @@ export class ExplorePointReleaseOrchestration {
   clear(): void {
     this.session.clear();
     this.scene.clearTracerSlots();
+    this.authoringHistory.clear();
     this.tool.cancelPending();
     this.scene.syncReleasePreview(null);
   }

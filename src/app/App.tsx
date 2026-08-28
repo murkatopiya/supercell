@@ -1,10 +1,12 @@
-import { useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 import { LandingPage } from "./LandingPage.js";
 import { ModeIdentity } from "./ModeIdentity.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
+import { INITIAL_HODOGRAPH_PANEL_GEOMETRY } from "../ui/hodograph/hodographPanelGeometry.js";
+import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.js";
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import {
   DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
@@ -12,7 +14,9 @@ import {
   type ExploreEnvironmentIdentity,
 } from "../explore/exploreEnvironmentIdentity.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
+import { ExploreAuthoringHistoryControls } from "../ui/tracer/ExploreAuthoringHistoryControls.js";
 import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
+import { matchExploreAuthoringHistoryShortcut } from "../ui/tracer/exploreAuthoringHistoryShortcut.js";
 import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
 import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
 import { PointDiagnosticsPanel } from "../ui/tracer/PointDiagnosticsPanel.js";
@@ -102,6 +106,9 @@ function createSceneSlots(
     addTracerSlot() {
       sceneHandleRef.current?.addTracerSlot();
     },
+    removeLastTracerSlot() {
+      sceneHandleRef.current?.removeLastTracerSlot();
+    },
     clearTracerSlots() {
       sceneHandleRef.current?.clearTracerSlots();
     },
@@ -126,6 +133,13 @@ export function App() {
    * docs/ui/07-app-navigation-and-mode-entry.md
    */
   const [environmentOpen, setEnvironmentOpen] = useState(true);
+  const [hodographPanelGeometry, setHodographPanelGeometry] = useState(
+    INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+  );
+  const [hodographPlotView, setHodographPlotView] = useState(
+    DEFAULT_HODOGRAPH_PLOT_VIEW,
+  );
+  const hodographHostRef = useRef<HTMLDivElement | null>(null);
   const [appSurface, setAppSurface] = useState<AppSurface>("landing");
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
@@ -177,10 +191,20 @@ export function App() {
   const historicalProbeRef = useRef<HistoricalPathProbe | null>(null);
   const followEnabledRef = useRef(false);
   const [followEnabled, setFollowEnabledState] = useState(false);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
   const setFollowEnabled = (next: boolean) => {
     followEnabledRef.current = next;
     setFollowEnabledState(next);
+  };
+
+  const syncAuthoringHistoryButtons = (next: {
+    canUndo: boolean;
+    canRedo: boolean;
+  } | null) => {
+    setCanUndo(next?.canUndo === true);
+    setCanRedo(next?.canRedo === true);
   };
 
   const mirrorSelection = () => {
@@ -305,7 +329,64 @@ export function App() {
     lab.orchestration.clear();
     clearSelectionAndInspection();
     setPendingSeed(null);
+    syncAuthoringHistoryButtons(lab.orchestration);
   };
+
+  const handleExploreUndo = (): boolean => {
+    if (lab === null || lab.kind !== "explore") {
+      return false;
+    }
+    const removed = lab.orchestration.undoLastAdd();
+    if (removed === null) {
+      return false;
+    }
+    if (selection.selectedId === removed.tracerId) {
+      clearSelectionAndInspection();
+    } else {
+      refreshInspection();
+    }
+    syncAuthoringHistoryButtons(lab.orchestration);
+    return true;
+  };
+
+  const handleExploreRedo = (): boolean => {
+    if (lab === null || lab.kind !== "explore") {
+      return false;
+    }
+    if (!lab.orchestration.redoLastAdd()) {
+      return false;
+    }
+    syncAuthoringHistoryButtons(lab.orchestration);
+    return true;
+  };
+
+  const authoringUndoRef = useRef(handleExploreUndo);
+  const authoringRedoRef = useRef(handleExploreRedo);
+  authoringUndoRef.current = handleExploreUndo;
+  authoringRedoRef.current = handleExploreRedo;
+
+  useEffect(() => {
+    if (lab === null || lab.kind !== "explore") {
+      return;
+    }
+    const onKeyDown = (event: KeyboardEvent) => {
+      const action = matchExploreAuthoringHistoryShortcut(event);
+      if (action === null) {
+        return;
+      }
+      const performed =
+        action === "undo"
+          ? authoringUndoRef.current()
+          : authoringRedoRef.current();
+      if (performed) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [lab]);
 
   const enterExplore = () => {
     if (lab !== null && lab.kind === "explore") {
@@ -318,6 +399,7 @@ export function App() {
         exploreEnvironmentalWindProfile(exploreEnvironmentIdentity),
       ),
     );
+    syncAuthoringHistoryButtons(null);
     setAltitudeM(DEFAULT_EXPLORE_POINT_ALTITUDE_M);
     setPlacementEnabled(false);
     setPendingSeed(null);
@@ -327,6 +409,7 @@ export function App() {
     setDepthCueEnabled(false);
     setCoordinateReferenceVisible(true);
     setEnvironmentOpen(false);
+    setHodographPlotView(DEFAULT_HODOGRAPH_PLOT_VIEW);
     setTimeScale(DEFAULT_TRACER_TIME_SCALE);
     setAppSurface("laboratory");
     setResetEpoch((epoch) => epoch + 1);
@@ -338,6 +421,7 @@ export function App() {
     }
     clearSelectionAndInspection();
     setLab(createGuidedLab(guidedExperimentId));
+    syncAuthoringHistoryButtons(null);
     setPendingSeed(null);
     setPlacementEnabled(false);
     setWorkbenchMode(DEFAULT_VISUAL_AIRFLOW_WORKBENCH_MODE);
@@ -346,6 +430,7 @@ export function App() {
     setDepthCueEnabled(false);
     setCoordinateReferenceVisible(true);
     setEnvironmentOpen(true);
+    setHodographPlotView(DEFAULT_HODOGRAPH_PLOT_VIEW);
     setTimeScale(DEFAULT_TRACER_TIME_SCALE);
     setAppSurface("laboratory");
     setResetEpoch((epoch) => epoch + 1);
@@ -374,6 +459,7 @@ export function App() {
       return;
     }
     setExploreEnvironmentIdentity(next);
+    setHodographPlotView(DEFAULT_HODOGRAPH_PLOT_VIEW);
     if (lab === null || lab.kind !== "explore") {
       return;
     }
@@ -386,6 +472,7 @@ export function App() {
     );
     setPendingSeed(null);
     setResetEpoch((epoch) => epoch + 1);
+    syncAuthoringHistoryButtons(null);
   };
 
   const returnToLanding = () => {
@@ -393,6 +480,7 @@ export function App() {
     setPendingSeed(null);
     setPlacementEnabled(false);
     setLab(null);
+    syncAuthoringHistoryButtons(null);
     setAppSurface("landing");
   };
 
@@ -434,7 +522,6 @@ export function App() {
   const environmentSurface = (
     <EnvironmentSurface
       open={environmentOpen}
-      presentation={explore !== null ? "overlay" : "column"}
       points={points}
       stormMotion={DEMO_SCENARIO.stormMotion}
       selectedHeight={
@@ -451,6 +538,11 @@ export function App() {
       overlayVisibility={overlayVisibility}
       onOverlayVisibilityChange={setOverlayVisibility}
       onClose={() => setEnvironmentOpen(false)}
+      panelGeometry={hodographPanelGeometry}
+      onPanelGeometryChange={setHodographPanelGeometry}
+      plotView={hodographPlotView}
+      onPlotViewChange={setHodographPlotView}
+      boundsElementRef={hodographHostRef}
       environmentIdentity={
         explore !== null ? exploreEnvironmentIdentity : undefined
       }
@@ -581,12 +673,23 @@ export function App() {
                   onConfirm={() => {
                     explore.orchestration.confirmRelease();
                     setPendingSeed(null);
+                    syncAuthoringHistoryButtons(explore.orchestration);
                   }}
                   onCancel={() => {
                     explore.orchestration.cancelPending();
                     explore.tool.placementEnabled = false;
                     setPlacementEnabled(false);
                     setPendingSeed(null);
+                  }}
+                />
+                <ExploreAuthoringHistoryControls
+                  canUndo={canUndo}
+                  canRedo={canRedo}
+                  onUndo={() => {
+                    handleExploreUndo();
+                  }}
+                  onRedo={() => {
+                    handleExploreRedo();
                   }}
                 />
               </div>
@@ -641,8 +744,10 @@ export function App() {
                 onDepthCueChange={setDepthCueEnabled}
               />
             </SceneToolbar>
-            {tracerViewport}
-            {environmentSurface}
+            <div className="workbench__hodograph-host" ref={hodographHostRef}>
+              {tracerViewport}
+              {environmentSurface}
+            </div>
           </div>
 
           <div className="workbench__column workbench__column--observation">
@@ -658,19 +763,9 @@ export function App() {
         </section>
       ) : (
         <section
-          className={
-            environmentOpen
-              ? "workbench workbench--guided"
-              : "workbench workbench--guided workbench--guided-environment-closed"
-          }
+          className="workbench workbench--guided workbench--guided-environment-closed"
           aria-label="Guided laboratory"
         >
-          {environmentOpen ? (
-            <div className="workbench__column workbench__column--hodograph">
-              {environmentSurface}
-            </div>
-          ) : null}
-
           <div className="workbench__column workbench__column--laboratory">
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
             <div className="laboratory-toolbar">
@@ -695,7 +790,10 @@ export function App() {
                 onVisibleChange={setCoordinateReferenceVisible}
               />
             </SceneToolbar>
-            {tracerViewport}
+            <div className="workbench__hodograph-host" ref={hodographHostRef}>
+              {tracerViewport}
+              {environmentSurface}
+            </div>
           </div>
 
           <div className="workbench__column workbench__column--inspector">
