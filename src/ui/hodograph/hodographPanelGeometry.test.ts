@@ -3,6 +3,7 @@ import {
   clampPanelGeometry,
   dragPanelByDelta,
   HODOGRAPH_HEADER_GRAB_PX,
+  HODOGRAPH_HEADER_HEIGHT_PX,
   HODOGRAPH_PANEL_MAX_HEIGHT_PX,
   HODOGRAPH_PANEL_MAX_WIDTH_PX,
   HODOGRAPH_PANEL_MIN_HEIGHT_PX,
@@ -57,6 +58,20 @@ describe("hodographPanelGeometry", () => {
     expect(lost.y).toBe(viewport.height - HODOGRAPH_HEADER_GRAB_PX);
     expect(lost.x + lost.width).toBeGreaterThanOrEqual(HODOGRAPH_HEADER_GRAB_PX);
     expect(lost.y).toBeLessThan(viewport.height);
+
+    const above = dragPanelByDelta(
+      INITIAL_HODOGRAPH_PANEL_GEOMETRY,
+      0,
+      -4000,
+      viewport,
+    );
+    expect(above.y).toBe(
+      HODOGRAPH_HEADER_GRAB_PX - HODOGRAPH_HEADER_HEIGHT_PX,
+    );
+    expect(above.y).toBeLessThan(0);
+    expect(above.y + HODOGRAPH_HEADER_HEIGHT_PX).toBe(
+      HODOGRAPH_HEADER_GRAB_PX,
+    );
   });
 
   it("resize respects min/max and does not change plot view state", () => {
@@ -107,7 +122,9 @@ describe("hodographPanelGeometry", () => {
     const next = clampPanelGeometry(hanging, { width: 500, height: 360 });
     expect(next.x + HODOGRAPH_HEADER_GRAB_PX).toBeLessThanOrEqual(500);
     expect(next.y).toBeLessThanOrEqual(360 - HODOGRAPH_HEADER_GRAB_PX);
-    expect(next.y).toBeGreaterThanOrEqual(0);
+    expect(next.y).toBeGreaterThanOrEqual(
+      HODOGRAPH_HEADER_GRAB_PX - HODOGRAPH_HEADER_HEIGHT_PX,
+    );
     expect(next.width).toBeLessThanOrEqual(500);
     expect(next.height).toBeLessThanOrEqual(360);
   });

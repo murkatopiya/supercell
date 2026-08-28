@@ -141,9 +141,13 @@ describe("HodographWorkspace chrome", () => {
     expect(panelSrc).toMatch(/addEventListener\("wheel"/);
     expect(panelSrc).toMatch(/passive: false/);
     expect(panelSrc).toMatch(/panHodographPlotView/);
-    expect(panelSrc).toMatch(/applyHodographPlotView/);
+    expect(panelSrc).toMatch(/hodograph-panel__plot-space/);
+    expect(panelSrc).toMatch(/hodographPlotSpaceCamera/);
+    expect(panelSrc).toMatch(/preventDefault/);
+    expect(panelSrc).toMatch(/removeAllRanges/);
     expect(workspaceSrc).not.toMatch(/panHodographPlotView/);
     expect(workspaceSrc).toMatch(/onHeaderPointerDown/);
+    expect(workspaceSrc).toMatch(/readWindowBounds/);
   });
 });
 

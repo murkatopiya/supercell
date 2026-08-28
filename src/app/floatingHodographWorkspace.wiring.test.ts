@@ -55,9 +55,18 @@ describe("Floating hodograph workspace wiring", () => {
   });
 
   it("keeps a single view transform path for overlays", () => {
-    expect(panelSrc).toMatch(/const transform = applyHodographPlotView/);
+    expect(panelSrc).toMatch(/hodograph-panel__plot-space/);
+    expect(panelSrc).toMatch(/hodographPlotSpaceCamera/);
     expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width).toBe(480);
     expect(HODOGRAPH_PANEL_MIN_WIDTH_PX).toBe(360);
     expect(VIEWBOX_WIDTH).toBe(640);
+  });
+
+  it("clamps the floating panel to the browser window and suppresses plot text selection", () => {
+    expect(workspaceSrc).toMatch(/readWindowBounds/);
+    expect(workspaceSrc).toMatch(/placeInitialGeometryOnWindow/);
+    expect(panelSrc).toMatch(/preventDefault/);
+    expect(panelSrc).toMatch(/removeAllRanges/);
+    expect(panelSrc).toMatch(/hodograph-panel--interactive/);
   });
 });

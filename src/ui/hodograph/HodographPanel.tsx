@@ -10,9 +10,10 @@ import {
   type HodographOverlayVisibility,
 } from "./hodographOverlayVisibility.js";
 import {
-  applyHodographPlotView,
   DEFAULT_HODOGRAPH_PLOT_VIEW,
   HODOGRAPH_ZOOM_STEP,
+  hodographPlotSpaceCamera,
+  hodographPlotSpaceTransformAttribute,
   panHodographPlotView,
   zoomHodographPlotView,
   type HodographPlotView,
@@ -65,16 +66,18 @@ const STORM_MOTION_DIAMOND_HALF = 6;
 const KNOT_RADIUS = 4;
 const SELECTED_KNOT_RADIUS = 6;
 
-function clientPointToSvg(
-  svg: SVGSVGElement,
+function clientPointToPlotSpace(
+  target: SVGSVGElement | SVGGElement,
   clientX: number,
   clientY: number,
 ): { x: number; y: number } | null {
-  const ctm = svg.getScreenCTM();
+  const ctm = target.getScreenCTM();
   if (!ctm) {
     return null;
   }
-  const point = svg.createSVGPoint();
+  const point = target.ownerSVGElement
+    ? target.ownerSVGElement.createSVGPoint()
+    : (target as SVGSVGElement).createSVGPoint();
   point.x = clientX;
   point.y = clientY;
   const local = point.matrixTransform(ctm.inverse());
@@ -92,18 +95,21 @@ export function HodographPanel({
   onPlotViewChange,
 }: HodographPanelProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const plotSpaceRef = useRef<SVGGElement | null>(null);
   const panRef = useRef<{ lastX: number; lastY: number } | null>(null);
   const plotViewRef = useRef(plotView);
   const autoscaleRef = useRef<ViewTransform | null>(null);
-  const transformRef = useRef<ViewTransform | null>(null);
   plotViewRef.current = plotView;
 
-  // Stable viewport: transform uses data presence, not visibility flags.
+  // Stable viewport: autoscale uses data presence, not visibility flags.
+  // Zoom/pan is a single SVG camera over that autoscale drawing.
   const overlayVelocities = stormMotion ? [stormMotion] : [];
   const autoscale = buildViewTransform(points, overlayVelocities);
-  const transform = applyHodographPlotView(autoscale, plotView);
+  const transform = autoscale;
+  const plotSpaceCamera = hodographPlotSpaceCamera(autoscale, plotView);
+  const plotSpaceTransform =
+    hodographPlotSpaceTransformAttribute(plotSpaceCamera);
   autoscaleRef.current = autoscale;
-  transformRef.current = transform;
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -113,16 +119,20 @@ export function HodographPanel({
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      const currentTransform = transformRef.current;
       const currentAutoscale = autoscaleRef.current;
-      if (!currentTransform || !currentAutoscale) {
+      const plotSpace = plotSpaceRef.current ?? svg;
+      if (!currentAutoscale) {
         return;
       }
-      const local = clientPointToSvg(svg, event.clientX, event.clientY);
+      const local = clientPointToPlotSpace(
+        plotSpace,
+        event.clientX,
+        event.clientY,
+      );
       if (!local) {
         return;
       }
-      const focus = screenToVelocity(local.x, local.y, currentTransform);
+      const focus = screenToVelocity(local.x, local.y, currentAutoscale);
       const factor =
         event.deltaY < 0 ? HODOGRAPH_ZOOM_STEP : 1 / HODOGRAPH_ZOOM_STEP;
       onPlotViewChange(
@@ -307,6 +317,8 @@ export function HodographPanel({
         if (onPlotViewChange === undefined || event.button !== 0) {
           return;
         }
+        event.preventDefault();
+        window.getSelection()?.removeAllRanges();
         event.currentTarget.setPointerCapture(event.pointerId);
         panRef.current = { lastX: event.clientX, lastY: event.clientY };
       }}
@@ -315,21 +327,26 @@ export function HodographPanel({
           return;
         }
         const svg = svgRef.current;
-        const currentTransform = transformRef.current;
-        if (!svg || !currentTransform) {
+        const currentAutoscale = autoscaleRef.current;
+        const plotSpace = plotSpaceRef.current ?? svg;
+        if (!svg || !currentAutoscale || !plotSpace) {
           return;
         }
-        const last = clientPointToSvg(
-          svg,
+        const last = clientPointToPlotSpace(
+          plotSpace,
           panRef.current.lastX,
           panRef.current.lastY,
         );
-        const next = clientPointToSvg(svg, event.clientX, event.clientY);
+        const next = clientPointToPlotSpace(
+          plotSpace,
+          event.clientX,
+          event.clientY,
+        );
         if (!last || !next) {
           return;
         }
-        const deltaEastward = (next.x - last.x) / currentTransform.scale;
-        const deltaNorthward = -((next.y - last.y) / currentTransform.scale);
+        const deltaEastward = (next.x - last.x) / currentAutoscale.scale;
+        const deltaNorthward = -((next.y - last.y) / currentAutoscale.scale);
         panRef.current = { lastX: event.clientX, lastY: event.clientY };
         onPlotViewChange(
           panHodographPlotView(
@@ -360,6 +377,11 @@ export function HodographPanel({
         className="hodograph-panel__background"
       />
 
+      <g
+        ref={plotSpaceRef}
+        className="hodograph-panel__plot-space"
+        transform={plotSpaceTransform}
+      >
       <line
         x1={eastAxisStart.x}
         y1={eastAxisStart.y}
@@ -634,6 +656,7 @@ export function HodographPanel({
         r={2.5}
         className="hodograph-panel__origin"
       />
+      </g>
     </svg>
   );
 }

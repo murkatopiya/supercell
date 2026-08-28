@@ -1,9 +1,13 @@
 import { describe, expect, it } from "vitest";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
+import { INITIAL_HODOGRAPH_PANEL_GEOMETRY } from "./hodographPanelGeometry.js";
 import {
   applyHodographPlotView,
+  applyPlotSpaceCamera,
   clampHodographUserScale,
   DEFAULT_HODOGRAPH_PLOT_VIEW,
+  hodographPlotSpaceCamera,
+  hodographPlotSpaceTransformAttribute,
   MAX_HODOGRAPH_USER_SCALE,
   MIN_HODOGRAPH_USER_SCALE,
   panHodographPlotView,
@@ -13,6 +17,9 @@ import {
 import {
   buildViewTransform,
   mapHodographPointsToScreen,
+  OMEGA_ARROW_LENGTH_PX,
+  omegaArrowEnd,
+  omegaScreenUnitDirection,
   velocityToScreen,
 } from "./hodographViewTransform.js";
 
@@ -183,5 +190,105 @@ describe("hodographPlotView", () => {
     const afterScreen = velocityToScreen(focus.eastward, focus.northward, after);
     expect(afterScreen.x).toBeCloseTo(beforeScreen.x);
     expect(afterScreen.y).toBeCloseTo(beforeScreen.y);
+  });
+
+  it("uses one plot-space camera for knots, overlays, titles, and diagnostic glyphs", () => {
+    const autoscale = buildViewTransform(demoPoints, [demoStormMotion]);
+    const view = { userScale: 2, panEastward: 4, panNorthward: -3 };
+    const camera = hodographPlotSpaceCamera(autoscale, view);
+    const domain = applyHodographPlotView(autoscale, view);
+
+    const knot = velocityToScreen(20, 20, autoscale);
+    const c = velocityToScreen(
+      demoStormMotion.eastward,
+      demoStormMotion.northward,
+      autoscale,
+    );
+    const origin = velocityToScreen(0, 0, autoscale);
+    expect(applyPlotSpaceCamera(knot, camera).x).toBeCloseTo(
+      velocityToScreen(20, 20, domain).x,
+    );
+    expect(applyPlotSpaceCamera(knot, camera).y).toBeCloseTo(
+      velocityToScreen(20, 20, domain).y,
+    );
+    expect(applyPlotSpaceCamera(c, camera).x).toBeCloseTo(
+      velocityToScreen(
+        demoStormMotion.eastward,
+        demoStormMotion.northward,
+        domain,
+      ).x,
+    );
+    expect(applyPlotSpaceCamera(c, camera).y).toBeCloseTo(
+      velocityToScreen(
+        demoStormMotion.eastward,
+        demoStormMotion.northward,
+        domain,
+      ).y,
+    );
+
+    const title = { x: (origin.x + knot.x) / 2, y: origin.y + 36 };
+    const originDisplayed = applyPlotSpaceCamera(origin, camera);
+    const titleDisplayed = applyPlotSpaceCamera(title, camera);
+    expect(titleDisplayed.x - originDisplayed.x).toBeCloseTo(
+      camera.scale * (title.x - origin.x),
+    );
+    expect(titleDisplayed.y - originDisplayed.y).toBeCloseTo(
+      camera.scale * (title.y - origin.y),
+    );
+
+    const unit = omegaScreenUnitDirection(1, 0)!;
+    const tip = omegaArrowEnd(origin, unit, OMEGA_ARROW_LENGTH_PX);
+    const displayedOrigin = applyPlotSpaceCamera(origin, camera);
+    const displayedTip = applyPlotSpaceCamera(tip, camera);
+    expect(
+      Math.hypot(
+        displayedTip.x - displayedOrigin.x,
+        displayedTip.y - displayedOrigin.y,
+      ),
+    ).toBeCloseTo(OMEGA_ARROW_LENGTH_PX * view.userScale);
+
+    expect(hodographPlotSpaceTransformAttribute(camera)).toContain("scale(2)");
+  });
+
+  it("pans axis titles with the plot by the same camera translation", () => {
+    const autoscale = buildViewTransform(demoPoints);
+    const identity = hodographPlotSpaceCamera(
+      autoscale,
+      DEFAULT_HODOGRAPH_PLOT_VIEW,
+    );
+    const panned = hodographPlotSpaceCamera(
+      autoscale,
+      panHodographPlotView(DEFAULT_HODOGRAPH_PLOT_VIEW, 6, -4),
+    );
+    const origin = velocityToScreen(0, 0, autoscale);
+    const eastTitle = {
+      x: origin.x,
+      y: 480 - 12,
+    };
+    const originDelta = {
+      x:
+        applyPlotSpaceCamera(origin, panned).x -
+        applyPlotSpaceCamera(origin, identity).x,
+      y:
+        applyPlotSpaceCamera(origin, panned).y -
+        applyPlotSpaceCamera(origin, identity).y,
+    };
+    const titleDelta = {
+      x:
+        applyPlotSpaceCamera(eastTitle, panned).x -
+        applyPlotSpaceCamera(eastTitle, identity).x,
+      y:
+        applyPlotSpaceCamera(eastTitle, panned).y -
+        applyPlotSpaceCamera(eastTitle, identity).y,
+    };
+    expect(titleDelta.x).toBeCloseTo(originDelta.x);
+    expect(titleDelta.y).toBeCloseTo(originDelta.y);
+    expect(originDelta.x).not.toBe(0);
+  });
+
+  it("Reset restores plot view without touching panel geometry", () => {
+    const geometry = { ...INITIAL_HODOGRAPH_PANEL_GEOMETRY };
+    expect(resetHodographPlotView()).toEqual(DEFAULT_HODOGRAPH_PLOT_VIEW);
+    expect(geometry).toEqual(INITIAL_HODOGRAPH_PANEL_GEOMETRY);
   });
 });

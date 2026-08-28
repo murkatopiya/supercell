@@ -1,14 +1,16 @@
 # Floating Hodograph Workspace
 
-**Status:** UI SoT / Slice 5 COMPLETE
+**Status:** UI SoT / Slice 5 COMPLETE; Slice 5.1 COMPLETE
 **Scope:** one reusable hodograph workspace for Guided and
 Explore: draggable, resizable, velocity-space zoom, pan, reset
-view, clamped to the viewport host. Not a sounding editor.
+view, clamped so a header grab strip stays reachable. Not a
+sounding editor.
 **Physics:** unchanged. Input remains `HodographPoint[]` from
 `hodographPoints`. Velocity-space invariants from
 `docs/ui/01-hodograph-panel.md` remain binding.
-**Implementation:** Slice 5 is COMPLETE. This document records
-the live workspace contract.
+**Implementation:** Slice 5 COMPLETE; Slice 5.1 interaction
+fixes COMPLETE. This document records the live workspace
+contract.
 
 Predecessors (not rewritten):
 
@@ -100,27 +102,35 @@ Owner: App UI session (`hodographPanelGeometry`). Not physics,
 not Environment, not `HodographPoint[]`, not Simulation.
 
 ```text
-initial   x=12, y=12, width=480, height=420
-          (CSS px inside .workbench__hodograph-host)
+initial   x=12, y=12, width=480, height=420 relative to the
+          laboratory viewport host, then adopted to
+          position:fixed window coordinates on first layout
 min       width 360, height 280
-max       width 720, height 640, and ≤ host size
+max       width 720, height 640, and ≤ browser window
 drag      header only; buttons / inputs / fieldsets excluded
 resize    south-east handle
-bounds    at least HODOGRAPH_HEADER_GRAB_PX (44) of the header
-          remains inside the host; y ≥ 0
+bounds    browser window, not the 3D column
+          the panel may hang off any edge;
+          at least HODOGRAPH_HEADER_GRAB_PX (44) of the
+          header stays reachable
+          minY = GRAB - HODOGRAPH_HEADER_HEIGHT_PX (52)
 ```
 
-Window resize of the host re-clamps geometry. Dragging the
-header changes only `{x, y}`. Resizing changes only
-`{width, height}` (then clamp). Neither writes plot view.
+Window resize re-clamps geometry against the browser
+window. Dragging the header changes only `{x, y}`. Resizing
+changes only `{width, height}` (then clamp). Neither writes
+plot view. Reset plot view does not reset panel geometry.
 
 ---
 
 ## 5. Plot view contract
 
-Owner: App UI session (`hodographPlotView`). Applied by
-`applyHodographPlotView` on top of `buildViewTransform`
-(existing autoscale + padding + equal aspect).
+Owner: App UI session (`hodographPlotView`). Autoscale remains
+`buildViewTransform` (padding + equal aspect + origin). Zoom/pan
+is a **single SVG plot-space camera** (`hodographPlotSpaceCamera`)
+applied to one `<g class="hodograph-panel__plot-space">`.
+That camera is position-equivalent to `applyHodographPlotView`
+and also scales strokes, fonts, markers, and diagnostic glyphs.
 
 ```text
 plotView = { userScale, panEastward, panNorthward }
@@ -130,6 +140,8 @@ initial  includes all required knots, (0, 0), equal aspect,
 zoom     userScale ∈ [1, 12]; 0 / Inf / NaN clamp to 1
          buttons ± zoom about the current view center
          wheel over the SVG zooms about the pointer velocity
+         plot-space content (geometry + annotations + glyphs)
+         scales together
 pan      pointer drag on the SVG; eastward/northward offsets (m/s)
 reset    DEFAULT_HODOGRAPH_PLOT_VIEW only
 ```
@@ -175,19 +187,54 @@ geometry.
 
 ---
 
-## 8. Overlay and selection compatibility
+## 8. Layer model
+
+### Panel-space (does not follow plot pan/zoom)
+
+```text
+window frame
+header
+− / + / Reset / Close
+Environment identity + honesty copy
+overlay checkboxes
+resize handle
+SVG background fill
+```
+
+### Plot-space (one SVG camera)
+
+```text
+eastward / northward axes
+axis titles
+ticks and tick labels
+hodograph polyline
+knot markers and height labels
+origin
+storm motion C
+storm-relative V_sr
+ω_h, ω_s, ω_c glyphs, arrowheads, and labels
+```
+
+Plot pan uses `user-select: none` on the interactive SVG and
+`preventDefault` + pointer capture so browser text selection
+does not start.
+
+---
+
+## 9. Overlay and selection compatibility
 
 Storm motion C, V_sr, ω_h, and streamwise/crosswise glyphs
-use the same `transform` as the polyline (`applyHodographPlotView`
-on the autoscale that already includes overlay C when present).
+live in the same plot-space `<g>` as the polyline. They share
+the autoscale mapping and the one SVG camera. Diagnostic
+values are unchanged; only presentation scale follows zoom.
 
 Selected height is unchanged by zoom/pan. The marker is
-redrawn in the new transform. Selection semantics are not
+redrawn in the plot-space camera. Selection semantics are not
 extended in this slice.
 
 ---
 
-## 9. Ownership
+## 10. Ownership
 
 | Concern | Owner | Workspace role |
 | --- | --- | --- |
@@ -204,7 +251,7 @@ or write storm motion.
 
 ---
 
-## 10. Accessibility
+## 11. Accessibility
 
 Header − / + / Reset / Close are real `button` elements with
 accessible names. Existing `:focus-visible` styles apply.
@@ -212,7 +259,7 @@ Full keyboard window-manager resize is out of scope.
 
 ---
 
-## 11. Out of scope
+## 12. Out of scope
 
 ```text
 sounding editing / knot drag
@@ -228,7 +275,7 @@ How It Works (docs/ui/12)
 
 ---
 
-## 12. Anti-claims
+## 13. Anti-claims
 
 ```text
 This SoT does not make the hodograph a sounding editor.

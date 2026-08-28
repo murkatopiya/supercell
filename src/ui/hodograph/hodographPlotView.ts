@@ -1,5 +1,6 @@
 import {
   fitEqualAspect,
+  velocityToScreen,
   type VelocitySample,
   type ViewTransform,
 } from "./hodographViewTransform.js";
@@ -157,4 +158,71 @@ export function applyHodographPlotView(
     },
     autoscale.plot,
   );
+}
+
+export interface HodographPlotSpaceCamera {
+  centerX: number;
+  centerY: number;
+  scale: number;
+  translateX: number;
+  translateY: number;
+}
+
+/**
+ * Single SVG camera for all plot-space primitives (geometry, ticks,
+ * titles, diagnostic glyphs). Equivalent in position to
+ * applyHodographPlotView, but also scales stroke/font/arrow sizes.
+ */
+export function hodographPlotSpaceCamera(
+  autoscale: ViewTransform,
+  view: HodographPlotView,
+): HodographPlotSpaceCamera {
+  const normalized = normalizeHodographPlotView(view);
+  const centerEastward =
+    (autoscale.eastwardMin + autoscale.eastwardMax) / 2;
+  const centerNorthward =
+    (autoscale.northwardMin + autoscale.northwardMax) / 2;
+  const center = velocityToScreen(
+    centerEastward,
+    centerNorthward,
+    autoscale,
+  );
+  return {
+    centerX: center.x,
+    centerY: center.y,
+    scale: normalized.userScale,
+    translateX:
+      -normalized.panEastward * autoscale.scale * normalized.userScale,
+    translateY:
+      normalized.panNorthward * autoscale.scale * normalized.userScale,
+  };
+}
+
+export function hodographPlotSpaceTransformAttribute(
+  camera: HodographPlotSpaceCamera,
+): string | undefined {
+  if (
+    camera.scale === 1 &&
+    camera.translateX === 0 &&
+    camera.translateY === 0
+  ) {
+    return undefined;
+  }
+  return `translate(${camera.centerX + camera.translateX} ${camera.centerY + camera.translateY}) scale(${camera.scale}) translate(${-camera.centerX} ${-camera.centerY})`;
+}
+
+export function applyPlotSpaceCamera(
+  point: { x: number; y: number },
+  camera: HodographPlotSpaceCamera,
+): { x: number; y: number } {
+  return {
+    x:
+      camera.scale * (point.x - camera.centerX) +
+      camera.centerX +
+      camera.translateX,
+    y:
+      camera.scale * (point.y - camera.centerY) +
+      camera.centerY +
+      camera.translateY,
+  };
 }

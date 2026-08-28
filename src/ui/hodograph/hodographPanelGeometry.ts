@@ -1,6 +1,6 @@
 /**
- * Floating hodograph panel geometry in CSS pixels of the laboratory
- * hodograph host (the tracer viewport box). Not velocity space.
+ * Floating hodograph panel geometry in CSS pixels of the browser
+ * viewport (position: fixed). Not velocity space.
  */
 
 export interface HodographPanelGeometry {
@@ -20,6 +20,8 @@ export const HODOGRAPH_PANEL_MIN_HEIGHT_PX = 280;
 export const HODOGRAPH_PANEL_MAX_WIDTH_PX = 720;
 export const HODOGRAPH_PANEL_MAX_HEIGHT_PX = 640;
 export const HODOGRAPH_HEADER_GRAB_PX = 44;
+/** Approximate header band; used so a grab strip can remain on-screen. */
+export const HODOGRAPH_HEADER_HEIGHT_PX = 52;
 export const HODOGRAPH_PANEL_INITIAL_X_PX = 12;
 export const HODOGRAPH_PANEL_INITIAL_Y_PX = 12;
 export const HODOGRAPH_PANEL_INITIAL_WIDTH_PX = 480;
@@ -52,8 +54,8 @@ export function panelGeometriesEqual(
 }
 
 /**
- * Keep size within min/max and keep at least a header grab strip inside
- * the containing laboratory viewport.
+ * Keep size within min/max. The panel may hang off any edge of the
+ * browser viewport; at least a header grab strip stays reachable.
  */
 export function clampPanelGeometry(
   geometry: HodographPanelGeometry,
@@ -95,7 +97,7 @@ export function clampPanelGeometry(
 
   const minX = HODOGRAPH_HEADER_GRAB_PX - width;
   const maxX = viewportWidth - HODOGRAPH_HEADER_GRAB_PX;
-  const minY = 0;
+  const minY = HODOGRAPH_HEADER_GRAB_PX - HODOGRAPH_HEADER_HEIGHT_PX;
   const maxY = viewportHeight - HODOGRAPH_HEADER_GRAB_PX;
 
   return {

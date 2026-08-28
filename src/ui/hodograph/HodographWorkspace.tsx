@@ -2,6 +2,7 @@ import { useEffect, useRef, type PointerEvent, type ReactNode, type RefObject } 
 import {
   clampPanelGeometry,
   dragPanelByDelta,
+  INITIAL_HODOGRAPH_PANEL_GEOMETRY,
   panelGeometriesEqual,
   resizePanelFromSouthEast,
   type HodographPanelGeometry,
@@ -37,12 +38,32 @@ function isHeaderDragExcludedTarget(target: EventTarget | null): boolean {
   );
 }
 
-function readViewportBounds(element: HTMLElement | null): ViewportBounds {
-  if (element === null) {
+function readWindowBounds(): ViewportBounds {
+  if (typeof window === "undefined") {
     return { width: 0, height: 0 };
   }
-  const rect = element.getBoundingClientRect();
-  return { width: rect.width, height: rect.height };
+  return { width: window.innerWidth, height: window.innerHeight };
+}
+
+function placeInitialGeometryOnWindow(
+  geometry: HodographPanelGeometry,
+  host: HTMLElement | null,
+): HodographPanelGeometry {
+  if (
+    !panelGeometriesEqual(geometry, INITIAL_HODOGRAPH_PANEL_GEOMETRY) ||
+    host === null
+  ) {
+    return geometry;
+  }
+  const rect = host.getBoundingClientRect();
+  if (!(rect.width > 0) || !(rect.height > 0)) {
+    return geometry;
+  }
+  return {
+    ...geometry,
+    x: geometry.x + rect.left,
+    y: geometry.y + rect.top,
+  };
 }
 
 /**
@@ -67,10 +88,11 @@ export function HodographWorkspace({
 
   useEffect(() => {
     const applyClamp = () => {
-      const next = clampPanelGeometry(
+      const placed = placeInitialGeometryOnWindow(
         geometryRef.current,
-        readViewportBounds(boundsElementRef.current),
+        boundsElementRef.current,
       );
+      const next = clampPanelGeometry(placed, readWindowBounds());
       if (!panelGeometriesEqual(next, geometryRef.current)) {
         onGeometryChange(next);
       }
@@ -98,6 +120,8 @@ export function HodographWorkspace({
     if (event.button !== 0 || isHeaderDragExcludedTarget(event.target)) {
       return;
     }
+    event.preventDefault();
+    window.getSelection()?.removeAllRanges();
     event.currentTarget.setPointerCapture(event.pointerId);
     headerDragRef.current = { lastX: event.clientX, lastY: event.clientY };
   };
@@ -114,7 +138,7 @@ export function HodographWorkspace({
         geometryRef.current,
         dx,
         dy,
-        readViewportBounds(boundsElementRef.current),
+        readWindowBounds(),
       ),
     );
   };
@@ -148,7 +172,7 @@ export function HodographWorkspace({
         geometryRef.current,
         dWidth,
         dHeight,
-        readViewportBounds(boundsElementRef.current),
+        readWindowBounds(),
       ),
     );
   };

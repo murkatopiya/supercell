@@ -426,6 +426,25 @@ describe("hodographViewTransform", () => {
       expect(polylineVertexCount(html)).toBe(demoPoints.length);
     });
 
+    it("keeps axis titles and diagnostic drawing inside the plot-space camera", () => {
+      const html = renderToStaticMarkup(
+        createElement(HodographPanel, {
+          points: demoPoints,
+          plotView: { userScale: 2, panEastward: 5, panNorthward: -2 },
+        }),
+      );
+      const plotSpaceIndex = html.indexOf("hodograph-panel__plot-space");
+      const backgroundIndex = html.indexOf("hodograph-panel__background");
+      const eastTitleIndex = html.indexOf("eastward (m/s)");
+      const northTitleIndex = html.indexOf("northward (m/s)");
+      const closeGroupAfterPlot = html.indexOf("</g>", eastTitleIndex);
+      expect(plotSpaceIndex).toBeGreaterThan(backgroundIndex);
+      expect(eastTitleIndex).toBeGreaterThan(plotSpaceIndex);
+      expect(northTitleIndex).toBeGreaterThan(plotSpaceIndex);
+      expect(closeGroupAfterPlot).toBeGreaterThan(northTitleIndex);
+      expect(html).toContain("scale(2)");
+    });
+
     it("keeps a full-resolution polyline while thinning dense markers", () => {
       const dense: HodographPoint[] = [];
       for (let i = 0; i < 50; i++) {
