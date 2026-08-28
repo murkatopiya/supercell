@@ -24,6 +24,7 @@ import {
 } from "../ui/tracer/TracerRuntimeControls.js";
 import { VisualAirflowWorkbenchControls } from "../ui/tracer/VisualAirflowWorkbenchControls.js";
 import { SceneToolbar } from "../ui/tracer/SceneToolbar.js";
+import { CoordinateReferenceControl } from "../ui/tracer/CoordinateReferenceControl.js";
 import {
   TracerViewport,
   type TracerViewportHandle,
@@ -155,6 +156,8 @@ export function App() {
     DEFAULT_OPERAND_HIGHLIGHT_MODE,
   );
   const [depthCueEnabled, setDepthCueEnabled] = useState(false);
+  const [coordinateReferenceVisible, setCoordinateReferenceVisible] =
+    useState(true);
   const selectionRef = useRef<TracerSelection | null>(null);
   if (selectionRef.current === null) {
     selectionRef.current = new TracerSelection();
@@ -322,6 +325,7 @@ export function App() {
     setPauseVisualization(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION);
     setHighlightMode(DEFAULT_OPERAND_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
+    setCoordinateReferenceVisible(true);
     setEnvironmentOpen(false);
     setTimeScale(DEFAULT_TRACER_TIME_SCALE);
     setAppSurface("laboratory");
@@ -340,6 +344,7 @@ export function App() {
     setPauseVisualization(DEFAULT_VISUAL_AIRFLOW_PAUSE_VISUALIZATION);
     setHighlightMode(DEFAULT_OPERAND_HIGHLIGHT_MODE);
     setDepthCueEnabled(false);
+    setCoordinateReferenceVisible(true);
     setEnvironmentOpen(true);
     setTimeScale(DEFAULT_TRACER_TIME_SCALE);
     setAppSurface("laboratory");
@@ -490,6 +495,7 @@ export function App() {
           : null
       }
       depthCueEnabled={depthCueEnabled}
+      coordinateReferenceVisible={coordinateReferenceVisible}
       onTracerSelect={(tracerId) => {
         setHistoricalPathProbe(null);
         selection.select(tracerId);
@@ -622,6 +628,10 @@ export function App() {
 
           <div className="workbench__column workbench__column--viewport">
             <SceneToolbar>
+              <CoordinateReferenceControl
+                visible={coordinateReferenceVisible}
+                onVisibleChange={setCoordinateReferenceVisible}
+              />
               <VisualAirflowWorkbenchControls
                 mode={workbenchMode}
                 highlightMode={highlightMode}
@@ -679,6 +689,12 @@ export function App() {
             {guidedExperiment !== null && (
               <GuidedExperimentPanel experiment={guidedExperiment} />
             )}
+            <SceneToolbar>
+              <CoordinateReferenceControl
+                visible={coordinateReferenceVisible}
+                onVisibleChange={setCoordinateReferenceVisible}
+              />
+            </SceneToolbar>
             {tracerViewport}
           </div>
 

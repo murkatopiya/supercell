@@ -62,7 +62,8 @@ describe("Slice 2 scene toolbar and session defaults", () => {
     expect(controls).toMatch(/ExploreFollowControl/);
 
     const guidedShell = appSrc.slice(appSrc.indexOf("workbench--guided"));
-    expect(guidedShell).not.toMatch(/SceneToolbar/);
+    expect(guidedShell).toMatch(/SceneToolbar/);
+    expect(guidedShell).toMatch(/CoordinateReferenceControl/);
     expect(guidedShell).not.toMatch(/VisualAirflowWorkbenchControls/);
   });
 
@@ -73,6 +74,9 @@ describe("Slice 2 scene toolbar and session defaults", () => {
     expect(appSrc).toMatch(/const \[workbenchMode, setWorkbenchMode\]/);
     expect(appSrc).toMatch(/const \[highlightMode, setHighlightMode\]/);
     expect(appSrc).toMatch(/const \[depthCueEnabled, setDepthCueEnabled\]/);
+    expect(appSrc).toMatch(
+      /const \[coordinateReferenceVisible, setCoordinateReferenceVisible\]/,
+    );
     expect(appSrc).toMatch(/onModeChange=\{setWorkbenchMode\}/);
     expect(appSrc).toMatch(/onHighlightModeChange=\{setHighlightMode\}/);
     expect(appSrc).toMatch(/onDepthCueChange=\{setDepthCueEnabled\}/);

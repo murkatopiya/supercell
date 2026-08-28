@@ -29,6 +29,10 @@ import {
   tracerIdForSlot,
 } from "./resolveTracerPointerUp.js";
 import { viewportFollowSync } from "./viewportFollowSync.js";
+import {
+  GROUND_CURSOR_UNAVAILABLE,
+  groundCursorHudFromClientPoint,
+} from "./groundCursorHud.js";
 
 export interface TracerViewportHandle {
   addTracerSlot(): void;
@@ -100,6 +104,10 @@ export interface TracerViewportProps {
    */
   depthCueEnabled?: boolean;
   /**
+   * World grid / cardinals / origin. HUD stays visible independently.
+   */
+  coordinateReferenceVisible?: boolean;
+  /**
    * Glyph pick → stable tracerId. Guided has this without placement.
    */
   onTracerSelect?: (tracerId: number) => void;
@@ -157,6 +165,7 @@ export function TracerViewport({
   highlightMode = DEFAULT_OPERAND_HIGHLIGHT_MODE,
   highlightOperand = null,
   depthCueEnabled = false,
+  coordinateReferenceVisible = true,
   onTracerSelect,
   onPathSampleSelect,
   historicalProbePosition = null,
@@ -166,6 +175,8 @@ export function TracerViewport({
   sceneHandleRef,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const hudEastRef = useRef<HTMLSpanElement>(null);
+  const hudNorthRef = useRef<HTMLSpanElement>(null);
   const pausedRef = useRef(paused);
   const timeScaleRef = useRef(timeScale);
   const resetPendingRef = useRef(false);
@@ -188,6 +199,7 @@ export function TracerViewport({
   const highlightModeRef = useRef(highlightMode);
   const highlightOperandRef = useRef(highlightOperand);
   const depthCueEnabledRef = useRef(depthCueEnabled);
+  const coordinateReferenceVisibleRef = useRef(coordinateReferenceVisible);
   const eulerianAirflowSamplesRef = useRef(eulerianAirflowSamples);
   const visualAirflowFieldRef = useRef(visualAirflowField);
 
@@ -207,6 +219,7 @@ export function TracerViewport({
   highlightModeRef.current = highlightMode;
   highlightOperandRef.current = highlightOperand;
   depthCueEnabledRef.current = depthCueEnabled;
+  coordinateReferenceVisibleRef.current = coordinateReferenceVisible;
   eulerianAirflowSamplesRef.current = eulerianAirflowSamples;
   visualAirflowFieldRef.current = visualAirflowField;
 
@@ -291,6 +304,9 @@ export function TracerViewport({
         }
       }
       scene.setDepthCueEnabled(depthCueEnabledRef.current);
+      scene.setCoordinateReferenceVisible(
+        coordinateReferenceVisibleRef.current,
+      );
       scene.syncReleasePreview(pendingPreviewRef.current);
       scene.syncSelectedSlot(
         occupancyIndexForTracerId(
@@ -332,6 +348,39 @@ export function TracerViewport({
     if (resizeObserver !== null && canvas.parentElement !== null) {
       resizeObserver.observe(canvas.parentElement);
     }
+
+    const writeGroundCursorHud = (clientX: number, clientY: number) => {
+      const rect = canvas.getBoundingClientRect();
+      const lines = groundCursorHudFromClientPoint(
+        (ndcX, ndcY) => scene.worldRayFromNdc(ndcX, ndcY),
+        clientX,
+        clientY,
+        rect,
+      );
+      if (hudEastRef.current !== null) {
+        hudEastRef.current.textContent = lines.east;
+      }
+      if (hudNorthRef.current !== null) {
+        hudNorthRef.current.textContent = lines.north;
+      }
+    };
+
+    const clearGroundCursorHud = () => {
+      if (hudEastRef.current !== null) {
+        hudEastRef.current.textContent = GROUND_CURSOR_UNAVAILABLE;
+      }
+      if (hudNorthRef.current !== null) {
+        hudNorthRef.current.textContent = GROUND_CURSOR_UNAVAILABLE;
+      }
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      writeGroundCursorHud(event.clientX, event.clientY);
+    };
+
+    const onPointerLeave = () => {
+      clearGroundCursorHud();
+    };
 
     const onPointerDown = (event: PointerEvent) => {
       if (event.button !== 0) {
@@ -424,6 +473,8 @@ export function TracerViewport({
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointerup", onPointerUp);
     canvas.addEventListener("pointercancel", onPointerCancel);
+    canvas.addEventListener("pointermove", onPointerMove);
+    canvas.addEventListener("pointerleave", onPointerLeave);
 
     const tick = (nowMs: number) => {
       if (disposed) {
@@ -504,6 +555,8 @@ export function TracerViewport({
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointerup", onPointerUp);
       canvas.removeEventListener("pointercancel", onPointerCancel);
+      canvas.removeEventListener("pointermove", onPointerMove);
+      canvas.removeEventListener("pointerleave", onPointerLeave);
       sceneRef.current = null;
       scene.detachVisualAirflow();
       workbenchScene?.dispose();
@@ -520,6 +573,18 @@ export function TracerViewport({
   return (
     <div className="tracer-viewport">
       <canvas ref={canvasRef} className="tracer-viewport__canvas" />
+      <div
+        className="tracer-viewport__hud"
+        aria-label="Ground cursor"
+        style={{ pointerEvents: "none" }}
+      >
+        <div>
+          E: <span ref={hudEastRef}>{GROUND_CURSOR_UNAVAILABLE}</span>
+        </div>
+        <div>
+          N: <span ref={hudNorthRef}>{GROUND_CURSOR_UNAVAILABLE}</span>
+        </div>
+      </div>
     </div>
   );
 }

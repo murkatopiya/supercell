@@ -1,6 +1,6 @@
 # World Coordinate Reference
 
-**Status:** UI SoT / NOT STARTED
+**Status:** UI SoT / Slice 3 COMPLETE
 **Scope:** a laboratory coordinate-reference layer on the 3D
 scene: world grid, cardinals, distance marks, origin, and a
 live cursor HUD. Experiment reproducibility, not decoration.
@@ -8,8 +8,8 @@ live cursor HUD. Experiment reproducibility, not decoration.
 `docs/physics/00-coordinate-system.md`. This file does not
 add a second world system, does not pick in screen-space
 metres, and does not snap seeds to the grid.
-**Implementation:** NOT STARTED. This document does not include
-that implementation.
+**Implementation:** Slice 3 COMPLETE in production `src/**`.
+Slice 4 tracer hover remains NOT STARTED (`10`).
 
 Predecessors:
 
@@ -37,26 +37,27 @@ physics domain, and not a storm-centered map.
 
 ## 2. Current fact (live App)
 
-Verified against `docs/rendering/11-deep-storm-tracer-view.md`,
-`src/rendering/deepStormTracerView.ts`, and `TracerScene`:
+Verified after Slice 3 against `TracerScene`,
+`worldCoordinateReference`, and `TracerViewport`:
 
 ```text
-GridHelper           10000 m extent, 10 divisions, 1000 m cells
-                     XZ plane, y = 0
-AxesHelper           2000 m RGB triad at the origin
-Compass / N E S W    none (“No compass widget in this slice” in 11)
-Distance labels      none
-Cursor HUD           none
-Explore pick datum   ray ∩ plane y = 0 → (x, z);
-                     y from altitude control (18)
-Inspector position   world (x, y, z) plus altitude = position.y
-Three.js scene       canonical world (physics/00 §16)
+Ground grid            GridHelper 10000 m / 10 divisions / 1000 m
+                       cells, XZ, y = 0, inside one
+                       worldCoordinateReference group
+RGB AxesHelper         removed from the product scene
+Origin                 modest ring + brighter center cross + `0`
+                       (not storm center)
+Compass widget         none; N/E/S/W are world-space labels
+Distance marks         E +1..+4 km along +X; N +1..+4 km along −Z
+Cursor HUD             E/N from ray ∩ y = 0; unavailable → —
+Grid control           SceneToolbar, App-owned, default on
+HUD vs Grid            HUD remains when the grid is hidden
+Explore pick datum     unchanged: ray ∩ y = 0 → (x, z)
+Inspector position     unchanged: world (x, y, z), altitude = y
 ```
 
-The existing grid is already world-aligned. It is not a
-labeled coordinate reference. This pass **upgrades that
-presentation**. It does not invent a parallel grid in another
-frame.
+Conversion lives in `src/core/math/AtmosphericPosition.ts`, not
+under `src/physics/**`.
 
 ---
 
@@ -181,9 +182,11 @@ Labels sit on the ground plane (or just above it). They are
 not a screen-locked compass widget that ignores camera
 azimuth. If the user orbits, E remains +X.
 
-RGB `AxesHelper` may remain as a local origin triad. Cardinal
-labels are the human legend. Do not rely on “red = X” as the
-only orientation teaching.
+RGB `AxesHelper` is **not** the user-facing legend. Slice 3
+removed it from `TracerScene`. Cardinals, distance marks, and
+the origin ring are the orientation teaching. `axisSizeM`
+remains on `DEEP_STORM_TRACER_VIEW` as a fixture number and is
+not drawn.
 
 ### 5.3 Distance marks
 
@@ -204,9 +207,10 @@ tornado location (`physics/00` §9).
 
 ### 5.5 Relation to GridHelper
 
-Replace or wrap the unlabeled `GridHelper` so there is **one**
-ground grid, not two overlapping pads. The replacement must
-keep the same plane and the same world metres.
+There is **one** ground grid: `THREE.GridHelper` inside
+`worldCoordinateReference`, same plane and same world metres.
+The unlabeled standalone `GridHelper` / `AxesHelper` pair in
+`TracerScene` is gone.
 
 ---
 
@@ -240,17 +244,9 @@ for that reason).
 
 Explore already has an explicit altitude control
 (`DEFAULT_EXPLORE_POINT_ALTITUDE_M`,
-`ExplorePointReleaseTool`). When placement is armed, the HUD
-**may** also show that controlled altitude as the would-be
-seed `y`:
-
-```text
-Release altitude: 240 m
-```
-
-That line observes existing tool state. It is not a ray pick.
-Together with E/N this is the reproducibility tool: same
-ground point, same altitude, different environments.
+`ExplorePointReleaseTool`). Slice 3 does **not** duplicate that
+value on the cursor HUD. The HUD remains E/N only so ground
+cursor position is not confused with seed altitude.
 
 ### 6.3 Misses
 
@@ -283,7 +279,9 @@ pixels to metres with a camera-distance heuristic.
 | Release altitude value | `ExplorePointReleaseTool` (Explore only) |
 
 The HUD does not write seeds. Placement still goes through
-`ExplorePointReleaseOrchestration`.
+`ExplorePointReleaseOrchestration`. v1 HUD lines are **E / N
+only**. Release altitude stays on `ExplorePointReleaseTool`
+and is not duplicated on the cursor HUD.
 
 ---
 
@@ -294,11 +292,10 @@ presentation group.
 
 Default: **on**.
 
-The scene toolbar (`08`) hosts the toggle. HUD may remain
-visible when the grid is hidden, because the HUD is a readout
-of the pick datum, not a drawing of the pad. If implementation
-bundles HUD with the grid for simplicity, that is allowed;
-document the choice in code comments.
+The scene toolbar (`08`) hosts `CoordinateReferenceControl`
+(`Grid`). Grid + cardinals + distance marks + origin hide
+together. The cursor HUD stays visible when the grid is hidden:
+it is a readout of the pick datum, not a drawing of the pad.
 
 ---
 
@@ -359,7 +356,23 @@ shared Guided + Explore
 
 It excludes snap-to-grid and any physics change.
 
-Slice 3 is NOT STARTED.
+Slice 3 is COMPLETE.
+
+Evidence:
+
+```text
+src/core/math/AtmosphericPosition.ts
+src/rendering/worldCoordinateReference.ts
+src/ui/tracer/CoordinateReferenceControl.tsx
+src/ui/tracer/groundCursorHud.ts
+src/ui/tracer/formatLaboratoryLength.ts
+src/rendering/TracerScene.ts
+  createWorldCoordinateReference; no AxesHelper
+src/ui/tracer/TracerViewport.tsx
+  HUD overlay, pointer-events: none
+src/app/App.tsx
+  coordinateReferenceVisible default true
+```
 
 ---
 

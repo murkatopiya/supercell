@@ -46,6 +46,10 @@ import {
   translateCameraFollowTarget,
 } from "./translateCameraFollowTarget.js";
 import { applyDeepStormTracerViewPose } from "./applyDeepStormTracerViewPose.js";
+import {
+  createWorldCoordinateReference,
+  disposeWorldCoordinateReference,
+} from "./worldCoordinateReference.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 export {
@@ -86,7 +90,8 @@ export function syncObservedTracerGlyph(
  *
  * Construction `tracerCount` is initial occupancy, including zero, not a
  * permanent ceiling. Use addTracerSlot / clearTracerSlots to grow or empty
- * tracer resources without recreating camera, OrbitControls, grid, or renderer.
+ * tracer resources without recreating camera, OrbitControls, the
+ * world coordinate-reference layer, or renderer.
  */
 export class TracerScene {
   private readonly renderer: THREE.WebGLRenderer;
@@ -101,6 +106,7 @@ export class TracerScene {
   private selectedSlotIndex: number | null = null;
   private followPoint: { x: number; y: number; z: number } | null = null;
   private depthCueEnabled = false;
+  private readonly coordinateReference: THREE.Group;
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
   private readonly trailsEnabled: boolean;
@@ -138,12 +144,11 @@ export class TracerScene {
     this.controls.enableDamping = false;
     this.controls.update();
 
-    const axes = new THREE.AxesHelper(view.axisSizeM);
-    disableFogOn(axes);
-    this.scene.add(axes);
-    const grid = new THREE.GridHelper(view.gridSizeM, view.gridDivisions);
-    disableFogOn(grid);
-    this.scene.add(grid);
+    this.coordinateReference = createWorldCoordinateReference(
+      view.gridSizeM,
+      view.gridDivisions,
+    );
+    this.scene.add(this.coordinateReference);
 
     this.sharedGeometry = new THREE.SphereGeometry(view.sphereRadiusM, 16, 12);
     this.keepInactiveGlyphs = options?.keepInactiveGlyphs === true;
@@ -184,7 +189,7 @@ export class TracerScene {
 
   /**
    * Dispose every tracer glyph/trail and drop slot count to 0.
-   * Camera, OrbitControls, grid, axes, shared geometry, and renderer stay.
+   * Camera, OrbitControls, coordinate reference, shared geometry, and renderer stay.
    */
   clearTracerSlots(): void {
     for (const slot of this.slots) {
@@ -219,6 +224,14 @@ export class TracerScene {
 
   get depthCueIsEnabled(): boolean {
     return this.depthCueEnabled;
+  }
+
+  /**
+   * Show or hide the world grid, cardinals, distance marks, and origin.
+   * Presentation only. Does not change picking, seeds, or simulation.
+   */
+  setCoordinateReferenceVisible(visible: boolean): void {
+    this.coordinateReference.visible = visible;
   }
 
   /**
@@ -444,6 +457,8 @@ export class TracerScene {
       this.historicalProbeMarker = undefined;
     }
     this.sharedGeometry.dispose();
+    this.scene.remove(this.coordinateReference);
+    disposeWorldCoordinateReference(this.coordinateReference);
     this.renderer.dispose();
   }
 
@@ -475,27 +490,5 @@ export class TracerScene {
       visible: slot.mesh.visible,
       position: slot.mesh.position,
     });
-  }
-}
-
-function disableFogOn(object: THREE.Object3D): void {
-  object.traverse((child) => {
-    const material = (child as THREE.Mesh).material;
-    if (material === undefined) {
-      return;
-    }
-    if (Array.isArray(material)) {
-      for (const item of material) {
-        setMaterialFog(item, false);
-      }
-      return;
-    }
-    setMaterialFog(material, false);
-  });
-}
-
-function setMaterialFog(material: THREE.Material, fog: boolean): void {
-  if ("fog" in material) {
-    (material as THREE.Material & { fog: boolean }).fog = fog;
   }
 }
