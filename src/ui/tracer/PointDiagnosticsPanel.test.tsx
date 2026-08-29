@@ -249,6 +249,6 @@ describe("PointDiagnosticsPanel", () => {
 });
 
 function htmlAria(source: string): string {
-  const match = source.match(/aria-label="([^"]+)"/);
-  return match?.[1] ?? "";
+  const match = source.match(/aria-label="([^"]+)"|ariaLabel="([^"]+)"/);
+  return match?.[1] ?? match?.[2] ?? "";
 }

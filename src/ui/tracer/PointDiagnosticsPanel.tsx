@@ -1,5 +1,6 @@
 import type { PointDiagnosticObservation } from "../../interaction/PointDiagnosticObservation.js";
 import type { InspectionSampleMode } from "../../interaction/HistoricalPathProbe.js";
+import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
 import {
   classifyPointDiagnosticSign,
   formatPointDiagnosticScientific,
@@ -27,18 +28,21 @@ export function PointDiagnosticsPanel({
   mode = "current",
 }: PointDiagnosticsPanelProps) {
   return (
-    <section className="point-diagnostics" aria-label="Point diagnostics">
-      <h3 className="point-diagnostics__title">Point diagnostics</h3>
-      <div className="point-diagnostics__body">
-        {observation === undefined ? (
-          <p className="point-diagnostics__placeholder">
-            Select a tracer to sample diagnostics at its current position.
-          </p>
-        ) : (
-          <PointDiagnosticsBody observation={observation} mode={mode} />
-        )}
-      </div>
-    </section>
+    <CollapsibleObservationSection
+      sectionClassName="point-diagnostics"
+      ariaLabel="Point diagnostics"
+      title="Point diagnostics"
+      titleClassName="point-diagnostics__title"
+      bodyClassName="point-diagnostics__body"
+    >
+      {observation === undefined ? (
+        <p className="point-diagnostics__placeholder">
+          Select a tracer to sample diagnostics at its current position.
+        </p>
+      ) : (
+        <PointDiagnosticsBody observation={observation} mode={mode} />
+      )}
+    </CollapsibleObservationSection>
   );
 }
 

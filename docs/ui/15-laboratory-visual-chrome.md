@@ -193,7 +193,10 @@ Populated rows use `--font-mono` for numeric readouts.
 Historical sample-mode labels use UI accent, not a
 diagnostic vector color.
 
-Behavior unchanged.
+Explore observation headings (Inspector, Point diagnostics,
+Analysis T1 verification, What-if geometry) are collapsible
+disclosure controls. Default OPEN. Collapse is presentation
+only.
 
 ---
 

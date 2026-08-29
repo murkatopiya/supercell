@@ -1,5 +1,6 @@
 import type { TrajectoryTiltingVerificationModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingVerification.js";
 import type { TrajectoryTiltingRecordedSampleContext } from "../../data/escHrTimeAnalysis/trajectoryTiltingVerification.js";
+import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
 import {
   alignmentAbsenceCopy,
   formatVerificationCosTheta,
@@ -30,23 +31,21 @@ export function TrajectoryTiltingVerificationPanel({
   model,
 }: TrajectoryTiltingVerificationPanelProps) {
   return (
-    <section
-      className="trajectory-tilting-verify"
-      aria-label="Analysis tilting verification"
+    <CollapsibleObservationSection
+      sectionClassName="trajectory-tilting-verify"
+      ariaLabel="Analysis tilting verification"
+      title="Analysis T1 verification"
+      titleClassName="trajectory-tilting-verify__title"
+      bodyClassName="trajectory-tilting-verify__body"
     >
-      <h3 className="trajectory-tilting-verify__title">
-        Analysis T1 verification
-      </h3>
-      <div className="trajectory-tilting-verify__body">
-        {model === undefined ? (
-          <p className="trajectory-tilting-verify__placeholder">
-            Select a recorded path sample to verify Analysis T1 numbers.
-          </p>
-        ) : (
-          <VerificationBody model={model} />
-        )}
-      </div>
-    </section>
+      {model === undefined ? (
+        <p className="trajectory-tilting-verify__placeholder">
+          Select a recorded path sample to verify Analysis T1 numbers.
+        </p>
+      ) : (
+        <VerificationBody model={model} />
+      )}
+    </CollapsibleObservationSection>
   );
 }
 

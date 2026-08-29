@@ -1,5 +1,6 @@
 import type { TracerInspection } from "../../interaction/TracerInspection.js";
 import type { InspectionSampleMode } from "../../interaction/HistoricalPathProbe.js";
+import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
 import {
   formatInspectorMeters,
   formatInspectorSeconds,
@@ -26,18 +27,21 @@ export function TracerInspectorPanel({
   mode = "current",
 }: TracerInspectorPanelProps) {
   return (
-    <section className="tracer-inspector" aria-label="Tracer inspector">
-      <h3 className="tracer-inspector__title">Inspector</h3>
-      <div className="tracer-inspector__body">
-        {inspection === undefined ? (
-          <p className="tracer-inspector__placeholder">
-            Select a tracer to inspect its motion.
-          </p>
-        ) : (
-          <InspectionBody inspection={inspection} mode={mode} />
-        )}
-      </div>
-    </section>
+    <CollapsibleObservationSection
+      sectionClassName="tracer-inspector"
+      ariaLabel="Tracer inspector"
+      title="Inspector"
+      titleClassName="tracer-inspector__title"
+      bodyClassName="tracer-inspector__body"
+    >
+      {inspection === undefined ? (
+        <p className="tracer-inspector__placeholder">
+          Select a tracer to inspect its motion.
+        </p>
+      ) : (
+        <InspectionBody inspection={inspection} mode={mode} />
+      )}
+    </CollapsibleObservationSection>
   );
 }
 

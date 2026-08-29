@@ -1769,6 +1769,11 @@ Analysis T1 legend V1: fixed symmetric CAL V1 domain;
   cool negative / exact 0 / warm positive;
   display saturation endpoints; value only, not support;
   OOD is not zero; visible when analysisColumn present
+Explore observation column: Inspector, Point diagnostics,
+  Analysis T1 verification, and What-if geometry are
+  user-collapsible. Default OPEN. Presentation only;
+  collapse does not change diagnostic, selection, Analysis,
+  what-if, renderer, or simulation state
 §23 item 4 remains OPEN
 §23 item 5 remains OPEN
 ```

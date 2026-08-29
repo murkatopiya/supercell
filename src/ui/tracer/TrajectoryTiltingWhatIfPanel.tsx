@@ -1,4 +1,5 @@
 import type { TrajectoryTiltingWhatIfModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
+import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
 import { alignmentAbsenceCopy } from "./formatTrajectoryTiltingVerification.js";
 import {
   formatVerificationScientific,
@@ -29,25 +30,25 @@ export function TrajectoryTiltingWhatIfPanel({
   onReset,
 }: TrajectoryTiltingWhatIfPanelProps) {
   return (
-    <section
-      className="trajectory-tilting-whatif"
-      aria-label="Analysis tilting what-if alignment"
+    <CollapsibleObservationSection
+      sectionClassName="trajectory-tilting-whatif"
+      ariaLabel="Analysis tilting what-if alignment"
+      title="What-if geometry"
+      titleClassName="trajectory-tilting-whatif__title"
+      bodyClassName="trajectory-tilting-whatif__body"
     >
-      <h3 className="trajectory-tilting-whatif__title">What-if geometry</h3>
-      <div className="trajectory-tilting-whatif__body">
-        {result === undefined ? (
-          <p className="trajectory-tilting-whatif__placeholder">
-            Select a recorded path sample to explore a hypothetical alignment.
-          </p>
-        ) : (
-          <WhatIfBody
-            result={result}
-            onThetaWhatIfChange={onThetaWhatIfChange}
-            onReset={onReset}
-          />
-        )}
-      </div>
-    </section>
+      {result === undefined ? (
+        <p className="trajectory-tilting-whatif__placeholder">
+          Select a recorded path sample to explore a hypothetical alignment.
+        </p>
+      ) : (
+        <WhatIfBody
+          result={result}
+          onThetaWhatIfChange={onThetaWhatIfChange}
+          onReset={onReset}
+        />
+      )}
+    </CollapsibleObservationSection>
   );
 }
 
