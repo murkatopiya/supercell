@@ -2,7 +2,7 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 ANALYSIS TILTING VALIDITY CONTRACT SPECIFIED /
-HEADLESS ANALYSIS T1 SIBLING AUTHORIZED /
+HEADLESS ANALYSIS T1 SIBLING IMPLEMENTED /
 LIVE CONSUMER REWIRING NOT STARTED / NOT AUTHORIZED
 **Scope:** how support-aware Analysis environmental horizontal
 vorticity may participate in the existing tilting-tendency
@@ -14,10 +14,10 @@ Analysis, or a V1 reopen.
 locked identity (`22`). This file records validity / support
 propagation and operand provenance. It does not change the
 product.
-**Implementation:** this file authorizes a later headless
-support-aware Analysis T1 sibling query. This file does not
-include that implementation. Live T1 runtime consumers remain
-out of scope.
+**Implementation:** headless support-aware Analysis T1 sibling
+`queryAnalysisTiltingTendencyAt` lives in
+`src/data/escHrTimeAnalysis/analysisTiltingQuery.ts`. Live T1
+runtime consumers remain out of scope.
 
 Predecessor (not replaced):
 
@@ -785,12 +785,10 @@ using:
 without touching existing T1 runtime consumers
 ```
 
-Module family: `src/data/escHrTimeAnalysis/` (same file as
-`analysisQuery.ts` or a sibling module there). Exact filename
-is implementation detail. Function name above is the locked
-capability.
+Module family: `src/data/escHrTimeAnalysis/analysisTiltingQuery.ts`.
+Function name above is the locked capability.
 
-**Authorized later implementation:**
+**IMPLEMENTED** headless:
 
 ```text
 typed Analysis T1 result as §9 / §11
@@ -815,13 +813,13 @@ generic diagnostics framework
 new derivative stencil
 ```
 
-Tests first. This file does not include that implementation.
+Tests first. Live consumers remain out of scope.
 
 ---
 
-## 18. D17 — Future test matrix
+## 18. D17 — Test matrix
 
-Required when the sibling is implemented:
+Required of the sibling implementation:
 
 ```text
 1.  FULL ω_h → FULL T1 + numeric value
@@ -953,8 +951,8 @@ D16  First implementation: headless queryAnalysisTiltingTendencyAt.
 
 D17  Test matrix §18.
 
-D18  Headless sibling AUTHORIZED. Live rewiring NOT AUTHORIZED.
-     This file does not include implementation.
+D18  Headless sibling IMPLEMENTED in analysisTiltingQuery.ts.
+     Live rewiring NOT AUTHORIZED.
 ```
 
 ---
@@ -964,10 +962,11 @@ D18  Headless sibling AUTHORIZED. Live rewiring NOT AUTHORIZED.
 ```text
 ARCHITECTURE ACCEPTED
 ANALYSIS TILTING VALIDITY CONTRACT SPECIFIED
-IMPLEMENTATION AUTHORIZED
+HEADLESS ANALYSIS T1 SIBLING IMPLEMENTED
+LIVE CONSUMER REWIRING NOT STARTED / NOT AUTHORIZED
 ```
 
-Authorized object: the narrow headless support-aware Analysis
+Implemented object: the narrow headless support-aware Analysis
 tilting-tendency sibling query named in §17.
 
 Not authorized: live T1 rewiring, Explore Source → Analysis,
@@ -995,7 +994,7 @@ injecting Analysis EWP into DiagnosticTiltingTendency is not
   Analysis T1
 this file does not rewire Explore / Guided / live T1
 this file does not reopen 22 / 26 physics
-this file does not include implementation
+live T1 integration is out of this sibling slice
 ```
 
 ---
@@ -1017,11 +1016,11 @@ SIBLING:           queryAnalysisTiltingTendencyAt
 REPRESENTATION:    explicit Source vs Analysis; caller-owned
 PROVENANCE:        mixed origin named; reference column
 GUIDED / EXPLORE:  unchanged
-FIRST SLICE:       headless sibling AUTHORIZED; not implemented
-                   here
+FIRST SLICE:       headless sibling IMPLEMENTED
+                   (analysisTiltingQuery.ts)
 BL-010:            column core IMPLEMENTED;
                    support-aware ω_h IMPLEMENTED;
-                   Analysis T1 sibling NOT STARTED / AUTHORIZED;
+                   Analysis T1 sibling IMPLEMENTED;
                    live consumer rewiring NOT STARTED /
                    NOT AUTHORIZED
 ```
@@ -1030,6 +1029,12 @@ BL-010:            column core IMPLEMENTED;
 
 ## 25. Implementation
 
-This document does not include implementation.
-Authorized later object: §17.
+Headless sibling is implemented:
+
+```text
+src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
+  queryAnalysisTiltingTendencyAt
+```
+
 Existing `DiagnosticTiltingTendency` and live labs are unchanged.
+Live Explore / Guided / Inspector rewiring is out of this slice.
