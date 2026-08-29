@@ -218,10 +218,11 @@ describe("trajectory tilting what-if glyph (no WebGLRenderer)", () => {
     disposeTrajectoryTiltingWhatIfGlyph(overlay);
   });
 
-  it("AM AN no picking change, no Analysis query, not wired", () => {
+  it("AM AN no picking change, no Analysis query in the glyph module", () => {
     expect(pickSrc).not.toMatch(/trajectoryTiltingWhatIf/);
-    expect(tracerSceneSrc).not.toMatch(/trajectoryTiltingWhatIf/);
-    expect(appSrc).not.toMatch(/trajectoryTiltingWhatIf/);
+    expect(tracerSceneSrc).toMatch(/createTrajectoryTiltingWhatIfGlyph/);
+    expect(tracerSceneSrc).not.toMatch(/queryAnalysisTilting/);
+    expect(appSrc).not.toMatch(/trajectoryTiltingWhatIfGlyph/);
     expect(glyphSrc).not.toMatch(/queryAnalysisTilting/);
     expect(glyphSrc).not.toMatch(/analysisTiltingQuery/);
     expect(glyphSrc).not.toMatch(/trajectoryTiltingGlyph\.js/);

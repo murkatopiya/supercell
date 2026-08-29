@@ -332,9 +332,10 @@ describe("trajectory tilting glyph (no WebGLRenderer)", () => {
     expect(glyphSrc).not.toMatch(/analysisTiltingQuery/);
     expect(glyphSrc).not.toMatch(/DiagnosticTiltingTendency/);
     expect(glyphSrc).not.toMatch(/horizontalVorticityFromShear/);
-    expect(tracerSceneSrc).not.toMatch(/trajectoryTiltingGlyph/);
+    expect(tracerSceneSrc).toMatch(/createTrajectoryTiltingGlyph/);
+    expect(tracerSceneSrc).not.toMatch(/queryAnalysisTilting/);
     expect(pickSrc).not.toMatch(/trajectoryTiltingGlyph/);
-    expect(appSrc).not.toMatch(/trajectoryTiltingGlyph/);
+    expect(appSrc).not.toMatch(/from ["'].*trajectoryTiltingGlyph\.js["']/);
     expect(createExploreLabSrc).not.toMatch(/trajectoryTiltingGlyph/);
     expect(createExploreLabSrc).not.toMatch(/queryAnalysisTilting/);
   });

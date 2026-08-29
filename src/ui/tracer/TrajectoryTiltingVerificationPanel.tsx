@@ -1,4 +1,5 @@
 import type { TrajectoryTiltingVerificationModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingVerification.js";
+import type { TrajectoryTiltingRecordedSampleContext } from "../../data/escHrTimeAnalysis/trajectoryTiltingVerification.js";
 import {
   alignmentAbsenceCopy,
   formatVerificationCosTheta,
@@ -82,6 +83,7 @@ function UnsupportedBody({
           ? "No Analysis column. No Analysis T1. Source T1 is not a fallback."
           : "Out of Analysis domain. No Analysis T1. This is not a numeric zero."}
       </p>
+      <RecordedSampleBlock sample={model.recordedSample} />
       {model.status === "OUT_OF_DOMAIN" ? (
         <ProvenanceBlock
           representation={model.representation}
@@ -113,10 +115,18 @@ function SupportedBody({
       >
         {model.support}
       </p>
+      {boundary ? (
+        <p className="trajectory-tilting-verify__hint">
+          BOUNDARY_CONDITIONED: numeric Analysis T1 remains valid with typed
+          support. This is not FULL_SUPPORT.
+        </p>
+      ) : null}
       <p className="trajectory-tilting-verify__hint">
         Geometry teaches. Numbers verify. These values are the atomic Analysis
-        explanation at this recorded sample, not a second T1 calculation.
+        explanation at this recorded sample, not Source Point Diagnostics and
+        not a second T1 calculation.
       </p>
+      <RecordedSampleBlock sample={model.recordedSample} />
       <p className="trajectory-tilting-verify__equation">{T1_PRODUCT_EQUATION}</p>
       {defined ? (
         <p className="trajectory-tilting-verify__equation">
@@ -183,6 +193,28 @@ function SupportedBody({
         cutoffWavelengthS={model.provenance.cutoffWavelengthS}
       />
     </>
+  );
+}
+
+function RecordedSampleBlock({
+  sample,
+}: {
+  sample: TrajectoryTiltingRecordedSampleContext | undefined;
+}) {
+  if (sample === undefined) {
+    return null;
+  }
+  return (
+    <dl className="trajectory-tilting-verify__rows">
+      <Row
+        label="Recorded trajectory sample position (m)"
+        value={`${sample.position.x}, ${sample.position.y}, ${sample.position.z}`}
+      />
+      <Row
+        label="Recorded simulation time (s)"
+        value={String(sample.simulationTime)}
+      />
+    </dl>
   );
 }
 

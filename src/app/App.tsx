@@ -24,6 +24,8 @@ import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
 import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
 import { PointDiagnosticsPanel } from "../ui/tracer/PointDiagnosticsPanel.js";
 import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
+import { TrajectoryTiltingVerificationPanel } from "../ui/tracer/TrajectoryTiltingVerificationPanel.js";
+import { TrajectoryTiltingWhatIfPanel } from "../ui/tracer/TrajectoryTiltingWhatIfPanel.js";
 import {
   TracerRuntimeControls,
   DEFAULT_TRACER_TIME_SCALE,
@@ -73,11 +75,18 @@ import {
   type HistoricalPathProbe,
   type InspectionSampleMode,
 } from "../interaction/HistoricalPathProbe.js";
+import { tracerIdForSlot } from "../ui/tracer/resolveTracerPointerUp.js";
 import {
   TracerSelection,
   resolveSelectedTracer,
 } from "../interaction/TracerSelection.js";
-import { tracerIdForSlot } from "../ui/tracer/resolveTracerPointerUp.js";
+import {
+  createExploreHistoricalAnalysisTiltingView,
+  exploreAnalysisTiltingExplorerActive,
+  exploreHistoricalAnalysisTiltingRecordedIdentity,
+  initialExploreWhatIfTheta,
+  resolveExploreHistoricalAnalysisTiltingExplanation,
+} from "../explore/resolveExploreHistoricalAnalysisTilting.js";
 import { ExploreFollowControl } from "../ui/tracer/ExploreFollowControl.js";
 import { ExploreResetViewControl } from "../ui/tracer/ExploreResetViewControl.js";
 import {
@@ -193,6 +202,10 @@ export function App() {
   const [historicalProbe, setHistoricalProbe] =
     useState<HistoricalPathProbe | null>(null);
   const historicalProbeRef = useRef<HistoricalPathProbe | null>(null);
+  const [thetaWhatIf, setThetaWhatIf] = useState<number | undefined>(
+    undefined,
+  );
+  const [thetaWhatIfIdentity, setThetaWhatIfIdentity] = useState("");
   const followEnabledRef = useRef(false);
   const [followEnabled, setFollowEnabledState] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
@@ -558,6 +571,54 @@ export function App() {
   const inspectionMode: InspectionSampleMode =
     historicalSample !== undefined ? "historical" : "current";
 
+  const analysisTiltingExplorerOn =
+    explore !== null &&
+    exploreAnalysisTiltingExplorerActive(
+      exploreEnvironmentIdentity,
+      historicalSample !== undefined,
+    );
+  const analysisTiltingExplanation =
+    analysisTiltingExplorerOn &&
+    explore !== null &&
+    historicalSample !== undefined
+      ? resolveExploreHistoricalAnalysisTiltingExplanation(
+          explore.analysisColumn,
+          explore.tiltingTendency.updraft,
+          historicalSample.position,
+          historicalSample.simulationTime,
+        )
+      : undefined;
+  const analysisTiltingRecordedIdentity =
+    analysisTiltingExplorerOn && historicalSample !== undefined
+      ? exploreHistoricalAnalysisTiltingRecordedIdentity(
+          exploreEnvironmentIdentity,
+          historicalSample.tracerId,
+          historicalSample.historyIndex,
+          historicalSample.position,
+          historicalSample.simulationTime,
+        )
+      : "";
+  const pendingThetaWhatIf =
+    analysisTiltingRecordedIdentity !== thetaWhatIfIdentity
+      ? initialExploreWhatIfTheta(analysisTiltingExplanation)
+      : thetaWhatIf;
+  if (analysisTiltingRecordedIdentity !== thetaWhatIfIdentity) {
+    setThetaWhatIfIdentity(analysisTiltingRecordedIdentity);
+    setThetaWhatIf(pendingThetaWhatIf);
+  }
+  const analysisTiltingView =
+    analysisTiltingExplanation !== undefined &&
+    historicalSample !== undefined
+      ? createExploreHistoricalAnalysisTiltingView(
+          analysisTiltingExplanation,
+          {
+            position: historicalSample.position,
+            simulationTime: historicalSample.simulationTime,
+          },
+          pendingThetaWhatIf,
+        )
+      : undefined;
+
   const environmentSurface = (
     <EnvironmentSurface
       open={environmentOpen}
@@ -601,6 +662,16 @@ export function App() {
       analysisColumn={explore?.analysisColumn ?? null}
       analysisUpdraft={
         explore !== null ? explore.tiltingTendency.updraft : null
+      }
+      analysisTiltingGlyphModel={
+        analysisTiltingView?.glyphModel.kind === "SUPPORTED"
+          ? analysisTiltingView.glyphModel
+          : null
+      }
+      analysisTiltingWhatIfModel={
+        analysisTiltingView?.whatIfModel.kind === "AVAILABLE"
+          ? analysisTiltingView.whatIfModel
+          : null
       }
       timestep={DEMO_SCENARIO.simulation.timestep}
       paused={paused || howItWorksOpen}
@@ -817,6 +888,22 @@ export function App() {
               observation={pointDiagnostics}
               mode={inspectionMode}
             />
+            {analysisTiltingExplorerOn ? (
+              <>
+                <TrajectoryTiltingVerificationPanel
+                  model={analysisTiltingView?.verificationModel}
+                />
+                <TrajectoryTiltingWhatIfPanel
+                  result={analysisTiltingView?.whatIfModel}
+                  onThetaWhatIfChange={setThetaWhatIf}
+                  onReset={() =>
+                    setThetaWhatIf(
+                      initialExploreWhatIfTheta(analysisTiltingExplanation),
+                    )
+                  }
+                />
+              </>
+            ) : null}
           </div>
         </section>
       ) : (

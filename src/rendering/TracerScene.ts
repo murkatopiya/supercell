@@ -59,12 +59,29 @@ import {
   disposeWorldCoordinateReference,
 } from "./worldCoordinateReference.js";
 import { ANALYSIS_T1_VALUE_APPEARANCE_V1 } from "./analysisT1ValueAppearanceV1.js";
+import { ANALYSIS_T1_GLYPH_DISPLAY_SCALE_V1 } from "./analysisT1GlyphDisplayScaleV1.js";
+import {
+  ANALYSIS_T1_GLYPH_APPEARANCE_V1,
+  ANALYSIS_T1_WHAT_IF_GLYPH_APPEARANCE_V1,
+} from "./analysisT1GlyphAppearanceV1.js";
 import type { TrajectoryTiltingRenderEncoding } from "../data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.js";
+import type { TrajectoryTiltingGlyphModel } from "../data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.js";
+import type { TrajectoryTiltingWhatIfModel } from "../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
 import {
   createTrajectoryTiltingOverlay,
   disposeTrajectoryTiltingOverlay,
   syncTrajectoryTiltingOverlay,
 } from "./trajectoryTiltingOverlay.js";
+import {
+  createTrajectoryTiltingGlyph,
+  disposeTrajectoryTiltingGlyph,
+  syncTrajectoryTiltingGlyph,
+} from "./trajectoryTiltingGlyph.js";
+import {
+  createTrajectoryTiltingWhatIfGlyph,
+  disposeTrajectoryTiltingWhatIfGlyph,
+  syncTrajectoryTiltingWhatIfGlyph,
+} from "./trajectoryTiltingWhatIfGlyph.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 export {
@@ -116,6 +133,8 @@ export class TracerScene {
   private readonly controls: OrbitControls;
   private readonly slots: TracerObserveSlot[] = [];
   private readonly analysisTiltingOverlays: THREE.Group[] = [];
+  private analysisTiltingGlyph: THREE.Group | undefined;
+  private analysisTiltingWhatIfGlyph: THREE.Group | undefined;
   private preview: THREE.Mesh | undefined;
   private selectionHalo: THREE.Mesh | undefined;
   private hoverHalo: THREE.Mesh | undefined;
@@ -250,6 +269,8 @@ export class TracerScene {
       disposeTracerObserveSlot(slot);
     }
     this.disposeAllAnalysisTiltingOverlays();
+    this.disposeAnalysisTiltingGlyph();
+    this.disposeAnalysisTiltingWhatIfGlyph();
     this.slots.length = 0;
     this.selectedSlotIndex = null;
     this.hoveredOccupancyIndex = null;
@@ -505,6 +526,52 @@ export class TracerScene {
   }
 
   /**
+   * Actual Analysis mechanism glyph at the selected recorded sample.
+   * Null hides it. Does not query Analysis physics. Raycast disabled.
+   */
+  syncAnalysisTiltingGlyph(model: TrajectoryTiltingGlyphModel | null): void {
+    if (model === null) {
+      this.disposeAnalysisTiltingGlyph();
+      return;
+    }
+    if (this.analysisTiltingGlyph === undefined) {
+      this.analysisTiltingGlyph = createTrajectoryTiltingGlyph();
+      this.analysisTiltingGlyph.renderOrder = 2;
+      this.scene.add(this.analysisTiltingGlyph);
+    }
+    syncTrajectoryTiltingGlyph(
+      this.analysisTiltingGlyph,
+      model,
+      ANALYSIS_T1_GLYPH_DISPLAY_SCALE_V1,
+      ANALYSIS_T1_GLYPH_APPEARANCE_V1,
+    );
+  }
+
+  /**
+   * Hypothetical what-if glyph. Does not replace the actual glyph.
+   * Null hides it. Raycast disabled.
+   */
+  syncAnalysisTiltingWhatIfGlyph(
+    model: TrajectoryTiltingWhatIfModel | null,
+  ): void {
+    if (model === null) {
+      this.disposeAnalysisTiltingWhatIfGlyph();
+      return;
+    }
+    if (this.analysisTiltingWhatIfGlyph === undefined) {
+      this.analysisTiltingWhatIfGlyph = createTrajectoryTiltingWhatIfGlyph();
+      this.analysisTiltingWhatIfGlyph.renderOrder = 2;
+      this.scene.add(this.analysisTiltingWhatIfGlyph);
+    }
+    syncTrajectoryTiltingWhatIfGlyph(
+      this.analysisTiltingWhatIfGlyph,
+      model,
+      ANALYSIS_T1_GLYPH_DISPLAY_SCALE_V1,
+      ANALYSIS_T1_WHAT_IF_GLYPH_APPEARANCE_V1,
+    );
+  }
+
+  /**
    * Derived Analysis T1 overlay beside occupancy trails.
    * Null / empty encodings hide and dispose overlay groups.
    * Does not query Analysis physics. Overlay raycast stays disabled.
@@ -584,6 +651,24 @@ export class TracerScene {
     while (this.analysisTiltingOverlays.length > 0) {
       this.disposeLastAnalysisTiltingOverlay();
     }
+  }
+
+  private disposeAnalysisTiltingGlyph(): void {
+    if (this.analysisTiltingGlyph === undefined) {
+      return;
+    }
+    this.scene.remove(this.analysisTiltingGlyph);
+    disposeTrajectoryTiltingGlyph(this.analysisTiltingGlyph);
+    this.analysisTiltingGlyph = undefined;
+  }
+
+  private disposeAnalysisTiltingWhatIfGlyph(): void {
+    if (this.analysisTiltingWhatIfGlyph === undefined) {
+      return;
+    }
+    this.scene.remove(this.analysisTiltingWhatIfGlyph);
+    disposeTrajectoryTiltingWhatIfGlyph(this.analysisTiltingWhatIfGlyph);
+    this.analysisTiltingWhatIfGlyph = undefined;
   }
 
   /**

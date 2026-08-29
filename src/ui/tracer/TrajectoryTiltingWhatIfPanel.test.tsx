@@ -198,7 +198,7 @@ describe("TrajectoryTiltingWhatIfPanel", () => {
     expect(html).not.toContain("spin-up");
     expect(panelSrc).not.toMatch(/queryAnalysisTilting/);
     expect(panelSrc).not.toMatch(/DiagnosticTiltingTendency/);
-    expect(appSrc).not.toMatch(/TrajectoryTiltingWhatIfPanel/);
+    expect(appSrc).toMatch(/TrajectoryTiltingWhatIfPanel/);
     expect(createExploreLabSrc).not.toMatch(/TrajectoryTiltingWhatIfPanel/);
   });
 });

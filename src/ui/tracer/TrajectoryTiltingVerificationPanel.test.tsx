@@ -192,7 +192,7 @@ describe("TrajectoryTiltingVerificationPanel", () => {
     expect(panelSrc).not.toMatch(/queryAnalysisTilting/);
     expect(panelSrc).not.toMatch(/queryAnalysisNativeSegmentVorticityAt/);
     expect(panelSrc).not.toMatch(/DiagnosticTiltingTendency/);
-    expect(appSrc).not.toMatch(/TrajectoryTiltingVerificationPanel/);
+    expect(appSrc).toMatch(/TrajectoryTiltingVerificationPanel/);
     expect(appSrc).not.toMatch(/createTrajectoryTiltingVerificationModel/);
     expect(createExploreLabSrc).not.toMatch(/TrajectoryTiltingVerificationPanel/);
   });

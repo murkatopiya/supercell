@@ -24,6 +24,8 @@ import type { Vec3 } from "../../core/math/Vec3.js";
 import type { VelocityField } from "../../core/fields/VelocityField.js";
 import type { EscHrTimeAnalysisColumn } from "../../data/escHrTimeAnalysis/types.js";
 import type { VerticalEnvelopeUpdraftField } from "../../physics/storm/VerticalEnvelopeUpdraftField.js";
+import type { TrajectoryTiltingGlyphModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.js";
+import type { TrajectoryTiltingWhatIfModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
 import {
   encodeExploreAnalysisTiltingForPathHistory,
   exploreAnalysisTiltingHistoryFingerprint,
@@ -143,6 +145,15 @@ export interface TracerViewportProps {
    */
   analysisUpdraft?: VerticalEnvelopeUpdraftField | null;
   /**
+   * Slice D glyph model for the selected recorded sample, or null.
+   * Guided omits this. Viewport does not query Analysis.
+   */
+  analysisTiltingGlyphModel?: TrajectoryTiltingGlyphModel | null;
+  /**
+   * Slice F what-if glyph model, or null. Does not replace the actual glyph.
+   */
+  analysisTiltingWhatIfModel?: TrajectoryTiltingWhatIfModel | null;
+  /**
    * World position of the inspected historical sample, or null.
    * Presentation-only; Follow still tracks the live glyph.
    */
@@ -200,6 +211,8 @@ export function TracerViewport({
   onPathSampleSelect,
   analysisColumn = null,
   analysisUpdraft = null,
+  analysisTiltingGlyphModel = null,
+  analysisTiltingWhatIfModel = null,
   historicalProbePosition = null,
   onSimulationAdvanced,
   followEnabledRef,
@@ -223,6 +236,8 @@ export function TracerViewport({
   const onPathSampleSelectRef = useRef(onPathSampleSelect);
   const analysisColumnRef = useRef(analysisColumn);
   const analysisUpdraftRef = useRef(analysisUpdraft);
+  const analysisTiltingGlyphModelRef = useRef(analysisTiltingGlyphModel);
+  const analysisTiltingWhatIfModelRef = useRef(analysisTiltingWhatIfModel);
   const historicalProbePositionRef = useRef(historicalProbePosition);
   const onSimulationAdvancedRef = useRef(onSimulationAdvanced);
   const followEnabledSourceRef = useRef(followEnabledRef);
@@ -246,6 +261,8 @@ export function TracerViewport({
   onPathSampleSelectRef.current = onPathSampleSelect;
   analysisColumnRef.current = analysisColumn;
   analysisUpdraftRef.current = analysisUpdraft;
+  analysisTiltingGlyphModelRef.current = analysisTiltingGlyphModel;
+  analysisTiltingWhatIfModelRef.current = analysisTiltingWhatIfModel;
   historicalProbePositionRef.current = historicalProbePosition;
   onSimulationAdvancedRef.current = onSimulationAdvanced;
   followEnabledSourceRef.current = followEnabledRef;
@@ -350,6 +367,10 @@ export function TracerViewport({
         analysisTiltingFingerprint = "";
         scene.syncAnalysisTiltingOverlays(null);
       }
+      scene.syncAnalysisTiltingGlyph(analysisTiltingGlyphModelRef.current);
+      scene.syncAnalysisTiltingWhatIfGlyph(
+        analysisTiltingWhatIfModelRef.current,
+      );
       if (workbenchScene !== null && visualAirflowPopulation !== null) {
         const field = visualAirflowFieldRef.current;
         const eulerian = eulerianAirflowSamplesRef.current;

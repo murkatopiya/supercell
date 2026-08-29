@@ -669,17 +669,10 @@ describe("I2 wiring: overlay observe-only, picking unchanged, I3 unwired", () =>
     expect(simulationSrc).not.toMatch(/encodeExploreAnalysisTilting/);
   });
 
-  it("does not wire I3 glyph, verification, or what-if", () => {
-    expect(appSrc).not.toMatch(/trajectoryTiltingGlyph/);
-    expect(appSrc).not.toMatch(/TrajectoryTiltingVerificationPanel/);
-    expect(appSrc).not.toMatch(/TrajectoryTiltingWhatIfPanel/);
-    expect(appSrc).not.toMatch(/trajectoryTiltingWhatIfGlyph/);
-    expect(viewportSrc).not.toMatch(/trajectoryTiltingGlyph/);
-    expect(viewportSrc).not.toMatch(/TrajectoryTiltingVerificationPanel/);
-    expect(viewportSrc).not.toMatch(/TrajectoryTiltingWhatIfPanel/);
-    expect(tracerSceneSrc).not.toMatch(/trajectoryTiltingGlyph/);
-    expect(tracerSceneSrc).not.toMatch(/trajectoryTiltingWhatIfGlyph/);
+  it("I2 encoder does not own I3 glyph, verification, or what-if factories", () => {
     expect(encoderSrc).not.toMatch(/createTrajectoryTiltingGlyphModel/);
     expect(encoderSrc).not.toMatch(/createTrajectoryTiltingWhatIfModel/);
+    expect(encoderSrc).not.toMatch(/TrajectoryTiltingVerificationPanel/);
+    expect(encoderSrc).not.toMatch(/TrajectoryTiltingWhatIfPanel/);
   });
 });

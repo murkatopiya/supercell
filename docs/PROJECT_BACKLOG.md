@@ -473,60 +473,43 @@ not this item.
 ### BL-048 — Trajectory Tilting Explorer V1
 
 Category: UX
-Status: PARTIAL / SLICES A–F COMPLETE;
-CAL COMPLETE / ACCEPTED V1;
-LANDING INTEGRATION SLICES I1–I2 COMPLETE / ACCEPTED;
-glyph / verify / what-if unwired
+Status: CLOSED / COMPLETE
 Origin: architecture `62`; BL-047 class B visualization
-Why retained: BL-047 accepted the scientific boundary for
-path-parameterized rotational diagnostics and required a
-separate architecture SoT before any class B surface.
-Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
-SLICES A–F IMPLEMENTED / ACCEPTED / LANDING INTEGRATION
-SLICES I1–I2 IMPLEMENTED / ACCEPTED / SLICE G NOT STARTED /
-DEFERRED / CAL COMPLETE / ACCEPTED V1)
-is that SoT. Slice A is the headless atomic Analysis
-explanation query
-(`queryAnalysisTiltingExplanationAt`).
-Slice B is the headless recorded-path Analysis projection
-(`projectAnalysisTiltingAlongRecordedPath`).
-Slice C is renderer-facing value/support encoding
-(`encodeTrajectoryTiltingForRender` + optional overlay).
-Slice D is the headless mechanism-glyph model plus
-Three.js capability
-(`createTrajectoryTiltingGlyphModel` + optional glyph).
-Slice E is the headless numeric verification model plus
-read-only presentation panel
-(`createTrajectoryTiltingVerificationModel` +
-`TrajectoryTiltingVerificationPanel`).
-Slice F is the ephemeral what-if alignment counterfactual
-(`createTrajectoryTiltingWhatIfModel` + optional glyph
-and panel). Magnitudes stay fixed; only θ varies;
-actual T1 remains Analysis authority; laboratory state
-is unchanged. Degenerate / OOD / COLUMN disable what-if.
-Renderer / glyph / numeric-verify / what-if capability is
-complete.
-`T1_COLOR_SCALE_V1` display saturation is ACCEPTED V1
-(`|T1|_sat = 6.100×10⁻⁵ s⁻²`; no `|T1|_ε`).
-Landing Integration Slice I1 holds the matching Analysis
-column beside Source EWP at the Explore/App data boundary
-(`exploreEnvironmentRepresentations` /
-`ExploreLab.analysisColumn`). SOURCE ADVECTS. ANALYSIS
-EXPLAINS. Moore and Demo have `analysisColumn = null`
-(`COLUMN_UNAVAILABLE`). Landing Integration Slice I2
-shows Analysis T1 along recorded Explore trajectories
-(`encodeExploreAnalysisTilting` + TracerScene overlay).
-Glyph / verify / what-if remain unwired. Overlay wiring
-is included in this I2 record.
-Slice G (optional `ω_y,current` comparison)
-remains NOT STARTED / DEFERRED.
-It does **not** complete BL-010.
+Closed because: the authorized V1 user-facing surface is
+complete. Slices A–F are IMPLEMENTED / ACCEPTED.
+`T1_COLOR_SCALE_V1` is CAL COMPLETE / ACCEPTED V1.
+Landing Integration Slices I1–I3 are IMPLEMENTED /
+ACCEPTED. Architecture `62` Feature V1 is INTEGRATED /
+COMPLETE except explicitly deferred Slice G.
+Intended scope of this item was A–F user-facing
+trajectory diagnostics (atomic explanation, path
+projection, trail encoding, historical-probe glyph,
+numeric verification, what-if alignment) plus the
+Explore landing that makes them observable. That surface
+is now wired:
+
+```text
+colored Analysis T1 trail
+  → exact recorded historical sample
+  → mechanism glyph
+  → numeric verification
+  → optional what-if alignment
+```
+
+Slice G (`ω_y,current` comparison) remains NOT STARTED /
+DEFERRED / NOT AUTHORIZED in architecture `62`. It is
+**not** remaining work of this item and is **not**
+included in this closure.
+This item does **not** complete BL-010.
 It does **not** rewire Source `V_env` into Analysis. It
 does **not** authorize `TILT_Y,total` or `I_tilt`.
 Glyph production meters-per-`s⁻¹` exaggeration remains
 OPEN inside `62` §23 item 4.
-Return when: a later named `62` slice is implemented.
-This index does not include that implementation.
+BOUNDARY trail visual distinction from FULL remains OPEN
+inside `62` §23 item 5; typed BOUNDARY support is visible
+in the I3 verification UI.
+Return when: not applicable; authorized V1 explorer
+surface is complete.
 Authoritative refs:
 [`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md);
 BL-047; `52`; `61`; BL-010 (PARTIAL; I1 sibling available,
@@ -685,11 +668,11 @@ It does **not** complete BL-010.
 The class B visualization architecture that this item
 required is now
 [`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md).
-`62` does not implement the remaining explorer slices and
-does not close remaining research OPEN items (topology,
-flicker, clamp-time flag, `R_y` product role).
-Implementation of the explorer is BL-048
-(PARTIAL / Slices A–E complete; App unwired).
+Authorized explorer slices A–F and landing I1–I3 are
+implemented under BL-048 (CLOSED / COMPLETE). Slice G
+remains DEFERRED / NOT AUTHORIZED. `62` does not close
+remaining research OPEN items (topology, flicker,
+clamp-time flag, `R_y` product role).
 Return when: not applicable as the boundary decision.
 Authoritative refs:
 [`docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`](research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md);
@@ -986,7 +969,7 @@ BL-010 (implementation authorized / not started).
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
 | L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no `TILT_Y,total` / no `I_tilt`; class B V1 architecture is `62` |
-| L. Trajectory Tilting Explorer V1 | BL-048 | PARTIAL / Slices A–F complete; CAL COMPLETE / ACCEPTED V1; I1–I2 COMPLETE / ACCEPTED; glyph/verify/what-if unwired; architecture `62` ACCEPTED; Slice G not started |
+| L. Trajectory Tilting Explorer V1 | BL-048 | CLOSED / COMPLETE; architecture `62` V1 INTEGRATED except deferred G; Slice G NOT AUTHORIZED |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -1015,6 +998,18 @@ Evidence: `58`; research
 `2026-08-28-leise-filter-and-analysis-operator-comparison.md`;
 `2026-08-28-high-resolution-esc-analysis-transform-decision.md`;
 BL-046; BL-045 validation columns.
+
+### BL-048 — Trajectory Tilting Explorer V1
+
+Category: UX
+Status: CLOSED / COMPLETE
+Closed because: authorized A–F user-facing trajectory
+diagnostics plus Explore landing I1–I3 are complete.
+Architecture `62` Feature V1 is INTEGRATED / COMPLETE
+except deferred G. Slice G remains NOT STARTED /
+DEFERRED / NOT AUTHORIZED and is not this closure.
+Full record: §2 UX remainder, same ID.
+Evidence: architecture `62`; BL-047.
 
 The [superseded status notes](#superseded-status-notes-do-not-revive)
 above are historical SoT claims, not retired backlog items.
@@ -1114,17 +1109,19 @@ BL-047:
                Trajectory Tilting Explorer V1 architecture;
                ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                SLICES A–F IMPLEMENTED / ACCEPTED;
-               LANDING INTEGRATION SLICES I1–I2
+               CAL COMPLETE / ACCEPTED V1;
+               LANDING INTEGRATION SLICES I1–I3
                  IMPLEMENTED / ACCEPTED;
-               SLICE G NOT STARTED / DEFERRED;
-               CAL COMPLETE / ACCEPTED V1
+               FEATURE V1 INTEGRATED / COMPLETE
+                 except deferred G;
+               SLICE G NOT STARTED / DEFERRED /
+                 NOT AUTHORIZED
 BL-048:
                Trajectory Tilting Explorer V1;
-               PARTIAL / SLICES A–F COMPLETE;
-               CAL COMPLETE / ACCEPTED V1;
-               LANDING INTEGRATION SLICES I1–I2 COMPLETE;
-               glyph/verify/what-if unwired;
-               architecture 62 ACCEPTED
+               CLOSED / COMPLETE;
+               A–F user-facing diagnostics + I1–I3 landing;
+               Slice G remains DEFERRED / NOT AUTHORIZED
+               in architecture 62 and is not this closure
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:

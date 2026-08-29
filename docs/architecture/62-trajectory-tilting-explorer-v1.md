@@ -3,9 +3,10 @@
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
 SLICES A–F IMPLEMENTED / ACCEPTED /
-LANDING INTEGRATION SLICES I1–I2 IMPLEMENTED / ACCEPTED /
-SLICE G NOT STARTED / DEFERRED /
-CAL COMPLETE / ACCEPTED V1
+CAL COMPLETE / ACCEPTED V1 /
+LANDING INTEGRATION SLICES I1–I3 IMPLEMENTED / ACCEPTED /
+FEATURE V1 INTEGRATED / COMPLETE except deferred G /
+SLICE G NOT STARTED / DEFERRED / NOT AUTHORIZED
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
@@ -20,13 +21,20 @@ IMPLEMENTED / ACCEPTED. Landing Integration Slice I1
 Explore/App data boundary) is IMPLEMENTED / ACCEPTED.
 Landing Integration Slice I2 (Analysis T1 overlay along
 recorded Explore trajectories) is IMPLEMENTED / ACCEPTED.
-Slice G remains NOT STARTED / DEFERRED. Numeric
+Landing Integration Slice I3 (exact historical probe
+→ Slice A explanation → Slice D glyph + Slice E
+verification + Slice F what-if) is IMPLEMENTED / ACCEPTED.
+Feature Architecture 62 V1 is INTEGRATED / COMPLETE
+except explicitly deferred Slice G. Slice G remains
+NOT STARTED / DEFERRED / NOT AUTHORIZED. Numeric
 `T1_COLOR_SCALE_V1` display saturation is
 ACCEPTED V1 (`|T1|_sat = 6.100×10⁻⁵ s⁻²`).
-`|T1|_ε` is not part of V1. Glyph / verify / what-if
-remain unwired. Glyph display-scale
-exaggeration remains an injected capability; the
-production meters-per-`s⁻¹` number is OPEN (§23 item 4).
+`|T1|_ε` is not part of V1. Explore I3 injects
+`ANALYSIS_T1_GLYPH_DISPLAY_SCALE_V1` as presentation
+wiring; the production meters-per-`s⁻¹` freeze remains
+OPEN (§23 item 4). BOUNDARY typed support is visible in
+the verification UI; trail visual distinction from FULL
+remains OPEN (§23 item 5).
 **Scope:** scientific UX, diagnostic authority, encoding, and
 slice boundaries for Trajectory Tilting Explorer V1.
 Not a T1 physics reopen. Not `TILT_Y,total`. Not `I_tilt`.
@@ -70,8 +78,14 @@ is implemented in
 `src/rendering/TracerScene.ts`: recorded history +
 Analysis column + prescribed updraft → Slice B →
 Slice C encoding with `T1_COLOR_SCALE_V1` → Analysis T1
-overlay. Glyph / verify / what-if remain unwired.
-Slice G remains NOT STARTED / DEFERRED.
+overlay. Landing Integration Slice I3 is implemented in
+`src/explore/resolveExploreHistoricalAnalysisTilting.ts`,
+`src/app/App.tsx`, `src/ui/tracer/TracerViewport.tsx`,
+and `src/rendering/TracerScene.ts`: selected
+`(tracerId, historyIndex)` → recorded `(P, t)` →
+`queryAnalysisTiltingExplanationAt` → glyph / verify /
+what-if. Slice G remains NOT STARTED / DEFERRED /
+NOT AUTHORIZED.
 
 Predecessor (not replaced):
 
@@ -128,7 +142,11 @@ It authorizes:
 - an Explore Analysis diagnostic sibling beside Source EWP
   (Landing Integration Slice I1 COMPLETE / ACCEPTED);
 - an Explore Analysis T1 overlay along recorded trajectories
-  (Landing Integration Slice I2 COMPLETE / ACCEPTED).
+  (Landing Integration Slice I2 COMPLETE / ACCEPTED);
+- an Explore historical-probe Analysis explanation
+  (Landing Integration Slice I3 COMPLETE / ACCEPTED):
+  exact recorded sample → Slice A → glyph + verification
+  + optional what-if.
 
 It does **not** authorize:
 
@@ -1078,7 +1096,7 @@ The what-if scalar is not actual T1 and must not overwrite
 or masquerade as it.
 
 Indicative split (Slice F implements this as capability;
-App / Explore remain unwired):
+Landing Integration Slice I3 wires it in Explore):
 
 ```text
 actual     = AnalysisTiltingExplanationResult   // frozen query
@@ -1402,12 +1420,13 @@ IMPLEMENTED / ACCEPTED. Slice D glyph capability is
 IMPLEMENTED / ACCEPTED. Slice E numeric verification
 capability is IMPLEMENTED / ACCEPTED. Slice F what-if
 capability is IMPLEMENTED / ACCEPTED. Slice G is
-NOT STARTED.
+NOT STARTED / DEFERRED / NOT AUTHORIZED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
 renderer slice. `T1_COLOR_SCALE_V1` is a separate CAL V1
 object. Overlay wiring is Landing Integration Slice I2.
-Glyph / verify / what-if remain unwired.
+Glyph / verify / what-if wiring is Landing Integration
+Slice I3.
 
 ### Slice A — atomic Analysis explanation result
 
@@ -1487,8 +1506,8 @@ tracers. Missing / null column remains
 Landing Integration Slice I1 implements that sibling
 availability at the Explore/App data boundary. Overlay
 wiring is Landing Integration Slice I2. Glyph / verify /
-what-if remain unwired. That is not live Analysis `V_env`
-rewiring. BL-010 remains PARTIAL.
+what-if wiring is Landing Integration Slice I3. That is
+not live Analysis `V_env` rewiring. BL-010 remains PARTIAL.
 
 ### Landing Integration Slice I1 — Analysis sibling beside Source EWP
 
@@ -1589,6 +1608,111 @@ src/ui/tracer/TracerViewport.tsx
 
 Glyph / verify / what-if are not included in this slice.
 
+### Landing Integration Slice I3 — Analysis explanation at a historical sample
+
+**Status:** IMPLEMENTED / ACCEPTED.
+
+```text
+THE GEOMETRY THAT EXPLAINS T1
+MUST BE THE SAME GEOMETRY
+FROM WHICH THAT EXACT T1 WAS CALCULATED.
+```
+
+User flow (Explore only):
+
+```text
+colored Analysis T1 trail
+  → click exact recorded historical sample
+  → mechanism glyph
+  → numeric verification
+  → optional what-if alignment
+```
+
+Selection identity remains Architecture `52`:
+`(tracerId, historyIndex)` → exact recorded
+`(position, simulationTime)`. Selection stores identity.
+Diagnostic state resolves from identity + current
+Explore lab / environment. No interpolated probe, no
+segment fraction, no nearest rendered T1 point, no
+overlay picking, and no copied diagnostic payload as
+selection authority.
+
+Physics authority is Slice A only:
+
+```text
+queryAnalysisTiltingExplanationAt(
+  ExploreLab.analysisColumn,
+  prescribed updraft,
+  recorded position,
+  recorded simulationTime
+)
+```
+
+UI does not reconstruct ω_h, ∇_h Vy, T1, θ, norms,
+support, or provenance. Trail encoding is not a
+scientific payload. Trail says where to look. Atomic
+explanation says why.
+
+Availability:
+
+```text
+Explore + exact historical sample
+Demo: no Analysis I3 UX
+Moore: typed COLUMN_UNAVAILABLE; no Source T1 fallback
+Guided: not extended
+OOD: typed unavailable; no invented numeric T1 / glyph
+BOUNDARY_CONDITIONED: numeric valid; typed support shown
+```
+
+Environment switch re-resolves or clears. It does not
+leave a stale glyph / panel from the previous identity.
+
+Composition: existing Explore observation column
+(Tracer Inspector + Source Point Diagnostics remain).
+I3 adds Analysis T1 verification and what-if below them.
+Glyphs live in TracerScene beside the I2 overlay.
+
+Trail ↔ probe: for supported historyIndex i, if a
+drawable segment owned by i exists, verification T1
+equals the raw atomic explanation T1 at i (not RGB).
+A probe at i remains valid when `[i, i+1]` is not
+drawable because i+1 is unsupported.
+
+Terminal ground-clamped records may still receive the
+steady Eulerian Analysis query at recorded P/t because
+Slice A supports that lookup. V1 does not call that
+an exact parcel endpoint budget, a material terminal
+tendency, or an integrated parcel result.
+
+Homes:
+
+```text
+src/explore/resolveExploreHistoricalAnalysisTilting.ts
+  exploreAnalysisTiltingExplorerActive
+  resolveExploreHistoricalAnalysisTiltingExplanation
+  createExploreHistoricalAnalysisTiltingView
+
+src/app/App.tsx
+  historical probe → Slice A → D/E/F models
+  thetaWhatIf ephemeral; reset on recorded identity
+
+src/ui/tracer/TracerViewport.tsx
+  passes packaged glyph models; does not query Analysis
+
+src/rendering/TracerScene.ts
+  syncAnalysisTiltingGlyph
+  syncAnalysisTiltingWhatIfGlyph
+  dispose on clear / unmount; raycast disabled
+
+src/rendering/analysisT1GlyphDisplayScaleV1.ts
+  presentation meters-per-s⁻¹ injection; §23 item 4 OPEN
+
+src/rendering/analysisT1GlyphAppearanceV1.ts
+  artistic actual / hypothetical glyph colors
+```
+
+Slice G is not included in this slice.
+
 ### Slice C — renderer value / support encoding
 
 **Status:** IMPLEMENTED / ACCEPTED as renderer capability.
@@ -1655,9 +1779,11 @@ does not itself wire TracerScene / App / Explore
 ### Slice D — historical-probe 3D geometry glyph
 
 **Status:** IMPLEMENTED / ACCEPTED as glyph capability.
-Production App activation is caller-column-blocked.
-Exact production display-scale exaggeration remains OPEN
-(§23 item 4).
+Production Explore wiring is Landing Integration Slice I3,
+not this slice record. Exact production display-scale
+exaggeration remains OPEN (§23 item 4). I3 injects
+`ANALYSIS_T1_GLYPH_DISPLAY_SCALE_V1` as presentation
+wiring only.
 
 Homes:
 
@@ -1675,14 +1801,14 @@ only when `ALIGNMENT_DEFINED`. Environmental language.
 Not pickable as a tracer. Shared origin is visual
 convention only. Display scale is injected and common to
 both operands; no per-vector normalization. Does not
-recompute scientific quantities. Does not wire
-TracerScene / App / Explore.
+recompute scientific quantities. Does not itself wire
+TracerScene / App / Explore (I3 consumes this capability).
 
 ### Slice E — numeric verify / provenance readout
 
 **Status:** IMPLEMENTED / ACCEPTED as model / presentation
-capability. Production App activation is caller-column-blocked
-and remains unwired.
+capability. Production Explore wiring is Landing
+Integration Slice I3, not this slice record.
 
 Homes:
 
@@ -1702,7 +1828,8 @@ Presentational. Reads the atomic result. Does not recompute
 physics. Does not display live `active` as sample science.
 Does not replace Point Diagnostics Source T1.
 GEOMETRY TEACHES. NUMBERS VERIFY.
-Does not wire TracerScene / App / Explore.
+Does not itself wire TracerScene / App / Explore
+(I3 consumes this capability).
 
 ### Slice F — what-if alignment
 
@@ -1714,7 +1841,8 @@ mutation. Angle manipulation disabled unless actual
 alignment is `ALIGNMENT_DEFINED` (§15). Does not invent
 magnitudes. Does not recompute actual T1. Does not
 integrate over time. Does not compare to `ω_y,current`.
-Does not wire TracerScene / App / Explore.
+Does not itself wire TracerScene / App / Explore
+(I3 consumes this capability).
 
 Public API: `createTrajectoryTiltingWhatIfModel`.
 Optional UI: `TrajectoryTiltingWhatIfPanel`.
@@ -1733,11 +1861,12 @@ reset = θ_whatif := actual θ; laboratory unchanged
 
 ### Slice G — optional existing-rotation comparison
 
-### Slice G — optional existing-rotation comparison
+**Status:** NOT STARTED / DEFERRED / NOT AUTHORIZED.
 
 Deferred. Requires a separate causal-perception review
 before implementation. Distinct encoding from T1. Explicit
-user action. Not default V1.
+user action. Not default V1. This document does not include
+that implementation.
 
 ### Calibration V1 (not a renderer slice)
 
@@ -1756,7 +1885,7 @@ not a Slice C number. Slices A–C may still use an injected
 test fixture. Production signedUnit mapping is
 `T1_COLOR_SCALE_V1` in `t1ColorScaleV1.ts`.
 Overlay wiring consumes this object in Slice I2.
-Glyph / verify / what-if remain unwired.
+Glyph / verify / what-if wiring is Slice I3.
 
 ### Explicitly not a slice of this SoT
 
@@ -1786,8 +1915,12 @@ without a SoT amendment or a dedicated calibration record.
    consistency (Simulation / history change; out of this SoT)
 4. Exact glyph display-scale exaggeration, if any
    (Slice D specified injected common mapping;
-    production meters-per-s⁻¹ remains OPEN)
-5. Exact support-channel styling (pattern / opacity / outline)
+    I3 injects ANALYSIS_T1_GLYPH_DISPLAY_SCALE_V1
+    as presentation wiring; production meters-per-s⁻¹
+    freeze remains OPEN)
+5. Exact support-channel styling (pattern / opacity / outline).
+   I3 shows typed BOUNDARY_CONDITIONED in verification UI.
+   Trail visual distinction from FULL remains OPEN.
 6. Slice G causal-perception treatment, if that slice is ever
    authorized
 7. BL-047 remaining research: T1 vs TILT_Y,total topology;
@@ -1840,10 +1973,13 @@ this file as TILT_Y,total or I_tilt authorization
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                    SLICES A–F IMPLEMENTED / ACCEPTED;
-                   LANDING INTEGRATION SLICES I1–I2
+                   CAL COMPLETE / ACCEPTED V1;
+                   LANDING INTEGRATION SLICES I1–I3
                      IMPLEMENTED / ACCEPTED;
-                   SLICE G NOT STARTED / DEFERRED;
-                   CAL COMPLETE / ACCEPTED V1
+                   FEATURE V1 INTEGRATED / COMPLETE
+                     except deferred G;
+                   SLICE G NOT STARTED / DEFERRED /
+                     NOT AUTHORIZED
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
 T1:                Analysis ω_h · prescribed ∇_h Vy
@@ -1866,16 +2002,19 @@ SCALE:             T1_COLOR_SCALE_V1 |T1|_sat = 6.100e-5 s⁻²;
 GLYPH:             actual atomic Analysis operands at recorded P_i;
                    shared origin visual convention only;
                    injected common s⁻¹→m display scale;
-                   θ absent when degenerate; App unwired
+                   θ absent when degenerate;
+                   I3 Explore wiring COMPLETE / ACCEPTED
 VERIFY:            atomic numbers + provenance; θ display degrees only;
-                   domain radians unchanged; App unwired
+                   domain radians unchanged;
+                   BOUNDARY_CONDITIONED typed in verification UI;
+                   I3 Explore wiring COMPLETE / ACCEPTED
 WHAT-IF:           counterfactual only; magnitudes fixed; θ only;
                    actual remains reference; laboratory unchanged;
                    disabled when alignment is degenerate;
                    no mutation; no prognostic ω_y;
                    visualization convention: ω_h fixed, ∇ hypothetical;
-                   App unwired
-ω_y,current:       not default V1
+                   I3 Explore wiring COMPLETE / ACCEPTED
+ω_y,current:       not default V1; Slice G NOT AUTHORIZED
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved
 HISTORY STORE:     still { position, simulationTime } only
@@ -1887,15 +2026,19 @@ COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
                    ANALYSIS EXPLAINS; not V_env rewiring
 TRAJECTORY GRAPH:  Slice I2; colored [i, i+1] = Analysis T1
                    at recorded sample i
-PICKING:           52 unchanged; overlay is not a pick source
+HISTORICAL PROBE:  Slice I3; exact recorded sample → Slice A
+                   → glyph + verification + optional what-if
+PICKING:           52 unchanged; overlay / glyphs are not pick sources
 BL-010:            PARTIAL; caller Analysis-column sibling
                    available; live V_env rewiring not authorized
 IMPLEMENTATION:    SLICES A–F COMPLETE / ACCEPTED as capability;
                    CAL COMPLETE / ACCEPTED V1;
-                   LANDING INTEGRATION SLICES I1–I2
+                   LANDING INTEGRATION SLICES I1–I3
                      COMPLETE / ACCEPTED;
-                   glyph/verify/what-if unwired;
-                   SLICE G NOT STARTED / DEFERRED
+                   FEATURE V1 INTEGRATED / COMPLETE
+                     except deferred G;
+                   SLICE G NOT STARTED / DEFERRED /
+                     NOT AUTHORIZED
 ```
 
 ---
@@ -1950,10 +2093,12 @@ src/rendering/analysisT1ValueAppearanceV1.ts
 
 src/rendering/TracerScene.ts
   Slice I2: syncAnalysisTiltingOverlays
+  Slice I3: syncAnalysisTiltingGlyph / WhatIfGlyph
   dispose on removeLast / clear / dispose
 
 src/ui/tracer/TracerViewport.tsx
   Slice I2: revision fingerprint + encode + scene sync
+  Slice I3: pass packaged glyph models; no Analysis query
   Guided does not pass Analysis column
 
 src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts
@@ -1967,7 +2112,7 @@ src/rendering/trajectoryTiltingGlyph.ts
   injected common display scale; no per-vector normalization
   θ arc only when ALIGNMENT_DEFINED
   raycast disabled
-  not imported by TracerScene / App / Explore
+  imported by TracerScene (Slice I3); not by App
 
 src/data/escHrTimeAnalysis/trajectoryTiltingVerification.ts
   createTrajectoryTiltingVerificationModel
@@ -1980,7 +2125,8 @@ src/ui/tracer/formatTrajectoryTiltingVerification.ts
 src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
   read-only Analysis T1 verification panel
   degenerate θ absent; orthogonal θ defined
-  not imported by App / Explore / TracerScene
+  recorded P/t and BOUNDARY typed support
+  imported by App (Slice I3)
 
 src/data/escHrTimeAnalysis/trajectoryTiltingWhatIf.ts
   createTrajectoryTiltingWhatIfModel
@@ -1993,12 +2139,12 @@ src/rendering/trajectoryTiltingWhatIfGlyph.ts
   optional hypothetical gradient + θ arc
   does not mutate Slice D actual glyph
   injected common display scale; raycast disabled
-  not imported by TracerScene / App / Explore
+  imported by TracerScene (Slice I3); not by App
 
 src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx
   θ-only control; actual vs hypothetical T1
   laboratory state unchanged
-  not imported by App / Explore / TracerScene
+  imported by App (Slice I3)
 
 src/app/exploreEnvironmentRepresentations.ts
   exploreEnvironmentRepresentations(identity)
@@ -2011,6 +2157,17 @@ src/app/createExploreLab.ts
   ExploreLab.analysisColumn
   identity selects Source advection + Analysis sibling
   Analysis not passed to Simulation
+
+src/explore/resolveExploreHistoricalAnalysisTilting.ts
+  Slice I3: historical (P, t) → Slice A explanation
+  packages D/E/F models; no T1 recomputation
+
+src/rendering/analysisT1GlyphDisplayScaleV1.ts
+  Slice I3 presentation display-length injection
+  §23 item 4 remains OPEN
+
+src/rendering/analysisT1GlyphAppearanceV1.ts
+  Slice I3 artistic actual / hypothetical glyph colors
 ```
 
 Landing Integration Slice I1 holds the Analysis column
@@ -2019,11 +2176,14 @@ SOURCE ADVECTS. ANALYSIS EXPLAINS. It is not included in
 Slice B–F capability and is not live `V_env` rewiring.
 
 Landing Integration Slice I2 wires the Analysis T1 overlay
-along recorded Explore trajectories. Glyph / verify /
-what-if remain unwired. Overlay wiring is included in
-this I2 record.
+along recorded Explore trajectories.
 
-Slice G is NOT STARTED / DEFERRED:
+Landing Integration Slice I3 wires the historical-probe
+Analysis explanation: exact recorded sample → Slice A →
+glyph + verification + optional what-if. Overlay, glyph,
+and panels observe; they do not advect.
+
+Slice G is NOT STARTED / DEFERRED / NOT AUTHORIZED:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
@@ -2053,9 +2213,19 @@ src/rendering/analysisT1ValueAppearanceV1.ts
                                 Slice I2 appearance
 src/rendering/TracerScene.ts
                                 Slice I2 overlay lifecycle
+                                Slice I3 glyph / what-if lifecycle
 src/ui/tracer/TracerViewport.tsx
-                                Slice I2 Explore sync
-optional ω_y,current            Slice G
+                                Slice I2 overlay sync
+                                Slice I3 glyph model pass-through
+src/explore/resolveExploreHistoricalAnalysisTilting.ts
+                                Slice I3 historical explanation
+src/app/App.tsx
+                                Slice I3 Explore inspector wiring
+src/rendering/analysisT1GlyphDisplayScaleV1.ts
+                                Slice I3 presentation scale
+src/rendering/analysisT1GlyphAppearanceV1.ts
+                                Slice I3 glyph appearance
+optional ω_y,current            Slice G (NOT AUTHORIZED)
 ```
 
 Existing `queryAnalysisTiltingTendencyAt` scalar contract

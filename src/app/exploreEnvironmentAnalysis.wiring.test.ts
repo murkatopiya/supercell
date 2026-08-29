@@ -419,7 +419,7 @@ describe("Explore Analysis sibling beside Source EWP", () => {
     }
   });
 
-  it("does not keep a second Analysis selector or wire I3 glyph/verify/what-if", () => {
+  it("does not keep a second Analysis selector; I3 consumes the I1 sibling", () => {
     expect(appSrc).toMatch(
       /enterExplore[\s\S]*createExploreLab\(\s*sceneSlotsRef\.current!,\s*exploreEnvironmentIdentity/s,
     );
@@ -427,13 +427,11 @@ describe("Explore Analysis sibling beside Source EWP", () => {
       /selectExploreEnvironment[\s\S]*createExploreLab\(\s*sceneSlotsRef\.current!,\s*next/s,
     );
     expect(appSrc).not.toMatch(/setAnalysisColumn/);
-    expect(appSrc).not.toMatch(/useState\(.*[Aa]nalysis/);
     expect(appSrc).not.toMatch(/projectAnalysisTiltingAlongRecordedPath/);
     expect(appSrc).not.toMatch(/trajectoryTiltingOverlay/);
-    expect(appSrc).not.toMatch(/trajectoryTiltingGlyph/);
-    expect(appSrc).not.toMatch(/TrajectoryTiltingVerificationPanel/);
-    expect(appSrc).not.toMatch(/TrajectoryTiltingWhatIfPanel/);
     expect(appSrc).not.toMatch(/T1_COLOR_SCALE_V1/);
+    expect(appSrc).toMatch(/TrajectoryTiltingVerificationPanel/);
+    expect(appSrc).toMatch(/TrajectoryTiltingWhatIfPanel/);
     expect(createExploreLabSrc).not.toMatch(
       /projectAnalysisTiltingAlongRecordedPath/,
     );
