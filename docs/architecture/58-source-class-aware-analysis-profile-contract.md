@@ -2,7 +2,8 @@
 
 **Status:** ARCHITECTURE ACCEPTED / ANALYSIS CONTRACT DEFINED /
 HIGH-RESOLUTION ESC PRODUCTION TRANSFORM SPECIFIED IN 59 /
-IMPLEMENTATION AUTHORIZATION LIVES IN 59
+IMPLEMENTATION AUTHORIZATION LIVES IN 59 /
+DIAGNOSTIC CONSUMPTION / SUPPORT CONTRACT IN 60
 **Scope:** the Source → Analysis contract after BL-037
 source-class research. Not a production filter. Not an
 Analysis implementation. Not a Source rewrite. Not a
@@ -10,7 +11,10 @@ hodograph production change. Not Bunkers. Not observed
 sandbox `C`. Not a V1 reopen. Not a provider interface.
 Successor `59` specifies the high-resolution ESC
 operator and records the Analysis-column
-implementation verdict. This file remains the contract.
+implementation verdict. Successor `60` specifies how
+diagnostics consume Source / Analysis and how FILTER
+support becomes query validity. This file remains the
+contract.
 **Physics:** unchanged. `EnvironmentalWindProfile` and
 diagnostic APIs remain profile-agnostic consumers.
 **Implementation:** none in this file. Production `src/**`
@@ -50,6 +54,12 @@ ESC-class production transform (not this file):
 
 ```text
 docs/architecture/59-high-resolution-esc-time-domain-analysis-integration.md
+```
+
+Diagnostic consumption / support (not this file):
+
+```text
+docs/architecture/60-analysis-consuming-diagnostic-support-contract.md
 ```
 
 Index (not SoT):
@@ -540,6 +550,12 @@ either, with explicit mode and provenance
 Do **not** silently switch live diagnostics to Analysis.
 This file does not rewire anything.
 
+Successor `60` makes this declaration concrete
+(`SOURCE_ONLY` / `ANALYSIS_FULL_SUPPORT_REQUIRED` /
+`ANALYSIS_LABELED_LAYER` /
+`SOURCE_OR_ANALYSIS_EXPLICIT_MODE`) and specifies how
+FILTER support becomes diagnostic query validity.
+
 Consumption roles, as policy not implementation:
 
 ```text
@@ -731,7 +747,8 @@ D7  Coarse IGRA/RAOB is not subjected automatically to
     ESC-scale filtering.
 
 D8  Diagnostics must eventually declare whether Source
-    or Analysis is consumed.
+    or Analysis is consumed. Successor `60` specifies
+    the consumption / support contract.
 
 D9  Source visualization remains available and must not
     be silently replaced by Analysis.
@@ -750,12 +767,14 @@ ARCHITECTURE ACCEPTED
 ANALYSIS CONTRACT DEFINED
 ESC PRODUCTION TRANSFORM SPECIFIED IN 59
 IMPLEMENTATION AUTHORIZATION LIVES IN 59
+DIAGNOSTIC CONSUMPTION / SUPPORT CONTRACT IN 60
 ```
 
 This file remains the Analysis contract. It does **not**
 itself implement BL-010. Successor `59` specifies the
 ESC-class production transform and records the
-Analysis-column implementation verdict.
+Analysis-column implementation verdict. Successor `60`
+specifies diagnostic consumption and support propagation.
 
 ---
 
@@ -785,6 +804,7 @@ HODOGRAPH:         Source polyline stays; Analysis
                    overlay if/when labeled
 IMPLEMENTATION:    ESC Analysis column authorization lives
                    in 59; this file does not implement it
+CONSUMPTION:       diagnostic support / query contract is 60
 SELECTION GATE:    BL-046 research complete; integration
                    gate is 59
 V1:                CLOSED; not reopened

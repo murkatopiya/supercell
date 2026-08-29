@@ -172,7 +172,9 @@ Authoritative refs: `48` U2; `49` §10.
 ### BL-010 — Storm-scale analysis wind profile (implementation)
 
 Category: PHYSICS
-Status: PARTIAL / COLUMN CORE IMPLEMENTED
+Status: PARTIAL / COLUMN CORE IMPLEMENTED;
+consumer integration NOT STARTED / AUTHORIZED
+(narrow headless native-segment Analysis `ω_h` query; `60`)
 Origin: `53` (source vs analysis distinction **ACCEPTED**);
 `54` (first concrete candidate construction);
 `55` (qualifies `54`: candidate, not implementation
@@ -180,6 +182,8 @@ authorization);
 `58` (source-class-aware Analysis **contract**);
 `59` (ESC-class production transform **specified**;
 Analysis-column implementation **authorized**);
+`60` (Analysis diagnostic support contract **specified**;
+narrow headless `ω_h` query **authorized**, not implemented);
 research `2026-08-28-high-resolution-esc-analysis-transform-decision.md`
 (ESC-class transform **research-selected**; not itself
 authorization)
@@ -187,12 +191,15 @@ Why retained: the headless Analysis column exists
 (`src/data/escHrTimeAnalysis/`, ESC TIME carrier in
 `src/data/eolNsslMgausEsc/`). Diagnostic rewiring, hodograph
 overlay, Explore Source replacement, and Guided consumption
-remain unwired (`59` §27).
-Return when: a later slice is authorized to consume the
-column. Do not treat column core as diagnostic/UI completion.
-Do not implement the `54` candidate as production. Do not retune
-to Fig. 2b 88 / 167. Do not mutate the source golden winds/heights.
-Do not silently replace Explore `V_env`.
+remain unwired (`59` §27). Architecture `60` authorizes only
+the next headless support-aware native-segment Analysis
+horizontal-vorticity query; it does not complete BL-010.
+Return when: that authorized query slice is implemented, or a
+later SoT authorizes further consumers. Do not treat column core
+as diagnostic/UI completion. Do not implement the `54` candidate
+as production. Do not retune to Fig. 2b 88 / 167. Do not mutate
+the source golden winds/heights. Do not silently replace Explore
+`V_env`.
 Authoritative refs:
 [`docs/architecture/53-goshen-2155-source-versus-analysis-profile.md`](architecture/53-goshen-2155-source-versus-analysis-profile.md);
 [`docs/architecture/54-storm-scale-analysis-wind-profile.md`](architecture/54-storm-scale-analysis-wind-profile.md)
@@ -203,6 +210,8 @@ Authoritative refs:
 (contract);
 [`docs/architecture/59-high-resolution-esc-time-domain-analysis-integration.md`](architecture/59-high-resolution-esc-time-domain-analysis-integration.md)
 (production transform; column authorization);
+[`docs/architecture/60-analysis-consuming-diagnostic-support-contract.md`](architecture/60-analysis-consuming-diagnostic-support-contract.md)
+(diagnostic support contract; narrow `ω_h` query authorization);
 [`docs/research/2026-08-28-high-resolution-esc-analysis-transform-decision.md`](research/2026-08-28-high-resolution-esc-analysis-transform-decision.md)
 (research-selected ESC candidate);
 this index BL-037 (CLOSED), BL-046.
@@ -220,12 +229,14 @@ streamwise/crosswise, and `T_tilt` would consume an **analysis**
 column while Explore `V_env` / scientific polyline stay on the
 **source**. That sketch does not authorize overlay implementation.
 Architecture `59` authorizes the Analysis **column** (BL-010), not
-this overlay. Overlay consumption must follow `59` FULL_SUPPORT
+this overlay. Architecture `60` specifies FILTER vs diagnostic
+support and authorizes a headless `ω_h` query, not this overlay.
+Overlay consumption must follow `59` / `60` FULL_SUPPORT
 policy for derivative-sensitive diagnostics.
 Return when: a validated analysis column exists (BL-010 implemented)
 **and** a UI slice is authorized to point overlays at it, with
 labeled provenance.
-Authoritative refs: `50` §5 / §11; `54` §8–§9; `55`; `58`; `48` §7;
+Authoritative refs: `50` §5 / §11; `54` §8–§9; `55`; `58`; `60`; `48` §7;
 BL-010; BL-046.
 
 ### BL-012 — Optional labeled analysis hodograph overlay

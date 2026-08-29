@@ -3,13 +3,18 @@
 **Status:** ARCHITECTURE ACCEPTED /
 PRODUCTION TRANSFORM SPECIFIED /
 IMPLEMENTATION AUTHORIZED /
-COLUMN CORE IMPLEMENTED
+COLUMN CORE IMPLEMENTED /
+DIAGNOSTIC CONSUMPTION / SUPPORT CONTRACT IN 60
 **Scope:** the production integration / authorization gate
 for the BL-046 high-resolution ESC Analysis transform.
 Not a Source rewrite. Not a provider framework. Not
 Leise. Not a height-domain ~200 m filter. Not diagnostic
 rewiring. Not hodograph UI. Not Guided. Not Explore
 replacement of Source. Not Moore. Not a V1 reopen.
+Successor `60` owns Analysis diagnostic consumption and
+how FILTER support propagates through interpolation and
+native-segment shear. This file remains authority for the
+transform.
 **Physics:** `EnvironmentalWindProfile` remains
 provider-neutral wind versus height (`04`, `48`). This
 file does not add measurement TIME to that kinematic
@@ -19,6 +24,8 @@ headless in `src/data/escHrTimeAnalysis/` with the ESC
 TIME carrier in `src/data/eolNsslMgausEsc/`. Diagnostic
 rewiring, hodograph overlay, and Explore/Guided
 consumption remain out of that authorized slice.
+Successor `60` authorizes a later headless native-segment
+Analysis `ω_h` query; this file does not implement it.
 
 Predecessor (contract; not replaced):
 
@@ -30,6 +37,12 @@ docs/architecture/55-analysis-profile-generalization-gate.md
 docs/architecture/56-esc-multi-sounding-observed-profile-ingest.md
 docs/architecture/57-igra-observed-profile-ingest.md
 docs/architecture/58-source-class-aware-analysis-profile-contract.md
+```
+
+Successor (diagnostic consumption; does not replace this transform):
+
+```text
+docs/architecture/60-analysis-consuming-diagnostic-support-contract.md
 ```
 
 Frozen scientific selection (not reopened here):
@@ -842,6 +855,11 @@ boundary-conditioned derivatives.
 
 This file does not implement the mask.
 
+Successor `60` specifies how FILTER support becomes
+diagnostic / query validity (interpolation, native-segment
+stencil, typed unavailability) and authorizes the first
+headless `ω_h` query. Transform semantics here are unchanged.
+
 ---
 
 ## 19. End-of-flight boundary
@@ -1154,8 +1172,11 @@ Analysis column and its TIME / gap / FIR / support /
 provenance contract.
 
 Not authorized by the BL-046 research report alone.
-Not authorized: diagnostic rewiring, hodograph overlay,
-Explore/Guided consumption.
+Not authorized by this file: diagnostic rewiring,
+hodograph overlay, Explore/Guided consumption.
+Successor `60` authorizes a later narrow headless
+native-segment Analysis `ω_h` query; it does not rewire
+live diagnostics.
 
 ---
 
@@ -1163,6 +1184,7 @@ Explore/Guided consumption.
 
 ```text
 CONTRACT:          58 remains authoritative
+CONSUMPTION:       60 governs diagnostic support / queries
 THIS FILE:         ESC-class integration / authorization
 TIME:              ESC measurement record; not EWP
 EWP:               still V(h)
@@ -1184,7 +1206,9 @@ HODOGRAPH:         Source polyline stays
 BL-046:            research decision complete
 BL-037:            CLOSED
 BL-010:            COLUMN CORE IMPLEMENTED (headless);
-                   consumers not wired
+                   consumer integration NOT STARTED /
+                   AUTHORIZED narrowly in 60
+                   (native-segment Analysis ω_h query)
 V1:                CLOSED; not reopened
 ```
 
@@ -1202,3 +1226,6 @@ src/data/escHrTimeAnalysis/    v1 transform, support, provenance
 Source V(h) goldens and `EnvironmentalWindProfile` remain
 unchanged. Diagnostic rewiring, hodograph overlay, and
 Explore/Guided consumption are outside this column core.
+Architecture `60` specifies the diagnostic support contract
+and authorizes a later headless native-segment Analysis
+`ω_h` query; it does not implement that query in this file.
