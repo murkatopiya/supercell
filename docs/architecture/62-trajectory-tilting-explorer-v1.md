@@ -3,6 +3,7 @@
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
 SLICES A–F IMPLEMENTED / ACCEPTED /
+LANDING INTEGRATION SLICE I1 IMPLEMENTED / ACCEPTED /
 SLICE G NOT STARTED / DEFERRED /
 CAL COMPLETE / ACCEPTED V1
 **Acceptance:** scientific/semantic review passed.
@@ -14,12 +15,14 @@ renderer-facing value/support encoding;
 historical-probe 3D mechanism glyph;
 numeric verification / provenance readout;
 ephemeral what-if alignment) are
-IMPLEMENTED / ACCEPTED. Slice G remains
-NOT STARTED / DEFERRED. Numeric
+IMPLEMENTED / ACCEPTED. Landing Integration Slice I1
+(Analysis diagnostic sibling beside Source EWP at the
+Explore/App data boundary) is IMPLEMENTED / ACCEPTED.
+Slice G remains NOT STARTED / DEFERRED. Numeric
 `T1_COLOR_SCALE_V1` display saturation is
 ACCEPTED V1 (`|T1|_sat = 6.100×10⁻⁵ s⁻²`).
-`|T1|_ε` is not part of V1. App / Explore /
-TracerScene remain unwired. Glyph display-scale
+`|T1|_ε` is not part of V1. Trajectory overlay / glyph /
+verify / what-if remain unwired. Glyph display-scale
 exaggeration remains an injected capability; the
 production meters-per-`s⁻¹` number is OPEN (§23 item 4).
 **Scope:** scientific UX, diagnostic authority, encoding, and
@@ -53,10 +56,15 @@ Slice F what-if capability is implemented in
 and `src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx`.
 CAL V1 is implemented in
 `src/data/escHrTimeAnalysis/t1ColorScaleV1.ts`.
-App / Explore / TracerScene remain unwired: production
-activation is caller-column-blocked. Overlay wiring is
-not included in this CAL record.
-Slice G remains NOT STARTED / DEFERRED.
+Landing Integration Slice I1 is implemented in
+`src/app/exploreEnvironmentRepresentations.ts` and
+`src/app/createExploreLab.ts`: one Explore identity
+selects Source EWP for advection and the matching
+Analysis sibling, or `null` (Moore / Demo). SOURCE
+ADVECTS. ANALYSIS EXPLAINS. Overlay / glyph / verify /
+what-if remain unwired. Overlay wiring is not included
+in this CAL record. Slice G remains NOT STARTED /
+DEFERRED.
 
 Predecessor (not replaced):
 
@@ -109,7 +117,9 @@ It authorizes:
 - an ephemeral what-if alignment state that does not mutate
   the laboratory;
 - production `T1_COLOR_SCALE_V1` display saturation
-  (CAL COMPLETE / ACCEPTED V1).
+  (CAL COMPLETE / ACCEPTED V1);
+- an Explore Analysis diagnostic sibling beside Source EWP
+  (Landing Integration Slice I1 COMPLETE / ACCEPTED).
 
 It does **not** authorize:
 
@@ -409,10 +419,11 @@ them. This explorer is a new surface, not that rewiring.
 
 BL-010 remains PARTIAL. Holding an Analysis column as a
 **diagnostic sibling** of the Source profile used for
-advection is in scope for this explorer. Injecting that
+advection is in scope for this explorer and is implemented
+by Landing Integration Slice I1. Injecting that
 column into `EnvironmentalWindField` / `V_total` / SRH /
 hodograph scientific polyline is not. Sibling availability
-is an application/caller integration concern (§22). It is
+is an Explore/App data-boundary concern (§22 I1). It is
 not owned by the headless projection slice and is not
 live `V_env` rewiring.
 
@@ -1463,11 +1474,54 @@ does not replace Source EWP. It does not advect
 tracers. Missing / null column remains
 `COLUMN_UNAVAILABLE`; there is no Source T1 fallback.
 
-This caller boundary remains a prerequisite of
-user-facing activation. Slice C, Slice D, and Slice E do not
-include that seam. App / Explore / TracerScene remain unwired. That
-is not live Analysis `V_env` rewiring. BL-010 remains
-PARTIAL.
+Landing Integration Slice I1 implements that sibling
+availability at the Explore/App data boundary. Overlay /
+glyph / verify / what-if remain unwired. That is not live
+Analysis `V_env` rewiring. BL-010 remains PARTIAL.
+
+### Landing Integration Slice I1 — Analysis sibling beside Source EWP
+
+**Status:** IMPLEMENTED / ACCEPTED.
+
+```text
+SOURCE ADVECTS.
+ANALYSIS EXPLAINS.
+```
+
+One Explore environment identity atomically selects:
+
+```text
+Source environmental profile / Source EWP
+EscHrTimeAnalysisColumn | null
+```
+
+Mapping:
+
+```text
+Goshen     Source Goshen   + matching Goshen Analysis
+Prospect   Source Prospect + matching Prospect Analysis
+Dumas      Source Dumas    + matching Dumas Analysis
+Moore      Source Moore    + analysisColumn = null
+Demo       prescribed DEMO + analysisColumn = null
+```
+
+Null is `COLUMN_UNAVAILABLE`, not a zero column and not
+Source T1. Analysis is not stored in Simulation, tracer,
+`CompositeVelocityField`, or `EnvironmentalWindField`.
+Live Analysis `V_env` rewiring is not included in this
+slice. Trajectory overlay / glyph / verify / what-if are
+not included in this slice.
+
+Homes:
+
+```text
+src/app/exploreEnvironmentRepresentations.ts
+  exploreEnvironmentRepresentations(identity)
+  exploreAnalysisColumn(identity)
+
+src/app/createExploreLab.ts
+  ExploreLab.analysisColumn sibling of Source advection
+```
 
 ### Slice C — renderer value / support encoding
 
@@ -1719,6 +1773,8 @@ this file as TILT_Y,total or I_tilt authorization
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                    SLICES A–F IMPLEMENTED / ACCEPTED;
+                   LANDING INTEGRATION SLICE I1
+                     IMPLEMENTED / ACCEPTED;
                    SLICE G NOT STARTED / DEFERRED;
                    CAL COMPLETE / ACCEPTED V1
 QUESTION:          why this T1 sign/magnitude at this sample?
@@ -1759,15 +1815,17 @@ HISTORY STORE:     still { position, simulationTime } only
 PROJECTION INPUT:  structural { position, simulationTime };
                    not a second history store
 COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
-                   caller-supplied; not Slice B; not Slice C
-                   capability; not Slice D capability;
-                   not Slice E capability; not Slice F capability;
-                   not V_env rewiring
+                   Slice I1 COMPLETE / ACCEPTED at Explore/App
+                   data boundary; SOURCE ADVECTS;
+                   ANALYSIS EXPLAINS; not V_env rewiring
 PICKING:           52 unchanged
-BL-010:            PARTIAL; live V_env rewiring not authorized
+BL-010:            PARTIAL; caller Analysis-column sibling
+                   available; live V_env rewiring not authorized
 IMPLEMENTATION:    SLICES A–F COMPLETE / ACCEPTED as capability;
                    CAL COMPLETE / ACCEPTED V1;
-                   App/Explore/TracerScene unwired;
+                   LANDING INTEGRATION SLICE I1
+                     COMPLETE / ACCEPTED;
+                   overlay/glyph/verify/what-if unwired;
                    SLICE G NOT STARTED / DEFERRED
 ```
 
@@ -1854,17 +1912,28 @@ src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx
   θ-only control; actual vs hypothetical T1
   laboratory state unchanged
   not imported by App / Explore / TracerScene
+
+src/app/exploreEnvironmentRepresentations.ts
+  exploreEnvironmentRepresentations(identity)
+  exploreAnalysisColumn(identity)
+  Slice I1: Source + Analysis sibling lookup
+  committed ESC goldens + retained TIME;
+  Moore / Demo → null
+
+src/app/createExploreLab.ts
+  ExploreLab.analysisColumn
+  identity selects Source advection + Analysis sibling
+  Analysis not passed to Simulation
 ```
 
-Application/caller supply of the Analysis column beside
-Source EWP remains a prerequisite of user-facing
-activation. It is not included in Slice B, Slice C,
-Slice D, Slice E, or Slice F capability and is not live
-`V_env` rewiring.
+Landing Integration Slice I1 holds the Analysis column
+beside Source EWP at the Explore/App data boundary.
+SOURCE ADVECTS. ANALYSIS EXPLAINS. It is not included in
+Slice B–F capability and is not live `V_env` rewiring.
 
 Renderer / glyph / numeric-verify / what-if capability is
-complete. CAL V1 scale exists. Production activation is
-caller-column-blocked. Overlay wiring is not included
+complete. CAL V1 scale exists. Overlay / glyph / verify /
+what-if remain unwired. Overlay wiring is not included
 in this record.
 
 Slice G is NOT STARTED / DEFERRED:
@@ -1887,6 +1956,10 @@ src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
                                 Slice E verification panel
 src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx
                                 Slice F what-if panel
+src/app/exploreEnvironmentRepresentations.ts
+                                Slice I1 Analysis sibling
+src/app/createExploreLab.ts
+                                Slice I1 Explore pairing
 optional ω_y,current            Slice G
 ```
 

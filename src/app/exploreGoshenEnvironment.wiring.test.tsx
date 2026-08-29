@@ -105,7 +105,10 @@ describe("I2 Goshen Explore sandbox", () => {
 
   it("uses the committed 2029-level Goshen golden when that identity is selected", () => {
     const profile = GOSHEN_2009_OBSERVED_RECORD.profile;
-    const lab = createExploreLab(fakeSlots(), profile);
+    const lab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+    );
     expect(profile.minHeight).toBe(2.4);
     expect(profile.maxHeight).toBe(12261.8);
     expect(profile.levelHeights()).toHaveLength(2029);
@@ -162,7 +165,7 @@ describe("I2 Goshen Explore sandbox", () => {
     const demoLab = createExploreLab(fakeSlots());
     const goshenLab = createExploreLab(
       fakeSlots(),
-      GOSHEN_2009_OBSERVED_RECORD.profile,
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
     );
     expect(goshenLab.tiltingTendency.sample(INTERIOR, 0)).not.toBe(
       demoLab.tiltingTendency.sample(INTERIOR, 0),
@@ -277,7 +280,7 @@ describe("I2 Goshen Explore sandbox", () => {
     const demoLab = createExploreLab(fakeSlots());
     const goshenLab = createExploreLab(
       fakeSlots(),
-      exploreEnvironmentalWindProfile(EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED),
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
     );
     expect(goshenLab.simulation).not.toBe(demoLab.simulation);
     expect(goshenLab.tiltingTendency.profile.minHeight).toBe(2.4);
@@ -285,7 +288,7 @@ describe("I2 Goshen Explore sandbox", () => {
     expect(appSrc).toMatch(/const selectExploreEnvironment/);
     expect(appSrc).toMatch(/selectExploreEnvironment[\s\S]*createExploreLab\(/s);
     expect(appSrc).toMatch(
-      /enterExplore[\s\S]*exploreEnvironmentalWindProfile\(exploreEnvironmentIdentity\)/s,
+      /enterExplore[\s\S]*createExploreLab\(\s*sceneSlotsRef\.current!,\s*exploreEnvironmentIdentity/s,
     );
   });
 

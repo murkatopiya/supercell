@@ -6,10 +6,15 @@ import { ExploreTracerSession } from "../explore/ExploreTracerSession.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import { VisualAirflowPopulation } from "../visualization/VisualAirflowPopulation.js";
 import { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.js";
-import type { EnvironmentalWindProfile } from "../physics/environment/EnvironmentalWindProfile.js";
+import type { EscHrTimeAnalysisColumn } from "../data/escHrTimeAnalysis/types.js";
+import {
+  DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
+  type ExploreEnvironmentIdentity,
+} from "../explore/exploreEnvironmentIdentity.js";
 import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
 import { DEMO_VISUAL_AIRFLOW_POPULATION } from "./demoVisualAirflowFixture.js";
 import { DEMO_EULERIAN_AIRFLOW_SAMPLES } from "./demoEulerianAirflowFixture.js";
+import { exploreEnvironmentRepresentations } from "./exploreEnvironmentRepresentations.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import type { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
 import type { DiagnosticVerticalVorticity } from "../physics/diagnostics/DiagnosticVerticalVorticity.js";
@@ -17,6 +22,7 @@ import type { Simulation } from "../simulation/Simulation.js";
 
 export interface ExploreLab {
   readonly kind: "explore";
+  readonly environmentIdentity: ExploreEnvironmentIdentity;
   readonly simulation: Simulation;
   readonly pathHistory: TracerPathHistory;
   readonly session: ExploreTracerSession;
@@ -27,6 +33,11 @@ export interface ExploreLab {
   readonly eulerianAirflowSamples: EulerianAirflowSamples;
   readonly tiltingTendency: DiagnosticTiltingTendency;
   readonly currentVerticalVorticity: DiagnosticVerticalVorticity;
+  /**
+   * Diagnostic Analysis sibling of the Source EWP that advects.
+   * Null is COLUMN_UNAVAILABLE (Moore, Demo). Not a velocity operand.
+   */
+  readonly analysisColumn: EscHrTimeAnalysisColumn | null;
 }
 
 /**
@@ -46,13 +57,16 @@ export function composeExploreTracerSimulation(
  * Visual airflow and Eulerian samples observe that same total field.
  * Visual advection uses the same Euler instance.
  *
- * Optional environmentalWindProfile replaces DEMO knots only.
+ * Explore identity selects Source EWP for advection and the matching
+ * Analysis diagnostic sibling. Demo and Moore have analysisColumn null.
  * Storm operands and prescribed C remain DEMO. Guided does not use this.
+ * Analysis is not passed to Simulation or CompositeVelocityField.
  */
 export function createExploreLab(
   sceneSlots: ExploreSceneSlots,
-  environmentalWindProfile?: EnvironmentalWindProfile,
+  identity: ExploreEnvironmentIdentity = DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
 ): ExploreLab {
+  const environment = exploreEnvironmentRepresentations(identity);
   const {
     simulation,
     velocityObservation,
@@ -62,7 +76,7 @@ export function createExploreLab(
   } = composeDemoTracersWithObservation(
     IntegrationFrame.StormRelativeLaboratory,
     [],
-    environmentalWindProfile,
+    environment.sourceProfile,
   );
   const pathHistory = new TracerPathHistory(0);
   const session = new ExploreTracerSession(simulation, pathHistory);
@@ -83,6 +97,7 @@ export function createExploreLab(
   );
   return {
     kind: "explore",
+    environmentIdentity: environment.identity,
     simulation,
     pathHistory,
     session,
@@ -93,6 +108,7 @@ export function createExploreLab(
     eulerianAirflowSamples,
     tiltingTendency,
     currentVerticalVorticity,
+    analysisColumn: environment.analysisColumn,
   };
 }
 

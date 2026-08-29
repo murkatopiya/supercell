@@ -225,17 +225,15 @@ describe("Explore observed environments", () => {
 
     const prospectLab = createExploreLab(
       fakeSlots(),
-      exploreEnvironmentalWindProfile(
-        EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
-      ),
+      EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
     );
     const dumasLab = createExploreLab(
       fakeSlots(),
-      exploreEnvironmentalWindProfile(EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED),
+      EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
     );
     const mooreLab = createExploreLab(
       fakeSlots(),
-      exploreEnvironmentalWindProfile(EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED),
+      EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
     );
     expect(prospectLab.tiltingTendency.profile).toBe(
       PROSPECT_VALLEY_2010_OBSERVED_RECORD.profile,
@@ -262,10 +260,22 @@ describe("Explore observed environments", () => {
     const mooreProfile = exploreEnvironmentalWindProfile(
       EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
     )!;
-    const goshenLab = createExploreLab(fakeSlots(), goshenProfile);
-    const prospectLab = createExploreLab(fakeSlots(), prospectProfile);
-    const dumasLab = createExploreLab(fakeSlots(), dumasProfile);
-    const mooreLab = createExploreLab(fakeSlots(), mooreProfile);
+    const goshenLab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+    );
+    const prospectLab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
+    );
+    const dumasLab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
+    );
+    const mooreLab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
+    );
 
     expect(goshenLab.simulation).not.toBe(prospectLab.simulation);
     expect(prospectLab.simulation).not.toBe(dumasLab.simulation);
@@ -342,7 +352,7 @@ describe("Explore observed environments", () => {
     expect(appSrc).not.toMatch(/goshenExploreActive/);
     expect(appSrc).not.toMatch(/GOSHEN_2009_OBSERVED_RECORD/);
     expect(appSrc).toMatch(
-      /selectExploreEnvironment[\s\S]*exploreEnvironmentalWindProfile\(next\)/s,
+      /selectExploreEnvironment[\s\S]*createExploreLab\(\s*sceneSlotsRef\.current!,\s*next/s,
     );
   });
 

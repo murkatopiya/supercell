@@ -403,7 +403,7 @@ export function App() {
     setLab(
       createExploreLab(
         sceneSlotsRef.current!,
-        exploreEnvironmentalWindProfile(exploreEnvironmentIdentity),
+        exploreEnvironmentIdentity,
       ),
     );
     syncAuthoringHistoryButtons(null);
@@ -474,7 +474,7 @@ export function App() {
     setLab(
       createExploreLab(
         sceneSlotsRef.current!,
-        exploreEnvironmentalWindProfile(next),
+        next,
       ),
     );
     setPlacementEnabled(false);

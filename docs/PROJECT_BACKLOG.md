@@ -175,7 +175,9 @@ Category: PHYSICS
 Status: PARTIAL / COLUMN CORE IMPLEMENTED;
 support-aware native-segment Analysis `ω_h` query IMPLEMENTED;
 Analysis T1 sibling IMPLEMENTED;
-live consumer rewiring NOT STARTED / NOT AUTHORIZED
+Explore Analysis column sibling beside Source EWP IMPLEMENTED
+(Architecture 62 Landing Integration Slice I1);
+live `V_env` rewiring NOT STARTED / NOT AUTHORIZED
 Origin: `53` (source vs analysis distinction **ACCEPTED**);
 `54` (first concrete candidate construction);
 `55` (qualifies `54`: candidate, not implementation
@@ -189,23 +191,30 @@ live rewiring **not** authorized);
 `61` (Analysis T1 validity **specified**;
 headless Analysis T1 sibling **implemented**;
 live rewiring **not** authorized);
+`62` (Explore Analysis sibling beside Source EWP
+**implemented** as Landing Integration Slice I1;
+live `V_env` rewiring **not** authorized);
 research `2026-08-28-high-resolution-esc-analysis-transform-decision.md`
 (ESC-class transform **research-selected**; not itself
 authorization)
 Why retained: the headless Analysis column, support-aware
 native-segment wind / shear / `ω_h` query, and Analysis T1
 sibling exist (`src/data/escHrTimeAnalysis/`, ESC TIME carrier
-in `src/data/eolNsslMgausEsc/`). Diagnostic rewiring, hodograph
-overlay, Explore Source replacement, and Guided consumption
-remain unwired (`59` §27, `60` §21, `61` §17). This does not
-complete BL-010.
-Return when: a later SoT authorizes live consumers (Explore,
-UI, SRH, hodograph). Do not treat column core, the headless
-`ω_h` query, or the headless Analysis T1 sibling as
-diagnostic/UI completion. Do not implement the `54` candidate
-as production. Do not retune to Fig. 2b 88 / 167. Do not
-mutate the source golden winds/heights. Do not silently
-replace Explore `V_env`.
+in `src/data/eolNsslMgausEsc/`). Explore holds the matching
+Analysis column as a diagnostic sibling of Source EWP
+(`62` Slice I1; `src/app/exploreEnvironmentRepresentations.ts`).
+SOURCE ADVECTS. ANALYSIS EXPLAINS. Diagnostic rewiring,
+hodograph overlay, Explore Source replacement, live Analysis
+`V_env`, and Guided consumption remain unwired (`59` §27,
+`60` §21, `61` §17, `62` I1). This does not complete BL-010.
+Return when: a later SoT authorizes live consumers (UI, SRH,
+hodograph, or Analysis `V_env`). Do not treat column core,
+the headless `ω_h` query, the headless Analysis T1 sibling,
+or the Explore Analysis sibling lookup as diagnostic/UI
+completion or as live `V_env` rewiring. Do not implement the
+`54` candidate as production. Do not retune to Fig. 2b 88 /
+167. Do not mutate the source golden winds/heights. Do not
+silently replace Explore `V_env`.
 Authoritative refs:
 [`docs/architecture/53-goshen-2155-source-versus-analysis-profile.md`](architecture/53-goshen-2155-source-versus-analysis-profile.md);
 [`docs/architecture/54-storm-scale-analysis-wind-profile.md`](architecture/54-storm-scale-analysis-wind-profile.md)
@@ -220,6 +229,8 @@ Authoritative refs:
 (diagnostic support contract; headless `ω_h` query implemented);
 [`docs/architecture/61-analysis-tilting-validity-propagation.md`](architecture/61-analysis-tilting-validity-propagation.md)
 (Analysis T1 validity; headless sibling implemented);
+[`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md)
+(Explore Analysis sibling beside Source EWP; not live `V_env`);
 [`docs/research/2026-08-28-high-resolution-esc-analysis-transform-decision.md`](research/2026-08-28-high-resolution-esc-analysis-transform-decision.md)
 (research-selected ESC candidate);
 this index BL-037 (CLOSED), BL-046.
@@ -464,13 +475,15 @@ not this item.
 Category: UX
 Status: PARTIAL / SLICES A–F COMPLETE;
 CAL COMPLETE / ACCEPTED V1;
-App/Explore/TracerScene unwired
+LANDING INTEGRATION SLICE I1 COMPLETE / ACCEPTED;
+user-facing trajectory tilting UX unwired
 Origin: architecture `62`; BL-047 class B visualization
 Why retained: BL-047 accepted the scientific boundary for
 path-parameterized rotational diagnostics and required a
 separate architecture SoT before any class B surface.
 Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
-SLICES A–F IMPLEMENTED / ACCEPTED / SLICE G NOT STARTED /
+SLICES A–F IMPLEMENTED / ACCEPTED / LANDING INTEGRATION
+SLICE I1 IMPLEMENTED / ACCEPTED / SLICE G NOT STARTED /
 DEFERRED / CAL COMPLETE / ACCEPTED V1)
 is that SoT. Slice A is the headless atomic Analysis
 explanation query
@@ -495,12 +508,14 @@ Renderer / glyph / numeric-verify / what-if capability is
 complete.
 `T1_COLOR_SCALE_V1` display saturation is ACCEPTED V1
 (`|T1|_sat = 6.100×10⁻⁵ s⁻²`; no `|T1|_ε`).
-Production activation remains caller-column-blocked.
-Overlay wiring is not included in this CAL record.
-It does **not** wire an Explore Analysis column beside
-Source EWP. That caller/integration availability remains
-a prerequisite of user-facing activation and is **not**
-live `V_env` rewiring.
+Landing Integration Slice I1 holds the matching Analysis
+column beside Source EWP at the Explore/App data boundary
+(`exploreEnvironmentRepresentations` /
+`ExploreLab.analysisColumn`). SOURCE ADVECTS. ANALYSIS
+EXPLAINS. Moore and Demo have `analysisColumn = null`
+(`COLUMN_UNAVAILABLE`). Overlay / glyph / verify / what-if
+remain unwired. Overlay wiring is not included in this
+CAL record.
 Slice G (optional `ω_y,current` comparison)
 remains NOT STARTED / DEFERRED.
 It does **not** complete BL-010.
@@ -512,7 +527,8 @@ Return when: a later named `62` slice is implemented.
 This index does not include that implementation.
 Authoritative refs:
 [`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md);
-BL-047; `52`; `61`; BL-010 (unchanged PARTIAL).
+BL-047; `52`; `61`; BL-010 (PARTIAL; I1 sibling available,
+live `V_env` rewiring not authorized).
 
 ---
 
@@ -1096,13 +1112,16 @@ BL-047:
                Trajectory Tilting Explorer V1 architecture;
                ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                SLICES A–F IMPLEMENTED / ACCEPTED;
+               LANDING INTEGRATION SLICE I1
+                 IMPLEMENTED / ACCEPTED;
                SLICE G NOT STARTED / DEFERRED;
                CAL COMPLETE / ACCEPTED V1
 BL-048:
                Trajectory Tilting Explorer V1;
                PARTIAL / SLICES A–F COMPLETE;
                CAL COMPLETE / ACCEPTED V1;
-               App/Explore/TracerScene unwired;
+               LANDING INTEGRATION SLICE I1 COMPLETE;
+               user-facing trajectory tilting UX unwired;
                architecture 62 ACCEPTED
 physics/04, 07:
                wind profile; value-only StormMotion
