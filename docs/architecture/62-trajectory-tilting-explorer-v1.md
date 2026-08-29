@@ -1598,11 +1598,21 @@ remain OPEN (§23 item 5). Occupancy trail remains.
 
 Coplanar compositing (presentation polish, not science):
 occupancy `THREE.Line` uses `depthTest` and does **not**
-write depth. Analysis overlay `LineSegments` use
-`depthTest` + `depthWrite` and `renderOrder` greater than
-occupancy. Camera orbit/zoom must not change overlay RGB.
-OOD gaps still show occupancy. Native WebGL 1 px line
-width remains a later presentation item (not Line2 here).
+write depth. Analysis overlay uses `depthTest` and
+`depthWrite` with `renderOrder` greater than occupancy
+(d33ae29). Occupancy-depthWrite alone does not explain
+camera-dependent disappearance of the **whole** overlay:
+`needsUpdate` on a mutated position attribute does not
+recompute `geometry.boundingSphere`, and a stale origin
+sphere frustum-culls FULL and BOUNDARY `LineSegments`
+while occupancy (which recomputes bounds) stays visible.
+Both overlay objects keep `frustumCulled = false` and
+call `computeBoundingSphere()` after every drawable
+rewrite. Overlay geometry is a small selected scientific
+presentation layer. Camera orbit/zoom must not toggle
+overlay presence or change overlay RGB. OOD gaps still
+show occupancy. Native WebGL 1 px line width remains a
+later presentation item (not Line2 here).
 
 Homes:
 
@@ -1728,7 +1738,10 @@ Architecture 62 V1 is unchanged. Slice G is not included.
 
 ```text
 occupancy trail: depthTest, depthWrite = false
-Analysis overlay: depthTest, depthWrite, later renderOrder
+Analysis overlay: depthTest, depthWrite, later
+  renderOrder (d33ae29); frustumCulled = false on
+  FULL and BOUNDARY LineSegments; computeBoundingSphere
+  after each position rewrite
 Focus sample: one-shot OrbitControls target = recorded P
 Focus ≠ Follow; not automatic on selection
 Reset View still restores DEEP_STORM_TRACER_VIEW
@@ -1959,7 +1972,10 @@ without a SoT amendment or a dedicated calibration record.
    I3 shows typed BOUNDARY_CONDITIONED in verification UI.
    Trail visual distinction from FULL remains OPEN.
    Occupancy/overlay coplanar compositing is a separate
-   presentation contract (occupancy depthWrite false).
+   presentation contract (occupancy depthWrite false;
+   overlay d33ae29 depthTest/depthWrite, later renderOrder;
+   overlay frustumCulled false; bounds refreshed after
+   each position rewrite).
 6. Slice G causal-perception treatment, if that slice is ever
    authorized
 7. BL-047 remaining research: T1 vs TILT_Y,total topology;
@@ -2060,9 +2076,14 @@ FOCUS SAMPLE:      one-shot OrbitControls target = recorded P;
                    not Follow; not auto on sample select;
                    Follow OFF then focus; pan remains;
                    Reset View restores storm framing
-COMPOSITING:       occupancy depthWrite false; overlay later
-                   with depthTest/depthWrite; camera does not
-                   change overlay RGB; OOD gaps still occupancy
+COMPOSITING:       occupancy depthWrite false; overlay
+                   d33ae29 depthTest/depthWrite, later
+                   renderOrder; frustumCulled false on
+                   FULL and BOUNDARY; computeBoundingSphere
+                   after each position rewrite;
+                   camera must not toggle overlay presence
+                   or change overlay RGB;
+                   OOD gaps still occupancy
 ω_y,current:       not default V1; Slice G NOT AUTHORIZED
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved

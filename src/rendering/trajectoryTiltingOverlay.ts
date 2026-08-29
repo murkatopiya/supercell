@@ -15,8 +15,15 @@ const BOUNDARY_OBJECT_NAME = "analysisTiltingBoundaryValue";
 
 /**
  * Drawn after occupancy trails (renderOrder 0). Occupancy does not
- * write depth, so this overlay wins coplanar Line vs LineSegments
- * without a camera-dependent geometric offset.
+ * write depth, so this overlay can win coplanar Line vs LineSegments.
+ *
+ * Both FULL and BOUNDARY LineSegments keep frustumCulled = false:
+ * position-buffer mutation does not recompute geometry.boundingSphere,
+ * and a stale sphere culls the entire Analysis layer while occupancy
+ * (which does recompute bounds) stays visible. Overlay geometry is
+ * small; this is an explicit scientific presentation layer.
+ * After every drawable rewrite, computeBoundingSphere() still runs
+ * so bounds stay honest. No camera-dependent geometric offset.
  */
 export const ANALYSIS_TILTING_OVERLAY_RENDER_ORDER = 1;
 
@@ -24,6 +31,7 @@ export function createTrajectoryTiltingOverlay(): THREE.Group {
   const group = new THREE.Group();
   group.name = "analysisTiltingOverlay";
   group.renderOrder = ANALYSIS_TILTING_OVERLAY_RENDER_ORDER;
+  group.frustumCulled = false;
   group.add(createValueLine(FULL_OBJECT_NAME));
   group.add(createValueLine(BOUNDARY_OBJECT_NAME));
   return group;
@@ -81,6 +89,7 @@ function createValueLine(name: string): THREE.LineSegments {
   const line = new THREE.LineSegments(geometry, material);
   line.name = name;
   line.renderOrder = ANALYSIS_TILTING_OVERLAY_RENDER_ORDER;
+  line.frustumCulled = false;
   line.raycast = () => {};
   line.visible = false;
   return line;
@@ -119,7 +128,9 @@ function writeValueSegments(
   position.needsUpdate = true;
   color.needsUpdate = true;
   line.geometry.setDrawRange(0, vertexCount);
+  line.geometry.computeBoundingSphere();
   line.visible = segments.length > 0;
+  line.frustumCulled = false;
 }
 
 function ensureAttribute(

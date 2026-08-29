@@ -136,10 +136,31 @@ function vertexColors(line: THREE.LineSegments, vertexCount: number): number[][]
   return rows;
 }
 
+function expectSphereContainsDrawable(line: THREE.LineSegments): void {
+  const sphere = line.geometry.boundingSphere;
+  expect(sphere).toBeTruthy();
+  if (!sphere) {
+    return;
+  }
+  const count = line.geometry.drawRange.count;
+  const attribute = line.geometry.getAttribute("position");
+  expect(attribute).toBeInstanceOf(THREE.BufferAttribute);
+  if (!(attribute instanceof THREE.BufferAttribute)) {
+    return;
+  }
+  for (let i = 0; i < count; i++) {
+    const vertex = new THREE.Vector3().fromBufferAttribute(attribute, i);
+    expect(sphere.distanceToPoint(vertex)).toBeLessThanOrEqual(
+      1e-6 * Math.max(1, sphere.radius),
+    );
+  }
+}
+
 describe("trajectory tilting overlay (no WebGLRenderer)", () => {
-  it("uses depthTest and depthWrite so occupancy cannot mask coplanar T1", () => {
+  it("keeps d33ae29 depth test and does not frustum-cull Analysis LineSegments", () => {
     const overlay = createTrajectoryTiltingOverlay();
     const full = lineOf(overlay, "analysisTiltingFullValue");
+    const boundary = lineOf(overlay, "analysisTiltingBoundaryValue");
     const material = full.material;
     expect(material).toBeInstanceOf(THREE.LineBasicMaterial);
     if (!(material instanceof THREE.LineBasicMaterial)) {
@@ -147,7 +168,12 @@ describe("trajectory tilting overlay (no WebGLRenderer)", () => {
     }
     expect(material.depthTest).toBe(true);
     expect(material.depthWrite).toBe(true);
+    expect(overlay.frustumCulled).toBe(false);
+    expect(full.frustumCulled).toBe(false);
+    expect(boundary.frustumCulled).toBe(false);
     expect(overlay.renderOrder).toBeGreaterThan(0);
+    expect(overlaySrc).toMatch(/frustumCulled = false/);
+    expect(overlaySrc).toMatch(/computeBoundingSphere\(\)/);
     disposeTrajectoryTiltingOverlay(overlay);
   });
 
@@ -264,6 +290,57 @@ describe("trajectory tilting overlay (no WebGLRenderer)", () => {
       new THREE.Vector3(0, 0, -1),
     );
     expect(raycaster.intersectObject(full, false)).toEqual([]);
+    disposeTrajectoryTiltingOverlay(overlay);
+  });
+
+  it("refreshes bounds after path growth so drawable vertices stay inside the sphere", () => {
+    const overlay = createTrajectoryTiltingOverlay();
+    const near = encodeTrajectoryTiltingForRender(
+      [
+        sample(0, 100, numericAnalysis("FULL_SUPPORT", 0.005)),
+        sample(1, 110, numericAnalysis("FULL_SUPPORT", -0.005)),
+      ],
+      TEST_FIXTURE_SCALE_V0,
+    );
+    syncTrajectoryTiltingOverlay(overlay, near, TEST_FIXTURE_APPEARANCE);
+    const full = lineOf(overlay, "analysisTiltingFullValue");
+    const colorsNear = vertexColors(full, 2);
+    const far = encodeTrajectoryTiltingForRender(
+      [
+        {
+          historyIndex: 0,
+          position: { x: 8000, y: 2500, z: 7000 },
+          simulationTime: 0,
+          analysis: numericAnalysis("FULL_SUPPORT", 0.005),
+        },
+        {
+          historyIndex: 1,
+          position: { x: 9000, y: 2600, z: 7100 },
+          simulationTime: 1,
+          analysis: numericAnalysis("FULL_SUPPORT", -0.005),
+        },
+        {
+          historyIndex: 2,
+          position: { x: 9100, y: 2700, z: 7200 },
+          simulationTime: 2,
+          analysis: numericAnalysis("BOUNDARY_CONDITIONED", 0.004),
+        },
+        {
+          historyIndex: 3,
+          position: { x: 9200, y: 2800, z: 7300 },
+          simulationTime: 3,
+          analysis: numericAnalysis("BOUNDARY_CONDITIONED", -0.004),
+        },
+      ],
+      TEST_FIXTURE_SCALE_V0,
+    );
+    syncTrajectoryTiltingOverlay(overlay, far, TEST_FIXTURE_APPEARANCE);
+    const boundary = lineOf(overlay, "analysisTiltingBoundaryValue");
+    expect(full.frustumCulled).toBe(false);
+    expect(boundary.frustumCulled).toBe(false);
+    expectSphereContainsDrawable(full);
+    expectSphereContainsDrawable(boundary);
+    expect(vertexColors(full, 2)).toEqual(colorsNear);
     disposeTrajectoryTiltingOverlay(overlay);
   });
 

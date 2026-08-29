@@ -102,8 +102,50 @@ function fullLine(overlay: THREE.Group): THREE.LineSegments {
   return object;
 }
 
+function boundaryLine(overlay: THREE.Group): THREE.LineSegments {
+  const object = overlay.getObjectByName("analysisTiltingBoundaryValue");
+  if (!(object instanceof THREE.LineSegments)) {
+    throw new Error("missing overlay boundary line");
+  }
+  return object;
+}
+
+function expectSphereContainsDrawable(line: THREE.Line | THREE.LineSegments): void {
+  const sphere = line.geometry.boundingSphere;
+  expect(sphere).toBeTruthy();
+  if (!sphere) {
+    return;
+  }
+  const count = line.geometry.drawRange.count;
+  const attribute = line.geometry.getAttribute("position");
+  expect(attribute).toBeInstanceOf(THREE.BufferAttribute);
+  if (!(attribute instanceof THREE.BufferAttribute)) {
+    return;
+  }
+  for (let i = 0; i < count; i++) {
+    const vertex = new THREE.Vector3().fromBufferAttribute(attribute, i);
+    expect(sphere.distanceToPoint(vertex)).toBeLessThanOrEqual(
+      1e-6 * Math.max(1, sphere.radius),
+    );
+  }
+}
+
+function frustumLookingAtFarPath(): THREE.Frustum {
+  const camera = new THREE.PerspectiveCamera(50, 1, 1, 4000);
+  camera.position.set(8500, 2550, 9000);
+  camera.lookAt(8500, 2550, 7050);
+  camera.updateProjectionMatrix();
+  camera.updateMatrixWorld();
+  return new THREE.Frustum().setFromProjectionMatrix(
+    new THREE.Matrix4().multiplyMatrices(
+      camera.projectionMatrix,
+      camera.matrixWorldInverse,
+    ),
+  );
+}
+
 describe("Analysis trail compositing contract", () => {
-  it("occupancy does not write depth; overlay tests and writes depth and draws later", () => {
+  it("occupancy does not write depth; overlay keeps d33ae29 depth test and is not frustum-culled", () => {
     const occupancy = createTrailLine(TRACER_COLORS[0]);
     const overlay = createTrajectoryTiltingOverlay();
     const occupancyMaterial = occupancy.material;
@@ -123,6 +165,9 @@ describe("Analysis trail compositing contract", () => {
     }
     expect(overlayMaterial.depthTest).toBe(true);
     expect(overlayMaterial.depthWrite).toBe(true);
+    expect(overlay.frustumCulled).toBe(false);
+    expect(overlayLine.frustumCulled).toBe(false);
+    expect(boundaryLine(overlay).frustumCulled).toBe(false);
     expect(overlay.renderOrder).toBe(ANALYSIS_TILTING_OVERLAY_RENDER_ORDER);
     expect(overlayLine.renderOrder).toBe(ANALYSIS_TILTING_OVERLAY_RENDER_ORDER);
     disposeTrailLine(occupancy);
@@ -216,5 +261,86 @@ describe("Analysis trail compositing contract", () => {
     const renderBody = tracerSceneSrc.slice(renderStart, renderStart + 450);
     expect(renderBody).not.toMatch(/syncAnalysisTiltingOverlays/);
     expect(renderBody).not.toMatch(/encodeExploreAnalysisTilting/);
+  });
+
+  it("needsUpdate does not recompute a cached boundingSphere after CPU position mutation", () => {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(new Float32Array([0, 0, 0, 1, 0, 0]), 3),
+    );
+    geometry.computeBoundingSphere();
+    const staleCenterX = geometry.boundingSphere!.center.x;
+    const staleRadius = geometry.boundingSphere!.radius;
+    const position = geometry.getAttribute("position");
+    expect(position).toBeInstanceOf(THREE.BufferAttribute);
+    if (!(position instanceof THREE.BufferAttribute)) {
+      return;
+    }
+    position.setXYZ(0, 8000, 2500, 7000);
+    position.setXYZ(1, 9000, 2600, 7100);
+    position.needsUpdate = true;
+    expect(geometry.boundingSphere!.center.x).toBe(staleCenterX);
+    expect(geometry.boundingSphere!.radius).toBe(staleRadius);
+    geometry.computeBoundingSphere();
+    expect(geometry.boundingSphere!.center.x).toBeGreaterThan(7000);
+  });
+
+  it("stale overlay bounds would fail a far-path frustum while occupancy stays inside", () => {
+    const nearPoints = [
+      { x: 0, y: 100, z: 0 },
+      { x: 10, y: 110, z: 0 },
+    ];
+    const farPoints = [
+      { x: 8000, y: 2500, z: 7000 },
+      { x: 9000, y: 2600, z: 7100 },
+    ];
+    const occupancy = createTrailLine(TRACER_COLORS[0]);
+    syncTrailLine(occupancy, nearPoints);
+    const overlay = createTrajectoryTiltingOverlay();
+    const nearEncoding = encodeTrajectoryTiltingForRender(
+      [
+        sample(0, nearPoints[0]!, numeric("FULL_SUPPORT", 0.004)),
+        sample(1, nearPoints[1]!, numeric("FULL_SUPPORT", -0.004)),
+      ],
+      SCALE,
+    );
+    syncTrajectoryTiltingOverlay(overlay, nearEncoding, APPEARANCE);
+    const full = fullLine(overlay);
+    const colorsNear = Array.from(full.geometry.getAttribute("color")!.array.slice(0, 6));
+
+    syncTrailLine(occupancy, farPoints);
+    const farEncoding = encodeTrajectoryTiltingForRender(
+      [
+        sample(0, farPoints[0]!, numeric("FULL_SUPPORT", 0.004)),
+        sample(1, farPoints[1]!, numeric("FULL_SUPPORT", -0.004)),
+        sample(2, { x: 9100, y: 2700, z: 7200 }, numeric("BOUNDARY_CONDITIONED", 0.004)),
+        sample(3, { x: 9200, y: 2800, z: 7300 }, numeric("BOUNDARY_CONDITIONED", -0.004)),
+      ],
+      SCALE,
+    );
+    syncTrajectoryTiltingOverlay(overlay, farEncoding, APPEARANCE);
+    const boundary = boundaryLine(overlay);
+    expect(occupancy.frustumCulled).toBe(true);
+    expect(full.frustumCulled).toBe(false);
+    expect(boundary.frustumCulled).toBe(false);
+    expectSphereContainsDrawable(occupancy);
+    expectSphereContainsDrawable(full);
+    expectSphereContainsDrawable(boundary);
+    expect(Array.from(full.geometry.getAttribute("color")!.array.slice(0, 6))).toEqual(colorsNear);
+
+    occupancy.updateMatrixWorld();
+    full.updateMatrixWorld();
+    const frustum = frustumLookingAtFarPath();
+    expect(frustum.intersectsObject(occupancy)).toBe(true);
+    expect(frustum.intersectsObject(full)).toBe(true);
+
+    const honest = full.geometry.boundingSphere!.clone();
+    full.geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 1);
+    expect(frustum.intersectsObject(full)).toBe(false);
+    full.geometry.boundingSphere = honest;
+    expect(frustum.intersectsObject(full)).toBe(true);
+    disposeTrailLine(occupancy);
+    disposeTrajectoryTiltingOverlay(overlay);
   });
 });
