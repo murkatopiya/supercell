@@ -1,6 +1,7 @@
 import {
   LANDING_CAPABILITIES,
   LANDING_CTA_LABEL,
+  LANDING_DESKTOP_RECOMMENDED,
   LANDING_DISCLAIMER,
   LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
   LANDING_ENVIRONMENTS_LEAD,
@@ -13,7 +14,9 @@ import { PUBLIC_VERSION_BADGE } from "./publicVersion.js";
 export interface LandingPageProps {
   onEnterExplore: () => void;
   onOpenHowItWorks: (trigger: HTMLButtonElement) => void;
+  onOpenGlossary: (trigger: HTMLButtonElement) => void;
   howItWorksOpen?: boolean;
+  glossaryOpen?: boolean;
 }
 
 /**
@@ -24,7 +27,9 @@ export interface LandingPageProps {
 export function LandingPage({
   onEnterExplore,
   onOpenHowItWorks,
+  onOpenGlossary,
   howItWorksOpen = false,
+  glossaryOpen = false,
 }: LandingPageProps) {
   return (
     <main className="app app--landing">
@@ -51,6 +56,16 @@ export function LandingPage({
           onClick={(event) => onOpenHowItWorks(event.currentTarget)}
         >
           How It Works
+        </button>
+        <button
+          type="button"
+          className="ui-button ui-button--subtle landing__how-it-works"
+          aria-label="Glossary"
+          aria-haspopup="dialog"
+          aria-expanded={glossaryOpen}
+          onClick={(event) => onOpenGlossary(event.currentTarget)}
+        >
+          Glossary
         </button>
       </div>
 
@@ -107,6 +122,9 @@ export function LandingPage({
       </p>
       <p className="landing__note landing__note--quiet">
         {LANDING_GUIDED_LATER_NOTE}
+      </p>
+      <p className="landing__note landing__note--quiet">
+        {LANDING_DESKTOP_RECOMMENDED}
       </p>
     </main>
   );

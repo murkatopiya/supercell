@@ -64,6 +64,7 @@ describe("How It Works Slice 6 wiring", () => {
       appSrc.indexOf("app__subtitle"),
     );
     expect(header).toMatch(/HowItWorksAffordance/);
+    expect(header).toMatch(/GlossaryAffordance/);
     expect(header).toMatch(/EnvironmentAffordance/);
     expect(header).toMatch(/ModeIdentity/);
     expect(header).not.toMatch(/aria-pressed=\{lab\.kind/);
@@ -97,7 +98,7 @@ describe("How It Works Slice 6 wiring", () => {
   });
 
   it("temporarily suspends viewport advancement without writing user paused", () => {
-    expect(appSrc).toMatch(/paused=\{paused \|\| howItWorksOpen\}/);
+    expect(appSrc).toMatch(/paused=\{paused \|\| howItWorksOpen \|\| glossaryOpen\}/);
     expect(appSrc).toMatch(/<TracerRuntimeControls[\s\S]*paused=\{paused\}/s);
     expect(appSrc).not.toMatch(/setPaused\(true\)/);
     expect(appSrc).not.toMatch(/setPaused\(howItWorksOpen/);

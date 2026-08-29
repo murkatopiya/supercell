@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
+import { GlossaryAffordance } from "./GlossaryAffordance.js";
+import { GlossarySurface } from "./GlossarySurface.js";
 import { HowItWorksAffordance } from "./HowItWorksAffordance.js";
 import { HowItWorksSurface } from "./HowItWorksSurface.js";
 import type { HowItWorksContext } from "./howItWorksContent.js";
@@ -155,6 +157,10 @@ export function App() {
   const howItWorksTriggerRef = useRef<HTMLButtonElement | null>(null);
   const howItWorksOpenRef = useRef(false);
   howItWorksOpenRef.current = howItWorksOpen;
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const glossaryTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const glossaryOpenRef = useRef(false);
+  glossaryOpenRef.current = glossaryOpen;
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
   if (sceneSlotsRef.current === null) {
@@ -410,7 +416,7 @@ export function App() {
       return;
     }
     const onKeyDown = (event: KeyboardEvent) => {
-      if (howItWorksOpenRef.current) {
+      if (howItWorksOpenRef.current || glossaryOpenRef.current) {
         return;
       }
       const action = matchExploreAuthoringHistoryShortcut(event);
@@ -522,11 +528,22 @@ export function App() {
 
   const openHowItWorks = (trigger: HTMLButtonElement) => {
     howItWorksTriggerRef.current = trigger;
+    setGlossaryOpen(false);
     setHowItWorksOpen(true);
   };
 
   const closeHowItWorks = () => {
     setHowItWorksOpen(false);
+  };
+
+  const openGlossary = (trigger: HTMLButtonElement) => {
+    glossaryTriggerRef.current = trigger;
+    setHowItWorksOpen(false);
+    setGlossaryOpen(true);
+  };
+
+  const closeGlossary = () => {
+    setGlossaryOpen(false);
   };
 
   const howItWorksContext: HowItWorksContext =
@@ -545,6 +562,14 @@ export function App() {
     />
   );
 
+  const glossarySurface = (
+    <GlossarySurface
+      open={glossaryOpen}
+      onClose={closeGlossary}
+      returnFocusRef={glossaryTriggerRef}
+    />
+  );
+
   const returnToLanding = () => {
     clearSelectionAndInspection();
     setPendingSeed(null);
@@ -560,9 +585,12 @@ export function App() {
         <LandingPage
           onEnterExplore={enterExplore}
           onOpenHowItWorks={openHowItWorks}
+          onOpenGlossary={openGlossary}
           howItWorksOpen={howItWorksOpen}
+          glossaryOpen={glossaryOpen}
         />
         {howItWorksSurface}
+        {glossarySurface}
       </>
     );
   }
@@ -697,7 +725,7 @@ export function App() {
           : null
       }
       timestep={DEMO_SCENARIO.simulation.timestep}
-      paused={paused || howItWorksOpen}
+      paused={paused || howItWorksOpen || glossaryOpen}
       timeScale={timeScale}
       resetEpoch={resetEpoch}
       pendingReleasePreview={lab.kind === "explore" ? pendingSeed : null}
@@ -783,6 +811,10 @@ export function App() {
           <HowItWorksAffordance
             expanded={howItWorksOpen}
             onOpen={openHowItWorks}
+          />
+          <GlossaryAffordance
+            expanded={glossaryOpen}
+            onOpen={openGlossary}
           />
         </div>
       </header>
@@ -972,6 +1004,7 @@ export function App() {
       )}
     </main>
     {howItWorksSurface}
+    {glossarySurface}
     </>
   );
 }

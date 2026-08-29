@@ -28,9 +28,31 @@ selected diagnostics along the recorded path. Analysis does
 not push the tracer. What-if geometry keeps the observed
 environment fixed and does not change laboratory state.
 
+**How It Works** is the workflow guide. **Glossary** defines
+laboratory terms and quantities. Explore opens on the Goshen
+observed environment; Demo, Prospect Valley, Dumas, and Moore
+remain selectable.
+
 A guided walkthrough is planned for a later version. Guided
 code remains in the repository; it is not a public v0.1
 landing peer of Explore.
+
+## Environmental datasets
+
+Observed environmental wind profiles used in the laboratory
+come from sounding archives. Landing event/case links are
+contextual information about meteorological events. They are
+not the source of the sounding data.
+
+- **EOL dataset 114.114**, NSSL Mobile GPS Advanced Upper-Air
+  Sounding System, DOI
+  [10.5065/D6CC0Z0Q](https://doi.org/10.5065/D6CC0Z0Q).
+  Used for Goshen, Prospect Valley, and Dumas Source profiles
+  and matching Analysis representations.
+- **NOAA/NCEI Integrated Global Radiosonde Archive (IGRA)
+  v2.2**, station USM00072357 (Norman / OUN), DSI-6301.
+  Used for the Moore Source profile. Moore has no production
+  Analysis representation.
 
 Motion is inspectable: the local velocity is explained by the
 prescribed decomposition. The seven named contributions are a

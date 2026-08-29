@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { LandingPage } from "./LandingPage.js";
 import {
   LANDING_CTA_LABEL,
+  LANDING_DESKTOP_RECOMMENDED,
   LANDING_DISCLAIMER,
   LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
   LANDING_ENVIRONMENTS_LEAD,
@@ -25,6 +26,7 @@ function landingMarkup() {
     <LandingPage
       onEnterExplore={() => {}}
       onOpenHowItWorks={() => {}}
+      onOpenGlossary={() => {}}
     />,
   );
 }
@@ -112,14 +114,24 @@ describe("LandingPage", () => {
     expect(html).not.toContain("production ready");
   });
 
-  it("exposes How It Works as an active help entry, not a third mode", () => {
+  it("exposes How It Works and Glossary as active help entries, not a third mode", () => {
     const html = landingMarkup();
     expect(html).toContain("How It Works");
     expect(html).toContain("aria-label=\"How It Works\"");
+    expect(html).toContain("aria-label=\"Glossary\"");
     expect(html).toContain("aria-haspopup=\"dialog\"");
     expect(html).not.toContain("disabled");
     expect(html).not.toContain("aria-pressed");
     expect(landingSrc).toContain("onOpenHowItWorks");
+    expect(landingSrc).toContain("onOpenGlossary");
     expect(landingSrc).not.toContain("HOW_IT_WORKS_UNAVAILABLE_REASON");
+  });
+
+  it("recommends desktop without blocking narrow viewports", () => {
+    const html = landingMarkup();
+    expect(html).toContain(LANDING_DESKTOP_RECOMMENDED);
+    expect(html).toContain("landing__note--quiet");
+    expect(html).not.toContain("unsupported");
+    expect(html).not.toContain("mobile is not");
   });
 });

@@ -82,21 +82,19 @@ describe("I2 Goshen Explore sandbox", () => {
     expect(createGuidedLabSrc).toMatch(/composeDemoTracerLab/);
   });
 
-  it("defaults Explore to the DEMO profile", () => {
+  it("defaults Explore to the Goshen observed profile", () => {
     const explore = createExploreLab(fakeSlots());
-    const demo = composeDemoTracerFields(
-      IntegrationFrame.StormRelativeLaboratory,
-    );
     expect(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY).toBe(
-      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
     );
     expect(
       exploreEnvironmentalWindProfile(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY),
-    ).toBeUndefined();
-    expect(explore.tiltingTendency.profile.minHeight).toBe(0);
-    expect(explore.tiltingTendency.profile.levelHeights()).toHaveLength(5);
-    expect(explore.velocityObservation.total.sample(INTERIOR, 0)).toEqual(
-      demo.field.sample(INTERIOR, 0),
+    ).toBe(GOSHEN_2009_OBSERVED_RECORD.profile);
+    expect(explore.tiltingTendency.profile).toBe(
+      GOSHEN_2009_OBSERVED_RECORD.profile,
+    );
+    expect(explore.environmentIdentity).toBe(
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
     );
     expect(appSrc).toMatch(
       /useState<ExploreEnvironmentIdentity>\(\s*DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY/,
@@ -162,7 +160,10 @@ describe("I2 Goshen Explore sandbox", () => {
     expect(goshen.environmentField.sample(INTERIOR, 0)).not.toEqual(
       demo.environmentField.sample(INTERIOR, 0),
     );
-    const demoLab = createExploreLab(fakeSlots());
+    const demoLab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+    );
     const goshenLab = createExploreLab(
       fakeSlots(),
       EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
@@ -277,7 +278,10 @@ describe("I2 Goshen Explore sandbox", () => {
   });
 
   it("rebuilds the Explore lab when environment identity changes", () => {
-    const demoLab = createExploreLab(fakeSlots());
+    const demoLab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+    );
     const goshenLab = createExploreLab(
       fakeSlots(),
       EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,

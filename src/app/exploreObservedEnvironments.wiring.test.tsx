@@ -144,7 +144,7 @@ describe("Explore observed environments", () => {
       MOORE_2013_OBSERVED_ENVIRONMENT_LABEL,
     ]);
     expect(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY).toBe(
-      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
     );
     for (const option of EXPLORE_ENVIRONMENT_OPTIONS) {
       expect(exploreEnvironmentLabel(option.identity)).toBe(option.label);

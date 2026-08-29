@@ -212,13 +212,16 @@ describe("Explore Analysis sibling beside Source EWP", () => {
     const representations = exploreEnvironmentRepresentations(
       EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
     );
-    const lab = createExploreLab(fakeSlots());
+    const lab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+    );
     const demoFields = composeDemoTracerFields(
       IntegrationFrame.StormRelativeLaboratory,
     );
 
     expect(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY).toBe(
-      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
     );
     expect(representations.sourceRecord).toBeUndefined();
     expect(representations.sourceProfile).toBeUndefined();

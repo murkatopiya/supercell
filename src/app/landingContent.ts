@@ -67,6 +67,9 @@ export const LANDING_OBSERVED_ENVIRONMENT_LINKS: readonly LandingObservedEnviron
 export const LANDING_GUIDED_LATER_NOTE =
   "A guided walkthrough is planned for a later version.";
 
+export const LANDING_DESKTOP_RECOMMENDED =
+  "Desktop recommended for the full 3D laboratory experience.";
+
 export const LANDING_CAPABILITIES = [
   {
     title: "Explore observed environments",

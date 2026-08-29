@@ -69,6 +69,9 @@ describe("HowItWorksSurface", () => {
   it("explains the current trajectory and Analysis T1 workflow", () => {
     const html = helpMarkup("landing");
     expect(html).toContain("vertical-tilting diagnostic");
+    expect(html).toContain("When a suitable Analysis representation is available");
+    expect(html).toContain("supported parts of the recorded trajectory");
+    expect(html).toContain("Use the Environment control");
     expect(html).toContain("fixed symmetric scale");
     expect(html).toContain(HOW_IT_WORKS_T1_SATURATION_DISPLAY);
     expect(html).toContain(HOW_IT_WORKS_COLOR_SCALE);

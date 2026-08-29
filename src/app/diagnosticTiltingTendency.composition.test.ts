@@ -13,6 +13,7 @@ import {
 } from "./createGuidedLab.js";
 import { IntegrationFrame } from "./IntegrationFrame.js";
 import type { ExploreSceneSlots } from "../explore/ExplorePointReleaseOrchestration.js";
+import { EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED } from "../explore/exploreEnvironmentIdentity.js";
 import { GuidedExperimentId } from "../guided/GuidedExperiment.js";
 import { TracerSelection } from "../interaction/TracerSelection.js";
 import inspectSrc from "../interaction/TracerInspection.ts?raw";
@@ -241,7 +242,10 @@ describe("DiagnosticTiltingTendency composition wiring", () => {
 
 describe("ExploreLab / GuidedLab T1 exposure", () => {
   it("exposes the same headless diagnostic on Explore and Guided at the same P,t", () => {
-    const explore = createExploreLab(fakeSlots());
+    const explore = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
+    );
     const guided = createGuidedLab(GuidedExperimentId.InflowToUpperOutflow);
     expect(explore.tiltingTendency).toBeInstanceOf(DiagnosticTiltingTendency);
     expect(guided.tiltingTendency).toBeInstanceOf(DiagnosticTiltingTendency);

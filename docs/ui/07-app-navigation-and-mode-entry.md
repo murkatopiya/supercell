@@ -63,19 +63,24 @@ content pass:
 Boot surface          landing (`appSurface = "landing"`, `lab = null`)
 Top-level chrome      landing: title + v0.1 research-prototype
                       badge + primary Explore CTA + How It Works
-                      laboratory: ModeIdentity + Environment affordance
+                      + Glossary
+                      laboratory: ModeIdentity + Environment
+                      + How It Works + Glossary
 Mode entry            landing primary CTA → enterExplore
                       Guided remains in App; not a public v0.1
                       landing peer choice
                       no in-mode Guided ↔ Explore toggle
 Default lab           not constructed until Explore entry
+Default Explore       Goshen 2009 observed
+                      (`DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY`)
 Environment           laboratory header tool, not a mode peer
                       Guided: default open, column presentation
                       Explore: default closed, overlay presentation
                       Explore identity radios live inside
                       EnvironmentSurface
 Router                none (Vite + React composition)
-How It Works          landing and laboratory help overlay (`12`)
+How It Works          landing and laboratory workflow overlay (`12`)
+Glossary              landing and laboratory vocabulary overlay
 ```
 
 `lab.kind` (`"guided" | "explore"`) is the live mode owner

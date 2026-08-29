@@ -77,6 +77,9 @@ There is one `HowItWorksSurface`. Landing, Guided, and Explore
 share it. Mode-aware extras change Explore-only workflow
 steps; Guided keeps prepared-release copy.
 
+Glossary is a sibling public help overlay. It defines
+laboratory terms. It does not replace How It Works.
+
 ---
 
 ## 3. Scope

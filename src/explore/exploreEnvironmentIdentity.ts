@@ -21,7 +21,7 @@ export const EXPLORE_ENVIRONMENT_IDENTITIES = [
 ] as const satisfies readonly ExploreEnvironmentIdentity[];
 
 export const DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY =
-  EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED;
+  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED;
 
 export const DEMO_PRESCRIBED_ENVIRONMENT_LABEL =
   "Demo prescribed environment";

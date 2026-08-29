@@ -19,7 +19,7 @@ export const HOW_IT_WORKS_NOT_FORECAST =
   "This is not live weather and not a forecast. The airflow is prescribed by the current laboratory environment.";
 
 export const HOW_IT_WORKS_CHOOSE_ENVIRONMENT =
-  "Choose an environment. Where available, that environment is an observed sounding-derived Source profile used in the laboratory velocity and advection path.";
+  "Use the Environment control to choose an observed environment. Where available, that environment is an observed sounding-derived Source profile used in the laboratory velocity and advection path.";
 
 export const HOW_IT_WORKS_RELEASE_TRACER =
   "A tracer is a passive marker carried by the prescribed storm-relative laboratory velocity field. It does not affect the airflow.";
@@ -34,7 +34,7 @@ export const HOW_IT_WORKS_GUIDED_RELEASES =
   "In this prepared exhibit, tracer releases are set by the experiment. The public laboratory workflow below describes Explore.";
 
 export const HOW_IT_WORKS_RECORDED_TRAJECTORY =
-  "The recorded path is colored by Analysis T1, a reduced-field vertical-tilting diagnostic, using a fixed symmetric scale.";
+  "When a suitable Analysis representation is available, supported parts of the recorded trajectory are colored by Analysis T1, a reduced-field vertical-tilting diagnostic, using a fixed symmetric scale.";
 
 export const HOW_IT_WORKS_TAIL =
   "The tail is recorded trajectory, not an airflow streamline.";
