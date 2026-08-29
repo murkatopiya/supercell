@@ -6,6 +6,7 @@ import {
   displayLengthFromPhysicalMagnitude,
 } from "../data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.js";
 import type { TrajectoryTiltingWhatIfModel } from "../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
+import { applyGradientGlyphReadabilityDisplacement } from "./analysisT1GradientGlyphReadabilityV1.js";
 
 /**
  * Injected artistic distinction of hypothetical vs actual geometry.
@@ -64,10 +65,12 @@ export function syncTrajectoryTiltingWhatIfGlyph(
   }
   group.visible = true;
 
-  const gradientDisplay = displayDisplacementFromWorldVector(
-    model.hypotheticalGradientVectorWorld,
-    model.gradientMagnitude,
-    displayScale,
+  const gradientDisplay = applyGradientGlyphReadabilityDisplacement(
+    displayDisplacementFromWorldVector(
+      model.hypotheticalGradientVectorWorld,
+      model.gradientMagnitude,
+      displayScale,
+    ),
   );
   writeArrow(gradient, gradientDisplay, appearance);
 

@@ -160,7 +160,7 @@ describe("trajectory tilting glyph (no WebGLRenderer)", () => {
     expect(omega.visible).toBe(true);
     expect(gradient.visible).toBe(true);
     expect(shaftTip(omega)).toEqual([20, 0, 0]);
-    expect(shaftTip(gradient)).toEqual([0, 0, 40]);
+    expect(shaftTip(gradient)).toEqual([0, 0, 80]);
     disposeTrajectoryTiltingGlyph(glyph);
   });
 

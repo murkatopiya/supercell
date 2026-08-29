@@ -1765,6 +1765,10 @@ Reset View still restores DEEP_STORM_TRACER_VIEW
 hypothetical glyph: dashed identity, higher opacity/contrast,
   smaller world-space dashes; magnitudes unchanged
 native 1px LineBasicMaterial width: later presentation item
+gradient glyph readability: after the common s⁻¹→m scale,
+  ANALYSIS_T1_GRADIENT_GLYPH_READABILITY_MULTIPLIER_V1 = 2
+  stretches ∇_h Vy arrows only; ω_h unchanged; actual and
+  hypothetical ∇ share this visibility factor; not |∇|
 Analysis T1 legend V1: fixed symmetric CAL V1 domain;
   cool negative / exact 0 / warm positive;
   display saturation endpoints; value only, not support;
@@ -1787,6 +1791,7 @@ src/rendering/TracerScene.ts
   focusPoint
 src/ui/tracer/ExploreFocusSampleControl.tsx
 src/rendering/analysisT1GlyphAppearanceV1.ts
+src/rendering/analysisT1GradientGlyphReadabilityV1.ts
 src/ui/tracer/analysisT1ColorLegendV1.ts
 src/ui/tracer/AnalysisT1ColorLegend.tsx
 ```

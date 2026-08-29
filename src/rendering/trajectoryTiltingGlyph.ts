@@ -7,6 +7,7 @@ import {
   displayDisplacementFromWorldVector,
   displayLengthFromPhysicalMagnitude,
 } from "../data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.js";
+import { applyGradientGlyphReadabilityDisplacement } from "./analysisT1GradientGlyphReadabilityV1.js";
 import type { Vec3 } from "../core/math/Vec3.js";
 
 /**
@@ -76,10 +77,12 @@ export function syncTrajectoryTiltingGlyph(
     model.omega.magnitude,
     displayScale,
   );
-  const gradientDisplay = displayDisplacementFromWorldVector(
-    model.gradient.vectorWorld,
-    model.gradient.magnitude,
-    displayScale,
+  const gradientDisplay = applyGradientGlyphReadabilityDisplacement(
+    displayDisplacementFromWorldVector(
+      model.gradient.vectorWorld,
+      model.gradient.magnitude,
+      displayScale,
+    ),
   );
   writeArrow(omega, omegaDisplay, appearance.omegaColor);
   writeArrow(gradient, gradientDisplay, appearance.gradientColor);

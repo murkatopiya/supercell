@@ -155,7 +155,7 @@ describe("trajectory tilting what-if glyph (no WebGLRenderer)", () => {
       const tip = shaftTip(lineOf(overlay, "analysisTiltingWhatIfGradientArrow"));
       lengths.push(Math.hypot(tip[0]!, tip[2]!));
     }
-    expect(lengths[0]).toBeCloseTo(40, 5);
+    expect(lengths[0]).toBeCloseTo(80, 5);
     expect(lengths[1]).toBeCloseTo(lengths[0]!, 5);
     expect(lengths[2]).toBeCloseTo(lengths[0]!, 5);
     disposeTrajectoryTiltingWhatIfGlyph(overlay);
