@@ -37,7 +37,7 @@ describe("ExploreEnvironmentSelector", () => {
     }
   });
 
-  it("is an Explore header control wired to the existing environment switch", () => {
+  it("is an Explore left-column control wired to the existing environment switch", () => {
     expect(selectorSrc).toMatch(/EXPLORE_ENVIRONMENT_OPTIONS\.map/);
     expect(selectorSrc).toMatch(/isExploreEnvironmentIdentity/);
     expect(selectorSrc).not.toMatch(/type="radio"/);
@@ -45,9 +45,15 @@ describe("ExploreEnvironmentSelector", () => {
       appSrc.indexOf("app__header"),
       appSrc.indexOf("app__subtitle"),
     );
-    expect(header).toMatch(/ExploreEnvironmentSelector/);
-    expect(header).toMatch(/onChange=\{selectExploreEnvironment\}/);
-    expect(header).toMatch(/value=\{exploreEnvironmentIdentity\}/);
+    expect(header).not.toMatch(/ExploreEnvironmentSelector/);
+    const controls = appSrc.slice(
+      appSrc.indexOf("workbench__column--controls"),
+      appSrc.indexOf("workbench__column--viewport"),
+    );
+    expect(controls).toMatch(/Storm-relative laboratory/);
+    expect(controls).toMatch(/ExploreEnvironmentSelector/);
+    expect(controls).toMatch(/onChange=\{selectExploreEnvironment\}/);
+    expect(controls).toMatch(/value=\{exploreEnvironmentIdentity\}/);
     expect(appSrc).toMatch(
       /selectExploreEnvironment[\s\S]*createExploreLab\(\s*sceneSlotsRef\.current!,\s*next/s,
     );

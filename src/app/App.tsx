@@ -16,7 +16,6 @@ import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.j
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import {
   DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
-  exploreEnvironmentLabel,
   type ExploreEnvironmentIdentity,
 } from "../explore/exploreEnvironmentIdentity.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
@@ -797,18 +796,10 @@ export function App() {
     <>
     <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
-        <div className="app__header-primary">
-          <ModeIdentity
-            mode={explore !== null ? "Explore" : "Guided"}
-            onReturnToLanding={returnToLanding}
-          />
-          {explore !== null ? (
-            <ExploreEnvironmentSelector
-              value={exploreEnvironmentIdentity}
-              onChange={selectExploreEnvironment}
-            />
-          ) : null}
-        </div>
+        <ModeIdentity
+          mode={explore !== null ? "Explore" : "Guided"}
+          onReturnToLanding={returnToLanding}
+        />
         <div className="app__header-tools">
           <EnvironmentAffordance
             expanded={environmentOpen}
@@ -837,9 +828,10 @@ export function App() {
         >
           <div className="workbench__column workbench__column--controls">
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
-            <p className="workbench__column-note">
-              {exploreEnvironmentLabel(exploreEnvironmentIdentity)}
-            </p>
+            <ExploreEnvironmentSelector
+              value={exploreEnvironmentIdentity}
+              onChange={selectExploreEnvironment}
+            />
             {explore.analysisColumn !== null ? (
               <p className="workbench__column-note">
                 Analysis T1 along recorded path

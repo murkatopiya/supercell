@@ -355,25 +355,24 @@ describe("Explore observed environments", () => {
     );
   });
 
-  it("reads the current environment under the Explore laboratory heading", () => {
-    expect(appSrc).toMatch(
-      /exploreEnvironmentLabel\(exploreEnvironmentIdentity\)/,
-    );
+  it("selects the current environment under the Explore laboratory heading", () => {
     const controls = appSrc.slice(
       appSrc.indexOf("workbench__column--controls"),
       appSrc.indexOf("workbench__column--viewport"),
     );
+    expect(controls).toMatch(/Storm-relative laboratory/);
+    expect(controls).toMatch(/ExploreEnvironmentSelector/);
+    expect(controls).toMatch(/onChange=\{selectExploreEnvironment\}/);
     expect(controls).toMatch(/workbench__column-note/);
     expect(controls).not.toMatch(/name="explore-environment-identity"/);
     const header = appSrc.slice(
       appSrc.indexOf("app__header"),
       appSrc.indexOf("app__subtitle"),
     );
-    expect(header).toMatch(/ExploreEnvironmentSelector/);
-    expect(header).toMatch(/onChange=\{selectExploreEnvironment\}/);
+    expect(header).not.toMatch(/ExploreEnvironmentSelector/);
     expect(appSrc).not.toMatch(/onEnvironmentIdentityChange/);
     const guided = appSrc.slice(appSrc.indexOf("workbench--guided"));
-    expect(guided).not.toMatch(/exploreEnvironmentLabel/);
+    expect(guided).not.toMatch(/ExploreEnvironmentSelector/);
     expect(guided).not.toMatch(/workbench__column-note/);
   });
 

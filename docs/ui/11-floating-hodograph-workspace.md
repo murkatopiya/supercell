@@ -57,7 +57,7 @@ EnvironmentSurface             one host for both modes:
                                  Guided: hodograph + overlays
                                  Explore: heading names current identity
                                    + honesty copy; no identity radios
-ExploreEnvironmentSelector     Explore header identity switch
+ExploreEnvironmentSelector     Explore left-column identity switch
 App                            owns geometry + plotView session state
 ```
 

@@ -10,8 +10,9 @@ export interface ExploreEnvironmentSelectorProps {
 }
 
 /**
- * Persistent Explore header control for environment identity.
- * Options come from EXPLORE_ENVIRONMENT_OPTIONS.
+ * Persistent Explore control for environment identity.
+ * Lives under Storm-relative laboratory. Options come from
+ * EXPLORE_ENVIRONMENT_OPTIONS.
  */
 export function ExploreEnvironmentSelector({
   value,

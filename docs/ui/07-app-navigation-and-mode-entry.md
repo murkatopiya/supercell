@@ -64,8 +64,8 @@ Boot surface          landing (`appSurface = "landing"`, `lab = null`)
 Top-level chrome      landing: title + v0.1 research-prototype
                       badge + primary Explore CTA + How It Works
                       + Glossary
-                      laboratory: ModeIdentity + Environment selector
-                      (Explore) + Hodograph + How It Works + Glossary
+                      laboratory: ModeIdentity + Hodograph + How It Works
+                      + Glossary
 Mode entry            landing primary CTA → enterExplore
                       Guided remains in App; not a public v0.1
                       landing peer choice
@@ -73,12 +73,15 @@ Mode entry            landing primary CTA → enterExplore
 Default lab           not constructed until Explore entry
 Default Explore       Goshen 2009 observed
                       (`DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY`)
-Environment selector  Explore laboratory header, next to ModeIdentity
+Environment selector  Explore left column, under Storm-relative
+                      laboratory; replaces the previous identity
+                      readout. Not a header control.
 Hodograph             laboratory header tool, not a mode peer
                       Guided: default open
                       Explore: default closed
-                      Explore identity is selected in the header,
-                      not inside the Hodograph surface
+                      Explore identity is selected under
+                      Storm-relative laboratory, not inside
+                      the Hodograph surface
 Router                none (Vite + React composition)
 How It Works          landing and laboratory workflow overlay (`12`)
 Glossary              landing and laboratory vocabulary overlay
@@ -127,7 +130,7 @@ Supercell Explorer
   │     ├── experiment catalog (existing GuidedExperimentId)
   │     └── Hodograph         (plot + overlays; default open)
   └── Explore               (top-level mode)
-        ├── environment identity (header selector)
+        ├── environment identity (left-column selector)
         └── Hodograph         (plot + overlays; default closed)
 ```
 
@@ -287,11 +290,9 @@ After this pass:
 - Guided may keep Hodograph default-open;
 - Explore may keep Hodograph default-closed;
 - Explore environment **identity** is selected by the
-  Environment selector next to ModeIdentity. It does not live
-  as radios inside the Hodograph surface. Explore also shows
-  the current identity as a readout under
-  **Storm-relative laboratory**; that line is not a second
-  switch.
+  Environment selector under **Storm-relative laboratory**.
+  It does not live as radios inside the Hodograph surface.
+  The previous identity readout is replaced by that selector.
 
 Guided experiment selection stays inside Guided
 (`GuidedExperimentSelector`). It is not a top-level mode and
@@ -306,7 +307,7 @@ not an Environment identity.
 | App surface (landing / help / laboratory) | App session state | exclusive view |
 | Current mode | `lab.kind` (existing) | observed by chrome |
 | Guided experiment id | App `guidedExperimentId` + `createGuidedLab` / `switchGuidedExperiment` | selector inside Guided |
-| Explore environment identity | App `exploreEnvironmentIdentity` + `createExploreLab` | radios inside Environment; Explore heading reads the current label |
+| Explore environment identity | App `exploreEnvironmentIdentity` + `createExploreLab` | selector under Storm-relative laboratory |
 | Environment open/closed | App `environmentOpen` | affordance + surface |
 | Hodograph points | physics `hodographPoints(profile)` at composition | Environment observes |
 | Simulation / particles | GuidedLab / ExploreLab | not owned by landing |
@@ -353,7 +354,7 @@ Explore-only (unchanged capability set):
 action rail: Release, Runtime, View
 airflow / scene presentation (08, landing 42-2 placement)
 Point diagnostics
-environment identity selector (Explore header)
+environment identity selector (Explore left column)
 ```
 
 This pass does not add Guided mounts that `40` §12 / `42` §12

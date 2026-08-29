@@ -17,7 +17,7 @@ describe("Explore 42-1 Environment surface", () => {
       appSrc.indexOf("app__subtitle"),
     );
     expect(header).toMatch(/EnvironmentAffordance/);
-    expect(header).toMatch(/ExploreEnvironmentSelector/);
+    expect(header).not.toMatch(/ExploreEnvironmentSelector/);
     expect(header).toMatch(/ModeIdentity/);
     expect(header).not.toMatch(/app__mode-switch/);
     expect(header).not.toMatch(/aria-pressed=\{lab\.kind === "guided"\}/);
@@ -28,6 +28,7 @@ describe("Explore 42-1 Environment surface", () => {
       appSrc.indexOf("workbench__column--viewport"),
     );
     expect(controls).not.toMatch(/EnvironmentAffordance/);
+    expect(controls).toMatch(/ExploreEnvironmentSelector/);
     expect(controls).not.toMatch(/EnvironmentSurface/);
     expect(controls).not.toMatch(/HodographPanel/);
     expect(controls).not.toMatch(/HodographOverlayControls/);
