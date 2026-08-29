@@ -598,6 +598,10 @@ export function App() {
       keepInactiveGlyphs={
         lab.kind === "explore" ? false : lab.keepInactiveGlyphs
       }
+      analysisColumn={explore?.analysisColumn ?? null}
+      analysisUpdraft={
+        explore !== null ? explore.tiltingTendency.updraft : null
+      }
       timestep={DEMO_SCENARIO.simulation.timestep}
       paused={paused || howItWorksOpen}
       timeScale={timeScale}
@@ -704,6 +708,11 @@ export function App() {
             <p className="workbench__column-note">
               {exploreEnvironmentLabel(exploreEnvironmentIdentity)}
             </p>
+            {explore.analysisColumn !== null ? (
+              <p className="workbench__column-note">
+                Analysis T1 along recorded path
+              </p>
+            ) : null}
             <div className="laboratory-toolbar laboratory-toolbar--explore">
               <div
                 className="control-band control-band--release control-band--primary"

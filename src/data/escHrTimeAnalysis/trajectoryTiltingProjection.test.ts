@@ -482,7 +482,7 @@ describe("projectAnalysisTiltingAlongRecordedPath", () => {
     expect(projectionSrc).not.toMatch(/React/);
   });
 
-  it("is not wired into live labs, App, Simulation, or TracerScene", () => {
+  it("is not imported by Simulation, labs, App, or TracerScene", () => {
     expect(composeDemoSrc).not.toMatch(
       /projectAnalysisTiltingAlongRecordedPath/,
     );

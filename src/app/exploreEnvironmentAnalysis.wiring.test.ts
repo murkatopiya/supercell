@@ -419,7 +419,7 @@ describe("Explore Analysis sibling beside Source EWP", () => {
     }
   });
 
-  it("does not wire tilting UX and does not keep a second Analysis selector in App", () => {
+  it("does not keep a second Analysis selector or wire I3 glyph/verify/what-if", () => {
     expect(appSrc).toMatch(
       /enterExplore[\s\S]*createExploreLab\(\s*sceneSlotsRef\.current!,\s*exploreEnvironmentIdentity/s,
     );

@@ -253,14 +253,14 @@ describe("trajectory tilting overlay (no WebGLRenderer)", () => {
     disposeTrajectoryTiltingOverlay(overlay);
   });
 
-  it("is not wired into TracerScene, App, or Explore, and does not query Analysis", () => {
+  it("does not query Analysis; production scale and Explore wiring live outside this module", () => {
     expect(overlaySrc).not.toMatch(/queryAnalysisTilting/);
     expect(overlaySrc).not.toMatch(/T1_COLOR_SCALE_V1/);
     expect(overlaySrc).not.toMatch(/parcel/);
     expect(overlaySrc).not.toMatch(/spin-up/);
-    expect(tracerSceneSrc).not.toMatch(/trajectoryTiltingOverlay/);
-    expect(tracerSceneSrc).not.toMatch(/encodeTrajectoryTiltingForRender/);
     expect(tracerSceneSrc).not.toMatch(/queryAnalysisTilting/);
+    expect(tracerSceneSrc).not.toMatch(/encodeTrajectoryTiltingForRender/);
+    expect(tracerSceneSrc).toMatch(/createTrajectoryTiltingOverlay/);
     expect(pickSrc).not.toMatch(/trajectoryTiltingOverlay/);
     expect(appSrc).not.toMatch(/trajectoryTiltingOverlay/);
     expect(appSrc).not.toMatch(/encodeTrajectoryTiltingForRender/);

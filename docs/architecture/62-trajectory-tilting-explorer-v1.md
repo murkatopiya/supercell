@@ -3,7 +3,7 @@
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
 SLICES A–F IMPLEMENTED / ACCEPTED /
-LANDING INTEGRATION SLICE I1 IMPLEMENTED / ACCEPTED /
+LANDING INTEGRATION SLICES I1–I2 IMPLEMENTED / ACCEPTED /
 SLICE G NOT STARTED / DEFERRED /
 CAL COMPLETE / ACCEPTED V1
 **Acceptance:** scientific/semantic review passed.
@@ -18,11 +18,13 @@ ephemeral what-if alignment) are
 IMPLEMENTED / ACCEPTED. Landing Integration Slice I1
 (Analysis diagnostic sibling beside Source EWP at the
 Explore/App data boundary) is IMPLEMENTED / ACCEPTED.
+Landing Integration Slice I2 (Analysis T1 overlay along
+recorded Explore trajectories) is IMPLEMENTED / ACCEPTED.
 Slice G remains NOT STARTED / DEFERRED. Numeric
 `T1_COLOR_SCALE_V1` display saturation is
 ACCEPTED V1 (`|T1|_sat = 6.100×10⁻⁵ s⁻²`).
-`|T1|_ε` is not part of V1. Trajectory overlay / glyph /
-verify / what-if remain unwired. Glyph display-scale
+`|T1|_ε` is not part of V1. Glyph / verify / what-if
+remain unwired. Glyph display-scale
 exaggeration remains an injected capability; the
 production meters-per-`s⁻¹` number is OPEN (§23 item 4).
 **Scope:** scientific UX, diagnostic authority, encoding, and
@@ -61,10 +63,15 @@ Landing Integration Slice I1 is implemented in
 `src/app/createExploreLab.ts`: one Explore identity
 selects Source EWP for advection and the matching
 Analysis sibling, or `null` (Moore / Demo). SOURCE
-ADVECTS. ANALYSIS EXPLAINS. Overlay / glyph / verify /
-what-if remain unwired. Overlay wiring is not included
-in this CAL record. Slice G remains NOT STARTED /
-DEFERRED.
+ADVECTS. ANALYSIS EXPLAINS. Landing Integration Slice I2
+is implemented in
+`src/explore/encodeExploreAnalysisTilting.ts`,
+`src/ui/tracer/TracerViewport.tsx`, and
+`src/rendering/TracerScene.ts`: recorded history +
+Analysis column + prescribed updraft → Slice B →
+Slice C encoding with `T1_COLOR_SCALE_V1` → Analysis T1
+overlay. Glyph / verify / what-if remain unwired.
+Slice G remains NOT STARTED / DEFERRED.
 
 Predecessor (not replaced):
 
@@ -119,7 +126,9 @@ It authorizes:
 - production `T1_COLOR_SCALE_V1` display saturation
   (CAL COMPLETE / ACCEPTED V1);
 - an Explore Analysis diagnostic sibling beside Source EWP
-  (Landing Integration Slice I1 COMPLETE / ACCEPTED).
+  (Landing Integration Slice I1 COMPLETE / ACCEPTED);
+- an Explore Analysis T1 overlay along recorded trajectories
+  (Landing Integration Slice I2 COMPLETE / ACCEPTED).
 
 It does **not** authorize:
 
@@ -966,8 +975,8 @@ versioned scale contract or test fixture
 
 production display saturation is T1_COLOR_SCALE_V1
 
-user-facing overlay remains unwired
-(caller-column-blocked; integration is a later record)
+user-facing overlay uses T1_COLOR_SCALE_V1
+(Landing Integration Slice I2; Explore only)
 
 no developer-chosen temporary production threshold
 ```
@@ -1357,7 +1366,7 @@ TrajectoryTiltingProjection[j]
 encodeTrajectoryTiltingForRender(projection, injected scale)
         │
         ▼
-optional T1 overlay (LineSegments; App unwired)
+T1 overlay (LineSegments; Slice I2 Explore wiring)
 ```
 
 Authority chain:
@@ -1397,7 +1406,8 @@ NOT STARTED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
 renderer slice. `T1_COLOR_SCALE_V1` is a separate CAL V1
-object. App / Explore / TracerScene remain unwired.
+object. Overlay wiring is Landing Integration Slice I2.
+Glyph / verify / what-if remain unwired.
 
 ### Slice A — atomic Analysis explanation result
 
@@ -1475,9 +1485,10 @@ tracers. Missing / null column remains
 `COLUMN_UNAVAILABLE`; there is no Source T1 fallback.
 
 Landing Integration Slice I1 implements that sibling
-availability at the Explore/App data boundary. Overlay /
-glyph / verify / what-if remain unwired. That is not live
-Analysis `V_env` rewiring. BL-010 remains PARTIAL.
+availability at the Explore/App data boundary. Overlay
+wiring is Landing Integration Slice I2. Glyph / verify /
+what-if remain unwired. That is not live Analysis `V_env`
+rewiring. BL-010 remains PARTIAL.
 
 ### Landing Integration Slice I1 — Analysis sibling beside Source EWP
 
@@ -1523,12 +1534,63 @@ src/app/createExploreLab.ts
   ExploreLab.analysisColumn sibling of Source advection
 ```
 
+### Landing Integration Slice I2 — Analysis T1 on recorded trajectory
+
+**Status:** IMPLEMENTED / ACCEPTED.
+
+```text
+The trajectory is the graph.
+A colored value segment [i, i+1] is Analysis T1
+at recorded sample i (the earlier endpoint).
+It is not T1 along the interval, not a mean of
+endpoints, not the T1 that caused displacement,
+and not material parcel vorticity tendency.
+```
+
+Explore only. Automatic when `analysisColumn` is present
+(Goshen / Prospect / Dumas). Moore and Demo have no
+overlay and no Source T1 fallback. Guided is unchanged.
+
+Data flow:
+
+```text
+TracerPathHistory.samplesFor(lane)
+  + ExploreLab.analysisColumn
+  + prescribed updraft
+  → projectAnalysisTiltingAlongRecordedPath
+  → encodeTrajectoryTiltingForRender(..., T1_COLOR_SCALE_V1)
+  → create/sync TrajectoryTiltingOverlay
+```
+
+Projection is derived observe-time state. It is not a
+second history store. Picking remains
+`pickPathHistorySample` on occupancy samples. Overlay
+raycast is disabled.
+
+Presentation policy: value color is
+`ANALYSIS_T1_VALUE_APPEARANCE_V1` (warm / 0 / cool).
+BOUNDARY uses that same value color on the Slice C
+BOUNDARY LineSegments object. Dash / opacity / outline
+remain OPEN (§23 item 5). Occupancy trail remains.
+
+Homes:
+
+```text
+src/explore/encodeExploreAnalysisTilting.ts
+src/rendering/analysisT1ValueAppearanceV1.ts
+src/rendering/TracerScene.ts
+  syncAnalysisTiltingOverlays
+src/ui/tracer/TracerViewport.tsx
+```
+
+Glyph / verify / what-if are not included in this slice.
+
 ### Slice C — renderer value / support encoding
 
 **Status:** IMPLEMENTED / ACCEPTED as renderer capability.
-Production App activation is caller-column-blocked.
 `T1_COLOR_SCALE_V1` display saturation is ACCEPTED V1
-(§13). Overlay wiring is not included in this record.
+(§13). Production overlay wiring is Landing Integration
+Slice I2, not this slice record.
 
 Homes:
 
@@ -1582,7 +1644,8 @@ does not ship a developer-chosen temporary production threshold
 does not change PathHistorySample
 does not interpolate T1 between recorded samples
 does not treat GPU segment interpolation as selection
-does not wire TracerScene / App / Explore
+does not itself wire TracerScene / App / Explore
+  (I2 consumes this capability)
 ```
 
 ### Slice D — historical-probe 3D geometry glyph
@@ -1688,8 +1751,8 @@ This is display calibration, not a renderer invention and
 not a Slice C number. Slices A–C may still use an injected
 test fixture. Production signedUnit mapping is
 `T1_COLOR_SCALE_V1` in `t1ColorScaleV1.ts`.
-App / Explore / TracerScene overlay wiring is not included
-in this record.
+Overlay wiring consumes this object in Slice I2.
+Glyph / verify / what-if remain unwired.
 
 ### Explicitly not a slice of this SoT
 
@@ -1773,7 +1836,7 @@ this file as TILT_Y,total or I_tilt authorization
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                    SLICES A–F IMPLEMENTED / ACCEPTED;
-                   LANDING INTEGRATION SLICE I1
+                   LANDING INTEGRATION SLICES I1–I2
                      IMPLEMENTED / ACCEPTED;
                    SLICE G NOT STARTED / DEFERRED;
                    CAL COMPLETE / ACCEPTED V1
@@ -1818,14 +1881,16 @@ COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
                    Slice I1 COMPLETE / ACCEPTED at Explore/App
                    data boundary; SOURCE ADVECTS;
                    ANALYSIS EXPLAINS; not V_env rewiring
-PICKING:           52 unchanged
+TRAJECTORY GRAPH:  Slice I2; colored [i, i+1] = Analysis T1
+                   at recorded sample i
+PICKING:           52 unchanged; overlay is not a pick source
 BL-010:            PARTIAL; caller Analysis-column sibling
                    available; live V_env rewiring not authorized
 IMPLEMENTATION:    SLICES A–F COMPLETE / ACCEPTED as capability;
                    CAL COMPLETE / ACCEPTED V1;
-                   LANDING INTEGRATION SLICE I1
+                   LANDING INTEGRATION SLICES I1–I2
                      COMPLETE / ACCEPTED;
-                   overlay/glyph/verify/what-if unwired;
+                   glyph/verify/what-if unwired;
                    SLICE G NOT STARTED / DEFERRED
 ```
 
@@ -1867,7 +1932,25 @@ src/rendering/trajectoryTiltingOverlay.ts
   FULL vs BOUNDARY as separate objects
   identical endpoint colors; raycast disabled
   occupancy trailGeometry unchanged
-  not imported by TracerScene / App / Explore
+  imported by TracerScene (Slice I2); not by App
+
+src/explore/encodeExploreAnalysisTilting.ts
+  Slice I2: PathHistory + Analysis column + updraft
+  → Slice B projection → Slice C encoding with
+    T1_COLOR_SCALE_V1
+  null column → no encoding (not zero)
+
+src/rendering/analysisT1ValueAppearanceV1.ts
+  Slice I2 presentation: signedUnit → RGB
+  warm / 0 / cool; not CAL
+
+src/rendering/TracerScene.ts
+  Slice I2: syncAnalysisTiltingOverlays
+  dispose on removeLast / clear / dispose
+
+src/ui/tracer/TracerViewport.tsx
+  Slice I2: fingerprint + encode + scene sync
+  Guided does not pass Analysis column
 
 src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts
   createTrajectoryTiltingGlyphModel
@@ -1931,10 +2014,10 @@ beside Source EWP at the Explore/App data boundary.
 SOURCE ADVECTS. ANALYSIS EXPLAINS. It is not included in
 Slice B–F capability and is not live `V_env` rewiring.
 
-Renderer / glyph / numeric-verify / what-if capability is
-complete. CAL V1 scale exists. Overlay / glyph / verify /
-what-if remain unwired. Overlay wiring is not included
-in this record.
+Landing Integration Slice I2 wires the Analysis T1 overlay
+along recorded Explore trajectories. Glyph / verify /
+what-if remain unwired. Overlay wiring is included in
+this I2 record.
 
 Slice G is NOT STARTED / DEFERRED:
 
@@ -1960,6 +2043,14 @@ src/app/exploreEnvironmentRepresentations.ts
                                 Slice I1 Analysis sibling
 src/app/createExploreLab.ts
                                 Slice I1 Explore pairing
+src/explore/encodeExploreAnalysisTilting.ts
+                                Slice I2 encoder
+src/rendering/analysisT1ValueAppearanceV1.ts
+                                Slice I2 appearance
+src/rendering/TracerScene.ts
+                                Slice I2 overlay lifecycle
+src/ui/tracer/TracerViewport.tsx
+                                Slice I2 Explore sync
 optional ω_y,current            Slice G
 ```
 

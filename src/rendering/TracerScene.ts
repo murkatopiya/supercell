@@ -58,6 +58,13 @@ import {
   createWorldCoordinateReference,
   disposeWorldCoordinateReference,
 } from "./worldCoordinateReference.js";
+import { ANALYSIS_T1_VALUE_APPEARANCE_V1 } from "./analysisT1ValueAppearanceV1.js";
+import type { TrajectoryTiltingRenderEncoding } from "../data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.js";
+import {
+  createTrajectoryTiltingOverlay,
+  disposeTrajectoryTiltingOverlay,
+  syncTrajectoryTiltingOverlay,
+} from "./trajectoryTiltingOverlay.js";
 
 export { TRACER_COLORS } from "./tracerObserveSlot.js";
 export {
@@ -108,6 +115,7 @@ export class TracerScene {
   private readonly camera: THREE.PerspectiveCamera;
   private readonly controls: OrbitControls;
   private readonly slots: TracerObserveSlot[] = [];
+  private readonly analysisTiltingOverlays: THREE.Group[] = [];
   private preview: THREE.Mesh | undefined;
   private selectionHalo: THREE.Mesh | undefined;
   private hoverHalo: THREE.Mesh | undefined;
@@ -201,6 +209,7 @@ export class TracerScene {
     if (slot.trail !== undefined) {
       this.scene.remove(slot.trail);
     }
+    this.disposeLastAnalysisTiltingOverlay();
     disposeTracerObserveSlot(slot);
     if (
       this.selectedSlotIndex !== null &&
@@ -240,6 +249,7 @@ export class TracerScene {
       }
       disposeTracerObserveSlot(slot);
     }
+    this.disposeAllAnalysisTiltingOverlays();
     this.slots.length = 0;
     this.selectedSlotIndex = null;
     this.hoveredOccupancyIndex = null;
@@ -494,6 +504,36 @@ export class TracerScene {
     }
   }
 
+  /**
+   * Derived Analysis T1 overlay beside occupancy trails.
+   * Null / empty encodings hide and dispose overlay groups.
+   * Does not query Analysis physics. Overlay raycast stays disabled.
+   */
+  syncAnalysisTiltingOverlays(
+    encodings: readonly TrajectoryTiltingRenderEncoding[] | null,
+  ): void {
+    if (encodings === null || encodings.length === 0) {
+      this.disposeAllAnalysisTiltingOverlays();
+      return;
+    }
+    while (this.analysisTiltingOverlays.length < encodings.length) {
+      const overlay = createTrajectoryTiltingOverlay();
+      overlay.renderOrder = 1;
+      this.scene.add(overlay);
+      this.analysisTiltingOverlays.push(overlay);
+    }
+    while (this.analysisTiltingOverlays.length > encodings.length) {
+      this.disposeLastAnalysisTiltingOverlay();
+    }
+    for (let i = 0; i < encodings.length; i++) {
+      syncTrajectoryTiltingOverlay(
+        this.analysisTiltingOverlays[i]!,
+        encodings[i]!,
+        ANALYSIS_T1_VALUE_APPEARANCE_V1,
+      );
+    }
+  }
+
   render(): void {
     if (this.followPoint !== null) {
       translateCameraFollowTarget(
@@ -529,6 +569,21 @@ export class TracerScene {
     this.scene.remove(this.coordinateReference);
     disposeWorldCoordinateReference(this.coordinateReference);
     this.renderer.dispose();
+  }
+
+  private disposeLastAnalysisTiltingOverlay(): void {
+    const overlay = this.analysisTiltingOverlays.pop();
+    if (overlay === undefined) {
+      return;
+    }
+    this.scene.remove(overlay);
+    disposeTrajectoryTiltingOverlay(overlay);
+  }
+
+  private disposeAllAnalysisTiltingOverlays(): void {
+    while (this.analysisTiltingOverlays.length > 0) {
+      this.disposeLastAnalysisTiltingOverlay();
+    }
   }
 
   /**

@@ -22,6 +22,12 @@ import type { Simulation } from "../../simulation/Simulation.js";
 import type { TracerSeedPosition } from "../../simulation/createTracersFromSeeds.js";
 import type { Vec3 } from "../../core/math/Vec3.js";
 import type { VelocityField } from "../../core/fields/VelocityField.js";
+import type { EscHrTimeAnalysisColumn } from "../../data/escHrTimeAnalysis/types.js";
+import type { VerticalEnvelopeUpdraftField } from "../../physics/storm/VerticalEnvelopeUpdraftField.js";
+import {
+  encodeExploreAnalysisTiltingForPathHistory,
+  exploreAnalysisTiltingHistoryFingerprint,
+} from "../../explore/encodeExploreAnalysisTilting.js";
 import type { EulerianAirflowSamples } from "../../visualization/EulerianAirflowSamples.js";
 import type { VisualAirflowPopulation } from "../../visualization/VisualAirflowPopulation.js";
 import { stepVisualAirflowOnFrozenField } from "../../visualization/stepVisualAirflowOnFrozenField.js";
@@ -128,6 +134,15 @@ export interface TracerViewportProps {
    */
   onPathSampleSelect?: (slotIndex: number, historyIndex: number) => void;
   /**
+   * Explore Analysis diagnostic sibling. Null hides the Analysis T1
+   * overlay. Guided omits this. Not a VelocityField operand.
+   */
+  analysisColumn?: EscHrTimeAnalysisColumn | null;
+  /**
+   * Prescribed updraft used with the Analysis column. Guided omits.
+   */
+  analysisUpdraft?: VerticalEnvelopeUpdraftField | null;
+  /**
    * World position of the inspected historical sample, or null.
    * Presentation-only; Follow still tracks the live glyph.
    */
@@ -183,6 +198,8 @@ export function TracerViewport({
   coordinateReferenceVisible = true,
   onTracerSelect,
   onPathSampleSelect,
+  analysisColumn = null,
+  analysisUpdraft = null,
   historicalProbePosition = null,
   onSimulationAdvanced,
   followEnabledRef,
@@ -204,6 +221,8 @@ export function TracerViewport({
   const onPlacementAttemptRef = useRef(onPlacementAttempt);
   const onTracerSelectRef = useRef(onTracerSelect);
   const onPathSampleSelectRef = useRef(onPathSampleSelect);
+  const analysisColumnRef = useRef(analysisColumn);
+  const analysisUpdraftRef = useRef(analysisUpdraft);
   const historicalProbePositionRef = useRef(historicalProbePosition);
   const onSimulationAdvancedRef = useRef(onSimulationAdvanced);
   const followEnabledSourceRef = useRef(followEnabledRef);
@@ -225,6 +244,8 @@ export function TracerViewport({
   onPlacementAttemptRef.current = onPlacementAttempt;
   onTracerSelectRef.current = onTracerSelect;
   onPathSampleSelectRef.current = onPathSampleSelect;
+  analysisColumnRef.current = analysisColumn;
+  analysisUpdraftRef.current = analysisUpdraft;
   historicalProbePositionRef.current = historicalProbePosition;
   onSimulationAdvancedRef.current = onSimulationAdvanced;
   followEnabledSourceRef.current = followEnabledRef;
@@ -292,6 +313,7 @@ export function TracerViewport({
     let disposed = false;
     let pointerDown: { x: number; y: number; pointerId: number } | null =
       null;
+    let analysisTiltingFingerprint = "";
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -306,6 +328,27 @@ export function TracerViewport({
       scene.syncFromParticles(simulation.particles);
       if (pathHistory) {
         scene.syncFromPathHistory(pathHistory);
+        const column = analysisColumnRef.current;
+        const updraft = analysisUpdraftRef.current;
+        const fingerprint =
+          column == null || updraft == null
+            ? "column-unavailable"
+            : exploreAnalysisTiltingHistoryFingerprint(pathHistory, column);
+        if (fingerprint !== analysisTiltingFingerprint) {
+          analysisTiltingFingerprint = fingerprint;
+          const encodings =
+            column == null || updraft == null
+              ? null
+              : encodeExploreAnalysisTiltingForPathHistory(
+                  pathHistory,
+                  column,
+                  updraft,
+                );
+          scene.syncAnalysisTiltingOverlays(encodings);
+        }
+      } else {
+        analysisTiltingFingerprint = "";
+        scene.syncAnalysisTiltingOverlays(null);
       }
       if (workbenchScene !== null && visualAirflowPopulation !== null) {
         const field = visualAirflowFieldRef.current;
