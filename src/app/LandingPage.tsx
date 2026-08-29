@@ -2,9 +2,11 @@ import {
   LANDING_CAPABILITIES,
   LANDING_CTA_LABEL,
   LANDING_DISCLAIMER,
-  LANDING_ENVIRONMENTS_NOTE,
+  LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
+  LANDING_ENVIRONMENTS_LEAD,
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
+  LANDING_OBSERVED_ENVIRONMENT_LINKS,
 } from "./landingContent.js";
 import { PUBLIC_VERSION_BADGE } from "./publicVersion.js";
 
@@ -79,7 +81,30 @@ export function LandingPage({
         <p>{LANDING_DISCLAIMER}</p>
       </section>
 
-      <p className="landing__note">{LANDING_ENVIRONMENTS_NOTE}</p>
+      <p className="landing__note">
+        {LANDING_ENVIRONMENTS_LEAD}{" "}
+        {LANDING_OBSERVED_ENVIRONMENT_LINKS.map((environment, index) => {
+          const last = index === LANDING_OBSERVED_ENVIRONMENT_LINKS.length - 1;
+          const separator =
+            index === 0 ? null : last ? ", and " : ", ";
+          return (
+            <span key={environment.identity}>
+              {separator}
+              <a
+                className="landing-environment-link"
+                href={environment.eventContextUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={environment.accessibleName}
+              >
+                {environment.label}
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            </span>
+          );
+        })}
+        . {LANDING_ENVIRONMENTS_ANALYSIS_NOTE}
+      </p>
       <p className="landing__note landing__note--quiet">
         {LANDING_GUIDED_LATER_NOTE}
       </p>

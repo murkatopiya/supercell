@@ -4,12 +4,21 @@ import { LandingPage } from "./LandingPage.js";
 import {
   LANDING_CTA_LABEL,
   LANDING_DISCLAIMER,
-  LANDING_ENVIRONMENTS_NOTE,
+  LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
+  LANDING_ENVIRONMENTS_LEAD,
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
+  LANDING_OBSERVED_ENVIRONMENT_LINKS,
 } from "./landingContent.js";
 import { PUBLIC_VERSION, PUBLIC_VERSION_BADGE } from "./publicVersion.js";
+import {
+  EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
+  EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+  EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
+  EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
+} from "../explore/exploreEnvironmentIdentity.js";
 import landingSrc from "./LandingPage.tsx?raw";
+import identitySrc from "../explore/exploreEnvironmentIdentity.ts?raw";
 
 function landingMarkup() {
   return renderToStaticMarkup(
@@ -51,12 +60,44 @@ describe("LandingPage", () => {
     expect(html).toContain(LANDING_DISCLAIMER);
     expect(html).toContain("not a weather forecast");
     expect(html).toContain("full atmospheric simulation");
-    expect(html).toContain(LANDING_ENVIRONMENTS_NOTE);
-    expect(html).toContain("Goshen");
-    expect(html).toContain("Prospect Valley");
-    expect(html).toContain("Dumas");
-    expect(html).toContain("Moore");
+    expect(html).toContain(LANDING_ENVIRONMENTS_LEAD);
+    expect(html).toContain(LANDING_ENVIRONMENTS_ANALYSIS_NOTE);
     expect(html).toContain("suitable Analysis representation");
+  });
+
+  it("links observed environment names to authoritative case resources", () => {
+    const html = landingMarkup();
+    expect(LANDING_OBSERVED_ENVIRONMENT_LINKS).toHaveLength(4);
+    expect(LANDING_OBSERVED_ENVIRONMENT_LINKS.map((item) => item.identity)).toEqual(
+      [
+        EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+        EXPLORE_ENVIRONMENT_PROSPECT_VALLEY_2010_OBSERVED,
+        EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
+        EXPLORE_ENVIRONMENT_MOORE_2013_OBSERVED,
+      ],
+    );
+    expect(
+      LANDING_OBSERVED_ENVIRONMENT_LINKS.map((item) => item.eventContextUrl),
+    ).toEqual([
+      "https://www.weather.gov/cys/GoshenCountyTornado",
+      "https://journals.ametsoc.org/view/journals/mwre/148/5/mwr-d-19-0288.1.xml",
+      "https://www.weather.gov/media/ama/may2010.pdf",
+      "https://www.weather.gov/oun/events-20130520",
+    ]);
+    for (const environment of LANDING_OBSERVED_ENVIRONMENT_LINKS) {
+      expect(html).toContain(`href="${environment.eventContextUrl}"`);
+      expect(html).toContain(`aria-label="${environment.accessibleName}"`);
+      expect(html).toContain(`>${environment.label}<span`);
+    }
+    expect(html).toContain('target="_blank"');
+    expect(html).toContain('rel="noopener noreferrer"');
+    expect(html.match(/class="landing-environment-link"/g)).toHaveLength(4);
+    expect(html).not.toContain("Prospect Valley tornado");
+    expect(html).not.toContain("reconstruction");
+    expect(html).not.toContain("Simulate the");
+    expect(landingSrc).not.toContain("weather.gov");
+    expect(identitySrc).not.toContain("eventContextUrl");
+    expect(identitySrc).not.toContain("weather.gov");
   });
 
   it("lists current laboratory capabilities without dumping documentation", () => {

@@ -578,6 +578,21 @@ body:has(.app--landing) {
   color: var(--color-text-muted);
 }
 
+.landing-environment-link {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.landing-environment-link:hover {
+  color: var(--color-accent-hover);
+}
+
+.landing-environment-link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
 @media (min-width: 640px) {
   .landing__capability-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
