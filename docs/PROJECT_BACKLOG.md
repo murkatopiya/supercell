@@ -450,7 +450,12 @@ Rejected in `52` (do not queue): simulation rewind, free 3D probe,
 diagnostic snapshot cache.
 Return when: a later interaction SoT, after the first slice is actually
 used. These are not implementation requirements of `52`.
-Authoritative refs: `52` §11 / §13.
+The scientific boundary for trajectory-parameterized rotational
+diagnostics is
+[`docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`](research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md)
+(BL-047). That research decision does **not** implement, or
+authorize, the LATER interactions in this item.
+Authoritative refs: `52` §11 / §13; BL-047.
 
 ---
 
@@ -569,6 +574,41 @@ Authoritative refs: this index; research
 `2026-08-27-goshen-2155-hodograph-reproduction.md` §7 (NSHARP vs
 Form B as a **paper** unknown, not this survey); `48` §12; `54` §6
 (Leise clone already rejected).
+
+### BL-047 — Vorticity-budget honesty and trajectory-diagnostic boundary
+
+Category: RESEARCH
+Status: RESEARCH DECISION COMPLETE
+Origin: trajectory-history diagnostic question after `52`;
+adversarial review 2026-08-29 (input, not SoT); independent
+vorticity-budget honesty audit 2026-08-29
+Why retained: physics `22` already forbids integrating T1;
+architecture `27` already names T1×Δt a fake spin-up. The
+boundary still needed an adjudicated research record so
+path-parameterized rotational diagnostics are not reopened as
+prognostic evolution. Research
+`2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`
+locks the taxonomy (Eulerian field / along-path lookup /
+path functional / absent prognostic state), T1 as exact
+tilting of `V_env+V_updraft` but not of `V_total`,
+`TILT_Y,total` as research-derived and unimplemented, and
+`DO NOT IMPLEMENT / PRESENT I_tilt`.
+Remaining OPEN items (T1 vs `TILT_Y,total` topology;
+interval support; flicker; clamp materiality policy; `R_y`
+role; class B visualization architecture) live in that SoT.
+They are not architecture decisions and not implementation
+authorization.
+This item does **not** authorize UI, `TILT_Y,total`, Analysis
+live rewiring, or a change to T1 / Candidate A / `V_total`.
+It does **not** complete BL-010.
+Return when: not applicable as the boundary decision;
+implementation of any later class B surface requires a
+separate architecture SoT.
+Authoritative refs:
+[`docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`](research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md);
+physics `22` / `23`; architecture `10`, `11`, `26`, `27`,
+`29`, `30`, `52`, `60`, `61`; BL-010 (unchanged PARTIAL);
+BL-024 (UX remainder; not this decision).
 
 ---
 
@@ -857,6 +897,7 @@ BL-010 (implementation authorized / not started).
 | I. Reconstruction long-term track | BL-018–BL-020, BL-034, BL-044 | consume vs producer split preserved |
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
+| L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE; no UI / no `TILT_Y,total` / no `I_tilt` |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -968,6 +1009,14 @@ BL-046:
                RESEARCH DECISION COMPLETE;
                time-domain FIR 40 s named;
                production spec / column authorization in 59
+research 2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md:
+               trajectory-diagnostic boundary RESEARCH DECISION;
+               T1 ≠ V_total tilting; I_tilt not presented;
+               not architecture; not implementation
+BL-047:
+               RESEARCH DECISION COMPLETE;
+               OPEN topology / support / materiality /
+               visualization items remain in that SoT
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:
