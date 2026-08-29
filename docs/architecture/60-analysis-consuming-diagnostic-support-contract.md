@@ -3,6 +3,7 @@
 **Status:** ARCHITECTURE ACCEPTED /
 DIAGNOSTIC SUPPORT CONTRACT SPECIFIED /
 HEADLESS NATIVE-SEGMENT QUERY IMPLEMENTED /
+TILTING VALIDITY PROPAGATION SPECIFIED IN 61 /
 LIVE CONSUMER REWIRING NOT STARTED / NOT AUTHORIZED
 **Scope:** how diagnostics may consume Source versus Analysis,
 and how FIR filter support propagates through interpolation,
@@ -10,6 +11,8 @@ native-segment shear, and layer queries. Not a Source rewrite.
 Not a new FIR. Not a change to `EnvironmentalWindProfile`.
 Not diagnostic rewiring of live Explore / Guided / T1.
 Not hodograph UI. Not Moore. Not a V1 reopen.
+Successor `61` owns Analysis T1 validity propagation and
+authorizes a later headless Analysis T1 sibling query.
 **Physics:** existing shear / vorticity / SRH / T1 identities
 are not reopened. This file records how Analysis *support*
 applies to those already-defined computations.
@@ -17,7 +20,8 @@ applies to those already-defined computations.
 Analysis wind / shear / `ω_h` query lives in
 `src/data/escHrTimeAnalysis/analysisQuery.ts`. Live
 Explore / Guided / T1 / SRH / hodograph rewiring is not
-included.
+included. Analysis T1 sibling authorization lives in `61`,
+not in this file.
 
 Predecessor (not replaced):
 
@@ -27,6 +31,12 @@ docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
 docs/architecture/55-analysis-profile-generalization-gate.md
 docs/architecture/58-source-class-aware-analysis-profile-contract.md
 docs/architecture/59-high-resolution-esc-time-domain-analysis-integration.md
+```
+
+Successor (Analysis T1 validity; does not replace this consumption contract):
+
+```text
+docs/architecture/61-analysis-tilting-validity-propagation.md
 ```
 
 Physics / architecture of existing diagnostics:
@@ -597,8 +607,8 @@ the `ω_h` operand only.
 | Analysis candidate? | Yes, via Analysis `ω_h`. |
 | Analysis-required? | Not yet. |
 | Derivative-sensitive? | Yes, via `ω_h`. |
-| Support policy | Validity cannot exceed upstream `ω_h` validity (§14). |
-| Rewiring after `60` | **Not authorized.** Separate slice after the `ω_h` query exists. |
+| Support policy | Validity cannot exceed upstream `ω_h` validity (§14). Successor `61` specifies the Analysis T1 contract. |
+| Rewiring after `60` | Live T1 **not** authorized. Headless Analysis T1 sibling is authorized in `61`. |
 
 ### C. 0–1 km SRH
 
@@ -681,8 +691,8 @@ is a separate validity bit.
 
 ## 14. D12 — Tilting validity propagation
 
-**NEW PROJECT DECISION.** Policy for a later slice. T1 is
-not rewired here.
+**NEW PROJECT DECISION.** Policy recorded here; the Analysis
+T1 contract is successor `61`. Live T1 is not rewired here.
 
 If tilting consumes Analysis-derived `ω_h`:
 
@@ -700,6 +710,11 @@ MUST NOT reuse that 0 to mean “FIR boundary” or “column
 missing.”
 
 The updraft operand does not become Analysis.
+
+Successor `61` instantiates this inequality, distinguishes
+support validity from provenance class, and authorizes a
+headless Analysis T1 sibling query. This file does not
+include that implementation.
 
 ---
 
@@ -927,11 +942,11 @@ Moore non-applicable
 no NaN / 0 as unavailable Analysis ω_h
 ```
 
-Downstream T1 validity propagation is **not** required in
-the first consumer slice because T1 is not authorized
-there. When a later T1 Analysis slice is authorized, it
-MUST test that unavailable `ω_h` does not become `T = 0`
-by silent substitution.
+Downstream T1 validity propagation was **not** required in
+the first consumer slice because T1 was not authorized
+there. Successor `61` now specifies that contract and
+requires that unavailable `ω_h` not become `T = 0` by
+silent substitution.
 
 ---
 
@@ -948,8 +963,9 @@ Implemented object: the narrow headless support-aware
 Analysis native-segment shear / horizontal-vorticity
 query named in §21.
 
-Not authorized: live diagnostic rewiring, UI, Explore
-switch, tilting, SRH consumers, hodograph overlay.
+Not authorized by this file: live diagnostic rewiring, UI,
+Explore switch, SRH consumers, hodograph overlay.
+Analysis T1 sibling authorization is successor `61`.
 
 No research blocker was found that prevents specifying
 this contract. The production derivative **is** the
@@ -972,7 +988,8 @@ Source hair must not backfill Analysis FIR boundaries
 Fig. 2b 88 / 167 is not a target
 ±40 s is not a universal 200 m cutoff
 support does not belong on provider-neutral EWP
-this file does not rewire Explore / Guided / T1
+this file does not rewire Explore / Guided / live T1
+Analysis T1 validity is successor 61
 ```
 
 ---
@@ -995,7 +1012,8 @@ CLAMP:             OUT_OF_DOMAIN for Analysis diagnostics
 QUERY OWNER:       sibling of EscHrTimeAnalysisColumn
 EWP:               remains V(h); no support fields
 ω_h Analysis:      FULL-required; mask mixed/boundary
-T1:                validity ≤ ω_h; not rewired here
+T1:                validity ≤ ω_h; live T1 not rewired here;
+                   Analysis T1 sibling specified in 61
 0–1 SRH:           59 unchanged; layer contract
 0–3 SRH:           launch-inclusive → BOUNDARY
 BULK:              computable ≠ FULL
@@ -1005,6 +1023,8 @@ FIRST SLICE:       headless Analysis native-segment ω_h
 BL-010:            column core IMPLEMENTED;
                    support-aware native-segment Analysis
                    ω_h query IMPLEMENTED;
+                   Analysis T1 sibling NOT STARTED /
+                   AUTHORIZED in 61;
                    live consumer rewiring NOT STARTED /
                    NOT AUTHORIZED
 ```

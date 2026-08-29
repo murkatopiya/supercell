@@ -174,6 +174,7 @@ Authoritative refs: `48` U2; `49` §10.
 Category: PHYSICS
 Status: PARTIAL / COLUMN CORE IMPLEMENTED;
 support-aware native-segment Analysis `ω_h` query IMPLEMENTED;
+Analysis T1 sibling NOT STARTED / AUTHORIZED;
 live consumer rewiring NOT STARTED / NOT AUTHORIZED
 Origin: `53` (source vs analysis distinction **ACCEPTED**);
 `54` (first concrete candidate construction);
@@ -185,22 +186,27 @@ Analysis-column implementation **authorized**);
 `60` (Analysis diagnostic support contract **specified**;
 headless native-segment Analysis `ω_h` query **implemented**;
 live rewiring **not** authorized);
+`61` (Analysis T1 validity **specified**;
+headless Analysis T1 sibling **authorized**;
+not implemented);
 research `2026-08-28-high-resolution-esc-analysis-transform-decision.md`
 (ESC-class transform **research-selected**; not itself
 authorization)
 Why retained: the headless Analysis column and support-aware
 native-segment wind / shear / `ω_h` query exist
 (`src/data/escHrTimeAnalysis/`, ESC TIME carrier in
-`src/data/eolNsslMgausEsc/`). Diagnostic rewiring, hodograph
-overlay, Explore Source replacement, and Guided consumption
-remain unwired (`59` §27, `60` §21). This does not complete
-BL-010.
-Return when: a later SoT authorizes live consumers (T1,
-Explore, UI, SRH, hodograph). Do not treat column core or the
-headless `ω_h` query as diagnostic/UI completion. Do not implement
-the `54` candidate as production. Do not retune to Fig. 2b 88 /
-167. Do not mutate the source golden winds/heights. Do not
-silently replace Explore `V_env`.
+`src/data/eolNsslMgausEsc/`). The Analysis T1 sibling query
+is authorized by `61` and is not implemented. Diagnostic
+rewiring, hodograph overlay, Explore Source replacement, and
+Guided consumption remain unwired (`59` §27, `60` §21, `61`
+§17). This does not complete BL-010.
+Return when: a later SoT authorizes live consumers (Explore,
+UI, SRH, hodograph). Do not treat column core, the headless
+`ω_h` query, or a later headless Analysis T1 sibling as
+diagnostic/UI completion. Do not implement the `54` candidate
+as production. Do not retune to Fig. 2b 88 / 167. Do not
+mutate the source golden winds/heights. Do not silently
+replace Explore `V_env`.
 Authoritative refs:
 [`docs/architecture/53-goshen-2155-source-versus-analysis-profile.md`](architecture/53-goshen-2155-source-versus-analysis-profile.md);
 [`docs/architecture/54-storm-scale-analysis-wind-profile.md`](architecture/54-storm-scale-analysis-wind-profile.md)
@@ -213,6 +219,8 @@ Authoritative refs:
 (production transform; column authorization);
 [`docs/architecture/60-analysis-consuming-diagnostic-support-contract.md`](architecture/60-analysis-consuming-diagnostic-support-contract.md)
 (diagnostic support contract; headless `ω_h` query implemented);
+[`docs/architecture/61-analysis-tilting-validity-propagation.md`](architecture/61-analysis-tilting-validity-propagation.md)
+(Analysis T1 validity; headless sibling authorized);
 [`docs/research/2026-08-28-high-resolution-esc-analysis-transform-decision.md`](research/2026-08-28-high-resolution-esc-analysis-transform-decision.md)
 (research-selected ESC candidate);
 this index BL-037 (CLOSED), BL-046.
@@ -232,12 +240,14 @@ column while Explore `V_env` / scientific polyline stay on the
 Architecture `59` authorizes the Analysis **column** (BL-010), not
 this overlay. Architecture `60` specifies FILTER vs diagnostic
 support and authorizes a headless `ω_h` query, not this overlay.
-Overlay consumption must follow `59` / `60` FULL_SUPPORT
-policy for derivative-sensitive diagnostics.
+Architecture `61` specifies Analysis T1 validity and authorizes
+a headless Analysis T1 sibling; it does not authorize this
+overlay. Overlay consumption must follow `59` / `60` / `61`
+FULL_SUPPORT policy for derivative-sensitive diagnostics.
 Return when: a validated analysis column exists (BL-010 implemented)
 **and** a UI slice is authorized to point overlays at it, with
 labeled provenance.
-Authoritative refs: `50` §5 / §11; `54` §8–§9; `55`; `58`; `60`; `48` §7;
+Authoritative refs: `50` §5 / §11; `54` §8–§9; `55`; `58`; `60`; `61`; `48` §7;
 BL-010; BL-046.
 
 ### BL-012 — Optional labeled analysis hodograph overlay
@@ -830,7 +840,7 @@ BL-010 (implementation authorized / not started).
 | B. Explicit height probe / nearest actual knot | BL-026 | sanctioned gap; not `51` display-index |
 | B. ω_h / streamwise overlays on dense observed | BL-011 | blocked on validated analysis column; not DEMO `[0,1000]` |
 | B. Silent DEMO `[0,1000]` | standing constraint | already decided against |
-| C. Analysis profile | BL-010 | PARTIAL / COLUMN CORE IMPLEMENTED; consumers not wired |
+| C. Analysis profile | BL-010 | PARTIAL / COLUMN CORE + ω_h query IMPLEMENTED; Analysis T1 sibling AUTHORIZED in `61`; live consumers not wired |
 | C. Source vs analysis distinction | `53` | ACCEPTED |
 | C. Analysis contract | `58` | ACCEPTED; ESC production transform specified in `59` |
 | C. `54` 100 m bin-mean | `54` + `55` + `58` | first candidate / ESC baseline; not universal default |
@@ -947,7 +957,10 @@ research 2026-08-28-leise-filter-and-analysis-operator-comparison.md:
                not Analysis
 BL-010:
                PARTIAL / COLUMN CORE IMPLEMENTED;
-               consumers not wired
+               support-aware native-segment ω_h IMPLEMENTED;
+               Analysis T1 sibling NOT STARTED / AUTHORIZED
+               (61); live consumer rewiring NOT STARTED /
+               NOT AUTHORIZED
 BL-037:
                CLOSED; universal operator NOT SUPPORTED;
                contract is 58; ESC operator named in BL-046;
