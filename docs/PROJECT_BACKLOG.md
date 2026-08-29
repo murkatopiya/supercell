@@ -578,7 +578,7 @@ Form B as a **paper** unknown, not this survey); `48` §12; `54` §6
 ### BL-047 — Vorticity-budget honesty and trajectory-diagnostic boundary
 
 Category: RESEARCH
-Status: RESEARCH DECISION COMPLETE
+Status: RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW
 Origin: trajectory-history diagnostic question after `52`;
 adversarial review 2026-08-29 (input, not SoT); independent
 vorticity-budget honesty audit 2026-08-29
@@ -590,14 +590,20 @@ prognostic evolution. Research
 `2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`
 locks the taxonomy (Eulerian field / along-path lookup /
 path functional / absent prognostic state), T1 as exact
-tilting of `V_env+V_updraft` but not of `V_total`,
-`TILT_Y,total` as research-derived and unimplemented, and
+tilting of `V_env+V_updraft` strictly inside PWL segments
+excluding knots but not of `V_total`, `TILT_Y,total` as
+research-derived and unimplemented, and
 `DO NOT IMPLEMENT / PRESENT I_tilt`.
+Final adversarial verdict on that SoT: **ACCEPT WITH
+NON-BLOCKING NOTES**; blocking findings: none. Non-blocking
+clarifications are in the SoT amendment. The reviewer
+artifact is not project SoT and is not in git history.
 Remaining OPEN items (T1 vs `TILT_Y,total` topology;
-interval support; flicker; clamp materiality policy; `R_y`
-role; class B visualization architecture) live in that SoT.
-They are not architecture decisions and not implementation
-authorization.
+trajectory-time interval support; flicker; clamp materiality
+and terminal timestamp policy; `R_y` role; class B
+visualization / causal-perception architecture) live in that
+SoT. They are not architecture decisions and not
+implementation authorization.
 This item does **not** authorize UI, `TILT_Y,total`, Analysis
 live rewiring, or a change to T1 / Candidate A / `V_total`.
 It does **not** complete BL-010.
@@ -897,7 +903,7 @@ BL-010 (implementation authorized / not started).
 | I. Reconstruction long-term track | BL-018–BL-020, BL-034, BL-044 | consume vs producer split preserved |
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
-| L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE; no UI / no `TILT_Y,total` / no `I_tilt` |
+| L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no UI / no `TILT_Y,total` / no `I_tilt` |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -1014,9 +1020,13 @@ research 2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.
                T1 ≠ V_total tilting; I_tilt not presented;
                not architecture; not implementation
 BL-047:
-               RESEARCH DECISION COMPLETE;
-               OPEN topology / support / materiality /
-               visualization items remain in that SoT
+               RESEARCH DECISION COMPLETE /
+               ACCEPTED AFTER ADVERSARIAL REVIEW;
+               ACCEPT WITH NON-BLOCKING NOTES;
+               blocking findings: none;
+               OPEN topology / trajectory-time support /
+               materiality / visualization items remain in
+               that SoT
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:

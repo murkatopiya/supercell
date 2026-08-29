@@ -1,9 +1,11 @@
 # Vorticity-Budget Honesty and Trajectory-Diagnostic Boundary
 
-**Status:** RESEARCH DECISION / NOT ARCHITECTURE / NOT IMPLEMENTATION
-AUTHORIZATION
+**Status:** RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL
+REVIEW / NOT ARCHITECTURE / NOT IMPLEMENTATION AUTHORIZATION
 **Date:** 2026-08-29
-**Checkpoint:** `2eb7516`
+**Checkpoint:** `2eb7516` (decision); amendment on `c21bafc`
+**Final adversarial verdict:** ACCEPT WITH NON-BLOCKING NOTES
+**Blocking findings:** none
 **Not:** Architecture N, production physics, diagnostic API, UI,
 Analysis live wiring, `V_total` change, T1 change, Candidate A
 change, tracer-integration change
@@ -153,6 +155,8 @@ Independently evolved parcel `ω_y(t)`.
 **Absent** in the current laboratory.
 
 Do not mix B and D.
+Do not mix C and D: an accumulated / path-functional quantity
+is especially easy to misread as evolved parcel state.
 
 ---
 
@@ -180,9 +184,9 @@ It is not `Dω_y/Dt`, not `ω_y`, not SRH, not prescribed `Ω`.
 T1 is **not** the full-field vertical tilting term of
 `V_total`.
 
-On an interior piecewise-linear environmental segment, T1
-**is** the exact vertical tilting term of the reduced
-two-operand field
+Strictly inside a piecewise-linear environmental segment,
+**excluding knots**, T1 **is** the exact vertical tilting
+term of the reduced two-operand field
 
 ```text
 V_env + V_updraft
@@ -191,7 +195,7 @@ V_env + V_updraft
 or the storm-relative equivalent
 
 ```text
-(V_env − C) + V_updraft
+V_red = (V_env − C) + V_updraft
 ```
 
 because:
@@ -206,6 +210,11 @@ because:
 ω_h,up · ∇_h Vy_up = 0
 ```
 
+The exactness claim does **not** extend to sounding knots.
+Source T1 outside the profile is a defined field continuation
+(`26` §6.2). That continuation is not a reason to expand the
+Analysis / interior-PWL claim.
+
 **Correct status:**
 
 T1 is an exact tilting diagnostic of the reduced
@@ -218,10 +227,43 @@ It is not `Dω_y/Dt` and not a full `V_total` budget term.
 Do not say “T1 is not a tilting term of any field.”
 Do not say “T1 is an arbitrary mixed product.”
 
-The tracer still follows `V_total`, not the reduced
-two-operand field. That trajectory mismatch is why a T1
-integral along a recorded path is not a `V_total` budget
-contribution even though T1 is exact for the reduced pair.
+One reason a T1 integral along a recorded path is not a
+`V_total` budget contribution is trajectory mismatch: the
+tracer follows `V_total`, not `V_red`.
+
+That is not the only reason. On `V_red` itself, strictly
+inside a PWL environmental segment:
+
+```text
+Vx_env = Vx_env(y),   Vz_env = Vz_env(y)
+V_updraft = (0, Vy_up, 0)
+
+ω_y,red ≡ 0
+```
+
+Therefore
+
+```text
+Dω_y,red / Dt ≡ 0
+STRETCH_Y,red = 0
+ω_y,red (∇ · V_red) = 0
+```
+
+and the kinematic identity of §9 gives, pointwise where the
+identity is defined:
+
+```text
+0 = T1 + R_y,red
+R_y,red = −T1
+```
+
+Even in the reduced field for which T1 is the exact vertical
+tilting term, T1 itself is **not** the material tendency of
+vertical vorticity. Integrating T1 does not become a licence
+for `Δω_y` after the trajectory mismatch is removed.
+
+This strengthens the already accepted `I_tilt` decision. It
+does not open new `R_y` product research.
 
 ---
 
@@ -251,11 +293,16 @@ Compact operand inventory (current stack):
 
 | `ω_h` source | `∇_h Vy_up` | `∇_h Vy_down` |
 | --- | --- | --- |
-| environmental (sounding shear) | **= T1** on PWL interior | may be nonzero (DEMO downdraft is offset) |
+| environmental (sounding shear) | **= T1** strictly inside a PWL segment, excluding knots | may be nonzero wherever `∇_h Vy_down ≠ 0`; offset is not required |
 | updraft | **0** identically | may be nonzero (distinct axes) |
 | downdraft | may be nonzero | **0** identically |
 | rotation `ω_h` from `G'(y)` | may be nonzero where `G' ≠ 0` | may be nonzero where `G' ≠ 0` |
 | radial limbs `ω_h` from `G'(y)` | 0 on inflow plateau (`G' = 0`); may be nonzero in tapers | likewise |
+
+Offset of the DEMO downdraft is **not** the reason env ×
+downdraft can be nonzero. Distinct vs coincident axes matter
+for the updraft ↔ downdraft **cross** terms, not for
+`ω_h,env · ∇_h Vy_down`.
 
 Analytic zeros also include: `∇_h Vy` from any `Vy ≡ 0`
 operand; rotation `ω_h` at rotation mid-layer (`G' = 0`) and
@@ -270,12 +317,16 @@ This file does not create a `TILT_Y,total` API.
 
 ## 7. Opposite-sign evidence
 
-**Research evidence, not a universal theorem.**
+**INDICATIVE / UNREPRODUCED RESEARCH SANITY CHECK.**
+Not production validation. Not a universal topology claim.
 
 A disposable DEMO calculation (central finite difference
-`h = 5 m`; existing `sample()` APIs; script not retained)
-found representative interior points where T1 and
-`TILT_Y,total` have opposite signs.
+`h = 5 m`; existing `sample()` APIs) found representative
+interior points where T1 and `TILT_Y,total` had opposite
+signs. The script was not retained and the numbers are not a
+reproducible validation authority. Central FD at `h = 5 m`
+must not be used as knot- or lid-boundary validation
+evidence.
 
 | Point (world m) | T1 (s⁻²) | `TILT_Y,total` (s⁻²) |
 | --- | ---: | ---: |
@@ -283,8 +334,9 @@ found representative interior points where T1 and
 | downdraft flank `(6500, 1500, 500)` | +1.86×10⁻⁵ | −5.70×10⁻⁵ |
 | inflow plateau `(2000, 800, 0)` | +1.02×10⁻⁵ | +6.43×10⁻⁵ (same sign; factor ~6) |
 
-**Meaning:** T1 and full-field tilting can differ in local
-**sign**, not only magnitude.
+The qualitative possibility of a local opposite sign follows
+from the multi-term expansion of `TILT_Y,total`. This table
+does not establish a universal couple topology.
 
 Spatial / couple-topology comparison remains **OPEN**.
 
@@ -316,9 +368,16 @@ Reasons, from locked formulas (`23`):
 The identity fails if a later operand carries azimuthal flow
 or the environment is no longer horizontally homogeneous.
 
-`DiagnosticVerticalVorticity` currently evaluates the rotation
-analytic identity. It does not independently curl `V_total` at
-runtime. Finite-difference checks on DEMO agree to ~10⁻⁹.
+**Implementation caution:** `DiagnosticVerticalVorticity`
+currently relies on the CURRENT STACK IDENTITY. It evaluates
+the rotation analytic identity rather than curling `V_total`
+at runtime. If a future operand contributes vertical
+vorticity, the diagnostic contract and implementation must
+be revisited. This file does not change that code.
+
+Finite-difference checks on DEMO agreed to ~10⁻⁹ as an
+indicative sanity check of the same unretained disposable
+calculation as §7; not production validation.
 
 ### 8.2 Along a recorded path
 
@@ -392,11 +451,12 @@ already recorded in architecture `29` §2.2:
 d/dt [ω_y(P(t))]  =  (V·∇)ω_y
 ```
 
-A disposable DEMO check (Euler path, trapezoid quadrature)
-matched `Δω_y` to `∫ (V·∇)ω_y dt` with residual `O(dt)`,
-as expected for forward Euler. The decomposed form with
-`R_y` matched the chain rule to ~10⁻¹² pointwise. That
-confirms signs; it does not add dynamics.
+A disposable DEMO check (Euler path, trapezoid quadrature;
+same unretained script as §7) matched `Δω_y` to
+`∫ (V·∇)ω_y dt` with residual `O(dt)`, as expected for
+forward Euler. The decomposed form with `R_y` matched the
+chain rule to ~10⁻¹² pointwise. That is an indicative sign
+check, not production validation. It does not add dynamics.
 
 ---
 
@@ -424,9 +484,11 @@ separate research:
 - quantitative atmospheric inconsistency metric.
 
 Narrow mathematical fact, not a product claim:
-`curl((V·∇)V) ≠ 0` means this prescribed `V` is not a member
-of the special idealized class in which that curl vanishes
-(e.g. incompressible Euler with conservative body forces).
+`curl(a_kin) ≠ 0` means `a_kin` is not a gradient /
+conservative vector field (on the relevant simply-connected
+local domain). That excludes the special idealized class in
+which this curl vanishes. It is not an atmospheric
+inconsistency score.
 
 ---
 
@@ -472,7 +534,8 @@ It is **not**:
 Reasons (each sufficient against those readings):
 
 1. T1 is not the full `V_total` tilting term.
-2. T1 is not `Dω_y/Dt`.
+2. T1 is not `Dω_y/Dt`, including on `V_red` where
+   `R_y,red = −T1` (§5.2).
 3. The material-rate decomposition contains other nonzero
    terms (`STRETCH_Y`, `−ω_y div V`, `R_y`, and the missing
    cross-operand tilting).
@@ -495,9 +558,22 @@ as a class A laboratory field property at `(P, t)`.
 DO NOT IMPLEMENT / DO NOT PRESENT I_tilt.
 ```
 
-If the question is ever reopened, only under explicit
-path-functional semantics, with no `ω` in the name, and with
-no causal / evolution language.
+If a later research slice ever reopens a path-functional
+object, conditions include all of:
+
+- explicit path-functional semantics;
+- no `ω` in the name;
+- no causal / evolution language;
+- explicit `t0` / interval;
+- seed / path identity where relevant;
+- Analysis support record for the interval;
+- no stitching across OOD.
+
+`DO NOT PRESENT` also covers monotonic transforms, normalized
+indices, or renamed exposure scores that keep the same
+misleading causal / spin-up interpretation. Honest path
+functionals that do not carry that interpretation remain
+admissible as class C.
 
 Physics `22` §21 and architecture `27` §7.1 remain in force.
 
@@ -517,6 +593,14 @@ NO FAKE EVOLUTION
    to the change of Q only if the integrand is a term of the
    budget of that same Q, of the same field, along a material
    path of that same field.
+   Membership of the integrand in that budget is necessary,
+   not sufficient, for reading an isolated integral as the
+   actual change of Q. If an isolated budget contribution is
+   shown, the other nonzero terms of the same budget must
+   remain explicitly unaccounted / disclosed. This is not a
+   requirement to visualize the full budget.
+   Consequence: “T1 is an exact term ⇒ ∫T1 = Δω” is false
+   even for the reduced field.
 
 2. MATERIALITY
    D/Dt and budget integration require a material path of
@@ -560,18 +644,48 @@ A ground-crossing accepted step may be modified / clamped to
 `y = 0`, after which the tracer deactivates. There is no
 sliding along the ground.
 
+On that crossing, the proposed Euler endpoint corresponds to
+`t_n + dt`, but domain acceptance linearly interpolates
+position to the plane crossing:
+
+```text
+P_clamp = P(t_n + α dt),    0 < α < 1
+active  = false
+```
+
+Current `Simulation` still:
+
+- increments `particle.age` by the full `dt`;
+- advances the clock by the full `dt`;
+- records the terminal `TracerPathHistory` sample with
+  `simulationTime = t_n + dt`.
+
+The terminal recorded pair `(position, simulationTime)` is
+therefore not a time-consistent trajectory sample: position
+corresponds approximately to crossing time `t_n + α dt`,
+timestamp to post-step `t_n + dt`.
+
+For **current** Eulerian-steady fields this does not change
+sampled diagnostics, because those fields ignore `t`. For a
+future time-dependent field it can matter.
+
 ```text
 pre-impact active path     discrete material-path approximation
-terminal clamped sample    not an ordinary Euler endpoint
+terminal clamped sample    not an ordinary Euler endpoint;
+                           position/time pair not consistent
 post-impact                no material trajectory exists
 ```
 
 This is a **blocker** for budget integration through impact.
 It is **not** a blocker for Eulerian field lookup at the
-recorded terminal point.
+recorded terminal point (on current steady fields).
 
 Materiality policy for future trajectory diagnostics:
-**OPEN** / requires architecture. Not decided here.
+**OPEN** / requires architecture. Not decided here. That
+future policy must decide both:
+
+- materiality of the clamped segment;
+- terminal timestamp consistency.
 
 Recorded path samples store `{position, simulationTime}`.
 Time is not reconstructed from index (`52` §3). Stride-1 is
@@ -630,7 +744,9 @@ Established implications along a recorded path:
 
 **OPEN** (not decided here; `60` / `61` unchanged):
 
-- interval-level support semantics;
+- trajectory-time interval support semantics (not the same
+  object as Architecture `60` HEIGHT-layer interval / layer
+  support);
 - knot-boundary FULL / BOUNDARY flicker policy.
 
 ---
@@ -669,8 +785,6 @@ design UI and does not authorize a visualization slice.
 lookups and class C statistics that do not claim `ω`):
 
 - `T1(P(t))` history;
-- `ω_y,current(P(t))` history **with** an explicit
-  anti-causal claim (growth is prescribed `Ω`, not T1);
 - linked path / history cursor;
 - trajectory colored by T1 (diverging scale; OOD as a gap,
   not zero);
@@ -678,10 +792,52 @@ lookups and class C statistics that do not claim `ω`):
 - decomposition of environmental vs prescribed operands;
 - Analysis support gaps / bands.
 
+`T1(P(t))` history and a trajectory colored by T1 show:
+
+```text
+the reduced environment × prescribed-updraft T1 diagnostic
+sampled along the recorded path
+```
+
+They must not be named or framed as:
+
+- “where `V_total` is tilting vorticity”;
+- “full-field tilting”;
+- “where the parcel gains vertical vorticity”.
+
+T1 and `TILT_Y,total` can differ in magnitude and sign, and
+`TILT_Y,total` itself is still not the full material
+tendency. Class B T1 history remains scientifically
+legitimate as that reduced-field diagnostic.
+
 T1 is a **scalar**. It must not be drawn as a vector.
 `∇_h Vy` is a genuine local vector. Environmental `ω_h` is
 horizontally homogeneous: a glyph belongs to a height layer,
 not to “the parcel’s local tube.”
+
+### Causal-perception risk — `T1(P(t))` beside `ω_y,current(P(t))`
+
+Juxtaposing those two series is **not** automatically safe
+because a disclaimer is present.
+
+On DEMO the updraft and rotation are co-centered. Radial
+symmetry gives `∇_h Vy,updraft = 0` on the updraft axis, so
+T1 → 0 there, while prescribed `ω_y^Ω` is largest near the
+rotation axis / core. Incoming trajectories can therefore
+show a visual lead-lag: T1 peaks on a flank earlier,
+`ω_y,current` peaks later nearer the core.
+
+That lead-lag is **not** causal evidence.
+
+A later architecture SoT must not treat “two curves +
+disclaimer” as a complete solution. It needs an explicit
+perceptual / causal design treatment. That treatment is not
+designed here.
+
+`ω_y,current(P(t))` history remains scientifically
+admissible as a class B lookup **with** the anti-causal
+claim that growth is prescribed `Ω`, not T1. The risk is
+the juxtaposition, not the isolated `ω_y` series.
 
 **Research first** (no API, no UI):
 
@@ -735,6 +891,7 @@ it.
 | `CONCEPT.md` §6 “play the simulation” / “move between timesteps” | can be read as storm evolution | follow-up documentation debt |
 | physics `22` unmarked `a` | collision between dynamic force acceleration and `a_kin` | follow-up documentation debt |
 | T1 “tends to increase `ω_y`” (`22` §8.2) | needs isolated-term scope; not `Dω_y/Dt` | follow-up documentation debt |
+| physics `22` T1 field membership | this SoT records T1 exactness for reduced `(V_env − C) + V_updraft` strictly inside PWL segments, excluding knots; physics `22` does not yet contain that fact | follow-up documentation alignment; **not** amended here |
 | ground-clamp vs material `D/Dt` | limitation not visible in diagnostic docs | follow-up documentation debt |
 
 `CONCEPT.md` is not rewritten in this slice.
@@ -748,14 +905,25 @@ Not resolved here. Not architecture decisions.
 1. Spatial / topological comparison of T1 vs `TILT_Y,total`.
 2. Whether `TILT_Y,total` deserves a named production
    diagnostic.
-3. Analysis interval-level support semantics.
+3. Analysis **trajectory-time** interval support semantics.
+   Architecture `60` already has interval / layer support
+   semantics for a HEIGHT-layer object. The OPEN item here is
+   specifically a trajectory-time interval, which may be
+   non-monotone in height, re-enter and leave support
+   regions, and cross the same height layer more than once.
+   “Trajectory interval support OPEN” does not mean
+   “Architecture `60` has no interval semantics.”
 4. FULL / BOUNDARY flicker policy along a trajectory.
-5. Materiality policy for terminal clamped samples.
+5. Materiality policy for terminal clamped samples, including
+   terminal timestamp consistency (`t_n + dt` vs
+   `t_n + α dt`).
 6. Material-line vs local-vorticity angle experiment.
 7. Whether `R_y` has any useful product or research role
-   beyond kinematic remainder.
+   beyond kinematic remainder. `R_y,red = −T1` on `V_red`
+   is already used in §5.2; it does not reopen this item.
 8. Exact future visualization architecture for class B
-   series.
+   series, including the causal-perception risk of
+   juxtaposing `T1(P(t))` with `ω_y,current(P(t))`.
 
 ---
 
@@ -810,28 +978,40 @@ taxonomy:              A Eulerian field
                        B Eulerian field along recorded path
                        C Lagrangian path functional
                        D prognostic parcel state — ABSENT
-T1:                    exact TILT of V_env+V_updraft on PWL interior
+T1:                    exact TILT of V_env+V_updraft strictly
+                       inside a PWL segment, excluding knots
                        not TILT of V_total
-                       not Dω_y/Dt
+                       not Dω_y/Dt; on V_red, R_y,red = −T1
 TILT_Y,total:          research-derived; not implemented
                        T1 is only the env×updraft component
-sign evidence:         DEMO points exist where T1 and TILT_Y,total
-                       disagree in sign; topology OPEN
+sign evidence:         INDICATIVE / unreproduced sanity check;
+                       opposite sign possible; topology OPEN
 ω_y,current:           CURRENT STACK IDENTITY = ω_y(V_rotation)
+                       evaluator uses that identity, not runtime
+                       curl(V_total); revisit if operands change
                        along path = class B lookup
                        T1 → ω_y,current REJECTED
+                       T1 vs ω_y juxtaposition = causal-perception
+                       risk; two curves + disclaimer not enough
 identity:              dω_y(P(t))/dt = (V·∇)ω_y  (preferred)
                        TILT+STRETCH−ωdiv+R_y is tautological with a_kin
-R_y:                   kinematic remainder; not baroclinic
+R_y:                   kinematic remainder; curl(a_kin)≠0 ⇒
+                       a_kin is not a gradient field locally
 div V:                 ≠ 0; YELLOW (10); do not drop dilatation
 I_tilt:                class C admissible; DO NOT IMPLEMENT / PRESENT
+                       including renamed spin-up-preserving scores
                        seed dependence ≠ mathematical ban
 NO FAKE EVOLUTION:     research decision / candidate invariant
+                       budget membership necessary, not sufficient
 materiality:           active Euler path ≈ material V_total
                        clamped terminal ≠ ordinary Euler endpoint
+                       recorded (P, t) not time-consistent at clamp
 time:                  no new axis; ESC TIME ≠ laboratory time
-support along path:    point statuses exist; interval/flicker OPEN
+support along path:    point statuses exist;
+                       trajectory-time interval/flicker OPEN
+                       (60 HEIGHT-layer interval semantics exist)
 env ω_h:               sounding at occupied altitude; not parcel ω_h
 vortex line:           unsupported; material line ≠ vortex line
 implementation:        none authorized
+adversarial:           ACCEPT WITH NON-BLOCKING NOTES; no blockers
 ```
