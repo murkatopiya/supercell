@@ -462,14 +462,14 @@ not this item.
 ### BL-048 — Trajectory Tilting Explorer V1
 
 Category: UX
-Status: PARTIAL / SLICES A–D COMPLETE;
+Status: PARTIAL / SLICES A–E COMPLETE;
 CAL OPEN; App/Explore/TracerScene unwired
 Origin: architecture `62`; BL-047 class B visualization
 Why retained: BL-047 accepted the scientific boundary for
 path-parameterized rotational diagnostics and required a
 separate architecture SoT before any class B surface.
 Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
-SLICES A–D IMPLEMENTED / ACCEPTED / SLICES E–G NOT STARTED /
+SLICES A–E IMPLEMENTED / ACCEPTED / SLICES F–G NOT STARTED /
 CAL OPEN / NOT COMPLETE)
 is that SoT. Slice A is the headless atomic Analysis
 explanation query
@@ -481,15 +481,20 @@ Slice C is renderer-facing value/support encoding
 Slice D is the headless mechanism-glyph model plus
 Three.js capability
 (`createTrajectoryTiltingGlyphModel` + optional glyph).
-Renderer / glyph capability is complete. User-facing
-scientific saturation is not release-ready. Production
-activation is CAL-blocked and caller-column-blocked.
+Slice E is the headless numeric verification model plus
+read-only presentation panel
+(`createTrajectoryTiltingVerificationModel` +
+`TrajectoryTiltingVerificationPanel`).
+Renderer / glyph / numeric-verify capability is complete.
+User-facing scientific saturation is not release-ready.
+Production activation is CAL-blocked and
+caller-column-blocked.
 It does **not** wire an Explore Analysis column beside
 Source EWP. That caller/integration availability remains
 a prerequisite of user-facing activation and is **not**
 live `V_env` rewiring.
-Slices E–G (numeric verify, what-if, optional
-`ω_y,current` comparison) remain NOT STARTED.
+Slices F–G (what-if, optional `ω_y,current` comparison)
+remain NOT STARTED.
 It does **not** complete BL-010.
 It does **not** rewire Source `V_env` into Analysis. It
 does **not** authorize `TILT_Y,total` or `I_tilt`.
@@ -661,7 +666,7 @@ required is now
 does not close remaining research OPEN items (topology,
 flicker, clamp-time flag, `R_y` product role).
 Implementation of the explorer is BL-048
-(PARTIAL / Slices A–D complete; App unwired).
+(PARTIAL / Slices A–E complete; App unwired).
 Return when: not applicable as the boundary decision.
 Authoritative refs:
 [`docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`](research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md);
@@ -958,7 +963,7 @@ BL-010 (implementation authorized / not started).
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
 | L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no `TILT_Y,total` / no `I_tilt`; class B V1 architecture is `62` |
-| L. Trajectory Tilting Explorer V1 | BL-048 | PARTIAL / Slices A–D complete; CAL OPEN; App unwired; architecture `62` ACCEPTED; slices E–G not started |
+| L. Trajectory Tilting Explorer V1 | BL-048 | PARTIAL / Slices A–E complete; CAL OPEN; App unwired; architecture `62` ACCEPTED; slices F–G not started |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -1085,12 +1090,12 @@ BL-047:
 62:
                Trajectory Tilting Explorer V1 architecture;
                ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-               SLICES A–D IMPLEMENTED / ACCEPTED;
-               SLICES E–G NOT STARTED;
+               SLICES A–E IMPLEMENTED / ACCEPTED;
+               SLICES F–G NOT STARTED;
                CAL OPEN / NOT COMPLETE
 BL-048:
                Trajectory Tilting Explorer V1;
-               PARTIAL / SLICES A–D COMPLETE;
+               PARTIAL / SLICES A–E COMPLETE;
                CAL OPEN; App/Explore/TracerScene unwired;
                architecture 62 ACCEPTED
 physics/04, 07:

@@ -1452,7 +1452,8 @@ body:has(.app--landing) {
 }
 
 .tracer-inspector__body,
-.point-diagnostics__body {
+.point-diagnostics__body,
+.trajectory-tilting-verify__body {
   padding: var(--space-3);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
@@ -1461,7 +1462,8 @@ body:has(.app--landing) {
 }
 
 .tracer-inspector__placeholder,
-.point-diagnostics__placeholder {
+.point-diagnostics__placeholder,
+.trajectory-tilting-verify__placeholder {
   margin: 0;
   font-size: var(--text-secondary);
   line-height: var(--text-line-body);
@@ -1471,7 +1473,10 @@ body:has(.app--landing) {
 .tracer-inspector__hint,
 .tracer-inspector__note,
 .point-diagnostics__hint,
-.point-diagnostics__disclaimer p {
+.point-diagnostics__disclaimer p,
+.trajectory-tilting-verify__hint,
+.trajectory-tilting-verify__equation,
+.trajectory-tilting-verify__absence {
   margin: 0 0 var(--space-2);
   color: var(--color-text-secondary);
 }
@@ -1479,11 +1484,15 @@ body:has(.app--landing) {
 .tracer-inspector__hint,
 .tracer-inspector__note,
 .point-diagnostics__hint,
-.point-diagnostics__disclaimer {
+.point-diagnostics__disclaimer,
+.trajectory-tilting-verify__hint,
+.trajectory-tilting-verify__equation,
+.trajectory-tilting-verify__absence {
   font-size: 0.75rem;
 }
 
-.point-diagnostics {
+.point-diagnostics,
+.trajectory-tilting-verify {
   margin: var(--space-4) 0 0;
 }
 
@@ -1520,6 +1529,79 @@ body:has(.app--landing) {
 }
 
 .point-diagnostics__disclaimer {
+  margin: 0;
+}
+
+.trajectory-tilting-verify__title {
+  margin: 0 0 var(--space-2);
+}
+
+.trajectory-tilting-verify__label {
+  margin: 0 0 0.1rem;
+  color: var(--color-text-secondary);
+}
+
+.trajectory-tilting-verify__symbol {
+  margin: 0 0 0.15rem;
+  font-weight: 600;
+}
+
+.trajectory-tilting-verify__reading {
+  margin: 0 0 0.1rem;
+}
+
+.trajectory-tilting-verify__value,
+.trajectory-tilting-verify__units {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.trajectory-tilting-verify__quantity {
+  margin: 0 0 var(--space-3);
+  padding: 0 0 var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.trajectory-tilting-verify__status {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-readout);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.trajectory-tilting-verify__status--boundary {
+  color: var(--color-accent);
+}
+
+.trajectory-tilting-verify__status--ood,
+.trajectory-tilting-verify__status--column {
+  color: var(--color-text-muted);
+}
+
+.trajectory-tilting-verify__rows {
+  margin: 0 0 var(--space-3);
+}
+
+.trajectory-tilting-verify__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 0.35rem 0.75rem;
+  margin: 0 0 0.35rem;
+}
+
+.trajectory-tilting-verify__row dt {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.trajectory-tilting-verify__row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.trajectory-tilting-verify__provenance {
   margin: 0;
 }
 

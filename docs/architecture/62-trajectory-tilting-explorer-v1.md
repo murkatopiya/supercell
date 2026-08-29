@@ -2,17 +2,18 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
-SLICES A–D IMPLEMENTED / ACCEPTED /
-SLICES E–G NOT STARTED /
+SLICES A–E IMPLEMENTED / ACCEPTED /
+SLICES F–G NOT STARTED /
 CAL OPEN / NOT COMPLETE
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
-Slices A–D (atomic Analysis explanation query;
+Slices A–E (atomic Analysis explanation query;
 recorded-path diagnostic projection;
 renderer-facing value/support encoding;
-historical-probe 3D mechanism glyph) are
-IMPLEMENTED / ACCEPTED. Slices E onward remain
+historical-probe 3D mechanism glyph;
+numeric verification / provenance readout) are
+IMPLEMENTED / ACCEPTED. Slices F onward remain
 NOT STARTED. Numeric `T1_COLOR_SCALE_V1` saturation
 and `|T1|_ε` remain OPEN. User-facing scientific
 saturation is not release-ready. Glyph display-scale
@@ -39,9 +40,13 @@ and `src/rendering/trajectoryTiltingOverlay.ts`.
 Slice D glyph capability is implemented in
 `src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts`
 and `src/rendering/trajectoryTiltingGlyph.ts`.
+Slice E numeric verification capability is implemented in
+`src/data/escHrTimeAnalysis/trajectoryTiltingVerification.ts`,
+`src/ui/tracer/formatTrajectoryTiltingVerification.ts`,
+and `src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx`.
 App / Explore / TracerScene remain unwired: production
 activation is CAL-blocked and caller-column-blocked.
-Slices E–G remain NOT STARTED.
+Slices F–G remain NOT STARTED.
 
 Predecessor (not replaced):
 
@@ -1237,7 +1242,9 @@ was built by `V_total`; Analysis T1 is evaluated there.
 Slice A is IMPLEMENTED / ACCEPTED. Slice B is
 IMPLEMENTED / ACCEPTED. Slice C renderer capability is
 IMPLEMENTED / ACCEPTED. Slice D glyph capability is
-IMPLEMENTED / ACCEPTED. Slices E–G are NOT STARTED.
+IMPLEMENTED / ACCEPTED. Slice E numeric verification
+capability is IMPLEMENTED / ACCEPTED. Slices F–G are
+NOT STARTED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
 renderer slice. User-facing scientific saturation remains
@@ -1319,7 +1326,7 @@ tracers. Missing / null column remains
 `COLUMN_UNAVAILABLE`; there is no Source T1 fallback.
 
 This caller boundary remains a prerequisite of
-user-facing activation. Slice C and Slice D do not
+user-facing activation. Slice C, Slice D, and Slice E do not
 include that seam. App / Explore / TracerScene remain unwired. That
 is not live Analysis `V_env` rewiring. BL-010 remains
 PARTIAL.
@@ -1413,9 +1420,29 @@ TracerScene / App / Explore.
 
 ### Slice E — numeric verify / provenance readout
 
+**Status:** IMPLEMENTED / ACCEPTED as model / presentation
+capability. Production App activation is caller-column-blocked
+and remains unwired.
+
+Homes:
+
+```text
+src/data/escHrTimeAnalysis/trajectoryTiltingVerification.ts
+  createTrajectoryTiltingVerificationModel(explanation, recordedSample?)
+
+src/ui/tracer/formatTrajectoryTiltingVerification.ts
+  display-only scientific / degree / segment formatting
+  domain θ remains radians
+
+src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
+  read-only Analysis T1 verification panel
+```
+
 Presentational. Reads the atomic result. Does not recompute
 physics. Does not display live `active` as sample science.
 Does not replace Point Diagnostics Source T1.
+GEOMETRY TEACHES. NUMBERS VERIFY.
+Does not wire TracerScene / App / Explore.
 
 ### Slice F — what-if alignment
 
@@ -1527,8 +1554,8 @@ this file as TILT_Y,total or I_tilt authorization
 ```text
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-                   SLICES A–D IMPLEMENTED / ACCEPTED;
-                   SLICES E–G NOT STARTED;
+                   SLICES A–E IMPLEMENTED / ACCEPTED;
+                   SLICES F–G NOT STARTED;
                    CAL OPEN / NOT COMPLETE
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
@@ -1552,6 +1579,8 @@ GLYPH:             actual atomic Analysis operands at recorded P_i;
                    shared origin visual convention only;
                    injected common s⁻¹→m display scale;
                    θ absent when degenerate; App unwired
+VERIFY:            atomic numbers + provenance; θ display degrees only;
+                   domain radians unchanged; App unwired
 WHAT-IF:           ephemeral; laboratory unchanged;
                    no θ demo when a magnitude is degenerate
 ω_y,current:       not default V1
@@ -1563,12 +1592,13 @@ PROJECTION INPUT:  structural { position, simulationTime };
 COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
                    caller-supplied; not Slice B; not Slice C
                    capability; not Slice D capability;
+                   not Slice E capability;
                    not V_env rewiring
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
-IMPLEMENTATION:    SLICES A–D COMPLETE / ACCEPTED as capability;
+IMPLEMENTATION:    SLICES A–E COMPLETE / ACCEPTED as capability;
                    App/Explore/TracerScene unwired;
-                   SLICES E–G NOT STARTED;
+                   SLICES F–G NOT STARTED;
                    CAL OPEN / NOT COMPLETE
 ```
 
@@ -1576,7 +1606,7 @@ IMPLEMENTATION:    SLICES A–D COMPLETE / ACCEPTED as capability;
 
 ## 26. Implementation
 
-Slices A–D are implemented:
+Slices A–E are implemented:
 
 ```text
 src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
@@ -1619,28 +1649,46 @@ src/rendering/trajectoryTiltingGlyph.ts
   θ arc only when ALIGNMENT_DEFINED
   raycast disabled
   not imported by TracerScene / App / Explore
+
+src/data/escHrTimeAnalysis/trajectoryTiltingVerification.ts
+  createTrajectoryTiltingVerificationModel
+    packages atomic T1 / magnitudes / alignment / provenance
+    no recomputation; domain θ remains radians
+
+src/ui/tracer/formatTrajectoryTiltingVerification.ts
+  display-only scientific / degree / segment formatting
+
+src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
+  read-only Analysis T1 verification panel
+  degenerate θ absent; orthogonal θ defined
+  not imported by App / Explore / TracerScene
 ```
 
 Application/caller supply of the Analysis column beside
 Source EWP remains a prerequisite of user-facing
-activation. It is not included in Slice B, Slice C, or
-Slice D capability and is not live `V_env` rewiring.
+activation. It is not included in Slice B, Slice C,
+Slice D, or Slice E capability and is not live
+`V_env` rewiring.
 
-Renderer / glyph capability is complete. Production
-activation is CAL-blocked and caller-column-blocked.
+Renderer / glyph / numeric-verify capability is complete.
+Production activation is CAL-blocked and
+caller-column-blocked.
 
-Slices E–G are NOT STARTED:
+Slices F–G are NOT STARTED:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
                                 Slice B recorded-path projection
                                 Slice C pure render encoding
                                 Slice D pure glyph model
+                                Slice E pure verification model
 src/rendering/trajectoryTiltingOverlay.ts
                                 Slice C overlay capability
 src/rendering/trajectoryTiltingGlyph.ts
                                 Slice D glyph capability
-presentational UI               Slice E / F
+src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
+                                Slice E verification panel
+presentational UI               Slice F
 ```
 
 Existing `queryAnalysisTiltingTendencyAt` scalar contract
