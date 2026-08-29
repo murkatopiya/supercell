@@ -2,15 +2,19 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
-SLICES A–B IMPLEMENTED / ACCEPTED /
-SLICES C–G NOT STARTED
+SLICES A–C IMPLEMENTED / ACCEPTED /
+SLICES D–G NOT STARTED /
+CAL OPEN / NOT COMPLETE
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
-Slices A–B (atomic Analysis explanation query;
-recorded-path diagnostic projection) are
-IMPLEMENTED / ACCEPTED. Slices C onward remain
-NOT STARTED.
+Slices A–C (atomic Analysis explanation query;
+recorded-path diagnostic projection;
+renderer-facing value/support encoding) are
+IMPLEMENTED / ACCEPTED. Slices D onward remain
+NOT STARTED. Numeric `T1_COLOR_SCALE_V1` saturation
+and `|T1|_ε` remain OPEN. User-facing scientific
+saturation is not release-ready.
 **Scope:** scientific UX, diagnostic authority, encoding, and
 slice boundaries for Trajectory Tilting Explorer V1.
 Not a T1 physics reopen. Not `TILT_Y,total`. Not `I_tilt`.
@@ -26,8 +30,12 @@ replace them.
 `src/data/escHrTimeAnalysis/analysisTiltingQuery.ts`.
 Slice B is implemented in
 `src/data/escHrTimeAnalysis/trajectoryTiltingProjection.ts`.
-This document does not include renderer code or UI.
-Slices C–G remain NOT STARTED.
+Slice C renderer capability is implemented in
+`src/data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.ts`
+and `src/rendering/trajectoryTiltingOverlay.ts`.
+App / Explore / TracerScene remain unwired: production
+activation is CAL-blocked and caller-column-blocked.
+Slices D–G remain NOT STARTED.
 
 Predecessor (not replaced):
 
@@ -658,8 +666,11 @@ explains Analysis T1 geometry, not advection.
 
 **NEW PROJECT DECISION.**
 
-Primary spatial representation: the recorded tracer tail,
-colored by Analysis T1 from the derived projection (§20).
+Primary spatial representation: the recorded occupancy trail
+plus an optional derived Analysis T1 overlay from the
+projection (§20). Occupancy geometry and occupancy color
+remain occupancy. T1 is not written into
+`PathHistorySample`.
 
 Semantic mapping (value channel only):
 
@@ -684,11 +695,38 @@ the frozen scale contract (§13). Intensity is not a
 substitute for a calibrated threshold; that threshold is
 OPEN.
 
-`THREE.Line` interpolates vertex attributes along a segment.
-That interpolation is a **rendering** of adjacent recorded
-samples. It is not a synthesized historical state and must
-not be pickable as one. Picking remains discrete samples
-(`52` / §6).
+Adjacent-sample T1 is **not** interpolated along a strip.
+A `THREE.Line` occupancy trail with vertex colors would
+blend neighboring T1 values and claim a diagnostic state
+between recorded samples. Slice C does not do that.
+
+Accepted overlay primitive:
+
+```text
+independent THREE.LineSegments
+segment [P_i, P_{i+1}] exists only when both recorded
+  samples have numeric Analysis T1 (FULL or BOUNDARY)
+both visual vertices use sample i's signed-unit encoding
+GPU interpolates identical endpoint colors
+that is not interpolated T1 along the interval
+```
+
+Scientific meaning of a colored overlay primitive:
+
+```text
+The uniform color of a drawn value segment is the Analysis T1
+of recorded sample i (the earlier endpoint). It is not T1
+along the interval, not a material-step diagnostic, and not
+the T1 that caused that displacement.
+```
+
+Visual gaps follow unsupported **recorded** samples. The
+overlay does not invent a support-boundary intersection
+between samples.
+
+Picking remains discrete recorded samples (`52` / §6).
+Overlay raycast is disabled. Overlay identity is not a
+pick identity.
 
 ---
 
@@ -1146,7 +1184,10 @@ queryAnalysisTiltingExplanationAt per (P_j, t_j)
 TrajectoryTiltingProjection[j]
         │
         ▼
-trail encoding (T1_COLOR_SCALE_V1, support channel)
+encodeTrajectoryTiltingForRender(projection, injected scale)
+        │
+        ▼
+optional T1 overlay (LineSegments; CAL-blocked in App)
 ```
 
 Authority chain:
@@ -1177,10 +1218,12 @@ was built by `V_total`; Analysis T1 is evaluated there.
 ## 22. Implementation slice decomposition
 
 Slice A is IMPLEMENTED / ACCEPTED. Slice B is
-IMPLEMENTED / ACCEPTED. Slices C–G are NOT STARTED.
+IMPLEMENTED / ACCEPTED. Slice C renderer capability is
+IMPLEMENTED / ACCEPTED. Slices D–G are NOT STARTED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
-renderer slice.
+renderer slice. User-facing scientific saturation remains
+CAL-blocked. App / Explore / TracerScene remain unwired.
 
 ### Slice A — atomic Analysis explanation result
 
@@ -1237,11 +1280,14 @@ not as Slice B work. That is slice ownership, not a
 change to the Analysis-beside-Source scientific
 split (§7, §10).
 
-### Caller integration prerequisite (not Slice B)
+### Caller integration prerequisite (not Slice B, not Slice C capability)
 
-Before Slice C or any later user-facing surface can
-consume the projection, an application/caller
-boundary must supply all three operands:
+Slice C encoding consumes an already-computed
+`TrajectoryTiltingProjection`. It does not invent the
+operands.
+
+User-facing activation still requires an application/caller
+boundary that supplies all three:
 
 ```text
 recorded Source/DEMO path history
@@ -1254,30 +1300,71 @@ does not replace Source EWP. It does not advect
 tracers. Missing / null column remains
 `COLUMN_UNAVAILABLE`; there is no Source T1 fallback.
 
-This caller boundary is a prerequisite of Slice C.
-It is not live Analysis `V_env` rewiring. BL-010
-remains PARTIAL.
+This caller boundary remains a prerequisite of
+user-facing activation. Slice C does not include that
+seam. App / Explore / TracerScene remain unwired. That
+is not live Analysis `V_env` rewiring. BL-010 remains
+PARTIAL.
 
 ### Slice C — renderer value / support encoding
 
-**Status:** NOT STARTED.
-
-Trail encoding from the projection. No new picking
-semantics. May consume an **injected** versioned scale
-contract or test fixture. User-facing scientific saturation
+**Status:** IMPLEMENTED / ACCEPTED as renderer capability.
+Production App activation is CAL-blocked and
+caller-column-blocked. User-facing scientific saturation
 is not release-ready until CAL freezes `T1_COLOR_SCALE_V1`
 (§13).
 
-Consumes a `TrajectoryTiltingProjection` already evaluated
-from caller-supplied history + Analysis column + updraft.
-Does not invent those operands. Does not fall back to
-Source T1. Does not inject Analysis into advection.
+Homes:
+
+```text
+src/data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.ts
+  encodeTrajectoryTiltingForRender(projection, scale)
+
+src/rendering/trajectoryTiltingOverlay.ts
+  create / sync / dispose TrajectoryTiltingOverlay
+```
+
+Scale split:
+
+```text
+scientific: injected TrajectoryTiltingColorScale
+            signedUnitFromTiltingTendency(t1) → [-1, +1]
+            exact T1 0 → 0; no production |T1|_sat / |T1|_ε
+artistic:   injected TrajectoryTiltingValueAppearance
+            linearRgbFromSignedUnit(signedUnit)
+```
+
+No production scale object exists. Tests use a local
+fixture (`test-fixture-v0`), not `T1_COLOR_SCALE_V1`.
+
+Support channel is orthogonal to value:
+
+```text
+FULL_SUPPORT           numeric; FULL overlay LineSegments
+BOUNDARY_CONDITIONED   same numeric map; BOUNDARY LineSegments
+OUT_OF_DOMAIN          no value color; no overlay primitive
+COLUMN_UNAVAILABLE     no value color; overlay absent
+```
+
+Exact artistic BOUNDARY styling remains OPEN (§23 item 5).
+Slice C distinguishes FULL vs BOUNDARY as separate overlay
+objects without freezing pattern / opacity / outline.
+
+A single numeric sample is encoded; it does not invent a
+two-point line.
+
+Consumes a `TrajectoryTiltingProjection`. Does not query
+Analysis physics from the renderer. Does not invent caller
+operands. Does not fall back to Source T1. Does not inject
+Analysis into advection.
 
 ```text
 does not invent |T1|_sat or |T1|_ε as a production freeze
 does not ship a developer-chosen temporary production threshold
 does not change PathHistorySample
+does not interpolate T1 between recorded samples
 does not treat GPU segment interpolation as selection
+does not wire TracerScene / App / Explore
 ```
 
 ### Slice D — historical-probe 3D geometry glyph
@@ -1400,8 +1487,9 @@ this file as TILT_Y,total or I_tilt authorization
 ```text
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-                   SLICES A–B IMPLEMENTED / ACCEPTED;
-                   SLICES C–G NOT STARTED
+                   SLICES A–C IMPLEMENTED / ACCEPTED;
+                   SLICES D–G NOT STARTED;
+                   CAL OPEN / NOT COMPLETE
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
 T1:                Analysis ω_h · prescribed ∇_h Vy
@@ -1414,10 +1502,12 @@ ATOMIC:            geometry and numbers from one evaluation
 ALIGNMENT:         θ/cos θ only when both norms non-degenerate;
                    T1 = 0 is not automatically orthogonality
 ADVECTION:         still Source/DEMO V_total
-COLOR:             T1 value/sign; support/validity orthogonal
-OOD:               gap; no fake 0
+COLOR:             T1 value/sign; support/validity orthogonal;
+                   overlay primitive = sample-i T1, not interval T1
+OOD:               gap at unsupported recorded samples; no fake 0
 SCALE:             mapping contract frozen;
-                   numeric sat/ε OPEN; CAL before release saturation
+                   numeric sat/ε OPEN; CAL before release saturation;
+                   no production T1_COLOR_SCALE_V1 object
 WHAT-IF:           ephemeral; laboratory unchanged;
                    no θ demo when a magnitude is degenerate
 ω_y,current:       not default V1
@@ -1427,18 +1517,21 @@ HISTORY STORE:     still { position, simulationTime } only
 PROJECTION INPUT:  structural { position, simulationTime };
                    not a second history store
 COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
-                   caller-supplied; not Slice B; not V_env rewiring
+                   caller-supplied; not Slice B; not Slice C
+                   capability; not V_env rewiring
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
-IMPLEMENTATION:    SLICES A–B COMPLETE / ACCEPTED;
-                   SLICES C–G NOT STARTED
+IMPLEMENTATION:    SLICES A–C COMPLETE / ACCEPTED as capability;
+                   App/Explore/TracerScene unwired;
+                   SLICES D–G NOT STARTED;
+                   CAL OPEN / NOT COMPLETE
 ```
 
 ---
 
 ## 26. Implementation
 
-Slices A–B are implemented:
+Slices A–C are implemented:
 
 ```text
 src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
@@ -1455,19 +1548,38 @@ src/data/escHrTimeAnalysis/trajectoryTiltingProjection.ts
       not a second persisted history model;
       canonical recorder remains TracerPathHistory
     no Simulation / renderer / UI dependency
+
+src/data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.ts
+  encodeTrajectoryTiltingForRender
+    pure; Three-free; injected scale required
+    sample encodings + earlier-endpoint value segments
+    no Analysis query; no production scale
+
+src/rendering/trajectoryTiltingOverlay.ts
+  optional LineSegments overlay
+  FULL vs BOUNDARY as separate objects
+  identical endpoint colors; raycast disabled
+  occupancy trailGeometry unchanged
+  not imported by TracerScene / App / Explore
 ```
 
 Application/caller supply of the Analysis column beside
-Source EWP is a prerequisite of Slice C. It is not
-included in Slice B and is not live `V_env` rewiring.
+Source EWP remains a prerequisite of user-facing
+activation. It is not included in Slice B or Slice C
+capability and is not live `V_env` rewiring.
 
-Slices C–G are NOT STARTED. Named production homes remain
+Renderer capability is complete. Production activation
+is CAL-blocked and caller-column-blocked.
+
+Slices D–G are NOT STARTED. Named production homes remain
 indicative:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
                                 Slice B recorded-path projection
-src/rendering/trailGeometry.ts  Slice C observe-only encoding
+                                Slice C pure render encoding
+src/rendering/trajectoryTiltingOverlay.ts
+                                Slice C overlay capability
 glyph module (rendering)        Slice D
 presentational UI               Slice E / F
 ```
