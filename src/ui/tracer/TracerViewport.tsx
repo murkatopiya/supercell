@@ -30,6 +30,7 @@ import {
   encodeExploreAnalysisTiltingForPathHistory,
   exploreAnalysisTiltingHistoryFingerprint,
 } from "../../explore/encodeExploreAnalysisTilting.js";
+import { AnalysisT1ColorLegend } from "./AnalysisT1ColorLegend.js";
 import type { EulerianAirflowSamples } from "../../visualization/EulerianAirflowSamples.js";
 import type { VisualAirflowPopulation } from "../../visualization/VisualAirflowPopulation.js";
 import { stepVisualAirflowOnFrozenField } from "../../visualization/stepVisualAirflowOnFrozenField.js";
@@ -695,6 +696,7 @@ export function TracerViewport({
       {overlay != null ? (
         <div className="tracer-viewport__overlay">{overlay}</div>
       ) : null}
+      {analysisColumn !== null ? <AnalysisT1ColorLegend /> : null}
       <div
         className="tracer-viewport__hud"
         aria-label="Ground cursor"

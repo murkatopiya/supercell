@@ -1595,6 +1595,13 @@ Presentation policy: value color is
 BOUNDARY uses that same value color on the Slice C
 BOUNDARY LineSegments object. Dash / opacity / outline
 remain OPEN (§23 item 5). Occupancy trail remains.
+The Analysis T1 trajectory color legend V1 is a fixed
+symmetric CAL V1 readout of that value encoding: cool
+negative / exact 0 / warm positive. Endpoints are
+display saturation, not physical extrema. Support and
+OOD are not on the legend. OOD is not zero. The legend
+is shown when `analysisColumn` is present (same
+availability as the overlay).
 
 Coplanar compositing (presentation polish, not science):
 occupancy `THREE.Line` uses `depthTest` and does **not**
@@ -1622,6 +1629,8 @@ src/rendering/analysisT1ValueAppearanceV1.ts
 src/rendering/TracerScene.ts
   syncAnalysisTiltingOverlays
 src/ui/tracer/TracerViewport.tsx
+src/ui/tracer/analysisT1ColorLegendV1.ts
+src/ui/tracer/AnalysisT1ColorLegend.tsx
 ```
 
 Glyph / verify / what-if are not included in this slice.
@@ -1748,6 +1757,10 @@ Reset View still restores DEEP_STORM_TRACER_VIEW
 hypothetical glyph: dashed identity, higher opacity/contrast,
   smaller world-space dashes; magnitudes unchanged
 native 1px LineBasicMaterial width: later presentation item
+Analysis T1 legend V1: fixed symmetric CAL V1 domain;
+  cool negative / exact 0 / warm positive;
+  display saturation endpoints; value only, not support;
+  OOD is not zero; visible when analysisColumn present
 §23 item 4 remains OPEN
 §23 item 5 remains OPEN
 ```
@@ -1761,6 +1774,8 @@ src/rendering/TracerScene.ts
   focusPoint
 src/ui/tracer/ExploreFocusSampleControl.tsx
 src/rendering/analysisT1GlyphAppearanceV1.ts
+src/ui/tracer/analysisT1ColorLegendV1.ts
+src/ui/tracer/AnalysisT1ColorLegend.tsx
 ```
 
 ### Slice C — renderer value / support encoding
@@ -1971,6 +1986,8 @@ without a SoT amendment or a dedicated calibration record.
 5. Exact support-channel styling (pattern / opacity / outline).
    I3 shows typed BOUNDARY_CONDITIONED in verification UI.
    Trail visual distinction from FULL remains OPEN.
+   The Analysis T1 color legend V1 encodes value only and
+   does not close this item.
    Occupancy/overlay coplanar compositing is a separate
    presentation contract (occupancy depthWrite false;
    overlay d33ae29 depthTest/depthWrite, later renderOrder;
@@ -2084,6 +2101,12 @@ COMPOSITING:       occupancy depthWrite false; overlay
                    camera must not toggle overlay presence
                    or change overlay RGB;
                    OOD gaps still occupancy
+T1 LEGEND:         Analysis T1 trajectory color legend V1;
+                   T1_COLOR_SCALE_V1 domain;
+                   ANALYSIS_T1_VALUE_APPEARANCE_V1 ramp;
+                   display saturation, not physical extrema;
+                   value only; OOD is not zero;
+                   visible iff analysisColumn present
 ω_y,current:       not default V1; Slice G NOT AUTHORIZED
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved
@@ -2168,8 +2191,17 @@ src/rendering/TracerScene.ts
 
 src/ui/tracer/TracerViewport.tsx
   Slice I2: revision fingerprint + encode + scene sync
+  Slice I2: Analysis T1 color legend V1 when
+    analysisColumn present; not environment-name gated
   Slice I3: pass packaged glyph models; no Analysis query
   Guided does not pass Analysis column
+
+src/ui/tracer/analysisT1ColorLegendV1.ts
+src/ui/tracer/AnalysisT1ColorLegend.tsx
+  Analysis T1 trajectory color legend V1
+  T1_COLOR_SCALE_V1 saturation domain
+  ANALYSIS_T1_VALUE_APPEARANCE_V1 CSS ramp
+  value only; OOD is not zero
 
 src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts
   createTrajectoryTiltingGlyphModel

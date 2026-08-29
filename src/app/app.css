@@ -780,6 +780,57 @@ body:has(.app--landing) {
   outline-offset: 2px;
 }
 
+.analysis-t1-color-legend {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 1;
+  pointer-events: none;
+  box-sizing: border-box;
+  width: 13.75rem;
+  max-width: calc(100% - 7.25rem);
+  margin: 0;
+  padding: 0.35rem 0.5rem 0.4rem;
+  border-radius: var(--radius-sm);
+  background: rgba(16, 22, 32, 0.78);
+  border: 1px solid var(--color-border-on-dark);
+  color: var(--color-text-on-dark);
+}
+
+.analysis-t1-color-legend__title,
+.analysis-t1-color-legend__note {
+  margin: 0;
+}
+
+.analysis-t1-color-legend__title {
+  margin-bottom: 0.2rem;
+  font-size: var(--text-readout);
+  font-weight: 600;
+}
+
+.analysis-t1-color-legend__ramp {
+  height: 0.55rem;
+  border-radius: 2px;
+  border: 1px solid rgba(232, 238, 245, 0.2);
+}
+
+.analysis-t1-color-legend__ticks {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin-top: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-on-dark);
+}
+
+.analysis-t1-color-legend__note {
+  margin-top: 0.15rem;
+  font-size: 0.625rem;
+  color: var(--color-text-on-dark-muted);
+}
+
 .tracer-viewport__hud {
   position: absolute;
   left: 0.5rem;

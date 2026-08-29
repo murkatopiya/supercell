@@ -23,6 +23,34 @@ export function srgbChannelToLinear(channel: number): number {
   return Math.pow((channel + 0.055) / 1.055, 2.4);
 }
 
+export function srgbChannelFromLinear(channel: number): number {
+  if (channel <= 0.0031308) {
+    return channel * 12.92;
+  }
+  return 1.055 * Math.pow(channel, 1 / 2.4) - 0.055;
+}
+
+function clamp01(channel: number): number {
+  if (channel <= 0) {
+    return 0;
+  }
+  if (channel >= 1) {
+    return 1;
+  }
+  return channel;
+}
+
+/**
+ * CSS sRGB for a linear-sRGB appearance sample.
+ * Matches the trail's vertex colors after the renderer encodes to sRGB.
+ */
+export function cssSrgbFromLinearRgb(rgb: LinearRgb): string {
+  const r = Math.round(clamp01(srgbChannelFromLinear(rgb.r)) * 255);
+  const g = Math.round(clamp01(srgbChannelFromLinear(rgb.g)) * 255);
+  const b = Math.round(clamp01(srgbChannelFromLinear(rgb.b)) * 255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 export function linearRgbFromSrgbHex(hex: number): LinearRgb {
   return {
     r: srgbChannelToLinear(((hex >> 16) & 255) / 255),

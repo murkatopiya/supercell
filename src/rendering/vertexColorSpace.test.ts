@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import * as THREE from "three";
 import {
+  cssSrgbFromLinearRgb,
   linearRgbFromSrgbHex,
+  srgbChannelFromLinear,
   srgbChannelToLinear,
 } from "./vertexColorSpace.js";
 
@@ -41,5 +43,29 @@ describe("linearRgbFromSrgbHex", () => {
     expect(converted.r).toBeCloseTo(1, 12);
     expect(converted.g).toBe(0);
     expect(converted.b).toBe(0);
+  });
+});
+
+describe("srgbChannelFromLinear", () => {
+  it("inverts srgbChannelToLinear at the endpoints and mid greys", () => {
+    expect(srgbChannelFromLinear(0)).toBe(0);
+    expect(srgbChannelFromLinear(srgbChannelToLinear(1))).toBeCloseTo(1, 12);
+    for (const srgb of [0, 0.04, 0.2, 0.5, 0.8, 1]) {
+      expect(srgbChannelFromLinear(srgbChannelToLinear(srgb))).toBeCloseTo(
+        srgb,
+        12,
+      );
+    }
+  });
+});
+
+describe("cssSrgbFromLinearRgb", () => {
+  it("recovers authored sRGB hex bytes after the linear working-space round trip", () => {
+    for (const hex of [0x2166ac, 0xb2182b, 0xf7f7f7, 0x000000, 0xffffff]) {
+      const css = cssSrgbFromLinearRgb(linearRgbFromSrgbHex(hex));
+      expect(css).toBe(
+        `rgb(${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255})`,
+      );
+    }
   });
 });
