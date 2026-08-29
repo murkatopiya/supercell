@@ -2,12 +2,14 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
-IMPLEMENTATION NOT STARTED
+SLICE A IMPLEMENTED / ACCEPTED /
+SLICES B–G NOT STARTED
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
-Implementation remains NOT STARTED. Slice A is not
-included.
+Slice A (atomic Analysis explanation query) is
+IMPLEMENTED / ACCEPTED. Slices B onward remain
+NOT STARTED.
 **Scope:** scientific UX, diagnostic authority, encoding, and
 slice boundaries for Trajectory Tilting Explorer V1.
 Not a T1 physics reopen. Not `TILT_Y,total`. Not `I_tilt`.
@@ -19,9 +21,10 @@ remains `61`. Trajectory-diagnostic taxonomy remains research
 `2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`
 (BL-047). This file consumes those records; it does not
 replace them.
-**Implementation:** this document does not include production
-code, renderer code, or UI. All named slices below are
-NOT STARTED.
+**Implementation:** Slice A is implemented in
+`src/data/escHrTimeAnalysis/analysisTiltingQuery.ts`.
+This document does not include renderer code or UI.
+Slices B–G remain NOT STARTED.
 
 Predecessor (not replaced):
 
@@ -554,7 +557,8 @@ Any future “effectively zero” band for alignment is
 **OPEN**. It is not `|T1|_ε` (color scale, §13). A color
 near-zero band must not be reused as θ-validity. If an
 alignment ε is ever needed, it requires an explicit
-calibrated contract; Slice A must not invent one.
+calibrated contract. Slice A uses exact IEEE 0 after
+signed-zero / hypot and does not invent an ε.
 
 ### 8.4 UI prohibition
 
@@ -1166,13 +1170,19 @@ was built by `V_total`; Analysis T1 is evaluated there.
 
 ## 22. Implementation slice decomposition
 
-All slices **NOT STARTED**. Independent review boundaries.
+Slice A is IMPLEMENTED / ACCEPTED. Slices B–G are
+NOT STARTED. Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
 renderer slice.
 
 ### Slice A — atomic Analysis explanation result
 
-Headless sibling query + tests.
+**Status:** IMPLEMENTED / ACCEPTED.
+
+Headless sibling query + tests. Public API:
+`queryAnalysisTiltingExplanationAt`. Scalar
+`queryAnalysisTiltingTendencyAt` is a projection of
+the same evaluation.
 
 ```text
 same T1 / status / segment / provenance as
@@ -1335,7 +1345,8 @@ this file as TILT_Y,total or I_tilt authorization
 ```text
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-                   IMPLEMENTATION NOT STARTED
+                   SLICE A IMPLEMENTED / ACCEPTED;
+                   SLICES B–G NOT STARTED
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
 T1:                Analysis ω_h · prescribed ∇_h Vy
@@ -1360,16 +1371,25 @@ TERMINAL:          no authoritative identity in V1;
 HISTORY STORE:     still { position, simulationTime } only
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
-IMPLEMENTATION:    NOT STARTED
+IMPLEMENTATION:    SLICE A COMPLETE / ACCEPTED;
+                   SLICES B–G NOT STARTED
 ```
 
 ---
 
 ## 26. Implementation
 
-This document does not include implementation.
+Slice A is implemented:
 
-Named production homes, when slices start, remain indicative:
+```text
+src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
+  queryAnalysisTiltingExplanationAt
+  queryAnalysisTiltingTendencyAt
+    scalar projection of the same evaluation
+```
+
+Slices B–G are NOT STARTED. Named production homes remain
+indicative:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query

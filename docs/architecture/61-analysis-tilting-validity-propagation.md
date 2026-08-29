@@ -967,7 +967,10 @@ LIVE CONSUMER REWIRING NOT STARTED / NOT AUTHORIZED
 ```
 
 Implemented object: the narrow headless support-aware Analysis
-tilting-tendency sibling query named in §17.
+tilting-tendency sibling query named in §17. Architecture `62`
+Slice A adds the atomic explanation sibling
+`queryAnalysisTiltingExplanationAt` in the same module; this
+file’s validity contract is unchanged.
 
 Not authorized: live T1 rewiring, Explore Source → Analysis,
 Guided consumption, Inspector / UI, SRH, hodograph overlay.
@@ -1034,6 +1037,7 @@ Headless sibling is implemented:
 ```text
 src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
   queryAnalysisTiltingTendencyAt
+  queryAnalysisTiltingExplanationAt   // Architecture 62 Slice A
 ```
 
 Existing `DiagnosticTiltingTendency` and live labs are unchanged.

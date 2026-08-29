@@ -18,7 +18,10 @@ import {
   queryAnalysisNativeSegmentVorticityAt,
   queryAnalysisWindAt,
 } from "./analysisQuery.js";
-import { queryAnalysisTiltingTendencyAt } from "./analysisTiltingQuery.js";
+import {
+  queryAnalysisTiltingExplanationAt,
+  queryAnalysisTiltingTendencyAt,
+} from "./analysisTiltingQuery.js";
 import { ESC_HR_TIME_SAMPLING_CLASS } from "./constants.js";
 import { createEscHrTimeAnalysis } from "./createEscHrTimeAnalysis.js";
 import type {
@@ -232,6 +235,43 @@ describe("support-aware Analysis laboratory T1 on production ESC columns", () =>
       }
       expect(axisT1.tiltingTendency).toBe(0);
       expect(Object.is(axisT1.tiltingTendency, 0)).toBe(true);
+
+      const fullExplanation = queryAnalysisTiltingExplanationAt(
+        column,
+        updraft,
+        fullPosition,
+        0,
+      );
+      expect(fullExplanation.status).toBe(fullT1.status);
+      if (fullExplanation.status !== "FULL_SUPPORT") {
+        throw new Error(`${spec.id}: expected FULL explanation`);
+      }
+      expect(fullExplanation.tiltingTendency).toBe(fullT1.tiltingTendency);
+      expect(fullExplanation.segment).toEqual(fullT1.segment);
+      expect(fullExplanation.provenance).toBe(fullT1.provenance);
+
+      const boundaryExplanation = queryAnalysisTiltingExplanationAt(
+        column,
+        updraft,
+        boundaryPosition,
+        0,
+      );
+      expect(boundaryExplanation.status).toBe(boundaryT1.status);
+      if (boundaryExplanation.status !== "BOUNDARY_CONDITIONED") {
+        throw new Error(`${spec.id}: expected BOUNDARY explanation`);
+      }
+      expect(boundaryExplanation.tiltingTendency).toBe(
+        boundaryT1.tiltingTendency,
+      );
+
+      const oodExplanation = queryAnalysisTiltingExplanationAt(
+        column,
+        updraft,
+        { x: 800, y: column.profile.minHeight - 10, z: 400 },
+        0,
+      );
+      expect(oodExplanation.status).toBe(ood.status);
+      expect("tiltingTendency" in oodExplanation).toBe(false);
     },
   );
 });

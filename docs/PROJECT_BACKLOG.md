@@ -462,25 +462,27 @@ not this item.
 ### BL-048 — Trajectory Tilting Explorer V1
 
 Category: UX
-Status: NOT STARTED
+Status: PARTIAL / SLICE A COMPLETE
 Origin: architecture `62`; BL-047 class B visualization
 Why retained: BL-047 accepted the scientific boundary for
 path-parameterized rotational diagnostics and required a
 separate architecture SoT before any class B surface.
 Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
-IMPLEMENTATION NOT STARTED)
-is that SoT. It specifies Trajectory
-Tilting Explorer V1 (Analysis T1 along recorded path,
-atomic explanation, value/support encoding, geometry
-glyph, what-if state, `ω_y,current` gate). It does **not**
-include implementation. It does **not** complete BL-010.
+SLICE A IMPLEMENTED / ACCEPTED / SLICES B–G NOT STARTED)
+is that SoT. Slice A is the headless atomic Analysis
+explanation query
+(`queryAnalysisTiltingExplanationAt`).
+Slices B–G (trajectory projection, renderer encoding,
+glyph, verify layer, what-if, optional `ω_y,current`
+comparison) remain NOT STARTED.
+It does **not** complete BL-010.
 It does **not** rewire Source `V_env` into Analysis. It
 does **not** authorize `TILT_Y,total` or `I_tilt`.
 Numeric `T1_COLOR_SCALE_V1` saturation / near-zero
 thresholds remain a calibration dependency inside `62`
 §13 / §23, not a renderer invention.
-Return when: a named `62` slice is implemented. This index
-does not include that implementation.
+Return when: a later named `62` slice is implemented.
+This index does not include that implementation.
 Authoritative refs:
 [`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md);
 BL-047; `52`; `61`; BL-010 (unchanged PARTIAL).
@@ -638,10 +640,11 @@ It does **not** complete BL-010.
 The class B visualization architecture that this item
 required is now
 [`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md).
-`62` does not implement the explorer and does not close
-remaining research OPEN items (topology, flicker,
-clamp-time flag, `R_y` product role). Implementation of
-the explorer is BL-048 (NOT STARTED).
+`62` does not implement the remaining explorer slices and
+does not close remaining research OPEN items (topology,
+flicker, clamp-time flag, `R_y` product role).
+Implementation of the explorer is BL-048
+(PARTIAL / Slice A complete).
 Return when: not applicable as the boundary decision.
 Authoritative refs:
 [`docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`](research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md);
@@ -938,7 +941,7 @@ BL-010 (implementation authorized / not started).
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
 | L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no `TILT_Y,total` / no `I_tilt`; class B V1 architecture is `62` |
-| L. Trajectory Tilting Explorer V1 | BL-048 | NOT STARTED; architecture `62` ACCEPTED; implementation not included |
+| L. Trajectory Tilting Explorer V1 | BL-048 | PARTIAL / Slice A complete; architecture `62` ACCEPTED; slices B–G not started |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -1065,10 +1068,12 @@ BL-047:
 62:
                Trajectory Tilting Explorer V1 architecture;
                ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-               IMPLEMENTATION NOT STARTED
+               SLICE A IMPLEMENTED / ACCEPTED;
+               SLICES B–G NOT STARTED
 BL-048:
                Trajectory Tilting Explorer V1;
-               NOT STARTED; architecture 62 ACCEPTED
+               PARTIAL / SLICE A COMPLETE;
+               architecture 62 ACCEPTED
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:
