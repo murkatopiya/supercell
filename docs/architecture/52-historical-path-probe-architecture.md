@@ -1,6 +1,6 @@
 # Historical Path Probe Architecture
 
-**Status:** POST-V1 RESEARCH CHECKPOINT / NOT IMPLEMENTED
+**Status:** POST-V1 RESEARCH CHECKPOINT / FIRST SLICE IMPLEMENTED
 **Scope:** whether live path history plus existing
 read-only diagnostic APIs can support click-a-past-path
 sample → inspect that recorded `(P, t)` without mutating
@@ -10,8 +10,12 @@ Not a free 3D probe. Not rewind.
 fields remain prescribed and Eulerian-steady. Diagnostics
 stay `sample(P, t)` observers. This file does not add
 diagnostic snapshot storage.
-**Implementation:** this document does not include that
-implementation.
+**Implementation:** first slice implemented: recorded
+`simulationTime`, pathline click pick, recomputed
+Inspector / Point diagnostics, CURRENT vs HISTORICAL
+PATH SAMPLE label, presentation-only path marker.
+Rewind, timeline, side-by-side, and free 3D probe remain
+out of this SoT.
 
 Predecessor:
 
@@ -72,28 +76,32 @@ Internal state:
 
 ```text
 stride:             positive integer; Explore / DEMO = 1
-histories:          Vec3[][]     // one lane per occupancy index
+histories:          PathHistorySample[][]  // one lane per occupancy
 observedActive:     boolean[]    // last observed active flag
 stepsSinceCapture:  number       // stride counter
 ```
 
-Each stored sample is **only a copied world position**:
+Each stored sample is a copied world position plus the
+laboratory clock at that sampling boundary:
 
 ```text
-{ x, y, z }   // metres; StormRelativeLaboratory world
-              // (+X east, +Y up, +Z south)
+{
+  position:        { x, y, z }   // metres; SRL world
+                                 // (+X east, +Y up, +Z south)
+  simulationTime:  number        // laboratory clock at capture
+}
 ```
 
 Not stored per sample:
 
 | Field | Present? |
 | --- | --- |
-| simulation time | **no** |
-| tracer age | **no** |
+| simulation time | **yes** (first-slice addition) |
+| tracer age | **no** (derived: sample.time − first.time) |
 | tracerId | **no** (lives on `TracerParticle`) |
 | slot id | **no** (lane index **is** occupancy index) |
 | explicit sequence id | **no** (array index is chronological) |
-| velocity / diagnostics | **no** |
+| velocity / diagnostics | **no** (recomputed via `sample(P, t)`) |
 | active-at-sample | **no** (lane has last observed `active` only) |
 
 Lane index equals particle array index equals renderer
@@ -132,10 +140,17 @@ GPU geometry has **positions only**. No per-vertex time.
 
 ## 3. Timestamps
 
-**CURRENT FACT.** Timestamps do **not** exist on path
-samples. The recorder never sees `clock.time`.
-`captureInitial` / `recordAfterStep` / `appendParticle`
-copy `particle.position` only.
+**CURRENT FACT.** First slice records `simulationTime` on
+each path sample at the existing sampling boundary:
+
+```text
+captureInitial / appendParticle  →  clock.time at capture
+recordAfterStep                  →  post-step clock.time
+                                  (same t Inspector uses)
+```
+
+That is path-history metadata, not a diagnostic snapshot.
+Do not reconstruct time from index.
 
 Reconstructing `t` from live `(clock.time, age, index)`
 is **not generally valid**:
@@ -147,23 +162,6 @@ stride ≠ 1:        samples skip steps
 off-stride terminal: last sample is not k * stride * dt
 recorder:          does not know dt
 ```
-
-For an **active** stride-1 tracer, `t_i = t_birth + i·dt`
-happens to work, but that is an accident of current DEMO
-wiring, not a stored contract.
-
-**NEW PROJECT DECISION.** First implementation records
-`simulationTime` on each path sample at the existing
-sampling boundary:
-
-```text
-captureInitial / appendParticle  →  current clock.time
-recordAfterStep                  →  post-step clock.time
-                                  (same t Inspector uses)
-```
-
-That is path-history metadata, not a diagnostic snapshot.
-Do not reconstruct time from index.
 
 ---
 
@@ -397,7 +395,7 @@ storm’s parcel history.
 
 ---
 
-## 10. Tests (future implementation)
+## 10. Tests
 
 Do not duplicate existing physics tests for T1, ω, or
 operand sums. Contract tests only:
@@ -428,11 +426,12 @@ no glyph-selection regression (36 screen-space contract)
 
 | Item | Class |
 | --- | --- |
-| Record `simulationTime` on path samples | **NEXT** (prerequisite in the first slice) |
-| Pathline click → nearest historical sample | **NEXT** |
-| Historical Inspector L1/L2 (recomputed seven operands + speed) | **NEXT** |
-| Historical Point diagnostics `T_tilt,y` / `ω_y,current` | **NEXT** |
-| CURRENT vs HISTORICAL label | **NEXT** |
+| Record `simulationTime` on path samples | **IMPLEMENTED** |
+| Pathline click → nearest historical sample | **IMPLEMENTED** |
+| Historical Inspector L1/L2 (recomputed seven operands + speed) | **IMPLEMENTED** |
+| Historical Point diagnostics `T_tilt,y` / `ω_y,current` | **IMPLEMENTED** |
+| CURRENT vs HISTORICAL label | **IMPLEMENTED** |
+| Presentation-only path-sample marker | **IMPLEMENTED** |
 | Side-by-side two historical points | LATER |
 | Timeline scrubber | LATER |
 | Simulation rewind | REJECTED |
@@ -480,8 +479,8 @@ Goshen profile ingest.
 ## 13. Compact lock-in
 
 ```text
-CURRENT HISTORY:     copied world positions only; no time
-NEEDED ADDITION:     simulationTime per sample; not diagnostic snapshots
+CURRENT HISTORY:     copied world position + simulationTime;
+                     not diagnostic snapshots
 RECOMPUTE:           existing sample(P, t) for V_total, 7 operands,
                      speed, T_tilt,y, ω_y,current
 TIME:                pass recorded t even if fields ignore it
@@ -493,5 +492,5 @@ NO RING BUFFER:      index stable while appending
 INSPECTOR:           one HISTORICAL PATH SAMPLE mode/label
 GOSHEN:              Eulerian lab comparison along the path;
                      not storm causation
-IMPLEMENTATION:      NOT INCLUDED IN THIS DOCUMENT
+IMPLEMENTATION:      FIRST SLICE COMPLETE
 ```

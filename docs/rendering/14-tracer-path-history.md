@@ -594,9 +594,8 @@ claim. This document owns path-history architecture only.
 Post-V1 historical path-sample inspection (click a recorded
 point, recompute diagnostics at that `(P, t)`, no rewind) is
 `docs/architecture/52-historical-path-probe-architecture.md`.
-Live samples in this recorder are still copied world positions
-only; `52` records that timestamps are absent and are required
-before that probe is scientifically complete.
+Each stored sample is a copied world position plus the
+laboratory `simulationTime` at the sampling boundary.
 
 ---
 
@@ -654,6 +653,8 @@ memory estimate:         2 tracers × ~4000 steps ≈ 8k points;
                          every-step is cheap
 coordinates:             world positions as integrated
                          (StormRelativeLaboratory); no GR ghost
+                         plus laboratory simulationTime per sample
+                         (`52`)
 pedagogy integration:    composition maps enum → seed array
                          + trailEnabled + keepInactiveGlyphs;
                          recorder and TracerScene do not

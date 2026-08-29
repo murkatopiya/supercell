@@ -27,6 +27,7 @@ Successor:
 
 ```text
 docs/architecture/51-dense-observed-hodograph-display.md
+docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
 ```
 
 I2 thinned dense height labels and kept every imported

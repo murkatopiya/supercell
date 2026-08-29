@@ -1,0 +1,683 @@
+{
+  "identity": {
+    "sourceIdentity": "EOL 114.114 / DOI 10.5065/D6CC0Z0Q / Bushnell/NSSL1 / UTC 2009-06-05 21:55:22 / native concatenated NSSL_MGAUS_20090605.cls",
+    "validTime": "2009-06-05 21:55:22 UTC",
+    "location": {
+      "latitude": 41.278,
+      "longitude": -103.893
+    },
+    "heightDatum": "ESC Alt minus header launch elevation 1557.9 m, rounded to 0.1 m → world Y, implied flat ground",
+    "keptLevelCount": 2029,
+    "minHeight": 2.4,
+    "maxHeight": 12261.8
+  },
+  "published": {
+    "paper": "Markowski et al. (2012) MWR Part I, DOI 10.1175/MWR-D-11-00336.1",
+    "figure": "Fig. 2b",
+    "stormMotion": {
+      "eastward": 10.5,
+      "northward": -1.3
+    },
+    "stormMotionUnits": "m/s eastward, northward",
+    "hodographFrame": "storm-relative; C subtracted from ground-relative winds",
+    "heightLabels": "km AGL",
+    "blackCurve": "5-step Leise filter",
+    "grayCurve": "unsmoothed",
+    "printedDiagnosticsOn": "smooth (black) hodograph",
+    "fig2b_0to1kmSRH": {
+      "value": 88,
+      "units": "m^2 s^-2",
+      "source": "Fig. 2b inset, smooth hodograph"
+    },
+    "fig2b_0to3kmSRH": {
+      "value": 167,
+      "units": "m^2 s^-2",
+      "source": "Fig. 2b inset, smooth hodograph"
+    },
+    "fig2b_0to6kmShear": {
+      "value": 29,
+      "units": "m s^-1",
+      "source": "Fig. 2b inset, smooth hodograph; magnitude of 0-6 km vector wind difference"
+    },
+    "intro0to3kmSRH": {
+      "value": 170,
+      "units": "m^2 s^-2",
+      "qualifier": "approximately; Introduction citing Fig. 2b"
+    },
+    "intro0to6kmBWD": {
+      "value": 30,
+      "units": "m s^-1",
+      "qualifier": "approximately; Introduction citing Fig. 2b"
+    }
+  },
+  "characteristicPointsRawGR": {
+    "nearest_2.4": {
+      "height": 2.4,
+      "eastward": -1.2,
+      "northward": 0.2
+    },
+    "nearest_500": {
+      "height": 497.6,
+      "eastward": -3,
+      "northward": 8.1
+    },
+    "nearest_1000": {
+      "height": 998.6,
+      "eastward": -0.2,
+      "northward": 10.1
+    },
+    "nearest_2000": {
+      "height": 2003,
+      "eastward": 2.6,
+      "northward": 9.7
+    },
+    "nearest_3000": {
+      "height": 3000.2,
+      "eastward": 8.8,
+      "northward": 6.3
+    },
+    "nearest_4000": {
+      "height": 4002.4,
+      "eastward": 9.8,
+      "northward": 9.5
+    },
+    "nearest_6000": {
+      "height": 6002,
+      "eastward": 27.7,
+      "northward": 8.6
+    },
+    "nearest_8000": {
+      "height": 7998.8,
+      "eastward": 33.7,
+      "northward": 4.9
+    },
+    "nearest_10000": {
+      "height": 9994.6,
+      "eastward": 43.4,
+      "northward": 2.5
+    },
+    "nearest_12000": {
+      "height": 12005.2,
+      "eastward": 36.5,
+      "northward": 0.7
+    }
+  },
+  "characteristicPointsRawSR": [
+    {
+      "height": 2.4,
+      "eastward": -1.2,
+      "northward": 0.2,
+      "srEastward": -11.7,
+      "srNorthward": 1.5,
+      "srSpeed": 11.795761950802499
+    },
+    {
+      "height": 500,
+      "eastward": -3,
+      "northward": 8.1,
+      "srEastward": -13.5,
+      "srNorthward": 9.4,
+      "srSpeed": 16.450227961946304
+    },
+    {
+      "height": 1000,
+      "eastward": -0.2,
+      "northward": 10.1,
+      "srEastward": -10.7,
+      "srNorthward": 11.4,
+      "srSpeed": 15.634896865665599
+    },
+    {
+      "height": 2000,
+      "eastward": 2.6,
+      "northward": 9.653846153846153,
+      "srEastward": -7.9,
+      "srNorthward": 10.953846153846154,
+      "srSpeed": 13.505433927206122
+    },
+    {
+      "height": 3000,
+      "eastward": 8.8,
+      "northward": 6.3,
+      "srEastward": -1.6999999999999993,
+      "srNorthward": 7.6,
+      "srSpeed": 7.787810988975015
+    },
+    {
+      "height": 4000,
+      "eastward": 9.8,
+      "northward": 9.5,
+      "srEastward": -0.6999999999999993,
+      "srNorthward": 10.8,
+      "srSpeed": 10.82266141020775
+    },
+    {
+      "height": 6000,
+      "eastward": 27.657446808510638,
+      "northward": 8.6,
+      "srEastward": 17.157446808510638,
+      "srNorthward": 9.9,
+      "srSpeed": 19.808785449564336
+    },
+    {
+      "height": 8000,
+      "eastward": 33.7,
+      "northward": 4.9,
+      "srEastward": 23.200000000000003,
+      "srNorthward": 6.2,
+      "srSpeed": 24.01416248799862
+    },
+    {
+      "height": 10000,
+      "eastward": 43.4432,
+      "northward": 2.456800000000003,
+      "srEastward": 32.9432,
+      "srNorthward": 3.756800000000003,
+      "srSpeed": 33.156718361140626
+    },
+    {
+      "height": 12000,
+      "eastward": 36.846666666666714,
+      "northward": 0.8733333333333576,
+      "srEastward": 26.346666666666714,
+      "srNorthward": 2.1733333333333578,
+      "srSpeed": 26.43615369569153
+    }
+  ],
+  "endpoints": {
+    "first": {
+      "height": 2.4,
+      "eastward": -1.2,
+      "northward": 0.2
+    },
+    "second": {
+      "height": 6.1,
+      "eastward": -1.4,
+      "northward": 4.1
+    },
+    "last": {
+      "height": 12261.8,
+      "eastward": 26.8,
+      "northward": 5.7
+    }
+  },
+  "rawDiagnosticsPublishedC": {
+    "near-0–1 km": {
+      "h0": 2.4,
+      "h1": 1000,
+      "srh": 132.64999999999992,
+      "bulkWindDifferenceEastward": 1,
+      "bulkWindDifferenceNorthward": 9.9,
+      "bulkWindDifferenceMagnitude": 9.950376877284599,
+      "shearEastward": 0.0010024057738572574,
+      "shearNorthward": 0.009923817161186848,
+      "omegaEastward": -0.009923817161186848,
+      "omegaNorthward": 0.0010024057738572574,
+      "omegaMagnitude": 0.009974315233845829
+    },
+    "near-0–3 km": {
+      "h0": 2.4,
+      "h1": 3000,
+      "srh": 197.92999999999955,
+      "bulkWindDifferenceEastward": 10,
+      "bulkWindDifferenceNorthward": 6.1,
+      "bulkWindDifferenceMagnitude": 11.713667231059624,
+      "shearEastward": 0.0033360021350413663,
+      "shearNorthward": 0.0020349613023752334,
+      "omegaEastward": -0.0020349613023752334,
+      "omegaNorthward": 0.0033360021350413663,
+      "omegaMagnitude": 0.003907681889197899
+    },
+    "near-0–6 km": {
+      "h0": 2.4,
+      "h1": 6000,
+      "srh": 397.3287234042546,
+      "bulkWindDifferenceEastward": 28.857446808510637,
+      "bulkWindDifferenceNorthward": 8.4,
+      "bulkWindDifferenceMagnitude": 30.05515324043484,
+      "shearEastward": 0.004811499067712191,
+      "shearNorthward": 0.0014005602240896359,
+      "omegaEastward": -0.0014005602240896359,
+      "omegaNorthward": 0.004811499067712191,
+      "omegaMagnitude": 0.005011196685413306
+    }
+  },
+  "rawDiagnosticsDemoC": {
+    "near-0–1 km": {
+      "h0": 2.4,
+      "h1": 1000,
+      "srh": 126.4000000000001,
+      "bulkWindDifferenceEastward": 1,
+      "bulkWindDifferenceNorthward": 9.9,
+      "bulkWindDifferenceMagnitude": 9.950376877284599,
+      "shearEastward": 0.0010024057738572574,
+      "shearNorthward": 0.009923817161186848,
+      "omegaEastward": -0.009923817161186848,
+      "omegaNorthward": 0.0010024057738572574,
+      "omegaMagnitude": 0.009974315233845829
+    },
+    "near-0–3 km": {
+      "h0": 2.4,
+      "h1": 3000,
+      "srh": 181.8800000000001,
+      "bulkWindDifferenceEastward": 10,
+      "bulkWindDifferenceNorthward": 6.1,
+      "bulkWindDifferenceMagnitude": 11.713667231059624,
+      "shearEastward": 0.0033360021350413663,
+      "shearNorthward": 0.0020349613023752334,
+      "omegaEastward": -0.0020349613023752334,
+      "omegaNorthward": 0.0033360021350413663,
+      "omegaMagnitude": 0.003907681889197899
+    },
+    "near-0–6 km": {
+      "h0": 2.4,
+      "h1": 6000,
+      "srh": 355.6140425531918,
+      "bulkWindDifferenceEastward": 28.857446808510637,
+      "bulkWindDifferenceNorthward": 8.4,
+      "bulkWindDifferenceMagnitude": 30.05515324043484,
+      "shearEastward": 0.004811499067712191,
+      "shearNorthward": 0.0014005602240896359,
+      "omegaEastward": -0.0014005602240896359,
+      "omegaNorthward": 0.004811499067712191,
+      "omegaMagnitude": 0.005011196685413306
+    }
+  },
+  "skipFirstKnotPublishedC": {
+    "near-0–1 km": {
+      "h0": 6.1,
+      "h1": 1000,
+      "srh": 87.31999999999994,
+      "bulkWindDifferenceEastward": 1.2,
+      "bulkWindDifferenceNorthward": 6,
+      "bulkWindDifferenceMagnitude": 6.118823416311342,
+      "shearEastward": 0.0012073649260488982,
+      "shearNorthward": 0.006036824630244492,
+      "omegaEastward": -0.006036824630244492,
+      "omegaNorthward": 0.0012073649260488982,
+      "omegaMagnitude": 0.006156377317950843
+    },
+    "near-0–3 km": {
+      "h0": 6.1,
+      "h1": 3000,
+      "srh": 152.59999999999968,
+      "bulkWindDifferenceEastward": 10.200000000000001,
+      "bulkWindDifferenceNorthward": 2.2,
+      "bulkWindDifferenceMagnitude": 10.434557968596467,
+      "shearEastward": 0.003406927419085474,
+      "shearNorthward": 0.0007348274825478473,
+      "omegaEastward": -0.0007348274825478473,
+      "omegaNorthward": 0.003406927419085474,
+      "omegaMagnitude": 0.0034852727107106004
+    },
+    "near-0–6 km": {
+      "h0": 6.1,
+      "h1": 6000,
+      "srh": 351.9987234042548,
+      "bulkWindDifferenceEastward": 29.057446808510637,
+      "bulkWindDifferenceNorthward": 4.5,
+      "bulkWindDifferenceMagnitude": 29.403829938112228,
+      "shearEastward": 0.0048478364351274865,
+      "shearNorthward": 0.0007507632759972639,
+      "omegaEastward": -0.0007507632759972639,
+      "omegaNorthward": 0.0048478364351274865,
+      "omegaMagnitude": 0.004905625709156348
+    }
+  },
+  "experiments": {
+    "leise5_nativeIndex": {
+      "description": "5-step Leise on native 2029 knots, equal-index two-way 1-2-1, stride 2^k. Endpoints within stride unchanged. First zero ~32 samples (~32 s if 1-s, ~160 m if ~5 m/s ascent).",
+      "diagnostics": {
+        "near-0–1 km": {
+          "h0": 2.4,
+          "h1": 1000,
+          "srh": 126.42931429995522,
+          "bulkWindDifferenceEastward": 1.0659576058387754,
+          "bulkWindDifferenceNorthward": 8.87444547712803,
+          "bulkWindDifferenceMagnitude": 8.938235180613882,
+          "shearEastward": 0.001068522058779847,
+          "shearNorthward": 0.00889579538605456,
+          "omegaEastward": -0.00889579538605456,
+          "omegaNorthward": 0.001068522058779847,
+          "omegaMagnitude": 0.008959738553141422
+        },
+        "near-0–3 km": {
+          "h0": 2.4,
+          "h1": 3000,
+          "srh": 195.3410138178945,
+          "bulkWindDifferenceEastward": 9.023086770375569,
+          "bulkWindDifferenceNorthward": 6.502579408703429,
+          "bulkWindDifferenceMagnitude": 11.12203370936361,
+          "shearEastward": 0.0030101036730636405,
+          "shearNorthward": 0.002169261879071067,
+          "omegaEastward": -0.002169261879071067,
+          "omegaNorthward": 0.0030101036730636405,
+          "omegaMagnitude": 0.003710312820043905
+        },
+        "near-0–6 km": {
+          "h0": 2.4,
+          "h1": 6000,
+          "srh": 432.3734747044472,
+          "bulkWindDifferenceEastward": 29.557306995797664,
+          "bulkWindDifferenceNorthward": 7.459785544618646,
+          "bulkWindDifferenceMagnitude": 30.48414009309646,
+          "shearEastward": 0.004928189108276254,
+          "shearNorthward": 0.0012437951088132995,
+          "omegaEastward": -0.0012437951088132995,
+          "omegaNorthward": 0.004928189108276254,
+          "omegaMagnitude": 0.005082723104757979
+        }
+      },
+      "omegaStats": {
+        "n": 2028,
+        "min": 0.00010566107185218673,
+        "p50": 0.006194314403633063,
+        "p90": 0.01652954688484397,
+        "p95": 0.02358656531903689,
+        "max": 0.7116460031390492,
+        "mean": 0.010528979510843774
+      },
+      "arcLength0to6": 62.86118669566932
+    },
+    "leise5_regular5m": {
+      "description": "Linear interpolate to 5 m, then 5-step Leise. First zero 160 m.",
+      "diagnostics": {
+        "near-0–1 km": {
+          "h0": 2.4,
+          "h1": 1000,
+          "srh": 128.23368322999715,
+          "bulkWindDifferenceEastward": 1.0824728236252812,
+          "bulkWindDifferenceNorthward": 9.005014575861642,
+          "bulkWindDifferenceMagnitude": 9.069842056252574,
+          "shearEastward": 0.0010850770084455505,
+          "shearNorthward": 0.009026678604512471,
+          "omegaEastward": -0.009026678604512471,
+          "omegaNorthward": 0.0010850770084455505,
+          "omegaMagnitude": 0.009091662045160959
+        },
+        "near-0–3 km": {
+          "h0": 2.4,
+          "h1": 3000,
+          "srh": 197.43142464754163,
+          "bulkWindDifferenceEastward": 9.182262399520694,
+          "bulkWindDifferenceNorthward": 6.508126552317252,
+          "bulkWindDifferenceMagnitude": 11.254761392167689,
+          "shearEastward": 0.0030632046969311095,
+          "shearNorthward": 0.002171112407364976,
+          "omegaEastward": -0.002171112407364976,
+          "omegaNorthward": 0.0030632046969311095,
+          "omegaMagnitude": 0.0037545908033652558
+        },
+        "near-0–6 km": {
+          "h0": 2.4,
+          "h1": 6000,
+          "srh": 435.93986833810595,
+          "bulkWindDifferenceEastward": 29.58175378700592,
+          "bulkWindDifferenceNorthward": 7.387885801646577,
+          "bulkWindDifferenceMagnitude": 30.49034295860265,
+          "shearEastward": 0.004932265203915886,
+          "shearNorthward": 0.001231807023083663,
+          "omegaEastward": -0.001231807023083663,
+          "omegaNorthward": 0.004932265203915886,
+          "omegaMagnitude": 0.005083757329365521
+        }
+      },
+      "omegaStats": {
+        "n": 2452,
+        "min": 0.00013937744341749043,
+        "p50": 0.007107502102850406,
+        "p90": 0.01852429414090265,
+        "p95": 0.026527086877323094,
+        "max": 0.5731949701239875,
+        "mean": 0.011159374817758841
+      },
+      "arcLength0to6": 64.48590112141675
+    },
+    "leise5_regular10m": {
+      "description": "Linear interpolate to 10 m, then 5-step Leise. First zero 320 m.",
+      "diagnostics": {
+        "near-0–1 km": {
+          "h0": 2.4,
+          "h1": 1000,
+          "srh": 126.06098329260489,
+          "bulkWindDifferenceEastward": 1.214538497170571,
+          "bulkWindDifferenceNorthward": 8.645441800648394,
+          "bulkWindDifferenceMagnitude": 8.730336058222953,
+          "shearEastward": 0.0012174604021356968,
+          "shearNorthward": 0.008666240778516835,
+          "omegaEastward": -0.008666240778516835,
+          "omegaNorthward": 0.0012174604021356968,
+          "omegaMagnitude": 0.008751339272476899
+        },
+        "near-0–3 km": {
+          "h0": 2.4,
+          "h1": 3000,
+          "srh": 194.4139856157316,
+          "bulkWindDifferenceEastward": 8.943593166473303,
+          "bulkWindDifferenceNorthward": 6.495549580361098,
+          "bulkWindDifferenceMagnitude": 11.053507274992729,
+          "shearEastward": 0.0029835845898296314,
+          "shearNorthward": 0.0021669167268351676,
+          "omegaEastward": -0.0021669167268351676,
+          "omegaNorthward": 0.0029835845898296314,
+          "omegaMagnitude": 0.003687452386907102
+        },
+        "near-0–6 km": {
+          "h0": 2.4,
+          "h1": 6000,
+          "srh": 425.97507792945146,
+          "bulkWindDifferenceEastward": 29.685037292785434,
+          "bulkWindDifferenceNorthward": 7.53754564331432,
+          "bulkWindDifferenceMagnitude": 30.62704741562772,
+          "shearEastward": 0.0049494860098681865,
+          "shearNorthward": 0.0012567603113435907,
+          "omegaEastward": -0.0012567603113435907,
+          "omegaNorthward": 0.0049494860098681865,
+          "omegaMagnitude": 0.005106550522813746
+        }
+      },
+      "arcLength0to6": 62.40776207047894
+    },
+    "bin50m": {
+      "diagnostics": {
+        "near-0–1 km": {
+          "h0": 24.466666666666665,
+          "h1": 1000,
+          "srh": 78.85399183464432,
+          "bulkWindDifferenceEastward": 2.0381186544948577,
+          "bulkWindDifferenceNorthward": 4.729236289167174,
+          "bulkWindDifferenceMagnitude": 5.149718781504057,
+          "shearEastward": 0.0020892352776206427,
+          "shearNorthward": 0.004847846944406999,
+          "omegaEastward": -0.004847846944406999,
+          "omegaNorthward": 0.0020892352776206427,
+          "omegaMagnitude": 0.005278875262937255
+        },
+        "near-0–3 km": {
+          "h0": 24.466666666666665,
+          "h1": 3000,
+          "srh": 146.45080985651725,
+          "bulkWindDifferenceEastward": 10.878237448825683,
+          "bulkWindDifferenceNorthward": 1.3239388062917472,
+          "bulkWindDifferenceMagnitude": 10.958506465565401,
+          "shearEastward": 0.0036558950044224057,
+          "shearNorthward": 0.0004449416820374209,
+          "omegaEastward": -0.0004449416820374209,
+          "omegaNorthward": 0.0036558950044224057,
+          "omegaMagnitude": 0.003682871350424149
+        },
+        "near-0–6 km": {
+          "h0": 24.466666666666665,
+          "h1": 6000,
+          "srh": 357.65085250002113,
+          "bulkWindDifferenceEastward": 30.07814007672931,
+          "bulkWindDifferenceNorthward": 3.0880319359816557,
+          "bulkWindDifferenceMagnitude": 30.23624400802772,
+          "shearEastward": 0.00503354904054243,
+          "shearNorthward": 0.0005167793004777798,
+          "omegaEastward": -0.0005167793004777798,
+          "omegaNorthward": 0.00503354904054243,
+          "omegaMagnitude": 0.005060007587835013
+        }
+      },
+      "arcLength0to6": 91.92373161924294
+    },
+    "bin100m": {
+      "diagnostics": {
+        "near-0–1 km": {
+          "h0": 50.6,
+          "h1": 1000,
+          "srh": 59.99483302406894,
+          "bulkWindDifferenceEastward": 2.9838755062365916,
+          "bulkWindDifferenceNorthward": 2.616061624290812,
+          "bulkWindDifferenceMagnitude": 3.968285707809577,
+          "shearEastward": 0.003142906579141133,
+          "shearNorthward": 0.002755489387287563,
+          "omegaEastward": -0.002755489387287563,
+          "omegaNorthward": 0.003142906579141133,
+          "omegaMagnitude": 0.004179782713092034
+        },
+        "near-0–3 km": {
+          "h0": 50.6,
+          "h1": 3000,
+          "srh": 128.46753766900332,
+          "bulkWindDifferenceEastward": 11.301164227678132,
+          "bulkWindDifferenceNorthward": -0.0491231310199467,
+          "bulkWindDifferenceMagnitude": 11.30127098971408,
+          "shearEastward": 0.0038316824532712186,
+          "shearNorthward": -0.000016655296338220214,
+          "omegaEastward": 0.000016655296338220214,
+          "omegaNorthward": 0.0038316824532712186,
+          "omegaMagnitude": 0.0038317186511541606
+        },
+        "near-0–6 km": {
+          "h0": 50.6,
+          "h1": 6000,
+          "srh": 359.4466910206659,
+          "bulkWindDifferenceEastward": 31.347816224737223,
+          "bulkWindDifferenceNorthward": 0.9182391412910702,
+          "bulkWindDifferenceMagnitude": 31.361261855679487,
+          "shearEastward": 0.005269071876951831,
+          "shearNorthward": 0.0001543414699450483,
+          "omegaEastward": -0.0001543414699450483,
+          "omegaNorthward": 0.005269071876951831,
+          "omegaMagnitude": 0.005271331874757032
+        }
+      },
+      "arcLength0to6": 66.42424018025335
+    },
+    "bin250m": {
+      "diagnostics": {
+        "near-0–1 km": {
+          "h0": 128.53478260869568,
+          "h1": 1000,
+          "srh": 44.6947337174591,
+          "bulkWindDifferenceEastward": 3.048401358401784,
+          "bulkWindDifferenceNorthward": 1.298817918980279,
+          "bulkWindDifferenceMagnitude": 3.313559842310095,
+          "shearEastward": 0.0034980183919755847,
+          "shearNorthward": 0.0014903841175305168,
+          "omegaEastward": -0.0014903841175305168,
+          "omegaNorthward": 0.0034980183919755847,
+          "omegaMagnitude": 0.003802285824130884
+        },
+        "near-0–3 km": {
+          "h0": 128.53478260869568,
+          "h1": 3000,
+          "srh": 113.9541192777406,
+          "bulkWindDifferenceEastward": 10.794747923686836,
+          "bulkWindDifferenceNorthward": -0.9474076484000271,
+          "bulkWindDifferenceMagnitude": 10.836243075355414,
+          "shearEastward": 0.003759316971108482,
+          "shearNorthward": -0.00032993875136009377,
+          "omegaEastward": 0.00032993875136009377,
+          "omegaNorthward": 0.003759316971108482,
+          "omegaMagnitude": 0.003773767834527359
+        },
+        "near-0–6 km": {
+          "h0": 128.53478260869568,
+          "h1": 6000,
+          "srh": 352.0564889340159,
+          "bulkWindDifferenceEastward": 31.534904263781595,
+          "bulkWindDifferenceNorthward": 0.09122180249568057,
+          "bulkWindDifferenceMagnitude": 31.535036203294915,
+          "shearEastward": 0.00537087474696692,
+          "shearNorthward": 0.000015536463066404823,
+          "omegaEastward": -0.000015536463066404823,
+          "omegaNorthward": 0.00537087474696692,
+          "omegaMagnitude": 0.0053708972182766246
+        }
+      },
+      "arcLength0to6": 42.75396632742843
+    }
+  },
+  "rawShapeMetrics": {
+    "arcLength0to1": 24.736566387128704,
+    "arcLength0to3": 57.78509294217214,
+    "arcLength0to6": 121.12340722979837,
+    "chord0to6": 30.05515324043484,
+    "localOmegaStats": {
+      "n": 2028,
+      "min": 0,
+      "p50": 0.019230769230769836,
+      "p90": 0.03778493151335397,
+      "p95": 0.04853209659650613,
+      "max": 1.0554391453927912,
+      "mean": 0.020435270150321705
+    },
+    "omegaAt0p5km": {
+      "height": 500,
+      "hLo": 497.6,
+      "hHi": 502.7,
+      "omegaEastward": 0,
+      "omegaNorthward": 0,
+      "omegaMagnitude": 0,
+      "directionFromEastDeg": 0
+    },
+    "omegaAt1km": {
+      "height": 1000,
+      "hLo": 998.6,
+      "hHi": 1005,
+      "omegaEastward": 0,
+      "omegaNorthward": 0,
+      "omegaMagnitude": 0,
+      "directionFromEastDeg": 0
+    },
+    "omegaAt2km": {
+      "height": 2000,
+      "hLo": 1996.5,
+      "hHi": 2003,
+      "omegaEastward": -0.01538461538461533,
+      "omegaNorthward": 0,
+      "omegaMagnitude": 0.01538461538461533,
+      "directionFromEastDeg": 180
+    },
+    "leiseNativeOmegaAt0p5km": {
+      "height": 500,
+      "hLo": 497.6,
+      "hHi": 502.7,
+      "omegaEastward": 0.00027865989535448874,
+      "omegaNorthward": 0.001913369870653213,
+      "omegaMagnitude": 0.001933555170974562,
+      "directionFromEastDeg": 81.7137983860434
+    },
+    "leiseNativeOmegaAt1km": {
+      "height": 1000,
+      "hLo": 998.6,
+      "hHi": 1005,
+      "omegaEastward": -0.0028993338346480872,
+      "omegaNorthward": 0.004457175731658961,
+      "omegaMagnitude": 0.005317194014480266,
+      "directionFromEastDeg": 123.04346933458956
+    },
+    "leiseNativeOmegaAt2km": {
+      "height": 2000,
+      "hLo": 1996.5,
+      "hHi": 2003,
+      "omegaEastward": -0.0007724175086390408,
+      "omegaNorthward": 0.003980827331543009,
+      "omegaMagnitude": 0.004055072755353716,
+      "directionFromEastDeg": 100.98090211958998
+    }
+  }
+}

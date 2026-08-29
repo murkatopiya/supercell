@@ -27,6 +27,14 @@ Successor (path-history diagnostics, not hodograph):
 docs/architecture/52-historical-path-probe-architecture.md
 ```
 
+Related research checkpoint (source vs analysis profile
+for the Goshen 2155 column; not a display change):
+
+```text
+docs/architecture/53-goshen-2155-source-versus-analysis-profile.md
+docs/research/2026-08-27-goshen-2155-hodograph-reproduction.md
+```
+
 Keep these roles distinct:
 
 ```text
