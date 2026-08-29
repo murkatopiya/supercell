@@ -1563,7 +1563,11 @@ TracerPathHistory.samplesFor(lane)
 ```
 
 Projection is derived observe-time state. It is not a
-second history store. Picking remains
+second history store. Overlay invalidation is Analysis
+column identity plus `TracerPathHistory.revision` (content
+generation). Same sample count and last `simulationTime`
+with different positions still refresh. Positions are not
+hashed each frame. Picking remains
 `pickPathHistorySample` on occupancy samples. Overlay
 raycast is disabled.
 
@@ -1949,7 +1953,7 @@ src/rendering/TracerScene.ts
   dispose on removeLast / clear / dispose
 
 src/ui/tracer/TracerViewport.tsx
-  Slice I2: fingerprint + encode + scene sync
+  Slice I2: revision fingerprint + encode + scene sync
   Guided does not pass Analysis column
 
 src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts

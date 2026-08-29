@@ -62,6 +62,10 @@ export function encodeExploreAnalysisTiltingForPathHistory(
   return encodings;
 }
 
+/**
+ * Column identity + PathHistory.revision.
+ * Not sample-count / last-time, which can collide after replacement.
+ */
 export function exploreAnalysisTiltingHistoryFingerprint(
   pathHistory: TracerPathHistory,
   analysisColumn: EscHrTimeAnalysisColumn | null | undefined,
@@ -69,17 +73,5 @@ export function exploreAnalysisTiltingHistoryFingerprint(
   if (analysisColumn == null) {
     return "column-unavailable";
   }
-  const parts = [
-    analysisColumn.provenance.sourceIdentity,
-    String(pathHistory.tracerCount),
-  ];
-  for (let slotIndex = 0; slotIndex < pathHistory.tracerCount; slotIndex++) {
-    const samples = pathHistory.samplesFor(slotIndex);
-    const last = samples[samples.length - 1];
-    parts.push(
-      String(samples.length),
-      last === undefined ? "" : String(last.simulationTime),
-    );
-  }
-  return parts.join("|");
+  return `${analysisColumn.provenance.sourceIdentity}|${pathHistory.revision}`;
 }

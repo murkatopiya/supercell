@@ -98,6 +98,51 @@ function vertexColors(line: THREE.LineSegments, vertexCount: number): number[][]
   return rows;
 }
 
+function countTimeIdentity(history: TracerPathHistory): string {
+  const parts = [String(history.tracerCount)];
+  for (let slotIndex = 0; slotIndex < history.tracerCount; slotIndex++) {
+    const samples = history.samplesFor(slotIndex);
+    const last = samples[samples.length - 1];
+    parts.push(
+      String(samples.length),
+      last === undefined ? "" : String(last.simulationTime),
+    );
+  }
+  return parts.join("|");
+}
+
+function recordPath(
+  history: TracerPathHistory,
+  samples: readonly PathHistorySample[],
+): void {
+  const first = samples[0]!;
+  history.captureInitial(
+    [{ position: first.position, age: 0, active: true }],
+    first.simulationTime,
+  );
+  for (let i = 1; i < samples.length; i++) {
+    const sample = samples[i]!;
+    history.recordAfterStep(
+      [{ position: sample.position, age: 0, active: true }],
+      sample.simulationTime,
+    );
+  }
+}
+
+function firstSegmentPositions(overlay: THREE.Group): number[] {
+  for (const name of [
+    "analysisTiltingFullValue",
+    "analysisTiltingBoundaryValue",
+  ] as const) {
+    const line = lineOf(overlay, name);
+    if (line.geometry.drawRange.count >= 2) {
+      const array = line.geometry.getAttribute("position")!.array;
+      return Array.from(array.slice(0, 6));
+    }
+  }
+  throw new Error("no drawable Analysis overlay segment");
+}
+
 describe("encodeExploreAnalysisTiltingAlongHistory", () => {
   it("pairs Goshen / Prospect / Dumas recorded samples with matching Analysis T1_COLOR_SCALE_V1 encodings", () => {
     const labs = [
@@ -507,6 +552,74 @@ describe("Explore Analysis T1 overlay observe layer", () => {
       exploreAnalysisTiltingHistoryFingerprint(history, null),
     ).toBe("column-unavailable");
   });
+
+  it("refreshes overlay when history is replaced at the same count and last time", () => {
+    const pathB: PathHistorySample[] = [
+      { position: { x: 2000, y: 2000, z: 0 }, simulationTime: 0 },
+      { position: { x: 2010, y: 2010, z: 10 }, simulationTime: 0.1 },
+      { position: { x: 2020, y: 2020, z: 20 }, simulationTime: 0.2 },
+    ];
+    const lab = createExploreLab(
+      fakeSlots(),
+      EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
+    );
+    const history = new TracerPathHistory(1);
+    recordPath(history, INTERIOR);
+
+    const countTimeA = countTimeIdentity(history);
+    let fingerprint = exploreAnalysisTiltingHistoryFingerprint(
+      history,
+      lab.analysisColumn,
+    );
+    const overlay = createTrajectoryTiltingOverlay();
+    const encodingsA = encodeExploreAnalysisTiltingForPathHistory(
+      history,
+      lab.analysisColumn,
+      lab.tiltingTendency.updraft,
+    )!;
+    expect(encodingsA[0]!.valueSegments.length).toBeGreaterThan(0);
+    syncTrajectoryTiltingOverlay(
+      overlay,
+      encodingsA[0]!,
+      ANALYSIS_T1_VALUE_APPEARANCE_V1,
+    );
+    const positionsA = firstSegmentPositions(overlay);
+    expect(positionsA.slice(0, 3)).toEqual([-2000, 2000, 0]);
+
+    history.clear();
+    recordPath(history, pathB);
+    expect(countTimeIdentity(history)).toBe(countTimeA);
+    expect(history.samplesFor(0).map((sample) => sample.position)).not.toEqual(
+      INTERIOR.map((sample) => sample.position),
+    );
+
+    const nextFingerprint = exploreAnalysisTiltingHistoryFingerprint(
+      history,
+      lab.analysisColumn,
+    );
+    expect(nextFingerprint).not.toBe(fingerprint);
+    expect(nextFingerprint).toBe(
+      `${lab.analysisColumn!.provenance.sourceIdentity}|${history.revision}`,
+    );
+
+    if (nextFingerprint !== fingerprint) {
+      fingerprint = nextFingerprint;
+      const encodingsB = encodeExploreAnalysisTiltingForPathHistory(
+        history,
+        lab.analysisColumn,
+        lab.tiltingTendency.updraft,
+      )!;
+      syncTrajectoryTiltingOverlay(
+        overlay,
+        encodingsB[0]!,
+        ANALYSIS_T1_VALUE_APPEARANCE_V1,
+      );
+    }
+    const positionsB = firstSegmentPositions(overlay);
+    expect(positionsB.slice(0, 3)).toEqual([2000, 2000, 0]);
+    expect(positionsB).not.toEqual(positionsA);
+    disposeTrajectoryTiltingOverlay(overlay);
+  });
 });
 
 describe("I2 wiring: overlay observe-only, picking unchanged, I3 unwired", () => {
@@ -514,6 +627,7 @@ describe("I2 wiring: overlay observe-only, picking unchanged, I3 unwired", () =>
     expect(encoderSrc).toMatch(/projectAnalysisTiltingAlongRecordedPath/);
     expect(encoderSrc).toMatch(/encodeTrajectoryTiltingForRender/);
     expect(encoderSrc).toMatch(/T1_COLOR_SCALE_V1/);
+    expect(encoderSrc).toMatch(/pathHistory\.revision/);
     expect(tracerSceneSrc).toMatch(/syncAnalysisTiltingOverlays/);
     expect(tracerSceneSrc).toMatch(/createTrajectoryTiltingOverlay/);
     expect(tracerSceneSrc).toMatch(/ANALYSIS_T1_VALUE_APPEARANCE_V1/);

@@ -531,4 +531,42 @@ describe("TracerPathHistory", () => {
       /simulationTime must be finite/,
     );
   });
+
+  it("bumps revision only when recorded samples or lanes mutate", () => {
+    const history = new TracerPathHistory(1, 2);
+    expect(history.revision).toBe(0);
+
+    history.captureInitial([particle(0, 1000, 0, false)], 0);
+    expect(history.revision).toBe(0);
+
+    history.captureInitial([particle(0, 1000, 0)], 0);
+    expect(history.revision).toBe(1);
+
+    history.recordAfterStep([particle(1, 1000, 0)], 0.1);
+    expect(history.revision).toBe(1);
+    history.recordAfterStep([particle(2, 1000, 0)], 0.2);
+    expect(history.revision).toBe(2);
+
+    const afterContent = history.revision;
+    history.clear();
+    expect(history.revision).toBe(afterContent + 1);
+    history.clear();
+    expect(history.revision).toBe(afterContent + 1);
+
+    const growing = new TracerPathHistory(0);
+    expect(growing.revision).toBe(0);
+    growing.appendParticle(particle(4, 1000, 0), 0);
+    expect(growing.revision).toBe(1);
+    growing.appendParticles([], 0);
+    expect(growing.revision).toBe(1);
+    growing.removeLastLane();
+    expect(growing.revision).toBe(2);
+    growing.removeLastLane();
+    expect(growing.revision).toBe(2);
+    growing.appendParticle(particle(5, 1000, 0), 0);
+    growing.removeAllLanes();
+    expect(growing.revision).toBe(4);
+    growing.removeAllLanes();
+    expect(growing.revision).toBe(4);
+  });
 });

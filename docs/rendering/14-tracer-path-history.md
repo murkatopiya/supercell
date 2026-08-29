@@ -638,7 +638,9 @@ reset semantics:         clear + captureInitial at seed positions;
                          diagnostic Reset unchanged / trails unused
 lane lifecycle:          constructor sets initial count (0 allowed);
                          appendParticle captures birth, bypasses stride;
-                         clear() keeps lanes; removeAllLanes() → 0
+                         clear() keeps lanes; removeAllLanes() → 0;
+                         revision bumps when samples or lanes mutate;
+                         not T1; not a second store
 pause semantics:         no step → no append; render may continue
 timeScale:               more steps → more points; not renderer sampling
 representation:          THREE.Line + BufferGeometry; glyph stays

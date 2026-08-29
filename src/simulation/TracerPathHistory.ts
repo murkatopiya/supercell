@@ -41,6 +41,7 @@ export class TracerPathHistory {
   private readonly histories: PathHistorySample[][];
   private readonly observedActive: boolean[];
   private stepsSinceCapture = 0;
+  private contentRevision = 0;
 
   constructor(tracerCount: number, stride = 1) {
     if (!Number.isInteger(tracerCount) || tracerCount < 0) {
@@ -56,6 +57,15 @@ export class TracerPathHistory {
 
   get tracerCount(): number {
     return this.histories.length;
+  }
+
+  /**
+   * Content generation of recorded samples and lanes.
+   * Bumps when history content mutates. Not Analysis T1,
+   * not a second store, not a PathHistorySample field.
+   */
+  get revision(): number {
+    return this.contentRevision;
   }
 
   /**
@@ -77,6 +87,7 @@ export class TracerPathHistory {
       },
     ]);
     this.observedActive.push(particle.active);
+    this.bumpRevision();
   }
 
   /**
@@ -104,6 +115,7 @@ export class TracerPathHistory {
     assertFiniteTime(time);
     this.assertParticleCount(particles);
     const simulationTime = storedTime(time);
+    let mutated = false;
     for (let i = 0; i < particles.length; i++) {
       const particle = particles[i]!;
       this.observedActive[i] = particle.active;
@@ -114,8 +126,12 @@ export class TracerPathHistory {
         position: copyVec3(particle.position),
         simulationTime,
       });
+      mutated = true;
     }
     this.stepsSinceCapture = 0;
+    if (mutated) {
+      this.bumpRevision();
+    }
   }
 
   /**
@@ -137,6 +153,7 @@ export class TracerPathHistory {
     this.stepsSinceCapture += 1;
     const onStride = this.stepsSinceCapture % this.stride === 0;
     const simulationTime = storedTime(time);
+    let mutated = false;
     for (let i = 0; i < particles.length; i++) {
       const particle = particles[i]!;
       const wasActive = this.observedActive[i]!;
@@ -147,8 +164,12 @@ export class TracerPathHistory {
           position: copyVec3(particle.position),
           simulationTime,
         });
+        mutated = true;
       }
       this.observedActive[i] = isActive;
+    }
+    if (mutated) {
+      this.bumpRevision();
     }
   }
 
@@ -157,11 +178,15 @@ export class TracerPathHistory {
    * Lane count is unchanged. Guided Reset: clear() then captureInitial().
    */
   clear(): void {
+    const hadContent = this.histories.some((history) => history.length > 0);
     for (const history of this.histories) {
       history.length = 0;
     }
     this.observedActive.fill(false);
     this.stepsSinceCapture = 0;
+    if (hadContent) {
+      this.bumpRevision();
+    }
   }
 
   /**
@@ -169,9 +194,13 @@ export class TracerPathHistory {
    * gone (Explore Clear), not merely the recorded points.
    */
   removeAllLanes(): void {
+    if (this.histories.length === 0) {
+      return;
+    }
     this.histories.length = 0;
     this.observedActive.length = 0;
     this.stepsSinceCapture = 0;
+    this.bumpRevision();
   }
 
   /**
@@ -184,6 +213,7 @@ export class TracerPathHistory {
     }
     this.histories.pop();
     this.observedActive.pop();
+    this.bumpRevision();
   }
 
   /**
@@ -206,6 +236,10 @@ export class TracerPathHistory {
       );
     }
     return history.map(copySample);
+  }
+
+  private bumpRevision(): void {
+    this.contentRevision += 1;
   }
 
   private assertParticleCount(particles: readonly TracerAdvectionState[]): void {
