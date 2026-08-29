@@ -173,8 +173,8 @@ Authoritative refs: `48` U2; `49` §10.
 
 Category: PHYSICS
 Status: PARTIAL / COLUMN CORE IMPLEMENTED;
-consumer integration NOT STARTED / AUTHORIZED
-(narrow headless native-segment Analysis `ω_h` query; `60`)
+support-aware native-segment Analysis `ω_h` query IMPLEMENTED;
+live consumer rewiring NOT STARTED / NOT AUTHORIZED
 Origin: `53` (source vs analysis distinction **ACCEPTED**);
 `54` (first concrete candidate construction);
 `55` (qualifies `54`: candidate, not implementation
@@ -183,23 +183,24 @@ authorization);
 `59` (ESC-class production transform **specified**;
 Analysis-column implementation **authorized**);
 `60` (Analysis diagnostic support contract **specified**;
-narrow headless `ω_h` query **authorized**, not implemented);
+headless native-segment Analysis `ω_h` query **implemented**;
+live rewiring **not** authorized);
 research `2026-08-28-high-resolution-esc-analysis-transform-decision.md`
 (ESC-class transform **research-selected**; not itself
 authorization)
-Why retained: the headless Analysis column exists
+Why retained: the headless Analysis column and support-aware
+native-segment wind / shear / `ω_h` query exist
 (`src/data/escHrTimeAnalysis/`, ESC TIME carrier in
 `src/data/eolNsslMgausEsc/`). Diagnostic rewiring, hodograph
 overlay, Explore Source replacement, and Guided consumption
-remain unwired (`59` §27). Architecture `60` authorizes only
-the next headless support-aware native-segment Analysis
-horizontal-vorticity query; it does not complete BL-010.
-Return when: that authorized query slice is implemented, or a
-later SoT authorizes further consumers. Do not treat column core
-as diagnostic/UI completion. Do not implement the `54` candidate
-as production. Do not retune to Fig. 2b 88 / 167. Do not mutate
-the source golden winds/heights. Do not silently replace Explore
-`V_env`.
+remain unwired (`59` §27, `60` §21). This does not complete
+BL-010.
+Return when: a later SoT authorizes live consumers (T1,
+Explore, UI, SRH, hodograph). Do not treat column core or the
+headless `ω_h` query as diagnostic/UI completion. Do not implement
+the `54` candidate as production. Do not retune to Fig. 2b 88 /
+167. Do not mutate the source golden winds/heights. Do not
+silently replace Explore `V_env`.
 Authoritative refs:
 [`docs/architecture/53-goshen-2155-source-versus-analysis-profile.md`](architecture/53-goshen-2155-source-versus-analysis-profile.md);
 [`docs/architecture/54-storm-scale-analysis-wind-profile.md`](architecture/54-storm-scale-analysis-wind-profile.md)
@@ -211,7 +212,7 @@ Authoritative refs:
 [`docs/architecture/59-high-resolution-esc-time-domain-analysis-integration.md`](architecture/59-high-resolution-esc-time-domain-analysis-integration.md)
 (production transform; column authorization);
 [`docs/architecture/60-analysis-consuming-diagnostic-support-contract.md`](architecture/60-analysis-consuming-diagnostic-support-contract.md)
-(diagnostic support contract; narrow `ω_h` query authorization);
+(diagnostic support contract; headless `ω_h` query implemented);
 [`docs/research/2026-08-28-high-resolution-esc-analysis-transform-decision.md`](research/2026-08-28-high-resolution-esc-analysis-transform-decision.md)
 (research-selected ESC candidate);
 this index BL-037 (CLOSED), BL-046.

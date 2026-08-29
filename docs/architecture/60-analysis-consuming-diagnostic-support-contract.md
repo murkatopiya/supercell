@@ -2,7 +2,8 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 DIAGNOSTIC SUPPORT CONTRACT SPECIFIED /
-IMPLEMENTATION AUTHORIZED (narrow headless query only)
+HEADLESS NATIVE-SEGMENT QUERY IMPLEMENTED /
+LIVE CONSUMER REWIRING NOT STARTED / NOT AUTHORIZED
 **Scope:** how diagnostics may consume Source versus Analysis,
 and how FIR filter support propagates through interpolation,
 native-segment shear, and layer queries. Not a Source rewrite.
@@ -12,8 +13,11 @@ Not hodograph UI. Not Moore. Not a V1 reopen.
 **Physics:** existing shear / vorticity / SRH / T1 identities
 are not reopened. This file records how Analysis *support*
 applies to those already-defined computations.
-**Implementation:** this file does not include production
-code. The authorized next consumer slice is named in §21.
+**Implementation:** headless support-aware native-segment
+Analysis wind / shear / `ω_h` query lives in
+`src/data/escHrTimeAnalysis/analysisQuery.ts`. Live
+Explore / Guided / T1 / SRH / hodograph rewiring is not
+included.
 
 Predecessor (not replaced):
 
@@ -841,9 +845,17 @@ does not imply `ω_h` FULL.
 
 ## 21. D17 — First implementation target
 
-**NEW PROJECT DECISION.**
+**NEW PROJECT DECISION.** First consumer slice **IMPLEMENTED**
+headless:
 
-Minimal next consumer slice:
+```text
+src/data/escHrTimeAnalysis/analysisQuery.ts
+  queryAnalysisWindAt
+  queryAnalysisNativeSegmentShearAt
+  queryAnalysisNativeSegmentVorticityAt
+```
+
+Authorized object of that slice:
 
 ```text
 headless support-aware Analysis native-segment
@@ -890,9 +902,9 @@ new central ±δh derivative
 
 ---
 
-## 22. Future test matrix (not implemented here)
+## 22. Test matrix
 
-The authorized consumer slice MUST include at least:
+The authorized consumer slice includes at least:
 
 ```text
 exact FULL knot wind
@@ -928,10 +940,11 @@ by silent substitution.
 ```text
 ARCHITECTURE ACCEPTED
 DIAGNOSTIC SUPPORT CONTRACT SPECIFIED
-IMPLEMENTATION AUTHORIZED
+HEADLESS NATIVE-SEGMENT QUERY IMPLEMENTED
+LIVE CONSUMER REWIRING NOT STARTED / NOT AUTHORIZED
 ```
 
-Authorized object: the narrow headless support-aware
+Implemented object: the narrow headless support-aware
 Analysis native-segment shear / horizontal-vorticity
 query named in §21.
 
@@ -988,7 +1001,10 @@ T1:                validity ≤ ω_h; not rewired here
 BULK:              computable ≠ FULL
 UNAVAILABLE:       typed; not NaN/0
 FIRST SLICE:       headless Analysis native-segment ω_h
-BL-010:            column core remains; consumer
-                   integration NOT STARTED / AUTHORIZED
-                   (narrow)
+                   IMPLEMENTED
+BL-010:            column core IMPLEMENTED;
+                   support-aware native-segment Analysis
+                   ω_h query IMPLEMENTED;
+                   live consumer rewiring NOT STARTED /
+                   NOT AUTHORIZED
 ```
