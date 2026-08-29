@@ -57,7 +57,7 @@ describe("Floating hodograph workspace wiring", () => {
   it("keeps a single view transform path for overlays", () => {
     expect(panelSrc).toMatch(/hodograph-panel__plot-space/);
     expect(panelSrc).toMatch(/hodographPlotSpaceCamera/);
-    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width).toBe(480);
+    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width).toBe(880);
     expect(HODOGRAPH_PANEL_MIN_WIDTH_PX).toBe(360);
     expect(VIEWBOX_WIDTH).toBe(640);
   });

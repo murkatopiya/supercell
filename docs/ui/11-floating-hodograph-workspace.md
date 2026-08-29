@@ -102,9 +102,10 @@ Owner: App UI session (`hodographPanelGeometry`). Not physics,
 not Environment, not `HodographPoint[]`, not Simulation.
 
 ```text
-initial   x=12, y=12, width=480, height=420 relative to the
+initial   x=12, y=12, width=880, height=650 relative to the
           laboratory viewport host, then adopted to
           position:fixed window coordinates on first layout
+          (desktop open size; clamp shrinks to the window)
 min       width 360, height 280
 max       browser window (no smaller product cap)
 drag      header only; buttons / inputs / fieldsets excluded
@@ -197,7 +198,7 @@ window frame
 header
 − / + / Reset / Close
 Environment identity + honesty copy
-overlay checkboxes
+overlay checkboxes (Demo / Guided only)
 resize handle
 SVG background fill
 ```
@@ -232,6 +233,16 @@ values are unchanged; only presentation scale follows zoom.
 Selected height is unchanged by zoom/pan. The marker is
 redrawn in the plot-space camera. Selection semantics are not
 extended in this slice.
+
+`HodographOverlayControls` are Demo / Guided teaching
+controls. They mount only when Explore honesty copy is
+absent (Guided, or Explore Demo prescribed). Observed
+Explore environments omit the checkbox fieldset: DEMO
+`[0, 1000]` overlay recipes are not applied, so those
+toggles have no action. Prescribed DEMO C may still draw
+as a plot marker; it is not an observed-storm diagnostic
+control set. Restoring observed overlays is BL-011, not
+this workspace contract.
 
 ---
 

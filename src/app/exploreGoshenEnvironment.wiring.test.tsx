@@ -250,6 +250,11 @@ describe("I2 Goshen Explore sandbox", () => {
     expect(html).not.toMatch(/reconstructs the Goshen/i);
     expect(html).not.toMatch(/historical Goshen storm/i);
     expect(html).not.toMatch(/observed storm motion/i);
+    expect(html).not.toContain("Hodograph overlays");
+    expect(html).not.toContain("Storm-relative wind V_sr");
+    expect(html).not.toContain("Horizontal vorticity ω_h");
+    expect(html).not.toContain("Streamwise / crosswise vorticity");
+    expect(html).not.toMatch(/disabled/);
   });
 
   it("does not apply the DEMO [0, 1000] overlay recipe to Goshen", () => {

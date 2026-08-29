@@ -141,6 +141,14 @@ describe("Explore 41-1 Release tracer entry", () => {
 
     expect(appSrc).toMatch(/enterExplore[\s\S]*setPlacementEnabled\(false\)/);
     expect(appSrc).toMatch(/enterGuided[\s\S]*setPlacementEnabled\(false\)/);
+
+    const envSwitch = appSrc.slice(
+      appSrc.indexOf("const selectExploreEnvironment"),
+      appSrc.indexOf("const openHowItWorks"),
+    );
+    expect(envSwitch).toMatch(/createExploreLab/);
+    expect(envSwitch).toMatch(/setPlacementEnabled\(false\)/);
+    expect(envSwitch).toMatch(/setPendingSeed\(null\)/);
   });
 });
 

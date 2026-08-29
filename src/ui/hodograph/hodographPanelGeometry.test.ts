@@ -11,15 +11,15 @@ import {
 } from "./hodographPanelGeometry.js";
 import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "./hodographPlotView.js";
 
-const viewport = { width: 900, height: 700 };
+const viewport = { width: 1920, height: 1080 };
 
 describe("hodographPanelGeometry", () => {
   it("starts at the documented initial placement over the viewport host", () => {
     expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY).toEqual({
       x: 12,
       y: 12,
-      width: 480,
-      height: 420,
+      width: 880,
+      height: 650,
     });
     const clamped = clampPanelGeometry(
       INITIAL_HODOGRAPH_PANEL_GEOMETRY,
@@ -80,15 +80,15 @@ describe("hodographPanelGeometry", () => {
       60,
       viewport,
     );
-    expect(grown.width).toBe(560);
-    expect(grown.height).toBe(480);
+    expect(grown.width).toBe(960);
+    expect(grown.height).toBe(710);
     expect(grown.x).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.x);
     expect(grown.y).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.y);
 
     const tooSmall = resizePanelFromSouthEast(
       INITIAL_HODOGRAPH_PANEL_GEOMETRY,
-      -500,
-      -500,
+      -1000,
+      -1000,
       viewport,
     );
     expect(tooSmall.width).toBe(HODOGRAPH_PANEL_MIN_WIDTH_PX);
@@ -109,7 +109,7 @@ describe("hodographPanelGeometry", () => {
       0,
       viewport,
     );
-    expect(eastOnly.width).toBe(560);
+    expect(eastOnly.width).toBe(960);
     expect(eastOnly.height).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.height);
 
     const southOnly = resizePanelFromSouthEast(
@@ -119,7 +119,7 @@ describe("hodographPanelGeometry", () => {
       viewport,
     );
     expect(southOnly.width).toBe(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width);
-    expect(southOnly.height).toBe(480);
+    expect(southOnly.height).toBe(710);
     expect(plotView.userScale).toBe(3);
     expect(plotView.panEastward).toBe(0);
   });

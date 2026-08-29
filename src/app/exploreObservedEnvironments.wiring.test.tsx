@@ -387,6 +387,9 @@ describe("Explore observed environments", () => {
     expect(prospectHtml).toContain(PROSPECT_VALLEY_SANDBOX_ANTI_CLAIM);
     expect(prospectHtml).not.toMatch(/reconstructs the Prospect/i);
     expect(prospectHtml).not.toMatch(/the real Prospect Valley storm/i);
+    expect(prospectHtml).not.toContain("Hodograph overlays");
+    expect(prospectHtml).not.toContain("Storm-relative wind V_sr");
+    expect(prospectHtml).not.toMatch(/disabled/);
 
     expect(dumasHtml).toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
     expect(dumasHtml).toContain(DUMAS_OBSERVED_ENVIRONMENT_COPY);
@@ -396,6 +399,8 @@ describe("Explore observed environments", () => {
     expect(dumasHtml).not.toMatch(/reconstructs the Dumas/i);
     expect(dumasHtml).not.toMatch(/the real Dumas storm/i);
     expect(dumasHtml).not.toMatch(/observed storm motion/i);
+    expect(dumasHtml).not.toContain("Hodograph overlays");
+    expect(dumasHtml).not.toMatch(/disabled/);
 
     expect(mooreHtml).toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
     expect(mooreHtml).toContain(MOORE_OBSERVED_ENVIRONMENT_COPY);
@@ -409,6 +414,8 @@ describe("Explore observed environments", () => {
     expect(mooreHtml).not.toMatch(/the real Moore storm/i);
     expect(mooreHtml).not.toMatch(/tornado/i);
     expect(mooreHtml).not.toMatch(/observed storm motion/i);
+    expect(mooreHtml).not.toContain("Hodograph overlays");
+    expect(mooreHtml).not.toMatch(/disabled/);
   });
 
   it("thins Prospect, Dumas, and Moore markers without resampling the source polyline", () => {

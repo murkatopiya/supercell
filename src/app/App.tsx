@@ -477,6 +477,7 @@ export function App() {
         exploreEnvironmentalWindProfile(next),
       ),
     );
+    setPlacementEnabled(false);
     setPendingSeed(null);
     setResetEpoch((epoch) => epoch + 1);
     syncAuthoringHistoryButtons(null);

@@ -102,13 +102,35 @@ describe("EnvironmentSurface", () => {
     expect(explore).not.toContain("NOT a simulation or reconstruction");
   });
 
+  it("keeps Hodograph overlay checkboxes on Demo and omits them for observed environments", () => {
+    const demo = surfaceMarkup(true, {
+      environmentIdentity: "demo-prescribed",
+    });
+    expect(demo).toContain("Hodograph overlays");
+    expect(demo).toContain("Storm motion C");
+    expect(demo).toContain("Storm-relative wind V_sr");
+    expect(demo).toContain("Horizontal vorticity ω_h");
+    expect(demo).toContain("Streamwise / crosswise vorticity");
+
+    const goshen = surfaceMarkup(true, {
+      environmentIdentity: "goshen-2009-observed",
+    });
+    expect(goshen).not.toContain("Hodograph overlays");
+    expect(goshen).not.toContain("Storm motion C");
+    expect(goshen).not.toContain("Storm-relative wind V_sr");
+    expect(goshen).not.toContain("Horizontal vorticity ω_h");
+    expect(goshen).not.toContain("Streamwise / crosswise vorticity");
+    expect(goshen).not.toMatch(/disabled/);
+    expect(goshen).toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
+  });
+
   it("is hidden when closed without dropping overlay controls from the tree", () => {
     const html = surfaceMarkup(false);
     expect(html).toMatch(/<section[^>]*\shidden/);
     expect(html).toContain("Hodograph overlays");
     expect(html).toContain("aria-label=\"Ground-relative hodograph\"");
     expect(html).toContain("left:12px");
-    expect(html).toContain("width:480px");
+    expect(html).toContain("width:880px");
   });
 
   it("uses the shared floating workspace for Guided and Explore", () => {
@@ -191,9 +213,10 @@ describe("Environment surface size contract", () => {
     expect(HODOGRAPH_PANEL_MIN_WIDTH_PX).toBe(360);
     expect(HODOGRAPH_PANEL_MIN_HEIGHT_PX).toBe(280);
     expect(ENVIRONMENT_OVERLAY_MIN_WIDTH_PX).toBe(360);
-    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width).toBe(480);
-    expect(surfaceMarkup(true)).toContain("width:480px");
-    expect(surfaceMarkup(true)).toContain("height:420px");
+    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.width).toBe(880);
+    expect(INITIAL_HODOGRAPH_PANEL_GEOMETRY.height).toBe(650);
+    expect(surfaceMarkup(true)).toContain("width:880px");
+    expect(surfaceMarkup(true)).toContain("height:650px");
     expect(surfaceMarkup(true)).toContain("left:12px");
     expect(surfaceMarkup(true)).toContain("top:12px");
   });

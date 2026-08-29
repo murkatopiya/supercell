@@ -45,6 +45,7 @@ export interface EnvironmentSurfaceProps {
 /**
  * On-demand Environment surface: shared floating hodograph workspace
  * for Guided and Explore. Mode extras (identity radios) stay here.
+ * Overlay checkboxes mount only when honesty copy is absent.
  * docs/ui/11-floating-hodograph-workspace.md
  */
 export function EnvironmentSurface({
@@ -138,10 +139,12 @@ export function EnvironmentSurface({
           onPlotViewChange={onPlotViewChange}
         />
       </div>
-      <HodographOverlayControls
-        value={overlayVisibility}
-        onChange={onOverlayVisibilityChange}
-      />
+      {honesty === undefined ? (
+        <HodographOverlayControls
+          value={overlayVisibility}
+          onChange={onOverlayVisibilityChange}
+        />
+      ) : null}
     </HodographWorkspace>
   );
 }
