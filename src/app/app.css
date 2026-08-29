@@ -1453,7 +1453,8 @@ body:has(.app--landing) {
 
 .tracer-inspector__body,
 .point-diagnostics__body,
-.trajectory-tilting-verify__body {
+.trajectory-tilting-verify__body,
+.trajectory-tilting-whatif__body {
   padding: var(--space-3);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
@@ -1463,7 +1464,8 @@ body:has(.app--landing) {
 
 .tracer-inspector__placeholder,
 .point-diagnostics__placeholder,
-.trajectory-tilting-verify__placeholder {
+.trajectory-tilting-verify__placeholder,
+.trajectory-tilting-whatif__placeholder {
   margin: 0;
   font-size: var(--text-secondary);
   line-height: var(--text-line-body);
@@ -1492,7 +1494,8 @@ body:has(.app--landing) {
 }
 
 .point-diagnostics,
-.trajectory-tilting-verify {
+.trajectory-tilting-verify,
+.trajectory-tilting-whatif {
   margin: var(--space-4) 0 0;
 }
 
@@ -1603,6 +1606,62 @@ body:has(.app--landing) {
 
 .trajectory-tilting-verify__provenance {
   margin: 0;
+}
+
+.trajectory-tilting-whatif__title {
+  margin: 0 0 var(--space-2);
+}
+
+.trajectory-tilting-whatif__label {
+  margin: 0 0 0.1rem;
+  color: var(--color-text-secondary);
+}
+
+.trajectory-tilting-whatif__reading {
+  margin: 0 0 0.1rem;
+}
+
+.trajectory-tilting-whatif__value,
+.trajectory-tilting-whatif__units {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.trajectory-tilting-whatif__quantity {
+  margin: 0 0 var(--space-3);
+  padding: 0 0 var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.trajectory-tilting-whatif__quantity--hypothetical {
+  border-style: dashed;
+}
+
+.trajectory-tilting-whatif__control {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.trajectory-tilting-whatif__reset {
+  font: inherit;
+  cursor: pointer;
+}
+
+.trajectory-tilting-whatif__status {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-readout);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.trajectory-tilting-whatif__hint {
+  margin: 0 0 var(--space-2);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
 }
 
 .tracer-inspector__identity {

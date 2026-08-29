@@ -462,14 +462,14 @@ not this item.
 ### BL-048 — Trajectory Tilting Explorer V1
 
 Category: UX
-Status: PARTIAL / SLICES A–E COMPLETE;
+Status: PARTIAL / SLICES A–F COMPLETE;
 CAL OPEN; App/Explore/TracerScene unwired
 Origin: architecture `62`; BL-047 class B visualization
 Why retained: BL-047 accepted the scientific boundary for
 path-parameterized rotational diagnostics and required a
 separate architecture SoT before any class B surface.
 Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
-SLICES A–E IMPLEMENTED / ACCEPTED / SLICES F–G NOT STARTED /
+SLICES A–F IMPLEMENTED / ACCEPTED / SLICE G NOT STARTED /
 CAL OPEN / NOT COMPLETE)
 is that SoT. Slice A is the headless atomic Analysis
 explanation query
@@ -485,7 +485,13 @@ Slice E is the headless numeric verification model plus
 read-only presentation panel
 (`createTrajectoryTiltingVerificationModel` +
 `TrajectoryTiltingVerificationPanel`).
-Renderer / glyph / numeric-verify capability is complete.
+Slice F is the ephemeral what-if alignment counterfactual
+(`createTrajectoryTiltingWhatIfModel` + optional glyph
+and panel). Magnitudes stay fixed; only θ varies;
+actual T1 remains Analysis authority; laboratory state
+is unchanged. Degenerate / OOD / COLUMN disable what-if.
+Renderer / glyph / numeric-verify / what-if capability is
+complete.
 User-facing scientific saturation is not release-ready.
 Production activation is CAL-blocked and
 caller-column-blocked.
@@ -493,8 +499,8 @@ It does **not** wire an Explore Analysis column beside
 Source EWP. That caller/integration availability remains
 a prerequisite of user-facing activation and is **not**
 live `V_env` rewiring.
-Slices F–G (what-if, optional `ω_y,current` comparison)
-remain NOT STARTED.
+Slice G (optional `ω_y,current` comparison)
+remains NOT STARTED.
 It does **not** complete BL-010.
 It does **not** rewire Source `V_env` into Analysis. It
 does **not** authorize `TILT_Y,total` or `I_tilt`.
@@ -1090,12 +1096,12 @@ BL-047:
 62:
                Trajectory Tilting Explorer V1 architecture;
                ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-               SLICES A–E IMPLEMENTED / ACCEPTED;
-               SLICES F–G NOT STARTED;
+               SLICES A–F IMPLEMENTED / ACCEPTED;
+               SLICE G NOT STARTED;
                CAL OPEN / NOT COMPLETE
 BL-048:
                Trajectory Tilting Explorer V1;
-               PARTIAL / SLICES A–E COMPLETE;
+               PARTIAL / SLICES A–F COMPLETE;
                CAL OPEN; App/Explore/TracerScene unwired;
                architecture 62 ACCEPTED
 physics/04, 07:

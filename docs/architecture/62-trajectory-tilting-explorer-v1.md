@@ -2,18 +2,19 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
-SLICES A–E IMPLEMENTED / ACCEPTED /
-SLICES F–G NOT STARTED /
+SLICES A–F IMPLEMENTED / ACCEPTED /
+SLICE G NOT STARTED /
 CAL OPEN / NOT COMPLETE
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
-Slices A–E (atomic Analysis explanation query;
+Slices A–F (atomic Analysis explanation query;
 recorded-path diagnostic projection;
 renderer-facing value/support encoding;
 historical-probe 3D mechanism glyph;
-numeric verification / provenance readout) are
-IMPLEMENTED / ACCEPTED. Slices F onward remain
+numeric verification / provenance readout;
+ephemeral what-if alignment) are
+IMPLEMENTED / ACCEPTED. Slice G remains
 NOT STARTED. Numeric `T1_COLOR_SCALE_V1` saturation
 and `|T1|_ε` remain OPEN. User-facing scientific
 saturation is not release-ready. Glyph display-scale
@@ -44,9 +45,13 @@ Slice E numeric verification capability is implemented in
 `src/data/escHrTimeAnalysis/trajectoryTiltingVerification.ts`,
 `src/ui/tracer/formatTrajectoryTiltingVerification.ts`,
 and `src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx`.
+Slice F what-if capability is implemented in
+`src/data/escHrTimeAnalysis/trajectoryTiltingWhatIf.ts`,
+`src/rendering/trajectoryTiltingWhatIfGlyph.ts`,
+and `src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx`.
 App / Explore / TracerScene remain unwired: production
 activation is CAL-blocked and caller-column-blocked.
-Slices F–G remain NOT STARTED.
+Slice G remains NOT STARTED.
 
 Predecessor (not replaced):
 
@@ -947,13 +952,40 @@ Actual geometry remains visually distinct (ghost / reference).
 The what-if scalar is not actual T1 and must not overwrite
 or masquerade as it.
 
-Indicative split (not implemented here):
+Indicative split (Slice F implements this as capability;
+App / Explore remain unwired):
 
 ```text
 actual     = AnalysisTiltingExplanationResult   // frozen query
 ephemeral  = { thetaWhatIf, t1WhatIf }
 t1WhatIf   = |ω_h|_actual |∇_h Vy|_actual cos(thetaWhatIf)
              only when actual alignment is ALIGNMENT_DEFINED
+```
+
+Visualization convention (not physics; Architecture 62
+does not freeze which operand rotates):
+
+```text
+environmental ω_h direction stays fixed
+a hypothetical copy of prescribed ∇_h Vy rotates
+  in the world x-z plane
+unsigned θ has two planar sides; the branch is the
+  sign of û × ĝ along +Y from the ACTUAL gradient
+aligned / opposed fallback = +1 (deterministic, not a
+  physical handedness of unsigned θ)
+what-if gradient magnitude equals actual |∇_h Vy|
+equal physical magnitude → equal injected display length
+```
+
+Canonical numeric policy for the counterfactual only:
+
+```text
+if thetaWhatIf === π/2 exactly, T1_whatif = +0
+  (Math.cos(π/2) is an IEEE residual, not a physical
+   near-zero band)
+nearby angles are not classified as zero
+actual T1 is copied from the atomic explanation and
+  is never recomputed from A·B·cos(actual θ)
 ```
 
 What-if keeps **actual** magnitudes fixed. It must not invent
@@ -1243,7 +1275,8 @@ Slice A is IMPLEMENTED / ACCEPTED. Slice B is
 IMPLEMENTED / ACCEPTED. Slice C renderer capability is
 IMPLEMENTED / ACCEPTED. Slice D glyph capability is
 IMPLEMENTED / ACCEPTED. Slice E numeric verification
-capability is IMPLEMENTED / ACCEPTED. Slices F–G are
+capability is IMPLEMENTED / ACCEPTED. Slice F what-if
+capability is IMPLEMENTED / ACCEPTED. Slice G is
 NOT STARTED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
@@ -1446,10 +1479,32 @@ Does not wire TracerScene / App / Explore.
 
 ### Slice F — what-if alignment
 
-Ephemeral educational state. Ghost vs actual. What-if T1
-cannot masquerade as actual T1. No laboratory mutation.
-Angle manipulation disabled unless actual alignment is
-`ALIGNMENT_DEFINED` (§15). Does not invent magnitudes.
+**Status:** IMPLEMENTED / ACCEPTED as capability.
+
+Ephemeral educational counterfactual. Ghost vs actual.
+What-if T1 cannot masquerade as actual T1. No laboratory
+mutation. Angle manipulation disabled unless actual
+alignment is `ALIGNMENT_DEFINED` (§15). Does not invent
+magnitudes. Does not recompute actual T1. Does not
+integrate over time. Does not compare to `ω_y,current`.
+Does not wire TracerScene / App / Explore.
+
+Public API: `createTrajectoryTiltingWhatIfModel`.
+Optional UI: `TrajectoryTiltingWhatIfPanel`.
+Optional renderer: `createTrajectoryTiltingWhatIfGlyph`.
+
+```text
+AVAILABLE only when ALIGNMENT_DEFINED
+UNAVAILABLE for GRADIENT_DEGENERATE / OMEGA_DEGENERATE /
+  BOTH_DEGENERATE / OUT_OF_DOMAIN / COLUMN_UNAVAILABLE
+θ_whatif domain [0, π]; wrapping is rejected
+T1_whatif = A·B·cos(θ_whatif); exact π/2 → +0
+actual T1 copied from explanation.tiltingTendency
+ω_h fixed; hypothetical ∇_h Vy rotates (visual convention)
+reset = θ_whatif := actual θ; laboratory unchanged
+```
+
+### Slice G — optional existing-rotation comparison
 
 ### Slice G — optional existing-rotation comparison
 
@@ -1554,8 +1609,8 @@ this file as TILT_Y,total or I_tilt authorization
 ```text
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-                   SLICES A–E IMPLEMENTED / ACCEPTED;
-                   SLICES F–G NOT STARTED;
+                   SLICES A–F IMPLEMENTED / ACCEPTED;
+                   SLICE G NOT STARTED;
                    CAL OPEN / NOT COMPLETE
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
@@ -1581,8 +1636,12 @@ GLYPH:             actual atomic Analysis operands at recorded P_i;
                    θ absent when degenerate; App unwired
 VERIFY:            atomic numbers + provenance; θ display degrees only;
                    domain radians unchanged; App unwired
-WHAT-IF:           ephemeral; laboratory unchanged;
-                   no θ demo when a magnitude is degenerate
+WHAT-IF:           counterfactual only; magnitudes fixed; θ only;
+                   actual remains reference; laboratory unchanged;
+                   disabled when alignment is degenerate;
+                   no mutation; no prognostic ω_y;
+                   visualization convention: ω_h fixed, ∇ hypothetical;
+                   App unwired
 ω_y,current:       not default V1
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved
@@ -1592,13 +1651,13 @@ PROJECTION INPUT:  structural { position, simulationTime };
 COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
                    caller-supplied; not Slice B; not Slice C
                    capability; not Slice D capability;
-                   not Slice E capability;
+                   not Slice E capability; not Slice F capability;
                    not V_env rewiring
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
-IMPLEMENTATION:    SLICES A–E COMPLETE / ACCEPTED as capability;
+IMPLEMENTATION:    SLICES A–F COMPLETE / ACCEPTED as capability;
                    App/Explore/TracerScene unwired;
-                   SLICES F–G NOT STARTED;
+                   SLICE G NOT STARTED;
                    CAL OPEN / NOT COMPLETE
 ```
 
@@ -1606,7 +1665,7 @@ IMPLEMENTATION:    SLICES A–E COMPLETE / ACCEPTED as capability;
 
 ## 26. Implementation
 
-Slices A–E are implemented:
+Slices A–F are implemented:
 
 ```text
 src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
@@ -1662,19 +1721,37 @@ src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
   read-only Analysis T1 verification panel
   degenerate θ absent; orthogonal θ defined
   not imported by App / Explore / TracerScene
+
+src/data/escHrTimeAnalysis/trajectoryTiltingWhatIf.ts
+  createTrajectoryTiltingWhatIfModel
+    counterfactual T1_whatif = A·B·cos(θ_whatif)
+    actual T1 copied, never recomputed
+    ω_h fixed; hypothetical ∇ rotates (visual convention)
+    UNAVAILABLE when alignment is not ALIGNMENT_DEFINED
+
+src/rendering/trajectoryTiltingWhatIfGlyph.ts
+  optional hypothetical gradient + θ arc
+  does not mutate Slice D actual glyph
+  injected common display scale; raycast disabled
+  not imported by TracerScene / App / Explore
+
+src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx
+  θ-only control; actual vs hypothetical T1
+  laboratory state unchanged
+  not imported by App / Explore / TracerScene
 ```
 
 Application/caller supply of the Analysis column beside
 Source EWP remains a prerequisite of user-facing
 activation. It is not included in Slice B, Slice C,
-Slice D, or Slice E capability and is not live
+Slice D, Slice E, or Slice F capability and is not live
 `V_env` rewiring.
 
-Renderer / glyph / numeric-verify capability is complete.
-Production activation is CAL-blocked and
+Renderer / glyph / numeric-verify / what-if capability is
+complete. Production activation is CAL-blocked and
 caller-column-blocked.
 
-Slices F–G are NOT STARTED:
+Slice G is NOT STARTED:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
@@ -1682,13 +1759,18 @@ src/data/escHrTimeAnalysis/     Slice A explanation query
                                 Slice C pure render encoding
                                 Slice D pure glyph model
                                 Slice E pure verification model
+                                Slice F pure what-if model
 src/rendering/trajectoryTiltingOverlay.ts
                                 Slice C overlay capability
 src/rendering/trajectoryTiltingGlyph.ts
                                 Slice D glyph capability
+src/rendering/trajectoryTiltingWhatIfGlyph.ts
+                                Slice F what-if glyph capability
 src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
                                 Slice E verification panel
-presentational UI               Slice F
+src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx
+                                Slice F what-if panel
+optional ω_y,current            Slice G
 ```
 
 Existing `queryAnalysisTiltingTendencyAt` scalar contract
