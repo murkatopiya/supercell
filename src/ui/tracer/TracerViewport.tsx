@@ -27,9 +27,9 @@ import type { VerticalEnvelopeUpdraftField } from "../../physics/storm/VerticalE
 import type { TrajectoryTiltingGlyphModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.js";
 import type { TrajectoryTiltingWhatIfModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
 import {
-  encodeExploreAnalysisTiltingForPathHistory,
   exploreAnalysisTiltingHistoryFingerprint,
 } from "../../explore/encodeExploreAnalysisTilting.js";
+import { ExploreAnalysisTiltingProjectionCache } from "../../explore/exploreAnalysisTiltingProjectionCache.js";
 import { AnalysisT1ColorLegend } from "./AnalysisT1ColorLegend.js";
 import type { EulerianAirflowSamples } from "../../visualization/EulerianAirflowSamples.js";
 import type { VisualAirflowPopulation } from "../../visualization/VisualAirflowPopulation.js";
@@ -340,6 +340,7 @@ export function TracerViewport({
     let pointerDown: { x: number; y: number; pointerId: number } | null =
       null;
     let analysisTiltingFingerprint = "";
+    const analysisTiltingCache = new ExploreAnalysisTiltingProjectionCache();
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -362,18 +363,22 @@ export function TracerViewport({
             : exploreAnalysisTiltingHistoryFingerprint(pathHistory, column);
         if (fingerprint !== analysisTiltingFingerprint) {
           analysisTiltingFingerprint = fingerprint;
-          const encodings =
-            column == null || updraft == null
-              ? null
-              : encodeExploreAnalysisTiltingForPathHistory(
-                  pathHistory,
-                  column,
-                  updraft,
-                );
-          scene.syncAnalysisTiltingOverlays(encodings);
+          if (column == null || updraft == null) {
+            analysisTiltingCache.reset();
+            scene.syncAnalysisTiltingOverlays(null);
+          } else {
+            scene.syncAnalysisTiltingOverlays(
+              analysisTiltingCache.encodeForPathHistory(
+                pathHistory,
+                column,
+                updraft,
+              ),
+            );
+          }
         }
       } else {
         analysisTiltingFingerprint = "";
+        analysisTiltingCache.reset();
         scene.syncAnalysisTiltingOverlays(null);
       }
       scene.syncAnalysisTiltingGlyph(analysisTiltingGlyphModelRef.current);

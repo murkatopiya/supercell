@@ -27,6 +27,8 @@ export type TrajectoryTiltingProjectedSample = {
   readonly position: Vec3;
   readonly simulationTime: number;
   readonly analysis: AnalysisTiltingTendencyResult;
+  /** Atomic query result when projected from Analysis. Encoding uses analysis. */
+  readonly explanation?: AnalysisTiltingExplanationResult;
 };
 
 /**
@@ -35,6 +37,13 @@ export type TrajectoryTiltingProjectedSample = {
  */
 export type TrajectoryTiltingProjection =
   readonly TrajectoryTiltingProjectedSample[];
+
+export type AnalysisTiltingExplanationQuery = (
+  column: EscHrTimeAnalysisColumn | null | undefined,
+  updraft: VerticalEnvelopeUpdraftField,
+  position: Vec3,
+  time: number,
+) => AnalysisTiltingExplanationResult;
 
 function copyVec3(position: Vec3): Vec3 {
   return { x: position.x, y: position.y, z: position.z };
@@ -64,6 +73,31 @@ function trailAnalysisFromExplanation(
 }
 
 /**
+ * One recorded-sample Analysis projection. Architecture 62 Slice B.
+ */
+export function projectAnalysisTiltingSampleAt(
+  recorded: TrajectoryTiltingRecordedSample,
+  historyIndex: number,
+  column: EscHrTimeAnalysisColumn | null | undefined,
+  updraft: VerticalEnvelopeUpdraftField,
+  query: AnalysisTiltingExplanationQuery = queryAnalysisTiltingExplanationAt,
+): TrajectoryTiltingProjectedSample {
+  const explanation = query(
+    column,
+    updraft,
+    recorded.position,
+    recorded.simulationTime,
+  );
+  return {
+    historyIndex,
+    position: copyVec3(recorded.position),
+    simulationTime: recorded.simulationTime,
+    analysis: trailAnalysisFromExplanation(explanation),
+    explanation,
+  };
+}
+
+/**
  * Analysis T1 sampled at exact recorded trajectory samples.
  *
  * Derived observe-time diagnostic beside recorded path history.
@@ -75,23 +109,20 @@ export function projectAnalysisTiltingAlongRecordedPath(
   recordedSamples: readonly TrajectoryTiltingRecordedSample[],
   column: EscHrTimeAnalysisColumn | null | undefined,
   updraft: VerticalEnvelopeUpdraftField,
+  query: AnalysisTiltingExplanationQuery = queryAnalysisTiltingExplanationAt,
 ): TrajectoryTiltingProjection {
   const projected: TrajectoryTiltingProjectedSample[] = [];
 
   for (let historyIndex = 0; historyIndex < recordedSamples.length; historyIndex++) {
-    const recorded = recordedSamples[historyIndex]!;
-    const explanation = queryAnalysisTiltingExplanationAt(
-      column,
-      updraft,
-      recorded.position,
-      recorded.simulationTime,
+    projected.push(
+      projectAnalysisTiltingSampleAt(
+        recordedSamples[historyIndex]!,
+        historyIndex,
+        column,
+        updraft,
+        query,
+      ),
     );
-    projected.push({
-      historyIndex,
-      position: copyVec3(recorded.position),
-      simulationTime: recorded.simulationTime,
-      analysis: trailAnalysisFromExplanation(explanation),
-    });
   }
 
   return projected;

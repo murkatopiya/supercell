@@ -659,7 +659,9 @@ describe("I2 wiring: overlay observe-only, picking unchanged, I3 unwired", () =>
     expect(appSrc).toMatch(/Analysis T1 along recorded path/);
     expect(appSrc).not.toMatch(/projectAnalysisTiltingAlongRecordedPath/);
     expect(appSrc).not.toMatch(/trajectoryTiltingOverlay/);
-    expect(viewportSrc).toMatch(/encodeExploreAnalysisTiltingForPathHistory/);
+    expect(viewportSrc).toMatch(/ExploreAnalysisTiltingProjectionCache/);
+    expect(viewportSrc).toMatch(/encodeForPathHistory/);
+    expect(viewportSrc).not.toMatch(/encodeExploreAnalysisTiltingForPathHistory/);
     expect(viewportSrc).toMatch(
       /analysisColumn !== null \? <AnalysisT1ColorLegend \/>/,
     );

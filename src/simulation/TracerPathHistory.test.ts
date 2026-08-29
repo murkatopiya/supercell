@@ -348,6 +348,25 @@ describe("TracerPathHistory", () => {
     ]);
   });
 
+  it("keeps lane prefix generation across appends and bumps it on clear", () => {
+    const history = new TracerPathHistory(1);
+    expect(history.lanePrefixGeneration(0)).toBe(0);
+    expect(history.sampleCountFor(0)).toBe(0);
+    history.captureInitial([particle(0, 1000, 0)], 0);
+    expect(history.lanePrefixGeneration(0)).toBe(0);
+    expect(history.sampleCountFor(0)).toBe(1);
+    expect(history.sampleAt(0, 0).position).toEqual({ x: 0, y: 1000, z: 0 });
+    history.recordAfterStep([particle(10, 1000, 0)], 0.1);
+    expect(history.lanePrefixGeneration(0)).toBe(0);
+    expect(history.sampleCountFor(0)).toBe(2);
+    history.clear();
+    expect(history.lanePrefixGeneration(0)).toBe(1);
+    expect(history.sampleCountFor(0)).toBe(0);
+    history.captureInitial([particle(20, 2000, 0)], 1);
+    expect(history.lanePrefixGeneration(0)).toBe(1);
+    expect(history.sampleAt(0, 0).position).toEqual({ x: 20, y: 2000, z: 0 });
+  });
+
   it("does not import renderer, UI, integrator, frame, or pedagogy types", () => {
     expect(tracerPathHistorySrc).not.toMatch(/from ["']three["']/);
     expect(tracerPathHistorySrc).not.toMatch(/TracerScene/);

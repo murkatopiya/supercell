@@ -1576,17 +1576,24 @@ Data flow:
 TracerPathHistory.samplesFor(lane)
   + ExploreLab.analysisColumn
   + prescribed updraft
-  → projectAnalysisTiltingAlongRecordedPath
+  → ExploreAnalysisTiltingProjectionCache
+     append-only continuation: query only new samples
+     clear / replacement / column / updraft change:
+       full projectAnalysisTiltingAlongRecordedPath
   → encodeTrajectoryTiltingForRender(..., T1_COLOR_SCALE_V1)
+     from the cached projection (O(N) encode, no re-query)
   → create/sync TrajectoryTiltingOverlay
 ```
 
 Projection is derived observe-time state. It is not a
-second history store. Overlay invalidation is Analysis
+second history store. Incremental cache results are
+exactly equivalent to an atomic full recompute.
+Overlay invalidation is Analysis
 column identity plus `TracerPathHistory.revision` (content
-generation). Same sample count and last `simulationTime`
-with different positions still refresh. Positions are not
-hashed each frame. Picking remains
+generation). Append vs replacement is distinguished by
+`lanePrefixGeneration` plus sample count, not by hashing
+positions. Same sample count and last `simulationTime`
+with different positions still refresh. Picking remains
 `pickPathHistorySample` on occupancy samples. Overlay
 raycast is disabled.
 
@@ -1625,6 +1632,7 @@ Homes:
 
 ```text
 src/explore/encodeExploreAnalysisTilting.ts
+src/explore/exploreAnalysisTiltingProjectionCache.ts
 src/rendering/analysisT1ValueAppearanceV1.ts
 src/rendering/TracerScene.ts
   syncAnalysisTiltingOverlays
@@ -2107,6 +2115,11 @@ T1 LEGEND:         Analysis T1 trajectory color legend V1;
                    display saturation, not physical extrema;
                    value only; OOD is not zero;
                    visible iff analysisColumn present
+TRAJECTORY CACHE:  derived per-lane Analysis projection;
+                   append queries only new samples;
+                   equivalent to full atomic recompute;
+                   PathHistory unchanged; T1 not stored there;
+                   encode/write from cache may still scan N
 ω_y,current:       not default V1; Slice G NOT AUTHORIZED
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved
@@ -2180,6 +2193,13 @@ src/explore/encodeExploreAnalysisTilting.ts
     T1_COLOR_SCALE_V1
   null column → no encoding (not zero)
 
+src/explore/exploreAnalysisTiltingProjectionCache.ts
+  derived per-lane Analysis projection cache
+  append-only: query only new samples
+  equivalent to full atomic recompute
+  encode/write from cache; Analysis query no longer O(N)
+  per append
+
 src/rendering/analysisT1ValueAppearanceV1.ts
   Slice I2 presentation: signedUnit → RGB
   warm / 0 / cool; not CAL
@@ -2190,7 +2210,7 @@ src/rendering/TracerScene.ts
   dispose on removeLast / clear / dispose
 
 src/ui/tracer/TracerViewport.tsx
-  Slice I2: revision fingerprint + encode + scene sync
+  Slice I2: revision fingerprint + cache encode + scene sync
   Slice I2: Analysis T1 color legend V1 when
     analysisColumn present; not environment-name gated
   Slice I3: pass packaged glyph models; no Analysis query

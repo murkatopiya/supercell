@@ -39,6 +39,7 @@ export interface PathHistorySample {
 export class TracerPathHistory {
   private readonly stride: number;
   private readonly histories: PathHistorySample[][];
+  private readonly prefixGenerations: number[];
   private readonly observedActive: boolean[];
   private stepsSinceCapture = 0;
   private contentRevision = 0;
@@ -52,6 +53,7 @@ export class TracerPathHistory {
     }
     this.stride = stride;
     this.histories = Array.from({ length: tracerCount }, () => []);
+    this.prefixGenerations = Array.from({ length: tracerCount }, () => 0);
     this.observedActive = Array.from({ length: tracerCount }, () => false);
   }
 
@@ -66,6 +68,55 @@ export class TracerPathHistory {
    */
   get revision(): number {
     return this.contentRevision;
+  }
+
+  /**
+   * Generation of one lane's existing prefix.
+   * Unchanged when samples are appended. Bumps when that lane's
+   * recorded prefix is discarded (clear of its samples, or the
+   * lane is removed). Observers may use this with sampleCountFor
+   * to prove append-only continuation without hashing positions.
+   */
+  lanePrefixGeneration(index: number): number {
+    const generation = this.prefixGenerations[index];
+    if (generation === undefined) {
+      throw new Error(
+        `TracerPathHistory: tracer index ${index} out of range`,
+      );
+    }
+    return generation;
+  }
+
+  /**
+   * Sample count of one lane. Does not copy samples.
+   */
+  sampleCountFor(index: number): number {
+    const history = this.histories[index];
+    if (history === undefined) {
+      throw new Error(
+        `TracerPathHistory: tracer index ${index} out of range`,
+      );
+    }
+    return history.length;
+  }
+
+  /**
+   * Copied sample at a local history index. Does not copy the lane.
+   */
+  sampleAt(index: number, historyIndex: number): PathHistorySample {
+    const history = this.histories[index];
+    if (history === undefined) {
+      throw new Error(
+        `TracerPathHistory: tracer index ${index} out of range`,
+      );
+    }
+    const sample = history[historyIndex];
+    if (sample === undefined) {
+      throw new Error(
+        `TracerPathHistory: history index ${historyIndex} out of range`,
+      );
+    }
+    return copySample(sample);
   }
 
   /**
@@ -86,6 +137,7 @@ export class TracerPathHistory {
         simulationTime: storedTime(time),
       },
     ]);
+    this.prefixGenerations.push(0);
     this.observedActive.push(particle.active);
     this.bumpRevision();
   }
@@ -179,8 +231,11 @@ export class TracerPathHistory {
    */
   clear(): void {
     const hadContent = this.histories.some((history) => history.length > 0);
-    for (const history of this.histories) {
-      history.length = 0;
+    for (let i = 0; i < this.histories.length; i++) {
+      if (this.histories[i]!.length > 0) {
+        this.prefixGenerations[i]! += 1;
+      }
+      this.histories[i]!.length = 0;
     }
     this.observedActive.fill(false);
     this.stepsSinceCapture = 0;
@@ -198,6 +253,7 @@ export class TracerPathHistory {
       return;
     }
     this.histories.length = 0;
+    this.prefixGenerations.length = 0;
     this.observedActive.length = 0;
     this.stepsSinceCapture = 0;
     this.bumpRevision();
@@ -212,6 +268,7 @@ export class TracerPathHistory {
       return;
     }
     this.histories.pop();
+    this.prefixGenerations.pop();
     this.observedActive.pop();
     this.bumpRevision();
   }
