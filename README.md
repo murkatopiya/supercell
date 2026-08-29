@@ -1,48 +1,50 @@
 # Supercell Explorer
 
-An idealized storm-relative flow laboratory: release a parcel,
-see where the prescribed flow takes it, and read why.
+An interactive kinematic laboratory for exploring how
+environmental wind and prescribed storm-local flow geometry
+shape tracer trajectories and vertical-tilting diagnostics.
 
-V1 is a prescribed kinematic laboratory: an idealized
-storm-relative flow superposed on one fixed environmental
-wind profile. Every velocity is prescribed. Diagnostics
-observe the flow; they never feed it. V1 is not a
-realistic supercell simulator, forecast model, numerical
-solver, or reconstructed observed storm.
-
-Nothing in V1 evolves, generates, or responds.
+**v0.1 · Research prototype.** This is not a weather forecast
+or a full atmospheric simulation. It is a prescribed
+kinematic laboratory for examining selected mechanisms under
+controlled assumptions.
 
 ## What you can do
 
-- **Guided** (default first screen): three prescribed pathline
-  exhibits, with on-screen honesty copy.
-- **Explore:** release a passive air parcel at a chosen ground
-  point and altitude, watch where the prescribed flow takes it,
-  follow it, recover the storm view, and inspect local motion.
-- Read **`V_total`** and the seven named prescribed velocity
-  contributions at a selected parcel.
-- In Explore, read two point diagnostics at that parcel:
-  **`T_tilt,y`** and **`ω_y,current`**.
+- **Explore:** choose an observed or prescribed environment,
+  release a passive tracer, and follow its recorded path.
+- Read **Analysis T1** along the trajectory on a fixed
+  symmetric color scale when an Analysis representation is
+  available.
+- Click a historical sample to inspect environmental
+  horizontal vorticity, prescribed updraft-gradient geometry,
+  numeric verification, and a constrained what-if alignment.
+- Observed environments include Goshen, Prospect Valley,
+  Dumas, and Moore. Analysis explanation is not identical
+  across all four.
+
+The Source environment advects the tracer. Analysis explains
+selected diagnostics along the recorded path. Analysis does
+not push the tracer. What-if geometry keeps the observed
+environment fixed and does not change laboratory state.
+
+A guided walkthrough is planned for a later version. Guided
+code remains in the repository; it is not a public v0.1
+landing peer of Explore.
 
 Motion is inspectable: the local velocity is explained by the
 prescribed decomposition. The seven named contributions are a
-V1 laboratory ontology, not a universal storm decomposition.
+laboratory ontology, not a universal storm decomposition.
 See [`docs/physics/12-composite-velocity-field.md`](docs/physics/12-composite-velocity-field.md)
 and [`docs/architecture/19-shared-tracer-inspector.md`](docs/architecture/19-shared-tracer-inspector.md).
 
-## Guided vs Explore
-
-The app boots in **Guided**. Parcel release, Follow, Reset View,
-Airflow view, and Point diagnostics are **Explore-only**.
-
 ## Environment and storm motion
 
-V1 uses one fixed environmental wind profile
-(`DEMO_SCENARIO`). The hodograph is that ground-relative
-profile. It is not selectable or editable.
+Explore can use sounding-derived observed environments
+(Goshen, Prospect Valley, Dumas, Moore) or a prescribed demo
+profile. Storm-local flow geometry remains prescribed.
 
-Storm motion **`C`** is a prescribed constant
-`(10, 0)` m/s (eastward, northward). It is value-only: not a
+Storm motion **`C`** is a prescribed laboratory value, not a
 Bunkers-class estimator and not an observed storm track.
 See [`docs/physics/07-storm-relative-wind.md`](docs/physics/07-storm-relative-wind.md)
 and [`docs/architecture/44-long-term-source-and-reconstruction-boundary.md`](docs/architecture/44-long-term-source-and-reconstruction-boundary.md)
@@ -62,24 +64,26 @@ Inspector **Why this motion?** lists:
 
 ## Point diagnostics
 
-At a selected Explore parcel:
-
-- **`T_tilt,y`** — tilting tendency (s⁻²)
-- **`ω_y,current`** — current world-vertical vorticity (s⁻¹)
-
-These are different quantities. `T_tilt,y` does not generate
-`ω_y,current`. Same sign at a point is not causation.
+At a selected Explore parcel, inspector can show local
+motion diagnostics. Trajectory Analysis T1 is a
+vertical-tilting diagnostic along the recorded path. It is
+not parcel spin-up, not Δω_y, and does not generate current
+ω_y.
 
 See [`docs/physics/22-diagnostic-tilting-tendency.md`](docs/physics/22-diagnostic-tilting-tendency.md)
 and [`docs/physics/23-diagnostic-vertical-vorticity.md`](docs/physics/23-diagnostic-vertical-vorticity.md).
 
-## What V1 does not model
+## What this laboratory does not model
 
 - a realistic or self-evolving supercell
 - forecast / nowcast
 - continuity / mass-consistency solver
 - thermodynamics, buoyancy, pressure, moisture, microphysics
-- live observations, soundings, or reconstructed storms
+- reconstructed storm evolution
+
+Observed environmental wind profiles are used inside a
+prescribed kinematic laboratory. They do not make the
+product a simulation of those storms.
 
 The full list is in
 [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md).

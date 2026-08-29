@@ -317,9 +317,10 @@ describe("Explore browser point-release acceptance", () => {
     expect(appSrc).not.toMatch(/LIVE_DEMO_TRACER_PEDAGOGY/);
     expect(appSrc).toMatch(/<LandingPage/);
     expect(appSrc).toMatch(/onEnterExplore=\{enterExplore\}/);
-    expect(appSrc).toMatch(/onEnterGuided=\{enterGuided\}/);
-    expect(landingSrc).toMatch(/>\s*Guided\s*</);
-    expect(landingSrc).toMatch(/>\s*Explore\s*</);
+    expect(appSrc).toMatch(/const enterGuided/);
+    expect(appSrc).not.toMatch(/onEnterGuided=\{enterGuided\}/);
+    expect(landingSrc).toMatch(/LANDING_CTA_LABEL/);
+    expect(landingSrc).not.toMatch(/onEnterGuided/);
     expect(exploreControlsSrc).toMatch(
       /Release passive tracers at a chosen altitude/,
     );

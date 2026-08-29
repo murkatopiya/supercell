@@ -45,7 +45,7 @@ answer, before entering a laboratory:
 
 ```text
 What is this application?
-Which of two modes am I choosing, and why?
+How do I enter the laboratory?
 Where do I read How It Works?
 ```
 
@@ -56,22 +56,26 @@ must not mistake Environment for a third top-level mode.
 
 ## 2. Current fact (live App)
 
-Verified after Slice 1 against `src/app/App.tsx`:
+Verified against `src/app/App.tsx` after the public v0.1
+content pass:
 
 ```text
 Boot surface          landing (`appSurface = "landing"`, `lab = null`)
-Top-level chrome      landing: title + mode cards + How It Works entry
+Top-level chrome      landing: title + v0.1 research-prototype
+                      badge + primary Explore CTA + How It Works
                       laboratory: ModeIdentity + Environment affordance
-Mode entry            landing cards → enterGuided / enterExplore
+Mode entry            landing primary CTA → enterExplore
+                      Guided remains in App; not a public v0.1
+                      landing peer choice
                       no in-mode Guided ↔ Explore toggle
-Default lab           not constructed until mode choice
+Default lab           not constructed until Explore entry
 Environment           laboratory header tool, not a mode peer
                       Guided: default open, column presentation
                       Explore: default closed, overlay presentation
                       Explore identity radios live inside
                       EnvironmentSurface
 Router                none (Vite + React composition)
-How It Works          landing button reserved; disabled until Slice 6
+How It Works          landing and laboratory help overlay (`12`)
 ```
 
 `lab.kind` (`"guided" | "explore"`) is the live mode owner
@@ -84,7 +88,7 @@ navigation (`16`).
 
 In this SoT:
 
-- a landing / mode-selection surface;
+- a landing / public-entry surface;
 - Guided and Explore as the only top-level modes;
 - in-mode identity chrome (`Supercell / Guided` or
   `Supercell / Explore`);
@@ -141,40 +145,39 @@ a specific sounding
 
 ### 5.1 Job
 
-The first screen is a **choice**, not a laboratory.
+The first screen is a **public entry**, not a laboratory.
 
-The user selects exactly one:
+The user can:
 
-- **Guided** — enter the Guided laboratory;
-- **Explore** — enter the Explore laboratory;
-- **How It Works** — reserved landing entry; the overlay
-  surface itself is Slice 6 (`12`).
+- **Open Laboratory** — enter Explore;
+- **How It Works** — open the help overlay.
+
+Guided remains implemented in App. Public v0.1 does not
+present it as an equal primary choice on Landing.
 
 ### 5.2 Copy contract
 
 Landing copy is user-facing. It is not a physics derivation
 and not an architecture lecture.
 
-Guided (meaning, not final wording):
+It must answer:
 
 ```text
-Walk a prepared scenario. Watch how environment, airflow,
-rotation, and tracer motion relate under a teaching claim.
+What is this?
+What can I do here?
+What is real data?
+What is prescribed?
+What is this NOT?
 ```
 
-Explore (meaning, not final wording):
+Public framing:
 
 ```text
-Choose an environment, release tracers yourself, and compare
-how different atmospheric setups behave.
+v0.1 · Research prototype
 ```
 
-How It Works is a third, clearly secondary action — help, not
-a mode.
-
-Final sentences may be tightened in implementation. They must
-keep this meaning split (`16` §2–§3, `CONCEPT` §8: Journey
-family = Guided).
+Primary action: enter Explore. How It Works is a clearly
+secondary help action, not a mode.
 
 ### 5.3 What landing does not do
 
@@ -225,8 +228,8 @@ Environment affordance in the same header as a mode tool
 ```
 
 `enterGuided` / `enterExplore` remain the composition entry
-points. They are invoked from landing cards, not from a
-laboratory mode switch.
+points. Public v0.1 landing invokes `enterExplore`. Guided
+entry remains in App and is not a landing peer control.
 
 Slice 1 How It Works: a landing `button` exists so the entry
 is visible. It is **disabled** until Slice 6 implements the
@@ -359,9 +362,9 @@ forbade.
 
 Landing:
 
-- choosing Guided calls the existing Guided entry path;
-- choosing Explore calls the existing Explore entry path;
-- How It Works is a reserved landing button; Slice 6 owns the overlay.
+- choosing Open Laboratory calls the existing Explore entry path;
+- How It Works opens the overlay (`12`);
+- Guided is not a public v0.1 landing peer control.
 
 In laboratory:
 
@@ -396,9 +399,10 @@ Required:
 
 - App can render a landing surface without mounting the
   laboratory workspace as the first screen;
-- landing exposes Guided, Explore, and How It Works;
-- entering Guided / Explore still uses `lab.kind` and existing
-  lab factories;
+- landing exposes a primary Explore CTA and How It Works;
+- landing does not present Guided as an equal primary choice;
+- entering Explore still uses `lab.kind` and existing
+  lab factories; Guided factories remain in App;
 - in-mode chrome identifies Guided vs Explore;
 - `Supercell` returns to landing;
 - Environment is not presented as a third `aria-pressed` mode

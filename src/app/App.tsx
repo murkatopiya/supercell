@@ -459,6 +459,7 @@ export function App() {
   };
 
   const enterGuided = () => {
+    // Retained Guided factory. Public v0.1 landing does not expose it as a peer CTA.
     if (lab !== null && lab.kind === "guided") {
       return;
     }
@@ -557,7 +558,6 @@ export function App() {
     return (
       <>
         <LandingPage
-          onEnterGuided={enterGuided}
           onEnterExplore={enterExplore}
           onOpenHowItWorks={openHowItWorks}
           howItWorksOpen={howItWorksOpen}

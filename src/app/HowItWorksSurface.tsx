@@ -1,29 +1,29 @@
 import { useEffect, useRef, type RefObject } from "react";
 import {
-  HOW_IT_WORKS_AIRFLOW_MARKS,
-  HOW_IT_WORKS_EULERIAN,
-  HOW_IT_WORKS_ENVIRONMENT_NOT_MODE,
-  HOW_IT_WORKS_EXPERIMENT_HEADING,
-  HOW_IT_WORKS_EXPLORE,
+  HOW_IT_WORKS_ANALYSIS,
+  HOW_IT_WORKS_ANALYSIS_UNAVAILABLE,
+  HOW_IT_WORKS_BOUNDARY,
+  HOW_IT_WORKS_CHOOSE_ENVIRONMENT,
+  HOW_IT_WORKS_COLOR,
+  HOW_IT_WORKS_COLOR_SCALE,
   HOW_IT_WORKS_EXPLORE_WORKFLOW,
-  HOW_IT_WORKS_FLOW_COMETS,
-  HOW_IT_WORKS_GRID,
-  HOW_IT_WORKS_GUIDED,
   HOW_IT_WORKS_GUIDED_RELEASES,
-  HOW_IT_WORKS_HODOGRAPH,
-  HOW_IT_WORKS_HODOGRAPH_INTERACTION,
-  HOW_IT_WORKS_HODOGRAPH_POINTS,
+  HOW_IT_WORKS_HISTORICAL_SAMPLE,
   HOW_IT_WORKS_NOT_FORECAST,
-  HOW_IT_WORKS_NOT_SIMPLIFIED,
-  HOW_IT_WORKS_OVERLAYS,
-  HOW_IT_WORKS_PASSIVE,
+  HOW_IT_WORKS_RECORDED_TRAJECTORY,
+  HOW_IT_WORKS_RELEASE_TRACER,
   HOW_IT_WORKS_SCENE_CONTROLS,
+  HOW_IT_WORKS_SOURCE,
+  HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS,
   HOW_IT_WORKS_SPEED,
+  HOW_IT_WORKS_T1_EQUATION,
+  HOW_IT_WORKS_T1_EQUATION_COS,
+  HOW_IT_WORKS_T1_GEOMETRY,
   HOW_IT_WORKS_TAIL,
   HOW_IT_WORKS_TITLE,
-  HOW_IT_WORKS_TRACER,
-  HOW_IT_WORKS_VISUALIZATION_HEADING,
+  HOW_IT_WORKS_VERIFY,
   HOW_IT_WORKS_WHAT,
+  HOW_IT_WORKS_WHAT_IF,
   type HowItWorksContext,
 } from "./howItWorksContent.js";
 
@@ -74,8 +74,7 @@ export function HowItWorksSurface({
     return null;
   }
 
-  const showExploreRelease = context !== "guided";
-  const showGuidedRelease = context !== "explore";
+  const showExploreWorkflow = context !== "guided";
 
   return (
     <div className="how-it-works" onClick={() => onCloseRef.current()}>
@@ -108,107 +107,83 @@ export function HowItWorksSurface({
           </section>
 
           <section className="how-it-works__section">
-            <h3>Guided and Explore</h3>
-            <p className="how-it-works__group-title">Guided</p>
-            <p>{HOW_IT_WORKS_GUIDED}</p>
-            <p>You watch prepared scenarios chosen for a particular teaching claim.</p>
-            <p className="how-it-works__group-title">Explore</p>
-            <p>{HOW_IT_WORKS_EXPLORE}</p>
-            <p>{HOW_IT_WORKS_NOT_SIMPLIFIED}</p>
-            <p>{HOW_IT_WORKS_ENVIRONMENT_NOT_MODE}</p>
+            <h3>1. Choose an environment</h3>
+            <p>{HOW_IT_WORKS_CHOOSE_ENVIRONMENT}</p>
           </section>
 
           <section className="how-it-works__section">
-            <h3>The 3D scene</h3>
-            {context === "guided" ? (
-              <p>
-                The scene shows prepared tracers in a storm-relative laboratory.
-                Explore also displays airflow marks on the same kind of scene.
-              </p>
-            ) : (
-              <p>
-                The scene shows tracers moving through prescribed storm-relative
-                airflow.
-              </p>
-            )}
-            <p className="how-it-works__group-title">Airflow marks</p>
-            <p>{HOW_IT_WORKS_FLOW_COMETS}</p>
-            <p>{HOW_IT_WORKS_AIRFLOW_MARKS}</p>
-            <p>{HOW_IT_WORKS_EULERIAN}</p>
-            <p className="how-it-works__group-title">Coordinate grid</p>
-            <p>{HOW_IT_WORKS_GRID}</p>
-            <p>
-              The marked origin is a laboratory reference, not the storm center.
-            </p>
-            <p className="how-it-works__group-title">Scene controls</p>
-            <p>{HOW_IT_WORKS_SCENE_CONTROLS}</p>
-          </section>
-
-          <section className="how-it-works__section">
-            <h3>Hodograph</h3>
-            <p>{HOW_IT_WORKS_HODOGRAPH}</p>
-            <p>{HOW_IT_WORKS_HODOGRAPH_POINTS}</p>
-            <p>{HOW_IT_WORKS_OVERLAYS}</p>
-            <p>{HOW_IT_WORKS_HODOGRAPH_INTERACTION}</p>
-          </section>
-
-          <section className="how-it-works__section">
-            <h3>Tracers</h3>
-            <p>{HOW_IT_WORKS_TRACER}</p>
-            <p>{HOW_IT_WORKS_PASSIVE}</p>
-            {showExploreRelease ? (
+            <h3>2. Release a tracer</h3>
+            {context === "guided" ? <p>{HOW_IT_WORKS_GUIDED_RELEASES}</p> : null}
+            <p>{HOW_IT_WORKS_RELEASE_TRACER}</p>
+            {showExploreWorkflow ? (
               <>
                 <p className="how-it-works__group-title">Releasing a tracer</p>
                 <p>{HOW_IT_WORKS_EXPLORE_WORKFLOW}</p>
-                <ul>
-                  <li>Click a tracer to select it. Its tail is also clickable.</li>
-                  <li>{HOW_IT_WORKS_TAIL}</li>
-                  <li>Inspector describes the selected tracer.</li>
-                  <li>
-                    Undo / Redo reverse the last tracer releases. They do not
-                    rewind simulation time.
-                  </li>
-                  <li>Clear tracers removes the current group.</li>
-                </ul>
               </>
-            ) : null}
-            {showGuidedRelease ? <p>{HOW_IT_WORKS_GUIDED_RELEASES}</p> : null}
-            {context === "guided" ? (
-              <ul>
-                <li>Click a tracer to select it. Its tail is also clickable.</li>
-                <li>{HOW_IT_WORKS_TAIL}</li>
-                <li>Inspector describes the selected tracer.</li>
-              </ul>
             ) : null}
           </section>
 
           <section className="how-it-works__section">
-            <h3>Experiment vs visualization</h3>
+            <h3>3. Read the recorded trajectory</h3>
+            <p>{HOW_IT_WORKS_RECORDED_TRAJECTORY}</p>
+            <p>{HOW_IT_WORKS_TAIL}</p>
+          </section>
+
+          <section className="how-it-works__section">
+            <h3>4. Understand the color</h3>
+            <p>{HOW_IT_WORKS_COLOR}</p>
+            <p>{HOW_IT_WORKS_COLOR_SCALE}</p>
+          </section>
+
+          {showExploreWorkflow ? (
+            <section className="how-it-works__section">
+              <h3>5. Click a historical sample</h3>
+              <p>{HOW_IT_WORKS_HISTORICAL_SAMPLE}</p>
+            </section>
+          ) : null}
+
+          <section className="how-it-works__section">
+            <h3>{showExploreWorkflow ? "6. Explain T1 geometrically" : "Explain T1 geometrically"}</h3>
+            <p>{HOW_IT_WORKS_T1_GEOMETRY}</p>
+            <p className="how-it-works__equation">{HOW_IT_WORKS_T1_EQUATION}</p>
+            <p className="how-it-works__equation">{HOW_IT_WORKS_T1_EQUATION_COS}</p>
+          </section>
+
+          <section className="how-it-works__section">
+            <h3>{showExploreWorkflow ? "7. Verify numerically" : "Verify numerically"}</h3>
+            <p>{HOW_IT_WORKS_VERIFY}</p>
+          </section>
+
+          {showExploreWorkflow ? (
+            <section className="how-it-works__section">
+              <h3>8. Use what-if geometry</h3>
+              <p>{HOW_IT_WORKS_WHAT_IF}</p>
+            </section>
+          ) : null}
+
+          <section className="how-it-works__section">
+            <h3>
+              {showExploreWorkflow
+                ? "9. Source vs Analysis"
+                : "Source vs Analysis"}
+            </h3>
+            <p>{HOW_IT_WORKS_SOURCE}</p>
+            <p>{HOW_IT_WORKS_ANALYSIS}</p>
             <p className="how-it-works__group-title">
-              {HOW_IT_WORKS_EXPERIMENT_HEADING}
+              {HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS}
             </p>
-            <ul>
-              <li>Environment</li>
-              <li>tracer release</li>
-              <li>prepared Guided experiment</li>
-            </ul>
-            <p className="how-it-works__group-title">
-              {HOW_IT_WORKS_VISUALIZATION_HEADING}
-            </p>
-            <ul>
-              <li>Grid</li>
-              <li>Airflow view</li>
-              <li>Highlight</li>
-              <li>Depth cue</li>
-              <li>hodograph zoom/pan</li>
-              <li>camera / view controls</li>
-            </ul>
+            <p>{HOW_IT_WORKS_ANALYSIS_UNAVAILABLE}</p>
+          </section>
+
+          <section className="how-it-works__section">
+            <h3>
+              {showExploreWorkflow
+                ? "10. Scientific boundary"
+                : "Scientific boundary"}
+            </h3>
+            <p>{HOW_IT_WORKS_BOUNDARY}</p>
             <p>{HOW_IT_WORKS_SPEED}</p>
-            <p>
-              Pause / Resume control whether laboratory time advances. Reset
-              returns tracers and laboratory time to the start of the current
-              experiment.
-            </p>
+            <p>{HOW_IT_WORKS_SCENE_CONTROLS}</p>
           </section>
         </div>
       </div>

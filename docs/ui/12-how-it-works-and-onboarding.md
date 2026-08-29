@@ -42,12 +42,12 @@ that answers:
 
 ```text
 What is this application?
-How do Guided and Explore differ?
-What am I looking at in the 3D scene?
-What does the hodograph show?
-How do tracers work?
-Which controls change the experiment, and which only
-  change visualization?
+What can I do in Explore?
+What is observed, and what is prescribed?
+What does the tracer path show?
+What does Analysis T1 mean?
+What happens after clicking a historical sample?
+What is this NOT?
 ```
 
 Tone: operator’s guide. Equations and operand derivations
@@ -74,7 +74,8 @@ viewport while open  paused || howItWorksOpen
 ```
 
 There is one `HowItWorksSurface`. Landing, Guided, and Explore
-share it. Mode-aware extras change tracer-release copy only.
+share it. Mode-aware extras change Explore-only workflow
+steps; Guided keeps prepared-release copy.
 
 ---
 
@@ -84,7 +85,7 @@ In this SoT:
 
 - a dedicated How It Works overlay;
 - entry from landing and from both laboratory modes;
-- six scannable sections with the honesty rules below;
+- scannable sections for the current Explore workflow;
 - help observes product facts; it does not own laboratory
   state.
 
@@ -173,96 +174,59 @@ Readable prose lives in `src/app/howItWorksContent.ts` and
 
 ### 6.1 What is Supercell Explorer?
 
-An interactive laboratory for examining **prescribed**
-supercell airflow and watching **passive** tracers move
-through it. The user explores a model, not live weather, and
-the product does not claim forecasting capability.
+An interactive kinematic laboratory for prescribed
+storm-relative flow, passive tracers, and a
+vertical-tilting diagnostic along the recorded path. The
+user explores a model, not live weather, and the product
+does not claim forecasting capability.
 
-### 6.2 Guided and Explore
+### 6.2 Current Explore workflow
 
-- **Guided:** prepared experiments designed to highlight
-  particular storm structures and relationships. Releases are
-  set by the prepared experiment.
-- **Explore:** choose an environment, release tracers, and
-  compare setups.
+Help explains the public laboratory in this order:
 
-These are two different ways to investigate. Guided is not a
-simplified Explore. Environment is chosen **inside** a mode,
-not instead of a mode (`07`).
+1. Choose an environment — observed sounding-derived Source
+   profile where available.
+2. Release a tracer — passive marker in the prescribed
+   storm-relative laboratory velocity field.
+3. Read the recorded trajectory — path colored by Analysis T1
+   on a fixed symmetric scale.
+4. Understand the color — warm = positive T1, cool = negative
+   T1, near-neutral = near zero. Saturation is
+   ±6.10×10⁻⁵ s⁻². Values beyond the display limit keep their
+   raw numeric value but use the saturated endpoint color.
+   Out-of-support / unavailable is not mapped to zero.
+5. Click a historical sample — selection refers to that exact
+   recorded trajectory sample.
+6. Explain T1 geometrically — alignment of environmental
+   horizontal vorticity ω_h with prescribed updraft horizontal
+   gradient ∇_h V_y.
+7. Verify numerically — inspector shows the same atomic
+   Analysis result used for the explanation.
+8. Use what-if geometry — observed environmental ω_h stays
+   fixed; only a hypothetical copy of prescribed storm-local
+   gradient alignment varies; laboratory state remains
+   unchanged.
+9. Source vs Analysis — Source advects; Analysis explains.
+   Source is used in the laboratory velocity/advection path.
+   Analysis explains selected diagnostics along the recorded
+   trajectory when an Analysis sibling is available.
+10. Scientific boundary — prescribed kinematic storm-relative
+    laboratory; not forecast, LES/CFD, prognostic
+    parcel-vorticity model, or reconstructed storm evolution.
 
-### 6.3 The 3D scene
+Scene controls still change drawing, not the atmospheric
+environment. Playback speed still does not change atmospheric
+velocity.
 
-- **Airflow marks / Flow comets:** visualization of the
-  prescribed velocity field. They are visualization marks,
-  not particles of air being permanently tracked. Tails on
-  comets are direction cues, not tracer histories (`39`).
-- **Eulerian — diagnostic:** samples the same total velocity
-  at fixed laboratory positions; instantaneous direction, not
-  moving parcels.
-- **Coordinate grid:** E = east, N = north. The grid follows
-  world coordinates. The HUD shows ground coordinates under
-  the cursor. The marked origin is a laboratory reference,
-  not the storm center. Internal axis names (`+X`, `−Z`,
-  Three.js) stay out of the operator’s guide (`09`).
-- **Scene controls:** Grid / Airflow view / Highlight /
-  Depth cue change how the scene is drawn. They do not change
-  the atmospheric environment.
+### 6.3 Honesty language
 
-### 6.4 Hodograph
+Help must not imply that Analysis pushed the tracer, that T1
+is parcel spin-up or Δω_y, that displayed T1 generated
+current ω_y, or that what-if modifies the observed sounding.
 
-Shows how the environmental wind vector changes with height.
-Points are horizontal wind components; heights form the
-hodograph. Diagnostic vectors are analytical overlays, not
-additional airflows (`01`, `05`, `11`).
-
-The panel can be moved and resized. The plot can be zoomed
-and panned. Reset restores the original **plot view**, not
-physics.
-
-### 6.5 Tracers
-
-A tracer is a passive marker carried by the simulated
-airflow. It does not affect the airflow (`physics/01`).
-
-Explore workflow:
-
-```text
-Release tracer → choose a ground position → choose altitude
-  → confirm release
-```
-
-Shared facts:
-
-- click the glyph to select;
-- the tail is also clickable;
-- the tail is recorded trajectory/history, not a streamline
-  (`14`, `10`);
-- Inspector describes the selected tracer;
-- Explore Undo / Redo reverse last tracer releases (not
-  simulation rewind) (`13`);
-- Clear tracers clears the current group.
-
-### 6.6 Experiment vs visualization
-
-**Changes the experiment**
-
-- Environment;
-- tracer release;
-- prepared Guided experiment.
-
-**Changes only what you see**
-
-- Grid;
-- Airflow view;
-- Highlight;
-- Depth cue;
-- hodograph zoom/pan;
-- camera / view controls.
-
-Speed changes how quickly the simulation is played, not the
-atmospheric velocity field itself (`02`, `08`). Pause /
-Resume control whether laboratory time advances. Not every
-Runtime control is pure visualization.
+Analysis capability may be unavailable when no suitable
+Analysis representation exists. Do not describe that as a
+broken Moore diagnostic.
 
 ---
 
@@ -271,9 +235,10 @@ Runtime control is pure visualization.
 One document, slightly adapted:
 
 ```text
-landing   both Guided and Explore tracer notes
-guided    prepared-experiment releases; no Explore workflow
-explore   full release / Undo / Redo / Clear workflow
+landing   public Explore workflow
+guided    prepared-experiment releases; no Explore release /
+          historical-sample / what-if steps
+explore   public Explore workflow
 ```
 
 Terminology stays shared. This is not two help documents.
@@ -325,9 +290,12 @@ numerical supercell simulation.
 - selected tracer, Environment, camera, and workspace are
   not written by open/close;
 - dialog semantics, Escape, and overlay pointer isolation;
-- Guided vs Explore copy differs on tracer release;
+- landing / Explore copy describes the current T1 trajectory
+  workflow, Source vs Analysis, and what-if laboratory-unchanged
+  rule;
+- Guided copy does not present Explore release as the live
+  action of that exhibit;
 - tracer is described as passive;
-- experiment vs visualization is explicit;
 - playback speed is not described as changing atmospheric
   velocity;
 - viewport uses `paused || howItWorksOpen` while runtime

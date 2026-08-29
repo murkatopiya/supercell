@@ -12,11 +12,14 @@ describe("App navigation Slice 1", () => {
     const html = renderToStaticMarkup(<App />);
     expect(html).toContain("app--landing");
     expect(html).toContain("Supercell Explorer");
-    expect(html).toContain("Guided");
-    expect(html).toContain("Explore");
-    expect(html).toContain("prepared supercell scenario");
-    expect(html).toContain("release tracers yourself");
+    expect(html).toContain("v0.1");
+    expect(html).toContain("Research prototype");
+    expect(html).toContain("Open Laboratory");
+    expect(html).toContain("kinematic laboratory");
     expect(html).toContain("How It Works");
+    expect(html).toContain("A guided walkthrough is planned for a later version.");
+    expect(html).not.toContain("prepared supercell scenario");
+    expect(html).not.toContain("landing-mode-card");
     expect(html).not.toContain("disabled");
     expect(html).not.toContain("role=\"dialog\"");
     expect(html).not.toContain("Storm-relative laboratory");
@@ -29,11 +32,12 @@ describe("App navigation Slice 1", () => {
     );
   });
 
-  it("enters Guided and Explore through existing lab factories", () => {
+  it("enters Explore from landing and keeps Guided factories without a landing peer choice", () => {
     expect(appSrc).toMatch(/<LandingPage/);
-    expect(appSrc).toMatch(/onEnterGuided=\{enterGuided\}/);
     expect(appSrc).toMatch(/onEnterExplore=\{enterExplore\}/);
+    expect(appSrc).not.toMatch(/onEnterGuided=\{enterGuided\}/);
     expect(appSrc).toMatch(/onOpenHowItWorks=\{openHowItWorks\}/);
+    expect(appSrc).toMatch(/const enterGuided/);
     expect(appSrc).toMatch(
       /enterGuided[\s\S]*createGuidedLab\(guidedExperimentId\)/s,
     );

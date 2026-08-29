@@ -283,30 +283,30 @@ and not diagnostic magenta / gold / cyan / tracer red.
 
 ## 9. Proof of concept
 
-V1 applies the new system only to Landing:
+V1 applies the visual system to Landing:
 
 ```text
 landing page background
 title typography
+v0.1 research-prototype badge
 intro copy
-Guided card
-Explore card
+primary Open Laboratory CTA
+capability blocks
+scientific disclaimer
 How It Works secondary action
 ```
 
-Landing semantics are unchanged (`07`): title, description,
-two mode buttons, How It Works help entry. No illustrations,
-no storm imagery, no decorative icons.
+Landing semantics (`07`): title, public explanation, primary
+Explore entry, How It Works help. No illustrations, no storm
+imagery, no decorative icons.
 
-Cards are `<button>` elements and look interactive at rest
-(raised surface, radius, border). Hover / focus-visible are
-additional, not the only affordance.
+Capability blocks are informational panels, not mode buttons.
 
 How It Works uses `.ui-button.ui-button--subtle`, not a
-third mode card.
+mode card.
 
-Layout architecture is unchanged: stacked cards below
-`640px`, two columns at `640px` and above.
+Capability layout is stacked below `640px`, two columns at
+`640px` and above.
 
 Guided and Explore laboratory chrome application is V2
 (`15`). This file stays the vocabulary; `15` is the
