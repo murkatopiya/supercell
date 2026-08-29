@@ -1,0 +1,1385 @@
+# Trajectory Tilting Explorer V1
+
+**Status:** ARCHITECTURE ACCEPTED /
+CONTRACTS SPECIFIED /
+IMPLEMENTATION NOT STARTED
+**Acceptance:** scientific/semantic review passed.
+Alignment-degeneracy, terminal-identifiability, and
+color-CAL dependency amendments are incorporated.
+Implementation remains NOT STARTED. Slice A is not
+included.
+**Scope:** scientific UX, diagnostic authority, encoding, and
+slice boundaries for Trajectory Tilting Explorer V1.
+Not a T1 physics reopen. Not `TILT_Y,total`. Not `I_tilt`.
+Not Analysis rewiring into advection. Not a change to
+`DiagnosticTiltingTendency.sample`. Not a historical-picking
+redesign. Not a V1 product reopen.
+**Physics:** T1 identity remains `22`. Analysis T1 validity
+remains `61`. Trajectory-diagnostic taxonomy remains research
+`2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`
+(BL-047). This file consumes those records; it does not
+replace them.
+**Implementation:** this document does not include production
+code, renderer code, or UI. All named slices below are
+NOT STARTED.
+
+Predecessor (not replaced):
+
+```text
+docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md
+docs/architecture/52-historical-path-probe-architecture.md
+docs/architecture/61-analysis-tilting-validity-propagation.md
+docs/architecture/60-analysis-consuming-diagnostic-support-contract.md
+docs/architecture/32-diagnostic-observation-ui-architecture.md
+docs/architecture/26-diagnostic-tilting-tendency-architecture.md
+docs/architecture/19-shared-tracer-inspector.md
+docs/rendering/14-tracer-path-history.md
+docs/physics/22-diagnostic-tilting-tendency.md
+```
+
+Index (not SoT):
+
+```text
+docs/PROJECT_BACKLOG.md   BL-047, BL-048, BL-010
+```
+
+Keep these roles distinct:
+
+```text
+CURRENT FACT
+STILL-BINDING
+NEW PROJECT DECISION
+ANTI-CLAIM
+OPEN
+REJECTED
+```
+
+---
+
+## 1. Status / scope
+
+**NEW PROJECT DECISION.** This file is the architecture SoT
+for Trajectory Tilting Explorer V1: a class B (Eulerian field
+sampled along a recorded path) scientific UX surface.
+
+It authorizes:
+
+- an atomic Analysis T1 explanation result at the existing
+  Analysis T1 authority boundary;
+- a derived per-sample Analysis projection of recorded
+  history;
+- trajectory value/support encoding of that projection;
+- a local 3D geometry glyph at a historical recorded sample;
+- a numeric verify layer fed by the same atomic result;
+- an ephemeral what-if alignment state that does not mutate
+  the laboratory.
+
+It does **not** authorize:
+
+- live Analysis `V_env` rewiring (BL-010 remains PARTIAL);
+- replacing Source / DEMO `DiagnosticTiltingTendency` in the
+  existing Point Diagnostics panel;
+- `TILT_Y,total`, `R_y` as a product diagnostic, or `I_tilt`;
+- prognostic parcel vorticity;
+- simulation rewind;
+- interpolated historical tracer state;
+- a default `ω_y,current` comparison;
+- a first-slice `T1(t)` graph;
+- a numeric T1 color-saturation threshold.
+
+---
+
+## 2. Scientific identity
+
+**STILL-BINDING** (`22`, `61`, BL-047).
+
+Primary diagnostic:
+
+```text
+T1 = T_tilt,y = ω_h,env · ∇_h Vy,updraft
+              = ω_x ∂Vy/∂x + ω_z ∂Vy/∂z
+```
+
+Equivalent decomposition, used only as explanation of that
+same product:
+
+```text
+T1 = |ω_h,env| |∇_h Vy| cos θ
+```
+
+when both magnitudes are strictly positive. Units: `s⁻²`.
+
+Semantics:
+
+```text
+T1 is the exact vertical tilting term of the reduced
+environment + prescribed-updraft mechanism
+(strictly inside supported PWL segment conditions),
+used as an isolated pedagogical diagnostic
+inside the richer seven-operand laboratory.
+```
+
+Tracer meaning for this explorer:
+
+```text
+moving probe through mechanism geometry
+NOT parcel acquiring / generated vorticity
+```
+
+**STILL-BINDING stronger research result (BL-047):**
+
+For
+
+```text
+V_red = (V_env − C) + V_updraft
+```
+
+the reduced vertical vorticity identity is
+
+```text
+ω_y,red ≡ 0
+```
+
+and therefore pointwise
+
+```text
+R_y,red = −T1.
+```
+
+Exact reduced-field T1 therefore cannot be framed as
+“adding spin” or “removing spin.” A displayed positive T1
+is alignment of environmental `ω_h` with the prescribed
+updraft gradient, not parcel spin-up.
+
+T1 is **not**:
+
+```text
+full-field TILT_Y,total
+Dω_y/Dt
+Δω_y
+vorticity gained by the tracer
+parcel prognostic state
+storm evolution
+```
+
+World map remains `22` / `61`:
+
+```text
+ω_x = omegaEastward
+ω_z = −omegaNorthward
+```
+
+---
+
+## 3. User question / UX goal
+
+**NEW PROJECT DECISION.**
+
+Primary question:
+
+```text
+Why does T1 at this recorded trajectory point
+have this sign and this magnitude?
+```
+
+Learning sequence (required order; geometry first):
+
+```text
+SELECT TRACER
+  → SEE T1 encoded along recorded trajectory
+  → NOTICE interesting + / ~0 / − region
+  → PROBE a real historical recorded sample
+  → SEE local 3D geometry:
+       environmental ω_h
+       prescribed-updraft ∇_h Vy
+       angle θ
+  → UNDERSTAND sign / alignment
+  → VERIFY exact numbers
+  → OPTIONAL what-if alignment experiment
+  → OPTIONAL separate comparison to existing prescribed rotation
+```
+
+UX principle:
+
+```text
+GEOMETRY TEACHES.
+NUMBERS VERIFY.
+```
+
+This is not a dashboard-first tool. A temporal `T1(t)` graph
+is not a V1 core requirement (§16). Existing Inspector
+“Why this motion?” (seven-operand `V_total` decomposition)
+remains a separate surface (`19`).
+
+---
+
+## 4. Non-goals
+
+Out of this SoT:
+
+```text
+TILT_Y,total API or overlay
+∫T1 / I_tilt
+prognostic ω_y
+ω → V
+Analysis profile injected into advection / V_total
+Source T1 as a peer user-selectable coloring
+rewiring Point Diagnostics from DiagnosticTiltingTendency
+to Analysis T1
+hodograph Analysis overlay (BL-011 / BL-012)
+simulation rewind / timeline scrubber
+free 3D probe (rejected in 52)
+interpolated historical (P, t)
+diagnostic snapshots stored on PathHistorySample
+per-trajectory or per-sounding color normalization
+numeric color-scale calibration
+default ω_y,current juxtaposition
+first-slice T1(t) graph
+Simulation / domain-clamp physics change
+fixing historical Inspector live-active debt
+```
+
+---
+
+## 5. Existing code facts from reconnaissance
+
+**CURRENT FACT.** Verified against live `src/**` at the
+architecture-authoring commit. Not restated as new physics.
+
+### 5.1 Historical identity
+
+```text
+PathHistorySample = { position, simulationTime }
+HistoricalPathProbe = { tracerId, historyIndex }
+```
+
+Picking: screen-space nearest stored sample
+(`pickPathHistorySampleByScreenDistance`). No segment
+interpolation. Glyph wins over path (`resolveTracerPointerUp`).
+Selected `(P, t)` is the recorded sample
+(`resolveHistoricalPathSample`).
+
+Renderer: one `THREE.Line` per occupancy slot; position-only
+`BufferGeometry`; single `LineBasicMaterial` color; trail
+`raycast` disabled. Probe marker is a separate mesh.
+
+### 5.2 Live diagnostics vs Analysis sibling
+
+```text
+advection V_total          Source/DEMO composite
+                           (Explore observed = Source EWP;
+                            Guided = DEMO EWP)
+live Point Diagnostics T1  DiagnosticTiltingTendency.sample
+                           → number; OOD sounding → 0
+Analysis T1                queryAnalysisTiltingTendencyAt
+                           headless; not wired in App / labs
+```
+
+`queryAnalysisTiltingTendencyAt` already computes world `ω_h`
+and `∇_h Vy` locally, then returns scalar T1 plus
+support / segment / provenance. Those two vectors are lost
+on the public result.
+
+### 5.3 Uncoordinated Analysis queries
+
+At the same height, `queryAnalysisWindAt` and
+`queryAnalysisNativeSegmentVorticityAt` / Analysis T1 can
+legitimately differ in support (example: last FULL wind knot
+is FULL for wind, BOUNDARY_CONDITIONED for native-segment
+vorticity/T1). UI must not assemble an explanation from
+independent queries.
+
+### 5.4 Terminal clamp and active-flag debt
+
+Terminal ground-crossing: accepted `P` is interpolated to
+`y = 0` at fraction `α`; recorded `simulationTime` and
+`particle.age` still advance a full `dt`. History has no
+terminal/clamp flag.
+
+`ResolvedHistoricalPathSample.active` is the **live**
+particle flag, not recorded-at-sample activity.
+
+---
+
+## 6. Historical selection identity contract
+
+**STILL-BINDING (`52`).** V1 preserves:
+
+```text
+click path
+  → nearest stored sample within tolerance
+  → HistoricalPathProbe { tracerId, historyIndex }
+  → resolve recorded (P_i, t_i)
+  → inspect / explain that sample
+  → live tracer continues
+  → no rewind
+```
+
+**NEW PROJECT DECISION.** A future click may geometrically
+land between rendered polyline vertices. Semantic selection
+**must** still resolve to a real recorded sample. The explorer
+must not synthesize an interpolated historical tracer state
+(`P(α)`, `t(α)`, or a virtual historyIndex).
+
+The selected marker remains a historical probe, not
+simulation rewind. Live glyph selection / Follow and the
+historical probe stay conceptually distinct (`52`).
+
+This file does not change picking policy, glyph-vs-path
+priority, or probe clear rules (Reset / Clear / environment
+switch / mode switch / invalid index).
+
+---
+
+## 7. Analysis diagnostic authority boundary
+
+**NEW PROJECT DECISION.** Trajectory Tilting Explorer V1
+consumes **Analysis T1**, at the existing `61` sibling
+boundary, not live Source `DiagnosticTiltingTendency`.
+
+Natural owner: the same Analysis T1 evaluation that already
+forms
+
+```text
+world ω_h    ← queryAnalysisNativeSegmentVorticityAt
+∇_h Vy       ← updraft.horizontalGradientOfVerticalVelocity
+T1           ← ω_x ∂Vy/∂x + ω_z ∂Vy/∂z
+```
+
+inside `queryAnalysisTiltingTendencyAt`
+(`src/data/escHrTimeAnalysis/analysisTiltingQuery.ts`).
+
+**ANTI-CLAIM.** Independently calling
+
+```text
+queryAnalysisWindAt
+queryAnalysisNativeSegmentVorticityAt
+updraft.horizontalGradientOfVerticalVelocity
+```
+
+from UI / React and combining them is not an atomic
+explanation. Support/segment decisions can disagree.
+
+The public scalar `queryAnalysisTiltingTendencyAt` contract
+from `61` remains. V1 does not silently widen that scalar
+result in a way that breaks `61`. The explanation result is
+a sibling query at the same module/authority (§8).
+
+Existing Point Diagnostics remain on
+`DiagnosticTiltingTendency` until a separate SoT rewires
+them. This explorer is a new surface, not that rewiring.
+
+BL-010 remains PARTIAL. Holding an Analysis column as a
+**diagnostic sibling** of the Source profile used for
+advection is in scope for this explorer. Injecting that
+column into `EnvironmentalWindField` / `V_total` / SRH /
+hodograph scientific polyline is not.
+
+---
+
+## 8. Atomic explanation contract
+
+**NEW PROJECT DECISION.**
+
+For a selected recorded sample `(P_i, t_i)`, all displayed
+geometry and numbers of the explorer come from **one**
+Analysis evaluation.
+
+Proposed authority (names indicative; not implemented here):
+
+```text
+queryAnalysisTiltingExplanationAt(
+  column: EscHrTimeAnalysisColumn | null | undefined,
+  updraft: VerticalEnvelopeUpdraftField,
+  position: Vec3,
+  time: number,
+) → AnalysisTiltingExplanationResult
+```
+
+Lives beside `queryAnalysisTiltingTendencyAt`. It performs
+the same evaluation (same column, same native-containing
+segment, same world map, same prescribed gradient). It does
+not call uncoordinated public queries and stitch them.
+
+### 8.1 Required ingredients on success
+
+When status is `FULL_SUPPORT` or `BOUNDARY_CONDITIONED`:
+
+```text
+echoed identity
+  position
+  time
+
+scalar
+  tiltingTendency                 T1  [s⁻²]
+
+vectors (world horizontal)
+  worldHorizontalVorticity        { omegaX, omegaZ }  [s⁻¹]
+  updraftHorizontalGradient       { dVyDx, dVyDz }    [s⁻¹]
+
+derived from those same vectors
+  omegaHMagnitude                 |ω_h|               [s⁻¹]
+  gradientMagnitude               |∇_h Vy|            [s⁻¹]
+  alignment                       see §8.3
+  cosTheta, theta                 present only when
+                                  alignment is DEFINED
+
+support / validity / provenance
+  status                          FULL_SUPPORT | BOUNDARY_CONDITIONED
+  segment                         { hLo, hHi }
+  provenance                      EscHrTimeAnalysisProvenance
+  physicalIdentity / operand tokens as in 61
+```
+
+Core invariant:
+
+```text
+THE GEOMETRY THAT EXPLAINS T1
+MUST BE THE SAME GEOMETRY
+FROM WHICH THAT EXACT T1 WAS CALCULATED.
+```
+
+`tiltingTendency` on this result **must** equal
+`queryAnalysisTiltingTendencyAt` at the same
+`(column, updraft, position, time)` whenever both succeed.
+`status`, `segment`, and `provenance` must match as well.
+
+### 8.2 Failure
+
+```text
+COLUMN_UNAVAILABLE  { status }
+OUT_OF_DOMAIN       { status, representation, provenance }
+```
+
+No `tiltingTendency`. No fake `0`. No vectors. No `θ`.
+
+This is the `61` Analysis contract, not legacy Source T1
+outside-sounding `0`.
+
+### 8.3 Alignment validity
+
+The pedagogical identity
+
+```text
+T1 = |ω_h| |∇_h Vy| cos θ
+```
+
+is defined **only** when both vector norms are non-degenerate.
+It is not a universal rewrite of the authoritative product
+
+```text
+T1 = ω_x ∂Vy/∂x + ω_z ∂Vy/∂z
+```
+
+which remains defined (and is physical `0`) when either
+vector is the zero vector.
+
+This is not a rare corner. On the axis of the prescribed
+radial updraft, `∇_h Vy = 0` by symmetry, so T1 = 0, but
+`θ` is **not** 90°. The angle is undefined.
+
+**Invariant:**
+
+```text
+T1 ≈ 0  MUST NOT  automatically imply orthogonality.
+```
+
+UI must never fabricate
+
+```text
+θ = 90°
+cos θ = 0
+```
+
+when the normalization denominator `|ω_h| |∇_h Vy|` is
+zero / degenerate.
+
+#### Alignment states
+
+On a supported (`FULL_SUPPORT` | `BOUNDARY_CONDITIONED`)
+result, the atomic explanation carries an alignment state.
+Names are indicative:
+
+```text
+ALIGNMENT_DEFINED
+  both |ω_h| and |∇_h Vy| are non-degenerate
+  θ ∈ [0, π] and cos θ are present
+  T1 = |ω_h| |∇_h Vy| cos θ
+  true orthogonality is this state with cos θ = 0
+
+GRADIENT_DEGENERATE
+  |∇_h Vy| degenerate, |ω_h| non-degenerate
+  typical prescribed-updraft axis
+  T1 is physical 0
+  θ and cos θ are absent
+
+OMEGA_DEGENERATE
+  |ω_h| degenerate, |∇_h Vy| non-degenerate
+  T1 is physical 0
+  θ and cos θ are absent
+
+BOTH_DEGENERATE
+  both magnitudes degenerate
+  T1 is physical 0
+  θ and cos θ are absent
+```
+
+Absent means **not present** on the result: not `0`, not
+`π/2`, not `NaN` displayed as a number. Glyph omits the
+angle wedge. Verify layer omits `θ` / `cos θ` (or shows an
+explicit undefined/degenerate alignment label). This is
+distinct from `OUT_OF_DOMAIN` / `COLUMN_UNAVAILABLE`.
+
+When `ALIGNMENT_DEFINED`:
+
+```text
+cos θ = (ω_h · ∇_h Vy) / (|ω_h| |∇_h Vy|)
+T1    = |ω_h| |∇_h Vy| cos θ
+```
+
+Sign of T1 is the sign of the dot product. `θ` is not a
+signed “spin” angle.
+
+#### Magnitude degeneracy test
+
+No ad hoc numerical ε is introduced here.
+
+A vector is degenerate iff its world-horizontal magnitude
+is exact `0` after the same signed-zero normalization
+already used for T1 (`61`: `T === 0 ? 0 : T`) applied to
+the two components, then `hypot`. That is the existing
+IEEE / production zero contract, not a new tolerance.
+
+Any future “effectively zero” band for alignment is
+**OPEN**. It is not `|T1|_ε` (color scale, §13). A color
+near-zero band must not be reused as θ-validity. If an
+alignment ε is ever needed, it requires an explicit
+calibrated contract; Slice A must not invent one.
+
+### 8.4 UI prohibition
+
+UI / React / renderer must not independently:
+
+```text
+interpolate the environmental profile
+calculate shear
+calculate ω_h
+convert atmospheric ↔ world vorticity
+calculate the updraft gradient
+calculate the dot product
+calculate support
+reconstruct provenance
+derive θ from separately fetched vectors
+fabricate θ or cos θ when alignment is degenerate
+```
+
+They may format and draw values supplied by the atomic
+result / projection.
+
+---
+
+## 9. Source vs Analysis boundary
+
+**NEW PROJECT DECISION.**
+
+User-facing trajectory coloring **must** use Analysis T1.
+
+Reason (BL-047 / `53` / `58` / `59`): local derivative
+diagnostics on raw Source sounding are unstable due to
+quantization / noise / native-level differentiation.
+
+**REJECTED** as V1 primary UX:
+
+```text
+[ Source ] [ Analysis ]
+```
+
+as peer user-selectable coloring layers.
+
+Source T1 is not an equal alternate user layer.
+
+A later, explicitly labeled diagnostic/debug/research
+comparison that demonstrates why raw differentiation is
+unsafe is out of V1 primary UX. It is not authorized by
+this file as a shipped control.
+
+A future legitimate user layer choice may exist only among
+multiple scientifically accepted **Analysis** representations.
+That set does not exist in V1. V1 has one Analysis T1.
+
+Live Point Diagnostics Source T1 remains a different
+surface with a different operand and a different OOD
+contract (`0` vs absent). This explorer must not present
+those two numbers as interchangeable.
+
+---
+
+## 10. Analysis vs advection boundary
+
+**CURRENT FACT.** Tracer advection uses the Source-based
+(or DEMO) environmental operand inside `V_total`. The
+Analysis profile is not live-rewired.
+
+**NEW PROJECT DECISION.** UX language must describe:
+
+```text
+Analysis tilting diagnostic evaluated
+at this recorded trajectory point.
+```
+
+The recorded path is the probe path. Analysis is sampled
+**along** that path.
+
+Forbidden wording and equivalents:
+
+```text
+this Analysis geometry pushed the tracer
+this is the exact field that moved the tracer
+the tracer gained this vorticity from T1
+```
+
+The seven-operand Inspector decomposition remains the
+explanation of `V_total` motion (`19`). This explorer
+explains Analysis T1 geometry, not advection.
+
+---
+
+## 11. Trajectory value encoding contract
+
+**NEW PROJECT DECISION.**
+
+Primary spatial representation: the recorded tracer tail,
+colored by Analysis T1 from the derived projection (§20).
+
+Semantic mapping (value channel only):
+
+```text
+warm     T1 > 0
+neutral  T1 ≈ 0
+cool     T1 < 0
+```
+
+Color encodes T1 value/sign only.
+
+Forbidden labels on this encoding:
+
+```text
+spin-up / spin-down
+gained rotation / lost rotation
+strengthening / weakening ω_y
+```
+
+Magnitude **may** use diverging intensity, but only under
+the frozen scale contract (§13). Intensity is not a
+substitute for a calibrated threshold; that threshold is
+OPEN.
+
+`THREE.Line` interpolates vertex attributes along a segment.
+That interpolation is a **rendering** of adjacent recorded
+samples. It is not a synthesized historical state and must
+not be pickable as one. Picking remains discrete samples
+(`52` / §6).
+
+---
+
+## 12. Support / provenance encoding contract
+
+**NEW PROJECT DECISION.** Support and provenance use an
+**orthogonal** visual channel, not a second T1 hue.
+
+```text
+color           = diagnostic value (T1)
+support channel = support / validity / provenance metadata
+```
+
+These statuses are Analysis support semantics (`60` / `61`),
+not probabilistic confidence scores.
+
+Statuses remain `60` / `61`:
+
+```text
+FULL_SUPPORT
+BOUNDARY_CONDITIONED
+OUT_OF_DOMAIN
+COLUMN_UNAVAILABLE
+```
+
+Trajectory-time consumer contract (does not redefine Analysis
+derivative support):
+
+| Status | T1 overlay |
+| --- | --- |
+| FULL_SUPPORT | numeric T1 allowed; value color |
+| BOUNDARY_CONDITIONED | numeric T1 allowed; value color **and** visible BOUNDARY status |
+| OUT_OF_DOMAIN | **no** numeric Analysis T1; **no** fake zero; path geometry may remain; T1 overlay gaps / disables |
+| COLUMN_UNAVAILABLE | no Analysis T1 overlay for that column/context |
+
+Do not silently stitch over OOD. A trajectory may leave and
+re-enter support, including the same height layer more than
+once. That is trajectory-time behavior, distinct from
+Architecture `60` height-layer interval support.
+
+Flicker policy for rapidly alternating FULL/BOUNDARY along
+the path is **OPEN** (§23). V1 default is honest per-sample
+status with no temporal smoothing of support.
+
+Provenance is a verify-layer affordance (column identity,
+transform id/version), not a color.
+
+Exact pattern / opacity / outline styling is not locked here
+beyond: value and support must remain separable channels.
+
+---
+
+## 13. Fixed / versioned color-scale requirement
+
+**NEW PROJECT DECISION.**
+
+Named object:
+
+```text
+T1_COLOR_SCALE_V1
+```
+
+Required properties:
+
+```text
+zero-centered
+symmetric about zero
+physical units s⁻²
+fixed across trajectories
+fixed across supported datasets
+independent of selected tracer
+independent of runtime path population
+robust to isolated derivative outliers
+explicitly versioned
+documented
+never silently recalibrated when adding a sounding
+```
+
+**REJECTED:**
+
+```text
+per-trajectory min/max normalization
+per-selected-sounding dynamic normalization
+runtime auto-rescaling
+silent change of color meaning across releases
+choosing “95th percentile” by fiat
+```
+
+**OPEN** (separate calibration / research slice, not this
+SoT and not a renderer invention):
+
+```text
+|T1|_sat   saturation magnitude
+|T1|_ε     near-zero band
+population / domain / weighting used to choose them
+```
+
+**CAL dependency (release vs tests):**
+
+```text
+renderer / API slices MAY be implemented against an
+injected versioned scale contract or test fixture
+
+user-facing scientific color saturation is NOT
+release-ready until the CAL slice freezes
+T1_COLOR_SCALE_V1 numeric |T1|_sat and |T1|_ε
+
+no developer-chosen temporary production threshold
+```
+
+A test fixture is not a production scale. Replacing fixture
+numbers with frozen `T1_COLOR_SCALE_V1` is the calibration
+slice, not a silent renderer tweak.
+
+Sign encoding (warm / cool / exact physical `0`) does not
+by itself freeze `|T1|_ε`. “T1 ≈ 0” as a visual band waits
+on `|T1|_ε`. Exact IEEE `0` remains a distinct physical
+zero (`61`) and is not orthogonality (§8.3).
+
+---
+
+## 14. 3D geometry glyph semantics
+
+**NEW PROJECT DECISION.**
+
+At the selected historical sample, the explorer may draw:
+
+```text
+environmental ω_h          world-horizontal vector
+prescribed-updraft ∇_h Vy  world-horizontal vector
+visible angle θ            only when ALIGNMENT_DEFINED
+```
+
+Both vectors may share the probe origin for readability.
+
+Required language:
+
+```text
+environmental horizontal vorticity
+at the altitude occupied by the tracer
+```
+
+**REJECTED** language:
+
+```text
+tracer horizontal vorticity
+parcel horizontal vorticity
+```
+
+`ω_h` is horizontally homogeneous in this laboratory: the
+glyph belongs to a height layer, not to a parcel-owned tube
+(BL-047).
+
+T1 is a scalar and must not be drawn as a vector.
+
+Both vectors have units `s⁻¹` in the world horizontal plane,
+so a common physical scale is meaningful. Display
+exaggeration, if used, must be labeled as display scale.
+Arrow length must not be presented as a second T1.
+
+The glyph draws the vectors from the atomic explanation
+result at that sample. It does not resample.
+
+---
+
+## 15. What-if alignment state boundary
+
+**NEW PROJECT DECISION.**
+
+V1 reserves a pedagogical what-if: vary `θ` while
+`|ω_h|` and `|∇_h Vy|` stay fixed, so `cos θ` moves through
+`+1 → 0 → −1` and the user sees the dot-product identity.
+
+This state is **counterfactual**.
+
+It must not mutate:
+
+```text
+storm field
+sounding / Analysis column
+tracer
+simulation
+recorded history
+diagnostic source data
+the actual atomic explanation result
+```
+
+Required conceptual labels:
+
+```text
+What-if geometry
+laboratory state unchanged
+```
+
+Actual geometry remains visually distinct (ghost / reference).
+The what-if scalar is not actual T1 and must not overwrite
+or masquerade as it.
+
+Indicative split (not implemented here):
+
+```text
+actual     = AnalysisTiltingExplanationResult   // frozen query
+ephemeral  = { thetaWhatIf, t1WhatIf }
+t1WhatIf   = |ω_h|_actual |∇_h Vy|_actual cos(thetaWhatIf)
+             only when actual alignment is ALIGNMENT_DEFINED
+```
+
+What-if keeps **actual** magnitudes fixed. It must not invent
+a nonzero magnitude to make the educational interaction
+interesting.
+
+When actual alignment is not `ALIGNMENT_DEFINED`:
+
+```text
+primary:  disable angle manipulation for that sample
+permitted: still draw remaining actual vector(s), if any,
+           but T1_whatif stays 0 because a magnitude is 0;
+           the UI must state that reason
+forbidden: rotating a zero vector, or synthesizing a
+           fake |∇_h Vy| or |ω_h|, to demonstrate
+           +1 → 0 → −1
+```
+
+The `+1 → 0 → −1` demonstration is available only for
+`ALIGNMENT_DEFINED` samples. Zero-gradient updraft-axis
+samples cannot produce it.
+
+Exact pointer/slider interaction is out of this SoT. The
+state boundary is not.
+
+---
+
+## 16. Numeric verify layer
+
+**NEW PROJECT DECISION.**
+
+Secondary readout may show:
+
+```text
+T1
+|ω_h|
+|∇_h Vy|
+θ, cos θ          only when ALIGNMENT_DEFINED
+alignment state   when not defined
+support / validity
+provenance affordance
+```
+
+Numbers verify; they do not teach first.
+
+If the atomic result already supplies a quantity, the
+readout must display that value. It must not recompute it.
+It must not print `θ = 90°` or `cos θ = 0` for a
+degenerate alignment.
+
+This layer is not a replacement of Inspector L1/L2 motion
+decomposition and not a replacement of Point Diagnostics
+Source T1. It is the explorer’s Analysis verify surface.
+
+Historical `State: active/inactive` from live particle
+(`§19`) must not appear here as a scientific sample property.
+
+---
+
+## 17. ω_y,current causal-perception gate
+
+**NEW PROJECT DECISION.**
+
+`ω_y,current` remains a valid Eulerian prescribed-field
+sample along the path (`23`, `32`, class B). Default
+Trajectory Tilting Explorer view **must not** include it.
+
+Forbidden as default V1:
+
+```text
+second graph
+side-by-side T1 and ω_y numbers
+default overlay of both series
+reuse of the T1 diverging palette as primary ω_y encoding
+```
+
+If a later slice includes comparison at all, it requires a
+deliberate action such as
+
+```text
+Compare to existing rotation
+```
+
+framed as:
+
+```text
+existing prescribed vertical vorticity sampled along the path,
+NOT generated by T1
+```
+
+with a distinct visual language from T1.
+
+Lead-lag on DEMO (T1 on the flank, `ω_y^Ω` nearer the core)
+is **not** causal evidence (BL-047). Two curves plus a
+disclaimer are not a complete treatment.
+
+**V1 choice:** the comparison is **deferred**. Slice G is
+named only as a later, separately reviewable surface. It is
+not part of the core explorer.
+
+---
+
+## 18. Terminal sample materiality / timestamp boundary
+
+**CURRENT FACT.** Terminal ground-clamped sample:
+
+```text
+P_recorded  ≈ P(t_n + α dt) on y = 0
+t_recorded  = t_n + dt
+```
+
+History stores no terminal/clamp flag. The sample is not a
+time-consistent material Euler endpoint.
+
+**NEW PROJECT DECISION.**
+
+This explorer must **not** treat that sample as an ordinary
+material diagnostic sample for budget / `D/Dt` /
+path-functional interpretations.
+
+For current Eulerian-steady Analysis T1, lookup at the
+recorded terminal `(P, t)` is numerically a field sample at
+that point. Timestamp / materiality semantics remain
+unresolved (BL-047 OPEN).
+
+V1 policy:
+
+```text
+Eulerian Analysis T1 lookup at the recorded (P, t)
+  remains allowed as a class B sample
+  (numerically meaningful for current Eulerian-steady fields)
+material / budget / material-endpoint interpretation
+  is forbidden; those semantics remain unresolved (BL-047)
+authoritative terminal/clamp identity
+  does not exist on PathHistorySample
+V1 must not infer terminal/clamp identity from
+  live particle.active
+  y = 0
+  last-sample-of-inactive-lane
+  or other positional / lifecycle heuristics
+explicit marking or exclusion of a terminal sample
+  requires a separate history / clamp metadata policy
+  (new recorded flag). That policy is out of this SoT.
+  This file does not change Simulation or history.
+```
+
+Do not invent a clamp-time physics fix here.
+
+---
+
+## 19. Existing historical active-flag debt
+
+**CURRENT FACT.** `resolveHistoricalPathSample.active` is
+live `particle.active`. After deactivation, a mid-path
+recorded sample can display Inspector `State: inactive`.
+
+**NEW PROJECT DECISION.** This is existing semantic debt
+(`52` / Inspector). Trajectory Tilting Explorer V1 does
+**not** require active-at-sample and does **not** fix that
+flag.
+
+New scientific labels in this explorer must not use that
+live `active` bit as “activity at this sample.” V1 simply
+omits it from the Analysis verify layer.
+
+---
+
+## 20. Renderer / domain separation
+
+**NEW PROJECT DECISION.**
+
+```text
+recorded trajectory history          PathHistorySample[]
+  { position, simulationTime }
+        +
+derived Analysis diagnostic projection
+  per historyIndex: explanation or failure
+        →
+render encoding
+  value color + orthogonal support channel
+```
+
+`PathHistorySample` does **not** gain stored T1, vectors,
+or support. Simulation/history domain stays a path recorder
+(`14`, `52`).
+
+The projection is derived at observe time from the atomic
+query. It is not a diagnostic snapshot cache of the kind
+`52` rejected; it is a pure function of
+
+```text
+(history samples, Analysis column, prescribed updraft)
+```
+
+Invalidation: environment/column change, history rewrite
+(Reset / Clear / append), or updraft identity change.
+Not every rAF.
+
+Renderer may add a color attribute / support attribute to
+trail geometry. That is rendering. It is not physics.
+
+Picking continues to use domain samples, not GPU line
+rasterization.
+
+---
+
+## 21. API / data-flow diagram
+
+```text
+user click on historical tail
+        │
+        ▼
+pickPathHistorySample  →  { slotIndex, historyIndex }
+        │
+        ▼
+HistoricalPathProbe { tracerId, historyIndex }
+        │
+        ▼
+resolveHistoricalPathSample
+        │
+        ▼
+recorded (P_i, t_i)     // exact stored sample
+        │
+        ▼
+queryAnalysisTiltingExplanationAt(column, updraft, P_i, t_i)
+        │
+        ├─ FULL / BOUNDARY ─► atomic explanation
+        │                      T1, ω_h, ∇_h Vy, |·|, θ, cos θ,
+        │                      status, segment, provenance
+        │
+        └─ OOD / COLUMN ────► no number; overlay gap / absent
+                │
+                ▼
+        3D glyph  +  numeric verify  +  optional what-if
+                │
+                │  what-if reads actual magnitudes/vectors;
+                │  writes only ephemeral θ / T1_whatif
+                ▼
+        laboratory state unchanged
+
+
+parallel, per recorded sample (not on click):
+
+history.samplesFor(lane)
+        │
+        ▼
+queryAnalysisTiltingExplanationAt per (P_j, t_j)
+        │
+        ▼
+TrajectoryTiltingProjection[j]
+        │
+        ▼
+trail encoding (T1_COLOR_SCALE_V1, support channel)
+```
+
+Authority chain:
+
+```text
+EscHrTimeAnalysisColumn          59 / 61 column
+VerticalEnvelopeUpdraftField     prescribed ∇_h Vy
+queryAnalysisTiltingExplanationAt
+        └── same evaluation as queryAnalysisTiltingTendencyAt
+UI / renderer                    observe only
+```
+
+Advection chain (unchanged, not this explorer’s T1):
+
+```text
+Source/DEMO EWP → EnvironmentalWindField
+  → StormRelativeEnvironmentalAdvectionField
+  → CompositeVelocityField = V_total
+  → EulerIntegrator
+  → TracerPathHistory
+```
+
+Those two chains meet only at recorded `(P, t)`: the path
+was built by `V_total`; Analysis T1 is evaluated there.
+
+---
+
+## 22. Implementation slice decomposition
+
+All slices **NOT STARTED**. Independent review boundaries.
+Color-scale numeric calibration is not embedded in the
+renderer slice.
+
+### Slice A — atomic Analysis explanation result
+
+Headless sibling query + tests.
+
+```text
+same T1 / status / segment / provenance as
+  queryAnalysisTiltingTendencyAt
+vectors preserved
+alignment validity (§8.3); θ/cos θ absent when degenerate
+OOD / COLUMN have no number
+does not change DiagnosticTiltingTendency
+does not wire App
+```
+
+### Slice B — trajectory diagnostic projection
+
+Headless map: recorded samples → per-index Analysis
+explanation / failure. Support / validity semantics.
+
+```text
+does not persist T1 on PathHistorySample
+does not interpolate samples
+does not infer terminal/clamp identity
+COLUMN_UNAVAILABLE / missing column → no T1 values
+```
+
+Holding an Explore diagnostic Analysis column beside Source
+EWP belongs here or as a prerequisite of this slice. It is
+still not `V_env` rewiring.
+
+### Slice C — renderer value / support encoding
+
+Trail encoding from the projection. No new picking
+semantics. May consume an **injected** versioned scale
+contract or test fixture. User-facing scientific saturation
+is not release-ready until CAL freezes `T1_COLOR_SCALE_V1`
+(§13).
+
+```text
+does not invent |T1|_sat or |T1|_ε as a production freeze
+does not ship a developer-chosen temporary production threshold
+does not change PathHistorySample
+does not treat GPU segment interpolation as selection
+```
+
+### Slice D — historical-probe 3D geometry glyph
+
+Draw `ω_h` and `∇_h Vy` from the atomic result. Draw `θ`
+only when `ALIGNMENT_DEFINED`. Environmental language.
+Not pickable as a tracer.
+
+### Slice E — numeric verify / provenance readout
+
+Presentational. Reads the atomic result. Does not recompute
+physics. Does not display live `active` as sample science.
+Does not replace Point Diagnostics Source T1.
+
+### Slice F — what-if alignment
+
+Ephemeral educational state. Ghost vs actual. What-if T1
+cannot masquerade as actual T1. No laboratory mutation.
+Angle manipulation disabled unless actual alignment is
+`ALIGNMENT_DEFINED` (§15). Does not invent magnitudes.
+
+### Slice G — optional existing-rotation comparison
+
+Deferred. Requires a separate causal-perception review
+before implementation. Distinct encoding from T1. Explicit
+user action. Not default V1.
+
+### Calibration dependency (not a renderer slice)
+
+```text
+T1_COLOR_SCALE_V1 numeric |T1|_sat and |T1|_ε
+population / domain / weighting first
+user-facing saturation not release-ready until this slice
+```
+
+This is research/calibration. It does not authorize
+percentile fiat or a developer-chosen production threshold.
+Slices A–C may use an injected test fixture. BL-048 records
+CAL as a dependency, not as an embedded Slice C number.
+
+Item 1 in §23 is required before claiming a calibrated
+diverging intensity scale.
+
+### Explicitly not a slice of this SoT
+
+```text
+picking redesign
+Simulation clamp-time fix
+historical active-flag fix
+T1(t) graph
+Analysis advection rewiring
+Source T1 peer coloring
+```
+
+---
+
+## 23. OPEN items
+
+Not decided here. Not silently closed by a later slice
+without a SoT amendment or a dedicated calibration record.
+
+```text
+1. |T1|_sat and |T1|_ε for T1_COLOR_SCALE_V1
+   (population / domain / weighting first)
+   user-facing saturation not release-ready until CAL
+2. Trajectory-time FULL/BOUNDARY flicker policy
+   (V1 default = per-sample honesty, no smoothing)
+3. Dedicated terminal-clamp recorded flag / timestamp
+   consistency (Simulation / history change; out of this SoT)
+4. Exact glyph display-scale exaggeration, if any
+5. Exact support-channel styling (pattern / opacity / outline)
+6. Slice G causal-perception treatment, if that slice is ever
+   authorized
+7. BL-047 remaining research: T1 vs TILT_Y,total topology;
+   R_y product role; material-line vs local-ω experiment
+8. Whether Point Diagnostics Source T1 is later rewired to
+   Analysis (separate SoT; not this explorer)
+9. Alignment magnitude ε, if exact IEEE 0 is ever insufficient;
+   not |T1|_ε; requires an explicit calibrated contract
+```
+
+Item 1 is required before claiming a calibrated diverging
+intensity scale. Slices may use an injected test fixture;
+that fixture is not production `T1_COLOR_SCALE_V1`.
+
+---
+
+## 24. REJECTED interpretations
+
+```text
+T1 → parcel spin-up
+T1 → Δω_y
+T1 × Δt → gained rotation
+causal T1 → ω_y,current
+Analysis T1 as the field that advected the tracer
+Source T1 as equal user-selectable coloring
+silent interpolated historical (P, t)
+UI-side reconstruction of diagnostic physics
+mixing T1 value encoding with support encoding
+dynamic / per-trajectory / per-sounding color normalization
+silent OOD → 0 in this Analysis UX
+T1 ≈ 0 ⇒ orthogonality / θ = 90° / cos θ = 0
+fabricating θ or cos θ when a vector magnitude is degenerate
+terminal/clamp identity from live active, y = 0, or last-sample heuristics
+developer-chosen temporary production color saturation
+terminal ground-clamped sample as ordinary material endpoint
+tracer / parcel ownership of sounding-derived ω_h
+T1 drawn as a vector
+what-if T1 as actual T1
+two curves + disclaimer as sufficient T1 vs ω_y causation design
+this file as BL-010 completion
+this file as live V_env rewiring
+this file as TILT_Y,total or I_tilt authorization
+```
+
+---
+
+## 25. Compact lock-in
+
+```text
+FEATURE:           Trajectory Tilting Explorer V1
+STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
+                   IMPLEMENTATION NOT STARTED
+QUESTION:          why this T1 sign/magnitude at this sample?
+TRACER:            moving probe through mechanism geometry
+T1:                Analysis ω_h · prescribed ∇_h Vy
+V_red:             ω_y,red ≡ 0; R_y,red = −T1
+IDENTITY:          (tracerId, historyIndex) → recorded (P, t)
+NO INTERPOLATION:  of historical tracer state
+AUTHORITY:         queryAnalysisTiltingExplanationAt
+                   sibling of queryAnalysisTiltingTendencyAt
+ATOMIC:            geometry and numbers from one evaluation
+ALIGNMENT:         θ/cos θ only when both norms non-degenerate;
+                   T1 = 0 is not automatically orthogonality
+ADVECTION:         still Source/DEMO V_total
+COLOR:             T1 value/sign; support/validity orthogonal
+OOD:               gap; no fake 0
+SCALE:             mapping contract frozen;
+                   numeric sat/ε OPEN; CAL before release saturation
+WHAT-IF:           ephemeral; laboratory unchanged;
+                   no θ demo when a magnitude is degenerate
+ω_y,current:       not default V1
+TERMINAL:          no authoritative identity in V1;
+                   Eulerian lookup allowed; material-endpoint unresolved
+HISTORY STORE:     still { position, simulationTime } only
+PICKING:           52 unchanged
+BL-010:            PARTIAL; live V_env rewiring not authorized
+IMPLEMENTATION:    NOT STARTED
+```
+
+---
+
+## 26. Implementation
+
+This document does not include implementation.
+
+Named production homes, when slices start, remain indicative:
+
+```text
+src/data/escHrTimeAnalysis/     Slice A explanation query
+projection module (new, Three-free)
+                                Slice B
+src/rendering/trailGeometry.ts  Slice C observe-only encoding
+glyph module (rendering)        Slice D
+presentational UI               Slice E / F
+```
+
+Existing `queryAnalysisTiltingTendencyAt` scalar contract
+stays. Existing `DiagnosticTiltingTendency` stays.
+Existing historical picking stays.

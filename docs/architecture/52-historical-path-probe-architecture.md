@@ -494,3 +494,10 @@ GOSHEN:              Eulerian lab comparison along the path;
                      not storm causation
 IMPLEMENTATION:      FIRST SLICE COMPLETE
 ```
+
+Successor (Trajectory Tilting Explorer V1 consumes this
+picking / recorded-sample identity; does not replace it):
+
+```text
+docs/architecture/62-trajectory-tilting-explorer-v1.md
+```

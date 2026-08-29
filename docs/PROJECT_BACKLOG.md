@@ -456,6 +456,34 @@ diagnostics is
 (BL-047). That research decision does **not** implement, or
 authorize, the LATER interactions in this item.
 Authoritative refs: `52` §11 / §13; BL-047.
+Trajectory Tilting Explorer V1 is BL-048 / architecture `62`,
+not this item.
+
+### BL-048 — Trajectory Tilting Explorer V1
+
+Category: UX
+Status: NOT STARTED
+Origin: architecture `62`; BL-047 class B visualization
+Why retained: BL-047 accepted the scientific boundary for
+path-parameterized rotational diagnostics and required a
+separate architecture SoT before any class B surface.
+Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
+IMPLEMENTATION NOT STARTED)
+is that SoT. It specifies Trajectory
+Tilting Explorer V1 (Analysis T1 along recorded path,
+atomic explanation, value/support encoding, geometry
+glyph, what-if state, `ω_y,current` gate). It does **not**
+include implementation. It does **not** complete BL-010.
+It does **not** rewire Source `V_env` into Analysis. It
+does **not** authorize `TILT_Y,total` or `I_tilt`.
+Numeric `T1_COLOR_SCALE_V1` saturation / near-zero
+thresholds remain a calibration dependency inside `62`
+§13 / §23, not a renderer invention.
+Return when: a named `62` slice is implemented. This index
+does not include that implementation.
+Authoritative refs:
+[`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md);
+BL-047; `52`; `61`; BL-010 (unchanged PARTIAL).
 
 ---
 
@@ -600,21 +628,27 @@ clarifications are in the SoT amendment. The reviewer
 artifact is not project SoT and is not in git history.
 Remaining OPEN items (T1 vs `TILT_Y,total` topology;
 trajectory-time interval support; flicker; clamp materiality
-and terminal timestamp policy; `R_y` role; class B
-visualization / causal-perception architecture) live in that
-SoT. They are not architecture decisions and not
-implementation authorization.
+and terminal timestamp policy; `R_y` role) live in that
+research SoT. Class B V1 visualization contracts now live in
+architecture `62`; they are not an implementation of this
+research item.
 This item does **not** authorize UI, `TILT_Y,total`, Analysis
 live rewiring, or a change to T1 / Candidate A / `V_total`.
 It does **not** complete BL-010.
-Return when: not applicable as the boundary decision;
-implementation of any later class B surface requires a
-separate architecture SoT.
+The class B visualization architecture that this item
+required is now
+[`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md).
+`62` does not implement the explorer and does not close
+remaining research OPEN items (topology, flicker,
+clamp-time flag, `R_y` product role). Implementation of
+the explorer is BL-048 (NOT STARTED).
+Return when: not applicable as the boundary decision.
 Authoritative refs:
 [`docs/research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md`](research/2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md);
+[`docs/architecture/62-trajectory-tilting-explorer-v1.md`](architecture/62-trajectory-tilting-explorer-v1.md);
 physics `22` / `23`; architecture `10`, `11`, `26`, `27`,
 `29`, `30`, `52`, `60`, `61`; BL-010 (unchanged PARTIAL);
-BL-024 (UX remainder; not this decision).
+BL-024 (UX remainder; not this decision); BL-048.
 
 ---
 
@@ -903,7 +937,8 @@ BL-010 (implementation authorized / not started).
 | I. Reconstruction long-term track | BL-018–BL-020, BL-034, BL-044 | consume vs producer split preserved |
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
-| L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no UI / no `TILT_Y,total` / no `I_tilt` |
+| L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no `TILT_Y,total` / no `I_tilt`; class B V1 architecture is `62` |
+| L. Trajectory Tilting Explorer V1 | BL-048 | NOT STARTED; architecture `62` ACCEPTED; implementation not included |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -1018,15 +1053,22 @@ BL-046:
 research 2026-08-29-vorticity-budget-honesty-and-trajectory-diagnostic-boundary.md:
                trajectory-diagnostic boundary RESEARCH DECISION;
                T1 ≠ V_total tilting; I_tilt not presented;
-               not architecture; not implementation
+               class B V1 visualization architecture is 62
 BL-047:
                RESEARCH DECISION COMPLETE /
                ACCEPTED AFTER ADVERSARIAL REVIEW;
                ACCEPT WITH NON-BLOCKING NOTES;
                blocking findings: none;
                OPEN topology / trajectory-time support /
-               materiality / visualization items remain in
-               that SoT
+               materiality items remain in that SoT;
+               class B V1 architecture is 62
+62:
+               Trajectory Tilting Explorer V1 architecture;
+               ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
+               IMPLEMENTATION NOT STARTED
+BL-048:
+               Trajectory Tilting Explorer V1;
+               NOT STARTED; architecture 62 ACCEPTED
 physics/04, 07:
                wind profile; value-only StormMotion
 KNOWN_LIMITATIONS.md:

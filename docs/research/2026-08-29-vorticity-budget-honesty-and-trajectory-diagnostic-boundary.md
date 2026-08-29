@@ -6,14 +6,22 @@ REVIEW / NOT ARCHITECTURE / NOT IMPLEMENTATION AUTHORIZATION
 **Checkpoint:** `2eb7516` (decision); amendment on `c21bafc`
 **Final adversarial verdict:** ACCEPT WITH NON-BLOCKING NOTES
 **Blocking findings:** none
-**Not:** Architecture N, production physics, diagnostic API, UI,
-Analysis live wiring, `V_total` change, T1 change, Candidate A
-change, tracer-integration change
+**Not:** this file is not Architecture N. Not production physics,
+diagnostic API, UI, Analysis live wiring, `V_total` change, T1
+change, Candidate A change, tracer-integration change.
+
+Successor visualization architecture for class B T1 along a
+recorded path (V1 explorer contracts only; this research
+file remains the taxonomy / honesty SoT):
+
+```text
+docs/architecture/62-trajectory-tilting-explorer-v1.md
+```
 
 ```text
 RESEARCH SoT
   ≠ physics 22 / 23
-  ≠ architecture 26 / 27 / 28 / 29 / 30 / 52 / 60 / 61
+  ≠ architecture 26 / 27 / 28 / 29 / 30 / 52 / 60 / 61 / 62
   ≠ implementation order
 ```
 
@@ -924,6 +932,12 @@ Not resolved here. Not architecture decisions.
 8. Exact future visualization architecture for class B
    series, including the causal-perception risk of
    juxtaposing `T1(P(t))` with `ω_y,current(P(t))`.
+   V1 explorer contracts for class B T1 coloring, atomic
+   explanation, and the default exclusion of `ω_y,current`
+   now live in architecture `62`. Remaining OPEN: numeric
+   color-scale calibration, flicker policy, terminal-clamp
+   recorded flag, and any later `ω_y` comparison treatment
+   (`62` §17 / §23). `62` does not close items 1–7.
 
 ---
 
@@ -965,7 +979,10 @@ rewrite of CONCEPT.md
 ```
 
 Class B lookups are scientifically admissible. Shipping them
-still requires a later architecture SoT.
+required a later architecture SoT; that SoT is now
+`docs/architecture/62-trajectory-tilting-explorer-v1.md`.
+This research file still does not authorize implementation,
+`TILT_Y,total`, `I_tilt`, or Analysis `V_env` rewiring.
 
 ---
 

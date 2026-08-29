@@ -35,7 +35,7 @@ docs/physics/15-vertical-updraft-envelope.md
 Index (not SoT):
 
 ```text
-docs/PROJECT_BACKLOG.md   BL-010
+docs/PROJECT_BACKLOG.md   BL-010, BL-048
 ```
 
 Keep these roles distinct:
@@ -1038,3 +1038,11 @@ src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
 
 Existing `DiagnosticTiltingTendency` and live labs are unchanged.
 Live Explore / Guided / Inspector rewiring is out of this slice.
+
+Successor (Trajectory Tilting Explorer V1; does not replace
+this validity contract and does not complete BL-010 live
+`V_env` rewiring):
+
+```text
+docs/architecture/62-trajectory-tilting-explorer-v1.md
+```
