@@ -131,6 +131,31 @@ npm install
 npm run dev
 ```
 
+## Deploy on Railway
+
+The app is a static Vite SPA. Railway builds it with the root
+`Dockerfile` and serves `dist/` with Caddy on `$PORT`.
+
+No environment variables are required.
+
+1. Push this repository to GitHub (or another Git remote Railway can
+   reach).
+2. In [Railway](https://railway.app), create a project and deploy from
+   that repository. Railway detects `Dockerfile` automatically.
+3. After the first successful deploy, open the service **Settings →
+   Networking** and click **Generate Domain**.
+
+Health check path: `/health` (served as the SPA `index.html`).
+
+Local production-image check, if Docker is available:
+
+```text
+docker build -t supercell-explorer .
+docker run --rm -p 3000:3000 -e PORT=3000 supercell-explorer
+```
+
+Then open `http://localhost:3000`.
+
 ## Test, typecheck, build
 
 ```text
