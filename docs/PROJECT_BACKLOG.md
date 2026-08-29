@@ -474,6 +474,10 @@ explanation query
 (`queryAnalysisTiltingExplanationAt`).
 Slice B is the headless recorded-path Analysis projection
 (`projectAnalysisTiltingAlongRecordedPath`).
+It does **not** wire an Explore Analysis column beside
+Source EWP. That caller/integration availability is a
+prerequisite of the first user-facing consumer (Slice C)
+and is **not** live `V_env` rewiring.
 Slices C–G (renderer encoding, glyph, verify layer,
 what-if, optional `ω_y,current` comparison) remain
 NOT STARTED.

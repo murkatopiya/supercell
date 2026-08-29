@@ -379,7 +379,10 @@ BL-010 remains PARTIAL. Holding an Analysis column as a
 **diagnostic sibling** of the Source profile used for
 advection is in scope for this explorer. Injecting that
 column into `EnvironmentalWindField` / `V_total` / SRH /
-hodograph scientific polyline is not.
+hodograph scientific polyline is not. Sibling availability
+is an application/caller integration concern (§22). It is
+not owned by the headless projection slice and is not
+live `V_env` rewiring.
 
 ---
 
@@ -1207,9 +1210,14 @@ status / T1 (when supported) / failure. Support /
 validity semantics. Public API:
 `projectAnalysisTiltingAlongRecordedPath`.
 
-Stores trail-relevant Analysis subset (status, T1,
-segment, provenance). Glyph vectors / θ remain on
-the atomic explanation query at a selected sample.
+Owns only the pure projection of Analysis T1 along
+exact recorded path samples. Stores trail-relevant
+Analysis subset (status, T1, segment, provenance).
+Glyph vectors / θ remain on the atomic explanation
+query at a selected sample.
+
+Does **not** own Explore/UI wiring, renderer, live
+diagnostic panels, or `V_env` rewiring.
 
 ```text
 does not persist T1 on PathHistorySample
@@ -1218,19 +1226,52 @@ does not infer terminal/clamp identity
 COLUMN_UNAVAILABLE / missing column → no T1 values
 does not derive continuous interval support
 does not hold an Explore Analysis column beside Source EWP
+does not replace Source EWP or advect tracers
 ```
 
-Holding an Explore diagnostic Analysis column beside Source
-EWP remains a later consumer/App concern. It is still not
-`V_env` rewiring.
+The original slice note that holding an Explore
+diagnostic Analysis column beside Source EWP
+“belongs here or as a prerequisite” is resolved as
+**prerequisite of the first user-facing consumer**,
+not as Slice B work. That is slice ownership, not a
+change to the Analysis-beside-Source scientific
+split (§7, §10).
+
+### Caller integration prerequisite (not Slice B)
+
+Before Slice C or any later user-facing surface can
+consume the projection, an application/caller
+boundary must supply all three operands:
+
+```text
+recorded Source/DEMO path history
+corresponding Analysis column
+prescribed updraft
+```
+
+The Analysis column exists **beside** Source EWP. It
+does not replace Source EWP. It does not advect
+tracers. Missing / null column remains
+`COLUMN_UNAVAILABLE`; there is no Source T1 fallback.
+
+This caller boundary is a prerequisite of Slice C.
+It is not live Analysis `V_env` rewiring. BL-010
+remains PARTIAL.
 
 ### Slice C — renderer value / support encoding
+
+**Status:** NOT STARTED.
 
 Trail encoding from the projection. No new picking
 semantics. May consume an **injected** versioned scale
 contract or test fixture. User-facing scientific saturation
 is not release-ready until CAL freezes `T1_COLOR_SCALE_V1`
 (§13).
+
+Consumes a `TrajectoryTiltingProjection` already evaluated
+from caller-supplied history + Analysis column + updraft.
+Does not invent those operands. Does not fall back to
+Source T1. Does not inject Analysis into advection.
 
 ```text
 does not invent |T1|_sat or |T1|_ε as a production freeze
@@ -1383,6 +1424,10 @@ WHAT-IF:           ephemeral; laboratory unchanged;
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved
 HISTORY STORE:     still { position, simulationTime } only
+PROJECTION INPUT:  structural { position, simulationTime };
+                   not a second history store
+COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
+                   caller-supplied; not Slice B; not V_env rewiring
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
 IMPLEMENTATION:    SLICES A–B COMPLETE / ACCEPTED;
@@ -1404,9 +1449,17 @@ src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
 src/data/escHrTimeAnalysis/trajectoryTiltingProjection.ts
   projectAnalysisTiltingAlongRecordedPath
     per-recorded-sample Analysis T1 / support
-    structural PathHistorySample input
+    TrajectoryTiltingRecordedSample =
+      structural { position, simulationTime }
+      compatibility with PathHistorySample;
+      not a second persisted history model;
+      canonical recorder remains TracerPathHistory
     no Simulation / renderer / UI dependency
 ```
+
+Application/caller supply of the Analysis column beside
+Source EWP is a prerequisite of Slice C. It is not
+included in Slice B and is not live `V_env` rewiring.
 
 Slices C–G are NOT STARTED. Named production homes remain
 indicative:
