@@ -2,13 +2,14 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
-SLICE A IMPLEMENTED / ACCEPTED /
-SLICES B–G NOT STARTED
+SLICES A–B IMPLEMENTED / ACCEPTED /
+SLICES C–G NOT STARTED
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
-Slice A (atomic Analysis explanation query) is
-IMPLEMENTED / ACCEPTED. Slices B onward remain
+Slices A–B (atomic Analysis explanation query;
+recorded-path diagnostic projection) are
+IMPLEMENTED / ACCEPTED. Slices C onward remain
 NOT STARTED.
 **Scope:** scientific UX, diagnostic authority, encoding, and
 slice boundaries for Trajectory Tilting Explorer V1.
@@ -23,8 +24,10 @@ remains `61`. Trajectory-diagnostic taxonomy remains research
 replace them.
 **Implementation:** Slice A is implemented in
 `src/data/escHrTimeAnalysis/analysisTiltingQuery.ts`.
+Slice B is implemented in
+`src/data/escHrTimeAnalysis/trajectoryTiltingProjection.ts`.
 This document does not include renderer code or UI.
-Slices B–G remain NOT STARTED.
+Slices C–G remain NOT STARTED.
 
 Predecessor (not replaced):
 
@@ -1170,8 +1173,9 @@ was built by `V_total`; Analysis T1 is evaluated there.
 
 ## 22. Implementation slice decomposition
 
-Slice A is IMPLEMENTED / ACCEPTED. Slices B–G are
-NOT STARTED. Independent review boundaries.
+Slice A is IMPLEMENTED / ACCEPTED. Slice B is
+IMPLEMENTED / ACCEPTED. Slices C–G are NOT STARTED.
+Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
 renderer slice.
 
@@ -1196,19 +1200,29 @@ does not wire App
 
 ### Slice B — trajectory diagnostic projection
 
+**Status:** IMPLEMENTED / ACCEPTED.
+
 Headless map: recorded samples → per-index Analysis
-explanation / failure. Support / validity semantics.
+status / T1 (when supported) / failure. Support /
+validity semantics. Public API:
+`projectAnalysisTiltingAlongRecordedPath`.
+
+Stores trail-relevant Analysis subset (status, T1,
+segment, provenance). Glyph vectors / θ remain on
+the atomic explanation query at a selected sample.
 
 ```text
 does not persist T1 on PathHistorySample
 does not interpolate samples
 does not infer terminal/clamp identity
 COLUMN_UNAVAILABLE / missing column → no T1 values
+does not derive continuous interval support
+does not hold an Explore Analysis column beside Source EWP
 ```
 
 Holding an Explore diagnostic Analysis column beside Source
-EWP belongs here or as a prerequisite of this slice. It is
-still not `V_env` rewiring.
+EWP remains a later consumer/App concern. It is still not
+`V_env` rewiring.
 
 ### Slice C — renderer value / support encoding
 
@@ -1345,8 +1359,8 @@ this file as TILT_Y,total or I_tilt authorization
 ```text
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-                   SLICE A IMPLEMENTED / ACCEPTED;
-                   SLICES B–G NOT STARTED
+                   SLICES A–B IMPLEMENTED / ACCEPTED;
+                   SLICES C–G NOT STARTED
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
 T1:                Analysis ω_h · prescribed ∇_h Vy
@@ -1371,30 +1385,35 @@ TERMINAL:          no authoritative identity in V1;
 HISTORY STORE:     still { position, simulationTime } only
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
-IMPLEMENTATION:    SLICE A COMPLETE / ACCEPTED;
-                   SLICES B–G NOT STARTED
+IMPLEMENTATION:    SLICES A–B COMPLETE / ACCEPTED;
+                   SLICES C–G NOT STARTED
 ```
 
 ---
 
 ## 26. Implementation
 
-Slice A is implemented:
+Slices A–B are implemented:
 
 ```text
 src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
   queryAnalysisTiltingExplanationAt
   queryAnalysisTiltingTendencyAt
     scalar projection of the same evaluation
+
+src/data/escHrTimeAnalysis/trajectoryTiltingProjection.ts
+  projectAnalysisTiltingAlongRecordedPath
+    per-recorded-sample Analysis T1 / support
+    structural PathHistorySample input
+    no Simulation / renderer / UI dependency
 ```
 
-Slices B–G are NOT STARTED. Named production homes remain
+Slices C–G are NOT STARTED. Named production homes remain
 indicative:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
-projection module (new, Three-free)
-                                Slice B
+                                Slice B recorded-path projection
 src/rendering/trailGeometry.ts  Slice C observe-only encoding
 glyph module (rendering)        Slice D
 presentational UI               Slice E / F
@@ -1402,4 +1421,5 @@ presentational UI               Slice E / F
 
 Existing `queryAnalysisTiltingTendencyAt` scalar contract
 stays. Existing `DiagnosticTiltingTendency` stays.
-Existing historical picking stays.
+Existing historical picking stays. `PathHistorySample`
+remains `{ position, simulationTime }`.
