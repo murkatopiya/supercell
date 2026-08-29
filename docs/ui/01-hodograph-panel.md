@@ -231,6 +231,11 @@ Axis titles:
     eastward (m/s)
     northward (m/s)
 
+They sit next to the velocity axes — below the east tick
+labels, left of the north tick labels — not at the viewBox
+edge. They remain in plot-space so zoom/pan keeps them with
+the axes.
+
 ### 7.2 Polyline
 
 Connect knot points in the given array order with a single polyline in

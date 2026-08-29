@@ -13,6 +13,7 @@ import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.j
 import { hodographPoints } from "../physics/environment/hodograph.js";
 import {
   DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
+  exploreEnvironmentLabel,
   type ExploreEnvironmentIdentity,
 } from "../explore/exploreEnvironmentIdentity.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
@@ -699,6 +700,9 @@ export function App() {
         >
           <div className="workbench__column workbench__column--controls">
             <h2 className="app__panel-title">Storm-relative laboratory</h2>
+            <p className="workbench__column-note">
+              {exploreEnvironmentLabel(exploreEnvironmentIdentity)}
+            </p>
             <div className="laboratory-toolbar laboratory-toolbar--explore">
               <div
                 className="control-band control-band--release control-band--primary"

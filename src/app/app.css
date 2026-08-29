@@ -574,6 +574,7 @@ body:has(.app--landing) {
 .workbench__column-note {
   margin: -0.25rem 0 var(--space-2);
   font-size: var(--text-secondary);
+  line-height: 1.35;
   color: var(--color-text-secondary);
   overflow-wrap: break-word;
 }
@@ -839,6 +840,11 @@ body:has(.app--landing) {
 .laboratory-toolbar--explore .tracer-runtime-controls {
   flex: 1 1 100%;
   min-width: 0;
+  row-gap: var(--space-4);
+}
+
+.laboratory-toolbar--explore .tracer-runtime-controls__legend span {
+  flex: 1 1 100%;
 }
 
 .laboratory-toolbar--guided {

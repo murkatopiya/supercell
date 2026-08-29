@@ -90,6 +90,14 @@ export const EXPLORE_ENVIRONMENT_OPTIONS: readonly ExploreEnvironmentOption[] = 
   },
 ];
 
+export function exploreEnvironmentLabel(
+  identity: ExploreEnvironmentIdentity,
+): string {
+  return EXPLORE_ENVIRONMENT_OPTIONS.find(
+    (option) => option.identity === identity,
+  )!.label;
+}
+
 export interface ExploreEnvironmentHonesty {
   readonly observed: string;
   readonly prescribed: string;

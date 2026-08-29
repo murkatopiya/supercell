@@ -33,6 +33,7 @@ import {
   velocityToScreen,
   MIN_VELOCITY_SPAN,
   PADDING_FRACTION,
+  VIEWBOX_HEIGHT,
 } from "./hodographViewTransform.js";
 
 const demoStormMotion = { eastward: 10, northward: -10 };
@@ -455,6 +456,25 @@ describe("hodographViewTransform", () => {
       expect(northTitleIndex).toBeGreaterThan(plotSpaceIndex);
       expect(closeGroupAfterPlot).toBeGreaterThan(northTitleIndex);
       expect(html).toContain("scale(2)");
+    });
+
+    it("anchors axis titles to the velocity axes, not the viewBox edge", () => {
+      const html = renderToStaticMarkup(
+        createElement(HodographPanel, { points: demoPoints }),
+      );
+      const transform = buildViewTransform(demoPoints);
+      const eastAxis = velocityToScreen(0, 0, transform);
+      const eastTitle = html.match(
+        /<text x="([^"]+)" y="([^"]+)" class="hodograph-panel__axis-title"[^>]*>eastward \(m\/s\)/,
+      );
+      const northTitle = html.match(
+        /<text x="([^"]+)" y="([^"]+)" class="hodograph-panel__axis-title"[^>]*>northward \(m\/s\)/,
+      );
+      expect(eastTitle).not.toBeNull();
+      expect(northTitle).not.toBeNull();
+      expect(Number(eastTitle![2])).toBeCloseTo(eastAxis.y + 32, 5);
+      expect(Number(eastTitle![2])).toBeLessThan(VIEWBOX_HEIGHT - 20);
+      expect(Number(northTitle![1])).toBeCloseTo(eastAxis.x - 38, 5);
     });
 
     it("keeps a full-resolution polyline while thinning dense markers", () => {

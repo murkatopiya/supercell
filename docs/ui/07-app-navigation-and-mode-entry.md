@@ -282,7 +282,10 @@ After this pass:
 - Explore environment **identity** (demo prescribed vs
   Goshen / Prospect Valley / Dumas observed) stays inside
   the Environment surface, as today (`EnvironmentSurface`
-  radios). It does not move to landing.
+  radios). It does not move to landing. Explore also shows
+  the current identity as a readout under
+  **Storm-relative laboratory**; that line is not a second
+  switch.
 
 Guided experiment selection stays inside Guided
 (`GuidedExperimentSelector`). It is not a top-level mode and
@@ -297,7 +300,7 @@ not an Environment identity.
 | App surface (landing / help / laboratory) | App session state | exclusive view |
 | Current mode | `lab.kind` (existing) | observed by chrome |
 | Guided experiment id | App `guidedExperimentId` + `createGuidedLab` / `switchGuidedExperiment` | selector inside Guided |
-| Explore environment identity | App `exploreEnvironmentIdentity` + `createExploreLab` | radios inside Environment |
+| Explore environment identity | App `exploreEnvironmentIdentity` + `createExploreLab` | radios inside Environment; Explore heading reads the current label |
 | Environment open/closed | App `environmentOpen` | affordance + surface |
 | Hodograph points | physics `hodographPoints(profile)` at composition | Environment observes |
 | Simulation / particles | GuidedLab / ExploreLab | not owned by landing |
@@ -402,6 +405,8 @@ Required:
   sibling of Guided / Explore;
 - Explore environment radios remain inside Environment, not
   on landing;
+- Explore laboratory heading reads the current environment
+  label and is not a second identity control;
 - Guided experiment selector remains inside Guided.
 
 Do not require:

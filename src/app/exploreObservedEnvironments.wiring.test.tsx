@@ -38,6 +38,7 @@ import {
   PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL,
   PROSPECT_VALLEY_OBSERVED_ENVIRONMENT_COPY,
   PROSPECT_VALLEY_SANDBOX_ANTI_CLAIM,
+  exploreEnvironmentLabel,
 } from "../explore/exploreEnvironmentIdentity.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { HodographPanel } from "../ui/hodograph/HodographPanel.js";
@@ -145,6 +146,9 @@ describe("Explore observed environments", () => {
     expect(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY).toBe(
       EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
     );
+    for (const option of EXPLORE_ENVIRONMENT_OPTIONS) {
+      expect(exploreEnvironmentLabel(option.identity)).toBe(option.label);
+    }
   });
 
   it("resolves each observed identity to its own golden record and provenance", () => {
@@ -340,6 +344,21 @@ describe("Explore observed environments", () => {
     expect(appSrc).toMatch(
       /selectExploreEnvironment[\s\S]*exploreEnvironmentalWindProfile\(next\)/s,
     );
+  });
+
+  it("reads the current environment under the Explore laboratory heading", () => {
+    expect(appSrc).toMatch(
+      /exploreEnvironmentLabel\(exploreEnvironmentIdentity\)/,
+    );
+    const controls = appSrc.slice(
+      appSrc.indexOf("workbench__column--controls"),
+      appSrc.indexOf("workbench__column--viewport"),
+    );
+    expect(controls).toMatch(/workbench__column-note/);
+    expect(controls).not.toMatch(/name="explore-environment-identity"/);
+    const guided = appSrc.slice(appSrc.indexOf("workbench--guided"));
+    expect(guided).not.toMatch(/exploreEnvironmentLabel/);
+    expect(guided).not.toMatch(/workbench__column-note/);
   });
 
   it("omits DEMO [0, 1000] overlays for every observed Explore environment", () => {

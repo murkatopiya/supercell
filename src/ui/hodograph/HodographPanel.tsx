@@ -65,6 +65,10 @@ export interface HodographPanelProps {
 const STORM_MOTION_DIAMOND_HALF = 6;
 const KNOT_RADIUS = 4;
 const SELECTED_KNOT_RADIUS = 6;
+/** Below east tick labels (`y + 16`). */
+const EAST_AXIS_TITLE_OFFSET_Y = 32;
+/** Left of north tick labels (`x - 8`). */
+const NORTH_AXIS_TITLE_OFFSET_X = 38;
 
 function clientPointToPlotSpace(
   target: SVGSVGElement | SVGGElement,
@@ -452,18 +456,18 @@ export function HodographPanel({
 
       <text
         x={(eastAxisStart.x + eastAxisEnd.x) / 2}
-        y={VIEWBOX_HEIGHT - 12}
+        y={eastAxisStart.y + EAST_AXIS_TITLE_OFFSET_Y}
         className="hodograph-panel__axis-title"
         textAnchor="middle"
       >
         eastward (m/s)
       </text>
       <text
-        x={16}
+        x={northAxisStart.x - NORTH_AXIS_TITLE_OFFSET_X}
         y={(northAxisStart.y + northAxisEnd.y) / 2}
         className="hodograph-panel__axis-title"
         textAnchor="middle"
-        transform={`rotate(-90 16 ${(northAxisStart.y + northAxisEnd.y) / 2})`}
+        transform={`rotate(-90 ${northAxisStart.x - NORTH_AXIS_TITLE_OFFSET_X} ${(northAxisStart.y + northAxisEnd.y) / 2})`}
       >
         northward (m/s)
       </text>

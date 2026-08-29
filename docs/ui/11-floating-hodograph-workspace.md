@@ -179,6 +179,7 @@ new environment  → plot view reset to autoscale of new points
                  → panel geometry kept
                  → overlay visibility kept
                  → Environment identity updates points as today
+                 → Explore heading readout follows the same identity
 ```
 
 Mode entry (Guided ↔ Explore) also resets plot view to
@@ -205,7 +206,7 @@ SVG background fill
 
 ```text
 eastward / northward axes
-axis titles
+axis titles (next to the axes, not the viewBox edge)
 ticks and tick labels
 hodograph polyline
 knot markers and height labels
@@ -241,7 +242,7 @@ extended in this slice.
 | `HodographPoint[]` | composition via physics API | observe |
 | Overlay payloads | composition / physics | observe |
 | Overlay visibility | App `overlayVisibility` | existing |
-| Explore environment identity | App | existing radios |
+| Explore environment identity | App | radios in the workspace; Explore heading readout observes |
 | Panel x/y/w/h | App UI session | Slice 5 |
 | Plot zoom/pan | App UI session | Slice 5 |
 | Sounding knots | physics profile | **not editable here** |

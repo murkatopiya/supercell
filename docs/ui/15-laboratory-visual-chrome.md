@@ -137,8 +137,16 @@ One outer `.laboratory-toolbar--explore`. Internal
 RELEASE / RUNTIME / VIEW bands stay as `control-band` sections
 with uppercase instrument labels. No extra card per band.
 
+The Explore laboratory heading shows the current environment
+label under **Storm-relative laboratory**. That is a readout
+of App `exploreEnvironmentIdentity`, not a second switch.
+
 Release is the primary workflow area. Undo / Redo are
 compact subtle controls with a visible disabled state.
+
+Explore Runtime stacks Speed as a heading, then 1× / 5× /
+10× / 20× on the next row, so the radios do not wrap around
+the label in the narrow rail.
 
 ---
 
