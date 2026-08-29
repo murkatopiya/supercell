@@ -19,7 +19,7 @@ export const HOW_IT_WORKS_NOT_FORECAST =
   "This is not live weather and not a forecast. The airflow is prescribed by the current laboratory environment.";
 
 export const HOW_IT_WORKS_CHOOSE_ENVIRONMENT =
-  "Use the Environment control to choose an observed environment. Where available, that environment is an observed sounding-derived Source profile used in the laboratory velocity and advection path.";
+  "Use the Environment selector above the laboratory to choose an observed environment. Where available, that environment is an observed sounding-derived Source profile used in the laboratory velocity and advection path.";
 
 export const HOW_IT_WORKS_RELEASE_TRACER =
   "A tracer is a passive marker carried by the prescribed storm-relative laboratory velocity field. It does not affect the airflow.";

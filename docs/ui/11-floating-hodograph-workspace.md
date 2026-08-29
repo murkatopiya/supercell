@@ -54,8 +54,10 @@ HodographOverlayControls       visibility (existing)
 HodographWorkspace             shared chrome: header drag, resize,
                                − / + / Reset, clamp
 EnvironmentSurface             one host for both modes:
-                                 Guided: no identity radios
-                                 Explore: identity radios + honesty copy
+                                 Guided: hodograph + overlays
+                                 Explore: heading names current identity
+                                   + honesty copy; no identity radios
+ExploreEnvironmentSelector     Explore header identity switch
 App                            owns geometry + plotView session state
 ```
 
@@ -65,8 +67,8 @@ Both modes mount the same `environmentSurface` over
 
 Guided no longer uses `workbench__column--hodograph`. The
 laboratory grid is the environment-closed layout (viewport +
-inspector). Open/close remains the Environment affordance
-(`07`, `42`).
+inspector). Open/close remains the Hodograph affordance
+(`07`, `42`; `EnvironmentAffordance` internally).
 
 Closing uses `hidden` and does not destroy geometry, plot
 view, overlay flags, or `HodographPoint[]`. Reopen in the same

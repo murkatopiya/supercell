@@ -240,7 +240,6 @@ describe("I2 Goshen Explore sandbox", () => {
         onPlotViewChange={() => {}}
         boundsElementRef={{ current: null }}
         environmentIdentity={EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED}
-        onEnvironmentIdentityChange={() => {}}
       />,
     );
     expect(html).toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);

@@ -94,7 +94,6 @@ function environmentSurfaceHtml(
       onPlotViewChange={() => {}}
       boundsElementRef={{ current: null }}
       environmentIdentity={identity}
-      onEnvironmentIdentityChange={() => {}}
     />,
   );
 }
@@ -366,6 +365,13 @@ describe("Explore observed environments", () => {
     );
     expect(controls).toMatch(/workbench__column-note/);
     expect(controls).not.toMatch(/name="explore-environment-identity"/);
+    const header = appSrc.slice(
+      appSrc.indexOf("app__header"),
+      appSrc.indexOf("app__subtitle"),
+    );
+    expect(header).toMatch(/ExploreEnvironmentSelector/);
+    expect(header).toMatch(/onChange=\{selectExploreEnvironment\}/);
+    expect(appSrc).not.toMatch(/onEnvironmentIdentityChange/);
     const guided = appSrc.slice(appSrc.indexOf("workbench--guided"));
     expect(guided).not.toMatch(/exploreEnvironmentLabel/);
     expect(guided).not.toMatch(/workbench__column-note/);
@@ -392,6 +398,8 @@ describe("Explore observed environments", () => {
     );
 
     expect(prospectHtml).toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(prospectHtml).toContain(`Hodograph — ${PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL}`);
+    expect(prospectHtml).not.toContain("type=\"radio\"");
     expect(prospectHtml).toContain(PROSPECT_VALLEY_OBSERVED_ENVIRONMENT_COPY);
     expect(prospectHtml).toContain(GOSHEN_PRESCRIBED_STORM_COPY);
     expect(prospectHtml).toContain(PROSPECT_VALLEY_SANDBOX_ANTI_CLAIM);

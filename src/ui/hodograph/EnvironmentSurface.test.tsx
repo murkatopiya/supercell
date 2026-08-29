@@ -60,9 +60,6 @@ function surfaceMarkup(
       onPlotViewChange={() => {}}
       boundsElementRef={boundsElementRef}
       environmentIdentity={extras.environmentIdentity}
-      onEnvironmentIdentityChange={
-        extras.environmentIdentity !== undefined ? () => {} : undefined
-      }
     />,
   );
 }
@@ -71,18 +68,18 @@ describe("EnvironmentSurface", () => {
   it("shows hodograph and overlays when open", () => {
     const html = surfaceMarkup(true);
     expect(html).toContain("id=\"environment-surface\"");
-    expect(html).toContain("aria-label=\"Environment\"");
+    expect(html).toContain("aria-label=\"Hodograph\"");
     expect(html).toContain("Hodograph");
     expect(html).toContain("aria-label=\"Ground-relative hodograph\"");
     expect(html).toContain("Hodograph overlays");
     expect(html.match(/hodograph-panel__marker/g)).toHaveLength(5);
     expect(html.match(/hodograph-panel__height-label/g)).toHaveLength(5);
     expect(html).toContain("Storm motion C");
-    expect(html).toContain("Close Environment");
+    expect(html).toContain("Close Hodograph");
     expect(html).not.toMatch(/<section[^>]*\shidden/);
   });
 
-  it("shows the Explore identity control only when identity is supplied", () => {
+  it("names the current Explore environment without a competing radio selector", () => {
     const guided = surfaceMarkup(true);
     expect(guided).not.toContain(DEMO_PRESCRIBED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
@@ -90,16 +87,23 @@ describe("EnvironmentSurface", () => {
     expect(guided).not.toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
     expect(guided).not.toContain("explore-environment-identity");
+    expect(guided).not.toContain("type=\"radio\"");
+    expect(guided).toContain("Hodograph");
+    expect(guided).not.toContain("Hodograph —");
 
     const explore = surfaceMarkup(true, {
       environmentIdentity: "demo-prescribed",
     });
-    expect(explore).toContain(DEMO_PRESCRIBED_ENVIRONMENT_LABEL);
-    expect(explore).toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
-    expect(explore).toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
-    expect(explore).toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
-    expect(explore).toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).toContain(`Hodograph — ${DEMO_PRESCRIBED_ENVIRONMENT_LABEL}`);
+    expect(explore).not.toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).not.toContain(PROSPECT_VALLEY_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).not.toContain(DUMAS_2010_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).not.toContain(MOORE_2013_OBSERVED_ENVIRONMENT_LABEL);
+    expect(explore).not.toContain("explore-environment-identity");
+    expect(explore).not.toContain("type=\"radio\"");
     expect(explore).not.toContain("NOT a simulation or reconstruction");
+    expect(surfaceSrc).not.toMatch(/onEnvironmentIdentityChange/);
+    expect(surfaceSrc).not.toMatch(/type="radio"/);
   });
 
   it("keeps Hodograph overlay checkboxes on Demo and omits them for observed environments", () => {
@@ -121,7 +125,8 @@ describe("EnvironmentSurface", () => {
     expect(goshen).not.toContain("Horizontal vorticity ω_h");
     expect(goshen).not.toContain("Streamwise / crosswise vorticity");
     expect(goshen).not.toMatch(/disabled/);
-    expect(goshen).toContain(GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL);
+    expect(goshen).toContain(`Hodograph — ${GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL}`);
+    expect(goshen).not.toContain("type=\"radio\"");
   });
 
   it("is hidden when closed without dropping overlay controls from the tree", () => {
@@ -191,15 +196,16 @@ describe("HodographWorkspace chrome", () => {
 });
 
 describe("EnvironmentAffordance", () => {
-  it("is a persistent Environment header control with aria-expanded", () => {
+  it("is a persistent Hodograph header control with aria-expanded", () => {
     const collapsed = renderToStaticMarkup(
       <EnvironmentAffordance expanded={false} onToggle={() => {}} />,
     );
     const expanded = renderToStaticMarkup(
       <EnvironmentAffordance expanded={true} onToggle={() => {}} />,
     );
-    expect(collapsed).toContain("Environment");
-    expect(collapsed).toContain("aria-label=\"Environment\"");
+    expect(collapsed).toContain("Hodograph");
+    expect(collapsed).not.toMatch(/>Environment</);
+    expect(collapsed).not.toContain("aria-label=\"Environment\"");
     expect(collapsed).toContain("aria-expanded=\"false\"");
     expect(collapsed).toContain("aria-controls=\"environment-surface\"");
     expect(expanded).toContain("aria-expanded=\"true\"");

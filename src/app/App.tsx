@@ -9,6 +9,7 @@ import { LandingPage } from "./LandingPage.js";
 import { ModeIdentity } from "./ModeIdentity.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
+import { ExploreEnvironmentSelector } from "../ui/hodograph/ExploreEnvironmentSelector.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
 import { INITIAL_HODOGRAPH_PANEL_GEOMETRY } from "../ui/hodograph/hodographPanelGeometry.js";
 import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.js";
@@ -697,9 +698,6 @@ export function App() {
       environmentIdentity={
         explore !== null ? exploreEnvironmentIdentity : undefined
       }
-      onEnvironmentIdentityChange={
-        explore !== null ? selectExploreEnvironment : undefined
-      }
     />
   );
 
@@ -799,10 +797,18 @@ export function App() {
     <>
     <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
-        <ModeIdentity
-          mode={explore !== null ? "Explore" : "Guided"}
-          onReturnToLanding={returnToLanding}
-        />
+        <div className="app__header-primary">
+          <ModeIdentity
+            mode={explore !== null ? "Explore" : "Guided"}
+            onReturnToLanding={returnToLanding}
+          />
+          {explore !== null ? (
+            <ExploreEnvironmentSelector
+              value={exploreEnvironmentIdentity}
+              onChange={selectExploreEnvironment}
+            />
+          ) : null}
+        </div>
         <div className="app__header-tools">
           <EnvironmentAffordance
             expanded={environmentOpen}

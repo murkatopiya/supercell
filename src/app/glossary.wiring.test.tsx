@@ -51,6 +51,7 @@ describe("Glossary wiring", () => {
     expect(header).toMatch(/GlossaryAffordance/);
     expect(header).toMatch(/HowItWorksAffordance/);
     expect(header).toMatch(/EnvironmentAffordance/);
+    expect(header).toMatch(/ExploreEnvironmentSelector/);
   });
 
   it("opens Glossary without constructing a lab and reuses How It Works overlay chrome", () => {

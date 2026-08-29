@@ -17,6 +17,8 @@ import {
   GLOSSARY_HISTORICAL_SAMPLE,
   GLOSSARY_IGRA_ATTRIBUTION,
   GLOSSARY_OCCUPANCY_TRAIL,
+  GLOSSARY_OCCUPANCY_COLOR_CALLOUT,
+  GLOSSARY_NAV,
   GLOSSARY_OOD,
   GLOSSARY_PASSIVE_TRACER,
   GLOSSARY_SOURCE,
@@ -29,6 +31,7 @@ import {
   GLOSSARY_VELOCITY_CONTRIBUTIONS,
   GLOSSARY_VELOCITY_WARNING,
   GLOSSARY_WHAT_IF,
+  glossaryTermDefinition,
   IGRA_DSI,
   IGRA_STATION_ID,
 } from "./glossaryContent.js";
@@ -78,8 +81,20 @@ describe("GlossarySurface", () => {
     ]);
     const html = glossaryMarkup();
     expect(html).toContain(GLOSSARY_V_TOTAL);
-    expect(html).toContain(GLOSSARY_V_TOTAL_EQUATION);
+    expect(GLOSSARY_V_TOTAL_EQUATION).toBe(
+      "V_total = V_environment + V_updraft + V_rotation + V_lower-inflow + V_upper-outflow + V_downdraft + V_near-ground-outflow",
+    );
+    expect(html).toContain("V_total =");
+    expect(html).toContain("V_environment");
+    expect(html).toContain("V_updraft");
+    expect(html).toContain("V_rotation");
+    expect(html).toContain("V_lower-inflow");
+    expect(html).toContain("V_upper-outflow");
+    expect(html).toContain("V_downdraft");
+    expect(html).toContain("V_near-ground-outflow");
     expect(html).toContain(GLOSSARY_VELOCITY_WARNING);
+    expect(html).toContain("glossary-callout");
+    expect(html).toContain("<dl");
     for (const contribution of GLOSSARY_VELOCITY_CONTRIBUTIONS) {
       expect(contribution.term).toBe(labelForContribution(contribution.key));
       expect(html).toContain(contribution.term);
@@ -114,20 +129,28 @@ describe("GlossarySurface", () => {
 
   it("defines visible support states without mapping OOD to zero", () => {
     const html = glossaryMarkup();
-    expect(html).toContain(GLOSSARY_FULL);
+    for (const entry of [
+      GLOSSARY_FULL,
+      GLOSSARY_BOUNDARY,
+      GLOSSARY_OOD,
+      GLOSSARY_COLUMN_UNAVAILABLE,
+    ]) {
+      const { term, definition } = glossaryTermDefinition(entry);
+      expect(html).toContain(term);
+      expect(html).toContain(definition);
+    }
     expect(html).toContain("FULL_SUPPORT");
-    expect(html).toContain(GLOSSARY_BOUNDARY);
     expect(html).toContain("BOUNDARY_CONDITIONED");
-    expect(html).toContain(GLOSSARY_OOD);
     expect(html).toContain("OUT_OF_DOMAIN");
     expect(html).toContain("not treated as zero");
-    expect(html).toContain(GLOSSARY_COLUMN_UNAVAILABLE);
     expect(html).toContain("COLUMN_UNAVAILABLE");
+    expect(html).toContain("glossary-support");
   });
 
   it("separates occupancy color from Analysis T1 overlay", () => {
     const html = glossaryMarkup();
     expect(html).toContain(GLOSSARY_OCCUPANCY_TRAIL);
+    expect(html).toContain(GLOSSARY_OCCUPANCY_COLOR_CALLOUT);
     expect(html).toContain("does not encode Analysis T1");
     expect(html).toContain("Occupancy red does not mean positive T1");
     expect(html).toContain(GLOSSARY_ANALYSIS_OVERLAY);
@@ -161,6 +184,30 @@ describe("GlossarySurface", () => {
     expect(html).not.toMatch(/replay/i);
     expect(html).not.toContain("Analysis advects");
     expect(html).not.toContain("T1 causes");
+  });
+
+  it("exposes in-dialog section navigation without search, tabs, or accordions", () => {
+    const html = glossaryMarkup();
+    expect(html).toContain("aria-label=\"Glossary sections\"");
+    expect(html).toContain("Laboratory velocity");
+    expect(html).toContain("Source and Analysis");
+    expect(html).toContain("Trajectory diagnostics");
+    expect(html).toContain("Support states");
+    expect(html).toContain("Occupancy trail and Analysis T1 overlay");
+    expect(html).toContain("Dataset attribution");
+    expect(html).toContain("Source advects. Analysis explains.");
+    for (const item of GLOSSARY_NAV) {
+      expect(html).toContain(`href="#${item.id}"`);
+      expect(html).toContain(`id="${item.id}"`);
+      expect(html).toContain(item.label.replaceAll("&", "&amp;"));
+    }
+    expect(html).not.toMatch(/type="search"/);
+    expect(html).not.toMatch(/<input/);
+    expect(html).not.toContain("role=\"tablist\"");
+    expect(html).not.toContain("accordion");
+    expect(surfaceSrc).toMatch(/<dl/);
+    expect(surfaceSrc).toMatch(/scrollGlossarySection/);
+    expect(surfaceSrc).toMatch(/how-it-works__dialog--glossary/);
   });
 });
 

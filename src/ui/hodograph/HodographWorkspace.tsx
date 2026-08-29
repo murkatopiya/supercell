@@ -18,6 +18,7 @@ import type { ViewTransform } from "./hodographViewTransform.js";
 
 export interface HodographWorkspaceProps {
   open: boolean;
+  title?: string;
   geometry: HodographPanelGeometry;
   onGeometryChange: (next: HodographPanelGeometry) => void;
   plotView: HodographPlotView;
@@ -72,6 +73,7 @@ function placeInitialGeometryOnWindow(
  */
 export function HodographWorkspace({
   open,
+  title = "Hodograph",
   geometry,
   onGeometryChange,
   plotView,
@@ -205,7 +207,7 @@ export function HodographWorkspace({
       id="environment-surface"
       className="hodograph-workspace environment-surface environment-surface--overlay ui-floating-panel"
       hidden={!open}
-      aria-label="Environment"
+      aria-label={title}
       style={{
         left: geometry.x,
         top: geometry.y,
@@ -220,7 +222,7 @@ export function HodographWorkspace({
         onPointerUp={endHeaderDrag}
         onPointerCancel={endHeaderDrag}
       >
-        <h2 className="app__panel-title">Hodograph</h2>
+        <h2 className="app__panel-title">{title}</h2>
         <div className="hodograph-workspace__view-controls">
           <button
             type="button"
@@ -268,7 +270,7 @@ export function HodographWorkspace({
         <button
           type="button"
           className="ui-button ui-button--subtle tracer-runtime-controls__button"
-          aria-label="Close Environment"
+          aria-label="Close Hodograph"
           onClick={onClose}
         >
           Close

@@ -115,6 +115,37 @@ export const GLOSSARY_COLUMN_UNAVAILABLE =
 export const GLOSSARY_OCCUPANCY_TRAIL =
   "The occupancy / tracer trail shows where the tracer has traveled. Its tracer color does not encode Analysis T1. Occupancy remains visible where Analysis is unavailable or out of domain. Occupancy red does not mean positive T1.";
 
+export const GLOSSARY_OCCUPANCY_COLOR_CALLOUT =
+  "Tracer/occupancy color does not encode T1.";
+
+export const GLOSSARY_NAV = [
+  { id: "glossary-velocity", label: "Velocity field" },
+  { id: "glossary-source-analysis", label: "Source & Analysis" },
+  { id: "glossary-trajectory", label: "Trajectory & T1" },
+  { id: "glossary-support", label: "Support" },
+  { id: "glossary-occupancy", label: "Occupancy" },
+  { id: "glossary-data", label: "Data" },
+] as const;
+
+export const GLOSSARY_SUPPORT_STATES = [
+  GLOSSARY_FULL,
+  GLOSSARY_BOUNDARY,
+  GLOSSARY_OOD,
+  GLOSSARY_COLUMN_UNAVAILABLE,
+] as const;
+
+export function glossaryTermDefinition(entry: string): {
+  term: string;
+  definition: string;
+} {
+  const separator = ": ";
+  const index = entry.indexOf(separator);
+  return {
+    term: entry.slice(0, index),
+    definition: entry.slice(index + separator.length),
+  };
+}
+
 export const GLOSSARY_ANALYSIS_OVERLAY =
   "The Analysis T1 overlay colors supported trajectory segments by Analysis T1 using the fixed symmetric diagnostic scale.";
 

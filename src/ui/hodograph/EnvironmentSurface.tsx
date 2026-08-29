@@ -2,8 +2,8 @@ import { useEffect, type RefObject } from "react";
 import type { HodographPoint } from "../../physics/environment/hodograph.js";
 import type { StormMotion } from "../../physics/environment/stormRelativeWind.js";
 import {
-  EXPLORE_ENVIRONMENT_OPTIONS,
   exploreEnvironmentHonesty,
+  exploreEnvironmentLabel,
   type ExploreEnvironmentIdentity,
 } from "../../explore/exploreEnvironmentIdentity.js";
 import { HodographOverlayControls } from "./HodographOverlayControls.js";
@@ -39,12 +39,11 @@ export interface EnvironmentSurfaceProps {
   onPlotViewChange: (next: HodographPlotView) => void;
   boundsElementRef: RefObject<HTMLElement | null>;
   environmentIdentity?: ExploreEnvironmentIdentity;
-  onEnvironmentIdentityChange?: (next: ExploreEnvironmentIdentity) => void;
 }
 
 /**
- * On-demand Environment surface: shared floating hodograph workspace
- * for Guided and Explore. Mode extras (identity radios) stay here.
+ * On-demand Hodograph surface: shared floating workspace for Guided
+ * and Explore. Explore environment identity is selected in the header.
  * Overlay checkboxes mount only when honesty copy is absent.
  * docs/ui/11-floating-hodograph-workspace.md
  */
@@ -64,7 +63,6 @@ export function EnvironmentSurface({
   onPlotViewChange,
   boundsElementRef,
   environmentIdentity,
-  onEnvironmentIdentityChange,
 }: EnvironmentSurfaceProps) {
   useEffect(() => {
     if (!open) {
@@ -86,10 +84,15 @@ export function EnvironmentSurface({
     environmentIdentity !== undefined
       ? exploreEnvironmentHonesty(environmentIdentity)
       : undefined;
+  const title =
+    environmentIdentity !== undefined
+      ? `Hodograph — ${exploreEnvironmentLabel(environmentIdentity)}`
+      : "Hodograph";
 
   return (
     <HodographWorkspace
       open={open}
+      title={title}
       geometry={panelGeometry}
       onGeometryChange={onPanelGeometryChange}
       plotView={plotView}
@@ -98,28 +101,6 @@ export function EnvironmentSurface({
       onClose={onClose}
       boundsElementRef={boundsElementRef}
     >
-      {environmentIdentity !== undefined && onEnvironmentIdentityChange ? (
-        <fieldset className="environment-surface__identity">
-          <legend className="environment-surface__identity-legend">
-            Environment
-          </legend>
-          {EXPLORE_ENVIRONMENT_OPTIONS.map((option) => (
-            <label
-              key={option.identity}
-              className="environment-surface__identity-option"
-            >
-              <input
-                className="ui-check"
-                type="radio"
-                name="explore-environment-identity"
-                checked={environmentIdentity === option.identity}
-                onChange={() => onEnvironmentIdentityChange(option.identity)}
-              />
-              {option.label}
-            </label>
-          ))}
-        </fieldset>
-      ) : null}
       {honesty !== undefined ? (
         <div className="environment-surface__honesty">
           <p>{honesty.observed}</p>

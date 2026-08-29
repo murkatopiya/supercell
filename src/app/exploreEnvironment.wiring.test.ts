@@ -17,6 +17,7 @@ describe("Explore 42-1 Environment surface", () => {
       appSrc.indexOf("app__subtitle"),
     );
     expect(header).toMatch(/EnvironmentAffordance/);
+    expect(header).toMatch(/ExploreEnvironmentSelector/);
     expect(header).toMatch(/ModeIdentity/);
     expect(header).not.toMatch(/app__mode-switch/);
     expect(header).not.toMatch(/aria-pressed=\{lab\.kind === "guided"\}/);

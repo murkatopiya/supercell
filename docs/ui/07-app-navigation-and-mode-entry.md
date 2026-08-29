@@ -64,8 +64,8 @@ Boot surface          landing (`appSurface = "landing"`, `lab = null`)
 Top-level chrome      landing: title + v0.1 research-prototype
                       badge + primary Explore CTA + How It Works
                       + Glossary
-                      laboratory: ModeIdentity + Environment
-                      + How It Works + Glossary
+                      laboratory: ModeIdentity + Environment selector
+                      (Explore) + Hodograph + How It Works + Glossary
 Mode entry            landing primary CTA → enterExplore
                       Guided remains in App; not a public v0.1
                       landing peer choice
@@ -73,11 +73,12 @@ Mode entry            landing primary CTA → enterExplore
 Default lab           not constructed until Explore entry
 Default Explore       Goshen 2009 observed
                       (`DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY`)
-Environment           laboratory header tool, not a mode peer
-                      Guided: default open, column presentation
-                      Explore: default closed, overlay presentation
-                      Explore identity radios live inside
-                      EnvironmentSurface
+Environment selector  Explore laboratory header, next to ModeIdentity
+Hodograph             laboratory header tool, not a mode peer
+                      Guided: default open
+                      Explore: default closed
+                      Explore identity is selected in the header,
+                      not inside the Hodograph surface
 Router                none (Vite + React composition)
 How It Works          landing and laboratory workflow overlay (`12`)
 Glossary              landing and laboratory vocabulary overlay
@@ -124,12 +125,10 @@ Supercell Explorer
   ├── How It Works          (help surface; see 12)
   ├── Guided                (top-level mode)
   │     ├── experiment catalog (existing GuidedExperimentId)
-  │     └── Environment       (hodograph + overlays; default open)
+  │     └── Hodograph         (plot + overlays; default open)
   └── Explore               (top-level mode)
-        ├── environment identity (demo prescribed |
-        │     Goshen 2009 | Prospect Valley 2010 |
-        │     Dumas 2010 observed)
-        └── Environment       (hodograph + overlays; default closed)
+        ├── environment identity (header selector)
+        └── Hodograph         (plot + overlays; default closed)
 ```
 
 Forbidden as top-level peers of Guided / Explore:
@@ -275,22 +274,21 @@ Live fact this pass corrected:
 ```text
 EnvironmentAffordance no longer sits beside a Guided | Explore
 mode switch. It is laboratory header chrome for the current
-mode.
+mode, publicly labeled Hodograph.
 ```
 
 After this pass:
 
-- the Environment affordance lives in **mode chrome** (header
+- the Hodograph affordance lives in **mode chrome** (header
   tools of the laboratory, or an equivalent in-mode control
   band);
 - it remains persistently labeled and available before tracer
   selection (`40` T2 / `42` affordance contract);
-- Guided may keep Environment default-open;
-- Explore may keep Environment default-closed;
-- Explore environment **identity** (demo prescribed vs
-  Goshen / Prospect Valley / Dumas observed) stays inside
-  the Environment surface, as today (`EnvironmentSurface`
-  radios). It does not move to landing. Explore also shows
+- Guided may keep Hodograph default-open;
+- Explore may keep Hodograph default-closed;
+- Explore environment **identity** is selected by the
+  Environment selector next to ModeIdentity. It does not live
+  as radios inside the Hodograph surface. Explore also shows
   the current identity as a readout under
   **Storm-relative laboratory**; that line is not a second
   switch.
@@ -335,7 +333,7 @@ Shared (both modes, once inside a laboratory):
 ```text
 product identity breadcrumb
 How It Works access (12)
-Environment affordance (not a mode)
+Environment / Hodograph affordance (not a mode)
 runtime Pause / Reset / Speed (08)
 shared Inspector presentational component
 3D TracerViewport
@@ -355,7 +353,7 @@ Explore-only (unchanged capability set):
 action rail: Release, Runtime, View
 airflow / scene presentation (08, landing 42-2 placement)
 Point diagnostics
-environment identity radios
+environment identity selector (Explore header)
 ```
 
 This pass does not add Guided mounts that `40` §12 / `42` §12

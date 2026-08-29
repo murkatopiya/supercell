@@ -6,7 +6,7 @@ export interface EnvironmentAffordanceProps {
 }
 
 /**
- * Shared in-mode control for the on-demand Environment surface.
+ * Shared in-mode control for the on-demand Hodograph surface.
  * Not a top-level mode. docs/ui/07-app-navigation-and-mode-entry.md
  */
 export function EnvironmentAffordance({
@@ -17,12 +17,12 @@ export function EnvironmentAffordance({
     <button
       type="button"
       className="ui-button tracer-runtime-controls__button environment-affordance"
-      aria-label="Environment"
+      aria-label="Hodograph"
       aria-expanded={expanded}
       aria-controls={ENVIRONMENT_SURFACE_ID}
       onClick={onToggle}
     >
-      Environment
+      Hodograph
     </button>
   );
 }

@@ -70,6 +70,7 @@ describe("App navigation Slice 1", () => {
       appSrc.indexOf("app__subtitle"),
     );
     expect(laboratoryHeader).toMatch(/EnvironmentAffordance/);
+    expect(laboratoryHeader).toMatch(/ExploreEnvironmentSelector/);
     expect(laboratoryHeader).toMatch(/ModeIdentity/);
     expect(appSrc).not.toMatch(/app__mode-switch/);
     const landingSrc = appSrc.slice(

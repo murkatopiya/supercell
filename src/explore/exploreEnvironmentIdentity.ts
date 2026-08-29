@@ -98,6 +98,12 @@ export function exploreEnvironmentLabel(
   )!.label;
 }
 
+export function isExploreEnvironmentIdentity(
+  value: string,
+): value is ExploreEnvironmentIdentity {
+  return (EXPLORE_ENVIRONMENT_IDENTITIES as readonly string[]).includes(value);
+}
+
 export interface ExploreEnvironmentHonesty {
   readonly observed: string;
   readonly prescribed: string;
