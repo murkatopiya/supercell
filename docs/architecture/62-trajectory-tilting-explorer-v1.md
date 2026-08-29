@@ -1596,6 +1596,14 @@ BOUNDARY uses that same value color on the Slice C
 BOUNDARY LineSegments object. Dash / opacity / outline
 remain OPEN (§23 item 5). Occupancy trail remains.
 
+Coplanar compositing (presentation polish, not science):
+occupancy `THREE.Line` uses `depthTest` and does **not**
+write depth. Analysis overlay `LineSegments` use
+`depthTest` + `depthWrite` and `renderOrder` greater than
+occupancy. Camera orbit/zoom must not change overlay RGB.
+OOD gaps still show occupancy. Native WebGL 1 px line
+width remains a later presentation item (not Line2 here).
+
 Homes:
 
 ```text
@@ -1712,6 +1720,35 @@ src/rendering/analysisT1GlyphAppearanceV1.ts
 ```
 
 Slice G is not included in this slice.
+
+### Pre-public presentation polish (not a science slice)
+
+Presentation / interaction only. Scientific status of
+Architecture 62 V1 is unchanged. Slice G is not included.
+
+```text
+occupancy trail: depthTest, depthWrite = false
+Analysis overlay: depthTest, depthWrite, later renderOrder
+Focus sample: one-shot OrbitControls target = recorded P
+Focus ≠ Follow; not automatic on selection
+Reset View still restores DEEP_STORM_TRACER_VIEW
+hypothetical glyph: dashed identity, higher opacity/contrast,
+  smaller world-space dashes; magnitudes unchanged
+native 1px LineBasicMaterial width: later presentation item
+§23 item 4 remains OPEN
+§23 item 5 remains OPEN
+```
+
+Homes:
+
+```text
+src/rendering/trailGeometry.ts
+src/rendering/trajectoryTiltingOverlay.ts
+src/rendering/TracerScene.ts
+  focusPoint
+src/ui/tracer/ExploreFocusSampleControl.tsx
+src/rendering/analysisT1GlyphAppearanceV1.ts
+```
 
 ### Slice C — renderer value / support encoding
 
@@ -1921,6 +1958,8 @@ without a SoT amendment or a dedicated calibration record.
 5. Exact support-channel styling (pattern / opacity / outline).
    I3 shows typed BOUNDARY_CONDITIONED in verification UI.
    Trail visual distinction from FULL remains OPEN.
+   Occupancy/overlay coplanar compositing is a separate
+   presentation contract (occupancy depthWrite false).
 6. Slice G causal-perception treatment, if that slice is ever
    authorized
 7. BL-047 remaining research: T1 vs TILT_Y,total topology;
@@ -1933,7 +1972,9 @@ without a SoT amendment or a dedicated calibration record.
 
 Item 1 saturation is frozen for V1. Tests may still use an
 injected fixture; that fixture is not production
-`T1_COLOR_SCALE_V1`.
+`T1_COLOR_SCALE_V1`. Native WebGL 1 px line width for
+occupancy, overlay, and glyph shafts remains a later
+presentation item; this polish does not introduce Line2.
 
 ---
 
@@ -2013,7 +2054,15 @@ WHAT-IF:           counterfactual only; magnitudes fixed; θ only;
                    disabled when alignment is degenerate;
                    no mutation; no prognostic ω_y;
                    visualization convention: ω_h fixed, ∇ hypothetical;
-                   I3 Explore wiring COMPLETE / ACCEPTED
+                   I3 Explore wiring COMPLETE / ACCEPTED;
+                   dashed presentation polish does not rescale vectors
+FOCUS SAMPLE:      one-shot OrbitControls target = recorded P;
+                   not Follow; not auto on sample select;
+                   Follow OFF then focus; pan remains;
+                   Reset View restores storm framing
+COMPOSITING:       occupancy depthWrite false; overlay later
+                   with depthTest/depthWrite; camera does not
+                   change overlay RGB; OOD gaps still occupancy
 ω_y,current:       not default V1; Slice G NOT AUTHORIZED
 TERMINAL:          no authoritative identity in V1;
                    Eulerian lookup allowed; material-endpoint unresolved

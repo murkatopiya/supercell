@@ -63,6 +63,12 @@ function createResetViewOrbit() {
       applyDeepStormTracerViewPose(this.cameraPosition, this.target);
       this.controlsUpdateCount += 1;
     },
+    focusPoint(position: { x: number; y: number; z: number }) {
+      this.followPoint = null;
+      this.enablePan = true;
+      translateCameraFollowTarget(this.cameraPosition, this.target, position);
+      this.controlsUpdateCount += 1;
+    },
     applyStoredBeforeUpdate() {
       if (this.followPoint !== null) {
         translateCameraFollowTarget(
@@ -237,5 +243,77 @@ describe("TracerScene.resetView capability", () => {
     expect(body).not.toMatch(/TracerSelection/);
     expect(tracerSceneSrc).not.toMatch(/CameraState/);
     expect(tracerSceneSrc).not.toMatch(/class Camera/);
+  });
+});
+
+describe("TracerScene.focusPoint capability", () => {
+  it("sets the orbit target to the exact recorded sample and keeps pan", () => {
+    const orbit = createResetViewOrbit();
+    const recorded = { x: -1800, y: 2150, z: 40 };
+    const cameraBefore = {
+      x: orbit.cameraPosition.x,
+      y: orbit.cameraPosition.y,
+      z: orbit.cameraPosition.z,
+    };
+    const targetBefore = {
+      x: orbit.target.x,
+      y: orbit.target.y,
+      z: orbit.target.z,
+    };
+    orbit.focusPoint(recorded);
+    expect({
+      x: orbit.target.x,
+      y: orbit.target.y,
+      z: orbit.target.z,
+    }).toEqual(recorded);
+    expect(orbit.followPoint).toBeNull();
+    expect(orbit.enablePan).toBe(true);
+    expect(orbit.cameraPosition.x - recorded.x).toBeCloseTo(
+      cameraBefore.x - targetBefore.x,
+      10,
+    );
+    expect(orbit.cameraPosition.y - recorded.y).toBeCloseTo(
+      cameraBefore.y - targetBefore.y,
+      10,
+    );
+    expect(orbit.cameraPosition.z - recorded.z).toBeCloseTo(
+      cameraBefore.z - targetBefore.z,
+      10,
+    );
+  });
+
+  it("is not Follow: live motion does not move a focused historical target", () => {
+    const orbit = createResetViewOrbit();
+    const recorded = { x: 500, y: 1800, z: -200 };
+    orbit.focusPoint(recorded);
+    orbit.applyStoredBeforeUpdate();
+    expect({
+      x: orbit.target.x,
+      y: orbit.target.y,
+      z: orbit.target.z,
+    }).toEqual(recorded);
+    expect(orbit.followPoint).toBeNull();
+    expect(tracerSceneSrc).toMatch(/focusPoint\(position: Vec3\)/);
+    expect(tracerSceneSrc).toMatch(/Not Follow/);
+    const focusStart = tracerSceneSrc.indexOf("focusPoint(position: Vec3)");
+    const focusBody = tracerSceneSrc.slice(focusStart, focusStart + 500);
+    expect(focusBody).not.toMatch(/selectedSlotIndex/);
+    expect(focusBody).not.toMatch(/particles/);
+  });
+
+  it("Reset View restores storm framing after Focus", () => {
+    const orbit = createResetViewOrbit();
+    orbit.focusPoint({ x: 3000, y: 100, z: 4750 });
+    orbit.resetView();
+    expect({
+      x: orbit.target.x,
+      y: orbit.target.y,
+      z: orbit.target.z,
+    }).toEqual(DEEP_STORM_TRACER_VIEW.target);
+    expect({
+      x: orbit.cameraPosition.x,
+      y: orbit.cameraPosition.y,
+      z: orbit.cameraPosition.z,
+    }).toEqual(DEEP_STORM_TRACER_VIEW.cameraPosition);
   });
 });

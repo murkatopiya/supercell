@@ -117,9 +117,9 @@ function createDashedArrow(name: string): THREE.LineSegments {
   const material = new THREE.LineDashedMaterial({
     fog: false,
     transparent: true,
-    opacity: 0.55,
-    dashSize: 40,
-    gapSize: 24,
+    opacity: 0.88,
+    dashSize: 12,
+    gapSize: 8,
   });
   const line = new THREE.LineSegments(geometry, material);
   line.name = name;
@@ -138,9 +138,9 @@ function createDashedArc(name: string): THREE.Line {
   const material = new THREE.LineDashedMaterial({
     fog: false,
     transparent: true,
-    opacity: 0.55,
-    dashSize: 40,
-    gapSize: 24,
+    opacity: 0.88,
+    dashSize: 12,
+    gapSize: 8,
   });
   const line = new THREE.Line(geometry, material);
   line.name = name;

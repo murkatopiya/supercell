@@ -107,6 +107,18 @@ describe("trail geometry (no WebGLRenderer)", () => {
     );
   });
 
+  it("does not write depth so a coplanar Analysis overlay can win", () => {
+    const line = createTrailLine(TRACER_COLORS[0]);
+    const material = line.material;
+    expect(material).toBeInstanceOf(THREE.LineBasicMaterial);
+    if (!(material instanceof THREE.LineBasicMaterial)) {
+      return;
+    }
+    expect(material.depthTest).toBe(true);
+    expect(material.depthWrite).toBe(false);
+    disposeTrailLine(line);
+  });
+
   it("copies snapshots and does not mutate history or particles", () => {
     const particles = [particle(0, 1000, 0)];
     const history = new TracerPathHistory(1);

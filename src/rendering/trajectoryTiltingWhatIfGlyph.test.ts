@@ -161,6 +161,35 @@ describe("trajectory tilting what-if glyph (no WebGLRenderer)", () => {
     disposeTrajectoryTiltingWhatIfGlyph(overlay);
   });
 
+  it("presentation dash/opacity does not change hypothetical display magnitude", () => {
+    const explanation = supportedExplanation();
+    const overlay = createTrajectoryTiltingWhatIfGlyph();
+    const model = createTrajectoryTiltingWhatIfModel(explanation, 0.4);
+    syncTrajectoryTiltingWhatIfGlyph(
+      overlay,
+      model,
+      TEST_FIXTURE_SCALE_V0,
+      TEST_FIXTURE_APPEARANCE,
+    );
+    const fixtureTip = shaftTip(lineOf(overlay, "analysisTiltingWhatIfGradientArrow"));
+    syncTrajectoryTiltingWhatIfGlyph(
+      overlay,
+      model,
+      TEST_FIXTURE_SCALE_V0,
+      {
+        ...TEST_FIXTURE_APPEARANCE,
+        opacity: 0.88,
+        dashSize: 12,
+        gapSize: 8,
+        hypotheticalGradientColor: 0xf2c14e,
+      },
+    );
+    expect(shaftTip(lineOf(overlay, "analysisTiltingWhatIfGradientArrow"))).toEqual(
+      fixtureTip,
+    );
+    disposeTrajectoryTiltingWhatIfGlyph(overlay);
+  });
+
   it("AJ what-if arc uses the hypothetical angle", () => {
     const overlay = createTrajectoryTiltingWhatIfGlyph();
     syncTrajectoryTiltingWhatIfGlyph(

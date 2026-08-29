@@ -88,6 +88,7 @@ import {
   resolveExploreHistoricalAnalysisTiltingExplanation,
 } from "../explore/resolveExploreHistoricalAnalysisTilting.js";
 import { ExploreFollowControl } from "../ui/tracer/ExploreFollowControl.js";
+import { ExploreFocusSampleControl } from "../ui/tracer/ExploreFocusSampleControl.js";
 import { ExploreResetViewControl } from "../ui/tracer/ExploreResetViewControl.js";
 import {
   guidedExperimentById,
@@ -331,6 +332,28 @@ export function App() {
   const handleResetView = () => {
     setFollowEnabled(false);
     sceneHandleRef.current?.resetView();
+  };
+
+  const handleFocusSample = () => {
+    const probe = historicalProbeRef.current;
+    const currentLab = lab;
+    if (
+      probe === null ||
+      currentLab === null ||
+      currentLab.pathHistory == null
+    ) {
+      return;
+    }
+    const sample = resolveHistoricalPathSample(
+      currentLab.simulation.particles,
+      currentLab.pathHistory,
+      probe,
+    );
+    if (sample === undefined) {
+      return;
+    }
+    setFollowEnabled(false);
+    sceneHandleRef.current?.focusPoint(sample.position);
   };
 
   /**
@@ -855,6 +878,10 @@ export function App() {
                     followEnabled={followEnabled}
                     canFollow={followTargetResolves}
                     onFollowEnabledChange={setFollowEnabled}
+                  />
+                  <ExploreFocusSampleControl
+                    canFocus={historicalSample !== undefined}
+                    onFocusSample={handleFocusSample}
                   />
                   <ExploreResetViewControl onResetView={handleResetView} />
                 </div>

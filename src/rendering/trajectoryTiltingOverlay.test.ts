@@ -137,6 +137,20 @@ function vertexColors(line: THREE.LineSegments, vertexCount: number): number[][]
 }
 
 describe("trajectory tilting overlay (no WebGLRenderer)", () => {
+  it("uses depthTest and depthWrite so occupancy cannot mask coplanar T1", () => {
+    const overlay = createTrajectoryTiltingOverlay();
+    const full = lineOf(overlay, "analysisTiltingFullValue");
+    const material = full.material;
+    expect(material).toBeInstanceOf(THREE.LineBasicMaterial);
+    if (!(material instanceof THREE.LineBasicMaterial)) {
+      return;
+    }
+    expect(material.depthTest).toBe(true);
+    expect(material.depthWrite).toBe(true);
+    expect(overlay.renderOrder).toBeGreaterThan(0);
+    disposeTrajectoryTiltingOverlay(overlay);
+  });
+
   it("draws nothing for an empty encoding", () => {
     const overlay = createTrajectoryTiltingOverlay();
     syncTrajectoryTiltingOverlay(

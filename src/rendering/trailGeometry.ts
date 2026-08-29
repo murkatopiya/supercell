@@ -25,11 +25,24 @@ export function writeTrailPositions(
   geometry.computeBoundingSphere();
 }
 
+/**
+ * Occupancy trail does not write depth so a coplanar Analysis T1
+ * overlay can win the depth test. Occupancy still tests against
+ * solid scene geometry. Architecture 62 presentation polish.
+ */
+export const OCCUPANCY_TRAIL_RENDER_ORDER = 0;
+
 export function createTrailLine(color: number): THREE.Line {
   const geometry = new THREE.BufferGeometry();
   writeTrailPositions(geometry, []);
-  const material = new THREE.LineBasicMaterial({ color, fog: false });
+  const material = new THREE.LineBasicMaterial({
+    color,
+    fog: false,
+    depthTest: true,
+    depthWrite: false,
+  });
   const line = new THREE.Line(geometry, material);
+  line.renderOrder = OCCUPANCY_TRAIL_RENDER_ORDER;
   line.raycast = () => {};
   return line;
 }

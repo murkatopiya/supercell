@@ -62,6 +62,11 @@ export interface TracerViewportHandle {
    * App turns Follow OFF before calling this.
    */
   resetView(): void;
+  /**
+   * One-shot OrbitControls target at a recorded sample.
+   * App turns Follow OFF before calling this. Not Follow.
+   */
+  focusPoint(position: Vec3): void;
   readonly tracerSlotCount: number;
 }
 
@@ -296,6 +301,9 @@ export function TracerViewport({
     },
     resetView() {
       sceneRef.current?.resetView();
+    },
+    focusPoint(position) {
+      sceneRef.current?.focusPoint(position);
     },
     get tracerSlotCount() {
       return sceneRef.current?.tracerSlotCount ?? 0;

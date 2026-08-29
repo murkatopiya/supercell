@@ -68,6 +68,7 @@ import type { TrajectoryTiltingRenderEncoding } from "../data/escHrTimeAnalysis/
 import type { TrajectoryTiltingGlyphModel } from "../data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.js";
 import type { TrajectoryTiltingWhatIfModel } from "../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
 import {
+  ANALYSIS_TILTING_OVERLAY_RENDER_ORDER,
   createTrajectoryTiltingOverlay,
   disposeTrajectoryTiltingOverlay,
   syncTrajectoryTiltingOverlay,
@@ -442,6 +443,23 @@ export class TracerScene {
   }
 
   /**
+   * One-shot OrbitControls target = recorded historical sample.
+   * Preserves camera-to-target offset. Not Follow: does not track a
+   * live tracer, does not disable pan, and is not applied every frame.
+   * App turns Follow OFF before calling this.
+   */
+  focusPoint(position: Vec3): void {
+    this.followPoint = null;
+    this.controls.enablePan = true;
+    translateCameraFollowTarget(
+      this.camera.position,
+      this.controls.target,
+      position,
+    );
+    this.controls.update();
+  }
+
+  /**
    * Restore canonical storm framing from DEEP_STORM_TRACER_VIEW.
    * Clears the scene follow point and restores pan. Does not own
    * product Follow state, selection, tracers, preview, or airflow.
@@ -585,7 +603,7 @@ export class TracerScene {
     }
     while (this.analysisTiltingOverlays.length < encodings.length) {
       const overlay = createTrajectoryTiltingOverlay();
-      overlay.renderOrder = 1;
+      overlay.renderOrder = ANALYSIS_TILTING_OVERLAY_RENDER_ORDER;
       this.scene.add(overlay);
       this.analysisTiltingOverlays.push(overlay);
     }

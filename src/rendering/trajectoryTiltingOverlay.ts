@@ -13,9 +13,17 @@ export interface TrajectoryTiltingValueAppearance {
 const FULL_OBJECT_NAME = "analysisTiltingFullValue";
 const BOUNDARY_OBJECT_NAME = "analysisTiltingBoundaryValue";
 
+/**
+ * Drawn after occupancy trails (renderOrder 0). Occupancy does not
+ * write depth, so this overlay wins coplanar Line vs LineSegments
+ * without a camera-dependent geometric offset.
+ */
+export const ANALYSIS_TILTING_OVERLAY_RENDER_ORDER = 1;
+
 export function createTrajectoryTiltingOverlay(): THREE.Group {
   const group = new THREE.Group();
   group.name = "analysisTiltingOverlay";
+  group.renderOrder = ANALYSIS_TILTING_OVERLAY_RENDER_ORDER;
   group.add(createValueLine(FULL_OBJECT_NAME));
   group.add(createValueLine(BOUNDARY_OBJECT_NAME));
   return group;
@@ -67,9 +75,12 @@ function createValueLine(name: string): THREE.LineSegments {
   const material = new THREE.LineBasicMaterial({
     vertexColors: true,
     fog: false,
+    depthTest: true,
+    depthWrite: true,
   });
   const line = new THREE.LineSegments(geometry, material);
   line.name = name;
+  line.renderOrder = ANALYSIS_TILTING_OVERLAY_RENDER_ORDER;
   line.raycast = () => {};
   line.visible = false;
   return line;
