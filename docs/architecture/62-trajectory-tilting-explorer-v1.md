@@ -2,19 +2,22 @@
 
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
-SLICES A–C IMPLEMENTED / ACCEPTED /
-SLICES D–G NOT STARTED /
+SLICES A–D IMPLEMENTED / ACCEPTED /
+SLICES E–G NOT STARTED /
 CAL OPEN / NOT COMPLETE
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
-Slices A–C (atomic Analysis explanation query;
+Slices A–D (atomic Analysis explanation query;
 recorded-path diagnostic projection;
-renderer-facing value/support encoding) are
-IMPLEMENTED / ACCEPTED. Slices D onward remain
+renderer-facing value/support encoding;
+historical-probe 3D mechanism glyph) are
+IMPLEMENTED / ACCEPTED. Slices E onward remain
 NOT STARTED. Numeric `T1_COLOR_SCALE_V1` saturation
 and `|T1|_ε` remain OPEN. User-facing scientific
-saturation is not release-ready.
+saturation is not release-ready. Glyph display-scale
+exaggeration remains an injected capability; the
+production meters-per-`s⁻¹` number is OPEN (§23 item 4).
 **Scope:** scientific UX, diagnostic authority, encoding, and
 slice boundaries for Trajectory Tilting Explorer V1.
 Not a T1 physics reopen. Not `TILT_Y,total`. Not `I_tilt`.
@@ -33,9 +36,12 @@ Slice B is implemented in
 Slice C renderer capability is implemented in
 `src/data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.ts`
 and `src/rendering/trajectoryTiltingOverlay.ts`.
+Slice D glyph capability is implemented in
+`src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts`
+and `src/rendering/trajectoryTiltingGlyph.ts`.
 App / Explore / TracerScene remain unwired: production
 activation is CAL-blocked and caller-column-blocked.
-Slices D–G remain NOT STARTED.
+Slices E–G remain NOT STARTED.
 
 Predecessor (not replaced):
 
@@ -890,6 +896,17 @@ Arrow length must not be presented as a second T1.
 The glyph draws the vectors from the atomic explanation
 result at that sample. It does not resample.
 
+Shared visual origin at the recorded sample `P_i` is a
+visualization convention only. It does not mean the
+vectors belong to the tracer.
+
+Slice D implements this as a headless glyph model plus a
+Three.js capability. Display length uses an injected
+`TrajectoryTiltingGlyphVectorDisplayScale` shared by both
+operands. There is no production meters-per-`s⁻¹` freeze
+(§23 item 4 remains OPEN). There is no per-vector
+normalization. App / TracerScene activation is not included.
+
 ---
 
 ## 15. What-if alignment state boundary
@@ -1219,7 +1236,8 @@ was built by `V_total`; Analysis T1 is evaluated there.
 
 Slice A is IMPLEMENTED / ACCEPTED. Slice B is
 IMPLEMENTED / ACCEPTED. Slice C renderer capability is
-IMPLEMENTED / ACCEPTED. Slices D–G are NOT STARTED.
+IMPLEMENTED / ACCEPTED. Slice D glyph capability is
+IMPLEMENTED / ACCEPTED. Slices E–G are NOT STARTED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
 renderer slice. User-facing scientific saturation remains
@@ -1301,8 +1319,8 @@ tracers. Missing / null column remains
 `COLUMN_UNAVAILABLE`; there is no Source T1 fallback.
 
 This caller boundary remains a prerequisite of
-user-facing activation. Slice C does not include that
-seam. App / Explore / TracerScene remain unwired. That
+user-facing activation. Slice C and Slice D do not
+include that seam. App / Explore / TracerScene remain unwired. That
 is not live Analysis `V_env` rewiring. BL-010 remains
 PARTIAL.
 
@@ -1369,9 +1387,29 @@ does not wire TracerScene / App / Explore
 
 ### Slice D — historical-probe 3D geometry glyph
 
-Draw `ω_h` and `∇_h Vy` from the atomic result. Draw `θ`
+**Status:** IMPLEMENTED / ACCEPTED as glyph capability.
+Production App activation is CAL-blocked and
+caller-column-blocked. Exact production display-scale
+exaggeration remains OPEN (§23 item 4).
+
+Homes:
+
+```text
+src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts
+  createTrajectoryTiltingGlyphModel(position, explanation)
+  injected TrajectoryTiltingGlyphVectorDisplayScale
+
+src/rendering/trajectoryTiltingGlyph.ts
+  create / sync / dispose TrajectoryTiltingGlyph
+```
+
+Draws `ω_h` and `∇_h Vy` from the atomic result. Draws `θ`
 only when `ALIGNMENT_DEFINED`. Environmental language.
-Not pickable as a tracer.
+Not pickable as a tracer. Shared origin is visual
+convention only. Display scale is injected and common to
+both operands; no per-vector normalization. Does not
+recompute scientific quantities. Does not wire
+TracerScene / App / Explore.
 
 ### Slice E — numeric verify / provenance readout
 
@@ -1435,6 +1473,8 @@ without a SoT amendment or a dedicated calibration record.
 3. Dedicated terminal-clamp recorded flag / timestamp
    consistency (Simulation / history change; out of this SoT)
 4. Exact glyph display-scale exaggeration, if any
+   (Slice D specified injected common mapping;
+    production meters-per-s⁻¹ remains OPEN)
 5. Exact support-channel styling (pattern / opacity / outline)
 6. Slice G causal-perception treatment, if that slice is ever
    authorized
@@ -1487,8 +1527,8 @@ this file as TILT_Y,total or I_tilt authorization
 ```text
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
-                   SLICES A–C IMPLEMENTED / ACCEPTED;
-                   SLICES D–G NOT STARTED;
+                   SLICES A–D IMPLEMENTED / ACCEPTED;
+                   SLICES E–G NOT STARTED;
                    CAL OPEN / NOT COMPLETE
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
@@ -1508,6 +1548,10 @@ OOD:               gap at unsupported recorded samples; no fake 0
 SCALE:             mapping contract frozen;
                    numeric sat/ε OPEN; CAL before release saturation;
                    no production T1_COLOR_SCALE_V1 object
+GLYPH:             actual atomic Analysis operands at recorded P_i;
+                   shared origin visual convention only;
+                   injected common s⁻¹→m display scale;
+                   θ absent when degenerate; App unwired
 WHAT-IF:           ephemeral; laboratory unchanged;
                    no θ demo when a magnitude is degenerate
 ω_y,current:       not default V1
@@ -1518,12 +1562,13 @@ PROJECTION INPUT:  structural { position, simulationTime };
                    not a second history store
 COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
                    caller-supplied; not Slice B; not Slice C
-                   capability; not V_env rewiring
+                   capability; not Slice D capability;
+                   not V_env rewiring
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
-IMPLEMENTATION:    SLICES A–C COMPLETE / ACCEPTED as capability;
+IMPLEMENTATION:    SLICES A–D COMPLETE / ACCEPTED as capability;
                    App/Explore/TracerScene unwired;
-                   SLICES D–G NOT STARTED;
+                   SLICES E–G NOT STARTED;
                    CAL OPEN / NOT COMPLETE
 ```
 
@@ -1531,7 +1576,7 @@ IMPLEMENTATION:    SLICES A–C COMPLETE / ACCEPTED as capability;
 
 ## 26. Implementation
 
-Slices A–C are implemented:
+Slices A–D are implemented:
 
 ```text
 src/data/escHrTimeAnalysis/analysisTiltingQuery.ts
@@ -1561,26 +1606,40 @@ src/rendering/trajectoryTiltingOverlay.ts
   identical endpoint colors; raycast disabled
   occupancy trailGeometry unchanged
   not imported by TracerScene / App / Explore
+
+src/data/escHrTimeAnalysis/trajectoryTiltingGlyphModel.ts
+  createTrajectoryTiltingGlyphModel
+    packages atomic explanation + recorded P_i
+    no recomputation of ω_h, ∇_h Vy, T1, θ
+    shared origin is visualization convention only
+
+src/rendering/trajectoryTiltingGlyph.ts
+  optional 3D mechanism glyph
+  injected common display scale; no per-vector normalization
+  θ arc only when ALIGNMENT_DEFINED
+  raycast disabled
+  not imported by TracerScene / App / Explore
 ```
 
 Application/caller supply of the Analysis column beside
 Source EWP remains a prerequisite of user-facing
-activation. It is not included in Slice B or Slice C
-capability and is not live `V_env` rewiring.
+activation. It is not included in Slice B, Slice C, or
+Slice D capability and is not live `V_env` rewiring.
 
-Renderer capability is complete. Production activation
-is CAL-blocked and caller-column-blocked.
+Renderer / glyph capability is complete. Production
+activation is CAL-blocked and caller-column-blocked.
 
-Slices D–G are NOT STARTED. Named production homes remain
-indicative:
+Slices E–G are NOT STARTED:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
                                 Slice B recorded-path projection
                                 Slice C pure render encoding
+                                Slice D pure glyph model
 src/rendering/trajectoryTiltingOverlay.ts
                                 Slice C overlay capability
-glyph module (rendering)        Slice D
+src/rendering/trajectoryTiltingGlyph.ts
+                                Slice D glyph capability
 presentational UI               Slice E / F
 ```
 
