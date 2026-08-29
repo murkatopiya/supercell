@@ -3,8 +3,8 @@
 **Status:** ARCHITECTURE ACCEPTED /
 CONTRACTS SPECIFIED /
 SLICES A–F IMPLEMENTED / ACCEPTED /
-SLICE G NOT STARTED /
-CAL OPEN / NOT COMPLETE
+SLICE G NOT STARTED / DEFERRED /
+CAL COMPLETE / ACCEPTED V1
 **Acceptance:** scientific/semantic review passed.
 Alignment-degeneracy, terminal-identifiability, and
 color-CAL dependency amendments are incorporated.
@@ -15,9 +15,11 @@ historical-probe 3D mechanism glyph;
 numeric verification / provenance readout;
 ephemeral what-if alignment) are
 IMPLEMENTED / ACCEPTED. Slice G remains
-NOT STARTED. Numeric `T1_COLOR_SCALE_V1` saturation
-and `|T1|_ε` remain OPEN. User-facing scientific
-saturation is not release-ready. Glyph display-scale
+NOT STARTED / DEFERRED. Numeric
+`T1_COLOR_SCALE_V1` display saturation is
+ACCEPTED V1 (`|T1|_sat = 6.100×10⁻⁵ s⁻²`).
+`|T1|_ε` is not part of V1. App / Explore /
+TracerScene remain unwired. Glyph display-scale
 exaggeration remains an injected capability; the
 production meters-per-`s⁻¹` number is OPEN (§23 item 4).
 **Scope:** scientific UX, diagnostic authority, encoding, and
@@ -49,9 +51,12 @@ Slice F what-if capability is implemented in
 `src/data/escHrTimeAnalysis/trajectoryTiltingWhatIf.ts`,
 `src/rendering/trajectoryTiltingWhatIfGlyph.ts`,
 and `src/ui/tracer/TrajectoryTiltingWhatIfPanel.tsx`.
+CAL V1 is implemented in
+`src/data/escHrTimeAnalysis/t1ColorScaleV1.ts`.
 App / Explore / TracerScene remain unwired: production
-activation is CAL-blocked and caller-column-blocked.
-Slice G remains NOT STARTED.
+activation is caller-column-blocked. Overlay wiring is
+not included in this CAL record.
+Slice G remains NOT STARTED / DEFERRED.
 
 Predecessor (not replaced):
 
@@ -102,7 +107,9 @@ It authorizes:
 - a local 3D geometry glyph at a historical recorded sample;
 - a numeric verify layer fed by the same atomic result;
 - an ephemeral what-if alignment state that does not mutate
-  the laboratory.
+  the laboratory;
+- production `T1_COLOR_SCALE_V1` display saturation
+  (CAL COMPLETE / ACCEPTED V1).
 
 It does **not** authorize:
 
@@ -115,7 +122,7 @@ It does **not** authorize:
 - interpolated historical tracer state;
 - a default `ω_y,current` comparison;
 - a first-slice `T1(t)` graph;
-- a numeric T1 color-saturation threshold.
+- `|T1|_ε` near-zero display band (not part of V1).
 
 ---
 
@@ -262,7 +269,8 @@ free 3D probe (rejected in 52)
 interpolated historical (P, t)
 diagnostic snapshots stored on PathHistorySample
 per-trajectory or per-sounding color normalization
-numeric color-scale calibration
+T1_COLOR_SCALE_V2+ / silent recalibration
+|T1|_ε near-zero display band
 default ω_y,current juxtaposition
 first-slice T1(t) graph
 Simulation / domain-clamp physics change
@@ -805,6 +813,8 @@ Named object:
 T1_COLOR_SCALE_V1
 ```
 
+**Status:** CAL COMPLETE / ACCEPTED V1.
+
 Required properties:
 
 ```text
@@ -821,46 +831,141 @@ documented
 never silently recalibrated when adding a sounding
 ```
 
+Production mapping (`TrajectoryTiltingColorScale`):
+
+```text
+version = T1_COLOR_SCALE_V1
+|T1|_sat = 6.100×10⁻⁵ s⁻²
+display domain = [−6.100×10⁻⁵, +6.100×10⁻⁵] s⁻²
+
+T1 == 0                 → exactly 0
+0 < T1 < sat            → T1 / sat
+−sat < T1 < 0           → T1 / sat
+T1 >= +sat              → +1
+T1 <= −sat              → −1
+```
+
+V1 has **no** `|T1|_ε` and **no** near-zero classification.
+Exact IEEE `0` remains the only special zero (`61`) and is
+not orthogonality (§8.3). Tiny nonzero T1 remains nonzero
+on the signed-unit map.
+
+This object maps scientific T1 → signedUnit ∈ [−1, +1].
+It does not encode RGB. Slice C already separates
+signedUnit from artistic appearance.
+
+**Display semantics (not physics):**
+
+```text
+saturation is a DISPLAY calibration
+it does not clip or replace raw T1
+it is not a physical-significance threshold
+pale color ≠ physically unimportant
+pale means smaller |T1| on this common display scale
+it is not a percentile of trajectory samples
+it is not empirical proof that spatial T1 is symmetric
+```
+
+Symmetry about zero is an intentional visualization
+policy. CAL sampling used paired dipole extrema at each
+included Analysis level, so signed P5/P95 symmetry is
+partly constructive.
+
+**Calibration population (V1):**
+
+```text
+INCLUDED
+  Goshen ESC HR Analysis
+  Prospect Valley ESC HR Analysis
+  Dumas ESC HR Analysis
+
+EXCLUDED
+  Moore / OUN IGRA     COLUMN_UNAVAILABLE; no Analysis column
+  DEMO Source          Source T1 ≠ Analysis T1
+```
+
+Sampling (per storm, then one storm-level statistic):
+
+```text
+native Analysis segments
+evaluate at segment midpoint height
+FULL_SUPPORT only
+prescribed production updraft from DEMO_SCENARIO
+two dipole-extrema positions at r = σ along ±ω_h
+characteristic level extrema, not trajectory samples,
+  not a fixed horizontal azimuth
+no cross-storm pooling of levels
+```
+
+Per storm: `Qstorm = max(|P5(T1)|, |P95(T1)|)`.
+
+| storm | P5 (s⁻²) | P95 (s⁻²) | Qstorm (s⁻²) |
+| --- | ---: | ---: | ---: |
+| Goshen | −5.825×10⁻⁵ | +5.825×10⁻⁵ | 5.825×10⁻⁵ |
+| Prospect | −6.100×10⁻⁵ | +6.100×10⁻⁵ | 6.100×10⁻⁵ |
+| Dumas | −5.621×10⁻⁵ | +5.621×10⁻⁵ | 5.621×10⁻⁵ |
+
+Q90 sanity (not the production aggregator):
+
+```text
+Goshen     4.148×10⁻⁵ s⁻²
+Prospect   4.242×10⁻⁵ s⁻²
+Dumas      3.612×10⁻⁵ s⁻²
+```
+
+```text
+max(Q95) / min(Q95) = 1.085
+```
+
+No calibration storm currently dominates the common scale.
+
+**V1 cross-storm aggregator:** `max(Qstorm)`.
+
+Chosen because the present calibration population is small
+and Qstorm values are tightly clustered. The aggregator is
+VERSIONED and REVIEWABLE. Expansion of the calibration
+population may justify a different cross-storm aggregator.
+V1 does not encode an automatic future switch to median.
+
+Implementation:
+
+```text
+src/data/escHrTimeAnalysis/t1ColorScaleV1.ts
+```
+
 **REJECTED:**
 
 ```text
 per-trajectory min/max normalization
 per-selected-sounding dynamic normalization
+per-storm runtime normalization
 runtime auto-rescaling
 silent change of color meaning across releases
-choosing “95th percentile” by fiat
+choosing a percentile by undocumented fiat
+|T1|_ε / near-zero zone in V1
+automatic future switch to a median aggregator
+Source T1 fallback
 ```
 
-**OPEN** (separate calibration / research slice, not this
-SoT and not a renderer invention):
+**CAL vs tests vs App:**
 
 ```text
-|T1|_sat   saturation magnitude
-|T1|_ε     near-zero band
-population / domain / weighting used to choose them
-```
+renderer / API slices MAY still use an injected
+versioned scale contract or test fixture
 
-**CAL dependency (release vs tests):**
+production display saturation is T1_COLOR_SCALE_V1
 
-```text
-renderer / API slices MAY be implemented against an
-injected versioned scale contract or test fixture
-
-user-facing scientific color saturation is NOT
-release-ready until the CAL slice freezes
-T1_COLOR_SCALE_V1 numeric |T1|_sat and |T1|_ε
+user-facing overlay remains unwired
+(caller-column-blocked; integration is a later record)
 
 no developer-chosen temporary production threshold
 ```
 
-A test fixture is not a production scale. Replacing fixture
-numbers with frozen `T1_COLOR_SCALE_V1` is the calibration
-slice, not a silent renderer tweak.
+A test fixture is not the production scale.
 
 Sign encoding (warm / cool / exact physical `0`) does not
-by itself freeze `|T1|_ε`. “T1 ≈ 0” as a visual band waits
-on `|T1|_ε`. Exact IEEE `0` remains a distinct physical
-zero (`61`) and is not orthogonality (§8.3).
+introduce `|T1|_ε`. A later versioned scale may add a
+near-zero visual band; V1 does not.
 
 ---
 
@@ -1241,7 +1346,7 @@ TrajectoryTiltingProjection[j]
 encodeTrajectoryTiltingForRender(projection, injected scale)
         │
         ▼
-optional T1 overlay (LineSegments; CAL-blocked in App)
+optional T1 overlay (LineSegments; App unwired)
 ```
 
 Authority chain:
@@ -1280,8 +1385,8 @@ capability is IMPLEMENTED / ACCEPTED. Slice G is
 NOT STARTED.
 Independent review boundaries.
 Color-scale numeric calibration is not embedded in the
-renderer slice. User-facing scientific saturation remains
-CAL-blocked. App / Explore / TracerScene remain unwired.
+renderer slice. `T1_COLOR_SCALE_V1` is a separate CAL V1
+object. App / Explore / TracerScene remain unwired.
 
 ### Slice A — atomic Analysis explanation result
 
@@ -1367,10 +1472,9 @@ PARTIAL.
 ### Slice C — renderer value / support encoding
 
 **Status:** IMPLEMENTED / ACCEPTED as renderer capability.
-Production App activation is CAL-blocked and
-caller-column-blocked. User-facing scientific saturation
-is not release-ready until CAL freezes `T1_COLOR_SCALE_V1`
-(§13).
+Production App activation is caller-column-blocked.
+`T1_COLOR_SCALE_V1` display saturation is ACCEPTED V1
+(§13). Overlay wiring is not included in this record.
 
 Homes:
 
@@ -1387,13 +1491,15 @@ Scale split:
 ```text
 scientific: injected TrajectoryTiltingColorScale
             signedUnitFromTiltingTendency(t1) → [-1, +1]
-            exact T1 0 → 0; no production |T1|_sat / |T1|_ε
+            exact T1 0 → 0
+            production object = T1_COLOR_SCALE_V1
+            tests may still use test-fixture-v0
 artistic:   injected TrajectoryTiltingValueAppearance
             linearRgbFromSignedUnit(signedUnit)
 ```
 
-No production scale object exists. Tests use a local
-fixture (`test-fixture-v0`), not `T1_COLOR_SCALE_V1`.
+Slice C encoding does not own the production number.
+The CAL V1 object lives in `t1ColorScaleV1.ts`.
 
 Support channel is orthogonal to value:
 
@@ -1428,9 +1534,9 @@ does not wire TracerScene / App / Explore
 ### Slice D — historical-probe 3D geometry glyph
 
 **Status:** IMPLEMENTED / ACCEPTED as glyph capability.
-Production App activation is CAL-blocked and
-caller-column-blocked. Exact production display-scale
-exaggeration remains OPEN (§23 item 4).
+Production App activation is caller-column-blocked.
+Exact production display-scale exaggeration remains OPEN
+(§23 item 4).
 
 Homes:
 
@@ -1512,21 +1618,24 @@ Deferred. Requires a separate causal-perception review
 before implementation. Distinct encoding from T1. Explicit
 user action. Not default V1.
 
-### Calibration dependency (not a renderer slice)
+### Calibration V1 (not a renderer slice)
+
+**Status:** CAL COMPLETE / ACCEPTED V1.
 
 ```text
-T1_COLOR_SCALE_V1 numeric |T1|_sat and |T1|_ε
-population / domain / weighting first
-user-facing saturation not release-ready until this slice
+T1_COLOR_SCALE_V1 |T1|_sat = 6.100×10⁻⁵ s⁻²
+display domain [−sat, +sat]
+no |T1|_ε in V1
+aggregator = max(Qstorm)
+population / sampling / provenance: §13
 ```
 
-This is research/calibration. It does not authorize
-percentile fiat or a developer-chosen production threshold.
-Slices A–C may use an injected test fixture. BL-048 records
-CAL as a dependency, not as an embedded Slice C number.
-
-Item 1 in §23 is required before claiming a calibrated
-diverging intensity scale.
+This is display calibration, not a renderer invention and
+not a Slice C number. Slices A–C may still use an injected
+test fixture. Production signedUnit mapping is
+`T1_COLOR_SCALE_V1` in `t1ColorScaleV1.ts`.
+App / Explore / TracerScene overlay wiring is not included
+in this record.
 
 ### Explicitly not a slice of this SoT
 
@@ -1547,9 +1656,9 @@ Not decided here. Not silently closed by a later slice
 without a SoT amendment or a dedicated calibration record.
 
 ```text
-1. |T1|_sat and |T1|_ε for T1_COLOR_SCALE_V1
-   (population / domain / weighting first)
-   user-facing saturation not release-ready until CAL
+1. ACCEPTED V1: T1_COLOR_SCALE_V1 |T1|_sat = 6.100×10⁻⁵ s⁻²
+   (§13). |T1|_ε is not part of V1; exact IEEE 0 only.
+   A later versioned scale may add a near-zero band.
 2. Trajectory-time FULL/BOUNDARY flicker policy
    (V1 default = per-sample honesty, no smoothing)
 3. Dedicated terminal-clamp recorded flag / timestamp
@@ -1568,9 +1677,9 @@ without a SoT amendment or a dedicated calibration record.
    not |T1|_ε; requires an explicit calibrated contract
 ```
 
-Item 1 is required before claiming a calibrated diverging
-intensity scale. Slices may use an injected test fixture;
-that fixture is not production `T1_COLOR_SCALE_V1`.
+Item 1 saturation is frozen for V1. Tests may still use an
+injected fixture; that fixture is not production
+`T1_COLOR_SCALE_V1`.
 
 ---
 
@@ -1610,8 +1719,8 @@ this file as TILT_Y,total or I_tilt authorization
 FEATURE:           Trajectory Tilting Explorer V1
 STATUS:            ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                    SLICES A–F IMPLEMENTED / ACCEPTED;
-                   SLICE G NOT STARTED;
-                   CAL OPEN / NOT COMPLETE
+                   SLICE G NOT STARTED / DEFERRED;
+                   CAL COMPLETE / ACCEPTED V1
 QUESTION:          why this T1 sign/magnitude at this sample?
 TRACER:            moving probe through mechanism geometry
 T1:                Analysis ω_h · prescribed ∇_h Vy
@@ -1627,9 +1736,10 @@ ADVECTION:         still Source/DEMO V_total
 COLOR:             T1 value/sign; support/validity orthogonal;
                    overlay primitive = sample-i T1, not interval T1
 OOD:               gap at unsupported recorded samples; no fake 0
-SCALE:             mapping contract frozen;
-                   numeric sat/ε OPEN; CAL before release saturation;
-                   no production T1_COLOR_SCALE_V1 object
+SCALE:             T1_COLOR_SCALE_V1 |T1|_sat = 6.100e-5 s⁻²;
+                   symmetric [−sat, +sat]; no |T1|_ε;
+                   aggregator max(Qstorm); versioned / reviewable;
+                   production object t1ColorScaleV1.ts
 GLYPH:             actual atomic Analysis operands at recorded P_i;
                    shared origin visual convention only;
                    injected common s⁻¹→m display scale;
@@ -1656,9 +1766,9 @@ COLUMN BESIDE:     Analysis diagnostic sibling of Source EWP;
 PICKING:           52 unchanged
 BL-010:            PARTIAL; live V_env rewiring not authorized
 IMPLEMENTATION:    SLICES A–F COMPLETE / ACCEPTED as capability;
+                   CAL COMPLETE / ACCEPTED V1;
                    App/Explore/TracerScene unwired;
-                   SLICE G NOT STARTED;
-                   CAL OPEN / NOT COMPLETE
+                   SLICE G NOT STARTED / DEFERRED
 ```
 
 ---
@@ -1688,6 +1798,11 @@ src/data/escHrTimeAnalysis/trajectoryTiltingRenderEncoding.ts
     pure; Three-free; injected scale required
     sample encodings + earlier-endpoint value segments
     no Analysis query; no production scale
+
+src/data/escHrTimeAnalysis/t1ColorScaleV1.ts
+  T1_COLOR_SCALE_V1
+    |T1|_sat = 6.100×10⁻⁵ s⁻²; signedUnit ∈ [−1, +1]
+    no |T1|_ε; no RGB; does not clip raw T1
 
 src/rendering/trajectoryTiltingOverlay.ts
   optional LineSegments overlay
@@ -1748,15 +1863,17 @@ Slice D, Slice E, or Slice F capability and is not live
 `V_env` rewiring.
 
 Renderer / glyph / numeric-verify / what-if capability is
-complete. Production activation is CAL-blocked and
-caller-column-blocked.
+complete. CAL V1 scale exists. Production activation is
+caller-column-blocked. Overlay wiring is not included
+in this record.
 
-Slice G is NOT STARTED:
+Slice G is NOT STARTED / DEFERRED:
 
 ```text
 src/data/escHrTimeAnalysis/     Slice A explanation query
                                 Slice B recorded-path projection
                                 Slice C pure render encoding
+                                CAL V1 T1_COLOR_SCALE_V1
                                 Slice D pure glyph model
                                 Slice E pure verification model
                                 Slice F pure what-if model

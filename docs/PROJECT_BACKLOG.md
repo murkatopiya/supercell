@@ -463,14 +463,15 @@ not this item.
 
 Category: UX
 Status: PARTIAL / SLICES A–F COMPLETE;
-CAL OPEN; App/Explore/TracerScene unwired
+CAL COMPLETE / ACCEPTED V1;
+App/Explore/TracerScene unwired
 Origin: architecture `62`; BL-047 class B visualization
 Why retained: BL-047 accepted the scientific boundary for
 path-parameterized rotational diagnostics and required a
 separate architecture SoT before any class B surface.
 Architecture `62` (ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED /
 SLICES A–F IMPLEMENTED / ACCEPTED / SLICE G NOT STARTED /
-CAL OPEN / NOT COMPLETE)
+DEFERRED / CAL COMPLETE / ACCEPTED V1)
 is that SoT. Slice A is the headless atomic Analysis
 explanation query
 (`queryAnalysisTiltingExplanationAt`).
@@ -492,21 +493,19 @@ actual T1 remains Analysis authority; laboratory state
 is unchanged. Degenerate / OOD / COLUMN disable what-if.
 Renderer / glyph / numeric-verify / what-if capability is
 complete.
-User-facing scientific saturation is not release-ready.
-Production activation is CAL-blocked and
-caller-column-blocked.
+`T1_COLOR_SCALE_V1` display saturation is ACCEPTED V1
+(`|T1|_sat = 6.100×10⁻⁵ s⁻²`; no `|T1|_ε`).
+Production activation remains caller-column-blocked.
+Overlay wiring is not included in this CAL record.
 It does **not** wire an Explore Analysis column beside
 Source EWP. That caller/integration availability remains
 a prerequisite of user-facing activation and is **not**
 live `V_env` rewiring.
 Slice G (optional `ω_y,current` comparison)
-remains NOT STARTED.
+remains NOT STARTED / DEFERRED.
 It does **not** complete BL-010.
 It does **not** rewire Source `V_env` into Analysis. It
 does **not** authorize `TILT_Y,total` or `I_tilt`.
-Numeric `T1_COLOR_SCALE_V1` saturation / near-zero
-thresholds remain a calibration dependency inside `62`
-§13 / §23, not a renderer invention.
 Glyph production meters-per-`s⁻¹` exaggeration remains
 OPEN inside `62` §23 item 4.
 Return when: a later named `62` slice is implemented.
@@ -969,7 +968,7 @@ BL-010 (implementation authorized / not started).
 | J. V1 validation debt | BL-002 | does not reopen V1 |
 | K. Historical path probe remainder | BL-023, BL-024 | first slice complete; only named LATER / deferred cap |
 | L. Vorticity-budget / trajectory-diagnostic boundary | BL-047 | RESEARCH DECISION COMPLETE / ACCEPTED AFTER ADVERSARIAL REVIEW; no `TILT_Y,total` / no `I_tilt`; class B V1 architecture is `62` |
-| L. Trajectory Tilting Explorer V1 | BL-048 | PARTIAL / Slices A–E complete; CAL OPEN; App unwired; architecture `62` ACCEPTED; slices F–G not started |
+| L. Trajectory Tilting Explorer V1 | BL-048 | PARTIAL / Slices A–F complete; CAL COMPLETE / ACCEPTED V1; App unwired; architecture `62` ACCEPTED; Slice G not started |
 
 Later **product** cases Moore / 10 May 2010 remain BL-021 / BL-042.
 Moore is also BL-045 candidate #2 (validation input). Those roles
@@ -1097,12 +1096,13 @@ BL-047:
                Trajectory Tilting Explorer V1 architecture;
                ARCHITECTURE ACCEPTED / CONTRACTS SPECIFIED;
                SLICES A–F IMPLEMENTED / ACCEPTED;
-               SLICE G NOT STARTED;
-               CAL OPEN / NOT COMPLETE
+               SLICE G NOT STARTED / DEFERRED;
+               CAL COMPLETE / ACCEPTED V1
 BL-048:
                Trajectory Tilting Explorer V1;
                PARTIAL / SLICES A–F COMPLETE;
-               CAL OPEN; App/Explore/TracerScene unwired;
+               CAL COMPLETE / ACCEPTED V1;
+               App/Explore/TracerScene unwired;
                architecture 62 ACCEPTED
 physics/04, 07:
                wind profile; value-only StormMotion
