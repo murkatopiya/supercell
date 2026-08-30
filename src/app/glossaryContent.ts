@@ -9,7 +9,7 @@ import { labelForContribution } from "../ui/tracer/tracerContributionLabels.js";
 export const GLOSSARY_TITLE = "Glossary";
 
 export const GLOSSARY_INTRO =
-  "Short meanings for terms and quantities you can see in the laboratory. How It Works explains the workflow.";
+  "Short meanings for terms and quantities you can see in the laboratory. User Guide is the practical manual. How It Works explains the conceptual model.";
 
 export const GLOSSARY_V_TOTAL_EQUATION =
   "V_total = V_environment + V_updraft + V_rotation + V_lower-inflow + V_upper-outflow + V_downdraft + V_near-ground-outflow";

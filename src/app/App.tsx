@@ -6,6 +6,8 @@ import { HowItWorksAffordance } from "./HowItWorksAffordance.js";
 import { HowItWorksSurface } from "./HowItWorksSurface.js";
 import type { HowItWorksContext } from "./howItWorksContent.js";
 import { LandingPage } from "./LandingPage.js";
+import { UserGuideAffordance } from "./UserGuideAffordance.js";
+import { UserGuideSurface } from "./UserGuideSurface.js";
 import { ModeIdentity } from "./ModeIdentity.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
@@ -162,6 +164,10 @@ export function App() {
   const glossaryTriggerRef = useRef<HTMLButtonElement | null>(null);
   const glossaryOpenRef = useRef(false);
   glossaryOpenRef.current = glossaryOpen;
+  const [userGuideOpen, setUserGuideOpen] = useState(false);
+  const userGuideTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const userGuideOpenRef = useRef(false);
+  userGuideOpenRef.current = userGuideOpen;
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
   if (sceneSlotsRef.current === null) {
@@ -417,7 +423,11 @@ export function App() {
       return;
     }
     const onKeyDown = (event: KeyboardEvent) => {
-      if (howItWorksOpenRef.current || glossaryOpenRef.current) {
+      if (
+        howItWorksOpenRef.current ||
+        glossaryOpenRef.current ||
+        userGuideOpenRef.current
+      ) {
         return;
       }
       const action = matchExploreAuthoringHistoryShortcut(event);
@@ -529,6 +539,7 @@ export function App() {
 
   const openHowItWorks = (trigger: HTMLButtonElement) => {
     howItWorksTriggerRef.current = trigger;
+    setUserGuideOpen(false);
     setGlossaryOpen(false);
     setHowItWorksOpen(true);
   };
@@ -539,12 +550,24 @@ export function App() {
 
   const openGlossary = (trigger: HTMLButtonElement) => {
     glossaryTriggerRef.current = trigger;
+    setUserGuideOpen(false);
     setHowItWorksOpen(false);
     setGlossaryOpen(true);
   };
 
   const closeGlossary = () => {
     setGlossaryOpen(false);
+  };
+
+  const openUserGuide = (trigger: HTMLButtonElement) => {
+    userGuideTriggerRef.current = trigger;
+    setHowItWorksOpen(false);
+    setGlossaryOpen(false);
+    setUserGuideOpen(true);
+  };
+
+  const closeUserGuide = () => {
+    setUserGuideOpen(false);
   };
 
   const howItWorksContext: HowItWorksContext =
@@ -571,6 +594,14 @@ export function App() {
     />
   );
 
+  const userGuideSurface = (
+    <UserGuideSurface
+      open={userGuideOpen}
+      onClose={closeUserGuide}
+      returnFocusRef={userGuideTriggerRef}
+    />
+  );
+
   const returnToLanding = () => {
     clearSelectionAndInspection();
     setPendingSeed(null);
@@ -585,11 +616,14 @@ export function App() {
       <>
         <LandingPage
           onEnterExplore={enterExplore}
+          onOpenUserGuide={openUserGuide}
           onOpenHowItWorks={openHowItWorks}
           onOpenGlossary={openGlossary}
+          userGuideOpen={userGuideOpen}
           howItWorksOpen={howItWorksOpen}
           glossaryOpen={glossaryOpen}
         />
+        {userGuideSurface}
         {howItWorksSurface}
         {glossarySurface}
       </>
@@ -723,7 +757,7 @@ export function App() {
           : null
       }
       timestep={DEMO_SCENARIO.simulation.timestep}
-      paused={paused || howItWorksOpen || glossaryOpen}
+      paused={paused || howItWorksOpen || glossaryOpen || userGuideOpen}
       timeScale={timeScale}
       resetEpoch={resetEpoch}
       pendingReleasePreview={lab.kind === "explore" ? pendingSeed : null}
@@ -805,6 +839,10 @@ export function App() {
           <EnvironmentAffordance
             expanded={environmentOpen}
             onToggle={() => setEnvironmentOpen((open) => !open)}
+          />
+          <UserGuideAffordance
+            expanded={userGuideOpen}
+            onOpen={openUserGuide}
           />
           <HowItWorksAffordance
             expanded={howItWorksOpen}
@@ -1015,6 +1053,7 @@ export function App() {
         </section>
       )}
     </main>
+    {userGuideSurface}
     {howItWorksSurface}
     {glossarySurface}
     </>

@@ -49,8 +49,10 @@ import logoUrl from "./assets/supercell-explorer-logo.webp";
 
 export interface LandingPageProps {
   onEnterExplore: () => void;
+  onOpenUserGuide: (trigger: HTMLButtonElement) => void;
   onOpenHowItWorks: (trigger: HTMLButtonElement) => void;
   onOpenGlossary: (trigger: HTMLButtonElement) => void;
+  userGuideOpen?: boolean;
   howItWorksOpen?: boolean;
   glossaryOpen?: boolean;
 }
@@ -62,8 +64,10 @@ export interface LandingPageProps {
  */
 export function LandingPage({
   onEnterExplore,
+  onOpenUserGuide,
   onOpenHowItWorks,
   onOpenGlossary,
+  userGuideOpen = false,
   howItWorksOpen = false,
   glossaryOpen = false,
 }: LandingPageProps) {
@@ -84,6 +88,16 @@ export function LandingPage({
               onClick={onEnterExplore}
             >
               {LANDING_CTA_LABEL}
+            </button>
+            <button
+              type="button"
+              className="ui-button ui-button--subtle landing__how-it-works"
+              aria-label="User Guide"
+              aria-haspopup="dialog"
+              aria-expanded={userGuideOpen}
+              onClick={(event) => onOpenUserGuide(event.currentTarget)}
+            >
+              User Guide
             </button>
             <button
               type="button"

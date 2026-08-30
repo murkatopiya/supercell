@@ -60,7 +60,7 @@ weather-radar rainbow chrome
 | Control surface | `.laboratory-toolbar` (Guided runtime + experiment; Explore Release / Runtime / View as one panel with internal bands) |
 | Information surface | Guided experiment explanation; Inspector; Point diagnostics |
 | Floating surface | Hodograph workspace (`.ui-floating-panel`) |
-| Global tools | Environment, How It Works (header, secondary) |
+| Global tools | Environment, User Guide, How It Works, Glossary (header, secondary) |
 
 ---
 
@@ -71,7 +71,7 @@ Semantics unchanged (`07`):
 ```text
 Supercell  /  Guided | Explore
 subtitle
-Environment + How It Works (right)
+Environment + User Guide + How It Works + Glossary (right)
 ```
 
 Visual treatment:
@@ -82,7 +82,7 @@ Visual treatment:
 - current mode is primary identity, not a switch;
 - subtitle uses secondary type;
 - Environment is a noticeable header tool (accent fill/border);
-- How It Works is `.ui-button--subtle`.
+- User Guide, How It Works, and Glossary are `.ui-button--subtle`.
 
 There is no in-laboratory Guided ↔ Explore toggle.
 
@@ -94,7 +94,7 @@ There is no in-laboratory Guided ↔ Explore toggle.
 | --- | --- |
 | primary | Explore **Release tracer** (the local workflow action) |
 | secondary (default `.ui-button`) | Pause, Resume, Reset, Confirm, Clear tracers, Reset View |
-| subtle | How It Works, Undo, Redo, Cancel, hodograph − / + / Reset / Close |
+| subtle | User Guide, How It Works, Glossary, Undo, Redo, Cancel, hodograph − / + / Reset / Close |
 | header tool | Environment (accent, not the local Release CTA) |
 | toggle | Grid, Flow comets, Eulerian — diagnostic, Highlight Off, Follow, Release tracer while armed (`aria-pressed`) |
 

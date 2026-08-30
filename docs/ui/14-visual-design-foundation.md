@@ -243,7 +243,7 @@ subtle surface). Hover does not restyle a disabled control as
 active.
 
 Primary / accent fill (`.ui-button--primary`) is for a true
-local workflow action. Landing How It Works is secondary /
+local workflow action. Landing How It Works / User Guide / Glossary are secondary /
 subtle. Explore Release tracer is the laboratory primary.
 
 Buttons leave browser-default appearance. Height stays

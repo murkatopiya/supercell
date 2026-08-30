@@ -70,12 +70,16 @@ selection            preserved
 environment          preserved
 camera / workspace   preserved
 user paused          unchanged
-viewport while open  paused || howItWorksOpen
+viewport while open  paused || howItWorksOpen || glossaryOpen
+                     || userGuideOpen
 ```
 
 There is one `HowItWorksSurface`. Landing, Guided, and Explore
 share it. Mode-aware extras change Explore-only workflow
 steps; Guided keeps prepared-release copy.
+
+User Guide is a sibling public help overlay. It is the
+practical operator manual. It does not replace How It Works.
 
 Glossary is a sibling public help overlay. It defines
 laboratory terms. It does not replace How It Works.
@@ -145,7 +149,7 @@ user’s persistent `paused` flag.
 The tracer viewport receives:
 
 ```text
-paused={paused || howItWorksOpen}
+paused={paused || howItWorksOpen || glossaryOpen || userGuideOpen}
 ```
 
 `TracerRuntimeControls` still bind to user `paused`.
@@ -301,7 +305,7 @@ numerical supercell simulation.
 - tracer is described as passive;
 - playback speed is not described as changing atmospheric
   velocity;
-- viewport uses `paused || howItWorksOpen` while runtime
+- viewport uses `paused || howItWorksOpen || glossaryOpen || userGuideOpen` while runtime
   controls keep user `paused`.
 
 ---

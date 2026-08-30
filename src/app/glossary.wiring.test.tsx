@@ -48,6 +48,7 @@ describe("Glossary wiring", () => {
       appSrc.indexOf("app__header"),
       appSrc.indexOf("app__subtitle"),
     );
+    expect(header).toMatch(/UserGuideAffordance/);
     expect(header).toMatch(/GlossaryAffordance/);
     expect(header).toMatch(/HowItWorksAffordance/);
     expect(header).toMatch(/EnvironmentAffordance/);
@@ -70,7 +71,7 @@ describe("Glossary wiring", () => {
 
   it("suspends the viewport while Glossary is open without writing user paused", () => {
     expect(appSrc).toMatch(
-      /paused=\{paused \|\| howItWorksOpen \|\| glossaryOpen\}/,
+      /paused=\{paused \|\| howItWorksOpen \|\| glossaryOpen \|\| userGuideOpen\}/,
     );
     expect(appSrc).toMatch(/<TracerRuntimeControls[\s\S]*paused=\{paused\}/s);
     const openFn = appSrc.slice(

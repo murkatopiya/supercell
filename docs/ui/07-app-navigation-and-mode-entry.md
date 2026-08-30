@@ -34,6 +34,7 @@ docs/ui/09-world-coordinate-reference.md
 docs/ui/10-tracer-interaction-affordance.md
 docs/ui/11-floating-hodograph-workspace.md
 docs/ui/12-how-it-works-and-onboarding.md
+docs/ui/16-user-guide.md
 ```
 
 ---
@@ -46,7 +47,7 @@ answer, before entering a laboratory:
 ```text
 What is this application?
 How do I enter the laboratory?
-Where do I read How It Works?
+Where do I read the User Guide?
 ```
 
 Once inside a mode, they must see where they are, and they
@@ -62,10 +63,10 @@ content pass:
 ```text
 Boot surface          landing (`appSurface = "landing"`, `lab = null`)
 Top-level chrome      landing: title + v0.1 research-prototype
-                      badge + primary Explore CTA + How It Works
-                      + Glossary
-                      laboratory: ModeIdentity + Hodograph + How It Works
-                      + Glossary
+                      badge + primary Explore CTA + User Guide
+                      + How It Works + Glossary
+                      laboratory: ModeIdentity + Hodograph + User Guide
+                      + How It Works + Glossary
 Mode entry            landing primary CTA → enterExplore
                       Guided remains in App; not a public v0.1
                       landing peer choice
@@ -83,7 +84,8 @@ Hodograph             laboratory header tool, not a mode peer
                       Storm-relative laboratory, not inside
                       the Hodograph surface
 Router                none (Vite + React composition)
-How It Works          landing and laboratory workflow overlay (`12`)
+User Guide            landing and laboratory practical manual (`16`)
+How It Works          landing and laboratory conceptual overlay (`12`)
 Glossary              landing and laboratory vocabulary overlay
 ```
 
@@ -103,8 +105,8 @@ In this SoT:
   `Supercell / Explore`);
 - return to landing via `Supercell`;
 - Environment as an intra-mode reference surface, not a mode;
-- access to How It Works from landing (and, with `12`, from
-  both modes);
+- access to User Guide, How It Works, and Glossary from landing
+  and from both laboratory modes;
 - App-owned view state without a routing library.
 
 Out of scope:
@@ -125,6 +127,7 @@ Out of scope:
 ```text
 Supercell Explorer
   ├── Landing
+  ├── User Guide            (practical manual; see 16)
   ├── How It Works          (help surface; see 12)
   ├── Guided                (top-level mode)
   │     ├── experiment catalog (existing GuidedExperimentId)
@@ -157,7 +160,8 @@ The first screen is a **public entry**, not a laboratory.
 The user can:
 
 - **Open Laboratory** — enter Explore;
-- **How It Works** — open the help overlay.
+- **User Guide** — open the practical operator manual.
+- **How It Works** — open the conceptual help overlay.
 
 Guided remains implemented in App. Public v0.1 does not
 present it as an equal primary choice on Landing.
@@ -183,8 +187,8 @@ Public framing:
 v0.1 · Research prototype
 ```
 
-Primary action: enter Explore. How It Works is a clearly
-secondary help action, not a mode.
+Primary action: enter Explore. User Guide, How It Works, and
+Glossary are clearly secondary help actions, not modes.
 
 ### 5.3 What landing does not do
 
@@ -333,7 +337,9 @@ Shared (both modes, once inside a laboratory):
 
 ```text
 product identity breadcrumb
+User Guide access (16)
 How It Works access (12)
+Glossary access
 Environment / Hodograph affordance (not a mode)
 runtime Pause / Reset / Speed (08)
 shared Inspector presentational component

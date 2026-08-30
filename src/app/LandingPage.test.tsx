@@ -47,6 +47,7 @@ function landingMarkup() {
   return renderToStaticMarkup(
     <LandingPage
       onEnterExplore={() => {}}
+      onOpenUserGuide={() => {}}
       onOpenHowItWorks={() => {}}
       onOpenGlossary={() => {}}
     />,
@@ -138,14 +139,17 @@ describe("LandingPage", () => {
     expect(html).not.toContain("production ready");
   });
 
-  it("exposes How It Works and Glossary as active help entries, not a third mode", () => {
+  it("exposes User Guide, How It Works, and Glossary as active help entries, not a third mode", () => {
     const html = landingMarkup();
+    expect(html).toContain("User Guide");
     expect(html).toContain("How It Works");
+    expect(html).toContain("aria-label=\"User Guide\"");
     expect(html).toContain("aria-label=\"How It Works\"");
     expect(html).toContain("aria-label=\"Glossary\"");
     expect(html).toContain("aria-haspopup=\"dialog\"");
     expect(html).not.toContain("disabled");
     expect(html).not.toContain("aria-pressed");
+    expect(landingSrc).toContain("onOpenUserGuide");
     expect(landingSrc).toContain("onOpenHowItWorks");
     expect(landingSrc).toContain("onOpenGlossary");
     expect(landingSrc).not.toContain("HOW_IT_WORKS_UNAVAILABLE_REASON");

@@ -28,7 +28,8 @@ selected diagnostics along the recorded path. Analysis does
 not push the tracer. What-if geometry keeps the observed
 environment fixed and does not change laboratory state.
 
-**How It Works** is the workflow guide. **Glossary** defines
+**User Guide** is the practical operator manual. **How It
+Works** explains the conceptual model. **Glossary** defines
 laboratory terms and quantities. Explore opens on the Goshen
 observed environment; Demo, Prospect Valley, Dumas, and Moore
 remain selectable.

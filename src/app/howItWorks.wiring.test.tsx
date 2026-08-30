@@ -63,6 +63,7 @@ describe("How It Works Slice 6 wiring", () => {
       appSrc.indexOf("app__header"),
       appSrc.indexOf("app__subtitle"),
     );
+    expect(header).toMatch(/UserGuideAffordance/);
     expect(header).toMatch(/HowItWorksAffordance/);
     expect(header).toMatch(/GlossaryAffordance/);
     expect(header).toMatch(/EnvironmentAffordance/);
@@ -91,14 +92,16 @@ describe("How It Works Slice 6 wiring", () => {
 
   it("keeps How It Works outside the laboratory viewport and above the hodograph", () => {
     expect(appSrc).toMatch(/\{howItWorksSurface\}/);
-    expect(appSrc).toMatch(/<\/main>\s*\{howItWorksSurface\}/s);
+    expect(appSrc).toMatch(
+      /<\/main>\s*\{userGuideSurface\}\s*\{howItWorksSurface\}/s,
+    );
     expect(surfaceSrc).toMatch(/className="how-it-works"/);
     expect(surfaceSrc).toMatch(/position:fixed; inset:0; z-index:80/);
     expect(surfaceSrc).toMatch(/onPointerDown=\{\(event\) => event\.stopPropagation\(\)\}/);
   });
 
   it("temporarily suspends viewport advancement without writing user paused", () => {
-    expect(appSrc).toMatch(/paused=\{paused \|\| howItWorksOpen \|\| glossaryOpen\}/);
+    expect(appSrc).toMatch(/paused=\{paused \|\| howItWorksOpen \|\| glossaryOpen \|\| userGuideOpen\}/);
     expect(appSrc).toMatch(/<TracerRuntimeControls[\s\S]*paused=\{paused\}/s);
     expect(appSrc).not.toMatch(/setPaused\(true\)/);
     expect(appSrc).not.toMatch(/setPaused\(howItWorksOpen/);
