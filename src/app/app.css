@@ -453,7 +453,7 @@ body:has(.app--landing) {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  max-width: 56rem;
+  max-width: 72rem;
   font-family: var(--font-sans);
   color: var(--color-text-primary);
 }
@@ -522,10 +522,35 @@ body:has(.app--landing) {
   color: var(--color-text-primary);
 }
 
+.landing__purpose-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.landing__purpose {
+  min-width: 0;
+}
+
+.landing__purpose-copy {
+  margin: 0;
+  max-width: 38rem;
+  font-size: var(--text-body);
+  line-height: var(--text-line-body);
+  color: var(--color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.landing__purpose-copy + .landing__purpose-copy {
+  margin-top: var(--space-4);
+}
+
 .landing__capabilities {
   display: flex;
   flex-direction: column;
   gap: 0;
+  min-width: 0;
 }
 
 .landing__capability-grid {
@@ -595,6 +620,13 @@ body:has(.app--landing) {
 @media (min-width: 640px) {
   .landing__capability-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .landing__purpose-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    column-gap: var(--space-5);
   }
 }
 

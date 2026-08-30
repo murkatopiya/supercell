@@ -8,6 +8,9 @@ import {
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
+  LANDING_WHY_EXISTS_CONNECTS,
+  LANDING_WHY_EXISTS_LEAD,
+  LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
 import { PUBLIC_VERSION_BADGE } from "./publicVersion.js";
 
@@ -69,22 +72,38 @@ export function LandingPage({
         </button>
       </div>
 
-      <section className="landing__capabilities" aria-labelledby="landing-capabilities-title">
-        <h2 id="landing-capabilities-title" className="landing__section-title">
-          What you can do
-        </h2>
-        <div className="landing__capability-grid">
-          {LANDING_CAPABILITIES.map((capability) => (
-            <article
-              key={capability.title}
-              className="ui-panel landing-capability"
-            >
-              <h3 className="landing-capability__title">{capability.title}</h3>
-              <p className="landing-capability__copy">{capability.copy}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <div className="landing__purpose-row">
+        <section
+          className="landing__purpose"
+          aria-labelledby="landing-purpose-title"
+        >
+          <h2 id="landing-purpose-title" className="landing__section-title">
+            {LANDING_WHY_EXISTS_TITLE}
+          </h2>
+          <p className="landing__purpose-copy">{LANDING_WHY_EXISTS_LEAD}</p>
+          <p className="landing__purpose-copy">{LANDING_WHY_EXISTS_CONNECTS}</p>
+        </section>
+
+        <section
+          className="landing__capabilities"
+          aria-labelledby="landing-capabilities-title"
+        >
+          <h2 id="landing-capabilities-title" className="landing__section-title">
+            What you can do
+          </h2>
+          <div className="landing__capability-grid">
+            {LANDING_CAPABILITIES.map((capability) => (
+              <article
+                key={capability.title}
+                className="ui-panel landing-capability"
+              >
+                <h3 className="landing-capability__title">{capability.title}</h3>
+                <p className="landing-capability__copy">{capability.copy}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
 
       <section
         className="ui-panel ui-panel--info landing__disclaimer"

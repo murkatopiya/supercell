@@ -10,6 +10,9 @@ import {
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
+  LANDING_WHY_EXISTS_CONNECTS,
+  LANDING_WHY_EXISTS_LEAD,
+  LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
 import { PUBLIC_VERSION, PUBLIC_VERSION_BADGE } from "./publicVersion.js";
 import {
@@ -20,6 +23,7 @@ import {
 } from "../explore/exploreEnvironmentIdentity.js";
 import landingSrc from "./LandingPage.tsx?raw";
 import identitySrc from "../explore/exploreEnvironmentIdentity.ts?raw";
+import { readFileSync } from "node:fs";
 
 function landingMarkup() {
   return renderToStaticMarkup(
@@ -30,6 +34,8 @@ function landingMarkup() {
     />,
   );
 }
+
+const appCss = readFileSync(new URL("./app.css", import.meta.url), "utf8");
 
 describe("LandingPage", () => {
   it("explains the current laboratory and marks it as a v0.1 research prototype", () => {
@@ -133,5 +139,52 @@ describe("LandingPage", () => {
     expect(html).toContain("landing__note--quiet");
     expect(html).not.toContain("unsupported");
     expect(html).not.toContain("mobile is not");
+  });
+
+  it("states why the laboratory exists and that it connects environment views to trajectory analysis", () => {
+    const html = landingMarkup();
+    expect(html).toContain(LANDING_WHY_EXISTS_TITLE);
+    expect(html).toContain("Why this exists");
+    expect(html).toContain(LANDING_WHY_EXISTS_LEAD);
+    expect(html).toContain(LANDING_WHY_EXISTS_CONNECTS);
+    expect(html).toContain("do not by themselves show");
+    expect(html).toContain("prescribed storm-local flow geometry");
+    expect(html).toContain("connects these views");
+    expect(html).toContain("passive tracer");
+    expect(html).toContain("Analysis T1");
+    expect(html).toContain("recorded trajectory");
+    expect(html).toContain("vector geometry");
+    expect(html).toContain("supported historical sample");
+    expect(html).toContain("sampled vertical-tilting diagnostic");
+    const whyCopy = `${LANDING_WHY_EXISTS_LEAD} ${LANDING_WHY_EXISTS_CONNECTS}`;
+    expect(whyCopy).not.toMatch(/forecast/i);
+    expect(whyCopy).not.toMatch(/predict/i);
+    expect(whyCopy).not.toMatch(/reconstruct/i);
+    expect(whyCopy).not.toMatch(/replay/i);
+    expect(whyCopy).not.toMatch(/parcel spin-up/i);
+    expect(whyCopy).not.toMatch(/tornadogenesis/i);
+    expect(whyCopy).not.toMatch(/real storm simulation/i);
+  });
+
+  it("places purpose beside capabilities on wide desktop without turning Why into a card", () => {
+    const html = landingMarkup();
+    const purposeStart = html.indexOf("landing__purpose-row");
+    const capabilitiesStart = html.indexOf("landing__capabilities");
+    const disclaimerStart = html.indexOf("landing__disclaimer");
+    expect(purposeStart).toBeGreaterThan(-1);
+    expect(capabilitiesStart).toBeGreaterThan(purposeStart);
+    expect(disclaimerStart).toBeGreaterThan(capabilitiesStart);
+    expect(html).toContain('class="landing__purpose"');
+    expect(html).not.toMatch(/class="[^"]*landing__purpose[^"]*ui-panel/);
+    expect(html).not.toMatch(/class="[^"]*ui-panel[^"]*landing__purpose/);
+    expect(appCss).toMatch(
+      /\.landing__purpose-row\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/,
+    );
+    expect(appCss).toMatch(
+      /@media \(min-width: 64rem\)[\s\S]*?\.landing__purpose-row[\s\S]*?grid-template-columns:/,
+    );
+    expect(appCss).toMatch(/\.app--landing\s*\{[^}]*max-width:\s*72rem/);
+    expect(landingSrc).toContain("landing__purpose-row");
+    expect(landingSrc).toContain("landing__disclaimer");
   });
 });

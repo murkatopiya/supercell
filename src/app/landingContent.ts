@@ -13,6 +13,14 @@ import {
 export const LANDING_LEDE =
   "An interactive kinematic laboratory for exploring how environmental wind and prescribed storm-local flow geometry shape tracer trajectories and vertical-tilting diagnostics.";
 
+export const LANDING_WHY_EXISTS_TITLE = "Why this exists";
+
+export const LANDING_WHY_EXISTS_LEAD =
+  "Environmental wind profiles and hodographs describe the surrounding environment, but they do not by themselves show how a trajectory passes through prescribed storm-local flow geometry — or why the sampled vertical-tilting diagnostic changes along that path.";
+
+export const LANDING_WHY_EXISTS_CONNECTS =
+  "Supercell Explorer connects these views. Follow a passive tracer through the laboratory, see where Analysis T1 changes along its recorded trajectory, and inspect the vector geometry behind any supported historical sample.";
+
 export const LANDING_CTA_LABEL = "Open Laboratory";
 
 export const LANDING_DISCLAIMER =
