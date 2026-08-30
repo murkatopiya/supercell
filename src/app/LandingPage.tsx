@@ -271,102 +271,104 @@ export function LandingPage({
               <span aria-hidden="true"> ↗</span>
             </a>
           </p>
-          <p className="landing__footer-line">{LANDING_FOOTER_PROJECT}</p>
         </div>
-        <details className="landing__attribution">
-          <summary className="landing__attribution-summary">
-            {LANDING_ATTRIBUTION_LABEL}
-          </summary>
-          <div className="ui-panel landing__attribution-panel">
-            <article className="landing__attribution-source">
-              <h3 className="landing__attribution-case">
-                {LANDING_ATTRIBUTION_ESC_CASES}
-              </h3>
-              <dl className="landing__attribution-fields">
-                <div className="landing__attribution-field">
-                  <dt>Dataset</dt>
-                  <dd>
-                    EOL{" "}
-                    <a
-                      className="landing__footer-link"
-                      href={EOL_SOUNDING_DATASET_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`EOL dataset ${EOL_SOUNDING_DATASET_ID} (opens in a new tab)`}
-                    >
-                      {EOL_SOUNDING_DATASET_ID}
-                      <span aria-hidden="true"> ↗</span>
-                    </a>
-                  </dd>
-                </div>
-                <div className="landing__attribution-field">
-                  <dt>System</dt>
-                  <dd>{EOL_SOUNDING_DATASET_NAME}</dd>
-                </div>
-                <div className="landing__attribution-field">
-                  <dt>DOI</dt>
-                  <dd>
-                    <a
-                      className="landing__footer-link"
-                      href={EOL_SOUNDING_DATASET_DOI_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`DOI ${EOL_SOUNDING_DATASET_DOI} (opens in a new tab)`}
-                    >
-                      {EOL_SOUNDING_DATASET_DOI}
-                      <span aria-hidden="true"> ↗</span>
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            </article>
-            <article className="landing__attribution-source">
-              <h3 className="landing__attribution-case">
-                {LANDING_ATTRIBUTION_MOORE_CASE}
-              </h3>
-              <dl className="landing__attribution-fields">
-                <div className="landing__attribution-field">
-                  <dt>Dataset</dt>
-                  <dd>
-                    <a
-                      className="landing__footer-link"
-                      href={IGRA_ARCHIVE_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${IGRA_ARCHIVE_SHORT_NAME} archive (opens in a new tab)`}
-                    >
-                      {IGRA_ARCHIVE_SHORT_NAME}
-                      <span aria-hidden="true"> ↗</span>
-                    </a>
-                  </dd>
-                </div>
-                <div className="landing__attribution-field">
-                  <dt>Station</dt>
-                  <dd>{IGRA_STATION_ID}</dd>
-                </div>
-                <div className="landing__attribution-field">
-                  <dt>ID</dt>
-                  <dd>{IGRA_DSI}</dd>
-                </div>
-                <div className="landing__attribution-field">
-                  <dt>DOI</dt>
-                  <dd>
-                    <a
-                      className="landing__footer-link"
-                      href={IGRA_ARCHIVE_DOI_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`DOI ${IGRA_ARCHIVE_DOI} (opens in a new tab)`}
-                    >
-                      {IGRA_ARCHIVE_DOI}
-                      <span aria-hidden="true"> ↗</span>
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            </article>
-          </div>
-        </details>
+        <div className="landing__footer-meta">
+          <p className="landing__footer-line">{LANDING_FOOTER_PROJECT}</p>
+          <details className="landing__attribution">
+            <summary className="landing__attribution-summary">
+              {LANDING_ATTRIBUTION_LABEL}
+            </summary>
+            <div className="ui-panel landing__attribution-panel">
+              <article className="landing__attribution-source">
+                <h3 className="landing__attribution-case">
+                  {LANDING_ATTRIBUTION_ESC_CASES}
+                </h3>
+                <dl className="landing__attribution-fields">
+                  <div className="landing__attribution-field">
+                    <dt>Dataset</dt>
+                    <dd>
+                      EOL{" "}
+                      <a
+                        className="landing__footer-link"
+                        href={EOL_SOUNDING_DATASET_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`EOL dataset ${EOL_SOUNDING_DATASET_ID} (opens in a new tab)`}
+                      >
+                        {EOL_SOUNDING_DATASET_ID}
+                        <span aria-hidden="true"> ↗</span>
+                      </a>
+                    </dd>
+                  </div>
+                  <div className="landing__attribution-field">
+                    <dt>System</dt>
+                    <dd>{EOL_SOUNDING_DATASET_NAME}</dd>
+                  </div>
+                  <div className="landing__attribution-field">
+                    <dt>DOI</dt>
+                    <dd>
+                      <a
+                        className="landing__footer-link"
+                        href={EOL_SOUNDING_DATASET_DOI_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`DOI ${EOL_SOUNDING_DATASET_DOI} (opens in a new tab)`}
+                      >
+                        {EOL_SOUNDING_DATASET_DOI}
+                        <span aria-hidden="true"> ↗</span>
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+              </article>
+              <article className="landing__attribution-source">
+                <h3 className="landing__attribution-case">
+                  {LANDING_ATTRIBUTION_MOORE_CASE}
+                </h3>
+                <dl className="landing__attribution-fields">
+                  <div className="landing__attribution-field">
+                    <dt>Dataset</dt>
+                    <dd>
+                      <a
+                        className="landing__footer-link"
+                        href={IGRA_ARCHIVE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${IGRA_ARCHIVE_SHORT_NAME} archive (opens in a new tab)`}
+                      >
+                        {IGRA_ARCHIVE_SHORT_NAME}
+                        <span aria-hidden="true"> ↗</span>
+                      </a>
+                    </dd>
+                  </div>
+                  <div className="landing__attribution-field">
+                    <dt>Station</dt>
+                    <dd>{IGRA_STATION_ID}</dd>
+                  </div>
+                  <div className="landing__attribution-field">
+                    <dt>ID</dt>
+                    <dd>{IGRA_DSI}</dd>
+                  </div>
+                  <div className="landing__attribution-field">
+                    <dt>DOI</dt>
+                    <dd>
+                      <a
+                        className="landing__footer-link"
+                        href={IGRA_ARCHIVE_DOI_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`DOI ${IGRA_ARCHIVE_DOI} (opens in a new tab)`}
+                      >
+                        {IGRA_ARCHIVE_DOI}
+                        <span aria-hidden="true"> ↗</span>
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+              </article>
+            </div>
+          </details>
+        </div>
       </footer>
     </main>
   );
