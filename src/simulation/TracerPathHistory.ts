@@ -282,6 +282,32 @@ export class TracerPathHistory {
   }
 
   /**
+   * Visit one lane's recorded world positions in chronological order
+   * without copying samples.
+   *
+   * Coordinates are passed as numbers, so no internal object escapes and
+   * there is nothing for the visitor to retain or mutate. Intended for
+   * hot-path observers that would otherwise pay pointsFor's defensive
+   * copy on every pointer event or frame; pointsFor remains the copying
+   * snapshot API. Does not interpolate, decimate, or skip samples.
+   */
+  forEachPoint(
+    index: number,
+    visit: (x: number, y: number, z: number, historyIndex: number) => void,
+  ): void {
+    const history = this.histories[index];
+    if (history === undefined) {
+      throw new Error(
+        `TracerPathHistory: tracer index ${index} out of range`,
+      );
+    }
+    for (let i = 0; i < history.length; i++) {
+      const position = history[i]!.position;
+      visit(position.x, position.y, position.z, i);
+    }
+  }
+
+  /**
    * Read-only snapshot of one tracer's path samples.
    * Copied points and times; not the internal array.
    */

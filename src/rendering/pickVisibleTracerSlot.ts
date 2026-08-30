@@ -34,6 +34,103 @@ export interface ScreenPickCandidate {
   readonly depth: number;
 }
 
+/** Caller-owned projection result. Written in place; never retained. */
+export interface CanvasPointProjectionOut {
+  x: number;
+  y: number;
+  depth: number;
+}
+
+/**
+ * Camera-invariant half of projectWorldPointToCanvasPixels, resolved once.
+ *
+ * The camera world matrix, world position, and view direction do not change
+ * while one synchronous pick runs, so hoisting them out of a per-point loop
+ * is arithmetically identical to recomputing them for every point. Rejection
+ * of non-finite input, points behind the camera, and points outside the NDC
+ * frustum is unchanged.
+ */
+export interface CanvasPointProjector {
+  /**
+   * Write one world point's CSS-pixel projection into `out` and return true.
+   * Returns false and leaves `out` untouched when the point is rejected.
+   */
+  projectInto(
+    worldX: number,
+    worldY: number,
+    worldZ: number,
+    out: CanvasPointProjectionOut,
+  ): boolean;
+}
+
+/**
+ * Null when the canvas size is unusable. Reuses two scratch vectors, so a
+ * projector must not be shared across concurrent traversals.
+ */
+export function createCanvasPointProjector(
+  camera: THREE.Camera,
+  canvasWidthCssPx: number,
+  canvasHeightCssPx: number,
+): CanvasPointProjector | null {
+  if (
+    !(canvasWidthCssPx > 0) ||
+    !(canvasHeightCssPx > 0) ||
+    !Number.isFinite(canvasWidthCssPx) ||
+    !Number.isFinite(canvasHeightCssPx)
+  ) {
+    return null;
+  }
+
+  camera.updateMatrixWorld();
+
+  const cameraPosition = new THREE.Vector3();
+  camera.getWorldPosition(cameraPosition);
+  const viewDirection = new THREE.Vector3();
+  camera.getWorldDirection(viewDirection);
+  const depthPoint = new THREE.Vector3();
+  const ndcPoint = new THREE.Vector3();
+
+  return {
+    projectInto(worldX, worldY, worldZ, out): boolean {
+      if (
+        !Number.isFinite(worldX) ||
+        !Number.isFinite(worldY) ||
+        !Number.isFinite(worldZ)
+      ) {
+        return false;
+      }
+
+      const depth = depthPoint
+        .set(worldX, worldY, worldZ)
+        .sub(cameraPosition)
+        .dot(viewDirection);
+      if (!(depth > 0) || !Number.isFinite(depth)) {
+        return false;
+      }
+
+      const ndc = ndcPoint.set(worldX, worldY, worldZ).project(camera);
+      if (
+        !Number.isFinite(ndc.x) ||
+        !Number.isFinite(ndc.y) ||
+        !Number.isFinite(ndc.z) ||
+        ndc.x < -1 ||
+        ndc.x > 1 ||
+        ndc.y < -1 ||
+        ndc.y > 1 ||
+        ndc.z < -1 ||
+        ndc.z > 1
+      ) {
+        return false;
+      }
+
+      out.x = ((ndc.x + 1) / 2) * canvasWidthCssPx;
+      out.y = ((1 - ndc.y) / 2) * canvasHeightCssPx;
+      out.depth = depth;
+      return true;
+    },
+  };
+}
+
 /**
  * Project a world point into CSS canvas pixels using the live camera.
  * Rejects non-finite input, points behind the camera, and points outside
@@ -46,10 +143,6 @@ export function projectWorldPointToCanvasPixels(
   canvasHeightCssPx: number,
 ): ProjectedCanvasPoint | null {
   if (
-    !(canvasWidthCssPx > 0) ||
-    !(canvasHeightCssPx > 0) ||
-    !Number.isFinite(canvasWidthCssPx) ||
-    !Number.isFinite(canvasHeightCssPx) ||
     !Number.isFinite(world.x) ||
     !Number.isFinite(world.y) ||
     !Number.isFinite(world.z)
@@ -57,38 +150,19 @@ export function projectWorldPointToCanvasPixels(
     return null;
   }
 
-  camera.updateMatrixWorld();
-
-  const worldPoint = new THREE.Vector3(world.x, world.y, world.z);
-  const cameraPosition = new THREE.Vector3();
-  camera.getWorldPosition(cameraPosition);
-  const viewDirection = new THREE.Vector3();
-  camera.getWorldDirection(viewDirection);
-  const depth = worldPoint.clone().sub(cameraPosition).dot(viewDirection);
-  if (!(depth > 0) || !Number.isFinite(depth)) {
+  const projector = createCanvasPointProjector(
+    camera,
+    canvasWidthCssPx,
+    canvasHeightCssPx,
+  );
+  if (projector === null) {
     return null;
   }
 
-  const ndc = worldPoint.project(camera);
-  if (
-    !Number.isFinite(ndc.x) ||
-    !Number.isFinite(ndc.y) ||
-    !Number.isFinite(ndc.z) ||
-    ndc.x < -1 ||
-    ndc.x > 1 ||
-    ndc.y < -1 ||
-    ndc.y > 1 ||
-    ndc.z < -1 ||
-    ndc.z > 1
-  ) {
-    return null;
-  }
-
-  return {
-    x: ((ndc.x + 1) / 2) * canvasWidthCssPx,
-    y: ((1 - ndc.y) / 2) * canvasHeightCssPx,
-    depth,
-  };
+  const projected: CanvasPointProjectionOut = { x: 0, y: 0, depth: 0 };
+  return projector.projectInto(world.x, world.y, world.z, projected)
+    ? projected
+    : null;
 }
 
 /**

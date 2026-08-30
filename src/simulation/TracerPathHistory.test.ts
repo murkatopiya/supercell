@@ -484,6 +484,48 @@ describe("TracerPathHistory", () => {
     expect(history.pointsFor(0)).toEqual([{ x: 7, y: 8, z: 9 }]);
   });
 
+  it("forEachPoint visits a lane chronologically and agrees with pointsFor", () => {
+    const particles = [particle(0, 0, 0), particle(10, 0, 0)];
+    const history = new TracerPathHistory(2);
+    history.captureInitial(particles, 0);
+    particles[0]!.position = { x: 1, y: 2, z: 3 };
+    history.recordAfterStep(particles, 0.1);
+    particles[0]!.position = { x: 4, y: 5, z: 6 };
+    history.recordAfterStep(particles, 0.2);
+
+    const visited: Array<{
+      x: number;
+      y: number;
+      z: number;
+      historyIndex: number;
+    }> = [];
+    history.forEachPoint(0, (x, y, z, historyIndex) => {
+      visited.push({ x, y, z, historyIndex });
+    });
+
+    expect(visited).toEqual([
+      { x: 0, y: 0, z: 0, historyIndex: 0 },
+      { x: 1, y: 2, z: 3, historyIndex: 1 },
+      { x: 4, y: 5, z: 6, historyIndex: 2 },
+    ]);
+    expect(visited.map(({ x, y, z }) => ({ x, y, z }))).toEqual(
+      history.pointsFor(0),
+    );
+  });
+
+  it("forEachPoint visits nothing for a cleared lane and rejects bad index", () => {
+    const history = new TracerPathHistory(1);
+    history.captureInitial([particle(1, 1, 1)], 0);
+    history.clear();
+
+    let visits = 0;
+    history.forEachPoint(0, () => {
+      visits += 1;
+    });
+    expect(visits).toBe(0);
+    expect(() => history.forEachPoint(1, () => {})).toThrow(/out of range/);
+  });
+
   it("removeLastLane drops only the last occupancy lane", () => {
     const history = new TracerPathHistory(0);
     history.appendParticle(particle(1, 0, 0), 0);

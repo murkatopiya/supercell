@@ -645,7 +645,9 @@ describe("I2 wiring: overlay observe-only, picking unchanged, I3 unwired", () =>
     expect(trailSrc).toMatch(/createTrailLine/);
     expect(pickSrc).not.toMatch(/trajectoryTiltingOverlay/);
     expect(pickSrc).not.toMatch(/analysisTilting/);
-    expect(pickSrc).toMatch(/pathHistory\.pointsFor/);
+    // Picking reads recorded path history directly; the non-copying
+    // traversal replaced pointsFor here for cost, not for source.
+    expect(pickSrc).toMatch(/pathHistory\.forEachPoint/);
     expect(viewportSrc).toMatch(/pickPathHistorySampleAtClientPoint/);
     expect(viewportSrc).toMatch(/syncFromPathHistory/);
     expect(viewportSrc).toMatch(/syncAnalysisTiltingOverlays/);
