@@ -986,33 +986,38 @@ tests pass.
 
 Documentation is part of the project's state.
 
-The repository should eventually contain:
+The live documentation layout is:
 
 ```text
 docs/
-├── CONCEPT.md
-├── ARCHITECTURE.md
-├── PHYSICS.md
-├── PROJECT_BACKLOG.md   // deferred-work index; not authorization
-├── ROADMAP.md            // not present; not created by the backlog
+├── README.md             // entry map; not SoT, not authorization
+├── CONCEPT.md            // long-term vision; not shipped scope
+├── ARCHITECTURE.md       // this file; consumer boundary
+├── KNOWN_LIMITATIONS.md  // limitations of the current prototype
+├── PROJECT_BACKLOG.md    // deferred-work index; not authorization
 │
-├── physics/
-│   ├── 00-coordinate-system.md
-│   ├── 01-parcel-basics.md
-│   ├── 02-inflow.md
-│   ├── 03-buoyancy-updraft.md
-│   ├── 04-wind-shear.md
-│   ├── 05-vorticity.md
-│   ├── 06-tilting.md
-│   ├── 07-stretching.md
-│   └── ...
-│
-├── decisions/
-│   └── ADR-xxx-*.md
-│
-└── validation/
-    └── ...
+├── physics/       // physics + diagnostic SoT, numbered 00–23
+├── architecture/  // per-feature architecture SoT and checkpoints
+├── rendering/     // rendering contracts and demo wiring
+├── ui/            // UX / UI SoT
+├── research/      // dated investigations and data audits
+├── reviews/       // dated review records; explicitly not SoT
+└── ideas/         // unadopted sketches; not SoT
 ```
+
+An earlier documentation plan listed filenames that are **not** part
+of this layout and are not planned: `PHYSICS.md`, `ROADMAP.md`,
+`decisions/ADR-*`, `validation/`, `physics/06-tilting.md`, and
+`physics/07-stretching.md`.
+
+Live `physics/` numbering is its own sequence and does not follow
+that plan: `06` is horizontal vorticity and `07` is storm-relative
+wind. Diagnostic tilting is `physics/22-diagnostic-tilting-tendency.md`.
+Stretching remains NOT INTRODUCED. Per-decision records live inside
+the owning SoT rather than in a separate `decisions/` tree, and
+validation records live in `research/` and `reviews/`.
+See `docs/architecture/25-tilting-stretching-direction-revalidation.md`
+§4.15 and `docs/rendering/09-deep-environmental-profile-demo.md` §2.
 
 Important architectural or physical decisions must be documented.
 

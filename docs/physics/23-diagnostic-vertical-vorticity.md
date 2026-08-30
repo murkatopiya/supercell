@@ -1080,8 +1080,13 @@ IMPLEMENTATION
   SCIENTIFIC DEMO VALIDATION COMPLETE
   Candidate A VALIDATED HEADLESS / DEMO
 
-STRETCHING / T2 / ω→V / Ω / V_total / UI
+STRETCHING / T2 / ω→V / Ω / V_total
   UNCHANGED / NOT STARTED
+
+UI
+  ω_y,current is presented by Point diagnostics
+  (src/ui/tracer/PointDiagnosticsPanel.tsx).
+  Presentation is not owned by this file (§5).
 ```
 
 Do not start stretching, T2, or `ω → V` because this file

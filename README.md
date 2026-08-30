@@ -175,6 +175,7 @@ version is not a scientific-validity or product-maturity claim.
 
 | Document | Role |
 | --- | --- |
+| [`docs/README.md`](docs/README.md) | Documentation entry map and authority rules |
 | [`docs/CONCEPT.md`](docs/CONCEPT.md) | Long-term vision; not the shipped V1 |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Consumer boundary |
 | [`docs/architecture/38-v1-scope-checkpoint.md`](docs/architecture/38-v1-scope-checkpoint.md) | V1 promise |

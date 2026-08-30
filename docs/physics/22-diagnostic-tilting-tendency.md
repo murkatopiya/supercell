@@ -12,7 +12,13 @@ T1 HEADLESS CAPABILITY IMPLEMENTED.
 SCIENTIFIC DEMO VALIDATION:
 `docs/research/2026-08-20-t1-demo-field-validation.md`.
 T1 remains CLOSED as the current headless diagnostic
-capability. UI NOT STARTED.
+capability.
+Source `DiagnosticTiltingTendency` is an internal/runtime
+diagnostic and has no public readout.
+Public T1 authority is ANALYSIS T1, owned by
+`docs/architecture/62-trajectory-tilting-explorer-v1.md`.
+The T1 identity presented there is the identity derived in
+this file; this file does not own that presentation.
 Post-T1 physics direction:
 `docs/architecture/27-post-t1-physics-direction-checkpoint.md`.
 Sibling diagnostic (current prescribed `ω_y`, not T1):
@@ -1364,7 +1370,9 @@ NEW PROJECT DERIVATION: §§5–8, 10–13, 19–20, and the T1 formula.
 ```text
 T1 architecture SoT          (successor: docs/architecture/26)
 production diagnostic API    DONE — headless DiagnosticTiltingTendency
-Inspector / visualization    UI NOT STARTED
+Source-T1 public readout     NOT PRESENT — Source T1 is internal only
+Analysis-T1 presentation     NOT DEFERRED — owned by
+                             docs/architecture/62
 stretching physics SoT
 prognostic ω_y
 ω → V closure
@@ -1472,7 +1480,8 @@ implementation:       Slice 1 COMPLETE
                       T1 HEADLESS CAPABILITY IMPLEMENTED
                       SCIENTIFIC DEMO VALIDATION COMPLETE
                       docs/research/2026-08-20-t1-demo-field-validation.md
-                      UI NOT STARTED
+                      Source-T1 public readout: NOT PRESENT
+                      Analysis-T1 presentation: docs/architecture/62
                       T1 CLOSED as headless diagnostic
                       post-T1 direction: docs/architecture/27
 ```
