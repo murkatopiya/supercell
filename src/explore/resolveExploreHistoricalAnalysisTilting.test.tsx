@@ -692,9 +692,12 @@ describe("I3 wiring: glyphs, picking, Source diagnostics, no Slice G", () => {
     expect(viewportSrc).toMatch(/pickPathHistorySampleAtClientPoint/);
   });
 
-  it("AJ Source Point Diagnostics remain the Source laboratory readout", () => {
+  it("AJ Point diagnostics is not a public T1 readout; Source T1 remains internal", () => {
     expect(appSrc).toMatch(/PointDiagnosticsPanel/);
-    expect(pointDiagnosticsPanelSrc).toMatch(/T_tilt,y/);
+    expect(pointDiagnosticsPanelSrc).not.toMatch(/T_tilt,y/);
+    expect(pointDiagnosticsPanelSrc).not.toMatch(
+      /Vertical-vorticity tilting tendency/,
+    );
     expect(pointDiagnosticsSrc).toMatch(/tiltingTendency\.sample/);
     expect(pointDiagnosticsSrc).not.toMatch(/queryAnalysisTiltingExplanationAt/);
     expect(pointDiagnosticsPanelSrc).not.toMatch(

@@ -429,7 +429,8 @@ no glyph-selection regression (36 screen-space contract)
 | Record `simulationTime` on path samples | **IMPLEMENTED** |
 | Pathline click → nearest historical sample | **IMPLEMENTED** |
 | Historical Inspector L1/L2 (recomputed seven operands + speed) | **IMPLEMENTED** |
-| Historical Point diagnostics `T_tilt,y` / `ω_y,current` | **IMPLEMENTED** |
+| Historical Point diagnostics `ω_y,current` | **IMPLEMENTED** |
+| Historical Point diagnostics public `T_tilt,y` | **SUPERSEDED** by Architecture 62 public T1 authority |
 | CURRENT vs HISTORICAL label | **IMPLEMENTED** |
 | Presentation-only path-sample marker | **IMPLEMENTED** |
 | Side-by-side two historical points | LATER |

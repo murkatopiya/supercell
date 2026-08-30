@@ -129,7 +129,8 @@ describe("Explore point-diagnostics App wiring", () => {
         lab.simulation.clock.time,
       ),
     );
-    expect(html).toContain("T_tilt,y");
+    expect(html).not.toContain("T_tilt,y");
+    expect(html).not.toContain("Vertical-vorticity tilting tendency");
     expect(html).toContain("ω_y,current");
     expect(html).not.toContain(
       "Select a tracer to sample diagnostics at its current position.",

@@ -25,7 +25,7 @@ export interface TrajectoryTiltingVerificationPanelProps {
 /**
  * Read-only Analysis T1 numeric verification / provenance readout.
  * Consumes a packaged verification model. Does not query Analysis.
- * Architecture 62 Slice E. Not Point Diagnostics Source T1.
+ * Architecture 62 Slice E. Public T1 authority; not Point diagnostics.
  */
 export function TrajectoryTiltingVerificationPanel({
   model,

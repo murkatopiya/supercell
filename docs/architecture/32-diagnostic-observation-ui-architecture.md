@@ -3,6 +3,7 @@
 **Status:** ARCHITECTURE / PRODUCT SoT /
 SLICE 1 COMPLETE / SLICE 2 COMPLETE /
 Explore point-diagnostics v1 IMPLEMENTED /
+public T1 display SUPERSEDED by Architecture 62 /
 Guided mount DEFERRED / NOT IMPLEMENTED /
 overlay/slice NOT IMPLEMENTED
 **Scope:** point-first diagnostic *observation* UI for two
@@ -13,6 +14,11 @@ contract, pedagogy, and domain/app/presentation flow.
 Not a physics SoT. Not a visualization/overlay SoT.
 Not Inspector L2. Not a Guided catalog expansion.
 Not `ROADMAP.md`.
+**Public T1:** Architecture 62 is the public T1 authority.
+Point diagnostics public readout is `ω_y,current` only.
+`DiagnosticTiltingTendency` remains the internal Source
+T1 runtime. This file does not restore Source T1 as a
+public Point diagnostic.
 **Physics:** T1 and Candidate A remain CLOSED. Model class
 remains prescribed kinematic laboratory (`30`). This file
 does not reopen `22`, `23`, `26`, `28`, `30`, or `31`.
@@ -38,6 +44,15 @@ checkpoint required. Slice 1 and Slice 2 are complete.
 Explore point-diagnostics v1 is implemented. Guided mount
 remains deferred / not implemented. Overlay/slice is not
 implemented.
+
+Successor public T1 authority:
+
+```text
+docs/architecture/62-trajectory-tilting-explorer-v1.md
+```
+
+Architecture 62 is the public T1 SoT. Public Point
+diagnostics does not display Source `T_tilt,y`.
 
 Successor post-point-diagnostics product direction:
 
@@ -69,6 +84,7 @@ docs/physics/23-diagnostic-vertical-vorticity.md
 docs/research/2026-08-20-t1-demo-field-validation.md
 docs/research/2026-08-20-candidate-a-demo-field-validation.md
 docs/architecture/52-historical-path-probe-architecture.md
+docs/architecture/62-trajectory-tilting-explorer-v1.md
 ```
 
 Keep these roles distinct:

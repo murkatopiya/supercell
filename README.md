@@ -86,11 +86,14 @@ Inspector **Why this motion?** lists:
 
 ## Point diagnostics
 
-At a selected Explore parcel, inspector can show local
-motion diagnostics. Trajectory Analysis T1 is a
-vertical-tilting diagnostic along the recorded path. It is
-not parcel spin-up, not Δω_y, and does not generate current
-ω_y.
+At a selected Explore parcel, Point diagnostics shows
+current world-vertical vorticity `ω_y,current` sampled at
+that point. Public T1 is Analysis T1 along the recorded
+path, not a Source Point readout.
+
+Trajectory Analysis T1 is a vertical-tilting diagnostic
+along the recorded path. It is not parcel spin-up, not
+Δω_y, and does not generate current ω_y.
 
 See [`docs/physics/22-diagnostic-tilting-tendency.md`](docs/physics/22-diagnostic-tilting-tendency.md)
 and [`docs/physics/23-diagnostic-vertical-vorticity.md`](docs/physics/23-diagnostic-vertical-vorticity.md).

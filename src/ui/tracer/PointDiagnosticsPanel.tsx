@@ -11,17 +11,16 @@ export interface PointDiagnosticsPanelProps {
   mode?: InspectionSampleMode;
 }
 
-const TILTING_LABEL = "Vertical-vorticity tilting tendency";
-const TILTING_SYMBOL = "T_tilt,y";
-const TILTING_UNITS = "s⁻²";
 const VORTICITY_LABEL = "Current world-vertical vorticity";
 const VORTICITY_SYMBOL = "ω_y,current";
 const VORTICITY_UNITS = "s⁻¹";
 
 /**
- * Explore-only presentational readout for T1 and Candidate A.
+ * Explore-only presentational readout for Candidate A.
+ * Public T1 authority is Architecture 62 Analysis T1, not this panel.
  * Observation in, DOM out. Does not sample fields.
  * docs/architecture/32-diagnostic-observation-ui-architecture.md
+ * docs/architecture/62-trajectory-tilting-explorer-v1.md
  */
 export function PointDiagnosticsPanel({
   observation,
@@ -71,31 +70,16 @@ function PointDiagnosticsBody({
           : "Sampled from the laboratory field at this marker. Not stored on the tracer."}
       </p>
       <DiagnosticQuantity
-        label={TILTING_LABEL}
-        symbol={TILTING_SYMBOL}
-        units={TILTING_UNITS}
-        value={observation.tiltingTendency}
-      />
-      <DiagnosticQuantity
         label={VORTICITY_LABEL}
         symbol={VORTICITY_SYMBOL}
         units={VORTICITY_UNITS}
         value={observation.currentVerticalVorticity}
       />
       <div className="point-diagnostics__disclaimer">
-        <p>These are different quantities.</p>
         <p>
-          T_tilt,y is a tilting tendency (s⁻²): where environmental horizontal
-          vorticity and the updraft gradient would tend to produce
-          world-vertical vorticity.
-        </p>
-        <p>
-          ω_y,current is world-vertical vorticity that already exists in current
-          V_total (s⁻¹). In this laboratory it is prescribed through Ω.
-        </p>
-        <p>
-          T1 does not generate ω_y,current. Same sign at this point is not
-          causation.
+          This is current world-vertical vorticity already present in the
+          prescribed laboratory field. It is not a prognostic parcel-vorticity
+          state.
         </p>
       </div>
     </>

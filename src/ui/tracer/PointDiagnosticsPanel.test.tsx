@@ -68,60 +68,31 @@ describe("PointDiagnosticsPanel", () => {
     );
     expect(quantityBlocks(html)).toHaveLength(0);
     expect(html).not.toContain("T_tilt,y");
+    expect(html).not.toContain("Vertical-vorticity tilting tendency");
     expect(html).not.toContain("ω_y,current");
     expect(html).not.toContain("s⁻²");
     expect(html).not.toContain("s⁻¹");
     expect(html).not.toContain("2.33");
     expect(html).not.toContain("positive");
     expect(html).not.toContain("negative");
-    expect(html).not.toContain("These are different quantities.");
   });
 
-  it("renders positive T1 with label, symbol, scientific value, units, and sign", () => {
+  it("does not render legacy Source T1 even when the observation carries it", () => {
     const html = renderToStaticMarkup(
       <PointDiagnosticsPanel
         observation={observationFixture({ tiltingTendency: 2.33e-5 })}
       />,
     );
-    const [t1] = quantityBlocks(html);
-    expect(t1).toContain("Vertical-vorticity tilting tendency");
-    expect(t1).toContain("T_tilt,y");
-    expect(t1).toContain("2.33×10⁻⁵");
-    expect(t1).toContain("s⁻²");
-    expect(t1).toContain("positive");
-    expect(html).not.toContain("rotation strength");
-    expect(html).not.toContain("mesocyclone");
-    expect(html).not.toContain("generated spin");
+    expect(html).not.toContain("Vertical-vorticity tilting tendency");
+    expect(html).not.toContain("T_tilt,y");
+    expect(html).not.toContain("2.33×10⁻⁵");
+    expect(html).not.toContain("s⁻²");
+    expect(html).not.toContain("T1 does not generate");
+    expect(html).not.toContain("These are different quantities.");
+    expect(quantityBlocks(html)).toHaveLength(1);
   });
 
-  it("renders negative T1 with the minus sign and the word negative", () => {
-    const html = renderToStaticMarkup(
-      <PointDiagnosticsPanel
-        observation={observationFixture({ tiltingTendency: -1.35e-5 })}
-      />,
-    );
-    const [t1] = quantityBlocks(html);
-    expect(t1).toContain("-1.35×10⁻⁵");
-    expect(t1).toContain("negative");
-    expect(t1).not.toContain("positive");
-    expect(t1).not.toContain(">zero<");
-  });
-
-  it("renders exact-zero T1 as 0 and zero, never -0", () => {
-    const html = renderToStaticMarkup(
-      <PointDiagnosticsPanel
-        observation={observationFixture({ tiltingTendency: -0 })}
-      />,
-    );
-    const [t1] = quantityBlocks(html);
-    expect(t1).toContain(`class="point-diagnostics__value">0<`);
-    expect(t1).toContain("zero");
-    expect(t1).not.toContain("-0");
-    expect(t1).not.toContain("0.00×10");
-    expect(t1).not.toMatch(/point-diagnostics__value">-</);
-  });
-
-  it("renders positive, negative, and zero Candidate A independently of T1", () => {
+  it("renders positive, negative, and zero Candidate A", () => {
     const positive = renderToStaticMarkup(
       <PointDiagnosticsPanel
         observation={observationFixture({
@@ -147,7 +118,7 @@ describe("PointDiagnosticsPanel", () => {
       />,
     );
 
-    const [, aPositive] = quantityBlocks(positive);
+    const [aPositive] = quantityBlocks(positive);
     expect(aPositive).toContain("Current world-vertical vorticity");
     expect(aPositive).toContain("ω_y,current");
     expect(aPositive).toContain("1.00×10⁻²");
@@ -156,18 +127,18 @@ describe("PointDiagnosticsPanel", () => {
     expect(aPositive).not.toContain("cyclonic");
     expect(aPositive).not.toContain("rotation strength");
 
-    const [, aNegative] = quantityBlocks(negative);
+    const [aNegative] = quantityBlocks(negative);
     expect(aNegative).toContain("-1.35×10⁻³");
     expect(aNegative).toContain("negative");
     expect(aNegative).toContain("s⁻¹");
 
-    const [, aZero] = quantityBlocks(zero);
+    const [aZero] = quantityBlocks(zero);
     expect(aZero).toContain(`class="point-diagnostics__value">0<`);
     expect(aZero).toContain("zero");
     expect(aZero).not.toContain("-0");
   });
 
-  it("keeps a tiny finite nonzero diagnostic in scientific notation", () => {
+  it("keeps a tiny finite nonzero vorticity in scientific notation", () => {
     const html = renderToStaticMarkup(
       <PointDiagnosticsPanel
         observation={observationFixture({
@@ -176,16 +147,14 @@ describe("PointDiagnosticsPanel", () => {
         })}
       />,
     );
-    const [t1, candidateA] = quantityBlocks(html);
-    expect(t1).toContain("2.33×10⁻²⁰");
-    expect(t1).toContain("positive");
-    expect(t1).not.toContain(`class="point-diagnostics__value">0<`);
+    const [candidateA] = quantityBlocks(html);
     expect(candidateA).toContain("-4.56×10⁻¹⁸");
     expect(candidateA).toContain("negative");
     expect(candidateA).not.toContain(`class="point-diagnostics__value">0<`);
+    expect(html).not.toContain("2.33×10⁻²⁰");
   });
 
-  it("renders both diagnostics from the same observation DTO", () => {
+  it("renders ω_y,current from the observation DTO", () => {
     const observation = observationFixture({
       tiltingTendency: -1.35e-5,
       currentVerticalVorticity: 3.03e-3,
@@ -194,26 +163,26 @@ describe("PointDiagnosticsPanel", () => {
       <PointDiagnosticsPanel observation={observation} />,
     );
     const blocks = quantityBlocks(html);
-    expect(blocks).toHaveLength(2);
-    expect(blocks[0]).toContain("T_tilt,y");
-    expect(blocks[0]).toContain("-1.35×10⁻⁵");
-    expect(blocks[0]).toContain("s⁻²");
-    expect(blocks[1]).toContain("ω_y,current");
-    expect(blocks[1]).toContain("3.03×10⁻³");
-    expect(blocks[1]).toContain("s⁻¹");
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0]).toContain("ω_y,current");
+    expect(blocks[0]).toContain("3.03×10⁻³");
+    expect(blocks[0]).toContain("s⁻¹");
+    expect(html).not.toContain("T_tilt,y");
+    expect(html).not.toContain("-1.35×10⁻⁵");
     expect(html).toContain("Sampled from the laboratory field at this marker.");
   });
 
-  it("keeps the anti-claim copy visible whenever values are shown", () => {
+  it("explains ω_y,current without anti-causation copy that assumes public T1", () => {
     const html = renderToStaticMarkup(
       <PointDiagnosticsPanel observation={observationFixture()} />,
     );
-    expect(html).toContain("These are different quantities.");
-    expect(html).toContain("T_tilt,y is a tilting tendency");
-    expect(html).toContain("ω_y,current is world-vertical vorticity that already");
-    expect(html).toContain("prescribed through Ω");
-    expect(html).toContain("T1 does not generate ω_y,current");
-    expect(html).toContain("Same sign at this point is not causation.");
+    expect(html).toContain(
+      "This is current world-vertical vorticity already present in the prescribed laboratory field.",
+    );
+    expect(html).toContain("It is not a prognostic parcel-vorticity state.");
+    expect(html).not.toContain("T1 does not generate ω_y,current");
+    expect(html).not.toContain("These are different quantities.");
+    expect(html).not.toContain("T_tilt,y is a tilting tendency");
     expect(html).not.toContain("T1 creates");
     expect(html).not.toContain("explains the chimney");
   });
@@ -230,7 +199,8 @@ describe("PointDiagnosticsPanel", () => {
       "Sampled at a past recorded position/time from the laboratory field.",
     );
     expect(html).toContain("The tracer was not rewound.");
-    expect(html).toContain("T_tilt,y");
+    expect(html).toContain("ω_y,current");
+    expect(html).not.toContain("T_tilt,y");
     expect(html).not.toContain(
       "Sampled from the laboratory field at this marker.",
     );

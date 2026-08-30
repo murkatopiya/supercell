@@ -184,6 +184,8 @@ describe("historical path probe App wiring", () => {
     );
     expect(html).toContain("HISTORICAL PATH SAMPLE");
     expect(html).toContain("The tracer was not rewound");
+    expect(html).not.toContain("T_tilt,y");
+    expect(html).toContain("ω_y,current");
 
     resetExploreLab(lab);
     expect(

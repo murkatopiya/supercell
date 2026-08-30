@@ -235,7 +235,8 @@ describe("Explore inspector collapse V1", () => {
     const button = toggleNamed(container, "Point diagnostics");
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(collapsed.hidden).toBe(false);
-    expect(collapsed.textContent).toContain("T_tilt,y");
+    expect(collapsed.textContent).toContain("ω_y,current");
+    expect(collapsed.textContent).not.toContain("T_tilt,y");
     unmount();
   });
 
@@ -295,7 +296,8 @@ describe("Explore inspector collapse V1", () => {
     expect(container.textContent).toContain("HISTORICAL PATH SAMPLE");
     expect(container.textContent).toContain("Tracer #2");
     expect(container.textContent).toContain("The tracer was not rewound");
-    expect(container.textContent).toContain("T_tilt,y");
+    expect(container.textContent).toContain("ω_y,current");
+    expect(container.textContent).not.toContain("T_tilt,y");
     expect(collapseSrc).not.toMatch(/HistoricalPathProbe/);
     expect(collapseSrc).not.toMatch(/TracerSelection/);
     expect(collapseSrc).not.toMatch(/setInspection/);

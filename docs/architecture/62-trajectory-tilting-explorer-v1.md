@@ -26,7 +26,10 @@ Landing Integration Slice I3 (exact historical probe
 verification + Slice F what-if) is IMPLEMENTED / ACCEPTED.
 Feature Architecture 62 V1 is INTEGRATED / COMPLETE
 except explicitly deferred Slice G. Slice G remains
-NOT STARTED / DEFERRED / NOT AUTHORIZED. Numeric
+NOT STARTED / DEFERRED / NOT AUTHORIZED.
+**Public T1 authority:** ANALYSIS T1. Legacy Source
+`DiagnosticTiltingTendency` remains an internal/runtime
+diagnostic. It is not a public T1 readout. Numeric
 `T1_COLOR_SCALE_V1` display saturation is
 ACCEPTED V1 (`|T1|_sat = 6.100×10⁻⁵ s⁻²`).
 `|T1|_ε` is not part of V1. Explore I3 injects
@@ -151,8 +154,8 @@ It authorizes:
 It does **not** authorize:
 
 - live Analysis `V_env` rewiring (BL-010 remains PARTIAL);
-- replacing Source / DEMO `DiagnosticTiltingTendency` in the
-  existing Point Diagnostics panel;
+- rewiring Point Diagnostics from Source
+  `DiagnosticTiltingTendency` to Analysis T1;
 - `TILT_Y,total`, `R_y` as a product diagnostic, or `I_tilt`;
 - prognostic parcel vorticity;
 - simulation rewind;
@@ -344,10 +347,12 @@ Renderer: one `THREE.Line` per occupancy slot; position-only
 advection V_total          Source/DEMO composite
                            (Explore observed = Source EWP;
                             Guided = DEMO EWP)
-live Point Diagnostics T1  DiagnosticTiltingTendency.sample
-                           → number; OOD sounding → 0
-Analysis T1                queryAnalysisTiltingTendencyAt
-                           headless; not wired in App / labs
+internal Source T1         DiagnosticTiltingTendency.sample
+                           → number; OOD sounding → 0;
+                           not a public T1 readout
+public Point diagnostics   ω_y,current only
+public Analysis T1         queryAnalysisTiltingExplanationAt
+                           at a historical recorded sample
 ```
 
 `queryAnalysisTiltingTendencyAt` already computes world `ω_h`
@@ -687,10 +692,47 @@ A future legitimate user layer choice may exist only among
 multiple scientifically accepted **Analysis** representations.
 That set does not exist in V1. V1 has one Analysis T1.
 
-Live Point Diagnostics Source T1 remains a different
-surface with a different operand and a different OOD
-contract (`0` vs absent). This explorer must not present
-those two numbers as interchangeable.
+### 9.1 Public T1 authority
+
+**NEW PROJECT DECISION.**
+
+```text
+PUBLIC T1 AUTHORITY = ANALYSIS T1.
+```
+
+The same reduced identity
+
+```text
+T1 = T_tilt,y = ω_h,env · ∇_h Vy,updraft
+```
+
+evaluated from Source native containing-segment `ω_h` and
+from filtered Analysis native-segment `ω_h` can produce
+materially different numbers. Presenting both as equivalent
+public T1 readouts would obscure representation / provenance
+and undermine the Source/Analysis contract.
+
+Legacy Source `DiagnosticTiltingTendency` remains an
+internal/runtime representation-valid diagnostic. It is
+**not** a public T1 readout.
+
+Source T1 MUST NOT:
+
+```text
+appear as a peer public T1
+substitute for Analysis T1
+become a fallback for COLUMN_UNAVAILABLE or OUT_OF_DOMAIN
+```
+
+This policy applies to **all** environments, not only Moore.
+
+`ω_y,current` remains public Point diagnostics because it
+is a different Eulerian laboratory-field quantity, not an
+alternate T1 representation.
+
+Point Diagnostics is **not** rewired to Analysis T1. When
+Analysis is unavailable, public T1 is absent
+(`COLUMN_UNAVAILABLE`), not a Source number.
 
 ---
 
@@ -1909,7 +1951,8 @@ src/ui/tracer/TrajectoryTiltingVerificationPanel.tsx
 
 Presentational. Reads the atomic result. Does not recompute
 physics. Does not display live `active` as sample science.
-Does not replace Point Diagnostics Source T1.
+Does not rewire Point Diagnostics to Analysis T1.
+Public Point Diagnostics does not display Source T1.
 GEOMETRY TEACHES. NUMBERS VERIFY.
 Does not itself wire TracerScene / App / Explore
 (I3 consumes this capability).
@@ -2015,8 +2058,9 @@ without a SoT amendment or a dedicated calibration record.
    authorized
 7. BL-047 remaining research: T1 vs TILT_Y,total topology;
    R_y product role; material-line vs local-ω experiment
-8. Whether Point Diagnostics Source T1 is later rewired to
-   Analysis (separate SoT; not this explorer)
+8. Whether the internal Source DiagnosticTiltingTendency
+   is later rewired to Analysis (separate SoT). Public
+   Point Diagnostics no longer displays Source T1.
 9. Alignment magnitude ε, if exact IEEE 0 is ever insufficient;
    not |T1|_ε; requires an explicit calibrated contract
 ```
@@ -2038,6 +2082,7 @@ T1 × Δt → gained rotation
 causal T1 → ω_y,current
 Analysis T1 as the field that advected the tracer
 Source T1 as equal user-selectable coloring
+public Source T1 as a peer T1 readout
 silent interpolated historical (P, t)
 UI-side reconstruction of diagnostic physics
 mixing T1 value encoding with support encoding
@@ -2361,6 +2406,7 @@ optional ω_y,current            Slice G (NOT AUTHORIZED)
 ```
 
 Existing `queryAnalysisTiltingTendencyAt` scalar contract
-stays. Existing `DiagnosticTiltingTendency` stays.
+stays. Existing `DiagnosticTiltingTendency` stays as
+internal/runtime Source T1. It is not a public T1 readout.
 Existing historical picking stays. `PathHistorySample`
 remains `{ position, simulationTime }`.
