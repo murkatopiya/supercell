@@ -635,6 +635,11 @@ export class TracerScene {
     this.controls.dispose();
     this.detachVisualAirflow();
     this.clearTracerSlots();
+    if (this.selectionHalo !== undefined) {
+      this.scene.remove(this.selectionHalo);
+      disposeSelectionHaloMarker(this.selectionHalo);
+      this.selectionHalo = undefined;
+    }
     if (this.hoverHalo !== undefined) {
       this.scene.remove(this.hoverHalo);
       disposeHoverHaloMarker(this.hoverHalo);

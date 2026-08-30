@@ -76,6 +76,10 @@ describe("release preview marker (no WebGLRenderer)", () => {
     expect(tracerSceneSrc).not.toMatch(/keepInactiveGlyphs \|\| pending/);
     expect(tracerSceneSrc).toMatch(/this\.clearTracerSlots\(\)/);
     expect(tracerSceneSrc).toMatch(/disposeReleasePreviewMarker/);
-    expect(tracerSceneSrc).toMatch(/disposeSelectionHaloMarker/);
+    // Must match the dispose call, not the import: an identifier-only
+    // pattern passes while TracerScene.dispose() leaks the halo.
+    expect(tracerSceneSrc).toMatch(
+      /disposeSelectionHaloMarker\(this\.selectionHalo\)/,
+    );
   });
 });
