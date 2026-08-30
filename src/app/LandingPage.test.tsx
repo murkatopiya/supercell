@@ -187,4 +187,17 @@ describe("LandingPage", () => {
     expect(landingSrc).toContain("landing__purpose-row");
     expect(landingSrc).toContain("landing__disclaimer");
   });
+
+  it("places the brand logo beside the hero copy on landing", () => {
+    const html = landingMarkup();
+    expect(html).toContain("landing__hero");
+    expect(html).toContain("landing__logo");
+    expect(html).toContain("supercell-explorer-logo");
+    expect(html).toMatch(/<img class="landing__logo"[^>]*alt=""/);
+    expect(landingSrc).toContain("landing__hero");
+    expect(landingSrc).toContain("landing__logo");
+    expect(appCss).toMatch(
+      /@media \(min-width: 64rem\)[\s\S]*?\.landing__hero[\s\S]*?grid-template-columns:/,
+    );
+  });
 });

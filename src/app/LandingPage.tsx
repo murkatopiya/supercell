@@ -13,6 +13,7 @@ import {
   LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
 import { PUBLIC_VERSION_BADGE } from "./publicVersion.js";
+import logoUrl from "./assets/supercell-explorer-logo.webp";
 
 export interface LandingPageProps {
   onEnterExplore: () => void;
@@ -36,40 +37,51 @@ export function LandingPage({
 }: LandingPageProps) {
   return (
     <main className="app app--landing">
-      <header className="landing__header">
-        <p className="landing__badge">{PUBLIC_VERSION_BADGE}</p>
-        <h1 className="app__title ui-type-app-title">Supercell Explorer</h1>
-        <p className="landing__lede">{LANDING_LEDE}</p>
-      </header>
+      <div className="landing__hero">
+        <div className="landing__intro">
+          <header className="landing__header">
+            <p className="landing__badge">{PUBLIC_VERSION_BADGE}</p>
+            <h1 className="app__title ui-type-app-title">Supercell Explorer</h1>
+            <p className="landing__lede">{LANDING_LEDE}</p>
+          </header>
 
-      <div className="landing__actions">
-        <button
-          type="button"
-          className="ui-button ui-button--primary landing__cta"
-          onClick={onEnterExplore}
-        >
-          {LANDING_CTA_LABEL}
-        </button>
-        <button
-          type="button"
-          className="ui-button ui-button--subtle landing__how-it-works"
-          aria-label="How It Works"
-          aria-haspopup="dialog"
-          aria-expanded={howItWorksOpen}
-          onClick={(event) => onOpenHowItWorks(event.currentTarget)}
-        >
-          How It Works
-        </button>
-        <button
-          type="button"
-          className="ui-button ui-button--subtle landing__how-it-works"
-          aria-label="Glossary"
-          aria-haspopup="dialog"
-          aria-expanded={glossaryOpen}
-          onClick={(event) => onOpenGlossary(event.currentTarget)}
-        >
-          Glossary
-        </button>
+          <div className="landing__actions">
+            <button
+              type="button"
+              className="ui-button ui-button--primary landing__cta"
+              onClick={onEnterExplore}
+            >
+              {LANDING_CTA_LABEL}
+            </button>
+            <button
+              type="button"
+              className="ui-button ui-button--subtle landing__how-it-works"
+              aria-label="How It Works"
+              aria-haspopup="dialog"
+              aria-expanded={howItWorksOpen}
+              onClick={(event) => onOpenHowItWorks(event.currentTarget)}
+            >
+              How It Works
+            </button>
+            <button
+              type="button"
+              className="ui-button ui-button--subtle landing__how-it-works"
+              aria-label="Glossary"
+              aria-haspopup="dialog"
+              aria-expanded={glossaryOpen}
+              onClick={(event) => onOpenGlossary(event.currentTarget)}
+            >
+              Glossary
+            </button>
+          </div>
+        </div>
+        <img
+          className="landing__logo"
+          src={logoUrl}
+          width={1024}
+          height={384}
+          alt=""
+        />
       </div>
 
       <div className="landing__purpose-row">
