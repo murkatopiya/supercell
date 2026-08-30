@@ -7,6 +7,14 @@ import {
   LANDING_DISCLAIMER,
   LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
   LANDING_ENVIRONMENTS_LEAD,
+  LANDING_FOOTER_CREATED_BY,
+  LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME,
+  LANDING_FOOTER_PORTFOLIO_LABEL,
+  LANDING_FOOTER_PORTFOLIO_URL,
+  LANDING_FOOTER_PRODUCT,
+  LANDING_FOOTER_PROJECT,
+  LANDING_ATTRIBUTION_ESC_CASES,
+  LANDING_ATTRIBUTION_MOORE_CASE,
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
@@ -20,7 +28,11 @@ import {
   LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
 import landingContentSrc from "./landingContent.ts?raw";
-import { PUBLIC_VERSION, PUBLIC_VERSION_BADGE } from "./publicVersion.js";
+import {
+  PUBLIC_VERSION,
+  PUBLIC_VERSION_BADGE,
+  PUBLIC_VERSION_STATUS,
+} from "./publicVersion.js";
 import {
   EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
   EXPLORE_ENVIRONMENT_GOSHEN_2009_OBSERVED,
@@ -260,6 +272,40 @@ describe("LandingPage", () => {
     expect(landingSrc).not.toMatch(/from ["'].*createExploreLab/);
     expect(landingSrc).not.toMatch(/from ["'].*physics/);
     expect(landingSrc).toContain("Does not construct a laboratory");
+  });
+
+  it("ends with a quiet project footer and a portfolio link", () => {
+    const html = landingMarkup();
+    expect(html).toContain('class="landing__footer"');
+    expect(html).toContain(
+      `${LANDING_FOOTER_PRODUCT} · ${PUBLIC_VERSION} ${PUBLIC_VERSION_STATUS}`,
+    );
+    expect(html).toContain(LANDING_FOOTER_CREATED_BY);
+    expect(html).toContain("Independent research &amp; software project · 2026");
+    expect(LANDING_FOOTER_PROJECT).toBe(
+      "Independent research & software project · 2026",
+    );
+    expect(html).toContain(`href="${LANDING_FOOTER_PORTFOLIO_URL}"`);
+    expect(html).toContain(
+      `aria-label="${LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME}"`,
+    );
+    expect(html).toContain(`>${LANDING_FOOTER_PORTFOLIO_LABEL}<span`);
+    expect(html.indexOf("landing__footer")).toBeGreaterThan(
+      html.indexOf(LANDING_DESKTOP_RECOMMENDED),
+    );
+    expect(landingSrc).toContain("PUBLIC_VERSION");
+    expect(landingSrc).toContain("PUBLIC_VERSION_STATUS");
+    expect(landingSrc).not.toContain("iryna.online");
+    expect(landingContentSrc).toContain(LANDING_FOOTER_PORTFOLIO_URL);
+    expect(html).toContain("Data &amp; attribution");
+    expect(html).toContain(LANDING_ATTRIBUTION_ESC_CASES);
+    expect(html).toContain(LANDING_ATTRIBUTION_MOORE_CASE);
+    expect(html).toContain("114.114");
+    expect(html).toContain("10.5065/D6CC0Z0Q");
+    expect(html).toContain("USM00072357");
+    expect(html).toContain("DSI-6301");
+    expect(html).toContain("https://doi.org/10.5065/D6CC0Z0Q");
+    expect(html).toContain("https://data.eol.ucar.edu/dataset/114.114");
   });
 
   it("places the brand logo beside the hero copy on landing", () => {

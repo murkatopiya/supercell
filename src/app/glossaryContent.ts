@@ -156,12 +156,25 @@ export const EOL_SOUNDING_DATASET_DOI = "10.5065/D6CC0Z0Q";
 export const EOL_SOUNDING_DATASET_NAME =
   "NSSL Mobile GPS Advanced Upper-Air Sounding System";
 
+export const EOL_SOUNDING_DATASET_URL = `https://data.eol.ucar.edu/dataset/${EOL_SOUNDING_DATASET_ID}`;
+
+export const EOL_SOUNDING_DATASET_DOI_URL = `https://doi.org/${EOL_SOUNDING_DATASET_DOI}`;
+
 export const IGRA_ARCHIVE_NAME =
   "NOAA/NCEI Integrated Global Radiosonde Archive (IGRA) v2.2";
+
+export const IGRA_ARCHIVE_SHORT_NAME = "NOAA/NCEI IGRA v2.2";
 
 export const IGRA_STATION_ID = "USM00072357";
 
 export const IGRA_DSI = "DSI-6301";
+
+export const IGRA_ARCHIVE_DOI = "10.7289/V5X63K0Q";
+
+export const IGRA_ARCHIVE_URL =
+  "https://www.ncei.noaa.gov/products/weather-balloon/integrated-global-radiosonde-archive";
+
+export const IGRA_ARCHIVE_DOI_URL = `https://doi.org/${IGRA_ARCHIVE_DOI}`;
 
 export const GLOSSARY_ATTRIBUTION_LEAD =
   "Dataset attribution names the origin of environmental sounding profiles used in the laboratory. Landing event/case links are contextual event information and are not sounding-data citations.";

@@ -78,6 +78,27 @@ export const LANDING_GUIDED_LATER_NOTE =
 export const LANDING_DESKTOP_RECOMMENDED =
   "Desktop recommended for the full 3D laboratory experience.";
 
+export const LANDING_FOOTER_PRODUCT = "Supercell Explorer";
+
+export const LANDING_FOOTER_CREATED_BY = "Created by Iryna Hnatovska";
+
+export const LANDING_FOOTER_PORTFOLIO_LABEL = "Portfolio";
+
+export const LANDING_FOOTER_PORTFOLIO_URL = "https://iryna.online";
+
+export const LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME =
+  "Iryna Hnatovska portfolio (opens in a new tab)";
+
+export const LANDING_FOOTER_PROJECT =
+  "Independent research & software project · 2026";
+
+export const LANDING_ATTRIBUTION_LABEL = "Data & attribution";
+
+export const LANDING_ATTRIBUTION_ESC_CASES =
+  "Goshen / Prospect Valley / Dumas";
+
+export const LANDING_ATTRIBUTION_MOORE_CASE = "Moore";
+
 export const LANDING_CAPABILITIES = [
   {
     title: "Explore observed environments",

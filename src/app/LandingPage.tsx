@@ -3,8 +3,17 @@ import {
   LANDING_CTA_LABEL,
   LANDING_DESKTOP_RECOMMENDED,
   LANDING_DISCLAIMER,
+  LANDING_ATTRIBUTION_ESC_CASES,
+  LANDING_ATTRIBUTION_LABEL,
+  LANDING_ATTRIBUTION_MOORE_CASE,
   LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
   LANDING_ENVIRONMENTS_LEAD,
+  LANDING_FOOTER_CREATED_BY,
+  LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME,
+  LANDING_FOOTER_PORTFOLIO_LABEL,
+  LANDING_FOOTER_PORTFOLIO_URL,
+  LANDING_FOOTER_PRODUCT,
+  LANDING_FOOTER_PROJECT,
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
@@ -18,7 +27,24 @@ import {
   LANDING_WHY_EXISTS_LEAD,
   LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
-import { PUBLIC_VERSION_BADGE } from "./publicVersion.js";
+import {
+  PUBLIC_VERSION,
+  PUBLIC_VERSION_BADGE,
+  PUBLIC_VERSION_STATUS,
+} from "./publicVersion.js";
+import {
+  EOL_SOUNDING_DATASET_DOI,
+  EOL_SOUNDING_DATASET_DOI_URL,
+  EOL_SOUNDING_DATASET_ID,
+  EOL_SOUNDING_DATASET_NAME,
+  EOL_SOUNDING_DATASET_URL,
+  IGRA_ARCHIVE_DOI,
+  IGRA_ARCHIVE_DOI_URL,
+  IGRA_ARCHIVE_SHORT_NAME,
+  IGRA_ARCHIVE_URL,
+  IGRA_DSI,
+  IGRA_STATION_ID,
+} from "./glossaryContent.js";
 import logoUrl from "./assets/supercell-explorer-logo.webp";
 
 export interface LandingPageProps {
@@ -226,6 +252,122 @@ export function LandingPage({
       <p className="landing__note landing__note--quiet">
         {LANDING_DESKTOP_RECOMMENDED}
       </p>
+
+      <footer className="landing__footer">
+        <div className="landing__footer-identity">
+          <p className="landing__footer-line">
+            {LANDING_FOOTER_PRODUCT} · {PUBLIC_VERSION} {PUBLIC_VERSION_STATUS}
+          </p>
+          <p className="landing__footer-line">
+            {LANDING_FOOTER_CREATED_BY} ·{" "}
+            <a
+              className="landing__footer-link"
+              href={LANDING_FOOTER_PORTFOLIO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME}
+            >
+              {LANDING_FOOTER_PORTFOLIO_LABEL}
+              <span aria-hidden="true"> ↗</span>
+            </a>
+          </p>
+          <p className="landing__footer-line">{LANDING_FOOTER_PROJECT}</p>
+        </div>
+        <details className="landing__attribution">
+          <summary className="landing__attribution-summary">
+            {LANDING_ATTRIBUTION_LABEL}
+          </summary>
+          <div className="ui-panel landing__attribution-panel">
+            <article className="landing__attribution-source">
+              <h3 className="landing__attribution-case">
+                {LANDING_ATTRIBUTION_ESC_CASES}
+              </h3>
+              <dl className="landing__attribution-fields">
+                <div className="landing__attribution-field">
+                  <dt>Dataset</dt>
+                  <dd>
+                    EOL{" "}
+                    <a
+                      className="landing__footer-link"
+                      href={EOL_SOUNDING_DATASET_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`EOL dataset ${EOL_SOUNDING_DATASET_ID} (opens in a new tab)`}
+                    >
+                      {EOL_SOUNDING_DATASET_ID}
+                      <span aria-hidden="true"> ↗</span>
+                    </a>
+                  </dd>
+                </div>
+                <div className="landing__attribution-field">
+                  <dt>System</dt>
+                  <dd>{EOL_SOUNDING_DATASET_NAME}</dd>
+                </div>
+                <div className="landing__attribution-field">
+                  <dt>DOI</dt>
+                  <dd>
+                    <a
+                      className="landing__footer-link"
+                      href={EOL_SOUNDING_DATASET_DOI_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`DOI ${EOL_SOUNDING_DATASET_DOI} (opens in a new tab)`}
+                    >
+                      {EOL_SOUNDING_DATASET_DOI}
+                      <span aria-hidden="true"> ↗</span>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </article>
+            <article className="landing__attribution-source">
+              <h3 className="landing__attribution-case">
+                {LANDING_ATTRIBUTION_MOORE_CASE}
+              </h3>
+              <dl className="landing__attribution-fields">
+                <div className="landing__attribution-field">
+                  <dt>Dataset</dt>
+                  <dd>
+                    <a
+                      className="landing__footer-link"
+                      href={IGRA_ARCHIVE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${IGRA_ARCHIVE_SHORT_NAME} archive (opens in a new tab)`}
+                    >
+                      {IGRA_ARCHIVE_SHORT_NAME}
+                      <span aria-hidden="true"> ↗</span>
+                    </a>
+                  </dd>
+                </div>
+                <div className="landing__attribution-field">
+                  <dt>Station</dt>
+                  <dd>{IGRA_STATION_ID}</dd>
+                </div>
+                <div className="landing__attribution-field">
+                  <dt>ID</dt>
+                  <dd>{IGRA_DSI}</dd>
+                </div>
+                <div className="landing__attribution-field">
+                  <dt>DOI</dt>
+                  <dd>
+                    <a
+                      className="landing__footer-link"
+                      href={IGRA_ARCHIVE_DOI_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`DOI ${IGRA_ARCHIVE_DOI} (opens in a new tab)`}
+                    >
+                      {IGRA_ARCHIVE_DOI}
+                      <span aria-hidden="true"> ↗</span>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+        </details>
+      </footer>
     </main>
   );
 }
