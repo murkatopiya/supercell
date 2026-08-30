@@ -8,6 +8,12 @@ import {
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
+  LANDING_WHATS_NEXT_DIRECTION,
+  LANDING_WHATS_NEXT_LEAD,
+  LANDING_WHATS_NEXT_PRINCIPLE_CLOSE,
+  LANDING_WHATS_NEXT_PRINCIPLE_LEAD,
+  LANDING_WHATS_NEXT_STAGES,
+  LANDING_WHATS_NEXT_TITLE,
   LANDING_WHY_EXISTS_CONNECTS,
   LANDING_WHY_EXISTS_LEAD,
   LANDING_WHY_EXISTS_TITLE,
@@ -116,6 +122,69 @@ export function LandingPage({
           </div>
         </section>
       </div>
+
+      <section
+        className="landing__whats-next"
+        aria-labelledby="landing-whats-next-title"
+      >
+        <h2 id="landing-whats-next-title" className="landing__section-title">
+          {LANDING_WHATS_NEXT_TITLE}
+        </h2>
+        <p className="landing__whats-next-copy">{LANDING_WHATS_NEXT_LEAD}</p>
+        <p className="landing__whats-next-copy">{LANDING_WHATS_NEXT_DIRECTION}</p>
+        <div className="landing-roadmap">
+          {LANDING_WHATS_NEXT_STAGES.flatMap((stage, index) => {
+            const card = (
+              <article
+                key={stage.id}
+                className={`ui-panel landing-roadmap__stage landing-roadmap__stage--${stage.kind}`}
+              >
+                <h3 className="landing-roadmap__label">
+                  {stage.status} · {stage.topic}
+                </h3>
+                {"copy" in stage ? (
+                  <p className="landing-roadmap__detail">{stage.copy}</p>
+                ) : (
+                  <p className="landing-roadmap__detail">
+                    {"tokens" in stage
+                      ? stage.tokens.map((token) => (
+                          <span
+                            key={token}
+                            className="landing-roadmap__token"
+                          >
+                            {token}
+                          </span>
+                        ))
+                      : null}
+                    {stage.items.map((item, itemIndex) => (
+                      <span key={item}>
+                        {"tokens" in stage || itemIndex > 0 ? (
+                          <span aria-hidden="true"> · </span>
+                        ) : null}
+                        {item}
+                      </span>
+                    ))}
+                  </p>
+                )}
+              </article>
+            );
+            if (index === 0) {
+              return [card];
+            }
+            return [
+              <span
+                key={`${stage.id}-connector`}
+                className="landing-roadmap__connector"
+                aria-hidden="true"
+              />,
+              card,
+            ];
+          })}
+        </div>
+        <p className="landing__whats-next-principle">
+          {LANDING_WHATS_NEXT_PRINCIPLE_LEAD} {LANDING_WHATS_NEXT_PRINCIPLE_CLOSE}
+        </p>
+      </section>
 
       <section
         className="ui-panel ui-panel--info landing__disclaimer"

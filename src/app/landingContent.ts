@@ -96,3 +96,47 @@ export const LANDING_CAPABILITIES = [
     copy: "Inspect environmental horizontal vorticity, prescribed updraft-gradient geometry, numeric verification, and a constrained what-if alignment.",
   },
 ] as const;
+
+export const LANDING_WHATS_NEXT_TITLE = "What's next";
+
+export const LANDING_WHATS_NEXT_LEAD =
+  "Supercell Explorer v1 focuses on kinematics: observed wind environments, prescribed storm-local flow geometry, tracer trajectories, and vertical-tilting diagnostics.";
+
+export const LANDING_WHATS_NEXT_DIRECTION =
+  "The next research direction is thermodynamics — extending the laboratory toward atmospheric stability, parcel thermodynamics, buoyancy, and the environments that support deep convection.";
+
+export const LANDING_WHATS_NEXT_PRINCIPLE_LEAD =
+  "Kinematics first. Thermodynamics next.";
+
+export const LANDING_WHATS_NEXT_PRINCIPLE_CLOSE =
+  "Coupling only when the physics earns it.";
+
+export const LANDING_WHATS_NEXT_STAGES = [
+  {
+    id: "kinematics",
+    kind: "current",
+    status: "V1",
+    topic: "Kinematics",
+    items: [
+      "Observed wind",
+      "trajectories",
+      "Analysis T1",
+      "mechanism geometry",
+    ],
+  },
+  {
+    id: "thermodynamics",
+    kind: "next",
+    status: "Next",
+    topic: "Thermodynamics",
+    tokens: ["T", "Td", "p"],
+    items: ["parcel ascent", "stability", "buoyancy", "CAPE / CIN"],
+  },
+  {
+    id: "coupled",
+    kind: "later",
+    status: "Later",
+    topic: "Coupled mechanisms",
+    copy: "Only where a scientifically defensible coupling is established.",
+  },
+] as const;

@@ -10,10 +10,16 @@ import {
   LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
+  LANDING_WHATS_NEXT_DIRECTION,
+  LANDING_WHATS_NEXT_LEAD,
+  LANDING_WHATS_NEXT_PRINCIPLE_CLOSE,
+  LANDING_WHATS_NEXT_PRINCIPLE_LEAD,
+  LANDING_WHATS_NEXT_TITLE,
   LANDING_WHY_EXISTS_CONNECTS,
   LANDING_WHY_EXISTS_LEAD,
   LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
+import landingContentSrc from "./landingContent.ts?raw";
 import { PUBLIC_VERSION, PUBLIC_VERSION_BADGE } from "./publicVersion.js";
 import {
   EXPLORE_ENVIRONMENT_DUMAS_2010_OBSERVED,
@@ -170,10 +176,12 @@ describe("LandingPage", () => {
     const html = landingMarkup();
     const purposeStart = html.indexOf("landing__purpose-row");
     const capabilitiesStart = html.indexOf("landing__capabilities");
+    const whatsNextStart = html.indexOf("landing__whats-next");
     const disclaimerStart = html.indexOf("landing__disclaimer");
     expect(purposeStart).toBeGreaterThan(-1);
     expect(capabilitiesStart).toBeGreaterThan(purposeStart);
-    expect(disclaimerStart).toBeGreaterThan(capabilitiesStart);
+    expect(whatsNextStart).toBeGreaterThan(capabilitiesStart);
+    expect(disclaimerStart).toBeGreaterThan(whatsNextStart);
     expect(html).toContain('class="landing__purpose"');
     expect(html).not.toMatch(/class="[^"]*landing__purpose[^"]*ui-panel/);
     expect(html).not.toMatch(/class="[^"]*ui-panel[^"]*landing__purpose/);
@@ -186,6 +194,72 @@ describe("LandingPage", () => {
     expect(appCss).toMatch(/\.app--landing\s*\{[^}]*max-width:\s*72rem/);
     expect(landingSrc).toContain("landing__purpose-row");
     expect(landingSrc).toContain("landing__disclaimer");
+  });
+
+  it("places a kinematics-complete thermodynamics roadmap after capabilities and before the scientific boundary", () => {
+    const html = landingMarkup();
+    expect(html).toContain("What&#x27;s next");
+    expect(LANDING_WHATS_NEXT_TITLE).toBe("What's next");
+    expect(html).toContain("V1 · Kinematics");
+    expect(html).toContain("Next · Thermodynamics");
+    expect(html).toContain("Later · Coupled mechanisms");
+    expect(html).toContain(LANDING_WHATS_NEXT_LEAD);
+    expect(html).toContain(LANDING_WHATS_NEXT_DIRECTION);
+    expect(html).toContain("next research direction is thermodynamics");
+    expect(html).toContain("Observed wind");
+    expect(html).toContain("Analysis T1");
+    expect(html).toContain("mechanism geometry");
+    expect(html).toContain("parcel ascent");
+    expect(html).toContain("CAPE / CIN");
+    expect(html).toContain(
+      "Only where a scientifically defensible coupling is established.",
+    );
+    expect(html).toContain(LANDING_WHATS_NEXT_PRINCIPLE_LEAD);
+    expect(html).toContain(LANDING_WHATS_NEXT_PRINCIPLE_CLOSE);
+    expect(html).toContain("Coupling only when the physics earns it.");
+
+    const capabilitiesEnd = html.indexOf("landing__capabilities");
+    const whatsNextStart = html.indexOf("landing__whats-next");
+    const principleStart = html.indexOf(LANDING_WHATS_NEXT_PRINCIPLE_CLOSE);
+    const disclaimerStart = html.indexOf("Scientific boundary");
+    expect(whatsNextStart).toBeGreaterThan(capabilitiesEnd);
+    expect(principleStart).toBeGreaterThan(whatsNextStart);
+    expect(disclaimerStart).toBeGreaterThan(principleStart);
+
+    expect(html.match(/class="landing-roadmap__connector"/g)).toHaveLength(2);
+    expect(html).toMatch(
+      /class="landing-roadmap__connector" aria-hidden="true"/,
+    );
+    expect(html).toContain('class="landing-roadmap__token"');
+    expect(html).toContain(">T</span>");
+    expect(html).toContain(">Td</span>");
+    expect(html).toContain(">p</span>");
+    expect(html).not.toContain("tabindex");
+    expect(html).not.toMatch(/coming soon/i);
+    expect(html).not.toMatch(/physically generated updraft/i);
+    expect(html).not.toMatch(/full supercell simulation/i);
+    expect(html).not.toMatch(/storm prediction/i);
+    expect(html).not.toMatch(/forecast capability/i);
+    expect(html).not.toMatch(/prognostic parcel-vorticity/i);
+    expect(html).not.toMatch(/fully coupled atmospheric model/i);
+    expect(LANDING_WHATS_NEXT_LEAD + LANDING_WHATS_NEXT_DIRECTION).not.toMatch(
+      /already (includes|implements|provides) thermodynamics/i,
+    );
+  });
+
+  it("keeps Open Laboratory as the only primary CTA and does not wire the roadmap into the laboratory", () => {
+    const html = landingMarkup();
+    expect(html).toContain(LANDING_CTA_LABEL);
+    expect(html.match(/ui-button--primary/g)).toHaveLength(1);
+    expect(html).toContain("landing__cta");
+    expect(landingSrc).not.toContain("createExploreLab");
+    expect(landingSrc).not.toContain("createGuidedLab");
+    expect(landingSrc).not.toContain("onEnterExplore()");
+    expect(landingContentSrc).not.toContain("createExploreLab");
+    expect(landingContentSrc).not.toMatch(/from ["'].*physics/);
+    expect(landingSrc).not.toMatch(/from ["'].*createExploreLab/);
+    expect(landingSrc).not.toMatch(/from ["'].*physics/);
+    expect(landingSrc).toContain("Does not construct a laboratory");
   });
 
   it("places the brand logo beside the hero copy on landing", () => {
