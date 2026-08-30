@@ -28,6 +28,7 @@ import { PointDiagnosticsPanel } from "../ui/tracer/PointDiagnosticsPanel.js";
 import { TracerInspectorPanel } from "../ui/tracer/TracerInspectorPanel.js";
 import { TrajectoryTiltingVerificationPanel } from "../ui/tracer/TrajectoryTiltingVerificationPanel.js";
 import { TrajectoryTiltingWhatIfPanel } from "../ui/tracer/TrajectoryTiltingWhatIfPanel.js";
+import { ExploreWhatIfGeometryAutoReveal } from "../ui/tracer/ExploreWhatIfGeometryAutoReveal.js";
 import {
   TracerRuntimeControls,
   DEFAULT_TRACER_TIME_SCALE,
@@ -936,32 +937,45 @@ export function App() {
             </div>
           </div>
 
-          <div className="workbench__column workbench__column--observation">
-            <TracerInspectorPanel
-              inspection={inspection}
-              mode={inspectionMode}
-            />
-            <PointDiagnosticsPanel
-              observation={pointDiagnostics}
-              mode={inspectionMode}
-            />
-            {analysisTiltingExplorerOn ? (
-              <>
-                <TrajectoryTiltingVerificationPanel
-                  model={analysisTiltingView?.verificationModel}
+          <ExploreWhatIfGeometryAutoReveal
+            glyphModel={analysisTiltingView?.glyphModel}
+            whatIfModel={analysisTiltingView?.whatIfModel}
+          >
+            {(autoReveal) => (
+              <div
+                className="workbench__column workbench__column--observation"
+                ref={autoReveal.columnRef}
+              >
+                <TracerInspectorPanel
+                  inspection={inspection}
+                  mode={inspectionMode}
                 />
-                <TrajectoryTiltingWhatIfPanel
-                  result={analysisTiltingView?.whatIfModel}
-                  onThetaWhatIfChange={setThetaWhatIf}
-                  onReset={() =>
-                    setThetaWhatIf(
-                      initialExploreWhatIfTheta(analysisTiltingExplanation),
-                    )
-                  }
+                <PointDiagnosticsPanel
+                  observation={pointDiagnostics}
+                  mode={inspectionMode}
                 />
-              </>
-            ) : null}
-          </div>
+                {analysisTiltingExplorerOn ? (
+                  <>
+                    <TrajectoryTiltingVerificationPanel
+                      model={analysisTiltingView?.verificationModel}
+                    />
+                    <TrajectoryTiltingWhatIfPanel
+                      result={analysisTiltingView?.whatIfModel}
+                      onThetaWhatIfChange={setThetaWhatIf}
+                      onReset={() =>
+                        setThetaWhatIf(
+                          initialExploreWhatIfTheta(analysisTiltingExplanation),
+                        )
+                      }
+                      expandRequestNonce={autoReveal.expandRequestNonce}
+                      sectionRef={autoReveal.whatIfSectionRef}
+                      onExpandedForReveal={autoReveal.onExpandedForReveal}
+                    />
+                  </>
+                ) : null}
+              </div>
+            )}
+          </ExploreWhatIfGeometryAutoReveal>
         </section>
       ) : (
         <section

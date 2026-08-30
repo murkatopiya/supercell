@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import type { TrajectoryTiltingWhatIfModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
 import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
 import { alignmentAbsenceCopy } from "./formatTrajectoryTiltingVerification.js";
@@ -17,6 +18,9 @@ export interface TrajectoryTiltingWhatIfPanelProps {
   result: TrajectoryTiltingWhatIfModel | undefined;
   onThetaWhatIfChange?: (thetaRadians: number) => void;
   onReset?: () => void;
+  expandRequestNonce?: number;
+  sectionRef?: RefObject<HTMLElement | null>;
+  onExpandedForReveal?: () => void;
 }
 
 /**
@@ -28,6 +32,9 @@ export function TrajectoryTiltingWhatIfPanel({
   result,
   onThetaWhatIfChange,
   onReset,
+  expandRequestNonce,
+  sectionRef,
+  onExpandedForReveal,
 }: TrajectoryTiltingWhatIfPanelProps) {
   return (
     <CollapsibleObservationSection
@@ -36,6 +43,9 @@ export function TrajectoryTiltingWhatIfPanel({
       title="What-if geometry"
       titleClassName="trajectory-tilting-whatif__title"
       bodyClassName="trajectory-tilting-whatif__body"
+      expandRequestNonce={expandRequestNonce}
+      sectionRef={sectionRef}
+      onExpandedForReveal={onExpandedForReveal}
     >
       {result === undefined ? (
         <p className="trajectory-tilting-whatif__placeholder">
