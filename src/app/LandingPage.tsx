@@ -78,8 +78,8 @@ export function LandingPage({
         <img
           className="landing__logo"
           src={logoUrl}
-          width={1024}
-          height={384}
+          width={2048}
+          height={768}
           alt=""
         />
       </div>
