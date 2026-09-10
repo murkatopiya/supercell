@@ -24,7 +24,7 @@ const EULERIAN_DIRECTIONS_COPY =
   "Eulerian direction marks sample the prescribed total velocity field, V_total, at fixed laboratory positions. They show instantaneous direction, not moving air parcels; marker count and spacing are not air density.";
 
 const HIGHLIGHT_COPY =
-  "Highlight tints where one selected storm operand contributes to the displayed samples. Comet advection and every mark's orientation still come from the total field. Tint is not a separate air mass or a quantitative comparison between operands.";
+  "Highlight tints where one selected flow component contributes to the displayed samples. Comet advection and every mark's orientation still come from the total field. Tint is not a separate air mass or a quantitative comparison between components.";
 
 const DEPTH_CUE_COPY =
   "Depth cue changes background airflow salience with camera distance. It is a viewing aid, not meteorological fog or an atmospheric quantity.";
@@ -36,7 +36,7 @@ const EULERIAN_DIRECTIONS_LINE =
   "Fixed-position V_total samples — not parcels; spacing ≠ density.";
 
 const HIGHLIGHT_LINE =
-  "Tint shows one storm operand’s contribution — not a separate air mass.";
+  "Tint shows one flow component’s contribution — not a separate air mass.";
 
 const DEPTH_CUE_LINE = "Viewing aid only — not meteorological fog.";
 
@@ -114,10 +114,10 @@ export function VisualAirflowWorkbenchControls({
             Off
           </button>
           <label className="visual-airflow-workbench-controls__field">
-            Operand
+            Flow component
             <select
               className="ui-select visual-airflow-workbench-controls__select"
-              aria-label="Highlighted storm operand"
+              aria-label="Highlighted flow component"
               title={HIGHLIGHT_COPY}
               value={highlightMode === "off" ? "" : highlightMode}
               onChange={(event) => {

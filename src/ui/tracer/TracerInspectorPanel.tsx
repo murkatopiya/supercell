@@ -12,6 +12,7 @@ import { labelForContribution } from "./tracerContributionLabels.js";
 export interface TracerInspectorPanelProps {
   inspection: TracerInspection | undefined;
   mode?: InspectionSampleMode;
+  trajectoryAnalysisAvailable?: boolean;
 }
 
 function contributionSpeed(velocity: { x: number; y: number; z: number }): number {
@@ -25,6 +26,7 @@ function contributionSpeed(velocity: { x: number; y: number; z: number }): numbe
 export function TracerInspectorPanel({
   inspection,
   mode = "current",
+  trajectoryAnalysisAvailable = false,
 }: TracerInspectorPanelProps) {
   return (
     <CollapsibleObservationSection
@@ -34,6 +36,11 @@ export function TracerInspectorPanel({
       titleClassName="tracer-inspector__title"
       bodyClassName="tracer-inspector__body"
     >
+      {mode === "current" && inspection !== undefined && trajectoryAnalysisAvailable ? (
+        <p className="tracer-inspector__hint">
+          You are inspecting the tracer’s current motion. Select a recorded trajectory point on its trail to inspect T1 and alignment.
+        </p>
+      ) : null}
       {inspection === undefined ? (
         <p className="tracer-inspector__placeholder">
           Select a tracer to inspect its motion.

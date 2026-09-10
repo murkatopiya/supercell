@@ -1,3 +1,4 @@
+import { ANALYSIS_UNAVAILABLE_COPY } from "../../app/publicDiagnosticCopy.js";
 import type { RefObject } from "react";
 import type { TrajectoryTiltingWhatIfModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingWhatIf.js";
 import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
@@ -49,7 +50,7 @@ export function TrajectoryTiltingWhatIfPanel({
     >
       {result === undefined ? (
         <p className="trajectory-tilting-whatif__placeholder">
-          Select a recorded path sample to explore a hypothetical alignment.
+          Select a recorded trajectory point to explore a hypothetical alignment.
         </p>
       ) : (
         <WhatIfBody
@@ -78,7 +79,7 @@ function WhatIfBody({
   return (
     <>
       <p className="trajectory-tilting-whatif__hint">
-        Laboratory state unchanged. Hypothetical T1 for the same operand
+        Laboratory state unchanged. Hypothetical T1 for the same vector
         magnitudes at a different alignment angle.
       </p>
       <p className="trajectory-tilting-whatif__hint">
@@ -136,8 +137,8 @@ function WhatIfBody({
         />
       </label>
       <p className="trajectory-tilting-whatif__hint">
-        0°: maximum positive T1 for fixed operand magnitudes. 90°: T1 = 0 for
-        fixed operand magnitudes. 180°: maximum negative T1 for fixed operand
+        0°: maximum positive T1 for fixed vector magnitudes. 90°: T1 = 0 for
+        fixed vector magnitudes. 180°: maximum negative T1 for fixed vector
         magnitudes.
       </p>
       <button
@@ -158,7 +159,8 @@ function UnavailableBody({
 }) {
   return (
     <>
-      <p className="trajectory-tilting-whatif__status">{result.reason}</p>
+      <p className="trajectory-tilting-whatif__status">What-if unavailable</p>
+      <details><summary>Technical details</summary><p>{result.reason}</p><p>Source T1 is not a fallback.</p></details>
       <p className="trajectory-tilting-whatif__hint">{unavailableCopy(result.reason)}</p>
       <p className="trajectory-tilting-whatif__hint">Laboratory state unchanged.</p>
     </>
@@ -169,7 +171,7 @@ function unavailableCopy(
   reason: Extract<TrajectoryTiltingWhatIfModel, { kind: "UNAVAILABLE" }>["reason"],
 ): string {
   if (reason === "COLUMN_UNAVAILABLE") {
-    return "No Analysis column. What-if alignment is unavailable. Source T1 is not a fallback.";
+    return ANALYSIS_UNAVAILABLE_COPY;
   }
   if (reason === "OUT_OF_DOMAIN") {
     return "Out of Analysis domain. What-if alignment is unavailable.";
@@ -177,6 +179,6 @@ function unavailableCopy(
   const alignment: AnalysisTiltingAlignment = { state: reason };
   return (
     alignmentAbsenceCopy(alignment) ??
-    "Alignment angle is undefined because an operand magnitude is zero."
+    "Alignment angle is undefined because a vector magnitude is zero."
   );
 }

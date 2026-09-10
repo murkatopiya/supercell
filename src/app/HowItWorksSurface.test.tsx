@@ -43,9 +43,9 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain("Release a tracer");
     expect(html).toContain("Read the recorded trajectory");
     expect(html).toContain("Understand the color");
-    expect(html).toContain("Click a historical sample");
+    expect(html).toContain("Click a recorded trajectory point");
     expect(html).toContain("Explain T1 geometrically");
-    expect(html).toContain("Verify numerically");
+    expect(html).toContain("Inspect the calculation");
     expect(html).toContain("Use what-if geometry");
     expect(html).toContain("Source vs Analysis");
     expect(html).toContain("Scientific boundary");
@@ -69,7 +69,7 @@ describe("HowItWorksSurface", () => {
   it("explains the current trajectory and Analysis T1 workflow", () => {
     const html = helpMarkup("landing");
     expect(html).toContain("vertical-tilting diagnostic");
-    expect(html).toContain("When a suitable Analysis representation is available");
+    expect(html).toContain("When an Analysis representation is available");
     expect(html).toContain("supported parts of the recorded trajectory");
     expect(html).toContain("Use the Environment selector under Storm-relative laboratory");
     expect(html).toContain("fixed symmetric scale");
@@ -80,7 +80,7 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain(HOW_IT_WORKS_HISTORICAL_SAMPLE);
     expect(html).toContain("exact recorded trajectory sample");
     expect(html).toContain("T1 = ω_h,env · ∇_h V_y,updraft");
-    expect(html).toContain("same atomic Analysis result");
+    expect(html).toContain("two factors and their alignment");
     expect(T1_COLOR_SCALE_V1_SATURATION).toBeCloseTo(6.1e-5, 12);
   });
 
@@ -89,13 +89,13 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain(HOW_IT_WORKS_SOURCE);
     expect(html).toContain(HOW_IT_WORKS_ANALYSIS);
     expect(html).toContain(HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS);
-    expect(html).toContain("does not push the tracer");
+    expect(html).toContain("does not advect tracers");
     expect(html).toContain(HOW_IT_WORKS_WHAT_IF);
     expect(html).toContain("Laboratory state remains unchanged");
-    expect(html).toContain("observed environmental ω_h fixed");
+    expect(html).toContain("Analysis-derived environmental ω_h fixed");
     expect(html).toContain(HOW_IT_WORKS_BOUNDARY);
     expect(html).toContain("not a weather forecast");
-    expect(html).not.toContain("parcel spin-up");
+    expect(html).toContain("not parcel spin-up");
     expect(html).not.toContain("Guided and Explore");
   });
 

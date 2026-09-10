@@ -89,7 +89,7 @@ describe("LandingPage", () => {
     expect(html).toContain("full atmospheric simulation");
     expect(html).toContain(LANDING_ENVIRONMENTS_LEAD);
     expect(html).toContain(LANDING_ENVIRONMENTS_ANALYSIS_NOTE);
-    expect(html).toContain("suitable Analysis representation");
+    expect(html).toContain("an Analysis representation");
   });
 
   it("links observed environment names to authoritative case resources", () => {
@@ -176,7 +176,7 @@ describe("LandingPage", () => {
     expect(html).toContain("Analysis T1");
     expect(html).toContain("recorded trajectory");
     expect(html).toContain("vector geometry");
-    expect(html).toContain("supported historical sample");
+    expect(html).toContain("recorded trajectory point with available diagnostics");
     expect(html).toContain("sampled vertical-tilting diagnostic");
     const whyCopy = `${LANDING_WHY_EXISTS_LEAD} ${LANDING_WHY_EXISTS_CONNECTS}`;
     expect(whyCopy).not.toMatch(/forecast/i);

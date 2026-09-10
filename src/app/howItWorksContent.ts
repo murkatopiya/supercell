@@ -1,3 +1,4 @@
+import { T1_EXPLANATION, SOURCE_EXPLANATION, ANALYSIS_EXPLANATION } from "./publicDiagnosticCopy.js";
 import { T1_COLOR_SCALE_V1_SATURATION } from "../data/escHrTimeAnalysis/t1ColorScaleV1.js";
 import { formatPointDiagnosticScientific } from "../ui/tracer/formatPointDiagnosticDisplay.js";
 
@@ -34,7 +35,7 @@ export const HOW_IT_WORKS_GUIDED_RELEASES =
   "In this prepared exhibit, tracer releases are set by the experiment. The public laboratory workflow below describes Explore.";
 
 export const HOW_IT_WORKS_RECORDED_TRAJECTORY =
-  "When a suitable Analysis representation is available, supported parts of the recorded trajectory are colored by Analysis T1, a reduced-field vertical-tilting diagnostic, using a fixed symmetric scale.";
+  "When an Analysis representation is available, supported parts of the recorded trajectory are colored by Analysis T1, a reduced-field vertical-tilting diagnostic, using a fixed symmetric scale.";
 
 export const HOW_IT_WORKS_TAIL =
   "The tail is recorded trajectory, not an airflow streamline.";
@@ -45,32 +46,32 @@ export const HOW_IT_WORKS_COLOR =
 export const HOW_IT_WORKS_COLOR_SCALE = `The color scale is fixed and symmetric. It saturates at ${HOW_IT_WORKS_T1_SATURATION_DISPLAY}. Values beyond that display limit keep their raw numeric value but use the saturated endpoint color. Out-of-support or unavailable samples are not mapped to zero.`;
 
 export const HOW_IT_WORKS_HISTORICAL_SAMPLE =
-  "Click a historical sample on the recorded path. Selection refers to that exact recorded trajectory sample.";
+  "Click a recorded trajectory point (a historical sample) on the trail. Selection refers to that exact recorded trajectory sample.";
 
 export const HOW_IT_WORKS_T1_GEOMETRY =
-  "T1 is explained by the alignment between environmental horizontal vorticity ω_h and the prescribed updraft horizontal gradient ∇_h V_y.";
+  T1_EXPLANATION;
 
 export const HOW_IT_WORKS_T1_EQUATION = "T1 = ω_h,env · ∇_h V_y,updraft";
 
 export const HOW_IT_WORKS_T1_EQUATION_COS = "T1 = |ω_h| |∇_h V_y| cos θ";
 
 export const HOW_IT_WORKS_VERIFY =
-  "The inspector shows the same atomic Analysis result used for the geometric explanation.";
+  "T1 calculation shows the two factors and their alignment used in the same diagnostic. It is a calculation breakdown, not an independent validation.";
 
 export const HOW_IT_WORKS_WHAT_IF =
-  "What-if geometry keeps the observed environmental ω_h fixed. Only a hypothetical copy of the prescribed storm-local gradient alignment varies. Laboratory state remains unchanged.";
+  "What-if geometry keeps the Analysis-derived environmental ω_h fixed. Only a hypothetical copy of the prescribed storm-local gradient alignment varies. Laboratory state remains unchanged.";
 
 export const HOW_IT_WORKS_SOURCE =
-  "The Source environment is used in the laboratory velocity and advection path. Source advects the tracer.";
+  SOURCE_EXPLANATION;
 
 export const HOW_IT_WORKS_ANALYSIS =
-  "The Analysis representation is used to explain selected diagnostics along the recorded trajectory when an Analysis sibling is available. Analysis explains those diagnostics; it does not push the tracer.";
+  ANALYSIS_EXPLANATION;
 
 export const HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS =
   "Source advects. Analysis explains.";
 
 export const HOW_IT_WORKS_ANALYSIS_UNAVAILABLE =
-  "Analysis capability may be unavailable when no suitable Analysis representation exists for the selected environment.";
+  "Some environments do not include an Analysis representation. For those environments, T1 and what-if are unavailable. Unavailable does not mean zero.";
 
 export const HOW_IT_WORKS_BOUNDARY =
   "This is a prescribed kinematic storm-relative laboratory. It is not a weather forecast, not LES or CFD, not a prognostic parcel-vorticity model, and not a reconstructed storm evolution.";

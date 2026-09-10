@@ -1,4 +1,5 @@
 import type { TrajectoryTiltingVerificationModel } from "../../data/escHrTimeAnalysis/trajectoryTiltingVerification.js";
+import { T1_EXPLANATION, ANALYSIS_UNAVAILABLE_COPY, ANALYSIS_FULL_COPY, ANALYSIS_BOUNDARY_COPY } from "../../app/publicDiagnosticCopy.js";
 import type { TrajectoryTiltingRecordedSampleContext } from "../../data/escHrTimeAnalysis/trajectoryTiltingVerification.js";
 import { CollapsibleObservationSection } from "./CollapsibleObservationSection.js";
 import {
@@ -34,13 +35,13 @@ export function TrajectoryTiltingVerificationPanel({
     <CollapsibleObservationSection
       sectionClassName="trajectory-tilting-verify"
       ariaLabel="Analysis tilting verification"
-      title="Analysis T1 verification"
+      title="T1 calculation"
       titleClassName="trajectory-tilting-verify__title"
       bodyClassName="trajectory-tilting-verify__body"
     >
       {model === undefined ? (
         <p className="trajectory-tilting-verify__placeholder">
-          Select a recorded path sample to verify Analysis T1 numbers.
+          Select a recorded trajectory point to inspect the T1 calculation.
         </p>
       ) : (
         <VerificationBody model={model} />
@@ -75,14 +76,18 @@ function UnsupportedBody({
             : "trajectory-tilting-verify__status trajectory-tilting-verify__status--ood"
         }
       >
-        {column ? "COLUMN_UNAVAILABLE" : "OUT_OF_DOMAIN"}
+        {column ? "Analysis unavailable" : "Outside the Analysis height domain"}
       </p>
       <p className="trajectory-tilting-verify__hint">
         {column
-          ? "No Analysis column. No Analysis T1. Source T1 is not a fallback."
+          ? ANALYSIS_UNAVAILABLE_COPY
           : "Out of Analysis domain. No Analysis T1. This is not a numeric zero."}
       </p>
-      <RecordedSampleBlock sample={model.recordedSample} />
+      <p className="trajectory-tilting-verify__hint">Recorded trajectory point. The live tracer has not been rewound.</p>
+      <details><summary>Technical details</summary>
+        <p>{model.status}</p>
+        <p>Source T1 is not a fallback.</p>
+        <RecordedSampleBlock sample={model.recordedSample} />
       {model.status === "OUT_OF_DOMAIN" ? (
         <ProvenanceBlock
           representation={model.representation}
@@ -91,6 +96,7 @@ function UnsupportedBody({
           transformVersion={model.provenance.transformVersion}
         />
       ) : null}
+      </details>
     </>
   );
 }
@@ -112,20 +118,14 @@ function SupportedBody({
             : "trajectory-tilting-verify__status"
         }
       >
-        {model.support}
+        {boundary ? "Available with boundary-dependent filtering" : "Available with full filter support"}
       </p>
-      {boundary ? (
-        <p className="trajectory-tilting-verify__hint">
-          BOUNDARY_CONDITIONED: numeric Analysis T1 remains valid with typed
-          support. This is not FULL_SUPPORT.
-        </p>
-      ) : null}
+      <p className="trajectory-tilting-verify__hint">{boundary ? ANALYSIS_BOUNDARY_COPY : ANALYSIS_FULL_COPY}</p>
       <p className="trajectory-tilting-verify__hint">
-        Geometry teaches. Numbers verify. These values are the atomic Analysis
-        explanation at this recorded sample, not Source Point Diagnostics and
-        not a second T1 calculation.
+        Recorded trajectory point. The live tracer has not been rewound.
+        These are the two factors and their alignment used in the same diagnostic, not an independent validation.
       </p>
-      <RecordedSampleBlock sample={model.recordedSample} />
+      <details><summary>What this diagnostic means</summary><p>{T1_EXPLANATION}</p></details>
       <p className="trajectory-tilting-verify__equation">{T1_PRODUCT_EQUATION}</p>
       {defined ? (
         <p className="trajectory-tilting-verify__equation">
@@ -153,7 +153,7 @@ function SupportedBody({
       {defined && model.alignment.state === "ALIGNMENT_DEFINED" ? (
         <>
           <Quantity
-            label="Alignment angle θ (display degrees; domain radians)"
+            label="Alignment angle θ"
             symbol="θ"
             units={VERIFICATION_THETA_DISPLAY_UNITS}
             value={formatVerificationThetaDegrees(model.alignment.theta)}
@@ -168,6 +168,9 @@ function SupportedBody({
       ) : (
         <p className="trajectory-tilting-verify__absence">{absence}</p>
       )}
+      <details><summary>Technical details</summary>
+      <p>{model.support}</p>
+      <RecordedSampleBlock sample={model.recordedSample} />
       <dl className="trajectory-tilting-verify__rows">
         <Row label="Representation" value={model.representation} />
         <Row label="Method" value={model.method} />
@@ -191,6 +194,7 @@ function SupportedBody({
         domain={model.provenance.domain}
         cutoffWavelengthS={model.provenance.cutoffWavelengthS}
       />
+      </details>
     </>
   );
 }

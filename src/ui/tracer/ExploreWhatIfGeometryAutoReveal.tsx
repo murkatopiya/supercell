@@ -23,6 +23,7 @@ export interface WhatIfGeometryAutoRevealApi {
 export interface ExploreWhatIfGeometryAutoRevealProps {
   glyphModel: TrajectoryTiltingGlyphModel | null | undefined;
   whatIfModel: TrajectoryTiltingWhatIfModel | null | undefined;
+  revealCalculationFirst?: boolean;
   children: (api: WhatIfGeometryAutoRevealApi) => ReactNode;
 }
 
@@ -34,6 +35,7 @@ export interface ExploreWhatIfGeometryAutoRevealProps {
 export function ExploreWhatIfGeometryAutoReveal({
   glyphModel,
   whatIfModel,
+  revealCalculationFirst = false,
   children,
 }: ExploreWhatIfGeometryAutoRevealProps) {
   const columnRef = useRef<HTMLDivElement | null>(null);
@@ -56,13 +58,17 @@ export function ExploreWhatIfGeometryAutoReveal({
     const container = columnRef.current;
     const target = whatIfSectionRef.current;
     if (container !== null && target !== null) {
-      scrollObservationChildIntoView(container, target);
+      if (revealCalculationFirst) {
+        container.scrollTop = 0;
+      } else {
+        scrollObservationChildIntoView(container, target);
+      }
     }
     // Retract the one-shot request so a later What-if remount
     // (cleared sample / explorer off) does not treat nonce 1 as a
     // new onboarding reveal.
     setExpandRequestNonce(0);
-  }, []);
+  }, [revealCalculationFirst]);
 
   return children({
     columnRef,

@@ -108,7 +108,7 @@ describe("GlossarySurface", () => {
     expect(html).toContain(GLOSSARY_SOURCE);
     expect(html).toContain(GLOSSARY_ANALYSIS);
     expect(html).toContain(GLOSSARY_SOURCE_ADVECTS_ANALYSIS_EXPLAINS);
-    expect(html).toContain("does not advect the tracer");
+    expect(html).toContain("does not advect tracers");
     expect(html).toContain("not a broken Source environment");
     expect(html).not.toContain("Moore is broken");
   });

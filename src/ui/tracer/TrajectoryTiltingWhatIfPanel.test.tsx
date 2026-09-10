@@ -192,7 +192,7 @@ describe("TrajectoryTiltingWhatIfPanel", () => {
     expect(html).toContain("Laboratory state unchanged");
     expect(html).toContain("What-if geometry");
     expect(html).toContain(
-      "Hypothetical T1 for the same operand magnitudes at a different alignment angle.",
+      "Hypothetical T1 for the same vector magnitudes at a different alignment angle.",
     );
     expect(html).not.toContain("ω_y,current");
     expect(html).not.toContain("spin-up");

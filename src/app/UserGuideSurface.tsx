@@ -377,7 +377,7 @@ export function UserGuideSurface({
           >
             <h3>
               <span className="user-guide__step">9</span>
-              Verification &amp; What-if
+              T1 calculation &amp; What-if
             </h3>
             <p>{USER_GUIDE_VERIFY_WHERE}</p>
             <p>{USER_GUIDE_WHAT_IF_DOES}</p>

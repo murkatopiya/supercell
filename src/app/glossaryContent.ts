@@ -1,3 +1,4 @@
+import { T1_EXPLANATION, SOURCE_EXPLANATION, ANALYSIS_EXPLANATION, ANALYSIS_UNAVAILABLE_COPY, ANALYSIS_FULL_COPY, ANALYSIS_BOUNDARY_COPY } from "./publicDiagnosticCopy.js";
 import { DEMO_VELOCITY_CONTRIBUTION_KEYS } from "./composeDemoTracerSimulation.js";
 import { labelForContribution } from "../ui/tracer/tracerContributionLabels.js";
 
@@ -61,16 +62,16 @@ export const GLOSSARY_VELOCITY_CONTRIBUTIONS = [
 ] as const;
 
 export const GLOSSARY_SOURCE =
-  "The Source environment is the environmental wind representation used in the laboratory velocity and advection path. Source advects the tracer.";
+  SOURCE_EXPLANATION;
 
 export const GLOSSARY_ANALYSIS =
-  "The Analysis representation is a companion used to explain supported diagnostics along the recorded trajectory when available. It does not advect the tracer.";
+  ANALYSIS_EXPLANATION;
 
 export const GLOSSARY_SOURCE_ADVECTS_ANALYSIS_EXPLAINS =
   "Source advects. Analysis explains.";
 
 export const GLOSSARY_ANALYSIS_UNAVAILABLE =
-  "Analysis unavailable means no suitable Analysis representation exists for that environment. It is not a zero diagnostic and is not a Source fallback.";
+  ANALYSIS_UNAVAILABLE_COPY;
 
 export const GLOSSARY_PASSIVE_TRACER =
   "A passive tracer is a moving probe carried by V_total. It does not affect the airflow and does not acquire or generate vorticity.";
@@ -82,7 +83,7 @@ export const GLOSSARY_HISTORICAL_SAMPLE =
   "A historical sample is an exact recorded trajectory sample, not an interpolated point.";
 
 export const GLOSSARY_ANALYSIS_T1 =
-  "Analysis T1 is a reduced-field vertical-tilting diagnostic evaluated using the Analysis environmental operand and the prescribed updraft gradient. It is not parcel spin-up, not Δω_y, and not current parcel vorticity.";
+  T1_EXPLANATION;
 
 export const GLOSSARY_T1_EQUATION = "T1 = ω_h,env · ∇_h V_y,updraft";
 
@@ -98,19 +99,17 @@ export const GLOSSARY_THETA =
   "θ is the alignment angle between ω_h and ∇_h V_y when both directions are defined.";
 
 export const GLOSSARY_WHAT_IF =
-  "What-if geometry is a counterfactual visualization that keeps environmental ω_h and operand magnitudes fixed while changing only the hypothetical alignment of the prescribed gradient. Laboratory state remains unchanged.";
+  "What-if geometry is a counterfactual visualization that keeps environmental ω_h and vector magnitudes fixed while changing only the hypothetical alignment of the prescribed gradient. Laboratory state remains unchanged.";
 
-export const GLOSSARY_FULL =
-  "FULL_SUPPORT: the diagnostic is evaluated within full Analysis support.";
+export const GLOSSARY_FULL = `FULL_SUPPORT: ${ANALYSIS_FULL_COPY}`;
 
-export const GLOSSARY_BOUNDARY =
-  "BOUNDARY_CONDITIONED: a numeric diagnostic is available at a support boundary and is typed as boundary support. It is not FULL_SUPPORT.";
+export const GLOSSARY_BOUNDARY = `BOUNDARY_CONDITIONED: ${ANALYSIS_BOUNDARY_COPY}`;
 
 export const GLOSSARY_OOD =
   "OUT_OF_DOMAIN (OOD): the Analysis diagnostic is unavailable outside the supported domain. It is not treated as zero.";
 
 export const GLOSSARY_COLUMN_UNAVAILABLE =
-  "COLUMN_UNAVAILABLE: no suitable Analysis representation exists. This is Analysis unavailable, not a broken Source environment and not a Source fallback.";
+  "COLUMN_UNAVAILABLE: this environment does not include an Analysis representation. This is Analysis unavailable, not a broken Source environment and not a Source fallback.";
 
 export const GLOSSARY_OCCUPANCY_TRAIL =
   "The occupancy / tracer trail shows where the tracer has traveled. Its tracer color does not encode Analysis T1. Occupancy remains visible where Analysis is unavailable or out of domain. Occupancy red does not mean positive T1.";
@@ -181,4 +180,4 @@ export const GLOSSARY_ATTRIBUTION_LEAD =
 
 export const GLOSSARY_EOL_ATTRIBUTION = `EOL dataset ${EOL_SOUNDING_DATASET_ID} / ${EOL_SOUNDING_DATASET_NAME}, DOI ${EOL_SOUNDING_DATASET_DOI}. Used for the Goshen, Prospect Valley, and Dumas Source profiles and matching Analysis representations.`;
 
-export const GLOSSARY_IGRA_ATTRIBUTION = `${IGRA_ARCHIVE_NAME}, station ${IGRA_STATION_ID} (Norman / OUN), ${IGRA_DSI}. Used for the Moore Source profile. Moore has no production Analysis representation.`;
+export const GLOSSARY_IGRA_ATTRIBUTION = `${IGRA_ARCHIVE_NAME}, station ${IGRA_STATION_ID} (Norman / OUN), ${IGRA_DSI}. Used for the Moore Source profile. Moore has no Analysis representation.`;

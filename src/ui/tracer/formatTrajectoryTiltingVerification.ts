@@ -88,7 +88,7 @@ export function alignmentAbsenceCopy(
     return "Alignment angle undefined: environmental horizontal vorticity magnitude is zero.";
   }
   if (alignment.state === "BOTH_DEGENERATE") {
-    return "Alignment angle undefined: both operand magnitudes are zero.";
+    return "Alignment angle undefined: both vector magnitudes are zero.";
   }
   return null;
 }

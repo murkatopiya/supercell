@@ -131,7 +131,7 @@ describe("public T1 authority = Analysis T1", () => {
     expect(point).not.toContain("T_tilt,y");
     expect(point).toContain("ω_y,current");
     expect(analysis).toContain("COLUMN_UNAVAILABLE");
-    expect(analysis).toContain("No Analysis T1.");
+    expect(analysis).toContain("T1 and what-if are unavailable");
     expect(analysis).toContain("Source T1 is not a fallback.");
     expect(whatIf).toContain("COLUMN_UNAVAILABLE");
     expect(whatIf).toContain("Source T1 is not a fallback.");

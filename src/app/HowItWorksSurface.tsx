@@ -125,6 +125,7 @@ export function HowItWorksSurface({
 
           <section className="how-it-works__section">
             <h3>3. Read the recorded trajectory</h3>
+            <p>{HOW_IT_WORKS_T1_GEOMETRY}</p>
             <p>{HOW_IT_WORKS_RECORDED_TRAJECTORY}</p>
             <p>{HOW_IT_WORKS_TAIL}</p>
           </section>
@@ -137,20 +138,19 @@ export function HowItWorksSurface({
 
           {showExploreWorkflow ? (
             <section className="how-it-works__section">
-              <h3>5. Click a historical sample</h3>
+              <h3>5. Click a recorded trajectory point</h3>
               <p>{HOW_IT_WORKS_HISTORICAL_SAMPLE}</p>
             </section>
           ) : null}
 
           <section className="how-it-works__section">
             <h3>{showExploreWorkflow ? "6. Explain T1 geometrically" : "Explain T1 geometrically"}</h3>
-            <p>{HOW_IT_WORKS_T1_GEOMETRY}</p>
             <p className="how-it-works__equation">{HOW_IT_WORKS_T1_EQUATION}</p>
             <p className="how-it-works__equation">{HOW_IT_WORKS_T1_EQUATION_COS}</p>
           </section>
 
           <section className="how-it-works__section">
-            <h3>{showExploreWorkflow ? "7. Verify numerically" : "Verify numerically"}</h3>
+            <h3>{showExploreWorkflow ? "7. Inspect the calculation" : "Inspect the calculation"}</h3>
             <p>{HOW_IT_WORKS_VERIFY}</p>
           </section>
 

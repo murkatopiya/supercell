@@ -79,10 +79,10 @@ describe("VisualAirflowWorkbenchControls V1 product surface", () => {
     expect(html).toContain("not a separate air mass");
     expect(html).toContain("About diagnostic tools");
     expect(html).toContain(
-      "Highlight tints where one selected storm operand contributes",
+      "Highlight tints where one selected flow component contributes",
     );
     expect(html).toContain(
-      "Tint is not a separate air mass or a quantitative comparison between operands.",
+      "Tint is not a separate air mass or a quantitative comparison between components.",
     );
     for (const key of STORM_OPERAND_HIGHLIGHT_KEYS) {
       expect(html).toContain(`value="${key}"`);

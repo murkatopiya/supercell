@@ -205,7 +205,7 @@ describe("Explore inspector collapse V1", () => {
     expect(html).not.toContain(" hidden");
     expect(html).toContain("Inspector");
     expect(html).toContain("Point diagnostics");
-    expect(html).toContain("Analysis T1 verification");
+    expect(html).toContain("T1 calculation");
     expect(html).toContain("What-if geometry");
     expect(html).toContain("HISTORICAL PATH SAMPLE");
     expect(html).toContain("FULL_SUPPORT");
@@ -264,7 +264,7 @@ describe("Explore inspector collapse V1", () => {
 
   it("E collapsing one section does not collapse another", () => {
     const { container, unmount } = mount(<ColumnFixture analysisOn />);
-    toggleNamed(container, "Analysis T1 verification");
+    toggleNamed(container, "T1 calculation");
     expect(
       container
         .querySelectorAll("button.observation-section__toggle")
@@ -273,7 +273,7 @@ describe("Explore inspector collapse V1", () => {
     ).toBe("true");
     expect(bodyFor(container, "Inspector").hidden).toBe(false);
     expect(bodyFor(container, "Point diagnostics").hidden).toBe(false);
-    expect(bodyFor(container, "Analysis T1 verification").hidden).toBe(true);
+    expect(bodyFor(container, "T1 calculation").hidden).toBe(true);
     expect(bodyFor(container, "What-if geometry").hidden).toBe(false);
     unmount();
   });
@@ -354,7 +354,7 @@ describe("Explore inspector collapse V1", () => {
     const demo = renderToStaticMarkup(<ColumnFixture analysisOn={false} />);
     expect(demo).toContain("Inspector");
     expect(demo).toContain("Point diagnostics");
-    expect(demo).not.toContain("Analysis T1 verification");
+    expect(demo).not.toContain("T1 calculation");
     expect(demo).not.toContain("What-if geometry");
     const observation = appSrc.slice(
       appSrc.indexOf("workbench__column--observation"),
@@ -380,10 +380,10 @@ describe("Explore inspector collapse V1", () => {
     act(() => {
       provenance.open = true;
     });
-    toggleNamed(container, "Analysis T1 verification");
-    expect(bodyFor(container, "Analysis T1 verification").hidden).toBe(true);
+    toggleNamed(container, "T1 calculation");
+    expect(bodyFor(container, "T1 calculation").hidden).toBe(true);
     expect(provenance.open).toBe(true);
-    toggleNamed(container, "Analysis T1 verification");
+    toggleNamed(container, "T1 calculation");
     expect(provenance.open).toBe(true);
     unmount();
   });

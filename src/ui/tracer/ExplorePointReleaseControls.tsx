@@ -1,10 +1,14 @@
+import { useState } from "react";
+
 export interface ExplorePointReleaseControlsProps {
+  analysisAvailable?: boolean;
+  hasTracers?: boolean;
   altitudeM: number;
   placementEnabled: boolean;
   hasPending: boolean;
   onAltitudeChange: (altitudeM: number) => void;
   onPlacementEnabledChange: (enabled: boolean) => void;
-  onConfirm: () => void;
+  onConfirm: () => boolean | void;
   onCancel: () => void;
 }
 
@@ -26,7 +30,10 @@ export function ExplorePointReleaseControls({
   onPlacementEnabledChange,
   onConfirm,
   onCancel,
+  analysisAvailable = false,
+  hasTracers = true,
 }: ExplorePointReleaseControlsProps) {
+  const [released, setReleased] = useState(false);
   return (
     <div className="explore-point-release-controls">
       <p className="explore-point-release-controls__copy">
@@ -78,7 +85,10 @@ export function ExplorePointReleaseControls({
                 ? "Confirm release"
                 : `Confirm release — ${PENDING_REQUIRED_REASON}`
             }
-            onClick={onConfirm}
+            onClick={() => {
+              const confirmed = onConfirm();
+              if (confirmed === true) setReleased(true);
+            }}
           >
             Confirm
           </button>
@@ -99,6 +109,15 @@ export function ExplorePointReleaseControls({
         </button>
         ) : null}
       </div>
+      {released && hasTracers ? (
+        <p className="control-disabled-reason" role="status">
+          Tracer released.
+          {placementEnabled ? " Placement stays enabled for additional releases; Cancel leaves placement mode." : ""}
+          {analysisAvailable
+            ? " Let it travel, pause, then click a recorded trajectory point on its trail to inspect T1."
+            : " Let it travel, pause, then click its recorded trail to inspect motion. T1 and what-if are unavailable for this environment."}
+        </p>
+      ) : null}
       {placementEnabled && !hasPending ? (
         <p className="control-disabled-reason">{PLACEMENT_INSTRUCTION}</p>
       ) : null}

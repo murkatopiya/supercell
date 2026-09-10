@@ -67,7 +67,7 @@ describe("UserGuideSurface", () => {
     expect(html).toContain("Inspecting trajectory history");
     expect(html).toContain("Reading Analysis T1");
     expect(html).toContain("Mechanism glyph");
-    expect(html).toContain("Verification");
+    expect(html).toContain("T1 calculation");
     expect(html).toContain("When a diagnostic is unavailable");
     expect(html).toContain("Reset / start another experiment");
     expect(html).toContain("Where to learn more");

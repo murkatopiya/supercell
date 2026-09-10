@@ -1,12 +1,15 @@
 import {
+  exploreEnvironmentHonesty,
   EXPLORE_ENVIRONMENT_OPTIONS,
   isExploreEnvironmentIdentity,
   type ExploreEnvironmentIdentity,
 } from "../../explore/exploreEnvironmentIdentity.js";
+import { ANALYSIS_UNAVAILABLE_COPY } from "../../app/publicDiagnosticCopy.js";
 
 export interface ExploreEnvironmentSelectorProps {
   value: ExploreEnvironmentIdentity;
   onChange: (identity: ExploreEnvironmentIdentity) => void;
+  analysisAvailable?: boolean;
 }
 
 /**
@@ -17,8 +20,11 @@ export interface ExploreEnvironmentSelectorProps {
 export function ExploreEnvironmentSelector({
   value,
   onChange,
+  analysisAvailable,
 }: ExploreEnvironmentSelectorProps) {
+  const honesty = exploreEnvironmentHonesty(value);
   return (
+    <>
     <label
       className="explore-environment-selector"
       htmlFor="explore-environment-selector"
@@ -42,5 +48,16 @@ export function ExploreEnvironmentSelector({
         ))}
       </select>
     </label>
+    <div className="workbench__column-note environment-clarity" aria-label="Environment data and limitations">
+      <p>{honesty ? "Observed: environmental wind profile. Observation details are in Hodograph." : "Environmental wind: prescribed demonstration profile."}</p>
+      <p>Prescribed: storm-local flow and storm motion.</p>
+      <p>Not a reconstruction of a storm.</p>
+      {analysisAvailable !== undefined ? (
+        <p role="status">{analysisAvailable
+          ? "Vertical-vorticity tilting diagnostic (T1) available along the recorded trajectory."
+          : ANALYSIS_UNAVAILABLE_COPY}</p>
+      ) : null}
+    </div>
+    </>
   );
 }

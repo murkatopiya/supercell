@@ -870,12 +870,8 @@ export function App() {
             <ExploreEnvironmentSelector
               value={exploreEnvironmentIdentity}
               onChange={selectExploreEnvironment}
+              analysisAvailable={explore.analysisColumn !== null}
             />
-            {explore.analysisColumn !== null ? (
-              <p className="workbench__column-note">
-                Analysis T1 along recorded path
-              </p>
-            ) : null}
             <div className="laboratory-toolbar laboratory-toolbar--explore">
               <div
                 className="control-band control-band--release control-band--primary"
@@ -883,6 +879,9 @@ export function App() {
               >
                 <span className="control-band__label">Release</span>
                 <ExplorePointReleaseControls
+                  key={exploreEnvironmentIdentity}
+                  analysisAvailable={explore.analysisColumn !== null}
+                  hasTracers={explore.simulation.particles.length > 0}
                   altitudeM={altitudeM}
                   placementEnabled={placementEnabled}
                   hasPending={pendingSeed !== null}
@@ -896,9 +895,10 @@ export function App() {
                     setPlacementEnabled(enabled);
                   }}
                   onConfirm={() => {
-                    explore.orchestration.confirmRelease();
+                    const released = explore.orchestration.confirmRelease();
                     setPendingSeed(null);
                     syncAuthoringHistoryButtons(explore.orchestration);
+                    return released;
                   }}
                   onCancel={() => {
                     explore.orchestration.cancelPending();
@@ -976,6 +976,7 @@ export function App() {
           </div>
 
           <ExploreWhatIfGeometryAutoReveal
+            revealCalculationFirst
             glyphModel={analysisTiltingView?.glyphModel}
             whatIfModel={analysisTiltingView?.whatIfModel}
           >
@@ -984,14 +985,6 @@ export function App() {
                 className="workbench__column workbench__column--observation"
                 ref={autoReveal.columnRef}
               >
-                <TracerInspectorPanel
-                  inspection={inspection}
-                  mode={inspectionMode}
-                />
-                <PointDiagnosticsPanel
-                  observation={pointDiagnostics}
-                  mode={inspectionMode}
-                />
                 {analysisTiltingExplorerOn ? (
                   <>
                     <TrajectoryTiltingVerificationPanel
@@ -1011,6 +1004,16 @@ export function App() {
                     />
                   </>
                 ) : null}
+                <TracerInspectorPanel
+                  trajectoryAnalysisAvailable={explore.analysisColumn !== null}
+                  inspection={inspection}
+                  mode={inspectionMode}
+                />
+                <PointDiagnosticsPanel
+                  observation={pointDiagnostics}
+                  mode={inspectionMode}
+                />
+
               </div>
             )}
           </ExploreWhatIfGeometryAutoReveal>

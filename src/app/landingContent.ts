@@ -11,7 +11,7 @@ import {
 } from "../explore/exploreEnvironmentIdentity.js";
 
 export const LANDING_LEDE =
-  "An interactive kinematic laboratory for exploring how environmental wind and prescribed storm-local flow geometry shape tracer trajectories and vertical-tilting diagnostics.";
+  "An interactive kinematic laboratory for exploring how environmental wind and prescribed storm-local flow geometry shape tracer trajectories. Explore a vertical-vorticity tilting diagnostic (T1) along a tracer’s recorded trajectory.";
 
 export const LANDING_WHY_EXISTS_TITLE = "Why this exists";
 
@@ -19,7 +19,7 @@ export const LANDING_WHY_EXISTS_LEAD =
   "Environmental wind profiles and hodographs describe the surrounding environment, but they do not by themselves show how a trajectory passes through prescribed storm-local flow geometry — or why the sampled vertical-tilting diagnostic changes along that path.";
 
 export const LANDING_WHY_EXISTS_CONNECTS =
-  "Supercell Explorer connects these views. Follow a passive tracer through the laboratory, see where Analysis T1 changes along its recorded trajectory, and inspect the vector geometry behind any supported historical sample.";
+  "Supercell Explorer connects these views. Follow a passive tracer through the laboratory, see where Analysis T1 changes along its recorded trajectory, and inspect the vector geometry behind any recorded trajectory point with available diagnostics.";
 
 export const LANDING_CTA_LABEL = "Open Laboratory";
 
@@ -29,7 +29,7 @@ export const LANDING_DISCLAIMER =
 export const LANDING_ENVIRONMENTS_LEAD = "Observed environments include";
 
 export const LANDING_ENVIRONMENTS_ANALYSIS_NOTE =
-  "Analysis explanation along a trajectory is available only when a suitable Analysis representation exists.";
+  "Analysis explanation along a trajectory is available only when an Analysis representation exists.";
 
 export interface LandingObservedEnvironmentLink {
   readonly identity: ExploreEnvironmentIdentity;
@@ -114,7 +114,7 @@ export const LANDING_CAPABILITIES = [
   },
   {
     title: "Explain a historical sample",
-    copy: "Inspect environmental horizontal vorticity, prescribed updraft-gradient geometry, numeric verification, and a constrained what-if alignment.",
+    copy: "Inspect environmental horizontal vorticity, prescribed updraft-gradient geometry, the calculation, and a constrained what-if alignment.",
   },
 ] as const;
 

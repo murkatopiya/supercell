@@ -2106,6 +2106,10 @@ body:has(.app--landing) {
   overflow-wrap: anywhere;
 }
 
+.environment-clarity p {
+  margin: 0.4rem 0;
+}
+
 .trajectory-tilting-verify__quantity {
   margin: 0 0 var(--space-3);
   padding: 0 0 var(--space-3);

@@ -1,3 +1,4 @@
+import { T1_EXPLANATION, ANALYSIS_FULL_COPY, ANALYSIS_BOUNDARY_COPY } from "./publicDiagnosticCopy.js";
 import {
   GOSHEN_2009_OBSERVED_ENVIRONMENT_LABEL,
   MOORE_2013_OBSERVED_ENVIRONMENT_LABEL,
@@ -33,7 +34,7 @@ export const USER_GUIDE_NAV = [
   { id: "user-guide-history", label: "Trajectory history" },
   { id: "user-guide-t1", label: "Analysis T1" },
   { id: "user-guide-glyph", label: "Mechanism glyph" },
-  { id: "user-guide-verify", label: "Verification" },
+  { id: "user-guide-verify", label: "T1 calculation" },
   { id: "user-guide-unavailable", label: "Unavailable" },
   { id: "user-guide-reset", label: "Reset" },
   { id: "user-guide-more", label: "Learn more" },
@@ -62,7 +63,7 @@ export const USER_GUIDE_RELEASE_PLACEMENT =
   "Release tracer arms placement mode. A stationary click on the ground sets the pending point. Dragging still orbits the camera, so a short click is the placement gesture.";
 
 export const USER_GUIDE_RELEASE_NO_ADD =
-  "There is no Add button. Confirm is what actually releases the tracer.";
+  "Confirm releases the tracer. Placement stays enabled for additional releases; Cancel leaves placement mode. Let the tracer travel, pause, then click a recorded trajectory point to inspect T1 when Analysis is available.";
 
 export const USER_GUIDE_CONTROLS = [
   {
@@ -141,7 +142,7 @@ export const USER_GUIDE_HISTORY_FOLLOW =
   "Follow still tracks the live glyph. Path pick does not replace the Follow target.";
 
 export const USER_GUIDE_T1_WHAT =
-  "When Analysis is available, supported parts of the recorded path get an Analysis T1 overlay. Occupancy color is a different channel: tracer red is not positive T1.";
+  `${T1_EXPLANATION} When Analysis is available, supported parts of the recorded path get an Analysis T1 overlay. Tracer color is a different channel: tracer red is not positive T1.`;
 
 export const USER_GUIDE_T1_COLOR =
   "Cool colors are negative T1. Near-neutral is near zero. Warm colors are positive T1.";
@@ -174,26 +175,26 @@ export const USER_GUIDE_GLYPH_ARTISTIC =
   "Those colors are a visual key, not a scientific RGB encoding of magnitude.";
 
 export const USER_GUIDE_VERIFY_WHERE =
-  "Analysis T1 verification, on the right, shows the same atomic Analysis numbers used for the geometric explanation: T1, |ω_h|, |∇_h V_y|, and θ.";
+  "T1 calculation, on the right, shows the two factors and their alignment used for the diagnostic: T1, |ω_h|, |∇_h V_y|, and θ. For a recorded trajectory point, this and What-if geometry appear before the motion details.";
 
 export const USER_GUIDE_WHAT_IF_DOES =
-  "The θ slider in What-if geometry rotates only a hypothetical copy of the prescribed gradient. Actual T1 and Hypothetical T1 are shown side by side. Reset to actual angle restores the observed alignment.";
+  "The θ slider in What-if geometry rotates only a hypothetical copy of the prescribed gradient. Actual T1 and Hypothetical T1 are shown side by side. Reset to actual angle restores the actual laboratory alignment.";
 
 export const USER_GUIDE_WHAT_IF_DOES_NOT =
   "The slider does not change the observed atmosphere, does not rewrite Source or Analysis, does not move the tracer, and does not restart the simulation.";
 
 export const USER_GUIDE_UNAVAILABLE_LEAD =
-  "A missing diagnostic is a typed support state. It is not a silent zero.";
+  "A missing diagnostic is unavailable, not zero. Exact support codes are preserved in Technical details.";
 
 export const USER_GUIDE_SUPPORT = [
   {
     code: "FULL_SUPPORT",
-    meaning: "The diagnostic is evaluated inside full Analysis support.",
+    meaning: ANALYSIS_FULL_COPY,
   },
   {
     code: "BOUNDARY_CONDITIONED",
     meaning:
-      "A numeric value exists at a support boundary. It is typed as boundary support, not FULL_SUPPORT.",
+      ANALYSIS_BOUNDARY_COPY,
   },
   {
     code: "OUT_OF_DOMAIN",
@@ -203,7 +204,7 @@ export const USER_GUIDE_SUPPORT = [
   {
     code: "COLUMN_UNAVAILABLE",
     meaning:
-      "No suitable Analysis representation exists for this environment. Source still advects. Analysis T1, the mechanism glyph, and what-if stay unavailable. This is not a broken Source environment and not a Source fallback.",
+      "This environment does not include an Analysis representation. Source still advects. Analysis T1, the mechanism glyph, and what-if stay unavailable. This is not a broken Source environment and not a Source fallback.",
   },
 ] as const;
 
