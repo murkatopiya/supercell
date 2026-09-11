@@ -351,27 +351,73 @@ The causal chain to be tested is
 
 H3 must not be interpreted as a direct C-dependence of the prescribed updraft or of the local Eulerian T1 field.
 
-### 6.2 Synthetic environmental control
+### 6.2 Frozen synthetic control geometry
 
-Use a simple curved environmental hodograph rather than the straight H1/H2 profile. The provisional control profile is
+Use the following curved environmental hodograph with piecewise-linear interpolation in height between control levels:
 
 | z (km) | u (m/s) | v (m/s) |
 |---:|---:|---:|
-| 0 | 0 | 0 |
-| 1 | 8 | 2 |
-| 2 | 14 | 8 |
-| 3 | 16 | 16 |
+| 0 | 15 | 8 |
+| 1 | 23 | 10 |
+| 2 | 29 | 16 |
+| 3 | 31 | 24 |
 
-The final interpolation rule will be frozen before execution.
+The sounding is held fixed in all H3 runs.
 
-Use one fixed prescribed updraft field and one identical initial tracer seed for all H3 runs.
+Use a deliberately simple symmetric horizontal Gaussian updraft centered at the origin:
 
-Choose two storm motions such that, under the existing V1 velocity composition:
+`w(x,y) = w_max * exp(-(x^2 + y^2)/(2*sigma^2))`
 
-- **Run A** carries the tracer through or very near the central updraft core;
-- **Run B** carries the same tracer seed along the updraft periphery or past the core.
+with
 
-The exact `C_A`, `C_B`, tracer seed, updraft parameters, and integration duration are not yet frozen and must be selected before backend execution without changing the qualitative expectations below.
+- center `(x_c, y_c) = (0, 0) m`;
+- `sigma = 1000 m`;
+- `w_max = 20 m/s`;
+- no prescribed rotation;
+- no prescribed radial inflow;
+- no other storm-local horizontal-flow component in the primary H3 control.
+
+For this synthetic control, the horizontal Gaussian shape is treated as unchanged with height over the active control layer unless the architecture audit shows that V1 requires an explicit vertical envelope. Any required mapping to an existing V1 vertical envelope must preserve the same horizontal field for both runs and must be documented before execution.
+
+The horizontal gradient is
+
+`grad_h(w) = -(w/sigma^2) * (x, y)`.
+
+Therefore:
+
+- `w` is maximal at `r = 0`;
+- `|grad_h(w)| = 0` at `r = 0`;
+- `|grad_h(w)|` is maximal at `r = sigma = 1000 m`;
+- the analytical maximum gradient magnitude is `(w_max/sigma) * exp(-1/2) ~= 0.01213 s^-1`.
+
+Use one identical tracer seed in both runs:
+
+`X_0 = (-3000, 0, 0) m`.
+
+Freeze the integration window at
+
+`0 <= t <= 600 s`.
+
+Use two storm motions:
+
+- **Run A / near-core:** `C_A = (5, 8) m/s`;
+- **Run B / flank:** `C_B = (5, 13) m/s`.
+
+At the surface, where `q(0) = (15, 8) m/s`, the initial storm-relative winds are
+
+- Run A: `r_A(0) = (10, 0) m/s`;
+- Run B: `r_B(0) = (10, -5) m/s`.
+
+Thus Run A initially carries the tracer directly toward the updraft center along `+x`, while Run B introduces a substantial southward cross-track component. As the tracer rises through the curved sounding, its storm-relative direction changes with height, so the full trajectories are not assumed to be straight lines.
+
+The frozen qualitative trajectory target is:
+
+- Run A passes through or very near the central updraft region and samples the strongest ascent;
+- Run B makes a clear flank passage, remaining materially farther from the center and sampling weaker peak ascent while still entering the strong-gradient region near `r ~= sigma`.
+
+The exact closest-approach radius, time of closest approach, maximum sampled `w`, and maximum sampled `|T1|` are **not** frozen numerically before execution; they are outcomes of the integrated trajectory. The frozen expectation is the ordering and causal structure, not a preselected backend result.
+
+If the actual V1 architecture cannot represent this control exactly, the architecture audit must document the smallest faithful mapping before any run. The control must not be silently altered to fit an implementation result.
 
 ### 6.3 Frozen Eulerian expectations
 
@@ -405,9 +451,13 @@ and
 
 `T1_B(t) = T1(X_B(t))`.
 
-For the core-crossing Run A, the expected sampled vertical velocity is substantially stronger than in Run B, which misses the core. In particular, Run A should reach a larger `max w(X(t))` provided the selected geometry indeed places it closer to the updraft maximum.
+For the core-crossing Run A, the expected sampled vertical velocity is substantially stronger than in Run B, which misses the core. In particular, the frozen directional expectation is
 
-Run B is expected to experience weaker ascent if it remains farther from the updraft core.
+`max_t w_A(t) > max_t w_B(t)`.
+
+Run B is expected to experience weaker ascent because it remains farther from the updraft core.
+
+No corresponding ordering is frozen for `max |T1|`. Run B may sample a substantial or even comparable `|T1|` if its flank trajectory follows the strong-gradient annulus near `r = sigma`.
 
 However, weaker sampled `w` does **not** imply proportionally weaker sampled `T1`.
 
@@ -456,11 +506,12 @@ H3 is falsified, or the implementation requires investigation, if any of the fol
 - changing only `C` changes the prescribed Eulerian `w(x,y,z)` field;
 - changing only `C` changes local Eulerian `T1(x,y,z)` at the same spatial point;
 - the full advecting velocity fails to respond to a change in `C` where the storm-relative environmental term should contribute;
-- Run A and Run B remain numerically identical despite a frozen setup designed to produce materially different advecting velocities;
+- Run A and Run B remain numerically identical despite the frozen setup producing materially different storm-relative environmental velocities;
+- the intended Run A near-core / Run B flank ordering fails without an identifiable synthetic-geometry or implementation reason;
 - sampled `w(t)` or sampled `T1(t)` differ at the same spatial point rather than only because the trajectories sample different points;
-- the final symmetric core-crossing setup predicts a T1 sign reversal analytically but the recorded trajectory samples both flanks without that reversal and no interpolation/discretization explanation is found.
+- the final near-core setup samples both sides of the updraft in a geometry that predicts a T1 sign reversal, but no reversal appears and no interpolation/discretization explanation is found.
 
-Failure to obtain the intended core-crossing/peripheral contrast is first treated as a synthetic-case design failure, not automatically as a V1 physics failure. The actual trajectories must be inspected before interpreting sampled-diagnostic differences.
+Failure to obtain the intended near-core/flank contrast is first treated as a synthetic-case design failure, not automatically as a V1 physics failure. The actual trajectories must be inspected before interpreting sampled-diagnostic differences.
 
 ### 6.8 Later stronger degeneracy control
 
@@ -478,11 +529,11 @@ This stronger case is explicitly secondary and should not complicate the first H
 
 Before backend execution, define:
 
-- exact synthetic updraft parameters;
-- exact spatial control points;
+- exact spatial Eulerian control points;
 - exact expected analytical values where practical;
 - equality/absolute/relative tolerances for each observable;
-- any interpolation assumptions;
+- integration step / solver assumptions for the harness;
+- any implementation interpolation assumptions beyond the frozen piecewise-linear H3 sounding;
 - layer definitions for SRH;
 - sign conventions used for vorticity and streamwise/crosswise decomposition.
 
