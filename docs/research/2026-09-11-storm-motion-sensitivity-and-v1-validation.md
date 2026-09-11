@@ -339,18 +339,136 @@ As in H1, any mismatch must be investigated before the analytical expectation is
 
 ## 6. Hypothesis H3 — Lagrangian path-mediated response
 
-**Status:** TO BE FORMALIZED AND FROZEN.
+### 6.1 Hypothesis
 
-Planned scope:
+Changing only constant storm motion `C` can alter the tracer trajectory because the storm-relative environmental contribution to the full advecting velocity changes.
 
-- curved synthetic hodograph;
-- fixed prescribed updraft;
-- identical initial tracer seed;
-- distinct storm motions producing distinct advecting velocities and trajectories;
-- unchanged Eulerian fields;
-- changed sampled `w(X(t))` and `T1(X(t))` only through the altered path.
+Therefore trajectory-sampled quantities may differ even though the underlying Eulerian environmental and prescribed laboratory fields are identical.
 
-A later stronger degeneracy case may compare two storm motions with identical SRH but different trajectories and different sampled diagnostics.
+The causal chain to be tested is
+
+`C -> V_total -> X(t) -> sampled w(X(t)), sampled T1(X(t))`.
+
+H3 must not be interpreted as a direct C-dependence of the prescribed updraft or of the local Eulerian T1 field.
+
+### 6.2 Synthetic environmental control
+
+Use a simple curved environmental hodograph rather than the straight H1/H2 profile. The provisional control profile is
+
+| z (km) | u (m/s) | v (m/s) |
+|---:|---:|---:|
+| 0 | 0 | 0 |
+| 1 | 8 | 2 |
+| 2 | 14 | 8 |
+| 3 | 16 | 16 |
+
+The final interpolation rule will be frozen before execution.
+
+Use one fixed prescribed updraft field and one identical initial tracer seed for all H3 runs.
+
+Choose two storm motions such that, under the existing V1 velocity composition:
+
+- **Run A** carries the tracer through or very near the central updraft core;
+- **Run B** carries the same tracer seed along the updraft periphery or past the core.
+
+The exact `C_A`, `C_B`, tracer seed, updraft parameters, and integration duration are not yet frozen and must be selected before backend execution without changing the qualitative expectations below.
+
+### 6.3 Frozen Eulerian expectations
+
+Across Run A and Run B, changing only `C` must leave the following fields unchanged at the same spatial point:
+
+- observed environmental wind `q(z)`;
+- vertical shear and environmental horizontal vorticity;
+- prescribed updraft `w(x,y,z)`;
+- prescribed horizontal updraft gradient `grad_h(w)`;
+- local Eulerian `T1(x,y,z) = omega_h · grad_h(w)`.
+
+If both runs are evaluated at the same spatial control point, local `w` and local `T1` must be identical within numerical tolerance.
+
+If the two tracer trajectories happen to pass through the same spatial point, the local field values there must also agree. A different value at the same point solely because `C` differs would indicate an unintended direct C-dependence.
+
+### 6.4 Frozen Lagrangian expectations
+
+Run A and Run B are expected to produce different trajectories:
+
+`X_A(t) != X_B(t)` in general.
+
+Therefore they may sample different histories from the same unchanged fields:
+
+`w_A(t) = w(X_A(t))`
+
+`w_B(t) = w(X_B(t))`
+
+and
+
+`T1_A(t) = T1(X_A(t))`
+
+`T1_B(t) = T1(X_B(t))`.
+
+For the core-crossing Run A, the expected sampled vertical velocity is substantially stronger than in Run B, which misses the core. In particular, Run A should reach a larger `max w(X(t))` provided the selected geometry indeed places it closer to the updraft maximum.
+
+Run B is expected to experience weaker ascent if it remains farther from the updraft core.
+
+However, weaker sampled `w` does **not** imply proportionally weaker sampled `T1`.
+
+### 6.5 Updraft-gradient distinction
+
+For a smooth symmetric Gaussian-like updraft, `w` is maximal at the center while the horizontal gradient `grad_h(w)` vanishes at the exact center.
+
+The strongest horizontal gradient lies on the flanks of the updraft rather than at its center.
+
+Therefore a core-crossing tracer may experience a qualitative sequence such as
+
+`weak w -> strong |grad_h(w)| -> max w / |grad_h(w)| ~= 0 -> strong |grad_h(w)| -> weak w`.
+
+Consequently:
+
+- the location/time of maximum sampled `w` need not coincide with the location/time of maximum `|T1|`;
+- `max sampled w` and `max sampled |T1|` are not expected to vary in lockstep;
+- a peripheral Run B trajectory may sample substantial `|T1|` if it follows a strong-gradient flank even while never entering the updraft core.
+
+This distinction is essential: `T1` depends on `grad_h(w)`, not on the magnitude of `w` alone.
+
+### 6.6 T1 sign-reversal control for a core crossing
+
+For a sufficiently symmetric core crossing, the horizontal updraft gradient on the entry side and exit side points in approximately opposite directions.
+
+If environmental `omega_h` does not reverse across that crossing, then
+
+`T1 = omega_h · grad_h(w)`
+
+is expected to reverse sign between the two sides of the updraft.
+
+The exact sign ordering depends on the orientation of `omega_h` and on the tracer crossing direction, so the protocol does not yet freeze whether the sequence is positive-to-negative or negative-to-positive.
+
+The expected qualitative structure is
+
+`one T1 sign -> approximately zero near the symmetric center -> opposite T1 sign`.
+
+Run B, which remains on one side of the updraft or misses the core, is not required to show the same symmetric sign reversal and may retain one T1 sign over the relevant interval.
+
+This sign change, if the final frozen geometry satisfies the symmetry assumptions, provides a stronger path-shape control than comparing only maxima.
+
+### 6.7 H3 falsification / investigation criteria
+
+H3 is falsified, or the implementation requires investigation, if any of the following occurs beyond the frozen numerical tolerance or without a documented geometric reason:
+
+- changing only `C` changes the prescribed Eulerian `w(x,y,z)` field;
+- changing only `C` changes local Eulerian `T1(x,y,z)` at the same spatial point;
+- the full advecting velocity fails to respond to a change in `C` where the storm-relative environmental term should contribute;
+- Run A and Run B remain numerically identical despite a frozen setup designed to produce materially different advecting velocities;
+- sampled `w(t)` or sampled `T1(t)` differ at the same spatial point rather than only because the trajectories sample different points;
+- the final symmetric core-crossing setup predicts a T1 sign reversal analytically but the recorded trajectory samples both flanks without that reversal and no interpolation/discretization explanation is found.
+
+Failure to obtain the intended core-crossing/peripheral contrast is first treated as a synthetic-case design failure, not automatically as a V1 physics failure. The actual trajectories must be inspected before interpreting sampled-diagnostic differences.
+
+### 6.8 Later stronger degeneracy control
+
+After the basic H3 path-mediated case passes, a stronger follow-up may compare two storm motions with identical layer SRH but different storm-relative wind profiles/positions and different trajectories.
+
+The purpose would be to demonstrate that equal integrated SRH does not uniquely determine the Lagrangian path through the prescribed laboratory flow and therefore does not uniquely determine sampled `w(X(t))` or sampled `T1(X(t))`.
+
+This stronger case is explicitly secondary and should not complicate the first H3 control.
 
 ---
 
