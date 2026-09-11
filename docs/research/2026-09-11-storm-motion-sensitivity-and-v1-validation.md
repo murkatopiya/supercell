@@ -525,17 +525,138 @@ This stronger case is explicitly secondary and should not complicate the first H
 
 ## 7. Numerical controls and tolerances
 
-**Status:** NOT YET FROZEN.
+**Status:** PARTIALLY FROZEN · PHYSICS/GEOMETRY CRITERIA FROZEN · SOLVER-SPECIFIC SETTINGS PENDING ARCHITECTURE AUDIT.
 
-Before backend execution, define:
+The purpose of the numerical control matrix is to define PASS/FAIL criteria before the backend is executed. Tolerances must not be widened after seeing a result merely to make a discrepancy pass.
 
-- exact spatial Eulerian control points;
-- exact expected analytical values where practical;
-- equality/absolute/relative tolerances for each observable;
-- integration step / solver assumptions for the harness;
-- any implementation interpolation assumptions beyond the frozen piecewise-linear H3 sounding;
-- layer definitions for SRH;
-- sign conventions used for vorticity and streamwise/crosswise decomposition.
+### 7.1 Strict equality class for Eulerian/algebraic invariants
+
+For quantities that should be identical under a change in constant storm motion `C` at the same spatial/vertical point, use a strict floating-point comparison:
+
+`|a - b| <= atol + rtol * max(|a|, |b|)`
+
+with provisional frozen values
+
+- `atol = 1e-9`;
+- `rtol = 1e-9`.
+
+This class applies to direct same-point comparisons of quantities such as:
+
+- observed `q(z)`;
+- vertical shear;
+- environmental `omega_h`;
+- prescribed local `w`;
+- prescribed local `grad_h(w)`;
+- local Eulerian `T1`.
+
+If the architecture audit shows that any of these values are intentionally produced through a numerically lossy interpolation or serialization boundary, the tolerance may be revised **before the first experiment run**, with the reason documented. It must not be revised post hoc in response to a failed result.
+
+### 7.2 SRH analytical controls
+
+For the straight H1/H2 synthetic profile, use absolute tolerances because the expected values are analytically simple.
+
+Frozen checks:
+
+- expected zero SRH: `|SRH| <= 1e-6 m^2/s^2`;
+- expected `+300 m^2/s^2`: `|SRH - 300| <= 1e-6 m^2/s^2`.
+
+These checks apply to the frozen H1/H2 layer definitions and sign convention. Any implementation-specific SRH interpolation/integration behavior must be audited before execution if it prevents the synthetic profile from being represented exactly.
+
+### 7.3 H3 same-point Eulerian control grid
+
+For H3, evaluate the unchanged Eulerian fields under both `C_A` and `C_B` at a fixed control grid.
+
+Horizontal control points:
+
+- core: `(0, 0)` m;
+- east gradient ring: `(+1000, 0)` m;
+- west gradient ring: `(-1000, 0)` m;
+- north gradient ring: `(0, +1000)` m.
+
+Vertical control levels:
+
+- `z = 0.5 km`;
+- `z = 1.5 km`;
+- `z = 2.5 km`.
+
+At all twelve spatial control points, compare at minimum:
+
+- local `w`;
+- local `grad_h(w)`;
+- local `T1`.
+
+Run A and Run B must agree under the strict equality class in §7.1. These controls are intended to detect any hidden direct dependency of prescribed/local Eulerian fields on `C`.
+
+### 7.4 H3 trajectory-geometry criteria
+
+Define horizontal distance from the tracer to the updraft axis as
+
+`r(t) = sqrt(x(t)^2 + y(t)^2)`.
+
+Let `r_min` be the minimum value over the frozen `0–600 s` integration window.
+
+Frozen geometry targets:
+
+- **Run A / near-core:** `r_min,A <= 0.5 sigma = 500 m`;
+- **Run B / flank:** `0.75 sigma <= r_min,B <= 1.5 sigma`, i.e. `750 m <= r_min,B <= 1500 m`.
+
+For the frozen Gaussian, a passage at `r = 0.5 sigma` still samples approximately `17.65 m/s` from a `20 m/s` peak, while the Run B band deliberately overlaps the strong-gradient annulus centered on `r = sigma = 1000 m`.
+
+Failure of these geometric targets is first classified as a synthetic-case design or architecture-mapping failure. It is not automatically evidence that V1 physics is wrong.
+
+### 7.5 H3 material sampled-w contrast
+
+The H3 control is intended to produce a clearly resolvable difference in sampled ascent, not a merely formal inequality.
+
+Freeze the material contrast criterion as
+
+`max_t w_A(t) >= max_t w_B(t) + 2 m/s`.
+
+If `max w_A > max w_B` but the difference is less than `2 m/s`, the run does not satisfy the intended primary H3 contrast and the synthetic geometry must be reviewed before drawing a physics conclusion.
+
+No analogous ordering is frozen for `max_t |T1|`. The experiment must record both maxima without treating either ordering as a PASS requirement.
+
+### 7.6 H3 T1 sign-reversal criterion
+
+For Run A, if the integrated trajectory actually samples opposite flanks of the symmetric updraft with a non-zero projection of `grad_h(w)` onto environmental `omega_h`, expect a sign reversal in sampled T1 across the core passage.
+
+The PASS structure is qualitative but must be robust rather than a single-sample sign flicker:
+
+- a sustained interval with one T1 sign on one flank;
+- a transition through zero or a numerically near-zero region around the central passage;
+- a sustained interval with the opposite sign on the other flank.
+
+A provisional near-zero threshold of
+
+`|T1| <= 1e-6 s^-2`
+
+is recorded for planning only. Its final value is **not yet frozen** because the representative T1 scale and the diagnostic sampling path must first be confirmed during the architecture audit. The final threshold must be committed before the first H3 execution.
+
+Run B is not required to show a sign reversal.
+
+### 7.7 Items intentionally deferred to architecture audit
+
+The following are implementation-specific and must be inspected in existing V1 before they are frozen:
+
+- actual trajectory integrator/solver;
+- actual integration time step or adaptive-step behavior;
+- diagnostic sampling cadence;
+- any interpolation performed by production code beyond the already frozen piecewise-linear H3 sounding;
+- behavior at or extremely near `|r| = 0` for streamwise/crosswise decomposition;
+- the final near-zero threshold for the H3 T1 sign-reversal check if production diagnostic scaling requires adjustment.
+
+The audit may define these settings or tolerances, but all such decisions must be committed to this pre-experiment protocol before the corresponding backend run.
+
+### 7.8 Frozen PASS/FAIL discipline
+
+For each check, record one of:
+
+- `PASS` — the frozen criterion is satisfied;
+- `FAIL` — the frozen criterion is violated and no known setup issue explains it;
+- `UNEXPLAINED` — a discrepancy exists but its cause has not yet been isolated;
+- `INVALID CONTROL` — the synthetic case did not realize the intended geometry or could not be faithfully represented by the audited V1 architecture.
+
+Predictions are not to be rewritten after execution to match backend output. A mismatch may reveal an analytical mistake, a synthetic-case mistake, a hidden dependency, a numerical issue, or an implementation defect; the deviation must be investigated explicitly.
 
 ---
 
