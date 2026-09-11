@@ -193,15 +193,117 @@ Any discrepancy must be investigated before the expected result is modified. Pos
 
 ## 5. Hypothesis H2 — Direct storm-relative C response
 
-**Status:** TO BE FORMALIZED AND FROZEN.
+### 5.1 Hypothesis
 
-Planned scope:
+Changing only constant storm motion `C` must change storm-relative wind, storm-relative hodograph position, streamwise/crosswise decomposition, and layer SRH in the analytically expected way while leaving the C-invariant Eulerian quantities from H1 unchanged.
 
-- direct changes in `r(z)`;
-- storm-relative hodograph translation;
-- streamwise/crosswise decomposition response;
-- SRH response to motion perpendicular to bulk shear;
-- an iso-SRH degeneracy control using distinct storm motions with identical layer SRH.
+For a fixed sounding and fixed integration layer, SRH is linear in `C`. Therefore storm motions separated along the layer bulk-shear direction may have identical SRH even though their storm-relative wind vectors differ at every level.
+
+H2 explicitly tests both the direct C-response and this iso-SRH degeneracy.
+
+### 5.2 Synthetic control
+
+Reuse the same straight x-axis environmental hodograph as H1:
+
+| z (km) | u (m/s) | v (m/s) |
+|---:|---:|---:|
+| 0 | 0 | 0 |
+| 1 | 10 | 0 |
+| 2 | 20 | 0 |
+| 3 | 30 | 0 |
+
+Thus the 0–3 km bulk shear is
+
+`Delta q_0-3 = (30, 0) m/s`.
+
+Hold the observed sounding and prescribed laboratory fields fixed.
+
+Use three storm motions:
+
+- `C1 = (10, 0) m/s`
+- `C2 = (10, +10) m/s`
+- `C3 = (20, +10) m/s`
+
+The transition `C1 -> C2` is perpendicular to the bulk-shear direction. The transition `C2 -> C3` is parallel to the bulk-shear direction.
+
+### 5.3 Frozen SRH sign convention
+
+For this validation campaign use
+
+`SRH = integral[(u - C_e) dv/dz - (v - C_n) du/dz] dz`.
+
+With this convention, the synthetic profile has `dv/dz = 0` and positive `du/dz`.
+
+Care must be taken not to infer the SRH sign solely from an ordinary visual clockwise/counter-clockwise area convention. The SRH sign is defined by the equation above.
+
+### 5.4 Expected SRH response
+
+For `C1 = (10, 0) m/s`:
+
+- all storm-relative wind vectors lie on the x-axis;
+- the oriented SRH contribution is zero;
+- expected `SRH_0-3(C1) = 0 m^2/s^2`.
+
+For `C2 = (10, +10) m/s`:
+
+- `v - C_n = -10 m/s` throughout the layer;
+- `dv/dz = 0`;
+- `Delta u = +30 m/s` from 0 to 3 km;
+- expected `SRH_0-3(C2) = -(-10) * 30 = +300 m^2/s^2`.
+
+For `C3 = (20, +10) m/s`:
+
+- the storm-relative wind differs from `C2` at every level because the eastward storm-motion component is 10 m/s larger;
+- the shift `C2 -> C3` is parallel to the 0–3 km bulk-shear vector;
+- expected `SRH_0-3(C3) = +300 m^2/s^2`.
+
+Therefore the first frozen iso-SRH degeneracy pair is
+
+`SRH_0-3(C2) = SRH_0-3(C3) = +300 m^2/s^2`,
+
+while
+
+`r_C2(z) != r_C3(z)` at every level.
+
+### 5.5 Expected non-SRH quantities
+
+Across `C1`, `C2`, and `C3`:
+
+Expected to remain invariant:
+
+- observed `q(z)`;
+- vertical shear;
+- environmental horizontal vorticity;
+- prescribed `w`;
+- prescribed `grad_h(w)` at fixed points;
+- local Eulerian `T1` at fixed points;
+- storm-relative hodograph shape.
+
+Expected to change directly with `C`:
+
+- storm-relative wind `r(z)`;
+- storm-relative hodograph position relative to the origin;
+- streamwise/crosswise decomposition wherever `|r| > 0`;
+- SRH from `C1` to `C2`.
+
+Expected degeneracy control:
+
+- `C2` and `C3` have different storm-relative winds and different hodograph positions relative to the origin;
+- `C2` and `C3` nevertheless have identical 0–3 km SRH.
+
+### 5.6 H2 falsification criteria
+
+H2 is falsified, or the implementation requires investigation, if any of the following occurs beyond the frozen numerical tolerance:
+
+- `SRH_0-3(C1)` is not zero;
+- `SRH_0-3(C2)` does not equal `+300 m^2/s^2`;
+- `SRH_0-3(C3)` does not equal `+300 m^2/s^2`;
+- `C2` and `C3` produce different 0–3 km SRH despite differing only along the bulk-shear direction;
+- the storm-relative hodograph deforms instead of translating;
+- C-invariant Eulerian quantities from H1 change;
+- storm-relative winds fail to respond to the imposed change in `C`.
+
+As in H1, any mismatch must be investigated before the analytical expectation is edited.
 
 ---
 
