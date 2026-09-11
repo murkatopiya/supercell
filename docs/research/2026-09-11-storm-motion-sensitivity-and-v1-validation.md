@@ -291,7 +291,34 @@ Expected degeneracy control:
 - `C2` and `C3` have different storm-relative winds and different hodograph positions relative to the origin;
 - `C2` and `C3` nevertheless have identical 0–3 km SRH.
 
-### 5.6 H2 falsification criteria
+### 5.6 Decomposition control at z = 1.5 km
+
+At `z = 1.5 km`, the environmental wind is
+
+`q = (15, 0) m/s`.
+
+For the iso-SRH pair:
+
+- `C2 = (10, +10) m/s` gives `r2 = (+5, -10) m/s`;
+- `C3 = (20, +10) m/s` gives `r3 = (-5, -10) m/s`.
+
+For this straight hodograph, environmental horizontal vorticity is directed along `+y` under the sign convention used for this control and is identical in both runs.
+
+Because `|r2| = |r3| = sqrt(125) = 5*sqrt(5) m/s`, the two storm-relative flow directions are mirror images across the y-axis. Therefore the expected decomposition is:
+
+- streamwise component: identical for `C2` and `C3`;
+- crosswise magnitude: identical for `C2` and `C3`;
+- signed crosswise component: equal magnitude and opposite sign.
+
+If `|omega_h| = Omega`, then the normalized projection factors are
+
+- streamwise: `-2/sqrt(5)` in both runs, so `omega_streamwise = -(2/sqrt(5))*Omega`;
+- crosswise magnitude: `1/sqrt(5)` in both runs;
+- signed crosswise component: `+(1/sqrt(5))*Omega` in one run and `-(1/sqrt(5))*Omega` in the other, with the exact sign assignment determined by the frozen crosswise-axis convention.
+
+This control demonstrates that identical layer SRH does not imply identical local storm-relative decomposition, even though the environmental horizontal vorticity itself is unchanged.
+
+### 5.7 H2 falsification criteria
 
 H2 is falsified, or the implementation requires investigation, if any of the following occurs beyond the frozen numerical tolerance:
 
@@ -301,7 +328,10 @@ H2 is falsified, or the implementation requires investigation, if any of the fol
 - `C2` and `C3` produce different 0–3 km SRH despite differing only along the bulk-shear direction;
 - the storm-relative hodograph deforms instead of translating;
 - C-invariant Eulerian quantities from H1 change;
-- storm-relative winds fail to respond to the imposed change in `C`.
+- storm-relative winds fail to respond to the imposed change in `C`;
+- at `z = 1.5 km`, the streamwise components for `C2` and `C3` are not equal;
+- at `z = 1.5 km`, the crosswise magnitudes for `C2` and `C3` are not equal;
+- at `z = 1.5 km`, the signed crosswise components for `C2` and `C3` do not have equal magnitude and opposite sign.
 
 As in H1, any mismatch must be investigated before the analytical expectation is edited.
 
