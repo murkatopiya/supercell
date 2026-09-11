@@ -62,6 +62,15 @@ The ordinary occupancy trail remains underneath the Analysis overlay. Its color 
 
 This distinction is critical for interpreting low-altitude manual probes.
 
+### 2.7 Current production updraft vertical support
+
+The current `DEMO_SCENARIO` configures `VerticalEnvelopeUpdraftField` with
+
+- `baseHeight = 0 m`;
+- `topHeight = 8000 m`.
+
+Its vertical factor therefore reaches zero at 0 and 8000 m and follows the production half-sine envelope between those lids.
+
 ---
 
 ## 3. Audit finding A1 — ground-level tracer on the updraft lower lid
@@ -106,26 +115,69 @@ cannot simply be mapped onto a V1 updraft with `baseHeight = 0` while retaining 
 
 If that mapping were used unchanged, the run would be classified as **INVALID CONTROL / architecture-mapping mismatch**, not as a failure of H3 or of V1 storm-motion physics.
 
-The H3 control must therefore be adapted and re-frozen before execution; no backend H3 run is authorized yet.
+### 3.4 Frozen minimal H3 adaptation
 
-### 3.4 Product-resolution candidates — decision NOT YET MADE
+The H3 adaptation changes **only the initial tracer altitude**. It does not change the V1 updraft class or its vertical-envelope law and does not add an epsilon/clamp to production behavior.
 
-At least three honest product directions remain open:
+The synthetic H3 horizontal geometry remains frozen:
+
+- updraft center `(x,z) = (0,0)`;
+- horizontal `sigma = 1000 m`;
+- synthetic peak vertical speed `W0 = 20 m/s`;
+- no rotation, radial inflow, radial outflow, downdraft, or other prescribed horizontal storm-local field;
+- initial horizontal tracer coordinates `(x0,z0) = (-3000,0) m`;
+- identical seed in both storm-motion runs.
+
+For vertical geometry, H3 uses the actual V1 `VerticalEnvelopeUpdraftField` law and the current production updraft support:
+
+- `baseHeight = 0 m`;
+- `topHeight = 8000 m`.
+
+The adapted initial altitude is frozen at
+
+`y0 = 500 m`.
+
+Therefore the complete H3 seed is
+
+`X0 = (-3000, 500, 0) m`.
+
+At this altitude the production vertical-envelope factor is
+
+`F(500) = sin(pi * 500/8000) ~= 0.19509`.
+
+This is intentionally inside the vertical support rather than on the lower lid. The choice is made analytically before backend execution and must not be retuned after observing H3 results merely to obtain a stronger or visually cleaner contrast.
+
+The original height-independent synthetic-updraft assumption is superseded for H3 by the production-compatible form
+
+`w(x,y,z) = W0 * exp(-r^2/(2*sigma^2)) * sin(pi*y/8000)`
+
+for `0 < y < 8000 m`, with zero vertical updraft contribution at/outside the lids according to the existing V1 field semantics.
+
+This adaptation preserves the intended H3 causal test:
+
+`C -> V_total -> X(t) -> sampled w(X(t)), sampled T1(X(t))`.
+
+Changing `C` remains the only difference between the paired H3 runs. The adapted seed and prescribed field are identical between runs.
+
+### 3.5 Product-resolution candidates — decision NOT YET MADE
+
+The synthetic-control adaptation above does **not** resolve the separate product-facing `y = 0` behavior. At least three honest product directions remain open:
 
 1. **Authoring floor / constraint.** Prevent the user from placing a tracer below a scientifically/product-defined minimum seed height for experiments that imply updraft entrainment.
 2. **Explicit warning.** Permit very low heights but explain that the current prescribed updraft has zero vertical velocity on its lower lid and extremely weak vertical velocity immediately above it, so a near-ground tracer is not guaranteed to behave like an intuitively entrained air parcel.
 3. **Model revision.** Revisit the lower-boundary behavior of the prescribed updraft in a later modeling decision so that near-ground lifting is represented differently.
 
-No option is selected by this audit. In particular, do not introduce an undocumented epsilon offset or silently move a user-authored tracer upward.
+No product option is selected by this audit. In particular, do not introduce an undocumented epsilon offset or silently move a user-authored tracer upward.
 
-### 3.5 Required follow-up
+### 3.6 Required follow-up
 
-Before V1.1 closes this finding:
+Before V1.1 closes the product-facing boundary finding:
 
 - confirm the exact `y = 0` disappearance mechanism in the atmospheric-domain / accepted-step path;
 - characterize representative low seed heights (`0`, `1`, and additional low-altitude controls) for survival and vertical response;
-- decide whether the correct resolution is UI constraint, warning/explanation, or a separately justified model change;
-- keep any H3 synthetic-control adaptation separate from the product decision, so validation geometry is not allowed to dictate production behavior.
+- decide whether the correct product resolution is UI constraint, warning/explanation, or a separately justified model change.
+
+These product questions no longer block freezing the H3 seed itself. They remain separate from the synthetic validation geometry.
 
 ---
 
@@ -190,6 +242,7 @@ Still to audit/freeze before backend execution:
 - exact `y = 0` tracer disappearance mechanism;
 - low-altitude Analysis support boundary relevant to user-authored seeds;
 - path-history / diagnostic sampling cadence used by the experimental harness;
-- faithful H3 mapping to the existing vertical-envelope updraft;
 - final H3 T1 near-zero/sign-reversal threshold;
 - minimal way to inject synthetic `C_A` / `C_B` without changing production physics semantics.
+
+The H3 seed/updraft architecture mapping is now frozen and is no longer an open audit item.
