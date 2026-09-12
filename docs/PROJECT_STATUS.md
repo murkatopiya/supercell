@@ -90,6 +90,7 @@ Completed and frozen before backend execution:
 8. H3 seed frozen at `X0 = (-3000, 500, 0) m`; it must not be retuned after results to improve contrast.
 9. H3 uses the V1 vertical half-sine support `[0, 8000] m`, synthetic horizontal `sigma = 1000 m`, `W0 = 20 m/s`, and no rotation/inflow/outflow/downdraft fields.
 10. Path-history / diagnostic sampling semantics frozen for the experimental harness: initial sample at `t=0`, then accepted post-step position/time every production fixed step (`dt=0.1 s`, stride 1); diagnostics are sampled at the stored `(P,t)` point; no FPS sampling/interpolation for primary H3 metrics.
+11. Streamwise/crosswise implementation frozen: horizontal-only basis; `c_hat=(-v,u)/|V_sr,h|` left-normal convention; exact horizontal zero throws `StreamwiseCrosswiseVorticityError`; no epsilon threshold; DEMO finite-layer endpoint-average basis is a composition convention, not the core definition.
 
 Detailed definitions, equations, expected values, PASS/FAIL rules, and caveats live in the two research documents above and must not be reconstructed from this summary alone.
 
@@ -116,28 +117,32 @@ Quantitative validation must use diagnostic support/status and values, never app
 
 **CLOSED / FROZEN.** Production history records post-step accepted positions with post-step laboratory time. The validation harness will preserve this convention rather than invent a second trajectory-sampling semantics.
 
+### A4 — streamwise/crosswise implementation
+
+**CLOSED / FROZEN.** Core decomposition uses the horizontal storm-relative direction only, with a left-normal crosswise basis. Exact horizontal `|V_sr|=0` is undefined and explicitly errors; it is not numeric zero. The DEMO hodograph overlay's layer-average basis is separate composition behavior and must not be silently imported into H1/H2 core validation.
+
 ---
 
 ## 5. Current step
 
 **Continue the pre-experiment architecture audit.**
 
-The next item is intentionally narrow:
+The next item is:
 
 ```text
-Audit the exact streamwise/crosswise implementation
-and define behavior at |V_sr| = 0.
+Confirm the exact y = 0 tracer disappearance/deactivation mechanism
+in the atmospheric-domain / accepted-step path.
 ```
 
-Why this is next: H1/H2 make analytical predictions about the decomposition, so the implementation convention and zero-relative-wind edge case must be known before those controls are executed.
+Why this is next: A1 currently contains a manual observation plus a bounded set of likely mechanisms. The code path should be made exact before the low-altitude product/support findings are closed.
 
 ---
 
 ## 6. NEXT ACTION
 
-**Inspect and freeze the existing V1 streamwise/crosswise decomposition implementation, including sign/basis convention and the `|V_sr| = 0` case. Record the result in the storm-motion architecture audit.**
+**Inspect the tracer integration/domain code path for an Explore seed at `y=0`, identify exactly why it becomes inactive/disappears after release, and record the result in the storm-motion architecture audit.**
 
-Do **not** start the validation harness or production UI work before this audit step is resolved.
+Do not redesign the lower boundary while auditing it.
 
 ---
 
@@ -145,8 +150,7 @@ Do **not** start the validation harness or production UI work before this audit 
 
 The current audit still needs to resolve/freeze:
 
-- exact streamwise/crosswise implementation and `|V_sr| = 0` behavior — **NEXT**;
-- exact `y = 0` tracer disappearance/deactivation mechanism;
+- exact `y = 0` tracer disappearance/deactivation mechanism — **NEXT**;
 - low-altitude Analysis support boundary relevant to user-authored seeds;
 - final H3 T1 near-zero / sign-reversal threshold;
 - minimal synthetic `C_A` / `C_B` injection seam that preserves production physics semantics.
@@ -174,6 +178,8 @@ Do not tune synthetic controls after seeing results merely to make the expected 
 Do not interpret local Eulerian T1 changes as a direct consequence of `C` unless a new audited implementation path demonstrates one.
 
 Do not use unsupported Analysis samples as numeric zero and do not infer T1 from trajectory color.
+
+Do not treat exact `|V_sr,h|=0` as zero streamwise/crosswise vorticity; the basis is undefined there.
 
 Do not treat `PROJECT_BACKLOG.md` as the current roadmap. It is a memory/index of deferred and unresolved work, not an execution order.
 
