@@ -52,7 +52,9 @@ Therefore no direct implementation path `C -> local T1(x,y,z)` was found in the 
 
 ### 2.5 SRH implementation
 
-`stormRelativeHelicityBetween()` receives the environmental profile, storm motion, and layer bounds and evaluates exact Form B over each piecewise-linear hodograph segment. This is compatible with the simple H1/H2 synthetic SRH controls and should make their analytical 0 and +300 m^2/s^2 expectations essentially exact up to floating-point arithmetic.
+`stormRelativeHelicityBetween()` receives the environmental profile, storm motion, and layer bounds and evaluates exact Form B over each piecewise-linear hodograph segment. This is compatible with the simple H1/H2 synthetic SRH controls and should make their analytical 0 and -300 m^2/s^2 expectations essentially exact up to floating-point arithmetic.
+
+The expectation sign in this paragraph was corrected before campaign execution to agree with canonical physics doc 09 and the unchanged production implementation; see the [formal pre-run SRH correction record](2026-09-12-storm-motion-srh-sign-correction.md). Other closed audit conclusions are unchanged.
 
 ### 2.6 Analysis trajectory rendering support semantics
 

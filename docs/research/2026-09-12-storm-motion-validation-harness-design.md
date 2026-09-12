@@ -1,6 +1,8 @@
 # Storm-Motion Sensitivity — Minimal Validation Harness Design
 
-**Status:** FROZEN · PRE-IMPLEMENTATION · NO BACKEND RUNS YET
+**Status:** FROZEN · IMPLEMENTED · IMPLEMENTATION REVIEW COMPLETE · NO BACKEND CAMPAIGN RUNS YET
+
+**Pre-run SRH sign correction:** H2 expectations were corrected to `0,-300,-300` before campaign execution, following canonical physics doc 09. See the [formal correction record](2026-09-12-storm-motion-srh-sign-correction.md). This slice does not authorize campaign execution.
 
 **Parent protocol:** `docs/research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`
 
@@ -18,7 +20,7 @@ No analytical expectation may be changed after backend output is seen merely to 
 
 ## 2. Implementation boundary
 
-The first harness implementation should be one dedicated Vitest module under a validation-only path, for example:
+The first harness implementation is one dedicated Vitest module under a validation-only path:
 
 `src/validation/stormMotionSensitivity.validation.test.ts`
 
@@ -87,7 +89,7 @@ Use the parent protocol's strict same-point equality rule:
 Use the parent protocol's SRH absolute tolerances:
 
 - expected zero: `|SRH| <= 1e-6 m^2/s^2`;
-- expected `300`: `|SRH - 300| <= 1e-6 m^2/s^2`.
+- expected `-300`: `|SRH - (-300)| <= 1e-6 m^2/s^2`, equivalently `|SRH + 300| <= 1e-6 m^2/s^2`.
 
 Do not relax these tolerances after execution.
 
@@ -140,8 +142,8 @@ Collect at minimum:
 Frozen analytical checks:
 
 - `SRH(C1)=0`;
-- `SRH(C2)=300 m^2/s^2`;
-- `SRH(C3)=300 m^2/s^2`;
+- `SRH(C2)=-300 m^2/s^2`;
+- `SRH(C3)=-300 m^2/s^2`;
 - `C2` and `C3` have different storm-relative winds despite identical layer SRH;
 - at `1500 m`, C2/C3 streamwise components are equal, crosswise magnitudes are equal, and signed crosswise components are opposite under the production left-normal basis;
 - all H1 C-invariants remain unchanged.
@@ -339,6 +341,6 @@ The minimal harness does not:
 
 **Harness design status: FROZEN.**
 
-The next authorized project step is implementation of this test-only harness using the existing production backend classes. Implementation may add validation/test code required by this design, but must not change production physics behavior to make the controls pass.
+The test-only harness is implemented using the existing production backend classes, and implementation review is complete. The pre-run SRH sign correction is closed. Review the correction diff/commit, then separately authorize H1 only. Production physics behavior must not change to make the controls pass.
 
 No H1/H2/H3 scientific result exists until that implementation is reviewed and the corresponding backend control is actually executed.

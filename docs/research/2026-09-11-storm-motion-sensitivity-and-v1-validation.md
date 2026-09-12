@@ -2,6 +2,8 @@
 
 **Status:** RESEARCH PROTOCOL · PRE-EXPERIMENT · ARCHITECTURE-SYNCHRONIZED · EXPECTATIONS FROZEN
 
+**Pre-run correction (2026-09-12):** the SRH integrand and H2 sign oracle were corrected to canonical physics doc 09 before any backend campaign execution. See the [formal correction record](2026-09-12-storm-motion-srh-sign-correction.md). All other frozen expectations and inputs are unchanged.
+
 ## 1. Research purpose
 
 This document defines a controlled validation campaign for the existing V1 kinematic laboratory before any storm-motion sensitivity feature is implemented in the UI.
@@ -180,13 +182,13 @@ The transition `C1 -> C2` is transverse to 0–3 km bulk shear. The transition `
 
 Use
 
-`SRH = integral[(u - C_e) dv/dh - (v - C_n) du/dh] dh`.
+`SRH = integral[(v - C_n) du/dh - (u - C_e) dv/dh] dh`.
 
 Expected:
 
 - `SRH_0-3(C1) = 0 m^2/s^2`;
-- `SRH_0-3(C2) = +300 m^2/s^2`;
-- `SRH_0-3(C3) = +300 m^2/s^2`.
+- `SRH_0-3(C2) = -300 m^2/s^2`;
+- `SRH_0-3(C3) = -300 m^2/s^2`.
 
 Thus `C2` and `C3` are the frozen iso-SRH degeneracy pair even though `r_C2(h) != r_C3(h)` at every level.
 
@@ -213,7 +215,7 @@ If the synthetic evaluation hits exact horizontal `V_sr=(0,0)`, expected outcome
 
 Investigate if beyond frozen tolerance:
 
-- SRH differs from `0`, `+300`, `+300` as specified;
+- SRH differs from `0`, `-300`, `-300` as specified;
 - C2/C3 cease to be iso-SRH;
 - the hodograph deforms;
 - C-invariant Eulerian quantities change;
@@ -405,7 +407,7 @@ Do not widen these tolerances after observing a failed result merely to make it 
 Frozen:
 
 - expected zero: `|SRH| <= 1e-6 m^2/s^2`;
-- expected `+300`: `|SRH-300| <= 1e-6 m^2/s^2`.
+- expected `-300`: `|SRH - (-300)| <= 1e-6 m^2/s^2`, equivalently `|SRH + 300| <= 1e-6 m^2/s^2`.
 
 ### 7.3 H3 same-point Eulerian grid
 
@@ -523,11 +525,11 @@ Any later user-facing C parameterization is a post-validation product decision.
 
 ## 9. Experimental procedure
 
-**Status:** NEXT STEP — MINIMAL HARNESS PROCEDURE/OUTPUT CONTRACT NOT YET FROZEN.
+**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · NO BACKEND CAMPAIGN EXECUTION.
 
-The remaining pre-run task is to define the smallest reproducible harness procedure and exact recorded outputs without changing the already frozen physics expectations.
+The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). Review the pre-run SRH correction diff/commit, then separately authorize H1 only; this specification correction does not authorize campaign execution.
 
-After that freeze, execute in this order:
+After the separate execution gate, preserve this order:
 
 1. H1;
 2. H2;

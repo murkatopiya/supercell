@@ -19,10 +19,13 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-PRE-EXPERIMENT HARNESS IMPLEMENTATION
+PRE-EXPERIMENT CORRECTION REVIEW / H1 AUTHORIZATION GATE
 ARCHITECTURE AUDIT CLOSED
 PARENT RESEARCH PROTOCOL ARCHITECTURE-SYNCHRONIZED
 VALIDATION HARNESS DESIGN FROZEN
+HARNESS IMPLEMENTATION REVIEW COMPLETE
+PRE-RUN SRH SIGN CORRECTION CLOSED
+PRODUCTION PHYSICS UNCHANGED
 NO PRODUCTION PHYSICS CHANGES AUTHORIZED
 BACKEND EXPERIMENTS NOT YET RUN
 ```
@@ -49,6 +52,10 @@ Closed implementation-fact architecture audit:
 Frozen minimal harness design:
 
 - [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md)
+
+Closed pre-run SRH sign correction:
+
+- [`research/2026-09-12-storm-motion-srh-sign-correction.md`](research/2026-09-12-storm-motion-srh-sign-correction.md)
 
 ---
 
@@ -81,6 +88,9 @@ Frozen before backend execution:
 23. H3 result schema frozen: geometry, sampled-w, valid sampled T1, support counts, lifecycle, same-point invariants, and explicit status records.
 24. Clean H3 sign reversal is local to the maximal contiguous `r <= 1500 m` core-passage window around global `r_min`, with opposite material signs on opposite sides of the core and one unchanged sounding segment across the evidence interval.
 25. First execution order frozen as H1 → classify → H2 → classify → H3 same-point controls → H3 trajectories.
+26. Test-only harness implemented; implementation review **COMPLETE**.
+27. Pre-run SRH sign correction **CLOSED**: research integral/H2 oracle aligned with canonical physics doc 09 and unchanged production Form B; H2 expectations are `0,-300,-300 m^2/s^2`.
+28. Production physics unchanged; backend scientific H1/H2/H3 experiments still **NOT RUN**.
 
 ---
 
@@ -105,21 +115,23 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 ## 5. Current step
 
-**Implement the frozen test-only validation harness without changing production physics.**
+**Harness implementation review is complete; formal pre-run SRH sign correction is closed.**
 
-The remaining pre-run gate is implementation/review, not research design.
+The remaining pre-run gate is review of the correction diff/commit, followed by separate authorization of H1 only. No campaign stage is authorized by this correction slice.
 
-The intended first implementation is a dedicated validation Vitest module, e.g.:
+The implemented test-only harness is:
 
 `src/validation/stormMotionSensitivity.validation.test.ts`
 
-It should import existing production backend classes directly and keep campaign-specific helpers local unless reuse later clearly justifies extraction.
+It imports existing production backend classes directly and keeps campaign-specific helpers local. Production physics, UI, and DEMO composition remain unchanged.
 
 ---
 
 ## 6. NEXT ACTION
 
-**Implement the frozen minimal validation harness from `research/2026-09-12-storm-motion-validation-harness-design.md`, run typecheck/tests only as implementation verification, and review the harness before executing/recording H1 scientific results.**
+**Review the correction diff/commit, then separately authorize H1 only.**
+
+Show the completed diff/report before commit or push. H2/H3 are not authorized; H1 must be executed and classified under a separate authorization before considering later stages.
 
 Do not alter production physics, DEMO composition, UI, ScenarioConfig, analytical expectations, synthetic inputs, or frozen tolerances to make the harness pass.
 
@@ -136,12 +148,14 @@ Harness-design blockers: **none**.
 Remaining gate:
 
 ```text
-implement validation-only harness
-→ typecheck / implementation review
+review pre-run SRH correction diff/commit
+→ separately authorize H1 only
 → execute H1
 → classify H1 before continuing
+→ consider separate authorization of H2
 → execute H2
 → classify H2 before continuing
+→ consider separate authorization of H3
 → execute H3 same-point controls + trajectories
 → record frozen metrics
 ```
@@ -197,4 +211,4 @@ Do not treat this file itself as physics authority.
 6. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 7. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-When harness implementation is reviewed, update this file in the same project step that authorizes the first H1 execution.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. Update this status again when the first H1 execution is separately authorized; implementation review and correction closure do not authorize execution.
