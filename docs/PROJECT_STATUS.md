@@ -91,6 +91,7 @@ Completed and frozen before backend execution:
 9. H3 uses the V1 vertical half-sine support `[0, 8000] m`, synthetic horizontal `sigma = 1000 m`, `W0 = 20 m/s`, and no rotation/inflow/outflow/downdraft fields.
 10. Path-history / diagnostic sampling semantics frozen for the experimental harness: initial sample at `t=0`, then accepted post-step position/time every production fixed step (`dt=0.1 s`, stride 1); diagnostics are sampled at the stored `(P,t)` point; no FPS sampling/interpolation for primary H3 metrics.
 11. Streamwise/crosswise implementation frozen: horizontal-only basis; `c_hat=(-v,u)/|V_sr,h|` left-normal convention; exact horizontal zero throws `StreamwiseCrosswiseVorticityError`; no epsilon threshold; DEMO finite-layer endpoint-average basis is a composition convention, not the core definition.
+12. Exact `y=0` disappearance mechanism confirmed: the production downdraft has a nonzero negative Gaussian tail at the atmospheric floor, the first Euler proposal goes below `y=0`, and `AtmosphericTracerDomain` deactivates the tracer on that first crossing.
 
 Detailed definitions, equations, expected values, PASS/FAIL rules, and caveats live in the two research documents above and must not be reconstructed from this summary alone.
 
@@ -100,7 +101,7 @@ Detailed definitions, equations, expected values, PASS/FAIL rules, and caveats l
 
 ### A1 — ground-level tracer / updraft lower lid
 
-The production vertical-envelope updraft is zero at its lower lid (`y=0`). A manually released Explore tracer at exactly `y=0` disappears immediately; `y=1 m` survives. The exact deactivation mechanism is still open and is separate from the now-frozen H3 adaptation.
+The production vertical-envelope updraft is zero at its lower lid (`y=0`). A manually released Explore tracer at exactly `y=0` disappears immediately; `y=1 m` survives. The deactivation mechanism is now confirmed by A5: the live DEMO downdraft is already active at `y=0`, so its negative far-field tail proposes a below-ground Euler step and the tracer-domain policy deactivates the tracer.
 
 ### A2 — unsupported Analysis trajectory can visually resemble T1
 
@@ -121,6 +122,10 @@ Quantitative validation must use diagnostic support/status and values, never app
 
 **CLOSED / FROZEN.** Core decomposition uses the horizontal storm-relative direction only, with a left-normal crosswise basis. Exact horizontal `|V_sr|=0` is undefined and explicitly errors; it is not numeric zero. The DEMO hodograph overlay's layer-average basis is separate composition behavior and must not be silently imported into H1/H2 core validation.
 
+### A5 — exact `y=0` disappearance mechanism
+
+**CLOSED / CONFIRMED.** The atmospheric floor itself does not generate the downward motion. The live DEMO downdraft uses vertical support `[-400,3600] m`, so `y=0` is an interior downdraft level. Its Gaussian tail is negative at every finite horizontal point. A ground-level seed therefore receives a downward first-step proposal; `AtmosphericTracerDomain` clips that crossing at `alpha=0` and sets `active=false`.
+
 ---
 
 ## 5. Current step
@@ -130,19 +135,19 @@ Quantitative validation must use diagnostic support/status and values, never app
 The next item is:
 
 ```text
-Confirm the exact y = 0 tracer disappearance/deactivation mechanism
-in the atmospheric-domain / accepted-step path.
+Audit the exact low-altitude Analysis support boundary
+relevant to user-authored tracer seeds and H3 diagnostic validity.
 ```
 
-Why this is next: A1 currently contains a manual observation plus a bounded set of likely mechanisms. The code path should be made exact before the low-altitude product/support findings are closed.
+Why this is next: A2 established that unsupported trajectory segments can be visually misleading, but the exact height/support contract still needs to be frozen before backend metrics decide whether a T1 sample is valid or unavailable.
 
 ---
 
 ## 6. NEXT ACTION
 
-**Inspect the tracer integration/domain code path for an Explore seed at `y=0`, identify exactly why it becomes inactive/disappears after release, and record the result in the storm-motion architecture audit.**
+**Inspect the Analysis profile/support code path and freeze the exact low-altitude support boundary/status behavior used by T1 for user-authored tracer samples. Record the result in the storm-motion architecture audit.**
 
-Do not redesign the lower boundary while auditing it.
+Do not infer the boundary from trail color or UI appearance.
 
 ---
 
@@ -150,8 +155,7 @@ Do not redesign the lower boundary while auditing it.
 
 The current audit still needs to resolve/freeze:
 
-- exact `y = 0` tracer disappearance/deactivation mechanism — **NEXT**;
-- low-altitude Analysis support boundary relevant to user-authored seeds;
+- low-altitude Analysis support boundary relevant to user-authored seeds — **NEXT**;
 - final H3 T1 near-zero / sign-reversal threshold;
 - minimal synthetic `C_A` / `C_B` injection seam that preserves production physics semantics.
 
@@ -180,6 +184,8 @@ Do not interpret local Eulerian T1 changes as a direct consequence of `C` unless
 Do not use unsupported Analysis samples as numeric zero and do not infer T1 from trajectory color.
 
 Do not treat exact `|V_sr,h|=0` as zero streamwise/crosswise vorticity; the basis is undefined there.
+
+Do not attribute the `y=0` disappearance to the updraft alone; it is a composite downdraft-tail + atmospheric-domain interaction.
 
 Do not treat `PROJECT_BACKLOG.md` as the current roadmap. It is a memory/index of deferred and unresolved work, not an execution order.
 
