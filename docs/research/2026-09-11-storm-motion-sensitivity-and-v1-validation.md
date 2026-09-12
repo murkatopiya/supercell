@@ -1,6 +1,6 @@
 # Storm-Motion Sensitivity & V1 Validation
 
-**Status:** RESEARCH PROTOCOL · PRE-EXPERIMENT · ARCHITECTURE-SYNCHRONIZED · EXPECTATIONS FROZEN
+**Status:** RESEARCH PROTOCOL · CAMPAIGN ACTIVE · ARCHITECTURE-SYNCHRONIZED · EXPECTATIONS FROZEN
 
 **Pre-run correction (2026-09-12):** the SRH integrand and H2 sign oracle were corrected to canonical physics doc 09 before any backend campaign execution. See the [formal correction record](2026-09-12-storm-motion-srh-sign-correction.md). All other frozen expectations and inputs are unchanged.
 
@@ -525,9 +525,9 @@ Any later user-facing C parameterization is a post-validation product decision.
 
 ## 9. Experimental procedure
 
-**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · NO BACKEND CAMPAIGN EXECUTION.
+**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 EXECUTED / CLASSIFIED PASS · H2/H3 NOT EXECUTED / NOT AUTHORIZED.
 
-The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). Review the pre-run SRH correction diff/commit, then separately authorize H1 only; this specification correction does not authorize campaign execution.
+The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 was separately authorized, executed, and classified PASS; its evidence is recorded in §10. Review and commit the H1 evidence/status documentation slice before considering separate H2 authorization. This documentation slice does not authorize or execute a campaign stage.
 
 After the separate execution gate, preserve this order:
 
@@ -546,13 +546,25 @@ No H1/H2/H3 backend execution occurs before the harness procedure/output contrac
 
 ## 10. Results
 
-**EMPTY — DO NOT POPULATE BEFORE THE MINIMAL HARNESS CONTRACT IS FROZEN AND THE FIRST CONTROL RUN IS EXECUTED.**
+### H1 — executed 2026-09-12 — PASS
+
+H1 was the first separately authorized backend campaign stage. All frozen H1 checks passed. Evidence below records the supplied observations and Vitest summary from that completed stage; this documentation slice did not rerun it.
+
+Vitest: **1 test file passed; 12 tests passed / 3 skipped**. Campaign H1 passed; H2, H3-Eulerian, and H3-trajectories were skipped and remain not executed / not authorized.
+
+- **Sweep A:** for `C=(0,0),(10,0),(20,0),(30,0) m/s`, `SRH_0-3=[0,0,0,0] m^2/s^2`. All four checks passed at the frozen absolute tolerance `1e-6 m^2/s^2`.
+- **Translation and Eulerian invariants:** environmental `q(h)` remained frozen; storm-relative and environmental differences for each 0–1, 1–2, and 2–3 km hodograph segment were identical: `(10,0) m/s`. Shear, environmental `omega_h`, prescribed `w`, `grad_h(w)`, and same-point local `DiagnosticTiltingTendency` T1 remained invariant. All strict frozen same-point equality checks passed.
+- **Signed crosswise reversal at 1500 m:** `C=(10,0)` gave `(omegaStreamwise,omegaCrosswise)=(0,+0.01) s^-1`; `C=(20,0)` gave `(0,-0.01) s^-1`. Zero/equal streamwise, equal crosswise magnitude, and opposite signed crosswise matched the frozen left-normal convention; the check passed.
+- **Exact horizontal `V_sr=0`:** decomposition remained undefined via `StreamwiseCrosswiseVorticityError`, without coercion to numeric zero. Expected control behavior passed.
+- **Sweep B:** for `C=(10,-10),(10,0),(10,+10) m/s`, `SRH_0-3=[+300,0,-300] m^2/s^2`. At 1500 m, the corresponding `(omegaStreamwise,omegaCrosswise)` pairs were `(+0.00894427190999916,+0.00447213595499958)`, `(0,+0.01)`, and `(-0.00894427190999916,+0.00447213595499958) s^-1`. `H1/sweep-B-response` passed.
+
+**H1 CLOSED · PASS.** No FAIL, UNEXPLAINED, or INVALID CONTROL classification was observed; no H1 physics failure was identified. These are H1 control results only. No H2/H3 results or final campaign conclusion are recorded here.
 
 ---
 
 ## 11. Deviations / investigations
 
-**EMPTY.**
+H1: none. Later stages remain pending; this section is not closed for the campaign.
 
 ---
 

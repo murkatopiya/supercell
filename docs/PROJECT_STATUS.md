@@ -19,15 +19,18 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-PRE-EXPERIMENT CORRECTION REVIEW / H1 AUTHORIZATION GATE
+STORM-MOTION SENSITIVITY CAMPAIGN / H2 AUTHORIZATION GATE
 ARCHITECTURE AUDIT CLOSED
 PARENT RESEARCH PROTOCOL ARCHITECTURE-SYNCHRONIZED
 VALIDATION HARNESS DESIGN FROZEN
 HARNESS IMPLEMENTATION REVIEW COMPLETE
 PRE-RUN SRH SIGN CORRECTION CLOSED
+H1 EXECUTED · CLASSIFIED PASS
+NO H1 UNEXPLAINED DEVIATIONS
+H2 NOT YET AUTHORIZED
+H3 NOT AUTHORIZED
 PRODUCTION PHYSICS UNCHANGED
 NO PRODUCTION PHYSICS CHANGES AUTHORIZED
-BACKEND EXPERIMENTS NOT YET RUN
 ```
 
 V1 itself remains **CLOSED** as the finite validation prototype recorded in:
@@ -41,7 +44,7 @@ The current campaign validates and probes the released V1 model before deciding 
 
 ## 2. Authoritative current documents
 
-Scientific pre-experiment protocol:
+Scientific protocol and recorded H1 evidence (§10):
 
 - [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md)
 
@@ -61,7 +64,7 @@ Closed pre-run SRH sign correction:
 
 ## 3. Completed path to the current point
 
-Frozen before backend execution:
+Pre-run freezes and completed campaign steps:
 
 1. C-dependence/invariance reasoning established.
 2. H1 translation-invariance control frozen.
@@ -90,7 +93,8 @@ Frozen before backend execution:
 25. First execution order frozen as H1 → classify → H2 → classify → H3 same-point controls → H3 trajectories.
 26. Test-only harness implemented; implementation review **COMPLETE**.
 27. Pre-run SRH sign correction **CLOSED**: research integral/H2 oracle aligned with canonical physics doc 09 and unchanged production Form B; H2 expectations are `0,-300,-300 m^2/s^2`.
-28. Production physics unchanged; backend scientific H1/H2/H3 experiments still **NOT RUN**.
+28. First separately authorized backend campaign stage H1 executed on 2026-09-12 and classified **CLOSED · PASS**, with no FAIL, UNEXPLAINED, or INVALID CONTROL checks; see [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results).
+29. H2, H3-Eulerian, and H3-trajectories remain **NOT EXECUTED / NOT AUTHORIZED**. Production physics unchanged.
 
 ---
 
@@ -115,9 +119,9 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 ## 5. Current step
 
-**Harness implementation review is complete; formal pre-run SRH sign correction is closed.**
+**H1 evidence recorded: H1 CLOSED · PASS. Harness implementation review is complete; formal pre-run SRH sign correction is closed.**
 
-The remaining pre-run gate is review of the correction diff/commit, followed by separate authorization of H1 only. No campaign stage is authorized by this correction slice.
+The current gate is review and commit of the H1 evidence/status documentation slice. After that, H2 may be separately authorized. H2/H3 have not been executed and are not authorized by this documentation slice.
 
 The implemented test-only harness is:
 
@@ -129,15 +133,15 @@ It imports existing production backend classes directly and keeps campaign-speci
 
 ## 6. NEXT ACTION
 
-**Review the correction diff/commit, then separately authorize H1 only.**
+**Review and commit the H1 evidence/status documentation slice. After that, H2 may be separately authorized.**
 
-Show the completed diff/report before commit or push. H2/H3 are not authorized; H1 must be executed and classified under a separate authorization before considering later stages.
+Show the completed diff/report before commit or push. Do not run H2 automatically as part of this slice. H2/H3 remain unauthorized.
 
 Do not alter production physics, DEMO composition, UI, ScenarioConfig, analytical expectations, synthetic inputs, or frozen tolerances to make the harness pass.
 
 ---
 
-## 7. Still open before scientific backend results
+## 7. Still open before later campaign stages
 
 Architecture blockers: **none**.
 
@@ -148,10 +152,7 @@ Harness-design blockers: **none**.
 Remaining gate:
 
 ```text
-review pre-run SRH correction diff/commit
-→ separately authorize H1 only
-→ execute H1
-→ classify H1 before continuing
+review and commit H1 evidence/status documentation
 → consider separate authorization of H2
 → execute H2
 → classify H2 before continuing
@@ -211,4 +212,4 @@ Do not treat this file itself as physics authority.
 6. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 7. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. Update this status again when the first H1 execution is separately authorized; implementation review and correction closure do not authorize execution.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1 evidence and classification are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results). Update this status again if H2 is separately authorized; this documentation update does not authorize execution.

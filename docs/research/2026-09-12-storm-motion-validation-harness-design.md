@@ -1,6 +1,6 @@
 # Storm-Motion Sensitivity — Minimal Validation Harness Design
 
-**Status:** FROZEN · IMPLEMENTED · IMPLEMENTATION REVIEW COMPLETE · NO BACKEND CAMPAIGN RUNS YET
+**Status:** FROZEN · IMPLEMENTED · IMPLEMENTATION REVIEW COMPLETE · H1 EXECUTED / CLASSIFIED PASS · H2/H3 NOT EXECUTED / NOT AUTHORIZED
 
 **Pre-run SRH sign correction:** H2 expectations were corrected to `0,-300,-300` before campaign execution, following canonical physics doc 09. See the [formal correction record](2026-09-12-storm-motion-srh-sign-correction.md). This slice does not authorize campaign execution.
 
@@ -341,6 +341,6 @@ The minimal harness does not:
 
 **Harness design status: FROZEN.**
 
-The test-only harness is implemented using the existing production backend classes, and implementation review is complete. The pre-run SRH sign correction is closed. Review the correction diff/commit, then separately authorize H1 only. Production physics behavior must not change to make the controls pass.
+The test-only harness is implemented using the existing production backend classes, and implementation review is complete. The pre-run SRH sign correction is closed. H1 was separately authorized, executed, and classified PASS; see [parent protocol §10](2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results). Review and commit the H1 evidence/status documentation slice; after that, H2 may be separately authorized. H2, H3-Eulerian, and H3-trajectories remain not executed / not authorized. Production physics behavior must not change to make the controls pass.
 
-No H1/H2/H3 scientific result exists until that implementation is reviewed and the corresponding backend control is actually executed.
+The frozen harness contract is unchanged. This documentation slice does not authorize or execute any campaign stage; later-stage results require their corresponding authorized backend execution.
