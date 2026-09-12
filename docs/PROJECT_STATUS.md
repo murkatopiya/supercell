@@ -19,7 +19,7 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-STORM-MOTION SENSITIVITY CAMPAIGN / H5 CLOSURE DOCUMENTATION REVIEW GATE
+STORM-MOTION SENSITIVITY CAMPAIGN / OBSERVED E1 IMPLEMENTATION DESIGN/REVIEW GATE
 ARCHITECTURE AUDIT CLOSED
 PARENT RESEARCH PROTOCOL ARCHITECTURE-SYNCHRONIZED
 VALIDATION HARNESS DESIGN FROZEN
@@ -36,7 +36,12 @@ H4 CLOSED · INVALID CONTROL
 H5 PRE-RUN SCIENTIFIC DESIGN REVIEWED / APPROVED · H5 EXPECTATIONS FROZEN
 H5 TEST-ONLY IMPLEMENTATION COMPLETE · H5 IMPLEMENTATION REVIEW COMPLETE / CLOSED
 H5 CLOSED · PASS / HUMAN SCIENTIFIC CLASSIFICATION
-OBSERVED C-MATRIX DEFERRED
+OBSERVED C-MATRIX SCIENTIFIC DESIGN REVIEWED
+E1 FULL-PRECISION ARITHMETIC SPECIFICATION REVIEWED AND APPROVED
+E1 ARITHMETIC INPUTS FROZEN PENDING IMPLEMENTATION REVIEW
+E1 IMPLEMENTATION DECISIONS STILL OPEN
+E1 EXECUTION NOT AUTHORIZED
+LAGRANGIAN STAGE NOT AUTHORIZED / MUST FOLLOW E1 CLOSURE
 PRODUCTION IMPLEMENTATION / UI NOT AUTHORIZED
 PRODUCTION PHYSICS UNCHANGED
 NO PRODUCTION PHYSICS CHANGES AUTHORIZED
@@ -57,7 +62,11 @@ Scientific protocol and recorded H1/H2/H3 evidence and classifications (§10):
 
 - [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md)
 
-H4 is CLOSED · INVALID CONTROL; its frozen specification remains in parent protocol §13. H5 scientific design is reviewed/approved and frozen in [parent protocol §14](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#14-h5--pre-run-scientific-design-for-a-shifted-boundary-crossing). H5 executed once and is CLOSED · PASS by human scientific classification; evidence is owned by parent protocol §15. Documentation review is pending.
+H4 is CLOSED · INVALID CONTROL; its frozen specification remains in parent protocol §13. H5 scientific design is reviewed/approved and frozen in [parent protocol §14](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#14-h5--pre-run-scientific-design-for-a-shifted-boundary-crossing). H5 executed once and is CLOSED · PASS by human scientific classification; evidence is owned by parent protocol §15. H5 closure documentation review is complete; its records remain unchanged.
+
+Reviewed observed C-matrix scientific design and approved E1 full-precision arithmetic specification:
+
+- [`research/2026-09-12-observed-c-matrix-protocol-design.md`](research/2026-09-12-observed-c-matrix-protocol-design.md) — §13 owns the frozen arithmetic inputs; §§10 and 13.6 identify still-open decisions. This is not E1 execution authorization.
 
 Closed implementation-fact architecture audit:
 
@@ -112,6 +121,8 @@ Pre-run freezes and completed campaign steps:
 33. H3 documentation/classification closure complete; its INVALID CONTROL and partial valid evidence remain unchanged.
 34. H4 design/implementation/review committed and pushed; subsequently separately authorized and executed once. H4 CLOSED · INVALID CONTROL.
 35. H5 pre-run scientific design reviewed/approved and expectations frozen. Only seed z changes to +225 m; test-only implementation and review complete; subsequently executed once and human-classified CLOSED · PASS; see protocol §15.
+36. Observed C-matrix scientific design reviewed; primary layer, baseline C0, five-member case-relative geometry, endpoint-arithmetic-mean reference flow and alpha=1/2 accepted.
+37. E1 full-precision arithmetic specification reviewed and approved: all 20 C vectors and endpoint-derived DeltaSRH predictions frozen pending implementation review. Conditioning audit found no zero reference flow. No E1 implementation or execution has occurred.
 
 ---
 
@@ -138,7 +149,24 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 **H1, H2, and H3 Eulerian CLOSED · PASS. H3 trajectories CLOSED · INVALID CONTROL, with partial valid evidence preserved.**
 
-H3/H4 classifications remain unchanged. H5 CLOSED · PASS: clean same-segment geometric T1 reversal demonstrated within the frozen synthetic control, with no oracle discrepancy. The current gate is manual H5 closure documentation review; observed C-matrix execution and production/UI work remain unauthorized.
+H3/H4 classifications remain unchanged. H5 CLOSED · PASS: clean same-segment geometric T1 reversal demonstrated within the frozen synthetic control, with no oracle discrepancy. The active step is observed E1 test-only implementation design/review, following approval of the arithmetic specification. This status synchronization does not implement E1 or authorize execution.
+
+**OBSERVED C-MATRIX PROTOCOL DESIGN — reviewed/frozen arithmetic inputs:**
+
+- Scientific design **REVIEWED**.
+- Primary layer `L=[500,3000] m` **ACCEPTED**.
+- Prescribed baseline `C0=(10,0) m/s` east/north **ACCEPTED**.
+- Five-member case-relative C geometry **ACCEPTED**.
+- Endpoint-arithmetic-mean reference flow **ACCEPTED**.
+- `alpha=1/2` **ACCEPTED**.
+- E1 full-precision arithmetic specification **REVIEWED AND APPROVED**.
+- E1 arithmetic inputs **FROZEN PENDING IMPLEMENTATION REVIEW**; all 20 C vectors and endpoint-derived DeltaSRH predictions frozen.
+- Full-precision conditioning audit found **no zero reference flow**. Minimum: **5.8202943903637792 m/s, Moore / right_minus**.
+- Deeper L2 **DEFERRED**. Moore remains **Source-only with respect to Analysis T1**.
+
+**Still-open E1 implementation decisions:** Eulerian spatial/query grid, local decomposition probe heights, independently justified numerical tolerances, exact executable assertions, support/applicability handling and evidence implementation. The proposed **1 m/s decomposition conditioning threshold remains NOT FROZEN**; it must not alter C or introduce a fallback basis. These open decisions are distinct from the approved arithmetic inputs.
+
+**Execution authorization:** E1 execution **NOT AUTHORIZED**. Lagrangian stage **NOT AUTHORIZED** and must follow E1 closure; its geometry, seeds, timestep/duration, T1 material threshold and execution criteria remain unfrozen. Production/harness/UI changes and test/campaign execution are not authorized by this status update.
 
 The implemented test-only harness is:
 
@@ -150,9 +178,17 @@ It imports existing production backend classes directly and keeps campaign-speci
 
 ## 6. NEXT ACTION
 
-**Review H5 Results and human classification in parent protocol §15. No commit/push in this task.**
+**E1 test-only implementation design/review, using the reviewed and approved frozen arithmetic specification.**
 
-After documentation review and separately authorized commit, observed C-matrix protocol design may proceed. Its execution is NOT AUTHORIZED. The synthetic H1–H5 phase is at its current closure gate; the overall campaign remains active and Conclusions remain EMPTY. No tests or campaign reruns are authorized.
+Next gate:
+
+```text
+E1 test-only implementation design/review
+-> implementation review closure
+-> separately authorized E1 execution
+```
+
+This task stops after status synchronization. It does not implement E1, close implementation review or authorize execution. E1 must close before any Lagrangian stage. The overall campaign remains active; parent protocol §12 Conclusions remains EMPTY. No tests, campaigns, prior-stage reruns, commit or push are authorized.
 
 Do not alter production physics, DEMO composition, UI, ScenarioConfig, analytical expectations, synthetic inputs, or frozen tolerances to make the harness pass.
 
@@ -166,15 +202,21 @@ Scientific classification: **H3 clean sign-reversal INVALID CONTROL**, with no U
 
 Harness-design blockers: **none**.
 
-Remaining gate:
+Completed scientific review and remaining implementation/execution gates:
 
 ```text
 H4 CLOSED · INVALID CONTROL
 → H5 scientific design APPROVED / EXPECTATIONS FROZEN
 → H5 test-only implementation COMPLETE / implementation review COMPLETE / CLOSED
 → H5 executed once / human classification CLOSED · PASS
-→ closure documentation review / separately authorized commit
-→ observed C-matrix protocol design only; execution NOT AUTHORIZED
+→ H5 closure documentation reviewed
+→ observed C-matrix scientific design REVIEWED
+→ E1 full-precision arithmetic specification REVIEWED AND APPROVED
+→ E1 arithmetic inputs FROZEN PENDING IMPLEMENTATION REVIEW
+→ E1 test-only implementation design/review
+→ implementation review closure
+→ separately authorized E1 execution (NOT AUTHORIZED now)
+→ E1 closure before any Lagrangian stage (NOT AUTHORIZED now)
 ```
 
 Deferred campaign path, not authorized by this slice or automatically unlocked by the partial H3 evidence:
@@ -221,11 +263,12 @@ Do not treat this file itself as physics authority.
 ## 9. Current-state reading order
 
 1. **This file** — current phase and `NEXT ACTION`.
-2. [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md) — frozen implementation/output contract for the next step.
-3. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — frozen scientific protocol and expectations.
-4. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — closed implementation-fact audit.
-5. [`bugs/README.md`](bugs/README.md) — product defects found while auditing.
-6. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
-7. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
+2. [`research/2026-09-12-observed-c-matrix-protocol-design.md`](research/2026-09-12-observed-c-matrix-protocol-design.md) — reviewed scientific design, approved frozen E1 arithmetic inputs (§13), open implementation decisions and execution gate.
+3. [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md) — existing frozen synthetic implementation/output contract; not an E1 implementation specification.
+4. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — frozen synthetic scientific protocol, expectations and closure records.
+5. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — closed implementation-fact audit.
+6. [`bugs/README.md`](bugs/README.md) — product defects found while auditing.
+7. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
+8. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current gate is documentation review.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current gate is E1 test-only implementation design/review; arithmetic approval does not authorize execution.
