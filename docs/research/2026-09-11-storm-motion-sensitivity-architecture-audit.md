@@ -234,15 +234,99 @@ All H3 quantitative comparisons must use diagnostic data/status, not screenshots
 
 ---
 
-## 5. Open architecture-audit items
+## 5. Audit finding A3 — path-history and diagnostic sampling semantics
+
+### 5.1 Path-history cadence
+
+The production `TracerPathHistory` records a discrete pathline at the simulation-step boundary, not at render-frame cadence.
+
+For the V1/Explore contract:
+
+- `dt = 0.1 s`;
+- history uses `stride = 1`;
+- `captureInitial(...)` stores the initial seed at its current laboratory time;
+- after every completed `Simulation.step(dt)`, `recordAfterStep(...)` stores the new accepted particle position;
+- the stored `simulationTime` is the **post-step** `clock.time`;
+- pause/render-only frames create no path sample;
+- timeScale changes the number of fixed steps consumed per wall-clock frame, not `dt` or the physical sampling interval;
+- an inactive transition may append one terminal accepted sample; already-inactive particles do not continue appending.
+
+Therefore, for an active H3 tracer started at `t = 0`, ordinary samples are
+
+`t_n = n * 0.1 s`, `n = 0,1,2,...`
+
+with the initial seed at `n = 0` and one post-step path sample for every subsequent fixed step.
+
+A 600 s H3 window contains 6000 integration steps and, if the tracer remains active throughout, **6001 path-history samples including the initial seed**.
+
+### 5.2 Position/time convention
+
+The integrator and the recorded diagnostic sample use different sides of the same Euler step and must not be conflated.
+
+The displacement
+
+`X[n] -> X[n+1]`
+
+is generated from the explicit-Euler advecting sample
+
+`V_total(X[n], t[n])`.
+
+Path history then records
+
+`(X[n+1], t[n+1])`.
+
+Historical diagnostics are recomputed at the recorded path marker and its recorded post-step time:
+
+`w(X[n+1], t[n+1])`,
+`T1(X[n+1], t[n+1])`,
+
+and likewise for other read-only field observers.
+
+They do **not** reconstruct the pre-step `V_total(X[n], t[n])` that generated the preceding displacement. This is the same current-state convention already used by the historical path probe / Inspector architecture and is not a physics discrepancy.
+
+### 5.3 Frozen H3 harness policy
+
+The H3 experimental harness must follow the production discrete-path semantics rather than inventing a second sampling clock:
+
+1. capture the initial tracer state at `t = 0`;
+2. advance using the production fixed step `dt = 0.1 s`;
+3. after every accepted completed step, record the accepted tracer position and post-step simulation time;
+4. evaluate trajectory-sampled `w` and T1 at those recorded `(P,t)` samples;
+5. preserve Analysis/support status with each T1 evaluation; unsupported samples are not numeric zeros;
+6. do not interpolate between path samples for the primary H3 metrics;
+7. do not decimate or use render-frame cadence for the primary H3 metrics.
+
+This gives the paired C runs the same deterministic temporal grid while allowing their spatial trajectories and resulting sampled diagnostics to diverge.
+
+### 5.4 Consequence for H3 metrics
+
+Quantities such as
+
+- minimum horizontal distance to the updraft axis;
+- maximum sampled `w`;
+- maximum sampled `|T1|`;
+- sign-change / near-zero events in supported T1;
+
+must be computed from the frozen discrete recorded sequence unless a later metric is explicitly defined as a continuous/interpolated quantity **before** viewing experiment results.
+
+For T1 specifically, a sign transition across two supported adjacent samples may be reported as a discrete sign transition. The primary harness must not invent an interpolated zero-crossing time unless that additional diagnostic is separately frozen before execution.
+
+### 5.5 Classification
+
+This item is **CLOSED / FROZEN** for the storm-motion validation harness.
+
+No production change is required. Existing V1 path-history and historical-diagnostic conventions are sufficiently explicit to define the H3 sampling cadence and sample meaning.
+
+---
+
+## 6. Open architecture-audit items
 
 Still to audit/freeze before backend execution:
 
 - exact streamwise/crosswise implementation and behavior at `|V_sr| = 0`;
 - exact `y = 0` tracer disappearance mechanism;
 - low-altitude Analysis support boundary relevant to user-authored seeds;
-- path-history / diagnostic sampling cadence used by the experimental harness;
 - final H3 T1 near-zero/sign-reversal threshold;
 - minimal way to inject synthetic `C_A` / `C_B` without changing production physics semantics.
 
-The H3 seed/updraft architecture mapping is now frozen and is no longer an open audit item.
+The H3 seed/updraft architecture mapping and path-history/diagnostic sampling policy are now frozen and are no longer open audit items.
