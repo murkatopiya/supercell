@@ -24,7 +24,7 @@ import { TracerPathHistory, type PathHistorySample } from "../simulation/TracerP
 // No campaign runs on import or during ordinary tests. Select ONE reviewed stage;
 // classification of the preceding stage is a human gate (see README.md).
 const stage = env.STORM_MOTION_VALIDATION_STAGE;
-const stages = ["H1", "H2", "H3-Eulerian", "H3-trajectories", "H4"];
+const stages = ["H1", "H2", "H3-Eulerian", "H3-trajectories", "H4", "H5"];
 if (stage !== undefined && !stages.includes(stage)) {
   throw new Error(`Unknown STORM_MOTION_VALIDATION_STAGE: ${stage}`);
 }
@@ -355,12 +355,12 @@ function h4Fields(): Fields {
   return { profile, environment, advection, updraft,
     tilting: new DiagnosticTiltingTendency({ profile, updraft }) };
 }
-function h4Sample(f: Fields, recorded: PathHistorySample, index: number) {
+function h4Sample(f: Fields, recorded: PathHistorySample, index: number, boundary?: number) {
   const sample = sampleDiagnostics(f, recorded, index);
   const requiredSegment = sameSegment(sample.t1.segment, H4_SEGMENT);
   const world = worldHorizontalVorticityFromAtmospheric(H4_OMEGA);
   const { x, y, z } = sample.position;
-  const B = world.omegaX * x + world.omegaZ * z;
+  const B = boundary ?? (world.omegaX * x + world.omegaZ * z);
   // Independent Gaussian/envelope oracle: no call to production T1 or gradient.
   const analyticalW = y > 0 && y < 8000
     ? 20 * Math.exp(-(x * x + z * z) / (2 * H4_SIGMA ** 2)) * Math.sin(Math.PI * y / 8000) : 0;
@@ -409,7 +409,7 @@ function h4Interval(samples: H4Sample[], left: number, right: number) {
     omegaUnchanged: interval.every(s => s.omegaMatches),
     oracleDiscrepancySamples: interval.filter(s => s.discrepancy).map(s => s.index) };
 }
-function h4Evidence(samples: H4Sample[], passage: ReturnType<typeof h4Passage>) {
+function h4Evidence(samples: H4Sample[], passage: ReturnType<typeof h4Passage>, label = "H4") {
   type Interval = ReturnType<typeof h4Interval>;
   let firstBoundaryPair: Interval | null = null;
   let firstIndependentPair: Interval | null = null;
@@ -418,7 +418,7 @@ function h4Evidence(samples: H4Sample[], passage: ReturnType<typeof h4Passage>) 
   const adjacentCrossings: { left: H4Sample; right: H4Sample; wholeIntervalSameSegment: boolean }[] = [];
   const exactZeroBrackets: { zeros: H4Sample[]; left: H4Sample | null; right: H4Sample | null; crosses: boolean }[] = [];
   if (passage.window === null) return { firstBoundaryPair, firstIndependentPair, qualifyingPair,
-    discrepancyPair, adjacentCrossings, exactZeroBrackets, absenceReason: "global r_min > 750 m; no H4 passage" };
+    discrepancyPair, adjacentCrossings, exactZeroBrackets, absenceReason: "global r_min > 750 m; no " + label + " passage" };
   const { start, end } = passage.window;
   for (let i = start; i <= end; i++) {
     if (i < end && samples[i].B * samples[i + 1].B < 0) adjacentCrossings.push({
@@ -473,19 +473,39 @@ function h4ReviewStatus(evidence: ReturnType<typeof h4Evidence>, integrity: bool
     (evidence.firstIndependentPair !== null && evidence.qualifyingPair === null);
   return discrepancy ? "UNEXPLAINED" : evidence.qualifyingPair !== null ? "PASS" : "INVALID CONTROL";
 }
-function runH4() {
+// H5 shares the frozen H4 evidence/classification path; only its seed differs.
+function geometricSeed(selected: "H4" | "H5") {
+  return selected === "H5" ? { x: -3000, y: 500, z: 225 } : { ...SEED };
+}
+function geometricStageSelected(value: string | undefined, selected: "H4" | "H5") {
+  return value === selected;
+}
+function h5Prediction() {
+  const seed = geometricSeed("H5");
+  const S0 = seed.x + 4 * seed.z;
+  return { S0, dSdt: 10, conditionalBoundaryTime: -S0 / 10,
+    condition: "tracer remains in required first segment 0<=y<1000",
+    equation: "S(t)=-2100+10*t; B=-0.002*S",
+    boundaryTimeIsPassCriterion: false };
+}
+function h5Sample(f: Fields, recorded: PathHistorySample, index: number) {
+  const S = recorded.position.x + 4 * recorded.position.z;
+  return { ...h4Sample(f, recorded, index, -0.002 * S), S };
+}
+function runGeometricStage(selected: "H4" | "H5") {
+  const seed = geometricSeed(selected);
   const f = h4Fields();
   const simulation = new Simulation(new CompositeVelocityField([f.advection, f.updraft]),
-    new EulerIntegrator(), [{ position: { ...SEED }, age: 0, active: true }],
+    new EulerIntegrator(), [{ position: { ...seed }, age: 0, active: true }],
     { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN });
   const { history, ...lifecycle } = recordPath(simulation, STEPS);
-  const samples = history.samplesFor(0).map((p, i) => h4Sample(f, p, i));
+  const samples = history.samplesFor(0).map((p, i) => selected === "H5" ? h5Sample(f, p, i) : h4Sample(f, p, i));
   const passage = h4Passage(samples);
-  const evidence = h4Evidence(samples, passage);
+  const evidence = h4Evidence(samples, passage, selected);
   const first = samples[0], last = samples[samples.length - 1];
   const integrity = samples.length === lifecycle.executedSteps + 1 &&
-    first.simulationTime === 0 && first.position.x === SEED.x &&
-    first.position.y === SEED.y && first.position.z === SEED.z &&
+    first.simulationTime === 0 && first.position.x === seed.x &&
+    first.position.y === seed.y && first.position.z === seed.z &&
     samples.every((s, i) => s.index === i && s.finite &&
       (i === 0 || (s.simulationTime > samples[i - 1].simulationTime &&
         equal(s.simulationTime - samples[i - 1].simulationTime, DT)))) &&
@@ -493,7 +513,7 @@ function runH4() {
     (lifecycle.finalTracer.active ? lifecycle.executedSteps === STEPS && samples.length === 6001
       : lifecycle.terminalTime === last.simulationTime);
   const world = worldHorizontalVorticityFromAtmospheric(H4_OMEGA);
-  const omegaCheck = numericCheck("H4/world-omega", [-0.002, -0.008], [world.omegaX, world.omegaZ]);
+  const omegaCheck = numericCheck(selected + "/world-omega", [-0.002, -0.008], [world.omegaX, world.omegaZ]);
   const local = passage.window === null ? [] : samples.slice(passage.window.start, passage.window.end + 1);
   const omegaMismatch = local.filter(s => s.requiredSegment && !s.omegaMatches);
   // Automated discrepancies remain UNEXPLAINED pending cause/setup review.
@@ -501,23 +521,23 @@ function runH4() {
   const status = h4ReviewStatus(evidence, integrity, omegaCheck.status === "PASS", omegaMismatch.length);
   const discrepancy = status === "UNEXPLAINED";
   const prerequisiteChecks = [
-    check("H4/integrity", "initial + accepted post-step samples, fixed dt, finite data and lifecycle", lifecycle, integrity),
+    check(selected + "/integrity", "initial + accepted post-step samples, fixed dt, finite data and lifecycle", lifecycle, integrity),
     omegaCheck,
-    check("H4/passage", "global minimum in maximal contiguous r<=750 interval", passage.window,
+    check(selected + "/passage", "global minimum in maximal contiguous r<=750 interval", passage.window,
       passage.window !== null, "INVALID CONTROL"),
-    check("H4/independent-prerequisites", "opposite B sides, whole first segment, unchanged omega, material analytical endpoints",
+    check(selected + "/independent-prerequisites", "opposite B sides, whole first segment, unchanged omega, material analytical endpoints",
       evidence.firstIndependentPair, evidence.firstIndependentPair !== null,
       discrepancy ? "UNEXPLAINED" : "INVALID CONTROL"),
   ];
-  const oracleChecks = [check("H4/segment-omega", "unchanged frozen first-segment omega", omegaMismatch, omegaMismatch.length === 0),
-    check("H4/oracle-discrepancy", "no wrong sign, neutral-for-material, or failed reversal under independent prerequisites",
+  const oracleChecks = [check(selected + "/segment-omega", "unchanged frozen first-segment omega", omegaMismatch, omegaMismatch.length === 0),
+    check(selected + "/oracle-discrepancy", "no wrong sign, neutral-for-material, or failed reversal under independent prerequisites",
       { discrepancyPair: evidence.discrepancyPair, independentPair: evidence.firstIndependentPair },
       evidence.discrepancyPair === null && (evidence.firstIndependentPair === null || evidence.qualifyingPair !== null))];
-  const finalCheck: Check = { id: "H4/clean-geometric-sign-reversal",
-    expected: "protocol 13.5: local opposite B/material T1 signs, whole {0,1000}, oracle agreement and valid integrity",
+  const finalCheck: Check = { id: selected + "/clean-geometric-sign-reversal",
+    expected: (selected === "H5" ? "protocol 14.3/14.4" : "protocol 13.5") + ": local opposite B/material T1 signs, whole {0,1000}, oracle agreement and valid integrity",
     observed: { qualifyingPair: evidence.qualifyingPair, absenceReason: evidence.absenceReason }, status };
-  return { stage: "H4", frozenInputs: { sounding: f.profile.levelHeights().map(height =>
-    ({ height, velocity: f.profile.sampleAtHeight(height) })), stormMotion: motion(5, 8), seed: { ...SEED },
+  return { stage: selected, ...(selected === "H5" ? { analyticalPrediction: h5Prediction() } : {}), frozenInputs: { sounding: f.profile.levelHeights().map(height =>
+    ({ height, velocity: f.profile.sampleAtHeight(height) })), stormMotion: motion(5, 8), seed: { ...seed },
     updraft: { centerX: 0, centerZ: 0, peakVerticalVelocity: 20, sigma: H4_SIGMA, baseHeight: 0, topHeight: 8000 },
     integrator: "EulerIntegrator", dt: DT, duration: 600, domain: "ATMOSPHERIC_TRACER_DOMAIN",
     stride: 1, epsilonT1: EPSILON_T1, radiusLimit: 750 },
@@ -535,19 +555,22 @@ function runH4() {
       : evidence.qualifyingPair !== null ? "all frozen clean-reversal conditions satisfied" : evidence.absenceReason,
     checks: [...prerequisiteChecks, ...oracleChecks, finalCheck] };
 }
-it.skipIf(stage !== "H4")("campaign H4 (explicit stage only; separate execution authorization required)",
-  () => reportAndAssert(runH4()));
+it.skipIf(!geometricStageSelected(stage, "H4"))("campaign H4 (explicit stage only; separate execution authorization required)",
+  () => reportAndAssert(runGeometricStage("H4")));
+
+it.skipIf(!geometricStageSelected(stage, "H5"))("campaign H5 (explicit stage only; separate execution authorization required)",
+  () => reportAndAssert(runGeometricStage("H5")));
 
 // Hand-authored points and injected T1 readings, NOT an integrated H4 path.
 // Exercise h4Sample's real oracle, support, sign and discrepancy logic rather
 // than fabricating its derived flags or mocking a campaign result.
-function h4Fixture(points: { x: number; t1: number; y?: number; z?: number }[]): H4Sample[] {
+function h4Fixture(points: { x: number; t1: number; y?: number; z?: number }[], selected: "H4" | "H5" = "H4"): H4Sample[] {
   const f = h4Fields();
   const diagnostic = vi.spyOn(f.tilting, "sample");
   try {
     return points.map((p, index) => {
       diagnostic.mockReturnValue(p.t1);
-      return h4Sample(f, { position: { x: p.x, y: p.y ?? 500, z: p.z ?? 0 },
+      return (selected === "H5" ? h5Sample : h4Sample)(f, { position: { x: p.x, y: p.y ?? 500, z: p.z ?? 0 },
         simulationTime: index * DT }, index);
     });
   } finally { diagnostic.mockRestore(); }
@@ -685,6 +708,79 @@ describe("H4 infrastructure fixtures (no campaign execution)", () => {
   });
 });
 
+// H5 hand-authored records only: never integrate or invoke runGeometricStage.
+describe("H5 infrastructure fixtures (no campaign execution)", () => {
+  const inspect = (points: Parameters<typeof h4Fixture>[0]) => inspectH4Fixture(h4Fixture(points, "H5"));
+  it("isolates H5 from every other selector and from no-stage execution", () => {
+    expect(stages.filter(s => geometricStageSelected(s, "H5"))).toEqual(["H5"]);
+    expect(geometricStageSelected(undefined, "H5")).toBe(false);
+    expect(geometricStageSelected("H5", "H4")).toBe(false);
+    expect(geometricStageSelected("H4", "H5")).toBe(false);
+  });
+  it("freezes the H5 seed while retaining the H4 seed", () => {
+    expect(geometricSeed("H5")).toEqual({ x: -3000, y: 500, z: 225 });
+    expect(geometricSeed("H4")).toEqual({ x: -3000, y: 500, z: 0 });
+    const copy = geometricSeed("H5"); copy.z = 0;
+    expect(geometricSeed("H5").z).toBe(225);
+  });
+  it("derives S0 and conditional crossing without promoting time to a criterion", () => {
+    expect(h5Prediction()).toMatchObject({ S0: -2100, dSdt: 10,
+      conditionalBoundaryTime: 210, boundaryTimeIsPassCriterion: false });
+    expect(h5Prediction().S0 + 10 * 209).toBe(-10);
+    expect(h5Prediction().S0 + 10 * 211).toBe(10);
+  });
+  it("checks dS/dt=10 against first-segment advection at hand-authored heights", () => {
+    const f = h4Fields();
+    for (const y of [0, 500, 999]) {
+      const velocity = f.advection.sample({ x: -3000, y, z: 225 }, 0);
+      expect(equal(velocity.x, 10 + 0.008 * y)).toBe(true);
+      expect(equal(velocity.z, -0.002 * y)).toBe(true);
+      expect(equal(velocity.x + 4 * velocity.z, h5Prediction().dSdt)).toBe(true);
+    }
+  });
+  it("does not pass from time=210 or an exact boundary sample alone", () => {
+    const samples = h4Fixture([{ x: 0, z: 0, t1: 0 }], "H5");
+    samples[0].simulationTime = 210;
+    const result = inspectH4Fixture(samples);
+    expect(result.evidence.qualifyingPair).toBeNull();
+    expect(result.status).toBe("INVALID CONTROL");
+  });
+  it("retains lexicographic evidence and accepts reversal without sampled zero", () => {
+    const points = [{ x: -100, t1: -3e-6 }, { x: -200, t1: -5e-6 },
+      { x: 100, t1: 3e-6 }, { x: 300, t1: 7e-6 }];
+    const result = inspect(points);
+    const h4 = inspectH4Fixture(h4Fixture(points));
+    expect(result.status).toBe(h4.status);
+    expect(result.evidence.qualifyingPair?.left.index).toBe(h4.evidence.qualifyingPair?.left.index);
+    expect(result.evidence.qualifyingPair?.right.index).toBe(h4.evidence.qualifyingPair?.right.index);
+    expect(result.status).toBe("PASS");
+    expect([result.evidence.qualifyingPair?.left.index, result.evidence.qualifyingPair?.right.index]).toEqual([0, 2]);
+    expect(result.evidence.exactZeroBrackets).toEqual([]);
+    expect(result.evidence.adjacentCrossings).toHaveLength(1);
+  });
+  it("retains support and missing-material INVALID CONTROL semantics", () => {
+    for (const points of [
+      [{ x: -100, t1: -3e-6 }, { x: 0, y: 1000, t1: 0 }, { x: 100, t1: 3e-6 }],
+      [{ x: -1, t1: 0 }, { x: 1, t1: 0 }],
+      [{ x: -800, t1: 0 }, { x: 800, t1: 0 }],
+    ]) expect(inspect(points).status).toBe("INVALID CONTROL");
+  });
+  it("detects independent discrepancies without observed reversal", () => {
+    for (const t1 of [0, -3e-6]) {
+      const result = inspect([{ x: -100, t1: -3e-6 }, { x: 100, t1 }]);
+      expect(result.evidence.firstIndependentPair).not.toBeNull();
+      expect(result.evidence.qualifyingPair).toBeNull();
+      expect(result.evidence.discrepancyPair).not.toBeNull();
+      expect(result.status).toBe("UNEXPLAINED");
+    }
+  });
+  it("does not conceal a discrepancy with a later clean pair", () => {
+    const result = inspect([{ x: -100, t1: 3e-6 }, { x: -100, t1: -3e-6 }, { x: 100, t1: 3e-6 }]);
+    expect(result.evidence.discrepancyPair?.left.index).toBe(0);
+    expect(result.evidence.qualifyingPair?.left.index).toBe(1);
+    expect(result.status).toBe("UNEXPLAINED");
+  });
+});
 // Infrastructure verification uses constructed records / short lifecycle fixtures,
 // never the H1/H2 collectors or the frozen 6000-step H3 trajectory campaign.
 function fixture(radii: number[], values: (number | null)[], heights = radii.map(() => 500)): Sample[] {
