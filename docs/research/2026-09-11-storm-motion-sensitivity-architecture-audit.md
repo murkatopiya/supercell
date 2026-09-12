@@ -95,7 +95,9 @@ At the lower lid,
 
 For the current DEMO updraft, `baseHeight = 0 m`. Therefore a tracer authored at `y = 0 m` receives no upward velocity from the prescribed updraft at that exact level.
 
-A live Explore manual probe confirmed that `y = 0 m` is reachable in the UI and that a released tracer at that height disappears immediately after release. The exact disappearance mechanism still requires code-level confirmation; likely candidates include atmospheric-domain / accepted-step ground handling rather than the updraft formula alone. This observed behavior is stronger than the earlier purely analytical concern that the tracer might simply remain near the lower lid.
+A live Explore manual probe confirmed that `y = 0 m` is reachable in the UI and that a released tracer at that height disappears immediately after release.
+
+The exact mechanism is now closed by A5 below: the live DEMO downdraft has a negative lower lid and therefore supplies a nonzero downward Gaussian tail at `y = 0`; the accepted Euler proposal goes below the atmospheric floor and `AtmosphericTracerDomain` deactivates the tracer on that first step.
 
 ### 3.2 Classification
 
@@ -111,7 +113,7 @@ The originally frozen H3 seed
 
 `X0 = (-3000, 0, 0) m`
 
-cannot simply be mapped onto a V1 updraft with `baseHeight = 0` while retaining the intended "enter the updraft, rise through the curved sounding" experiment. At the lower lid the updraft contribution to vertical velocity is zero, and the released V1 behavior at `y = 0` may immediately terminate/deactivate the tracer.
+cannot simply be mapped onto a V1 updraft with `baseHeight = 0` while retaining the intended "enter the updraft, rise through the curved sounding" experiment. At the lower lid the updraft contribution to vertical velocity is zero, while the live DEMO downdraft contributes a downward tail and the atmospheric tracer-domain policy deactivates a tracer whose accepted proposal crosses below `y = 0`.
 
 If that mapping were used unchanged, the run would be classified as **INVALID CONTROL / architecture-mapping mismatch**, not as a failure of H3 or of V1 storm-motion physics.
 
@@ -164,20 +166,21 @@ Changing `C` remains the only difference between the paired H3 runs. The adapted
 The synthetic-control adaptation above does **not** resolve the separate product-facing `y = 0` behavior. At least three honest product directions remain open:
 
 1. **Authoring floor / constraint.** Prevent the user from placing a tracer below a scientifically/product-defined minimum seed height for experiments that imply updraft entrainment.
-2. **Explicit warning.** Permit very low heights but explain that the current prescribed updraft has zero vertical velocity on its lower lid and extremely weak vertical velocity immediately above it, so a near-ground tracer is not guaranteed to behave like an intuitively entrained air parcel.
-3. **Model revision.** Revisit the lower-boundary behavior of the prescribed updraft in a later modeling decision so that near-ground lifting is represented differently.
+2. **Explicit warning.** Permit very low heights but explain that the current prescribed updraft has zero vertical velocity on its lower lid and the live DEMO can contain downward velocity there, so a ground-level tracer may immediately leave the atmospheric pathline domain.
+3. **Model/composition revision.** Revisit the interaction between the prescribed storm operands and the lower-boundary policy in a later modeling/product decision.
 
 No product option is selected by this audit. In particular, do not introduce an undocumented epsilon offset or silently move a user-authored tracer upward.
 
 ### 3.6 Required follow-up
 
-Before V1.1 closes the product-facing boundary finding:
+The exact deactivation mechanism is now confirmed by A5 and no longer open.
 
-- confirm the exact `y = 0` disappearance mechanism in the atmospheric-domain / accepted-step path;
+Before V1.1 closes the product-facing boundary finding, still:
+
 - characterize representative low seed heights (`0`, `1`, and additional low-altitude controls) for survival and vertical response;
-- decide whether the correct product resolution is UI constraint, warning/explanation, or a separately justified model change.
+- decide whether the correct product resolution is UI constraint, warning/explanation, composition/model revision, or another explicitly justified policy.
 
-These product questions no longer block freezing the H3 seed itself. They remain separate from the synthetic validation geometry.
+These product questions do not block the frozen H3 seed itself.
 
 ---
 
@@ -429,13 +432,92 @@ No production change is required for the core diagnostic before H1/H2 execution.
 
 ---
 
-## 7. Open architecture-audit items
+## 7. Audit finding A5 — exact `y = 0` disappearance mechanism
+
+### 7.1 The deactivation path
+
+The live tracer simulation is constructed with `ATMOSPHERIC_TRACER_DOMAIN`.
+
+For an active tracer, `Simulation.step(dt)` first asks the integrator for a proposed position from the full composite velocity field. It then passes the segment `(from, proposed)` to `applyAtmosphericTracerDomain(...)`.
+
+The domain policy accepts any proposal with `proposed.y >= 0`. If an accepted segment starts at/above the atmospheric floor and proposes `proposed.y < 0`, it intersects the segment with `y = 0`, stores that floor point, and sets `active = false`.
+
+There is an explicit production test for the exact boundary case: a tracer starting at `y = 0` with a downward proposal is treated as a crossing with interpolation parameter `alpha = 0`; it remains at its starting floor position and is immediately deactivated.
+
+Therefore `AtmosphericTracerDomain` is the lifecycle mechanism that makes the glyph disappear once the first downward proposal occurs. The domain is not the source of the downward velocity.
+
+### 7.2 The downward proposal at `y = 0`
+
+The source is the live prescribed downdraft operand.
+
+Current DEMO downdraft parameters are:
+
+- center `(5000, 0) m`;
+- `sigma = 2000 m`;
+- `D0 = 20 m/s`;
+- vertical support `[-400, 3600] m`.
+
+Its field is
+
+`Vy_down = -D0 * exp(-r^2/(2 sigma^2)) * sin(pi * (y - baseHeight)/(topHeight - baseHeight))`.
+
+Because the lower lid is `-400 m`, the atmospheric floor `y = 0` lies **inside** the downdraft envelope rather than on its lid:
+
+`F_down(0) = sin(pi * 400/4000) ~= 0.309`.
+
+The horizontal Gaussian is strictly positive at every finite horizontal distance. Therefore in the current DEMO the downdraft contributes a negative vertical velocity at `y = 0` everywhere at finite `(x,z)`, although it becomes exponentially tiny far from the downdraft core.
+
+By contrast, the updraft lower lid is exactly `y = 0`, so its contribution there is exactly zero.
+
+At the updraft axis `(x,z) = (0,0)`, which is 5000 m from the downdraft axis, the downdraft tail is approximately
+
+`Vy_down(0,0,0) ~= -0.2715 m/s`.
+
+With production Euler `dt = 0.1 s`, the first vertical proposal from that contribution alone is approximately
+
+`proposed.y ~= -0.02715 m`.
+
+That is below the atmospheric floor. Because the step begins at `from.y = 0`, the domain intersection has `alpha = 0`; the accepted position remains the original floor point and the tracer becomes inactive immediately.
+
+### 7.3 Why `y = 1 m` can survive
+
+The boundary effect is discontinuous in lifecycle terms but not in field terms.
+
+At `y = 1 m`, the tracer has one metre of vertical margin. The composite vertical velocity can still be slightly downward initially, but a `dt = 0.1 s` Euler step must move more than 1 m downward in a single accepted step to trigger deactivation immediately. The live manual probe showed that this does not happen there; the tracer survives and can continue along a near-ground path.
+
+This explains the observed `y = 0` versus `y = 1 m` difference without invoking a hidden UI clamp or special seed rule.
+
+### 7.4 Classification
+
+The **mechanism is CLOSED / CONFIRMED**:
+
+`downdraft Gaussian tail at y=0 -> negative V_total,y -> first Euler proposal below ground -> AtmosphericTracerDomain alpha=0 crossing -> active=false`.
+
+This is an interaction between two individually documented production choices:
+
+1. a downdraft envelope whose lower lid is below the atmospheric floor, intentionally making `y = 0` an interior downdraft level;
+2. a hard tracer lifecycle floor at `y = 0` that deactivates downward crossings.
+
+It is not caused by the updraft implementation, and there is no evidence of a renderer-only disappearance bug.
+
+The broader product question remains open: whether Explore should permit authoring an exactly ground-level seed in a composite where an exponentially small far-field downward tail can immediately terminate it.
+
+### 7.5 Validation consequence
+
+This finding does not change the frozen H3 synthetic control, because H3 explicitly excludes the production downdraft operand and already uses the adapted seed altitude `y0 = 500 m`.
+
+For product-facing low-altitude characterization, however, any future test must inspect **full composite vertical velocity plus domain outcome**, not updraft `w` alone.
+
+This item itself is **CLOSED / FROZEN** as an architecture fact.
+
+---
+
+## 8. Open architecture-audit items
 
 Still to audit/freeze before backend execution:
 
-- exact `y = 0` tracer disappearance mechanism;
 - low-altitude Analysis support boundary relevant to user-authored seeds;
 - final H3 T1 near-zero/sign-reversal threshold;
 - minimal way to inject synthetic `C_A` / `C_B` without changing production physics semantics.
 
-The H3 seed/updraft architecture mapping, path-history/diagnostic sampling policy, and streamwise/crosswise implementation/domain semantics are now frozen and are no longer open audit items.
+The H3 seed/updraft architecture mapping, path-history/diagnostic sampling policy, streamwise/crosswise implementation/domain semantics, and exact `y = 0` disappearance mechanism are now frozen and are no longer open audit items.
