@@ -13,7 +13,7 @@ import { horizontalVorticityFromShear } from "../physics/environment/horizontalV
 import { decomposeHorizontalVorticity, StreamwiseCrosswiseVorticityError } from "../physics/environment/streamwiseCrosswiseVorticity.js";
 import { stormRelativeHelicityBetween } from "../physics/environment/stormRelativeHelicity.js";
 import type { StormMotion, StormRelativeWind } from "../physics/environment/stormRelativeWind.js";
-import { DiagnosticTiltingTendency, soundingSegmentContainingHeight, type EnvironmentalSoundingSegment } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
+import { DiagnosticTiltingTendency, soundingSegmentContainingHeight, worldHorizontalVorticityFromAtmospheric, type EnvironmentalSoundingSegment } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
 import { VerticalEnvelopeUpdraftField } from "../physics/storm/VerticalEnvelopeUpdraftField.js";
 import { ATMOSPHERIC_TRACER_DOMAIN } from "../simulation/AtmosphericTracerDomain.js";
 import { Simulation } from "../simulation/Simulation.js";
@@ -24,7 +24,7 @@ import { TracerPathHistory, type PathHistorySample } from "../simulation/TracerP
 // No campaign runs on import or during ordinary tests. Select ONE reviewed stage;
 // classification of the preceding stage is a human gate (see README.md).
 const stage = env.STORM_MOTION_VALIDATION_STAGE;
-const stages = ["H1", "H2", "H3-Eulerian", "H3-trajectories"];
+const stages = ["H1", "H2", "H3-Eulerian", "H3-trajectories", "H4"];
 if (stage !== undefined && !stages.includes(stage)) {
   throw new Error(`Unknown STORM_MOTION_VALIDATION_STAGE: ${stage}`);
 }
@@ -335,6 +335,354 @@ it.skipIf(stage !== "H3-trajectories")("campaign H3 trajectories (explicit stage
       a.wMax.w >= b.wMax.w + 2, geometryA && geometryB ? "UNEXPLAINED" : "INVALID CONTROL"),
     signReversalCheck(a.samples, a.corePassage)];
   reportAndAssert({ stage: "H3-trajectories", samePoint, runs: [a, b], checks });
+});
+
+// H4 is a separate frozen control. No H4 construction or sampling occurs on import.
+// H1/H2/H3 helpers, parameters and entry points above remain unchanged.
+const H4_SIGMA = 500;
+const H4_SEGMENT = { hLo: 0, hHi: 1000 };
+const H4_OMEGA = { omegaEastward: -0.002, omegaNorthward: 0.008 };
+type H4Sign = "positive" | "negative" | "neutral";
+function h4Material(value: number): H4Sign {
+  return value > EPSILON_T1 ? "positive" : value < -EPSILON_T1 ? "negative" : "neutral";
+}
+function h4Fields(): Fields {
+  const profile = profileFor("curved");
+  const environment = new EnvironmentalWindField(profile);
+  const advection = new StormRelativeEnvironmentalAdvectionField(environment, motion(5, 8));
+  const updraft = new VerticalEnvelopeUpdraftField({ centerX: 0, centerZ: 0,
+    peakVerticalVelocity: 20, sigma: H4_SIGMA, baseHeight: 0, topHeight: 8000 });
+  return { profile, environment, advection, updraft,
+    tilting: new DiagnosticTiltingTendency({ profile, updraft }) };
+}
+function h4Sample(f: Fields, recorded: PathHistorySample, index: number) {
+  const sample = sampleDiagnostics(f, recorded, index);
+  const requiredSegment = sameSegment(sample.t1.segment, H4_SEGMENT);
+  const world = worldHorizontalVorticityFromAtmospheric(H4_OMEGA);
+  const { x, y, z } = sample.position;
+  const B = world.omegaX * x + world.omegaZ * z;
+  // Independent Gaussian/envelope oracle: no call to production T1 or gradient.
+  const analyticalW = y > 0 && y < 8000
+    ? 20 * Math.exp(-(x * x + z * z) / (2 * H4_SIGMA ** 2)) * Math.sin(Math.PI * y / 8000) : 0;
+  // The first-segment oracle must never qualify an upper or unsupported segment.
+  const analyticalT1 = requiredSegment ? -(analyticalW / H4_SIGMA ** 2) * B : null;
+  const segment = sample.t1.segment;
+  const atmosphericOmega = segment === null ? null : horizontalVorticityFromShear(
+    verticalWindShearBetween(f.profile, segment.hLo, segment.hHi));
+  const worldOmega = atmosphericOmega === null ? null : worldHorizontalVorticityFromAtmospheric(atmosphericOmega);
+  const omegaMatches = requiredSegment && atmosphericOmega !== null && worldOmega !== null &&
+    equal(atmosphericOmega.omegaEastward, H4_OMEGA.omegaEastward) &&
+    equal(atmosphericOmega.omegaNorthward, H4_OMEGA.omegaNorthward) &&
+    equal(worldOmega.omegaX, -0.002) && equal(worldOmega.omegaZ, -0.008);
+  const observedMaterialSign = materialSign(sample);
+  const analyticalMaterialSign = analyticalT1 === null ? null : h4Material(analyticalT1);
+  const BSign = B > 0 ? "positive" : B < 0 ? "negative" : "zero";
+  const observedMaterial = observedMaterialSign === "positive" || observedMaterialSign === "negative";
+  const oracleAgreement = requiredSegment && sample.t1.value !== null && analyticalT1 !== null
+    ? Math.sign(sample.t1.value) === Math.sign(analyticalT1) : null;
+  const finite = [x, y, z, sample.simulationTime, sample.r, sample.w, B, analyticalW,
+    ...(sample.t1.value === null ? [] : [sample.t1.value]),
+    ...(analyticalT1 === null ? [] : [analyticalT1])].every(Number.isFinite);
+  // Neutral observed T1 against a material oracle is a discrepancy too.
+  const discrepancy = requiredSegment && (!finite ||
+    (analyticalMaterialSign !== "neutral" && analyticalMaterialSign !== null &&
+      observedMaterialSign !== analyticalMaterialSign) || (observedMaterial && !oracleAgreement));
+  return { ...sample, requiredSegment, B, BSign, analyticalW, analyticalT1,
+    atmosphericOmega, worldOmega, omegaMatches, observedMaterialSign, analyticalMaterialSign,
+    oracleAgreement, finite, discrepancy };
+}
+type H4Sample = ReturnType<typeof h4Sample>;
+function h4Passage(samples: H4Sample[]) {
+  const minimum = samples.reduce((a, b) => b.r < a.r ? b : a);
+  if (minimum.r > 750) return { minimum, iCore: minimum.index, window: null };
+  let start = minimum.index, end = minimum.index;
+  while (start > 0 && samples[start - 1].r <= 750) start--;
+  while (end + 1 < samples.length && samples[end + 1].r <= 750) end++;
+  return { minimum, iCore: minimum.index, window: { start, end, radiusLimit: 750 } };
+}
+function h4Interval(samples: H4Sample[], left: number, right: number) {
+  const interval = samples.slice(left, right + 1);
+  return { left: samples[left], right: samples[right],
+    yMin: Math.min(...interval.map(s => s.position.y)),
+    yMax: Math.max(...interval.map(s => s.position.y)),
+    wholeIntervalSameSegment: interval.every(s => s.requiredSegment),
+    omegaUnchanged: interval.every(s => s.omegaMatches),
+    oracleDiscrepancySamples: interval.filter(s => s.discrepancy).map(s => s.index) };
+}
+function h4Evidence(samples: H4Sample[], passage: ReturnType<typeof h4Passage>) {
+  type Interval = ReturnType<typeof h4Interval>;
+  let firstBoundaryPair: Interval | null = null;
+  let firstIndependentPair: Interval | null = null;
+  let qualifyingPair: Interval | null = null;
+  let discrepancyPair: Interval | null = null;
+  const adjacentCrossings: { left: H4Sample; right: H4Sample; wholeIntervalSameSegment: boolean }[] = [];
+  const exactZeroBrackets: { zeros: H4Sample[]; left: H4Sample | null; right: H4Sample | null; crosses: boolean }[] = [];
+  if (passage.window === null) return { firstBoundaryPair, firstIndependentPair, qualifyingPair,
+    discrepancyPair, adjacentCrossings, exactZeroBrackets, absenceReason: "global r_min > 750 m; no H4 passage" };
+  const { start, end } = passage.window;
+  for (let i = start; i <= end; i++) {
+    if (i < end && samples[i].B * samples[i + 1].B < 0) adjacentCrossings.push({
+      left: samples[i], right: samples[i + 1],
+      wholeIntervalSameSegment: samples[i].requiredSegment && samples[i + 1].requiredSegment });
+    if (samples[i].B === 0) {
+      const first = i;
+      while (i < end && samples[i + 1].B === 0) i++;
+      const left = first > start ? samples[first - 1] : null;
+      const right = i < end ? samples[i + 1] : null;
+      exactZeroBrackets.push({ zeros: samples.slice(first, i + 1), left, right,
+        crosses: left !== null && right !== null && left.B * right.B < 0 });
+    }
+  }
+  // Ascending lexicographic (leftIndex,rightIndex). Never require straddling iCore.
+  // Accumulated flags keep the whole-interval checks O(1) per pair.
+  for (let left = start; left < end; left++) {
+    let same = samples[left].requiredSegment, omega = samples[left].omegaMatches;
+    let discrepancy = samples[left].discrepancy;
+    for (let right = left + 1; right <= end; right++) {
+      same = same && samples[right].requiredSegment;
+      omega = omega && samples[right].omegaMatches;
+      discrepancy = discrepancy || samples[right].discrepancy;
+      const l = samples[left], r = samples[right];
+      if (!(l.B * r.B < 0)) continue;
+      if (firstBoundaryPair === null) firstBoundaryPair = h4Interval(samples, left, right);
+      const predictedMaterial = l.analyticalT1 !== null && r.analyticalT1 !== null &&
+        Math.abs(l.analyticalT1) > EPSILON_T1 && Math.abs(r.analyticalT1) > EPSILON_T1;
+      if (!same || !omega || !predictedMaterial) continue;
+      if (firstIndependentPair === null) firstIndependentPair = h4Interval(samples, left, right);
+      // Detect discrepancies WITHOUT requiring observed opposite signs. A later
+      // clean pair cannot conceal a discrepancy in independently qualifying evidence.
+      if (discrepancy && discrepancyPair === null) discrepancyPair = h4Interval(samples, left, right);
+      if (qualifyingPair === null && !discrepancy && opposite(l, r) && l.oracleAgreement && r.oracleAgreement) {
+        qualifyingPair = h4Interval(samples, left, right);
+      }
+    }
+  }
+  const absenceReason = qualifyingPair !== null ? null : discrepancyPair !== null
+    ? "independent geometry/material oracle prerequisites exist; production T1 discrepancy"
+    : firstBoundaryPair === null ? "no opposite nonzero B sides in local passage"
+    : firstIndependentPair === null ? "no whole first-segment interval with unchanged omega and material oracle endpoints"
+    : "no observed qualifying pair; investigate independently satisfied prerequisites";
+  return { firstBoundaryPair, firstIndependentPair, qualifyingPair, discrepancyPair,
+    adjacentCrossings, exactZeroBrackets, absenceReason };
+}
+// Shared by campaign assembly and hand-authored unit fixtures; no simulation.
+function h4ReviewStatus(evidence: ReturnType<typeof h4Evidence>, integrity: boolean,
+  worldOmegaMatches: boolean, omegaMismatchCount: number): Status {
+  const discrepancy = !integrity || !worldOmegaMatches || omegaMismatchCount > 0 ||
+    evidence.discrepancyPair !== null ||
+    (evidence.firstIndependentPair !== null && evidence.qualifyingPair === null);
+  return discrepancy ? "UNEXPLAINED" : evidence.qualifyingPair !== null ? "PASS" : "INVALID CONTROL";
+}
+function runH4() {
+  const f = h4Fields();
+  const simulation = new Simulation(new CompositeVelocityField([f.advection, f.updraft]),
+    new EulerIntegrator(), [{ position: { ...SEED }, age: 0, active: true }],
+    { tracerDomain: ATMOSPHERIC_TRACER_DOMAIN });
+  const { history, ...lifecycle } = recordPath(simulation, STEPS);
+  const samples = history.samplesFor(0).map((p, i) => h4Sample(f, p, i));
+  const passage = h4Passage(samples);
+  const evidence = h4Evidence(samples, passage);
+  const first = samples[0], last = samples[samples.length - 1];
+  const integrity = samples.length === lifecycle.executedSteps + 1 &&
+    first.simulationTime === 0 && first.position.x === SEED.x &&
+    first.position.y === SEED.y && first.position.z === SEED.z &&
+    samples.every((s, i) => s.index === i && s.finite &&
+      (i === 0 || (s.simulationTime > samples[i - 1].simulationTime &&
+        equal(s.simulationTime - samples[i - 1].simulationTime, DT)))) &&
+    last.simulationTime === lifecycle.finalSimulationTime &&
+    (lifecycle.finalTracer.active ? lifecycle.executedSteps === STEPS && samples.length === 6001
+      : lifecycle.terminalTime === last.simulationTime);
+  const world = worldHorizontalVorticityFromAtmospheric(H4_OMEGA);
+  const omegaCheck = numericCheck("H4/world-omega", [-0.002, -0.008], [world.omegaX, world.omegaZ]);
+  const local = passage.window === null ? [] : samples.slice(passage.window.start, passage.window.end + 1);
+  const omegaMismatch = local.filter(s => s.requiredSegment && !s.omegaMatches);
+  // Automated discrepancies remain UNEXPLAINED pending cause/setup review.
+  // FAIL remains an allowed Check status, never assigned merely from a failing test.
+  const status = h4ReviewStatus(evidence, integrity, omegaCheck.status === "PASS", omegaMismatch.length);
+  const discrepancy = status === "UNEXPLAINED";
+  const prerequisiteChecks = [
+    check("H4/integrity", "initial + accepted post-step samples, fixed dt, finite data and lifecycle", lifecycle, integrity),
+    omegaCheck,
+    check("H4/passage", "global minimum in maximal contiguous r<=750 interval", passage.window,
+      passage.window !== null, "INVALID CONTROL"),
+    check("H4/independent-prerequisites", "opposite B sides, whole first segment, unchanged omega, material analytical endpoints",
+      evidence.firstIndependentPair, evidence.firstIndependentPair !== null,
+      discrepancy ? "UNEXPLAINED" : "INVALID CONTROL"),
+  ];
+  const oracleChecks = [check("H4/segment-omega", "unchanged frozen first-segment omega", omegaMismatch, omegaMismatch.length === 0),
+    check("H4/oracle-discrepancy", "no wrong sign, neutral-for-material, or failed reversal under independent prerequisites",
+      { discrepancyPair: evidence.discrepancyPair, independentPair: evidence.firstIndependentPair },
+      evidence.discrepancyPair === null && (evidence.firstIndependentPair === null || evidence.qualifyingPair !== null))];
+  const finalCheck: Check = { id: "H4/clean-geometric-sign-reversal",
+    expected: "protocol 13.5: local opposite B/material T1 signs, whole {0,1000}, oracle agreement and valid integrity",
+    observed: { qualifyingPair: evidence.qualifyingPair, absenceReason: evidence.absenceReason }, status };
+  return { stage: "H4", frozenInputs: { sounding: f.profile.levelHeights().map(height =>
+    ({ height, velocity: f.profile.sampleAtHeight(height) })), stormMotion: motion(5, 8), seed: { ...SEED },
+    updraft: { centerX: 0, centerZ: 0, peakVerticalVelocity: 20, sigma: H4_SIGMA, baseHeight: 0, topHeight: 8000 },
+    integrator: "EulerIntegrator", dt: DT, duration: 600, domain: "ATMOSPHERIC_TRACER_DOMAIN",
+    stride: 1, epsilonT1: EPSILON_T1, radiusLimit: 750 },
+    requestedSteps: STEPS, ...lifecycle, sampleCount: samples.length,
+    rMin: passage.minimum, iCore: passage.iCore, passage: passage.window,
+    atmosphericOmega: H4_OMEGA, worldOmega: world,
+    boundary: { equation: "B=-0.002*x-0.008*z; B=0 iff x+4*z=0", coefficients: world,
+      signOracle: "sign(T1)=-sign(B) for positive w in required segment" },
+    evidence, validityCounts: { valid: samples.filter(s => s.t1.validity === "valid").length,
+      outsideProfile: samples.filter(s => s.t1.validity !== "valid").length,
+      requiredSegment: samples.filter(s => s.requiredSegment).length,
+      otherSupportedSegment: samples.filter(s => s.t1.validity === "valid" && !s.requiredSegment).length },
+    samples, prerequisiteChecks, oracleChecks, scientificStatus: status,
+    classificationReason: discrepancy ? "independent discrepancy / integrity issue; cause not isolated, review required"
+      : evidence.qualifyingPair !== null ? "all frozen clean-reversal conditions satisfied" : evidence.absenceReason,
+    checks: [...prerequisiteChecks, ...oracleChecks, finalCheck] };
+}
+it.skipIf(stage !== "H4")("campaign H4 (explicit stage only; separate execution authorization required)",
+  () => reportAndAssert(runH4()));
+
+// Hand-authored points and injected T1 readings, NOT an integrated H4 path.
+// Exercise h4Sample's real oracle, support, sign and discrepancy logic rather
+// than fabricating its derived flags or mocking a campaign result.
+function h4Fixture(points: { x: number; t1: number; y?: number; z?: number }[]): H4Sample[] {
+  const f = h4Fields();
+  const diagnostic = vi.spyOn(f.tilting, "sample");
+  try {
+    return points.map((p, index) => {
+      diagnostic.mockReturnValue(p.t1);
+      return h4Sample(f, { position: { x: p.x, y: p.y ?? 500, z: p.z ?? 0 },
+        simulationTime: index * DT }, index);
+    });
+  } finally { diagnostic.mockRestore(); }
+}
+function inspectH4Fixture(samples: H4Sample[]) {
+  const passage = h4Passage(samples);
+  const evidence = h4Evidence(samples, passage);
+  const local = passage.window === null ? [] : samples.slice(passage.window.start, passage.window.end + 1);
+  return { passage, evidence, status: h4ReviewStatus(evidence, samples.every(s => s.finite), true,
+    local.filter(s => s.requiredSegment && !s.omegaMatches).length) };
+}
+describe("H4 infrastructure fixtures (no campaign execution)", () => {
+  it("A: accepts a clean material reversal without a sampled zero", () => {
+    const samples = h4Fixture([{ x: 100, t1: 3e-6 }, { x: -100, t1: -3e-6 }]);
+    const { evidence, status } = inspectH4Fixture(samples);
+    expect(samples.map(s => s.BSign)).toEqual(["negative", "positive"]);
+    expect(samples.map(s => s.analyticalMaterialSign)).toEqual(["positive", "negative"]);
+    expect(samples.every(s => s.omegaMatches && s.oracleAgreement && !s.discrepancy)).toBe(true);
+    expect(evidence.firstIndependentPair).not.toBeNull();
+    expect(evidence.qualifyingPair?.wholeIntervalSameSegment).toBe(true);
+    expect(evidence.qualifyingPair?.omegaUnchanged).toBe(true);
+    expect(evidence.discrepancyPair).toBeNull();
+    expect(evidence.adjacentCrossings.map(p => [p.left.index, p.right.index])).toEqual([[0, 1]]);
+    expect(evidence.exactZeroBrackets).toEqual([]);
+    expect(status).toBe("PASS");
+  });
+  it("B: preserves exact-zero runs and their recorded crossing brackets", () => {
+    const samples = h4Fixture([{ x: 100, t1: 3e-6 }, { x: 0, t1: 0 },
+      { x: 0, t1: 0 }, { x: -100, t1: -3e-6 }]);
+    const { evidence, status } = inspectH4Fixture(samples);
+    expect(evidence.exactZeroBrackets).toEqual([{ zeros: [samples[1], samples[2]],
+      left: samples[0], right: samples[3], crosses: true }]);
+    expect(evidence.adjacentCrossings).toEqual([]);
+    expect(evidence.qualifyingPair?.left.index).toBe(0);
+    expect(evidence.qualifyingPair?.right.index).toBe(3);
+    expect(evidence.exactZeroBrackets[0]).not.toHaveProperty("crossingTime");
+    expect(status).toBe("PASS");
+  });
+  it("C: exact y=1000 breaks the entire first-segment interval", () => {
+    const samples = h4Fixture([{ x: 100, t1: 3e-6 }, { x: 20, y: 1000, t1: 0 },
+      { x: -100, t1: -3e-6 }]);
+    expect(samples[1].t1.segment).toEqual({ hLo: 1000, hHi: 2000 });
+    expect(samples[1].requiredSegment).toBe(false);
+    expect(samples[1].analyticalT1).toBeNull();
+    expect(h4Interval(samples, 0, 2).wholeIntervalSameSegment).toBe(false);
+    const { evidence, status } = inspectH4Fixture(samples);
+    expect(evidence.firstBoundaryPair).not.toBeNull();
+    expect(evidence.firstIndependentPair).toBeNull();
+    expect(evidence.qualifyingPair).toBeNull();
+    expect(evidence.discrepancyPair).toBeNull();
+    expect(status).toBe("INVALID CONTROL");
+  });
+  it("D: wrong sign is an independent discrepancy, even with no observed reversal", () => {
+    const samples = h4Fixture([{ x: 100, t1: 3e-6 }, { x: -100, t1: 3e-6 }]);
+    const { evidence, status } = inspectH4Fixture(samples);
+    expect(samples[1].oracleAgreement).toBe(false);
+    expect(samples[1].discrepancy).toBe(true);
+    expect(evidence.firstIndependentPair).not.toBeNull();
+    expect(evidence.qualifyingPair).toBeNull();
+    expect(evidence.discrepancyPair?.oracleDiscrepancySamples).toEqual([1]);
+    expect(status).toBe("UNEXPLAINED");
+  });
+  it("E: neutral observed T1 cannot hide a material analytical prediction", () => {
+    const samples = h4Fixture([{ x: 100, t1: EPSILON_T1 }, { x: -100, t1: -3e-6 }]);
+    expect(samples[0].observedMaterialSign).toBe("neutral");
+    expect(samples[0].analyticalMaterialSign).toBe("positive");
+    const { evidence, status } = inspectH4Fixture(samples);
+    expect(evidence.discrepancyPair?.oracleDiscrepancySamples).toEqual([0]);
+    expect(evidence.qualifyingPair).toBeNull();
+    expect(status).toBe("UNEXPLAINED");
+  });
+  it("F: satisfied independent prerequisites with wholly neutral observations remain UNEXPLAINED", () => {
+    const { evidence, status } = inspectH4Fixture(h4Fixture([{ x: 100, t1: 0 }, { x: -100, t1: 0 }]));
+    expect(evidence.firstIndependentPair).not.toBeNull();
+    expect(evidence.qualifyingPair).toBeNull();
+    expect(evidence.discrepancyPair?.oracleDiscrepancySamples).toEqual([0, 1]);
+    expect(status).toBe("UNEXPLAINED");
+  });
+  it("G: no passage gives INVALID CONTROL with absent interval metrics", () => {
+    const { passage, evidence, status } = inspectH4Fixture(h4Fixture([{ x: 800, t1: 0 }, { x: -800, t1: 0 }]));
+    expect(passage.window).toBeNull();
+    expect(evidence.firstBoundaryPair).toBeNull();
+    expect(evidence.firstIndependentPair).toBeNull();
+    expect(evidence.qualifyingPair).toBeNull();
+    expect(evidence.absenceReason).toContain("no H4 passage");
+    expect(status).toBe("INVALID CONTROL");
+  });
+  it("H: selects lexicographically first valid pair, not later stronger evidence", () => {
+    const { evidence, status } = inspectH4Fixture(h4Fixture([{ x: 100, t1: 3e-6 },
+      { x: 200, t1: 5e-6 }, { x: -100, t1: -3e-6 }, { x: -300, t1: -7e-6 }]));
+    expect([evidence.qualifyingPair?.left.index, evidence.qualifyingPair?.right.index]).toEqual([0, 2]);
+    expect([evidence.firstIndependentPair?.left.index, evidence.firstIndependentPair?.right.index]).toEqual([0, 2]);
+    expect(status).toBe("PASS");
+  });
+  it("I: allows both evidence samples before i_core within one local passage", () => {
+    const { passage, evidence, status } = inspectH4Fixture(h4Fixture([{ x: 100, t1: 3e-6 },
+      { x: -100, t1: -3e-6 }, { x: -10, t1: 0 }]));
+    expect(passage.iCore).toBe(2);
+    expect(evidence.qualifyingPair?.left.index).toBe(0);
+    expect(evidence.qualifyingPair?.right.index).toBe(1);
+    expect(status).toBe("PASS");
+  });
+  it("does not qualify submaterial oracle endpoints or an exact-zero endpoint", () => {
+    for (const points of [[{ x: 1, t1: 0 }, { x: -1, t1: 0 }],
+      [{ x: 0, t1: 0 }, { x: 100, t1: 3e-6 }]]) {
+      const { evidence, status } = inspectH4Fixture(h4Fixture(points));
+      expect(evidence.firstIndependentPair).toBeNull();
+      expect(evidence.qualifyingPair).toBeNull();
+      expect(status).toBe("INVALID CONTROL");
+    }
+  });
+  it("blocks an omega mismatch and preserves the UNEXPLAINED review path", () => {
+    const samples = h4Fixture([{ x: 100, t1: 3e-6 }, { x: -100, t1: -3e-6 }]);
+    // Explicit malformed-record fixture for the evidence-layer omega guard.
+    samples[1] = { ...samples[1], omegaMatches: false,
+      atmosphericOmega: { omegaEastward: 0, omegaNorthward: 0 }, worldOmega: { omegaX: 0, omegaZ: 0 } };
+    const { evidence, status } = inspectH4Fixture(samples);
+    expect(evidence.firstBoundaryPair?.omegaUnchanged).toBe(false);
+    expect(evidence.firstIndependentPair).toBeNull();
+    expect(evidence.qualifyingPair).toBeNull();
+    expect(status).toBe("UNEXPLAINED");
+  });
+  it("retains first tied r minimum and the maximal local window including r=750", () => {
+    const samples = h4Fixture([800, 750, 100, -100, -750, -800].map(x => ({ x, t1: 0 })));
+    const passage = h4Passage(samples);
+    expect(passage.iCore).toBe(2);
+    expect(passage.window).toEqual({ start: 1, end: 4, radiusLimit: 750 });
+  });
+  it("cannot conceal a discrepancy with a later clean pair", () => {
+    const { evidence, status } = inspectH4Fixture(h4Fixture([{ x: 100, t1: -3e-6 },
+      { x: 100, t1: 3e-6 }, { x: -100, t1: -3e-6 }]));
+    expect(evidence.discrepancyPair?.left.index).toBe(0);
+    expect(evidence.qualifyingPair?.left.index).toBe(1);
+    expect(status).toBe("UNEXPLAINED");
+  });
 });
 
 // Infrastructure verification uses constructed records / short lifecycle fixtures,

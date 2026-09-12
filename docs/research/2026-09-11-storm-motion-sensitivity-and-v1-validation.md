@@ -527,7 +527,7 @@ Any later user-facing C parameterization is a post-validation product decision.
 
 **Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 CLOSED / PASS · H2 CLOSED / PASS · H3 EULERIAN CLOSED / PASS · H3 TRAJECTORIES CLOSED / INVALID CONTROL.
 
-The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS. H2 authorization followed the commit/push of H1 documentation. H3 Eulerian was separately executed and classified PASS, followed by separately authorized H3 trajectories, classified INVALID CONTROL for the clean same-segment sign-reversal control; partial valid evidence is preserved in §10. The current gate is documentation review and classification closure. This slice does not authorize a rerun, altered control, or production implementation.
+The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS. H2 authorization followed the commit/push of H1 documentation. H3 Eulerian was separately executed and classified PASS, followed by separately authorized H3 trajectories, classified INVALID CONTROL for the clean same-segment sign-reversal control; partial valid evidence is preserved in §10. H3 documentation/classification closure is complete. H4 TEST-ONLY IMPLEMENTATION is COMPLETE; H4 IMPLEMENTATION REVIEW is COMPLETE / CLOSED, and H4 EXECUTION is NOT AUTHORIZED. This slice does not authorize a campaign run, altered control, or production implementation.
 
 After the separate execution gate, preserve this order:
 
@@ -699,3 +699,119 @@ Technical execution/reporting issue: the additional `snapshotSaved` timeout is r
 ## 12. Conclusions
 
 **EMPTY.**
+
+---
+
+## 13. H4 — new pre-run geometric sign-reversal experiment
+
+**Status: PRE-RUN DESIGN REVIEWED / APPROVED · EXPECTATIONS FROZEN · H4 TEST-ONLY IMPLEMENTATION COMPLETE · IMPLEMENTATION REVIEW COMPLETE / CLOSED · EXECUTION NOT AUTHORIZED.**
+
+This section owns the H4 scientific specification. H3 documentation/classification closure is complete: H3 trajectories remains CLOSED · INVALID CONTROL, with its evidence and frozen protocol unchanged. H4 follows that finding as a new pre-registered synthetic experiment, not a repaired or post-hoc rerun of H3. No H4 result exists. Observed C-matrix work and production/UI implementation remain deferred and unauthorized.
+
+### 13.1 Scientific question and hypothesis
+
+Can a single tracer sample material T1 of opposite signs during one near-core passage while environmental horizontal vorticity remains unchanged inside one containing sounding segment?
+
+Hypothesis: the frozen H4 trajectory can sample opposite material signs of `T1 = omega_h · grad_h(w)` by crossing the analytical zero-boundary of the prescribed updraft gradient within one core passage, with the entire qualifying interval in the 0–1000 m sounding segment. The updraft is steady and segment vorticity is constant; the sign change is geometric and path-mediated. This is a conditional control whose realized geometry is an outcome, not an assumed PASS.
+
+Sampling T1 does not mean that the tracer evolves or acquires prognostic vorticity. H4 does not test full vorticity evolution, mesocyclone generation, real-storm reconstruction, observed-environment validation, or production UI behavior.
+
+### 13.2 Analytical oracle in production coordinates
+
+The existing [horizontal-vorticity helper](../../src/physics/environment/horizontalVorticity.ts) uses atmospheric east/north `omega_h=(-dv/dh,du/dh)`. For the frozen first segment:
+
+```text
+du/dh = (23-15)/1000 = 0.008 s^-1
+dv/dh = (10-8)/1000 = 0.002 s^-1
+omega_atmospheric = (omegaEastward,omegaNorthward) = (-0.002,+0.008) s^-1
+```
+
+The existing `worldHorizontalVorticityFromAtmospheric` in [DiagnosticTiltingTendency](../../src/physics/diagnostics/DiagnosticTiltingTendency.ts), consistent with [physics doc 22](../physics/22-diagnostic-tilting-tendency.md), defines `omegaX=omegaEastward`, `omegaZ=0-omegaNorthward`. World +X is east, +Y is up, and +Z is south. Thus:
+
+`omega_world,h = (-0.002,-0.008) s^-1`.
+
+For the centered production [VerticalEnvelopeUpdraftField](../../src/physics/storm/VerticalEnvelopeUpdraftField.ts), at `0<y<8000 m`:
+
+```text
+w = 20 * exp(-(x^2+z^2)/(2*sigma^2)) * sin(pi*y/8000)
+dVyDx = -(w/sigma^2)*x
+dVyDz = -(w/sigma^2)*z
+grad_h(w) = -(w/sigma^2)*(x,z)
+B(x,z) = omegaX*x + omegaZ*z = -0.002*x - 0.008*z
+T1_oracle = -(w/sigma^2)*B = (w/sigma^2)*(0.002*x + 0.008*z)
+```
+
+For H4, `sigma^2=250000 m^2`. With nonzero positive w, the explicit T1=0 boundary is:
+
+**`-0.002*x - 0.008*z = 0`, equivalently `x + 4*z = 0`.**
+
+The line passes through the updraft center and is perpendicular to world-horizontal vorticity. The center `x=z=0` also gives the trivial zero gradient and hence T1=0. Passing through the center is not required. At/outside vertical lids, zero gradient is a separate production boundary condition, not evidence of crossing this horizontal line.
+
+For material valid samples with w>0, `sign(T1)=-sign(B)=sign(x+4*z)`. Thus B<0 predicts positive T1, and B>0 predicts negative T1. This relation is derived from the production convention, not an assumed atmospheric-to-world sign mapping. The first-segment B formula is not an oracle for upper sounding segments.
+
+The oracle is evaluated analytically at each recorded position/time, independently of the core diagnostic's returned T1. No numerical extrema or expected T1 amplitudes are preassigned; no maximum-|T1| ordering is a target. The existing strict equality rule in §7.1 is retained for numerical invariant comparisons; no new tolerance or B epsilon is introduced.
+
+### 13.3 Frozen synthetic inputs
+
+| Input | H4 value |
+| --- | --- |
+| Environmental sounding: height m → (east,north) m/s | 0→(15,8); 1000→(23,10); 2000→(29,16); 3000→(31,24) |
+| Environmental vertical velocity | exactly 0 |
+| Storm motion C, m/s | (5,8) |
+| Seed (x,y,z), m | (-3000,500,0) |
+| Updraft center (x,z), m | (0,0) |
+| Peak vertical velocity W0 | 20 m/s |
+| Sigma | **500 m** |
+| Vertical support | baseHeight=0 m; topHeight=8000 m |
+| Integration | production explicit Euler; dt=0.1 s |
+| Observation horizon inherited from H3-A | 600 s / at most 6000 completed steps |
+| Domain/lifecycle | production ATMOSPHERIC_TRACER_DOMAIN |
+| Recording | production TracerPathHistory, one tracer, stride=1 |
+| Primary T1 | existing DiagnosticTiltingTendency with profile and updraft |
+| Material-sign guard | epsilon_T1=1e-6 s^-2 |
+
+The sole deliberate prescribed-field parameter change from H3-A is sigma=500 m instead of 1000 m. This factor-of-two geometric change is chosen before H4 execution to construct a more compact updraft, allowing less traversal time for ascent across 1000 m. Whether the trajectory actually realizes that intended geometry remains to be observed. H3 is not retuned. No rotation, lower radial inflow, upper outflow, near-ground outflow, downdraft, or other storm-local horizontal velocity field is included.
+
+Future construction must use existing primitives directly: EnvironmentalWindProfile → EnvironmentalWindField → StormRelativeEnvironmentalAdvectionField(environment,C), with total velocity CompositeVelocityField([stormRelativeEnvironment,updraft]). No DEMO or ScenarioConfig changes are needed or authorized. Seed, C, W0, sigma, sounding, dt, epsilon, and tolerances must not be tuned after H4 execution.
+
+### 13.4 Sampling, validity, and local passage
+
+Capture the initial sample at t=0. After every completed Simulation.step(0.1), record the accepted position and post-step simulation time with recordAfterStep; evaluate diagnostics at those recorded coordinates/time. No interpolation, decimation, resampling, or render-frame sampling contributes to primary evidence. Stop after recording a terminal accepted sample if the tracer deactivates; do not fabricate later samples. A fully active run has 6001 samples.
+
+Gate T1 evidence with production soundingSegmentContainingHeight. A null segment means out-of-profile / invalid-for-T1-evidence, never a physical zero. Preserve all containing segments and validity states. For the required segment `{hLo:0,hHi:1000}`, production ownership is **0<=y<1000 m**: exact y=1000 belongs to the upper segment and cannot qualify. Values in other supported segments may be recorded descriptively but cannot qualify for H4 reversal.
+
+Compute r=sqrt(x²+z²). Let i_core be the global minimum-r recorded sample, using the first occurrence if tied. The H4 near-core passage is the maximal contiguous recorded interval containing i_core with **r<=1.5*sigma=750 m**. If the global minimum exceeds 750 m, no such passage exists. There is no additional H3-A 500 m geometry threshold for H4.
+
+Classify numeric T1 as positive if T1>+epsilon_T1, negative if T1<-epsilon_T1, neutral otherwise. This threshold does not rewrite numeric T1 or define physical zero. Invalid samples are not neutral evidence.
+
+Search chronologically ordered evidence pairs only within this one passage. “Before/after” denotes temporal order across the analytical B boundary; H4 does not additionally require the pair to straddle i_core in time. All intervening recorded samples must retain the same required 0–1000 m segment. Examine qualifying pairs deterministically in ascending (left index,right index) order and preserve the first qualifying pair; do not select evidence from a different passage or widen the window after observing output.
+
+Record adjacent B sign transitions separately. Opposite nonzero B signs at adjacent samples give a discrete crossing bracket; if exact B=0 samples intervene, preserve those samples and the bracketing indices. Neither a sampled exact B/T1 zero nor an interpolated zero-crossing time is required. Opposite-side material endpoints and a valid intervening interval suffice; crossing through x=z=0 is unnecessary.
+
+### 13.5 Classification rules frozen before execution
+
+**PASS — H4 CLOSED · PASS:** trajectory/sample integrity is valid; the frozen local passage exists; two chronologically ordered valid material T1 samples lie on opposite B sides in that passage; both samples and their entire intervening recorded interval belong to `{0,1000}`; environmental omega_h remains the frozen segment value; B has opposite signs; T1 has opposite material signs and agrees with `sign(T1)=-sign(B)` at the evidence samples. Material samples throughout the qualifying interval must not contradict the oracle. A sampled zero is not required.
+
+**INVALID CONTROL:** the setup fails to furnish the intended test: no passage, no B-boundary crossing in that passage, no qualifying material evidence absent an independently established oracle discrepancy, evidence crossing y=1000 or otherwise not wholly in the required segment, or termination before evaluation for an identified non-physics reason. Insufficient material amplitude alone is not a physics failure. Missing or unreliable trajectory evidence must be described as a setup/evidence issue when its cause is established. Preserve partial evidence; do not weaken the criteria.
+
+**FAIL / UNEXPLAINED:** do not make finding opposite observed T1 signs a prerequisite for detecting a diagnostic failure. Independently identify boundary-crossing pairs with valid geometry, unchanged first-segment omega_h, and material analytically predicted T1 (using the same epsilon). If production T1 is valid/material but its sign contradicts the oracle, or reversal is absent despite independently established geometry and material-oracle prerequisites, record a discrepancy even if no observed opposite-sign pair exists. Use FAIL only for a violated frozen criterion with no known setup issue after the cause/setup has been isolated; use UNEXPLAINED while the discrepancy's cause is not isolated. A neutral observed value where the oracle predicts material evidence also requires investigation, not automatic INVALID CONTROL. Unisolated integrity or execution problems must not be called a physics failure.
+
+An observed opposite-sign pair cannot override an oracle contradiction in the qualifying evidence. Missing geometry/support is INVALID CONTROL; satisfied independent prerequisites with inconsistent diagnostic behavior is a discrepancy for FAIL/UNEXPLAINED classification. Preserve explicit check id, expected rule, observed evidence, classification, and reason. Technical reporting/test-runner failures remain separate from scientific status. No H4 status is assigned before execution.
+
+### 13.6 Required future evidence
+
+Retain deterministic recorded samples and at minimum:
+
+- requested/executed Euler steps, sample count, final time, final active state and terminal time if any;
+- global r_min with index/time/position and core-passage start/end indices;
+- selected chronological evidence samples with index/time, x,y,z,r,w,T1,B, T1 validity, containing segment, material sign(T1), sign(B), analytical T1 and oracle-agreement flag;
+- atmospheric and world omega_h used, and confirmation of unchanged omega_h over the qualifying interval;
+- y_min/y_max and whether every sample in that interval remained in `{0,1000}`;
+- discrete adjacent B-crossing brackets, any sampled exact zeros, and whether a direct discrete crossing was recorded (without interpolation);
+- validity counts, descriptive nonqualifying candidates, prerequisite/discrepancy checks, and the final classification with reasons.
+
+If no qualifying interval exists, interval-dependent metrics are absent/null with an explicit reason, not fabricated zeros. No H4 observation or amplitude is supplied by this pre-run design.
+
+### 13.7 Authorization gate
+
+The new H4 pre-run specification and production-convention derivation were reviewed/approved; test-only implementation was separately authorized and is now complete. H4 implementation review is now COMPLETE / CLOSED. Typecheck and no-stage infrastructure verification (24 passed, all 5 campaign stages skipped) support review closure, not scientific execution. The approved accumulated work may be committed/pushed; a new explicit authorization is required afterward before H4 execution. No H4 observed results or campaign runs have been produced. Observed C-matrix and production/UI work remain deferred. H1/H2/H3 frozen records and final campaign conclusions remain untouched.

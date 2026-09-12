@@ -347,6 +347,14 @@ The trajectory INVALID CONTROL arose specifically because opposite material-sign
 
 Execution/reporting note: the trajectory campaign test failed at the non-PASS report/assert gate for `H3/A/sign-reversal = INVALID CONTROL`; infrastructure tests passed and H1/H2/H3 Eulerian campaign stages were skipped in that run. The additional unhandled `[vitest-worker]: Timeout calling "snapshotSaved"` error is a technical reporting issue, not scientific evidence or the cause of INVALID CONTROL.
 
-The next gate is documentation review and classification closure. No rerun, altered control, or production implementation is authorized. Production physics behavior must not change to make the controls pass.
+H3 documentation/classification closure is complete. The separate H4 pre-run design in [parent protocol §13](2026-09-11-storm-motion-sensitivity-and-v1-validation.md#13-h4--new-pre-run-geometric-sign-reversal-experiment) was approved and test-only implementation separately authorized. Implementation and implementation review are COMPLETE / CLOSED; execution requires a new explicit authorization after commit/push. H4 execution, H3 reruns and production implementation remain unauthorized.
 
 The frozen harness contract is unchanged. This documentation slice does not authorize or execute any campaign stage; later-stage results require their corresponding authorized backend execution.
+
+## 15. H4 implementation handoff — execution not authorized
+
+**H4: DESIGN APPROVED / EXPECTATIONS FROZEN · TEST-ONLY IMPLEMENTATION COMPLETE · IMPLEMENTATION REVIEW COMPLETE / CLOSED · EXECUTION NOT AUTHORIZED.** The sole authoritative H4 scientific/input/evidence/classification contract is [parent protocol §13](2026-09-11-storm-motion-sensitivity-and-v1-validation.md#13-h4--new-pre-run-geometric-sign-reversal-experiment); this section does not duplicate or amend it. Sections 1–14 retain the H1/H2/H3 harness contract and historical classifications.
+
+H4 is a separate synthetic experiment following H3, not a repair of H3 or permission to retune it. Future test-only implementation must preserve the existing H1/H2/H3 entry points and frozen records, use production primitives, and implement the H4-specific boundary/evidence semantics from the parent specification. Do not silently reuse H3's opposite-temporal-sides-of-i_core condition as an extra H4 requirement: H4 selects chronological opposite-boundary-side evidence within its own local passage.
+
+The existing validation-only module now has an explicit H4 selector and separate construction/oracle/evidence helpers; existing H1/H2/H3 behavior is unchanged. Typecheck and no-stage infrastructure verification passed (24 infrastructure tests, 5 campaign stages skipped). Implementation review is COMPLETE / CLOSED; execution requires a new explicit authorization after commit/push. Observed C-matrix, production/UI implementation, and H3 reruns remain unauthorized.
