@@ -9,12 +9,19 @@ scope. This file does not restate physical definitions, does not
 record decisions, and does not authorize implementation. When this
 index disagrees with an owning document, the owning document wins.
 
+> **Returning to the project after a break?** Start with
+> [`PROJECT_STATUS.md`](PROJECT_STATUS.md). It records the current phase,
+> the active step, the next action, and the shortest reading path back
+> into the authoritative documents. It is a status/navigation bookmark,
+> not a source of truth or implementation authorization.
+
 ---
 
 ## 1. Start here
 
 | Question | Read |
 | --- | --- |
+| I am returning after a break. Where is the project now and what is next? | `PROJECT_STATUS.md` |
 | What is this product, and what does it refuse to claim? | `../README.md`, then `KNOWN_LIMITATIONS.md` |
 | What are the layers and the consumer boundary? | `ARCHITECTURE.md` |
 | What are the coordinates, units, and signs? | `physics/00-coordinate-system.md` |
@@ -82,6 +89,7 @@ Consequences worth knowing before reading:
 5. `reviews/**` records outside findings; it decides nothing.
 6. `CONCEPT.md` is vision and never establishes shipped scope.
 7. `PROJECT_BACKLOG.md` is memory and never authorizes work.
+8. `PROJECT_STATUS.md` is the current return-point/navigation bookmark; it never overrides an owning document or authorizes work.
 
 If code, an owning document, and this index disagree in a way the
 rules above do not settle, the disagreement is a defect in the
