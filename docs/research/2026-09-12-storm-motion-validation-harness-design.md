@@ -1,6 +1,6 @@
 # Storm-Motion Sensitivity — Minimal Validation Harness Design
 
-**Status:** FROZEN · IMPLEMENTED · IMPLEMENTATION REVIEW COMPLETE · H1 EXECUTED / CLASSIFIED PASS · H2 EXECUTED / CLASSIFIED PASS · H3 NOT EXECUTED / NOT AUTHORIZED
+**Status:** FROZEN · IMPLEMENTED · IMPLEMENTATION REVIEW COMPLETE · H1 CLOSED / PASS · H2 CLOSED / PASS · H3 EULERIAN CLOSED / PASS · H3 TRAJECTORIES CLOSED / INVALID CONTROL
 
 **Pre-run SRH sign correction:** H2 expectations were corrected to `0,-300,-300` before campaign execution, following canonical physics doc 09. See the [formal correction record](2026-09-12-storm-motion-srh-sign-correction.md). This slice does not authorize campaign execution.
 
@@ -341,6 +341,12 @@ The minimal harness does not:
 
 **Harness design status: FROZEN.**
 
-The test-only harness is implemented using the existing production backend classes, and implementation review is complete. The pre-run SRH sign correction is closed. H1 and H2 were separately authorized, executed, and classified PASS; see [parent protocol §10](2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results). H2 was separately authorized only after H1 evidence/status documentation was committed/pushed. H3 requires a separate authorization gate after H2 evidence/status documentation is reviewed and committed. H3-Eulerian and H3-trajectories remain not executed / not authorized. Production physics behavior must not change to make the controls pass.
+The test-only harness is implemented using the existing production backend classes, and implementation review is complete. The pre-run SRH sign correction is closed. H1 and H2 are CLOSED · PASS; H2 was separately authorized only after H1 evidence/status documentation was committed/pushed. H3 Eulerian was separately executed and classified CLOSED · PASS. Subsequently, H3 trajectories was separately authorized, executed, and classified CLOSED · INVALID CONTROL; see [parent protocol §10](2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results).
+
+The trajectory INVALID CONTROL arose specifically because opposite material-sign evidence did not satisfy the frozen same-containing-sounding-segment requirement (`sameSoundingSegment=false`, `sameSegmentEvidence=null`). Trajectory/sample integrity, A/B geometry, and sampled-w contrast passed and remain valid partial evidence. This is not an established H3 physics failure or validation of clean same-segment sign reversal.
+
+Execution/reporting note: the trajectory campaign test failed at the non-PASS report/assert gate for `H3/A/sign-reversal = INVALID CONTROL`; infrastructure tests passed and H1/H2/H3 Eulerian campaign stages were skipped in that run. The additional unhandled `[vitest-worker]: Timeout calling "snapshotSaved"` error is a technical reporting issue, not scientific evidence or the cause of INVALID CONTROL.
+
+The next gate is documentation review and classification closure. No rerun, altered control, or production implementation is authorized. Production physics behavior must not change to make the controls pass.
 
 The frozen harness contract is unchanged. This documentation slice does not authorize or execute any campaign stage; later-stage results require their corresponding authorized backend execution.

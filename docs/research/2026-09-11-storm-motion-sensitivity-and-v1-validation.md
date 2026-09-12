@@ -525,9 +525,9 @@ Any later user-facing C parameterization is a post-validation product decision.
 
 ## 9. Experimental procedure
 
-**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 CLOSED / PASS · H2 CLOSED / PASS · H3 NOT EXECUTED / NOT AUTHORIZED.
+**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 CLOSED / PASS · H2 CLOSED / PASS · H3 EULERIAN CLOSED / PASS · H3 TRAJECTORIES CLOSED / INVALID CONTROL.
 
-The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS; their evidence is recorded in §10. H2 authorization followed the commit/push of H1 documentation. Review and commit the H2 evidence/status documentation slice before considering separate H3 authorization. The campaign remains active; this documentation slice does not authorize or execute a campaign stage.
+The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS. H2 authorization followed the commit/push of H1 documentation. H3 Eulerian was separately executed and classified PASS, followed by separately authorized H3 trajectories, classified INVALID CONTROL for the clean same-segment sign-reversal control; partial valid evidence is preserved in §10. The current gate is documentation review and classification closure. This slice does not authorize a rerun, altered control, or production implementation.
 
 After the separate execution gate, preserve this order:
 
@@ -585,15 +585,114 @@ Streamwise components were equal, crosswise magnitudes were equal, signed crossw
 
 Rigid-translation controls passed: environmental `q`, environmental and storm-relative inter-level differences, shear, and horizontal environmental vorticity remained unchanged. Same-point Eulerian controls passed: prescribed `w`, prescribed horizontal gradient, and local T1 remained unchanged.
 
-Vitest: **1 test file passed; 12 tests passed / 3 skipped / 15 total**. Only campaign H2 was explicitly executed in that run; H1, H3-Eulerian, and H3-trajectories were skipped. H3 remains **NOT EXECUTED / NOT AUTHORIZED**.
+Vitest: **1 test file passed; 12 tests passed / 3 skipped / 15 total**. Only campaign H2 was explicitly executed in that run; H1, H3-Eulerian, and H3-trajectories were skipped. H3 was **NOT EXECUTED / NOT AUTHORIZED** at the time of this H2 record.
 
 **H2 CLOSED · PASS · NO UNEXPLAINED DEVIATIONS · NO INVALID CONTROL · NO PHYSICS FAILURE.** These observations do not constitute a final campaign conclusion or authorize H3.
+
+### H3 Eulerian — CLOSED · PASS
+
+H3 Eulerian was separately executed and classified PASS before H3 trajectories was separately authorized and executed. This Eulerian classification is recorded independently of the trajectory control outcome below; it does not establish a clean trajectory sign reversal.
+
+### H3 trajectories — CLOSED · INVALID CONTROL
+
+The following supplied observations are from the completed, separately authorized H3-trajectories run. No tests or campaign stages were rerun for this documentation record. Frozen predictions remain unchanged in §§6–7.
+
+#### Trajectory/sample integrity — observed evidence and classification
+
+| Observable | Run A | Run B |
+| --- | --- | --- |
+| Executed Euler steps | 6000 | 6000 |
+| Recorded samples | 6001 | 6001 |
+| Final simulation time, s | 600.0000000000679 | 600.0000000000679 |
+| Final tracer state | active | active |
+| Final x, m | 8121.0277724765265 | 7504.478913704676 |
+| Final y, m | 1470.0264790241065 | 1203.0747825548285 |
+| Final z, m | -2015.5190439631856 | 1571.9740042786143 |
+| Trajectory/sample integrity | PASS | PASS |
+
+#### Geometry — frozen prediction, observed evidence, classification
+
+Frozen predictions: `r_min,A <= 500 m`; `750 m <= r_min,B <= 1500 m`.
+
+| Observable at sampled minimum radius | Run A | Run B |
+| --- | --- | --- |
+| Sample index | 2017 | 1950 |
+| Simulation time, s | 201.69999999999283 | 194.9999999999932 |
+| x, m | -24.496312262258442 | -155.29054057926237 |
+| y, m | 914.3698953056625 | 802.3813169284911 |
+| z, m | -239.6259219344389 | 751.3226351448191 |
+| r_min, m | 240.87476367892899 | 767.2032677682978 |
+| w, m/s | 6.827156590018876 | 4.617929011820854 |
+| T1, s⁻² | -0.000013422189855977302 | +0.000026322195367379 |
+| Containing sounding segment, m | 0–1000 | 0–1000 |
+| Geometry classification | PASS | PASS |
+
+#### Sampled-w contrast — frozen prediction, observed evidence, classification
+
+Frozen prediction: `max(w_A) >= max(w_B) + 2 m/s`.
+
+| Observable at sampled maximum w | Run A | Run B |
+| --- | --- | --- |
+| Sample index | 2212 | 2134 |
+| Simulation time, s | 221.19999999999172 | 213.39999999999216 |
+| x, m | 323.4582019992173 | 153.20349416444836 |
+| y, m | 1054.057390121755 | 890.3746548582399 |
+| z, m | -278.7494734860081 | 812.1991264588909 |
+| r, m | 426.99704613649635 | 826.5220696658872 |
+| Maximum sampled w, m/s | 7.343263876516004 | 4.868952635583312 |
+
+Observed contrast: `w_A,max - w_B,max ≈ 2.474311240932692 m/s`. Classification: **PASS**.
+
+#### Run A clean sign reversal — frozen prediction
+
+The frozen control requires near-core opposite material T1 signs before and after `i_core`, within one core passage, with the evidence and entire qualifying crossing in one containing environmental sounding segment. A sampled zero is not required. `epsilon_T1=1e-6 s^-2` remains a material-sign threshold, not a physical zero tolerance.
+
+#### Run A clean sign reversal — observed evidence
+
+`iCore=2017`. The core-passage window spans indices `1067–2777`, with radius limit `1500 m`.
+
+Material negative T1 exists before `iCore`. The first material sample in the core-passage window was:
+
+| Observable | Value |
+| --- | --- |
+| Sample index | 1067 |
+| Simulation time, s | 106.69999999999821 |
+| Position (x,y,z), m | (-1495.366180056533, 547.4096025604892, -109.40845498586955) |
+| r, m | 1499.3632723523883 |
+| w, m/s | 1.3863908338360447 |
+| T1, s⁻² | -0.00000535978696361018 |
+| Containing sounding segment, m | 0–1000 |
+| Temporal side / material sign | before / negative |
+
+Material positive T1 also exists after `iCore`, but the candidate after-core evidence belongs to the `1000–2000 m` segment, whereas the before-core negative evidence belongs to `0–1000 m`. The harness recorded `sameSoundingSegment=false` and `sameSegmentEvidence=null`.
+
+#### Run A clean sign reversal — classification and interpretation
+
+**H3/A/sign-reversal = INVALID CONTROL.** The trajectory shows opposite material T1 signs on opposite temporal sides of the core passage, but the relevant evidence crosses an environmental sounding-segment boundary. It cannot serve as the predefined clean same-segment sign-reversal control. This classification is not FAIL, UNEXPLAINED, or PASS; the frozen criterion is not weakened or rewritten.
+
+#### Overall trajectory classification and execution/reporting outcome
+
+| Scientific control | Classification |
+| --- | --- |
+| Trajectory/sample integrity | PASS |
+| H3/A geometry | PASS |
+| H3/B geometry | PASS |
+| Sampled-w contrast | PASS |
+| H3/A clean sign reversal | INVALID CONTROL |
+
+**H3-TRAJECTORIES CLOSED · INVALID CONTROL**, with partial valid geometry, sampled-w, and path evidence preserved. No failure of the entire H3 physics hypothesis is established, and clean same-segment sign reversal is not validated. No post-hoc retuning is performed or authorized.
+
+Separately, at the execution level, the campaign H3 trajectories test produced one failed test because the report/assert gate rejects any non-PASS scientific check. The rejected check was `H3/A/sign-reversal = INVALID CONTROL`. H1, H2, and H3 Eulerian campaign stages remained skipped in this run; infrastructure tests passed.
+
+Vitest additionally reported an unhandled `[vitest-worker]: Timeout calling "snapshotSaved"` error. This is a technical execution/reporting issue, not scientific evidence and not the cause of the INVALID CONTROL classification.
 
 ---
 
 ## 11. Deviations / investigations
 
-H1: none. H2: none. H3 remains pending; this section is not closed for the campaign.
+H1: none. H2: none. H3 Eulerian: PASS. H3 trajectories: the clean sign-reversal control is INVALID CONTROL because opposite material-sign evidence crosses a containing sounding-segment boundary; successful geometry/w/path evidence is retained. No UNEXPLAINED scientific deviation or H3 physics failure is established.
+
+Technical execution/reporting issue: the additional `snapshotSaved` timeout is recorded separately from scientific classification. Documentation review and classification closure remain the next action; no rerun, altered control, or production implementation is authorized.
 
 ---
 

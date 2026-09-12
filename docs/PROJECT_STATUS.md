@@ -19,7 +19,7 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-STORM-MOTION SENSITIVITY CAMPAIGN / H3 AUTHORIZATION GATE
+STORM-MOTION SENSITIVITY CAMPAIGN / DOCUMENTATION REVIEW AND CLASSIFICATION CLOSURE
 ARCHITECTURE AUDIT CLOSED
 PARENT RESEARCH PROTOCOL ARCHITECTURE-SYNCHRONIZED
 VALIDATION HARNESS DESIGN FROZEN
@@ -27,8 +27,10 @@ HARNESS IMPLEMENTATION REVIEW COMPLETE
 PRE-RUN SRH SIGN CORRECTION CLOSED
 H1 EXECUTED · CLASSIFIED PASS
 H2 EXECUTED · CLASSIFIED PASS
-NO H1/H2 UNEXPLAINED DEVIATIONS
-H3 NOT YET AUTHORIZED
+H3 EULERIAN EXECUTED · CLASSIFIED PASS
+H3 TRAJECTORIES EXECUTED · CLASSIFIED INVALID CONTROL
+NO UNEXPLAINED DEVIATIONS
+NO H3 PHYSICS FAILURE ESTABLISHED
 PRODUCTION PHYSICS UNCHANGED
 NO PRODUCTION PHYSICS CHANGES AUTHORIZED
 ```
@@ -44,7 +46,7 @@ The current campaign validates and probes the released V1 model before deciding 
 
 ## 2. Authoritative current documents
 
-Scientific protocol and recorded H1/H2 evidence (§10):
+Scientific protocol and recorded H1/H2/H3 evidence and classifications (§10):
 
 - [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md)
 
@@ -95,7 +97,9 @@ Pre-run freezes and completed campaign steps:
 27. Pre-run SRH sign correction **CLOSED**: research integral/H2 oracle aligned with canonical physics doc 09 and unchanged production Form B; H2 expectations are `0,-300,-300 m^2/s^2`.
 28. First separately authorized backend campaign stage H1 executed on 2026-09-12 and classified **CLOSED · PASS**, with no FAIL, UNEXPLAINED, or INVALID CONTROL checks; see [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results).
 29. H2 separately authorized after H1 documentation was committed/pushed, executed on 2026-09-12, and classified **CLOSED · PASS**, with no unexplained deviations, invalid control, or physics failure; see [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results).
-30. H3-Eulerian and H3-trajectories remain **NOT EXECUTED / NOT AUTHORIZED**. Production physics unchanged.
+30. H3 Eulerian separately executed and classified **CLOSED · PASS** before separately authorized H3 trajectories.
+31. H3 trajectories executed and classified **CLOSED · INVALID CONTROL**: opposite material-sign evidence crossed a sounding-segment boundary and did not satisfy the frozen clean sign-reversal requirement. Trajectory/sample integrity, A/B geometry, and sampled-w contrast passed; see [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results).
+32. No H3 physics failure established; production physics unchanged. The additional Vitest `snapshotSaved` timeout is a technical execution/reporting issue, separate from scientific classification.
 
 ---
 
@@ -120,9 +124,9 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 ## 5. Current step
 
-**H1 and H2 evidence recorded: both CLOSED · PASS. Harness implementation review is complete; formal pre-run SRH sign correction is closed.**
+**H1, H2, and H3 Eulerian CLOSED · PASS. H3 trajectories CLOSED · INVALID CONTROL, with partial valid evidence preserved.**
 
-The current gate is review and commit of the H2 evidence/status documentation slice. After that, H3 may be separately authorized. H3 has not been executed and is not authorized by this documentation slice.
+The current gate is documentation review and classification closure of the H3 evidence/status record. The clean same-segment sign-reversal control was invalid; no H3 physics failure is established. No rerun, altered control, or production implementation is authorized by this slice.
 
 The implemented test-only harness is:
 
@@ -134,32 +138,32 @@ It imports existing production backend classes directly and keeps campaign-speci
 
 ## 6. NEXT ACTION
 
-**Review and commit the H2 evidence/status documentation slice. After that, H3 may be separately authorized.**
+**Review the H3 evidence/status documentation and complete classification closure, preserving INVALID CONTROL and the successful partial evidence.**
 
-Show the completed diff/report before commit or push. Do not run H3 automatically as part of this slice. H3 remains unauthorized.
+Show the completed diff/report before any commit or push; neither is performed in this slice. Do not authorize a rerun, altered control, new seed, sounding, tolerance, or production implementation. Record the `snapshotSaved` timeout separately as a technical execution/reporting note.
 
 Do not alter production physics, DEMO composition, UI, ScenarioConfig, analytical expectations, synthetic inputs, or frozen tolerances to make the harness pass.
 
 ---
 
-## 7. Still open before later campaign stages
+## 7. Remaining documentation / classification gate
 
 Architecture blockers: **none**.
 
-Scientific expectation blockers: **none currently identified**.
+Scientific classification: **H3 clean sign-reversal INVALID CONTROL**, with no UNEXPLAINED scientific deviations or established H3 physics failure. Frozen expectations remain unchanged.
 
 Harness-design blockers: **none**.
 
 Remaining gate:
 
 ```text
-review and commit H2 evidence/status documentation
-→ consider separate authorization of H3
-→ execute H3 same-point controls + trajectories
-→ record frozen metrics
+review H3 observed evidence and status documentation
+→ preserve successful geometry/w/path evidence and INVALID CONTROL sign-reversal classification
+→ keep snapshotSaved timeout separate as a technical reporting issue
+→ complete documentation/classification closure
 ```
 
-After synthetic validation:
+Deferred campaign path, not authorized by this slice or automatically unlocked by the partial H3 evidence:
 
 ```text
 observed C-sensitivity matrix
@@ -210,4 +214,4 @@ Do not treat this file itself as physics authority.
 6. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 7. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2 evidence and classification are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results). Update this status again if H3 is separately authorized; this documentation update does not authorize execution.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results). Update this status after documentation/classification review; this update does not authorize another experiment or production implementation.
