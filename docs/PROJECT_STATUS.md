@@ -1,12 +1,12 @@
 # PROJECT_STATUS
 
-**Role:** current-project return point. Open this file first after a break to recover where the project is, what phase is active, what has already been closed, and what the next action is.
+**Role:** current-project status and navigation point. Use this file to quickly understand the active phase, completed milestones, open gates, and next action.
 
 **Not:** a physics or architecture source of truth, a roadmap, a backlog, a schedule, or implementation authorization.
 
 This file is a navigation/status bookmark only. It points to the documents that own decisions and evidence. If this file conflicts with an owning physics, architecture, research, rendering, UI, or review document, the owning document wins.
 
-**Maintenance rule:** update this file whenever a meaningful project step closes, the active phase changes, or `NEXT ACTION` changes. Do not update it for every commit or minor edit. Keep it compact enough that a returning contributor can recover the project state in a few minutes.
+**Maintenance rule:** update this file whenever a meaningful project step closes, the active phase changes, or `NEXT ACTION` changes. Do not update it for every commit or minor edit. Keep it compact enough that the current project state can be recovered in a few minutes.
 
 **Last status update:** 2026-09-12
 
@@ -165,7 +165,7 @@ minimal validation harness
 
 ---
 
-## 8. Important guardrails on return
+## 8. Important guardrails
 
 Do not infer project state from an old numbered architecture document alone; check this file, then follow its authoritative links.
 
@@ -181,15 +181,15 @@ Do not treat this file itself as authorization. The owning SoT/research protocol
 
 ---
 
-## 9. Fast return reading order
+## 9. Current-state reading order
 
-If returning after a long break, read in this order:
+For a fast orientation to the current project state, read in this order:
 
-1. **This file** — recover current phase and `NEXT ACTION`.
-2. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — recover the frozen hypotheses, controls, expectations, and experiment protocol.
-3. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — recover what the released implementation actually does and which audit items remain open.
-4. [`bugs/README.md`](bugs/README.md) — recover product defects found while auditing.
-5. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — only if broader deferred/unresolved work is relevant.
+1. **This file** — current phase and `NEXT ACTION`.
+2. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — frozen hypotheses, controls, expectations, and experiment protocol.
+3. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — what the released implementation actually does and which audit items remain open.
+4. [`bugs/README.md`](bugs/README.md) — product defects found while auditing.
+5. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work, when relevant.
 6. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — documentation map and global architectural rules when wider context is needed.
 
 Once the current `NEXT ACTION` closes, update this file in the same project step that selects its successor.
