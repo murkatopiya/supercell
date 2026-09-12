@@ -19,7 +19,8 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-RESEARCH / PRE-EXPERIMENT ARCHITECTURE AUDIT
+PRE-EXPERIMENT PROTOCOL FREEZE
+ARCHITECTURE AUDIT CLOSED
 NO PRODUCTION CHANGES AUTHORIZED BY THIS STATUS FILE
 VALIDATION HARNESS NOT YET STARTED
 BACKEND EXPERIMENTS NOT YET RUN
@@ -62,7 +63,7 @@ Authoritative working protocol:
 
 - [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md)
 
-Implementation-fact companion audit:
+Closed implementation-fact companion audit:
 
 - [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md)
 
@@ -89,9 +90,13 @@ Completed and frozen before backend execution:
 7. H3 mapped to the real V1 `VerticalEnvelopeUpdraftField` without changing production physics.
 8. H3 seed frozen at `X0 = (-3000, 500, 0) m`; it must not be retuned after results to improve contrast.
 9. H3 uses the V1 vertical half-sine support `[0, 8000] m`, synthetic horizontal `sigma = 1000 m`, `W0 = 20 m/s`, and no rotation/inflow/outflow/downdraft fields.
-10. Path-history / diagnostic sampling semantics frozen for the experimental harness: initial sample at `t=0`, then accepted post-step position/time every production fixed step (`dt=0.1 s`, stride 1); diagnostics are sampled at the stored `(P,t)` point; no FPS sampling/interpolation for primary H3 metrics.
-11. Streamwise/crosswise implementation frozen: horizontal-only basis; `c_hat=(-v,u)/|V_sr,h|` left-normal convention; exact horizontal zero throws `StreamwiseCrosswiseVorticityError`; no epsilon threshold; DEMO finite-layer endpoint-average basis is a composition convention, not the core definition.
-12. Exact `y=0` disappearance mechanism confirmed: the production downdraft has a nonzero negative Gaussian tail at the atmospheric floor, the first Euler proposal goes below `y=0`, and `AtmosphericTracerDomain` deactivates the tracer on that first crossing.
+10. Path-history / diagnostic sampling semantics frozen: initial sample at `t=0`, then accepted post-step position/time every fixed step (`dt=0.1 s`, stride 1); no FPS sampling/interpolation for primary H3 metrics.
+11. Streamwise/crosswise implementation frozen: horizontal-only basis; left-normal crosswise convention; exact horizontal zero is undefined and errors; no epsilon threshold.
+12. Exact `y=0` disappearance mechanism confirmed: downdraft tail + below-ground Euler proposal + atmospheric-domain deactivation.
+13. Analysis support semantics frozen: height support is profile-relative and inclusive at `[minHeight,maxHeight]`; `OUT_OF_DOMAIN` / `COLUMN_UNAVAILABLE` contain no numeric Analysis T1; legacy `DiagnosticTiltingTendency` remains a distinct API and must not be mistaken for support-aware Analysis evidence.
+14. H3 sign-reversal semantics frozen: `1e-6 s^-2` is a material-sign guard, not physical zero; PASS requires opposite material signs across the same near-core passage within the same containing sounding segment; a sampled near-zero point is not required.
+15. Synthetic C injection seam frozen: construct `StormRelativeEnvironmentalAdvectionField(environmentField, C_test)` directly; production DEMO composition stays unchanged. H3 uses only storm-relative environmental advection + frozen updraft.
+16. **Pre-experiment architecture audit CLOSED.**
 
 Detailed definitions, equations, expected values, PASS/FAIL rules, and caveats live in the two research documents above and must not be reconstructed from this summary alone.
 
@@ -101,69 +106,78 @@ Detailed definitions, equations, expected values, PASS/FAIL rules, and caveats l
 
 ### A1 — ground-level tracer / updraft lower lid
 
-The production vertical-envelope updraft is zero at its lower lid (`y=0`). A manually released Explore tracer at exactly `y=0` disappears immediately; `y=1 m` survives. The deactivation mechanism is now confirmed by A5: the live DEMO downdraft is already active at `y=0`, so its negative far-field tail proposes a below-ground Euler step and the tracer-domain policy deactivates the tracer.
+The production vertical-envelope updraft is zero at its lower lid (`y=0`). A manually released Explore tracer at exactly `y=0` disappears immediately; `y=1 m` survives. A5 confirmed this as a composite downdraft-tail + atmospheric-domain interaction.
 
 ### A2 — unsupported Analysis trajectory can visually resemble T1
 
 Unsupported low-altitude Analysis samples receive no T1 value overlay, so the ordinary first-tracer red identity trail becomes visible underneath. Because red also appears in the T1 value scale, this can be misread as a signed T1 value.
 
-This is tracked as a semantic UX bug:
+Tracked as a semantic UX bug:
 
 - [`bugs/2026-09-11-analysis-unsupported-segment-looks-like-t1.md`](bugs/2026-09-11-analysis-unsupported-segment-looks-like-t1.md)
 - [`bugs/README.md`](bugs/README.md)
 
-Quantitative validation must use diagnostic support/status and values, never apparent trail hue.
-
 ### A3 — path-history / diagnostic sampling
 
-**CLOSED / FROZEN.** Production history records post-step accepted positions with post-step laboratory time. The validation harness will preserve this convention rather than invent a second trajectory-sampling semantics.
+**CLOSED / FROZEN.** Production history records post-step accepted positions with post-step laboratory time.
 
 ### A4 — streamwise/crosswise implementation
 
-**CLOSED / FROZEN.** Core decomposition uses the horizontal storm-relative direction only, with a left-normal crosswise basis. Exact horizontal `|V_sr|=0` is undefined and explicitly errors; it is not numeric zero. The DEMO hodograph overlay's layer-average basis is separate composition behavior and must not be silently imported into H1/H2 core validation.
+**CLOSED / FROZEN.** Core decomposition uses the horizontal storm-relative direction only, with a left-normal crosswise basis. Exact horizontal `|V_sr|=0` is undefined and explicitly errors.
 
 ### A5 — exact `y=0` disappearance mechanism
 
-**CLOSED / CONFIRMED.** The atmospheric floor itself does not generate the downward motion. The live DEMO downdraft uses vertical support `[-400,3600] m`, so `y=0` is an interior downdraft level. Its Gaussian tail is negative at every finite horizontal point. A ground-level seed therefore receives a downward first-step proposal; `AtmosphericTracerDomain` clips that crossing at `alpha=0` and sets `active=false`.
+**CLOSED / CONFIRMED.** Production downdraft support includes `y=0`; its negative Gaussian tail can push a ground-level seed below the atmospheric floor on the first Euler proposal, where the domain policy deactivates it.
+
+### A6 — Analysis support boundary
+
+**CLOSED / FROZEN.** Analysis validity follows each profile's own `[minHeight,maxHeight]`, not a universal laboratory ground threshold. FULL and BOUNDARY are numeric; OOD/COLUMN_UNAVAILABLE are not. Synthetic H3 must explicitly choose its diagnostic path and may not treat legacy out-of-profile zero as Analysis evidence.
+
+### A7 — H3 sign reversal
+
+**CLOSED / FROZEN.** `epsilon_T1 = 1e-6 s^-2` is an experiment-level material-sign threshold. PASS uses opposite material signs on opposite flanks of the same core passage within one containing sounding segment; no sampled zero is required.
+
+### A8 — synthetic C injection seam
+
+**CLOSED / FROZEN.** The harness injects C directly into `StormRelativeEnvironmentalAdvectionField`. No production composer, ScenarioConfig, UI, or physics change is required.
 
 ---
 
 ## 5. Current step
 
-**Continue the pre-experiment architecture audit.**
+**Synchronize the now-closed architecture audit into the parent pre-experiment protocol and freeze the minimal validation-harness procedure/outputs.**
 
-The next item is:
-
-```text
-Audit the exact low-altitude Analysis support boundary
-relevant to user-authored tracer seeds and H3 diagnostic validity.
-```
-
-Why this is next: A2 established that unsupported trajectory segments can be visually misleading, but the exact height/support contract still needs to be frozen before backend metrics decide whether a T1 sample is valid or unavailable.
+The architecture audit itself is complete. The remaining gate is procedural, not architectural.
 
 ---
 
 ## 6. NEXT ACTION
 
-**Inspect the Analysis profile/support code path and freeze the exact low-altitude support boundary/status behavior used by T1 for user-authored tracer samples. Record the result in the storm-motion architecture audit.**
+**Update `research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md` with the frozen A6/A7/A8 consequences, replace the provisional H3 sign-reversal language, record the production-compatible H3 seed/updraft mapping, and freeze the minimal H1/H2/H3 harness procedure before any backend execution.**
 
-Do not infer the boundary from trail color or UI appearance.
+No H1/H2/H3 run should occur before that protocol synchronization is committed.
 
 ---
 
 ## 7. Still open before backend experiments
 
-The current audit still needs to resolve/freeze:
+Architecture blockers: **none**.
 
-- low-altitude Analysis support boundary relevant to user-authored seeds — **NEXT**;
-- final H3 T1 near-zero / sign-reversal threshold;
-- minimal synthetic `C_A` / `C_B` injection seam that preserves production physics semantics.
+Pre-experiment protocol work still required:
 
-After these are closed, the intended sequence is:
+- synchronize H3 production-compatible vertical-envelope mapping and seed into the parent protocol;
+- freeze the material-sign / same-sounding-segment sign-reversal rule there;
+- freeze the chosen synthetic H3 T1 diagnostic-path validity semantics;
+- freeze the direct `StormRelativeEnvironmentalAdvectionField(..., C_test)` injection seam;
+- define the minimal harness observables/output record and exact execution order.
+
+After those are committed, the intended sequence is:
 
 ```text
 minimal validation harness
-→ H1/H2/H3 backend runs
+→ H1 backend controls
+→ H2 backend controls
+→ H3 backend controls
 → observed C-sensitivity matrix
 → compare predictions vs observations
 → classify PASS / FAIL / UNEXPLAINED / INVALID CONTROL
@@ -175,15 +189,19 @@ minimal validation harness
 
 ## 8. Important guardrails
 
-Do not infer project state from an old numbered architecture document alone; check this file, then follow its authoritative links.
-
 Do not tune synthetic controls after seeing results merely to make the expected effect stronger.
 
 Do not interpret local Eulerian T1 changes as a direct consequence of `C` unless a new audited implementation path demonstrates one.
 
 Do not use unsupported Analysis samples as numeric zero and do not infer T1 from trajectory color.
 
+Do not conflate legacy `DiagnosticTiltingTendency` out-of-profile zero with support-aware Analysis `OUT_OF_DOMAIN`.
+
 Do not treat exact `|V_sr,h|=0` as zero streamwise/crosswise vorticity; the basis is undefined there.
+
+Do not require a sampled T1 zero for the H3 sign-reversal PASS check; use the frozen material-sign / same-segment rule.
+
+Do not change the production DEMO composer merely to inject synthetic storm motion for validation.
 
 Do not attribute the `y=0` disappearance to the updraft alone; it is a composite downdraft-tail + atmospheric-domain interaction.
 
@@ -198,8 +216,8 @@ Do not treat this file itself as authorization. The owning SoT/research protocol
 For a fast orientation to the current project state, read in this order:
 
 1. **This file** — current phase and `NEXT ACTION`.
-2. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — frozen hypotheses, controls, expectations, and experiment protocol.
-3. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — what the released implementation actually does and which audit items remain open.
+2. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — parent protocol to synchronize/freeze next.
+3. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — closed implementation-fact audit.
 4. [`bugs/README.md`](bugs/README.md) — product defects found while auditing.
 5. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work, when relevant.
 6. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — documentation map and global architectural rules when wider context is needed.
