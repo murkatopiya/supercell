@@ -319,14 +319,123 @@ No production change is required. Existing V1 path-history and historical-diagno
 
 ---
 
-## 6. Open architecture-audit items
+## 6. Audit finding A4 — streamwise/crosswise implementation and zero-flow domain
+
+### 6.1 Core implementation
+
+The production core diagnostic is `decomposeHorizontalVorticity(...)` in `src/physics/environment/streamwiseCrosswiseVorticity.ts`.
+
+It consumes already-computed horizontal storm-relative wind and horizontal vorticity. It does not recompute the environmental profile, shear, storm motion, or vorticity.
+
+Let
+
+`V_sr,h = (u,v)`
+
+and
+
+`omega_h = (omega_e, omega_n)`.
+
+For nonzero horizontal storm-relative speed
+
+`|V_sr,h| = hypot(u,v) > 0`,
+
+the implementation forms
+
+`s_hat = (u,v)/|V_sr,h|`
+
+and the atmospheric east-north left-normal
+
+`c_hat = (-v,u)/|V_sr,h|`.
+
+It then returns the signed scalar projections
+
+`omegaStreamwise = omega_h · s_hat`
+
+and
+
+`omegaCrosswise = omega_h · c_hat`.
+
+This matches the owning physics definition in `docs/physics/08-streamwise-crosswise-vorticity.md`.
+
+The crosswise sign convention is therefore frozen for the storm-motion experiment as **left-normal / +90 degree CCW in the atmospheric east-north plane**. A sign flip caused by changing `C` is meaningful only relative to this fixed basis convention.
+
+### 6.2 Horizontal only
+
+The implementation ignores `stormRelativeWind.vertical` completely.
+
+Therefore the decomposition basis is defined from horizontal `V_sr,h`, not the full 3D flow vector. A large vertical component does not rescue an otherwise zero horizontal storm-relative wind.
+
+### 6.3 Exact zero-flow behavior
+
+The implementation performs an exact component check before normalization:
+
+`u === 0 && v === 0`.
+
+If both horizontal components are zero, it throws `StreamwiseCrosswiseVorticityError` with the basis classified as undefined.
+
+Consequences:
+
+- exact `V_sr,h = (0,0)` is **not** returned as `(omegaStreamwise, omegaCrosswise) = (0,0)`;
+- exact zero is **not** numeric evidence of zero streamwise or zero crosswise vorticity;
+- IEEE signed zero `-0` is included because `-0 === 0`;
+- vertical storm-relative wind is irrelevant to the domain check;
+- there is no epsilon or small-speed threshold in the core diagnostic;
+- any finite nonzero horizontal wind, however small, is currently accepted and normalized.
+
+The no-threshold behavior is a current implementation fact, not a claim that arbitrarily small `|V_sr,h|` is physically or numerically robust.
+
+### 6.4 Existing tests
+
+Production tests explicitly cover:
+
+- parallel and anti-parallel vorticity;
+- positive and negative crosswise orientation;
+- an oblique case with norm partition and vector reconstruction;
+- zero vorticity;
+- exact zero horizontal storm-relative flow;
+- zero horizontal flow with large vertical wind;
+- signed-zero horizontal components;
+- invariance to vertical storm-relative wind.
+
+Thus the sign convention and exact-zero failure mode are already intentional tested behavior rather than an accidental renderer convention.
+
+### 6.5 Core diagnostic versus current hodograph overlay
+
+The current DEMO hodograph overlay has an additional composition choice that must not be confused with the core definition.
+
+`createDemoStreamwiseCrosswiseOverlay()` builds a finite-layer basis for `[0,1000] m` from the **average of the two endpoint storm-relative winds**:
+
+`V_sr,avg = (V_sr(h0) + V_sr(h1))/2`.
+
+It then calls the same core `decomposeHorizontalVorticity(...)` with that average basis. If the average horizontal basis has zero magnitude, the overlay returns `undefined` before calling the throwing core diagnostic.
+
+This is a UI/composition convention for the current DEMO finite-layer overlay, not the universal definition of streamwise/crosswise vorticity.
+
+The H1/H2 validation harness must therefore test the **core diagnostic with the explicitly frozen storm-relative basis at the synthetic evaluation height**, unless the protocol separately specifies a finite-layer average. It must not silently inherit the DEMO `[0,1000]` overlay averaging rule.
+
+### 6.6 Consequence for H1/H2 controls
+
+For the synthetic controls, changing `C` changes `V_sr,h` and therefore rotates/reverses the basis while leaving environmental `omega_h` unchanged.
+
+The expected H2 sign behavior remains compatible with implementation: when two runs have the same `omega_h` but their storm-relative basis reverses its eastward component, the signed crosswise component may reverse while the streamwise component remains equal, exactly as analytically frozen for the selected synthetic point.
+
+If a synthetic evaluation produces exact `V_sr,h = (0,0)`, the correct expected outcome is **undefined decomposition / `StreamwiseCrosswiseVorticityError`**. A validation check passes when the implementation explicitly reports that undefined domain. It must not coerce the result to numeric zero or invent a basis direction.
+
+### 6.7 Classification
+
+This item is **CLOSED / FROZEN** for the storm-motion validation harness.
+
+No production change is required for the core diagnostic before H1/H2 execution. The experiment must preserve the existing left-normal sign convention, horizontal-only basis, exact-zero error policy, and distinction between the core diagnostic and the DEMO finite-layer overlay basis.
+
+---
+
+## 7. Open architecture-audit items
 
 Still to audit/freeze before backend execution:
 
-- exact streamwise/crosswise implementation and behavior at `|V_sr| = 0`;
 - exact `y = 0` tracer disappearance mechanism;
 - low-altitude Analysis support boundary relevant to user-authored seeds;
 - final H3 T1 near-zero/sign-reversal threshold;
 - minimal way to inject synthetic `C_A` / `C_B` without changing production physics semantics.
 
-The H3 seed/updraft architecture mapping and path-history/diagnostic sampling policy are now frozen and are no longer open audit items.
+The H3 seed/updraft architecture mapping, path-history/diagnostic sampling policy, and streamwise/crosswise implementation/domain semantics are now frozen and are no longer open audit items.
