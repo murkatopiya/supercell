@@ -1,6 +1,6 @@
 # Storm-Motion Sensitivity — V1 Architecture Audit
 
-**Status:** ACTIVE · NO PRODUCTION CHANGES
+**Status:** CLOSED · PRE-EXPERIMENT ARCHITECTURE FACTS FROZEN · NO PRODUCTION CHANGES
 
 **Parent protocol:** `docs/research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`
 
@@ -40,7 +40,7 @@ The current DEMO fixed timestep is
 
 Below the first knot and above the last knot, environmental advection uses clamped continuation of the endpoint wind.
 
-The T1 diagnostic does not use that clamped continuation as observational support: outside the environmental sounding support its sounding segment is unavailable and T1 returns zero.
+The legacy `DiagnosticTiltingTendency` does not extrapolate a containing shear segment outside environmental sounding support; its scalar API returns numeric zero there. The support-aware Analysis path is intentionally stricter and returns `OUT_OF_DOMAIN` with no numeric T1 outside its Analysis profile domain. These two semantics must not be conflated.
 
 ### 2.4 T1 direct C-dependence audit
 
@@ -97,7 +97,7 @@ For the current DEMO updraft, `baseHeight = 0 m`. Therefore a tracer authored at
 
 A live Explore manual probe confirmed that `y = 0 m` is reachable in the UI and that a released tracer at that height disappears immediately after release.
 
-The exact mechanism is now closed by A5 below: the live DEMO downdraft has a negative lower lid and therefore supplies a nonzero downward Gaussian tail at `y = 0`; the accepted Euler proposal goes below the atmospheric floor and `AtmosphericTracerDomain` deactivates the tracer on that first step.
+The exact mechanism is closed by A5 below: the live DEMO downdraft has a negative lower lid and therefore supplies a nonzero downward Gaussian tail at `y = 0`; the accepted Euler proposal goes below the atmospheric floor and `AtmosphericTracerDomain` deactivates the tracer on that first step.
 
 ### 3.2 Classification
 
@@ -173,7 +173,7 @@ No product option is selected by this audit. In particular, do not introduce an 
 
 ### 3.6 Required follow-up
 
-The exact deactivation mechanism is now confirmed by A5 and no longer open.
+The exact deactivation mechanism is confirmed by A5 and no longer open.
 
 Before V1.1 closes the product-facing boundary finding, still:
 
@@ -231,9 +231,9 @@ The audit does not yet select a solution.
 
 ### 4.5 Validation relevance
 
-This finding matters to the storm-motion validation campaign because visual trail color cannot be used as evidence for H3 sampled T1 unless the corresponding sample is confirmed to have Analysis support.
+This finding matters to the storm-motion validation campaign because visual trail color cannot be used as evidence for H3 sampled T1 unless the corresponding sample is confirmed to have diagnostic support under the selected T1 path.
 
-All H3 quantitative comparisons must use diagnostic data/status, not screenshots or apparent trail hue.
+All quantitative comparisons must use diagnostic data/status or explicit containing-segment validity, not screenshots or apparent trail hue.
 
 ---
 
@@ -295,7 +295,7 @@ The H3 experimental harness must follow the production discrete-path semantics r
 2. advance using the production fixed step `dt = 0.1 s`;
 3. after every accepted completed step, record the accepted tracer position and post-step simulation time;
 4. evaluate trajectory-sampled `w` and T1 at those recorded `(P,t)` samples;
-5. preserve Analysis/support status with each T1 evaluation; unsupported samples are not numeric zeros;
+5. preserve the diagnostic validity/support information appropriate to the selected T1 path; unsupported samples must never be silently reinterpreted as observational zero;
 6. do not interpolate between path samples for the primary H3 metrics;
 7. do not decimate or use render-frame cadence for the primary H3 metrics.
 
@@ -308,11 +308,11 @@ Quantities such as
 - minimum horizontal distance to the updraft axis;
 - maximum sampled `w`;
 - maximum sampled `|T1|`;
-- sign-change / near-zero events in supported T1;
+- sign-change / material-sign events in valid numeric T1;
 
 must be computed from the frozen discrete recorded sequence unless a later metric is explicitly defined as a continuous/interpolated quantity **before** viewing experiment results.
 
-For T1 specifically, a sign transition across two supported adjacent samples may be reported as a discrete sign transition. The primary harness must not invent an interpolated zero-crossing time unless that additional diagnostic is separately frozen before execution.
+For T1 specifically, a sign transition across two valid adjacent samples may be reported as a discrete sign transition. The primary harness must not invent an interpolated zero-crossing time unless that additional diagnostic is separately frozen before execution.
 
 ### 5.5 Classification
 
@@ -512,12 +512,179 @@ This item itself is **CLOSED / FROZEN** as an architecture fact.
 
 ---
 
-## 8. Open architecture-audit items
+## 8. Audit finding A6 — Analysis height support is profile-relative, not ground-relative
 
-Still to audit/freeze before backend execution:
+### 8.1 Exact support domain
 
-- low-altitude Analysis support boundary relevant to user-authored seeds;
-- final H3 T1 near-zero/sign-reversal threshold;
-- minimal way to inject synthetic `C_A` / `C_B` without changing production physics semantics.
+The support-aware Analysis query path uses the actual Analysis profile bounds. For a finite query height `h`:
 
-The H3 seed/updraft architecture mapping, path-history/diagnostic sampling policy, streamwise/crosswise implementation/domain semantics, and exact `y = 0` disappearance mechanism are now frozen and are no longer open audit items.
+- `h < profile.minHeight` or `h > profile.maxHeight` -> `OUT_OF_DOMAIN` with no numeric T1;
+- `profile.minHeight <= h <= profile.maxHeight` -> the query is in-domain and may return `FULL_SUPPORT` or `BOUNDARY_CONDITIONED`;
+- there is no clamp or extrapolation that converts an out-of-domain Analysis query into observational diagnostic evidence.
+
+The containing-segment contract is half-open `[h_i,h_{i+1})`, except for the last closed segment. At an exact interior knot, the upper segment owns the derivative. At `minHeight`, the first segment owns it; at `maxHeight`, the last segment owns it.
+
+### 8.2 Production low-level examples
+
+The lower Analysis boundary is not a universal laboratory height. It varies with the observational column. Current normalized ESC examples include approximately:
+
+- Goshen: `minHeight = 2.4 m`;
+- Prospect Valley: `minHeight = -0.1 m`;
+- Dumas: `minHeight = -0.5 m`.
+
+Therefore a laboratory point at `y = 0` may be outside Analysis support for one observed environment and inside support for another. The Analysis validity boundary follows the data column, not the atmospheric tracer floor.
+
+This exactly explains the manual Goshen point near `y ~= 1.9 m`: it lies below the Goshen Analysis `minHeight` and correctly returns `OUT_OF_DOMAIN`.
+
+### 8.3 FULL versus BOUNDARY
+
+Being inside the height domain does not imply `FULL_SUPPORT`. Diagnostic support is inherited from the Analysis filter support of the containing knot/segment:
+
+- if all required knots are `FULL_SUPPORT`, the diagnostic is `FULL_SUPPORT`;
+- if any required knot is `BOUNDARY_CONDITIONED`, the diagnostic is `BOUNDARY_CONDITIONED`;
+- both states are numeric Analysis T1, but their support class must be preserved;
+- `OUT_OF_DOMAIN` and `COLUMN_UNAVAILABLE` contain no numeric T1 and are never zero substitutes.
+
+### 8.4 Synthetic H3 diagnostic-path consequence
+
+The synthetic H3 sounding is an ordinary frozen environmental profile, not automatically an ESC high-resolution Analysis column. V1 intentionally keeps two diagnostic APIs distinct:
+
+- legacy/core `DiagnosticTiltingTendency(profile, updraft)`;
+- support-aware ESC Analysis `queryAnalysisTiltingTendencyAt(column, updraft, ...)`.
+
+Tests explicitly pin that distinction: outside profile support, legacy `DiagnosticTiltingTendency.sample(...)` can return numeric zero while the support-aware Analysis query returns `OUT_OF_DOMAIN` with no numeric value.
+
+Therefore the H3 validation harness must choose its diagnostic path explicitly. It must not construct an ESC Analysis meaning accidentally, and it must not reinterpret a legacy out-of-profile zero as observational support.
+
+For the frozen H3 synthetic sounding (`0–3 km`) and seed (`y0 = 500 m`), the initial point is safely inside the synthetic environmental profile. During H3, primary T1 sign/maximum metrics are valid only while the selected diagnostic path has a real containing environmental segment. If the tracer leaves that support, those samples are excluded from T1 evidence rather than treated as meaningful zero.
+
+### 8.5 Classification
+
+This item is **CLOSED / FROZEN**.
+
+There is no single low-altitude Analysis threshold to hard-code into the validation harness. Analysis support is profile-relative; synthetic H3 support must be represented explicitly according to the diagnostic path selected by the pre-experiment protocol.
+
+---
+
+## 9. Audit finding A7 — H3 material-sign / sign-reversal semantics
+
+### 9.1 Why a required sampled zero is rejected
+
+The H3 trajectory is sampled on the frozen discrete grid (`dt = 0.1 s`). A mathematically continuous T1 zero crossing can therefore occur between recorded samples.
+
+Requiring the discrete sequence to contain a sample with `T1 ~= 0` would test accidental phase alignment between the trajectory and the sampling grid, not the intended physical sign reversal.
+
+Production T1 also does not contain an internal `1e-6 s^-2` zero epsilon. Exact physical zero remains exact numeric zero where the operands produce it.
+
+### 9.2 Frozen material-sign threshold
+
+For the H3 validation criterion only, define
+
+`epsilon_T1 = 1e-6 s^-2`.
+
+Its meaning is **material-sign evidence**, not physical equality to zero:
+
+- `T1 > +epsilon_T1` -> materially positive;
+- `T1 < -epsilon_T1` -> materially negative;
+- `|T1| <= epsilon_T1` -> neutral / near-zero for classification only.
+
+The model and diagnostic are not modified by this threshold.
+
+### 9.3 Frozen sign-reversal PASS structure
+
+Run A satisfies the sign-reversal control only if the realized geometry actually provides the intended near-core opposite-flank passage and all of the following hold:
+
+1. there is valid numeric T1 evidence with one material sign on one side of the same core passage;
+2. there is valid numeric T1 evidence with the opposite material sign on the other side;
+3. the two pieces of evidence belong to the **same containing environmental sounding segment**, so the local segment `omega_h` is unchanged and the sign reversal can be attributed cleanly to the changing updraft-gradient projection;
+4. the sign evidence is local to that one core passage, not merely a plus somewhere and a minus somewhere else in the 600 s run.
+
+The sign order is not frozen: positive-to-negative and negative-to-positive are both acceptable if the geometry explains them.
+
+A neutral/near-zero sample may occur between the two signs but is **not required**. If adjacent valid recorded samples jump directly from material positive to material negative (or vice versa), record a **discrete sign transition**. Do not invent an interpolated zero-crossing time for the primary metric.
+
+If the containing sounding segment changes across the candidate sign reversal, the event may be recorded descriptively but does not satisfy this clean same-segment sign-reversal control.
+
+Run B is not required to reverse sign.
+
+### 9.4 Classification
+
+This item is **CLOSED / FROZEN**.
+
+`1e-6 s^-2` is now frozen as an experiment-level material-sign guard, not as a physical zero tolerance in V1.
+
+---
+
+## 10. Audit finding A8 — minimal synthetic storm-motion injection seam
+
+### 10.1 Current production composition
+
+The physical adapter `StormRelativeEnvironmentalAdvectionField` already accepts an arbitrary `StormMotion` in its constructor and copies that value into the environmental-advection operand. It subtracts `C` horizontally when sampled and does not mutate the wrapped `EnvironmentalWindField` or know about prescribed storm-local fields.
+
+The current DEMO composer is intentionally less configurable: `composeDemoTracerFields(...)` may receive an optional environmental profile, but its storm-relative environmental operand always uses `DEMO_SCENARIO.stormMotion`. The production composer therefore does **not** currently expose `C` as an experimental parameter.
+
+`CompositeVelocityField` itself has no storm-motion semantics; it only sums its supplied velocity operands.
+
+### 10.2 Frozen validation seam
+
+The validation harness must **not** add a storm-motion override to the production DEMO composer merely to run the experiment.
+
+Instead, construct the existing physics objects directly:
+
+`synthetic EnvironmentalWindProfile`
+`-> EnvironmentalWindField(profile)`
+`-> StormRelativeEnvironmentalAdvectionField(environmentField, C_test)`.
+
+This is the minimal existing injection seam and preserves the intended ownership boundary: only the environmental advection operand receives `C`.
+
+For H1/H2, most checks can call the existing environmental/diagnostic functions directly without constructing the seven-operand DEMO composite.
+
+For H3, construct the deliberately minimal frozen synthetic total field:
+
+`V_total = CompositeVelocityField([V_env_sr(C_test), frozen synthetic VerticalEnvelopeUpdraftField])`.
+
+Do not include DEMO rotation, radial inflow, upper/near-ground outflow, or downdraft, because the frozen H3 control explicitly excludes them.
+
+The paired H3 runs must differ only in the `StormMotion` passed to `StormRelativeEnvironmentalAdvectionField`; the environmental profile, updraft parameters, seed, integrator, timestep, domain policy, sampling policy, and metric code must otherwise be identical.
+
+### 10.3 What must not be changed for the validation campaign
+
+The pre-experiment harness does not require:
+
+- a new `stormMotion` argument on `composeDemoTracerFields()`;
+- a mutable/global storm-motion state;
+- a UI storm-motion control;
+- a production `ScenarioConfig` redesign;
+- changes to `StormRelativeEnvironmentalAdvectionField` physics;
+- changes to `CompositeVelocityField`.
+
+Any later user-facing C parameterization is a separate post-validation product/architecture decision.
+
+### 10.4 Classification
+
+This item is **CLOSED / FROZEN**.
+
+The existing backend already exposes the correct low-level seam for controlled synthetic C injection. No production physics change is required before building the validation harness.
+
+---
+
+## 11. Architecture-audit closure
+
+All architecture facts required before the storm-motion synthetic backend campaign are now frozen:
+
+- C data flow and invariants;
+- integrator and timestep;
+- environmental interpolation;
+- T1 direct-C independence;
+- SRH implementation;
+- H3 production-compatible updraft mapping and seed;
+- path-history / diagnostic sampling semantics;
+- streamwise/crosswise basis and exact-zero domain;
+- ground-level tracer deactivation mechanism;
+- Analysis support semantics and the legacy-vs-Analysis distinction;
+- H3 material-sign / same-segment sign-reversal criterion;
+- minimal synthetic C injection seam.
+
+**Architecture audit status: CLOSED.**
+
+No backend experiment is authorized by this closure alone. Before the first run, synchronize the frozen A6/A7/A8 consequences into the parent pre-experiment protocol and freeze the minimal harness procedure/outputs there. Only then may H1/H2/H3 execution begin.
