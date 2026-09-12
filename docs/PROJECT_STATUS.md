@@ -19,7 +19,7 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-STORM-MOTION SENSITIVITY CAMPAIGN / H5 EXECUTION AUTHORIZATION GATE
+STORM-MOTION SENSITIVITY CAMPAIGN / H5 CLOSURE DOCUMENTATION REVIEW GATE
 ARCHITECTURE AUDIT CLOSED
 PARENT RESEARCH PROTOCOL ARCHITECTURE-SYNCHRONIZED
 VALIDATION HARNESS DESIGN FROZEN
@@ -35,7 +35,7 @@ H3 DOCUMENTATION / CLASSIFICATION CLOSURE COMPLETE
 H4 CLOSED · INVALID CONTROL
 H5 PRE-RUN SCIENTIFIC DESIGN REVIEWED / APPROVED · H5 EXPECTATIONS FROZEN
 H5 TEST-ONLY IMPLEMENTATION COMPLETE · H5 IMPLEMENTATION REVIEW COMPLETE / CLOSED
-H5 EXECUTION NOT AUTHORIZED
+H5 CLOSED · PASS / HUMAN SCIENTIFIC CLASSIFICATION
 OBSERVED C-MATRIX DEFERRED
 PRODUCTION IMPLEMENTATION / UI NOT AUTHORIZED
 PRODUCTION PHYSICS UNCHANGED
@@ -57,7 +57,7 @@ Scientific protocol and recorded H1/H2/H3 evidence and classifications (§10):
 
 - [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md)
 
-H4 is CLOSED · INVALID CONTROL; its frozen specification remains in parent protocol §13. H5 scientific design is reviewed/approved and frozen in [parent protocol §14](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#14-h5--pre-run-scientific-design-for-a-shifted-boundary-crossing). H5 test-only implementation is complete; implementation review is complete/closed and execution is not authorized.
+H4 is CLOSED · INVALID CONTROL; its frozen specification remains in parent protocol §13. H5 scientific design is reviewed/approved and frozen in [parent protocol §14](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#14-h5--pre-run-scientific-design-for-a-shifted-boundary-crossing). H5 executed once and is CLOSED · PASS by human scientific classification; evidence is owned by parent protocol §15. Documentation review is pending.
 
 Closed implementation-fact architecture audit:
 
@@ -111,7 +111,7 @@ Pre-run freezes and completed campaign steps:
 32. No H3 physics failure established; production physics unchanged. The additional Vitest `snapshotSaved` timeout is a technical execution/reporting issue, separate from scientific classification.
 33. H3 documentation/classification closure complete; its INVALID CONTROL and partial valid evidence remain unchanged.
 34. H4 design/implementation/review committed and pushed; subsequently separately authorized and executed once. H4 CLOSED · INVALID CONTROL.
-35. H5 pre-run scientific design reviewed/approved and expectations frozen. Only seed z changes to +225 m; test-only implementation complete, implementation review complete/closed; no H5 execution.
+35. H5 pre-run scientific design reviewed/approved and expectations frozen. Only seed z changes to +225 m; test-only implementation and review complete; subsequently executed once and human-classified CLOSED · PASS; see protocol §15.
 
 ---
 
@@ -138,7 +138,7 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 **H1, H2, and H3 Eulerian CLOSED · PASS. H3 trajectories CLOSED · INVALID CONTROL, with partial valid evidence preserved.**
 
-H3 documentation/classification closure is complete. H4 CLOSED · INVALID CONTROL. The current gate is separate explicit H5 execution authorization; H5 is a new control with frozen seed z=+225 m, not an H4 rerun. H5 test-only implementation is complete; review is complete/closed, execution and production/UI work are not authorized.
+H3/H4 classifications remain unchanged. H5 CLOSED · PASS: clean same-segment geometric T1 reversal demonstrated within the frozen synthetic control, with no oracle discrepancy. The current gate is manual H5 closure documentation review; observed C-matrix execution and production/UI work remain unauthorized.
 
 The implemented test-only harness is:
 
@@ -150,15 +150,15 @@ It imports existing production backend classes directly and keeps campaign-speci
 
 ## 6. NEXT ACTION
 
-**Commit/push the reviewed H5 pre-run slice after permitted verification, then await separate explicit H5 execution authorization.**
+**Review H5 Results and human classification in parent protocol §15. No commit/push in this task.**
 
-H5 PRE-RUN SCIENTIFIC DESIGN REVIEWED / APPROVED · H5 EXPECTATIONS FROZEN. Test-only implementation is complete; implementation review is complete/closed and execution is not authorized. Verification is limited to typecheck and no-stage infrastructure tests. Commit/push of the reviewed H5 slice is authorized after clean verification; no campaign stage is authorized. Observed C-matrix and production/UI work remain deferred and unauthorized.
+After documentation review and separately authorized commit, observed C-matrix protocol design may proceed. Its execution is NOT AUTHORIZED. The synthetic H1–H5 phase is at its current closure gate; the overall campaign remains active and Conclusions remain EMPTY. No tests or campaign reruns are authorized.
 
 Do not alter production physics, DEMO composition, UI, ScenarioConfig, analytical expectations, synthetic inputs, or frozen tolerances to make the harness pass.
 
 ---
 
-## 7. H5 design and authorization gates
+## 7. Synthetic closure and observed-protocol design gates
 
 Architecture blockers: **none**.
 
@@ -172,7 +172,9 @@ Remaining gate:
 H4 CLOSED · INVALID CONTROL
 → H5 scientific design APPROVED / EXPECTATIONS FROZEN
 → H5 test-only implementation COMPLETE / implementation review COMPLETE / CLOSED
-→ separate explicit H5 execution authorization (NOT GRANTED)
+→ H5 executed once / human classification CLOSED · PASS
+→ closure documentation review / separately authorized commit
+→ observed C-matrix protocol design only; execution NOT AUTHORIZED
 ```
 
 Deferred campaign path, not authorized by this slice or automatically unlocked by the partial H3 evidence:
@@ -226,4 +228,4 @@ Do not treat this file itself as physics authority.
 6. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 7. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 scientific design is owned by §14; scientific review is approved, test-only implementation is complete, implementation review is complete/closed and execution is not authorized.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current gate is documentation review.

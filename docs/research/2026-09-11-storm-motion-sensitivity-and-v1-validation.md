@@ -527,7 +527,7 @@ Any later user-facing C parameterization is a post-validation product decision.
 
 **Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 CLOSED / PASS · H2 CLOSED / PASS · H3 EULERIAN CLOSED / PASS · H3 TRAJECTORIES CLOSED / INVALID CONTROL.
 
-The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS. H2 authorization followed the commit/push of H1 documentation. H3 Eulerian was separately executed and classified PASS, followed by separately authorized H3 trajectories, classified INVALID CONTROL for the clean same-segment sign-reversal control; partial valid evidence is preserved in §10. H3 documentation/classification closure is complete. H4 is CLOSED · INVALID CONTROL. H5 PRE-RUN SCIENTIFIC DESIGN REVIEWED / APPROVED · H5 EXPECTATIONS FROZEN; H5 TEST-ONLY IMPLEMENTATION COMPLETE · H5 IMPLEMENTATION REVIEW COMPLETE / CLOSED; H5 EXECUTION NOT AUTHORIZED. See §14. This slice does not authorize a campaign run, altered control, or production implementation.
+The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS. H2 authorization followed the commit/push of H1 documentation. H3 Eulerian was separately executed and classified PASS, followed by separately authorized H3 trajectories, classified INVALID CONTROL for the clean same-segment sign-reversal control; partial valid evidence is preserved in §10. H3 documentation/classification closure is complete. H4 is CLOSED · INVALID CONTROL. H5 PRE-RUN SCIENTIFIC DESIGN REVIEWED / APPROVED · H5 EXPECTATIONS FROZEN; H5 TEST-ONLY IMPLEMENTATION COMPLETE · H5 IMPLEMENTATION REVIEW COMPLETE / CLOSED; H5 CLOSED · PASS (human scientific classification; see §15). See §14. This slice does not authorize a campaign run, altered control, or production implementation.
 
 After the separate execution gate, preserve this order:
 
@@ -814,7 +814,7 @@ If no qualifying interval exists, interval-dependent metrics are absent/null wit
 
 ### 13.7 Authorization gate
 
-The new H4 pre-run specification and production-convention derivation were reviewed/approved; test-only implementation was separately authorized and is now complete. H4 implementation review is now COMPLETE / CLOSED. Typecheck and no-stage infrastructure verification (24 passed, all 5 campaign stages skipped) support review closure, not scientific execution. The approved work was committed/pushed as 553f0029c41d5fde6a7251e947d516f801147964, followed by separate explicit H4 authorization and one execution. H4 is now CLOSED · INVALID CONTROL; no rerun or retuning is authorized. The current H5 execution authorization gate is recorded in §14. Observed C-matrix and production/UI work remain deferred. H1/H2/H3 frozen records and final campaign conclusions remain untouched.
+The new H4 pre-run specification and production-convention derivation were reviewed/approved; test-only implementation was separately authorized and is now complete. H4 implementation review is now COMPLETE / CLOSED. Typecheck and no-stage infrastructure verification (24 passed, all 5 campaign stages skipped) support review closure, not scientific execution. The approved work was committed/pushed as 553f0029c41d5fde6a7251e947d516f801147964, followed by separate explicit H4 authorization and one execution. H4 is now CLOSED · INVALID CONTROL; no rerun or retuning is authorized. The H5 closure documentation gate is recorded in §14.5 and §15. Observed C-matrix and production/UI work remain deferred. H1/H2/H3 frozen records and final campaign conclusions remain untouched.
 
 ---
 
@@ -822,7 +822,7 @@ The new H4 pre-run specification and production-convention derivation were revie
 
 **H4 CLOSED · INVALID CONTROL.**
 **H5 PRE-RUN SCIENTIFIC DESIGN REVIEWED / APPROVED · H5 EXPECTATIONS FROZEN.**
-**H5 TEST-ONLY IMPLEMENTATION COMPLETE · H5 IMPLEMENTATION REVIEW COMPLETE / CLOSED · H5 EXECUTION NOT AUTHORIZED.**
+**H5 TEST-ONLY IMPLEMENTATION COMPLETE · H5 IMPLEMENTATION REVIEW COMPLETE / CLOSED · H5 CLOSED · PASS (human scientific classification; see §15).**
 
 H5 is a new pre-registered synthetic control. Its purpose is to test clean same-segment geometric T1 sign reversal with the analytical B=0 crossing deliberately positioned near the expected near-core passage. The intended geometry is a conditional prediction, not an observed trajectory or guaranteed PASS. H4 inputs, results, classification and evidence remain unchanged.
 
@@ -922,6 +922,119 @@ These rules retain §13.5 semantics. Do not weaken criteria, adjust inputs or se
 
 ### 14.5 Current gate
 
-H5 scientific design review is CLOSED / APPROVED and expectations remain frozen. Separately authorized H5 test-only implementation is COMPLETE; implementation review is COMPLETE / CLOSED. H5 execution is NOT AUTHORIZED and requires new explicit authorization after the reviewed slice is committed/pushed.
+H5 design and implementation reviews were CLOSED / APPROVED before baseline aaf80959abfd6df07a6daa261fadc3e78ed28a7a was committed/pushed. A separate explicit authorization permitted exactly one H5 execution. Human scientific classification is now **H5 CLOSED · PASS**; see §15 for observed evidence, separately from the frozen pre-run specification in §§14.1–14.4.
 
-Observed C-matrix remains deferred. Production/UI work is not authorized. Implementation verification used typecheck and the validation module with no stage selected: 33 infrastructure tests passed and all 6 campaign stages skipped. The reviewed H5 slice may be committed/pushed after clean verification. H5 execution and H1/H2/H3/H4 reruns are not authorized. Campaign Conclusions remain EMPTY.
+Current gate: manual review of H5 evidence/classification documentation, then its separately authorized commit. Only afterward may observed C-matrix protocol design proceed. Observed C-matrix execution is NOT AUTHORIZED; production/UI work remains unauthorized. No tests, campaign reruns, commit or push are authorized in this documentation slice. Campaign Conclusions remain EMPTY.
+
+---
+
+## 15. H5 Results and human scientific classification — 2026-09-12
+
+### 15.1 Provenance, frozen prediction and inputs
+
+H5 executed exactly once under explicit authorization from HEAD=origin/main=aaf80959abfd6df07a6daa261fadc3e78ed28a7a. No tracked changes or selected stage existed before execution. Raw stdout/stderr is retained locally as h5-output.txt (untracked, not a repository dependency), SHA-256 4F5AE60AB9CA954A9E1417A8A5F98D502C43B400A9421F86DAFB529DCACC7A74. This record uses that existing run; no rerun or post-hoc retuning occurred.
+
+Frozen inputs remain as §14.1: sounding 0→(15,8), 1000→(23,10), 2000→(29,16), 3000→(31,24) m and m/s; environmental vertical velocity 0; C=(5,8) m/s; seed=(-3000,500,+225) m. Updraft center=(0,0), W0=20 m/s, sigma=500 m, base=0/top=8000 m; no rotation, radial inflow/outflow, downdraft or other storm-local horizontal fields. EulerIntegrator dt=0.1 s, duration=600 s/max 6000 steps, one tracer, TracerPathHistory stride=1, ATMOSPHERIC_TRACER_DOMAIN; epsilonT1=1e-6 s^-2, passage r<=750 m, required segment {0,1000} with ownership 0<=y<1000.
+
+The frozen conditional prediction is S0=-2100, dSdt=10 m/s, S(t)=-2100+10*t, B=-0.002*S and t_B0=210 s while the tracer remains in the first segment. boundaryTimeIsPassCriterion=false. Boundary-time agreement is not standalone PASS evidence; material evidence below is primary. Frozen §§14.1–14.4 are unchanged.
+
+### 15.2 Harness status and technical execution outcome
+
+Harness scientificStatus=PASS; classificationReason="all frozen clean-reversal conditions satisfied".
+
+| H5 check id | Status |
+| --- | --- |
+| H5/integrity | PASS |
+| H5/world-omega | PASS |
+| H5/passage | PASS |
+| H5/independent-prerequisites | PASS |
+| H5/segment-omega | PASS |
+| H5/oracle-discrepancy | PASS |
+| H5/clean-geometric-sign-reversal | PASS |
+
+Separately, Vitest reported 1 test file passed; 34 passed / 5 skipped / 39 total: H5 plus 33 infrastructure tests ran; H1/H2/H3-Eulerian/H3-trajectories/H4 were skipped. No technical runner errors were reported. A runner pass is not itself the scientific classification.
+
+### 15.3 Lifecycle, global minimum and local passage
+
+Requested/executed steps=6000/6000; samples=6001; final simulation time and tracer age=600.0000000000679 s; active=true; tracer id=1; terminalTime=null. Final position (x,y,z)=(6733.497259494588,931.6148254194409,-708.3743148735185) m.
+
+Global r_min=3.6399821845208824 m at i_core=2115, t=211.49999999999227 s, position=(0.7668440986767087,695.2310304842184,3.5582889753298734) m.
+
+| Passage boundary | Start | End |
+| --- | --- | --- |
+| Index | 1608 | 2567 |
+| Time, s | 160.79999999999515 | 256.69999999998987 |
+| x, m | -745.885685553549 | 745.3831899088692 |
+| y, m | 523.7212417242756 | 897.5194695874177 |
+| z, m | 63.47142138838612 | -69.59579747721824 |
+| r, m | 748.5813765027486 | 748.6251898147773 |
+
+The maximal contiguous r<=750 m passage around the global minimum remained wholly in the required first segment.
+
+### 15.4 Material qualifying evidence and support
+
+firstBoundaryPair=1608→2101; firstIndependentPair=1608→2124; qualifyingPair=1608→2124; discrepancyPair=null; absenceReason=null. The first boundary pair has y_min=523.7212417242756 and y_max=687.7265188896621 m; its right endpoint is neutral. The independent and qualifying pairs coincide and have y_min=523.7212417242756, y_max=700.0984871208203 m. All three recorded intervals have wholeIntervalSameSegment=true, omegaUnchanged=true and oracleDiscrepancySamples=[].
+
+| Qualifying endpoint | Left | Right |
+| --- | --- | --- |
+| Index | 1608 | 2124 |
+| Time, s | 160.79999999999515 | 212.39999999999222 |
+| x, m | -745.885685553549 | 14.788064848906858 |
+| y, m | 523.7212417242756 | 700.0984871208203 |
+| z, m | 63.47142138838612 | 2.302983787772337 |
+| r, m | 748.5813765027486 | 14.966315388305059 |
+| w, m/s | 1.3316477795985537 | 5.427121674704042 |
+| S | -492.00000000000455 | +23.999999999996206 |
+| B | +0.9840000000000091 | -0.04799999999999241 |
+| Production T1, s^-2 | -5.241365660499954e-6 | +1.0420073615430113e-6 |
+| Analytical T1, s^-2 | -5.241365660499957e-6 | +1.042007361543011e-6 |
+| Observed material sign | negative | positive |
+| Analytical material sign | negative | positive |
+| Oracle agreement | true | true |
+| Containing segment | {0,1000} | {0,1000} |
+
+Both endpoints strictly exceed the frozen material threshold in magnitude (|T1|>epsilonT1); the entire qualifying interval retains first-segment support and unchanged omega, without oracle discrepancy. This is the primary PASS evidence.
+
+All 6001 samples were valid and in the required segment: valid=6001, outsideProfile=0, requiredSegment=6001, otherSupportedSegment=0. Atmospheric omega=(-0.002,+0.008) s^-1; world omega=(-0.002,-0.008) s^-1. No sample has discrepancy=true or oracleAgreement=false. Production T1 agrees with the independent analytical oracle under the frozen checks.
+
+### 15.5 Recorded analytical boundary bracket
+
+adjacentCrossings contains exactly one pair, 2100→2101, with wholeIntervalSameSegment=true; exactZeroBrackets=[].
+
+| Boundary sample | 2100 | 2101 |
+| --- | --- | --- |
+| Time, s | 209.99999999999235 | 210.09999999999235 |
+| x, m | -22.524390892450665 | -20.974635772758624 |
+| y, m | 687.1938996150488 | 687.7265188896621 |
+| z, m | 5.631097723111718 | 5.4936589431887075 |
+| r, m | 23.217610700568404 | 21.682150132861896 |
+| w, m/s | 5.326192746132185 | 5.330955070723951 |
+| S | -3.794298208958935e-12 | +0.9999999999962057 |
+| B | +7.58859641791787e-15 | -0.0019999999999924115 |
+| Production T1, s^-2 | -1.6178329292557136e-19 | +4.264764056562969e-8 |
+| Analytical T1, s^-2 | -1.6167330877775537e-19 | +4.264764056562979e-8 |
+| Observed / analytical material sign | neutral / neutral | neutral / neutral |
+| Oracle agreement | true | true |
+
+The recorded boundary bracket agrees closely with the pre-run conditional t=210 s prediction. Exact sampled B=0 was not registered. These neutral samples are not the material qualifying pair and boundary-time agreement alone is not PASS evidence. No interpolation or new B epsilon is introduced.
+
+### 15.6 Human scientific classification and scope
+
+**H5 CLOSED · PASS**
+
+```text
+CLEAN SAME-SEGMENT GEOMETRIC T1 SIGN REVERSAL DEMONSTRATED
+NO ORACLE DISCREPANCY
+NO UNEXPLAINED DEVIATIONS
+NO PHYSICS FAILURE
+```
+
+This human classification is based on the material qualifying evidence and full frozen prerequisites, independently distinguished from the harness status and Vitest outcome. Within this frozen synthetic kinematic control, one tracer samples material T1 of both signs during one near-core passage while remaining in one piecewise-linear sounding segment with unchanged environmental horizontal vorticity. Because omega_h is fixed and the prescribed updraft is steady, the reversal is attributable to changing sampled geometry/orientation of the prescribed horizontal updraft gradient relative to that fixed omega_h.
+
+H5 supports the specific frozen synthetic geometric/path-mediated T1 sign-reversal hypothesis and found no production-vs-independent-oracle discrepancy. It does not establish full vorticity evolution, mesocyclone generation or reversal, real-supercell reconstruction, observed-storm validation, universal storm-motion behavior or production/UI readiness.
+
+### 15.7 Relation to preceding controls and next gate
+
+H3 trajectories retains INVALID CONTROL: opposite sampled T1 signs came from different sounding segments. H4 retains CLOSED · INVALID CONTROL: the frozen local passage ended before the analytically required B=0 crossing; its cause was isolated without rerun or changed criteria. H5 is a new pre-registered experiment informed by that mechanism, with seed z changed before execution; its actual run furnished all independent prerequisites and same-segment opposite material signs. H5 does not rewrite H3/H4 classification or serve as an H4 rerun.
+
+The synthetic H1–H5 phase has reached its current closure documentation gate, including the retained invalid controls. The overall observed validation campaign remains active. Review this documentation manually; only after documentation review/commit may observed C-matrix protocol design proceed. Observed C-matrix execution and production/UI work remain unauthorized. Parent §12 Conclusions remains EMPTY. No tests, experiments, commit or push were performed for this documentation slice.
