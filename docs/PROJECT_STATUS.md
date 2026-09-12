@@ -19,11 +19,11 @@ This file is a navigation/status bookmark only. It points to the documents that 
 Current status:
 
 ```text
-PRE-EXPERIMENT HARNESS DESIGN
+PRE-EXPERIMENT HARNESS IMPLEMENTATION
 ARCHITECTURE AUDIT CLOSED
 PARENT RESEARCH PROTOCOL ARCHITECTURE-SYNCHRONIZED
-NO PRODUCTION CHANGES AUTHORIZED BY THIS STATUS FILE
-VALIDATION HARNESS NOT YET IMPLEMENTED
+VALIDATION HARNESS DESIGN FROZEN
+NO PRODUCTION PHYSICS CHANGES AUTHORIZED
 BACKEND EXPERIMENTS NOT YET RUN
 ```
 
@@ -36,37 +36,19 @@ The current campaign validates and probes the released V1 model before deciding 
 
 ---
 
-## 2. Current scientific question
+## 2. Authoritative current documents
 
-The active research asks what changes when the environmental sounding is held fixed and only prescribed storm motion `C` changes.
-
-Working causal separation:
-
-```text
-C changes directly
-→ storm-relative wind / hodograph position / SRH /
-  streamwise-crosswise decomposition / environmental advection
-
-C does not directly change
-→ ground-relative environmental wind q(h)
-→ vertical shear
-→ environmental horizontal vorticity ω_h
-→ prescribed updraft geometry
-→ local Eulerian T1 = ω_h · ∇_h w_updraft
-
-C can change indirectly
-→ full tracer trajectory X(t)
-→ which Eulerian locations the tracer samples
-→ sampled w(X(t)) and sampled T1(X(t))
-```
-
-Authoritative research protocol:
+Scientific pre-experiment protocol:
 
 - [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md)
 
-Closed implementation-fact companion audit:
+Closed implementation-fact architecture audit:
 
 - [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md)
+
+Frozen minimal harness design:
+
+- [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md)
 
 ---
 
@@ -80,20 +62,25 @@ Frozen before backend execution:
 4. H3 path-mediated hypothesis and geometry frozen.
 5. H3 mapped to production `VerticalEnvelopeUpdraftField` with `sigma=1000 m`, `W0=20 m/s`, vertical support `[0,8000] m`, and no rotation/inflow/outflow/downdraft.
 6. H3 seed frozen at `X0=(-3000,500,0) m`; no post-hoc retuning.
-7. At the actual 500 m initial height, H3 uses `q=(19,9) m/s`, hence `r_A=(14,+1)` and `r_B=(14,-4)` for the two frozen storm motions.
-8. Explicit Euler and `dt=0.1 s` frozen.
-9. Path-history sampling frozen: initial point plus accepted post-step position/time every fixed step; no FPS sampling/interpolation for primary metrics.
-10. Streamwise/crosswise basis/sign convention and exact-zero domain frozen.
-11. Exact `y=0` tracer disappearance mechanism confirmed.
-12. Analysis support semantics frozen; synthetic core T1 and support-aware Analysis remain distinct APIs.
-13. Synthetic H3 T1 path frozen to core `DiagnosticTiltingTendency`, with explicit containing-segment validity gating; out-of-profile legacy zero is excluded from T1 evidence.
-14. H3 sign-reversal semantics frozen: `epsilon_T1=1e-6 s^-2` is a material-sign guard, not physical zero; PASS requires opposite material signs across the same near-core passage within one containing sounding segment; no sampled zero is required.
-15. Synthetic C injection seam frozen: construct `StormRelativeEnvironmentalAdvectionField(environmentField, C_test)` directly; production DEMO composition remains unchanged.
-16. H3 minimal total field frozen as storm-relative environmental advection + synthetic updraft only.
-17. H3 geometry radius uses world horizontal `(x,z)`, not vertical `y`.
-18. H3 same-point control heights are `y=500,1500,2500 m`.
-19. Architecture audit **CLOSED**.
-20. Parent pre-experiment protocol updated to incorporate all closed-audit consequences and obsolete H3 assumptions removed.
+7. Explicit Euler and `dt=0.1 s` frozen.
+8. Path-history sampling frozen: initial point plus accepted post-step position/time every fixed step; no FPS sampling/interpolation for primary metrics.
+9. Streamwise/crosswise basis/sign convention and exact-zero domain frozen.
+10. Exact `y=0` tracer disappearance mechanism confirmed.
+11. Analysis support semantics frozen; synthetic core T1 and support-aware Analysis remain distinct APIs.
+12. Synthetic H3 T1 path frozen to core `DiagnosticTiltingTendency`, with explicit containing-segment validity gating; out-of-profile legacy zero is excluded from T1 evidence.
+13. H3 sign-reversal semantics frozen: `epsilon_T1=1e-6 s^-2` is a material-sign guard, not physical zero.
+14. Synthetic C injection seam frozen: construct `StormRelativeEnvironmentalAdvectionField(environmentField, C_test)` directly; production DEMO composition remains unchanged.
+15. H3 minimal total field frozen as storm-relative environmental advection + synthetic updraft only.
+16. H3 geometry radius uses world horizontal `(x,z)`.
+17. H3 same-point control heights are `y=500,1500,2500 m`.
+18. Architecture audit **CLOSED**.
+19. Parent protocol synchronized with the closed audit and obsolete H3 assumptions removed.
+20. Minimal validation harness design **FROZEN**.
+21. H1/H2 are direct algebraic/Eulerian Vitest controls; no tracer simulation or UI is required.
+22. H3 harness construction frozen to fresh independent simulations, `ATMOSPHERIC_TRACER_DOMAIN`, `TracerPathHistory(stride=1)`, 6000 fixed steps maximum, and discrete post-step diagnostics.
+23. H3 result schema frozen: geometry, sampled-w, valid sampled T1, support counts, lifecycle, same-point invariants, and explicit status records.
+24. Clean H3 sign reversal is local to the maximal contiguous `r <= 1500 m` core-passage window around global `r_min`, with opposite material signs on opposite sides of the core and one unchanged sounding segment across the evidence interval.
+25. First execution order frozen as H1 → classify → H2 → classify → H3 same-point controls → H3 trajectories.
 
 ---
 
@@ -118,35 +105,46 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 ## 5. Current step
 
-**Design and freeze the minimal validation harness procedure and output contract.**
+**Implement the frozen test-only validation harness without changing production physics.**
 
-The scientific expectations, architecture mapping, numerical tolerances, diagnostic-path semantics, and C injection seam are now synchronized in the parent protocol.
+The remaining pre-run gate is implementation/review, not research design.
 
-The remaining pre-run gate is procedural: specify exactly what the harness constructs, executes, records, and emits for H1/H2/H3 without adding production feature work.
+The intended first implementation is a dedicated validation Vitest module, e.g.:
+
+`src/validation/stormMotionSensitivity.validation.test.ts`
+
+It should import existing production backend classes directly and keep campaign-specific helpers local unless reuse later clearly justifies extraction.
 
 ---
 
 ## 6. NEXT ACTION
 
-**Define the minimal H1/H2/H3 validation-harness structure and exact result schema/observables, then commit that procedure to the parent protocol before implementing or executing the harness.**
+**Implement the frozen minimal validation harness from `research/2026-09-12-storm-motion-validation-harness-design.md`, run typecheck/tests only as implementation verification, and review the harness before executing/recording H1 scientific results.**
 
-No H1/H2/H3 backend run should occur before that harness contract is frozen.
+Do not alter production physics, DEMO composition, UI, ScenarioConfig, analytical expectations, synthetic inputs, or frozen tolerances to make the harness pass.
 
 ---
 
-## 7. Still open before backend experiments
+## 7. Still open before scientific backend results
 
 Architecture blockers: **none**.
 
 Scientific expectation blockers: **none currently identified**.
 
-Remaining pre-run work:
+Harness-design blockers: **none**.
 
-- freeze harness construction for H1/H2/H3;
-- freeze exact observables/result record per run;
-- freeze how PASS / FAIL / UNEXPLAINED / INVALID CONTROL are emitted and aggregated;
-- freeze execution order and output persistence/location;
-- only then implement the smallest harness and execute H1 → H2 → H3.
+Remaining gate:
+
+```text
+implement validation-only harness
+→ typecheck / implementation review
+→ execute H1
+→ classify H1 before continuing
+→ execute H2
+→ classify H2 before continuing
+→ execute H3 same-point controls + trajectories
+→ record frozen metrics
+```
 
 After synthetic validation:
 
@@ -175,23 +173,28 @@ Do not require a sampled T1 zero for H3 sign-reversal PASS.
 
 Do not count a sign change spanning different sounding segments as the clean same-segment reversal control.
 
+Do not search the whole 600 s H3 path for unrelated opposite signs; use the frozen local core-passage window.
+
 Do not change production DEMO composition merely to inject synthetic storm motion.
+
+Do not add product/UI architecture solely for the validation campaign.
 
 Do not attribute the `y=0` disappearance to the updraft alone.
 
 Do not treat `PROJECT_BACKLOG.md` as the current roadmap.
 
-Do not treat this file itself as implementation authorization.
+Do not treat this file itself as physics authority.
 
 ---
 
 ## 9. Current-state reading order
 
 1. **This file** — current phase and `NEXT ACTION`.
-2. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — frozen pre-experiment scientific protocol and next harness-design gate.
-3. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — closed implementation-fact audit.
-4. [`bugs/README.md`](bugs/README.md) — product defects found while auditing.
-5. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
-6. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
+2. [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md) — frozen implementation/output contract for the next step.
+3. [`research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md`](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md) — frozen scientific protocol and expectations.
+4. [`research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`](research/2026-09-11-storm-motion-sensitivity-architecture-audit.md) — closed implementation-fact audit.
+5. [`bugs/README.md`](bugs/README.md) — product defects found while auditing.
+6. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
+7. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-When the harness contract is frozen, update this file in the same project step that selects the first implementation action.
+When harness implementation is reviewed, update this file in the same project step that authorizes the first H1 execution.
