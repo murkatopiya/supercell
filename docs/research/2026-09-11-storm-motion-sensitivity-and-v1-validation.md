@@ -1,6 +1,6 @@
 # Storm-Motion Sensitivity & V1 Validation
 
-**Status:** RESEARCH PROTOCOL · PRE-EXPERIMENT · EXPECTATIONS NOT YET FULLY FROZEN
+**Status:** RESEARCH PROTOCOL · PRE-EXPERIMENT · ARCHITECTURE-SYNCHRONIZED · EXPECTATIONS FROZEN
 
 ## 1. Research purpose
 
@@ -10,11 +10,17 @@ The goal is not to discover that storm-relative quantities depend on storm motio
 
 The experiment must distinguish between:
 
-- quantities that are invariant under changing only constant storm motion `C`;
-- quantities that depend directly on `C`;
-- quantities that change only indirectly through the Lagrangian trajectory.
+- quantities invariant under changing only constant storm motion `C`;
+- quantities directly dependent on `C`;
+- quantities changing only indirectly through the Lagrangian trajectory.
 
-Observed/environmental fields, storm-relative representations, prescribed laboratory fields, and trajectory-sampled diagnostics must remain conceptually separate throughout the experiment.
+Observed/environmental fields, storm-relative representations, prescribed laboratory fields, and trajectory-sampled diagnostics remain conceptually separate throughout the experiment.
+
+The implementation-fact companion is:
+
+- `docs/research/2026-09-11-storm-motion-sensitivity-architecture-audit.md`
+
+That audit is closed. Its A6/A7/A8 findings are incorporated below.
 
 ---
 
@@ -22,7 +28,7 @@ Observed/environmental fields, storm-relative representations, prescribed labora
 
 Let the observed environmental wind profile be
 
-`q(z) = (u(z), v(z))`.
+`q(h) = (u(h), v(h))`.
 
 Let constant storm motion be
 
@@ -30,310 +36,189 @@ Let constant storm motion be
 
 Storm-relative environmental wind is
 
-`r(z) = q(z) - C`.
+`r(h) = q(h) - C`.
 
-Changing only constant `C` leaves the observed sounding unchanged.
-
-For any two levels,
+Changing only constant `C` leaves the observed sounding unchanged. For any two levels,
 
 `(q_2 - C) - (q_1 - C) = q_2 - q_1`,
 
 therefore vertical shear and quantities derived only from vertical derivatives of the environmental wind remain unchanged.
 
-The current V1 T1 diagnostic is a reduced-field vertical-vorticity tilting diagnostic:
+The V1 reduced-field tilting diagnostic is
 
 `T1 = omega_h · grad_h(w_updraft)`.
 
-It is not the full tilting term of the laboratory flow and it is not a vorticity-evolution equation for a tracer.
+It is not the full tilting term of the laboratory flow and is not a vorticity-evolution equation for a tracer.
 
-At a fixed spatial point, if only `C` changes, both environmental horizontal vorticity `omega_h` and the prescribed updraft gradient remain unchanged; therefore local Eulerian `T1(x,y,z)` must remain unchanged.
+At a fixed spatial point, changing only `C` leaves both environmental horizontal vorticity `omega_h` and the prescribed updraft gradient unchanged. Therefore local Eulerian `T1(x,y,z)` must remain unchanged.
 
-A tracer may nevertheless sample different values because changing `C` changes the full advecting velocity and therefore its trajectory.
+A tracer may nevertheless sample different values because changing `C` changes the environmental advection contribution to `V_total`, hence its trajectory.
 
 ---
 
 ## 3. Quantity classification
 
-### 3.1 C-invariant under a constant storm-motion change
+### 3.1 C-invariant
 
 Expected to remain unchanged:
 
-- observed environmental wind `q(z)`;
-- vertical shear `dq/dz`;
+- observed environmental wind `q(h)`;
+- vertical shear `dq/dh`;
 - environmental horizontal vorticity `omega_h`;
-- prescribed updraft field `w(x,y,z)`;
+- prescribed updraft `w(x,y,z)`;
 - `grad_h(w)` at a fixed spatial point;
 - local Eulerian `T1(x,y,z)`;
-- shape of the storm-relative hodograph, including inter-level distances and segment directions.
+- storm-relative hodograph shape, including inter-level distances and segment directions.
 
 ### 3.2 Directly C-dependent
 
 Expected to change directly with `C`:
 
-- storm-relative wind `r(z) = q(z) - C`;
-- position of the storm-relative hodograph relative to the origin;
+- storm-relative wind `r(h) = q(h) - C`;
+- storm-relative hodograph position relative to the origin;
 - streamwise/crosswise decomposition of environmental horizontal vorticity relative to storm-relative flow;
 - SRH for a fixed layer, except along iso-SRH directions;
-- full advecting velocity at a fixed point where the environmental storm-relative component contributes.
+- full advecting velocity at a fixed point where the environmental storm-relative operand contributes.
 
-### 3.3 Indirect / path-mediated response
+### 3.3 Indirect / path-mediated
 
 Expected to change only through the altered trajectory:
 
 - tracer trajectory `X(t)`;
-- prescribed-field values sampled along the trajectory;
-- `T1(X(t))` sampled along the trajectory;
+- prescribed-field values sampled along that trajectory;
+- `T1(X(t))` sampled along that trajectory;
 - other Lagrangian diagnostics derived from the recorded path.
 
 ---
 
 ## 4. Hypothesis H1 — Eulerian translation invariance
 
-### 4.1 Hypothesis
+### 4.1 Synthetic environmental control
 
-Changing only constant storm motion `C` must translate the storm-relative hodograph without deforming it and must not alter the observed environmental wind, vertical shear, environmental horizontal vorticity, prescribed updraft field, prescribed updraft gradient, or local Eulerian T1 field.
+Use a linear wind profile with a straight hodograph along the eastward axis:
 
-Storm-relative representations may change even while the underlying Eulerian environmental and prescribed fields remain identical.
-
-### 4.2 Synthetic environmental control
-
-Use an intentionally simple linear wind profile with a perfectly straight hodograph along the x-axis:
-
-| z (km) | u (m/s) | v (m/s) |
+| h (km) | u (m/s) | v (m/s) |
 |---:|---:|---:|
 | 0 | 0 | 0 |
 | 1 | 10 | 0 |
 | 2 | 20 | 0 |
 | 3 | 30 | 0 |
 
-Thus the 0–3 km bulk shear vector is parallel to `+x`.
+Thus the 0–3 km bulk shear is parallel to `+east`.
 
-The prescribed updraft field is held fixed across all runs. Its exact synthetic specification and numerical control points will be frozen before the experiment is executed.
+No tracer is required for the primary H1 Eulerian control.
 
-No tracer is required for the primary H1 Eulerian control. H1 is deliberately separated from Lagrangian path effects.
+### 4.2 Sweep A — C parallel to bulk shear
 
-### 4.3 Sweep A — storm motion parallel to bulk shear
-
-Use a small storm-motion parameter sweep along the bulk-shear direction:
+Use:
 
 - `C1 = (0, 0) m/s`
 - `C2 = (10, 0) m/s`
 - `C3 = (20, 0) m/s`
 - `C4 = (30, 0) m/s`
 
-Expected result:
+Expected:
 
-- the storm-relative hodograph translates rigidly along x;
-- its shape does not change;
-- `q(z)`, `dq/dz`, `omega_h`, prescribed `w`, `grad_h(w)`, and local `T1` remain identical at fixed spatial control points within the numerical tolerance defined before execution;
-- storm-relative wind `r(z)` changes;
-- streamwise/crosswise decomposition may change because the storm-relative basis changes;
-- 0–3 km SRH remains zero for this synthetic geometry.
+- rigid storm-relative hodograph translation with no deformation;
+- invariant `q`, shear, `omega_h`, prescribed `w`, prescribed `grad_h(w)`, and local T1 at identical spatial points;
+- changing storm-relative wind;
+- potentially changing streamwise/crosswise decomposition;
+- `SRH_0-3 = 0` for every member of this sweep.
 
-For this straight hodograph, all storm-relative wind vectors lie on the x-axis. Environmental horizontal vorticity is perpendicular to the shear and therefore lies along the y-axis up to sign convention. Away from levels where `|r| = 0`, environmental horizontal vorticity is purely crosswise relative to the storm-relative flow and the streamwise component is zero.
+At `h = 1.5 km`, `q=(15,0) m/s`:
 
-At levels where `|r| = 0`, the direction of storm-relative flow is undefined, so streamwise/crosswise decomposition is also undefined at that exact level.
+- with `C=(10,0)`, `r=(+5,0)`;
+- with `C=(20,0)`, `r=(-5,0)`.
 
-### 4.4 Signed crosswise reversal control
+Environmental `omega_h` remains unchanged, streamwise vorticity remains zero, crosswise magnitude is unchanged, and the signed crosswise component reverses under the frozen left-normal convention.
 
-At `z = 1.5 km`, the linear profile gives
+If exact horizontal `|r|=0`, streamwise/crosswise decomposition is undefined. The core diagnostic is expected to report the undefined domain rather than numeric zero.
 
-`q = (15, 0) m/s`.
+### 4.3 Sweep B — C transverse to bulk shear
 
-For
-
-- `C = (10, 0)`, `r = (+5, 0)`;
-- `C = (20, 0)`, `r = (-5, 0)`.
-
-Expected result:
-
-- environmental `omega_h` is unchanged;
-- streamwise component remains zero;
-- crosswise magnitude remains unchanged;
-- the signed crosswise component reverses sign because the storm-relative flow direction reverses by 180 degrees;
-- local Eulerian `T1` at the same spatial point remains unchanged.
-
-This is an important validation contrast: a storm-relative representation may change sign while the underlying environmental vorticity and local Eulerian tilting field remain unchanged.
-
-### 4.5 Sweep B — storm motion across the bulk-shear direction
-
-A second sweep is required to demonstrate that local Eulerian T1 invariance is not an artifact of moving only along an iso-SRH direction.
-
-Use, for example:
+Use:
 
 - `C5 = (10, -10) m/s`
 - `C6 = (10, 0) m/s`
 - `C7 = (10, +10) m/s`
 
-Expected result:
+Expected:
 
-- SRH changes across this sweep;
+- SRH changes across the sweep;
 - storm-relative wind and hodograph position change;
 - streamwise/crosswise decomposition changes;
-- observed `q(z)`, vertical shear, environmental `omega_h`, prescribed `w`, `grad_h(w)`, and local Eulerian `T1` remain unchanged at fixed spatial control points.
+- all C-invariant Eulerian quantities remain unchanged.
 
-This sweep is necessary because H1 is intended to test invariance to constant `C` generally, not only invariance along a special iso-SRH line.
+### 4.4 H1 investigation criteria
 
-### 4.6 H1 falsification criteria
+Investigate if changing only `C` causes beyond frozen tolerance:
 
-H1 is falsified, or the implementation requires investigation, if changing only constant `C` causes any of the following beyond the frozen numerical tolerance:
+- hodograph deformation rather than translation;
+- changes in `q`, shear, `omega_h`, prescribed `w`, prescribed `grad_h(w)`, or same-point local T1;
+- non-zero 0–3 km SRH in Sweep A;
+- failure of the expected 1.5 km signed-crosswise reversal.
 
-- deformation of the storm-relative hodograph rather than rigid translation;
-- change in observed `q(z)`;
-- change in vertical shear;
-- change in environmental horizontal vorticity;
-- change in the prescribed updraft field or its spatial gradient at a fixed point;
-- change in local Eulerian `T1` at the same spatial point;
-- non-zero 0–3 km SRH in Sweep A for the straight x-axis synthetic hodograph;
-- failure of the expected signed crosswise reversal at the 1.5 km control level.
-
-Any discrepancy must be investigated before the expected result is modified. Possible causes include an incomplete analytical assumption, an incorrectly constructed synthetic case, an unintended hidden dependency on `C`, or an implementation defect.
+Predictions are not edited after execution merely to fit backend output.
 
 ---
 
-## 5. Hypothesis H2 — Direct storm-relative C response
+## 5. Hypothesis H2 — direct storm-relative C response
 
-### 5.1 Hypothesis
+### 5.1 Synthetic control
 
-Changing only constant storm motion `C` must change storm-relative wind, storm-relative hodograph position, streamwise/crosswise decomposition, and layer SRH in the analytically expected way while leaving the C-invariant Eulerian quantities from H1 unchanged.
+Reuse the H1 straight profile. Hold environmental and prescribed fields fixed.
 
-For a fixed sounding and fixed integration layer, SRH is linear in `C`. Therefore storm motions separated along the layer bulk-shear direction may have identical SRH even though their storm-relative wind vectors differ at every level.
-
-H2 explicitly tests both the direct C-response and this iso-SRH degeneracy.
-
-### 5.2 Synthetic control
-
-Reuse the same straight x-axis environmental hodograph as H1:
-
-| z (km) | u (m/s) | v (m/s) |
-|---:|---:|---:|
-| 0 | 0 | 0 |
-| 1 | 10 | 0 |
-| 2 | 20 | 0 |
-| 3 | 30 | 0 |
-
-Thus the 0–3 km bulk shear is
-
-`Delta q_0-3 = (30, 0) m/s`.
-
-Hold the observed sounding and prescribed laboratory fields fixed.
-
-Use three storm motions:
+Use:
 
 - `C1 = (10, 0) m/s`
 - `C2 = (10, +10) m/s`
 - `C3 = (20, +10) m/s`
 
-The transition `C1 -> C2` is perpendicular to the bulk-shear direction. The transition `C2 -> C3` is parallel to the bulk-shear direction.
+The transition `C1 -> C2` is transverse to 0–3 km bulk shear. The transition `C2 -> C3` is parallel to it.
 
-### 5.3 Frozen SRH sign convention
+### 5.2 Frozen SRH convention and expectations
 
-For this validation campaign use
+Use
 
-`SRH = integral[(u - C_e) dv/dz - (v - C_n) du/dz] dz`.
+`SRH = integral[(u - C_e) dv/dh - (v - C_n) du/dh] dh`.
 
-With this convention, the synthetic profile has `dv/dz = 0` and positive `du/dz`.
+Expected:
 
-Care must be taken not to infer the SRH sign solely from an ordinary visual clockwise/counter-clockwise area convention. The SRH sign is defined by the equation above.
+- `SRH_0-3(C1) = 0 m^2/s^2`;
+- `SRH_0-3(C2) = +300 m^2/s^2`;
+- `SRH_0-3(C3) = +300 m^2/s^2`.
 
-### 5.4 Expected SRH response
+Thus `C2` and `C3` are the frozen iso-SRH degeneracy pair even though `r_C2(h) != r_C3(h)` at every level.
 
-For `C1 = (10, 0) m/s`:
+### 5.3 Frozen decomposition control at 1.5 km
 
-- all storm-relative wind vectors lie on the x-axis;
-- the oriented SRH contribution is zero;
-- expected `SRH_0-3(C1) = 0 m^2/s^2`.
+At `h=1.5 km`, `q=(15,0)`:
 
-For `C2 = (10, +10) m/s`:
+- `C2` gives `r2=(+5,-10)`;
+- `C3` gives `r3=(-5,-10)`.
 
-- `v - C_n = -10 m/s` throughout the layer;
-- `dv/dz = 0`;
-- `Delta u = +30 m/s` from 0 to 3 km;
-- expected `SRH_0-3(C2) = -(-10) * 30 = +300 m^2/s^2`.
+With the production core convention
 
-For `C3 = (20, +10) m/s`:
+`c_hat = (-v,u)/|V_sr,h|`,
 
-- the storm-relative wind differs from `C2` at every level because the eastward storm-motion component is 10 m/s larger;
-- the shift `C2 -> C3` is parallel to the 0–3 km bulk-shear vector;
-- expected `SRH_0-3(C3) = +300 m^2/s^2`.
+expected:
 
-Therefore the first frozen iso-SRH degeneracy pair is
+- identical streamwise component;
+- identical crosswise magnitude;
+- opposite signed crosswise component.
 
-`SRH_0-3(C2) = SRH_0-3(C3) = +300 m^2/s^2`,
+If the synthetic evaluation hits exact horizontal `V_sr=(0,0)`, expected outcome is undefined decomposition / `StreamwiseCrosswiseVorticityError`, never numeric zero.
 
-while
+### 5.4 H2 investigation criteria
 
-`r_C2(z) != r_C3(z)` at every level.
+Investigate if beyond frozen tolerance:
 
-### 5.5 Expected non-SRH quantities
-
-Across `C1`, `C2`, and `C3`:
-
-Expected to remain invariant:
-
-- observed `q(z)`;
-- vertical shear;
-- environmental horizontal vorticity;
-- prescribed `w`;
-- prescribed `grad_h(w)` at fixed points;
-- local Eulerian `T1` at fixed points;
-- storm-relative hodograph shape.
-
-Expected to change directly with `C`:
-
-- storm-relative wind `r(z)`;
-- storm-relative hodograph position relative to the origin;
-- streamwise/crosswise decomposition wherever `|r| > 0`;
-- SRH from `C1` to `C2`.
-
-Expected degeneracy control:
-
-- `C2` and `C3` have different storm-relative winds and different hodograph positions relative to the origin;
-- `C2` and `C3` nevertheless have identical 0–3 km SRH.
-
-### 5.6 Decomposition control at z = 1.5 km
-
-At `z = 1.5 km`, the environmental wind is
-
-`q = (15, 0) m/s`.
-
-For the iso-SRH pair:
-
-- `C2 = (10, +10) m/s` gives `r2 = (+5, -10) m/s`;
-- `C3 = (20, +10) m/s` gives `r3 = (-5, -10) m/s`.
-
-For this straight hodograph, environmental horizontal vorticity is directed along `+y` under the sign convention used for this control and is identical in both runs.
-
-Because `|r2| = |r3| = sqrt(125) = 5*sqrt(5) m/s`, the two storm-relative flow directions are mirror images across the y-axis. Therefore the expected decomposition is:
-
-- streamwise component: identical for `C2` and `C3`;
-- crosswise magnitude: identical for `C2` and `C3`;
-- signed crosswise component: equal magnitude and opposite sign.
-
-If `|omega_h| = Omega`, then the normalized projection factors are
-
-- streamwise: `-2/sqrt(5)` in both runs, so `omega_streamwise = -(2/sqrt(5))*Omega`;
-- crosswise magnitude: `1/sqrt(5)` in both runs;
-- signed crosswise component: `+(1/sqrt(5))*Omega` in one run and `-(1/sqrt(5))*Omega` in the other, with the exact sign assignment determined by the frozen crosswise-axis convention.
-
-This control demonstrates that identical layer SRH does not imply identical local storm-relative decomposition, even though the environmental horizontal vorticity itself is unchanged.
-
-### 5.7 H2 falsification criteria
-
-H2 is falsified, or the implementation requires investigation, if any of the following occurs beyond the frozen numerical tolerance:
-
-- `SRH_0-3(C1)` is not zero;
-- `SRH_0-3(C2)` does not equal `+300 m^2/s^2`;
-- `SRH_0-3(C3)` does not equal `+300 m^2/s^2`;
-- `C2` and `C3` produce different 0–3 km SRH despite differing only along the bulk-shear direction;
-- the storm-relative hodograph deforms instead of translating;
-- C-invariant Eulerian quantities from H1 change;
-- storm-relative winds fail to respond to the imposed change in `C`;
-- at `z = 1.5 km`, the streamwise components for `C2` and `C3` are not equal;
-- at `z = 1.5 km`, the crosswise magnitudes for `C2` and `C3` are not equal;
-- at `z = 1.5 km`, the signed crosswise components for `C2` and `C3` do not have equal magnitude and opposite sign.
-
-As in H1, any mismatch must be investigated before the analytical expectation is edited.
+- SRH differs from `0`, `+300`, `+300` as specified;
+- C2/C3 cease to be iso-SRH;
+- the hodograph deforms;
+- C-invariant Eulerian quantities change;
+- storm-relative wind does not respond to C;
+- the 1.5 km decomposition fails the frozen equality/opposite-sign relations.
 
 ---
 
@@ -343,353 +228,332 @@ As in H1, any mismatch must be investigated before the analytical expectation is
 
 Changing only constant storm motion `C` can alter the tracer trajectory because the storm-relative environmental contribution to the full advecting velocity changes.
 
-Therefore trajectory-sampled quantities may differ even though the underlying Eulerian environmental and prescribed laboratory fields are identical.
+The causal chain is
 
-The causal chain to be tested is
+`C -> V_env,sr -> V_total -> X(t) -> sampled w(X(t)), sampled T1(X(t))`.
 
-`C -> V_total -> X(t) -> sampled w(X(t)), sampled T1(X(t))`.
+H3 must never be interpreted as direct C-dependence of the prescribed updraft or of local Eulerian T1.
 
-H3 must not be interpreted as a direct C-dependence of the prescribed updraft or of the local Eulerian T1 field.
+### 6.2 Frozen synthetic sounding
 
-### 6.2 Frozen synthetic control geometry
+Use the curved piecewise-linear profile:
 
-Use the following curved environmental hodograph with piecewise-linear interpolation in height between control levels:
-
-| z (km) | u (m/s) | v (m/s) |
+| h (km) | u (m/s) | v (m/s) |
 |---:|---:|---:|
 | 0 | 15 | 8 |
 | 1 | 23 | 10 |
 | 2 | 29 | 16 |
 | 3 | 31 | 24 |
 
-The sounding is held fixed in all H3 runs.
+The sounding is identical in both H3 runs.
 
-Use a deliberately simple symmetric horizontal Gaussian updraft centered at the origin:
+### 6.3 Frozen production-compatible updraft mapping
 
-`w(x,y) = w_max * exp(-(x^2 + y^2)/(2*sigma^2))`
+Use the existing `VerticalEnvelopeUpdraftField` law, not the earlier height-invariant approximation.
 
-with
+Frozen parameters:
 
-- center `(x_c, y_c) = (0, 0) m`;
-- `sigma = 1000 m`;
-- `w_max = 20 m/s`;
-- no prescribed rotation;
-- no prescribed radial inflow;
-- no other storm-local horizontal-flow component in the primary H3 control.
+- axis `(x,z)=(0,0) m`;
+- horizontal `sigma=1000 m`;
+- `W0=20 m/s`;
+- `baseHeight=0 m`;
+- `topHeight=8000 m`;
+- no rotation;
+- no lower radial inflow;
+- no upper or near-ground outflow;
+- no downdraft;
+- no other prescribed horizontal storm-local field.
 
-For this synthetic control, the horizontal Gaussian shape is treated as unchanged with height over the active control layer unless the architecture audit shows that V1 requires an explicit vertical envelope. Any required mapping to an existing V1 vertical envelope must preserve the same horizontal field for both runs and must be documented before execution.
+The field is
 
-The horizontal gradient is
+`w(x,y,z) = W0 * exp(-(x^2+z^2)/(2*sigma^2)) * sin(pi*y/8000)`
 
-`grad_h(w) = -(w/sigma^2) * (x, y)`.
+for `0 < y < 8000 m`, with the existing V1 zero-at/outside-lid semantics.
 
-Therefore:
+At fixed altitude the horizontal gradient is radial and vanishes on the axis. The global maximum horizontal-gradient scale occurs where the vertical envelope is maximal and `r=sigma`; its analytical upper bound is
 
-- `w` is maximal at `r = 0`;
-- `|grad_h(w)| = 0` at `r = 0`;
-- `|grad_h(w)|` is maximal at `r = sigma = 1000 m`;
-- the analytical maximum gradient magnitude is `(w_max/sigma) * exp(-1/2) ~= 0.01213 s^-1`.
+`(W0/sigma) * exp(-1/2) ~= 0.01213 s^-1`.
 
-Use one identical tracer seed in both runs:
+At other heights the gradient is reduced by the half-sine vertical factor.
 
-`X_0 = (-3000, 0, 0) m`.
+### 6.4 Frozen seed, timestep, window, and storm motions
 
-Freeze the integration window at
+Use the same seed in both runs:
 
-`0 <= t <= 600 s`.
+`X0 = (-3000, 500, 0) m`.
 
-Use two storm motions:
+This supersedes the obsolete `y0=0` seed.
 
-- **Run A / near-core:** `C_A = (5, 8) m/s`;
-- **Run B / flank:** `C_B = (5, 13) m/s`.
+Use:
 
-At the surface, where `q(0) = (15, 8) m/s`, the initial storm-relative winds are
+- explicit Euler;
+- `dt = 0.1 s`;
+- integration window `0 <= t <= 600 s`;
+- `C_A = (5,8) m/s`;
+- `C_B = (5,13) m/s`.
 
-- Run A: `r_A(0) = (10, 0) m/s`;
-- Run B: `r_B(0) = (10, -5) m/s`.
+At the actual frozen initial altitude `h=500 m`, piecewise-linear interpolation gives
 
-Thus Run A initially carries the tracer directly toward the updraft center along `+x`, while Run B introduces a substantial southward cross-track component. As the tracer rises through the curved sounding, its storm-relative direction changes with height, so the full trajectories are not assumed to be straight lines.
+`q(500 m) = (19,9) m/s`.
 
-The frozen qualitative trajectory target is:
+Therefore initial storm-relative winds are
 
-- Run A passes through or very near the central updraft region and samples the strongest ascent;
-- Run B makes a clear flank passage, remaining materially farther from the center and sampling weaker peak ascent while still entering the strong-gradient region near `r ~= sigma`.
+- Run A: `r_A=(14,+1) m/s`;
+- Run B: `r_B=(14,-4) m/s`.
 
-The exact closest-approach radius, time of closest approach, maximum sampled `w`, and maximum sampled `|T1|` are **not** frozen numerically before execution; they are outcomes of the integrated trajectory. The frozen expectation is the ordering and causal structure, not a preselected backend result.
+Run A is therefore initially nearly aligned toward the updraft from the west, while Run B has the larger cross-track component. The exact trajectories remain experiment outcomes.
 
-If the actual V1 architecture cannot represent this control exactly, the architecture audit must document the smallest faithful mapping before any run. The control must not be silently altered to fit an implementation result.
+The seed must not be moved after results merely to improve contrast.
 
-### 6.3 Frozen Eulerian expectations
+### 6.5 Frozen Eulerian expectations
 
-Across Run A and Run B, changing only `C` must leave the following fields unchanged at the same spatial point:
+Across Run A and Run B, identical spatial points must have identical:
 
-- observed environmental wind `q(z)`;
-- vertical shear and environmental horizontal vorticity;
-- prescribed updraft `w(x,y,z)`;
-- prescribed horizontal updraft gradient `grad_h(w)`;
-- local Eulerian `T1(x,y,z) = omega_h · grad_h(w)`.
+- environmental `q`;
+- shear and `omega_h`;
+- prescribed `w`;
+- prescribed `grad_h(w)`;
+- local Eulerian T1.
 
-If both runs are evaluated at the same spatial control point, local `w` and local `T1` must be identical within numerical tolerance.
+Any C-response in sampled values must arise through the differing paths.
 
-If the two tracer trajectories happen to pass through the same spatial point, the local field values there must also agree. A different value at the same point solely because `C` differs would indicate an unintended direct C-dependence.
+### 6.6 Frozen Lagrangian expectations
 
-### 6.4 Frozen Lagrangian expectations
+Expected in general:
 
-Run A and Run B are expected to produce different trajectories:
+`X_A(t) != X_B(t)`.
 
-`X_A(t) != X_B(t)` in general.
+Primary qualitative geometry target:
 
-Therefore they may sample different histories from the same unchanged fields:
+- Run A: near-core passage;
+- Run B: flank passage.
 
-`w_A(t) = w(X_A(t))`
-
-`w_B(t) = w(X_B(t))`
-
-and
-
-`T1_A(t) = T1(X_A(t))`
-
-`T1_B(t) = T1(X_B(t))`.
-
-For the core-crossing Run A, the expected sampled vertical velocity is substantially stronger than in Run B, which misses the core. In particular, the frozen directional expectation is
+Primary sampled-ascent expectation:
 
 `max_t w_A(t) > max_t w_B(t)`.
 
-Run B is expected to experience weaker ascent because it remains farther from the updraft core.
+No ordering is frozen for `max |T1|`; a flank trajectory may sample a strong gradient even with weaker peak `w`.
 
-No corresponding ordering is frozen for `max |T1|`. Run B may sample a substantial or even comparable `|T1|` if its flank trajectory follows the strong-gradient annulus near `r = sigma`.
+### 6.7 Frozen H3 diagnostic path
 
-However, weaker sampled `w` does **not** imply proportionally weaker sampled `T1`.
+The synthetic H3 sounding is an ordinary `EnvironmentalWindProfile`, not an ESC Analysis column.
 
-### 6.5 Updraft-gradient distinction
+Therefore the primary synthetic H3 T1 value path is the existing core/legacy `DiagnosticTiltingTendency(profile, updraft)`, using the same synthetic profile and the same frozen updraft instance as the experiment.
 
-For a smooth symmetric Gaussian-like updraft, `w` is maximal at the center while the horizontal gradient `grad_h(w)` vanishes at the exact center.
+However, legacy numeric zero outside profile support is **not** accepted as T1 evidence. The harness must gate every H3 T1 metric by existence of a real containing environmental sounding segment. Samples outside the synthetic 0–3 km sounding support are excluded from T1 maxima/sign evidence rather than interpreted as physical zero.
 
-The strongest horizontal gradient lies on the flanks of the updraft rather than at its center.
+This is a synthetic-validation convention only. It does not convert synthetic H3 into ESC Analysis semantics.
 
-Therefore a core-crossing tracer may experience a qualitative sequence such as
+For observed-environment Analysis work later:
 
-`weak w -> strong |grad_h(w)| -> max w / |grad_h(w)| ~= 0 -> strong |grad_h(w)| -> weak w`.
+- `FULL_SUPPORT` and `BOUNDARY_CONDITIONED` are numeric T1 states and their status must be preserved;
+- `OUT_OF_DOMAIN` and `COLUMN_UNAVAILABLE` have no numeric T1 and are never zero substitutes;
+- Analysis height support is profile-relative, not tied to the laboratory ground plane.
 
-Consequently:
+### 6.8 Frozen T1 sign-reversal control
 
-- the location/time of maximum sampled `w` need not coincide with the location/time of maximum `|T1|`;
-- `max sampled w` and `max sampled |T1|` are not expected to vary in lockstep;
-- a peripheral Run B trajectory may sample substantial `|T1|` if it follows a strong-gradient flank even while never entering the updraft core.
+For Run A, sign reversal is conditional on the realized geometry actually sampling opposite flanks of one near-core passage with a non-zero projection onto environmental `omega_h`.
 
-This distinction is essential: `T1` depends on `grad_h(w)`, not on the magnitude of `w` alone.
+Define the experiment-level material-sign guard
 
-### 6.6 T1 sign-reversal control for a core crossing
+`epsilon_T1 = 1e-6 s^-2`.
 
-For a sufficiently symmetric core crossing, the horizontal updraft gradient on the entry side and exit side points in approximately opposite directions.
+This is **not** a physical zero epsilon. It classifies evidence only:
 
-If environmental `omega_h` does not reverse across that crossing, then
+- `T1 > +epsilon_T1` -> materially positive;
+- `T1 < -epsilon_T1` -> materially negative;
+- `|T1| <= epsilon_T1` -> neutral/near-zero for classification only.
 
-`T1 = omega_h · grad_h(w)`
+Run A satisfies the clean sign-reversal control only if:
 
-is expected to reverse sign between the two sides of the updraft.
+1. valid numeric T1 on one side of one core passage has one material sign;
+2. valid numeric T1 on the other side has the opposite material sign;
+3. both pieces of sign evidence belong to the same containing environmental sounding segment, so segment `omega_h` is unchanged;
+4. the evidence is local to that one passage, not merely a plus and minus somewhere in the 600 s run.
 
-The exact sign ordering depends on the orientation of `omega_h` and on the tracer crossing direction, so the protocol does not yet freeze whether the sequence is positive-to-negative or negative-to-positive.
+Positive-to-negative and negative-to-positive are both acceptable.
 
-The expected qualitative structure is
+A sampled neutral point is not required. If adjacent valid samples jump directly between opposite material signs, record a **discrete sign transition**. Do not interpolate a zero-crossing time for the primary metric.
 
-`one T1 sign -> approximately zero near the symmetric center -> opposite T1 sign`.
+If the containing sounding segment changes across the candidate event, record it descriptively but do not count it as this clean same-segment sign-reversal PASS.
 
-Run B, which remains on one side of the updraft or misses the core, is not required to show the same symmetric sign reversal and may retain one T1 sign over the relevant interval.
-
-This sign change, if the final frozen geometry satisfies the symmetry assumptions, provides a stronger path-shape control than comparing only maxima.
-
-### 6.7 H3 falsification / investigation criteria
-
-H3 is falsified, or the implementation requires investigation, if any of the following occurs beyond the frozen numerical tolerance or without a documented geometric reason:
-
-- changing only `C` changes the prescribed Eulerian `w(x,y,z)` field;
-- changing only `C` changes local Eulerian `T1(x,y,z)` at the same spatial point;
-- the full advecting velocity fails to respond to a change in `C` where the storm-relative environmental term should contribute;
-- Run A and Run B remain numerically identical despite the frozen setup producing materially different storm-relative environmental velocities;
-- the intended Run A near-core / Run B flank ordering fails without an identifiable synthetic-geometry or implementation reason;
-- sampled `w(t)` or sampled `T1(t)` differ at the same spatial point rather than only because the trajectories sample different points;
-- the final near-core setup samples both sides of the updraft in a geometry that predicts a T1 sign reversal, but no reversal appears and no interpolation/discretization explanation is found.
-
-Failure to obtain the intended near-core/flank contrast is first treated as a synthetic-case design failure, not automatically as a V1 physics failure. The actual trajectories must be inspected before interpreting sampled-diagnostic differences.
-
-### 6.8 Later stronger degeneracy control
-
-After the basic H3 path-mediated case passes, a stronger follow-up may compare two storm motions with identical layer SRH but different storm-relative wind profiles/positions and different trajectories.
-
-The purpose would be to demonstrate that equal integrated SRH does not uniquely determine the Lagrangian path through the prescribed laboratory flow and therefore does not uniquely determine sampled `w(X(t))` or sampled `T1(X(t))`.
-
-This stronger case is explicitly secondary and should not complicate the first H3 control.
+Run B is not required to reverse sign.
 
 ---
 
 ## 7. Numerical controls and tolerances
 
-**Status:** PARTIALLY FROZEN · PHYSICS/GEOMETRY CRITERIA FROZEN · SOLVER-SPECIFIC SETTINGS PENDING ARCHITECTURE AUDIT.
+**Status:** FROZEN FOR H1/H2/H3 PRE-EXPERIMENT EXECUTION.
 
-The purpose of the numerical control matrix is to define PASS/FAIL criteria before the backend is executed. Tolerances must not be widened after seeing a result merely to make a discrepancy pass.
+### 7.1 Strict equality class
 
-### 7.1 Strict equality class for Eulerian/algebraic invariants
+For quantities expected identical under changing only C at the same point:
 
-For quantities that should be identical under a change in constant storm motion `C` at the same spatial/vertical point, use a strict floating-point comparison:
+`|a-b| <= atol + rtol*max(|a|,|b|)`
 
-`|a - b| <= atol + rtol * max(|a|, |b|)`
-
-with provisional frozen values
+with
 
 - `atol = 1e-9`;
 - `rtol = 1e-9`.
 
-This class applies to direct same-point comparisons of quantities such as:
+This applies to same-point `q`, shear, `omega_h`, prescribed `w`, prescribed `grad_h(w)`, and local T1.
 
-- observed `q(z)`;
-- vertical shear;
-- environmental `omega_h`;
-- prescribed local `w`;
-- prescribed local `grad_h(w)`;
-- local Eulerian `T1`.
-
-If the architecture audit shows that any of these values are intentionally produced through a numerically lossy interpolation or serialization boundary, the tolerance may be revised **before the first experiment run**, with the reason documented. It must not be revised post hoc in response to a failed result.
+Do not widen these tolerances after observing a failed result merely to make it pass.
 
 ### 7.2 SRH analytical controls
 
-For the straight H1/H2 synthetic profile, use absolute tolerances because the expected values are analytically simple.
+Frozen:
 
-Frozen checks:
+- expected zero: `|SRH| <= 1e-6 m^2/s^2`;
+- expected `+300`: `|SRH-300| <= 1e-6 m^2/s^2`.
 
-- expected zero SRH: `|SRH| <= 1e-6 m^2/s^2`;
-- expected `+300 m^2/s^2`: `|SRH - 300| <= 1e-6 m^2/s^2`.
+### 7.3 H3 same-point Eulerian grid
 
-These checks apply to the frozen H1/H2 layer definitions and sign convention. Any implementation-specific SRH interpolation/integration behavior must be audited before execution if it prevents the synthetic profile from being represented exactly.
+Use horizontal points:
 
-### 7.3 H3 same-point Eulerian control grid
+- `(0,0)`;
+- `(+1000,0)`;
+- `(-1000,0)`;
+- `(0,+1000)` m in the world `(x,z)` horizontal plane.
 
-For H3, evaluate the unchanged Eulerian fields under both `C_A` and `C_B` at a fixed control grid.
+Use vertical heights:
 
-Horizontal control points:
+- `y=500 m`;
+- `y=1500 m`;
+- `y=2500 m`.
 
-- core: `(0, 0)` m;
-- east gradient ring: `(+1000, 0)` m;
-- west gradient ring: `(-1000, 0)` m;
-- north gradient ring: `(0, +1000)` m.
-
-Vertical control levels:
-
-- `z = 0.5 km`;
-- `z = 1.5 km`;
-- `z = 2.5 km`.
-
-At all twelve spatial control points, compare at minimum:
+At all twelve points compare at minimum:
 
 - local `w`;
-- local `grad_h(w)`;
-- local `T1`.
+- local horizontal `grad_h(w)`;
+- local T1.
 
-Run A and Run B must agree under the strict equality class in §7.1. These controls are intended to detect any hidden direct dependency of prescribed/local Eulerian fields on `C`.
+Run A and Run B must agree under §7.1.
 
-### 7.4 H3 trajectory-geometry criteria
+### 7.4 H3 trajectory geometry
 
-Define horizontal distance from the tracer to the updraft axis as
+Define horizontal radius from the updraft axis as
 
-`r(t) = sqrt(x(t)^2 + y(t)^2)`.
+`r(t) = sqrt(x(t)^2 + z(t)^2)`.
 
-Let `r_min` be the minimum value over the frozen `0–600 s` integration window.
+Frozen targets:
 
-Frozen geometry targets:
+- Run A: `r_min,A <= 500 m`;
+- Run B: `750 m <= r_min,B <= 1500 m`.
 
-- **Run A / near-core:** `r_min,A <= 0.5 sigma = 500 m`;
-- **Run B / flank:** `0.75 sigma <= r_min,B <= 1.5 sigma`, i.e. `750 m <= r_min,B <= 1500 m`.
+At `r=0.5 sigma`, the horizontal Gaussian factor is `exp(-0.125) ~= 0.882` of the **local height-dependent axial updraft**, not necessarily `17.65 m/s`, because V1 applies the vertical half-sine envelope.
 
-For the frozen Gaussian, a passage at `r = 0.5 sigma` still samples approximately `17.65 m/s` from a `20 m/s` peak, while the Run B band deliberately overlaps the strong-gradient annulus centered on `r = sigma = 1000 m`.
+Failure of these geometry targets is first classified as a synthetic-case/architecture-mapping problem, not automatically a physics failure.
 
-Failure of these geometric targets is first classified as a synthetic-case design or architecture-mapping failure. It is not automatically evidence that V1 physics is wrong.
+### 7.5 H3 sampled-w contrast
 
-### 7.5 H3 material sampled-w contrast
-
-The H3 control is intended to produce a clearly resolvable difference in sampled ascent, not a merely formal inequality.
-
-Freeze the material contrast criterion as
+Freeze:
 
 `max_t w_A(t) >= max_t w_B(t) + 2 m/s`.
 
-If `max w_A > max w_B` but the difference is less than `2 m/s`, the run does not satisfy the intended primary H3 contrast and the synthetic geometry must be reviewed before drawing a physics conclusion.
+If Run A exceeds Run B by less than `2 m/s`, the primary material contrast is not realized and the control must be reviewed before drawing a physics conclusion.
 
-No analogous ordering is frozen for `max_t |T1|`. The experiment must record both maxima without treating either ordering as a PASS requirement.
+No analogous ordering is required for `max |T1|`.
 
-### 7.6 H3 T1 sign-reversal criterion
+### 7.6 H3 discrete sampling semantics
 
-For Run A, if the integrated trajectory actually samples opposite flanks of the symmetric updraft with a non-zero projection of `grad_h(w)` onto environmental `omega_h`, expect a sign reversal in sampled T1 across the core passage.
+Primary H3 metrics use production path semantics:
 
-The PASS structure is qualitative but must be robust rather than a single-sample sign flicker:
+1. capture initial state at `t=0`;
+2. integrate with fixed `dt=0.1 s`;
+3. after every accepted completed step, record accepted position and post-step simulation time;
+4. sample `w` and valid T1 at that recorded `(P,t)`;
+5. no render-frame cadence;
+6. no decimation for primary metrics;
+7. no interpolation between samples for primary metrics.
 
-- a sustained interval with one T1 sign on one flank;
-- a transition through zero or a numerically near-zero region around the central passage;
-- a sustained interval with the opposite sign on the other flank.
+If active for the full 600 s, this gives 6000 Euler steps and 6001 recorded path samples including the initial state.
 
-A provisional near-zero threshold of
+### 7.7 PASS/FAIL discipline
 
-`|T1| <= 1e-6 s^-2`
+Each check receives one of:
 
-is recorded for planning only. Its final value is **not yet frozen** because the representative T1 scale and the diagnostic sampling path must first be confirmed during the architecture audit. The final threshold must be committed before the first H3 execution.
+- `PASS` — frozen criterion satisfied;
+- `FAIL` — frozen criterion violated with no known setup issue;
+- `UNEXPLAINED` — discrepancy exists but cause not isolated;
+- `INVALID CONTROL` — synthetic case did not realize intended geometry or could not be faithfully represented.
 
-Run B is not required to show a sign reversal.
-
-### 7.7 Items intentionally deferred to architecture audit
-
-The following are implementation-specific and must be inspected in existing V1 before they are frozen:
-
-- actual trajectory integrator/solver;
-- actual integration time step or adaptive-step behavior;
-- diagnostic sampling cadence;
-- any interpolation performed by production code beyond the already frozen piecewise-linear H3 sounding;
-- behavior at or extremely near `|r| = 0` for streamwise/crosswise decomposition;
-- the final near-zero threshold for the H3 T1 sign-reversal check if production diagnostic scaling requires adjustment.
-
-The audit may define these settings or tolerances, but all such decisions must be committed to this pre-experiment protocol before the corresponding backend run.
-
-### 7.8 Frozen PASS/FAIL discipline
-
-For each check, record one of:
-
-- `PASS` — the frozen criterion is satisfied;
-- `FAIL` — the frozen criterion is violated and no known setup issue explains it;
-- `UNEXPLAINED` — a discrepancy exists but its cause has not yet been isolated;
-- `INVALID CONTROL` — the synthetic case did not realize the intended geometry or could not be faithfully represented by the audited V1 architecture.
-
-Predictions are not to be rewritten after execution to match backend output. A mismatch may reveal an analytical mistake, a synthetic-case mistake, a hidden dependency, a numerical issue, or an implementation defect; the deviation must be investigated explicitly.
+Predictions are never rewritten post hoc simply to match backend output.
 
 ---
 
-## 8. Experimental procedure
+## 8. Frozen architecture / harness boundary
 
-**Status:** NOT YET FROZEN.
+### 8.1 Synthetic C injection seam
 
-The intended sequence is:
+Do **not** add a storm-motion override to the production DEMO composer merely for validation.
 
-1. Finish and freeze analytical expectations.
-2. Freeze synthetic inputs and numerical tolerances.
-3. Commit this pre-experiment protocol before running the backend.
-4. Audit the existing V1 implementation and map the actual `C` data flow without changing physics behavior.
-5. Build the smallest reproducible experimental harness needed to feed frozen cases into the existing backend and collect observables.
-6. Execute H1, then H2, then H3.
-7. Record results without rewriting prior expectations.
-8. Investigate every discrepancy before changing the analytical model or implementation.
-9. Only after synthetic validation, move to observed-environment C-matrix experiments using the selected real sounding cases.
+Construct the existing low-level objects directly:
+
+`synthetic EnvironmentalWindProfile`
+`-> EnvironmentalWindField(profile)`
+`-> StormRelativeEnvironmentalAdvectionField(environmentField, C_test)`.
+
+Only the environmental advection operand receives `C_test`.
+
+For H1/H2, call the existing environmental/diagnostic functions directly wherever a full composite is unnecessary.
+
+For H3 construct only:
+
+`V_total = CompositeVelocityField([V_env_sr(C_test), frozen VerticalEnvelopeUpdraftField])`.
+
+Do not include DEMO rotation, lower inflow, upper outflow, near-ground outflow, or downdraft.
+
+The paired H3 runs differ only in the `StormMotion` passed to `StormRelativeEnvironmentalAdvectionField`. Profile, updraft, seed, integrator, timestep, domain policy, sampling policy, and metric code remain identical.
+
+### 8.2 Production code explicitly not required to change
+
+This campaign does not require:
+
+- a new `stormMotion` argument on `composeDemoTracerFields()`;
+- mutable/global storm-motion state;
+- a UI storm-motion control;
+- a production `ScenarioConfig` redesign;
+- physics changes to `StormRelativeEnvironmentalAdvectionField`;
+- changes to `CompositeVelocityField`.
+
+Any later user-facing C parameterization is a post-validation product decision.
 
 ---
 
-## 9. Results
+## 9. Experimental procedure
 
-**EMPTY — DO NOT POPULATE BEFORE THE PRE-EXPERIMENT EXPECTATIONS ARE FROZEN AND THE FIRST CONTROL RUN IS EXECUTED.**
+**Status:** NEXT STEP — MINIMAL HARNESS PROCEDURE/OUTPUT CONTRACT NOT YET FROZEN.
+
+The remaining pre-run task is to define the smallest reproducible harness procedure and exact recorded outputs without changing the already frozen physics expectations.
+
+After that freeze, execute in this order:
+
+1. H1;
+2. H2;
+3. H3;
+4. record results without rewriting expectations;
+5. investigate every discrepancy;
+6. build the observed C-sensitivity matrix only after synthetic validation;
+7. write the validation report;
+8. only then decide whether production/V1.1 changes are warranted.
+
+No H1/H2/H3 backend execution occurs before the harness procedure/output contract is frozen.
 
 ---
 
-## 10. Deviations / investigations
+## 10. Results
+
+**EMPTY — DO NOT POPULATE BEFORE THE MINIMAL HARNESS CONTRACT IS FROZEN AND THE FIRST CONTROL RUN IS EXECUTED.**
+
+---
+
+## 11. Deviations / investigations
 
 **EMPTY.**
 
 ---
 
-## 11. Conclusions
+## 12. Conclusions
 
 **EMPTY.**
