@@ -525,9 +525,9 @@ Any later user-facing C parameterization is a post-validation product decision.
 
 ## 9. Experimental procedure
 
-**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 EXECUTED / CLASSIFIED PASS · H2/H3 NOT EXECUTED / NOT AUTHORIZED.
+**Status:** HARNESS CONTRACT FROZEN · IMPLEMENTATION REVIEW COMPLETE · H1 CLOSED / PASS · H2 CLOSED / PASS · H3 NOT EXECUTED / NOT AUTHORIZED.
 
-The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 was separately authorized, executed, and classified PASS; its evidence is recorded in §10. Review and commit the H1 evidence/status documentation slice before considering separate H2 authorization. This documentation slice does not authorize or execute a campaign stage.
+The procedure/output contract is frozen in [the harness design](2026-09-12-storm-motion-validation-harness-design.md). H1 and H2 were separately authorized, executed, and classified PASS; their evidence is recorded in §10. H2 authorization followed the commit/push of H1 documentation. Review and commit the H2 evidence/status documentation slice before considering separate H3 authorization. The campaign remains active; this documentation slice does not authorize or execute a campaign stage.
 
 After the separate execution gate, preserve this order:
 
@@ -550,7 +550,7 @@ No H1/H2/H3 backend execution occurs before the harness procedure/output contrac
 
 H1 was the first separately authorized backend campaign stage. All frozen H1 checks passed. Evidence below records the supplied observations and Vitest summary from that completed stage; this documentation slice did not rerun it.
 
-Vitest: **1 test file passed; 12 tests passed / 3 skipped**. Campaign H1 passed; H2, H3-Eulerian, and H3-trajectories were skipped and remain not executed / not authorized.
+Vitest: **1 test file passed; 12 tests passed / 3 skipped**. Campaign H1 passed; H2, H3-Eulerian, and H3-trajectories were skipped in that run and were not yet executed / authorized at the time of this H1 record.
 
 - **Sweep A:** for `C=(0,0),(10,0),(20,0),(30,0) m/s`, `SRH_0-3=[0,0,0,0] m^2/s^2`. All four checks passed at the frozen absolute tolerance `1e-6 m^2/s^2`.
 - **Translation and Eulerian invariants:** environmental `q(h)` remained frozen; storm-relative and environmental differences for each 0–1, 1–2, and 2–3 km hodograph segment were identical: `(10,0) m/s`. Shear, environmental `omega_h`, prescribed `w`, `grad_h(w)`, and same-point local `DiagnosticTiltingTendency` T1 remained invariant. All strict frozen same-point equality checks passed.
@@ -558,13 +558,42 @@ Vitest: **1 test file passed; 12 tests passed / 3 skipped**. Campaign H1 passed;
 - **Exact horizontal `V_sr=0`:** decomposition remained undefined via `StreamwiseCrosswiseVorticityError`, without coercion to numeric zero. Expected control behavior passed.
 - **Sweep B:** for `C=(10,-10),(10,0),(10,+10) m/s`, `SRH_0-3=[+300,0,-300] m^2/s^2`. At 1500 m, the corresponding `(omegaStreamwise,omegaCrosswise)` pairs were `(+0.00894427190999916,+0.00447213595499958)`, `(0,+0.01)`, and `(-0.00894427190999916,+0.00447213595499958) s^-1`. `H1/sweep-B-response` passed.
 
-**H1 CLOSED · PASS.** No FAIL, UNEXPLAINED, or INVALID CONTROL classification was observed; no H1 physics failure was identified. These are H1 control results only. No H2/H3 results or final campaign conclusion are recorded here.
+**H1 CLOSED · PASS.** No FAIL, UNEXPLAINED, or INVALID CONTROL classification was observed; no H1 physics failure was identified. This subsection records H1 control results only, without a final campaign conclusion.
+
+### H2 — executed 2026-09-12 — PASS
+
+H2 was separately authorized and executed after H1 evidence/status documentation was committed/pushed. The following supplied observations and Vitest summary are evidence from that completed H2 stage; this documentation slice did not rerun it.
+
+The synthetic straight sounding was `q(0 km)=(0,0)`, `q(1 km)=(10,0)`, `q(2 km)=(20,0)`, and `q(3 km)=(30,0) m/s`.
+
+| Control | Storm motion (east, north), m/s | Observed SRH_0-3, m²/s² |
+| --- | --- | --- |
+| C1 | (10,0) | 0 |
+| C2 | (10,10) | -300 |
+| C3 | (20,10) | -300 |
+
+All SRH values matched the frozen expectations within the existing absolute tolerance `1e-6 m^2/s^2`. The iso-SRH control gave `SRH(C2)-SRH(C3)=0`: **PASS**.
+
+At 1500 m:
+
+| Control | V_sr (east, north), m/s | omegaStreamwise, s⁻¹ | omegaCrosswise, s⁻¹ |
+| --- | --- | --- | --- |
+| C2 | (5,-10) | -0.00894427190999916 | +0.00447213595499958 |
+| C3 | (-5,-10) | -0.00894427190999916 | -0.00447213595499958 |
+
+Streamwise components were equal, crosswise magnitudes were equal, signed crosswise components were opposite, and storm-relative winds were distinct. The decomposition control passed.
+
+Rigid-translation controls passed: environmental `q`, environmental and storm-relative inter-level differences, shear, and horizontal environmental vorticity remained unchanged. Same-point Eulerian controls passed: prescribed `w`, prescribed horizontal gradient, and local T1 remained unchanged.
+
+Vitest: **1 test file passed; 12 tests passed / 3 skipped / 15 total**. Only campaign H2 was explicitly executed in that run; H1, H3-Eulerian, and H3-trajectories were skipped. H3 remains **NOT EXECUTED / NOT AUTHORIZED**.
+
+**H2 CLOSED · PASS · NO UNEXPLAINED DEVIATIONS · NO INVALID CONTROL · NO PHYSICS FAILURE.** These observations do not constitute a final campaign conclusion or authorize H3.
 
 ---
 
 ## 11. Deviations / investigations
 
-H1: none. Later stages remain pending; this section is not closed for the campaign.
+H1: none. H2: none. H3 remains pending; this section is not closed for the campaign.
 
 ---
 
