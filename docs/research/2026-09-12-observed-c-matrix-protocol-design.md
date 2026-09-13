@@ -1,7 +1,20 @@
 # Observed C-Matrix Protocol Design
 
 **Status: E1 ARITHMETIC INPUTS — FROZEN PENDING IMPLEMENTATION REVIEW (§13).
-REMAINING DESIGN PROPOSALS OPEN · E1 EXECUTION NOT AUTHORIZED.**
+E1 IMPLEMENTATION CONTRACT FROZEN · E1 EXECUTION NOT AUTHORIZED.**
+
+**Implementation design review closure — 2026-09-13: CLOSED · APPROVED.**
+The [E1 implementation contract](2026-09-12-observed-c-matrix-e1-implementation-design.md)
+now freezes the three-file layout, explicit storm-only literal snapshot,
+composition, P1/P2 probes, E1-A–F assertions, numerical tolerances, independent
+oracles, exact-zero-only decomposition policy, evidence and stop rules.
+Earlier open E1 design decisions recorded below, including the historical
+list in §13.6, are resolved by that later reviewed contract; §13 itself is
+preserved unchanged as the arithmetic-freeze record. The 1 m/s proposal remains
+NOT FROZEN and NOT USED by E1. Implementation is NOT STARTED and is authorized
+to start only after this freeze is reviewed/committed, then must stop for
+actual implementation review. E1 execution and the Lagrangian stage remain
+NOT AUTHORIZED. No arithmetic values or predictions are changed.
 
 **Scientific review outcome — 2026-09-12:** observed C-matrix scientific design
 **REVIEWED**; E1 full-precision arithmetic specification **REVIEWED AND APPROVED**.
