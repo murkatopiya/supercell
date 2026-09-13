@@ -1,8 +1,8 @@
 # PROJECT_STATUS
 
-**Current gate — 2026-09-13: PHASE P IMPLEMENTATION REVIEW — CLOSED · APPROVED.**
+**Current gate — 2026-09-13: PHASE P SCIENTIFIC EXECUTION — CLOSED · INVALID CONTROL.**
 
-Authoritative [Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md) remains byte-for-byte frozen. This bookmark records human implementation-review closure, an engineering/provenance milestone, not a scientific result.
+Authoritative [Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md) remains byte-for-byte frozen. This bookmark records the human-classified qualification/control result and execution provenance in [Phase P execution and human closure](#phase-p-execution-and-human-closure). Cause: NUMERICAL CONVERGENCE. No main L1 conclusion or production-physics failure is established.
 
 ```text
 PHASE P SPECIFICATION — FROZEN
@@ -10,16 +10,26 @@ PHASE P IMPLEMENTATION DESIGN — CLOSED · APPROVED
 PHASE P IMPLEMENTATION — COMPLETE
 PHASE P IMPLEMENTATION REVIEW — CLOSED · APPROVED
 REVIEWED IMPLEMENTATION SHA — 285e623
-PHASE P EXECUTION — NOT AUTHORIZED
-OBSERVED PHASE P SCIENTIFIC RUNS — 0
+PHASE P SCIENTIFIC EXECUTION — CLOSED · INVALID CONTROL
+INVALID CONTROL CAUSE — NUMERICAL CONVERGENCE
+PHASE P SCIENTIFIC ATTEMPTS — 2
+ATTEMPT 1 — INCOMPLETE · ENOSPC
+ATTEMPT 2 — COMPLETE · INVALID CONTROL
+SELECTED T/h — NONE
+ALL-EIGHT-SEED ADMISSION — NOT ACHIEVED
+ENSEMBLE — REJECTED
+UNEXPLAINED — 0
+PHYSICS FAILURE — NOT ESTABLISHED
+FURTHER PHASE P EXECUTION — NOT AUTHORIZED
+MAIN L1 — NOT AUTHORIZED
 MAIN L1 — NOT FROZEN
 MATERIAL-RESPONSE THRESHOLDS — STILL OPEN
 PRODUCTION/UI — UNCHANGED
 ```
 
-Specification baseline: `5c0d13a`. Human-reviewed implementation: `285e623` (full SHA `285e6230667cb47b9bbdce920b94089309c7d823`). Future runtime execution HEAD: unknown. A separately authorized execution may use a docs-only descendant HEAD; scientific implementation bytes must match the reviewed implementation under the existing preflight contract.
+Specification baseline: `5c0d13a`. Human-reviewed implementation: `285e623` (full SHA `285e6230667cb47b9bbdce920b94089309c7d823`). Both execution attempts used runtime HEAD `07d2932a1933d47cc19b3829daad52b276c5d491`, a docs-only descendant of the reviewed implementation. These are distinct specification, implementation and runtime provenance identities.
 
-Human review verified validation-only scope, unchanged production/UI, frozen constants and E1 C-matrix/storm inheritance, guard/preflight and GLOBAL READY boundary, explicit-C routing and seven-operand composition, lifecycle/support/crossing semantics, numerical qualification machinery, first-step oracle, outcome-blind controller and artifact contract. Final infrastructure verification recorded: 28 passed, 1 scientific test skipped; typecheck and diff/whitespace checks passed. Observed scientific runs: 0.
+Earlier human implementation review verified validation-only scope, unchanged production/UI, frozen constants and E1 C-matrix/storm inheritance, guard/preflight and GLOBAL READY boundary, explicit-C routing and seven-operand composition, lifecycle/support/crossing semantics, numerical qualification machinery, first-step oracle, outcome-blind controller and artifact contract. Final infrastructure verification at that gate: 28 passed, 1 scientific test skipped; typecheck and diff/whitespace checks passed. Observed scientific runs at that earlier gate: 0.
 
 The narrow event-width implementation corrigendum was reviewed and approved before closure: fine bracket width had initially been compared against coarse h; coarse now requires `b_c - a_c <= h_c`, and fine requires `b_f - a_f <= h_f`. A regression test was added. Event-time tolerance `max(1 s, 2h)` is unchanged. This corrects implementation of the frozen rule; it does not change the scientific specification.
 
@@ -230,11 +240,90 @@ At the earlier implementation handoff, no scientific E1 execution had occurred. 
 
 **E1 human scientific closure (2026-09-13):** CLOSED · PASS; valid control YES; unexplained deviations NONE; physics failure established NO; production physics UNCHANGED. Exactly one execution: runner exit 0, emitted COMPLETE, Vitest 1 passed / 11 skipped, preflight 336 checks / 0 blocks, members 20/20, uncollected 0, faults 0. Applicable assertions: PASS 1054 / INVALID CONTROL 0 / UNEXPLAINED 0 / FAIL 0; N_A 22 (12 BASELINE_REFERENCE, 10 COLUMN_UNAVAILABLE); independent assertions 480. The group summary, representation-specific Dumas/Moore controls, scientific findings and explicit scope exclusions are recorded in [observed protocol §14](research/2026-09-12-observed-c-matrix-protocol-design.md#14-e1-execution-results-and-human-scientific-closure).
 
+### Phase P execution and human closure
+
+**Human classification: PHASE P SCIENTIFIC EXECUTION — CLOSED · INVALID CONTROL. Cause: NUMERICAL CONVERGENCE.** Phase P completed the registered collection and qualification machinery, but the registered ensemble did not satisfy frozen numerical-convergence qualification at any allowed T/h pair. The current frozen Phase P numerical qualification configuration is insufficient to admit the ensemble for main L1.
+
+This qualification/control result does not establish failure of the main L1 hypothesis, absence of C-dependent path or sampled T1 response, a scientific null response, production-physics failure, incorrect C routing, incorrect observed environmental data or incorrect prescribed storm fields. It does not establish a need to loosen tolerances, use a particular smaller dt or change integrator. Those require separate analysis/design decisions. UNEXPLAINED — 0. PHYSICS FAILURE — NOT ESTABLISHED.
+
+Both attempts used specification baseline `5c0d13a`, reviewed implementation `285e6230667cb47b9bbdce920b94089309c7d823` and runtime HEAD `07d2932a1933d47cc19b3829daad52b276c5d491` on `main`.
+
+#### Attempt 1 — INCOMPLETE · EXTERNAL STORAGE FAILURE
+
+Collection started: YES. Expected units: 640; emitted completed units: 339. Machine state: `QUALIFICATION_INCOMPLETE`; selected: `null`. Cause: `ENOSPC: no space left on device, write`. The qualification controller was not reached. No Phase P qualification result was established by Attempt 1; it is not classified INVALID CONTROL. Partial evidence was preserved without editing. No resume was used.
+
+#### Attempt 2 — COMPLETE · INVALID CONTROL
+
+After storage remediation and separate human authorization, Attempt 2 was a fresh execution from unit zero with output relocated to E:. Runner exit: 0; scientific test: 1 passed; infrastructure tests: 28 skipped; invocation duration: 1463.27 s. Raw units: 640/640; trajectory records: 640; diagnostic records: 640; trajectory samples: 2,592,640; malformed JSON records: 0. All 640 units terminated at `MAX_TIME`; mandatory Source/ground early stops: 0; faults: 0.
+
+Exact machine result:
+
+```json
+{"faults":[],"humanReview":"REQUIRED","selected":null,"state":"QUALIFICATION_COMPLETE","unitsCollected":640}
+```
+
+The saved machine request for human review remains unchanged in evidence; the subsequent human classification is recorded here. Machine summary: `control: INVALID CONTROL`, `ensemble: REJECTED`, selected T/h: NONE. All eight seeds (S1-L, S2-L, S3-L, S4-L, S1-H, S2-H, S3-H, S4-H) are REJECTED. ALL-EIGHT-SEED ADMISSION — NOT ACHIEVED. This is not partial admission; the frozen protocol requires all eight seeds.
+
+Registered candidates, in frozen assessment order:
+
+| T (s) | h (s) | COMPLETE | VIABLE | CONTROLS | NUMERICAL | Reason |
+|---:|---:|---|---|---|---|---|
+| 540 | 0.5 | YES | YES | YES | NO | NUMERICAL |
+| 540 | 0.25 | YES | YES | YES | NO | NUMERICAL |
+| 360 | 0.5 | YES | YES | YES | NO | NUMERICAL |
+| 360 | 0.25 | YES | YES | YES | NO | NUMERICAL |
+| 180 | 0.5 | YES | YES | YES | NO | NUMERICAL |
+| 180 | 0.25 | YES | YES | YES | NO | NUMERICAL |
+
+No registered candidate passed numerical qualification. Aggregate saved check counts across all six candidates, including repeated checks:
+
+| Saved status/category | Count |
+|---|---:|
+| completed check | 29,948 |
+| INVALID CONTROL | 3,186 |
+| UNEXPLAINED | 0 |
+| N_A (total) | 1,570 |
+| N_A / NO_SEGMENT_MATCHED_SAMPLES | 1,090 |
+| N_A / COLUMN_UNAVAILABLE | 480 |
+
+N_A denotes inapplicability, not failure.
+
+The following rounded values are maximum saved residuals for their respective criteria. Each tolerance belongs to the same check record as the residual shown; these are qualification evidence only.
+
+| Criterion | Residual | Tolerance | Units |
+|---|---:|---:|---|
+| Position | 42.4604 | 10 | m |
+| Vertical | 10.5911 | 3 | m |
+| Path response | 39.8126 | 10 | m |
+| Vertical response | 10.7283 | 3 | m |
+| Source history | 1.98508e-5 | 1.47581e-6 | s^-2 |
+| Source Eabs | 1.05918e-3 | 1.54675e-4 | s^-1 |
+| Source Esigned | 6.97766e-4 | 2.26271e-5 | s^-1 |
+| Analysis Esigned | 3.76232e-5 | 3.33595e-5 | s^-1 |
+
+These maxima do not establish refinement order, asymptotic convergence, localization of failures, adequacy/inadequacy of tolerances or a required next dt. Those questions belong to a separate read-only numerical post-mortem.
+
+#### Attempt 2 evidence provenance
+
+Preserved local directory outside Git: `E:\phase-p-retry-07d2932-attempt-2`. All seven files are finalized; no `.partial` artifacts exist in Attempt 2. SHA-256 values were verified against preserved bytes and matched execution metadata for the six referenced artifacts; execution.json has its own independently computed hash, without a self-hash cycle.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| manifest.json | 17,962 | `cd43c7ae1fede86ae5183ca8f6dcfa6a993322cb23e7d9408138ae3e0295ef07` |
+| trajectory.ndjson | 2,229,555,241 | `fdadf5a9e3509d43e962d2609e9fd323aa7a5161a912838c53e89312c4555421` |
+| diagnostic.ndjson | 1,570,714,917 | `fb074530dfbcccc70f996a4b6646053a75be8225c9a8ca4e7de5253dbf540cac` |
+| summary.json | 10,728,090 | `dfd164614eea8efd27587899e307759987f3a47914597d593161951dd6f0e361` |
+| execution.json | 856 | `9ec363cb044175140196d0619fe4f59b12297b64eeaabe0223ba8577f3008f1b` |
+| stdout.txt | 109 | `6f6c75811035efab4965816d5cc3863c34ead4b51c6f698c0ec9dcab6a76937f` |
+| stderr.txt | 0 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+
+No evidence was regenerated or modified during this docs-only closure. No tests, Simulation, observed collection or numerical post-mortem ran; no commit/push occurred. Further execution and main L1 remain unauthorized.
+
 ## 6. NEXT ACTION
 
-**Separate Phase P scientific execution authorization.**
+**READ-ONLY PHASE P NUMERICAL CONVERGENCE POST-MORTEM**
 
-Human implementation review is CLOSED · APPROVED for `285e623`. Phase P execution remains NOT AUTHORIZED; observed Phase P scientific runs remain 0. This docs-only closure establishes provenance only. Main L1 remains NOT FROZEN; material-response thresholds remain STILL OPEN.
+The next gate uses existing Attempt 2 qualification evidence only to determine where and how frozen numerical qualification failed. It should examine refinement trends by case, member, seed, candidate duration, resolution pair and criterion, especially 0.5 ↔ 0.25, 0.25 ↔ 0.125 and 0.125 ↔ 0.0625 s. That analysis is not part of this closure. No deeper dt ladder, changed tolerances, different integrator, seed/duration changes or another execution are prescribed or authorized here. Main L1 remains NOT AUTHORIZED and NOT FROZEN; material-response thresholds remain STILL OPEN.
 
 The approved exact E1 C matrix and 36-parameter storm snapshot are explicitly inherited. E1 stays CLOSED · PASS; no E1/H1–H5 rerun is authorized. No observed scientific collection, commit or push occurred during Phase P implementation.
 
@@ -322,4 +411,4 @@ Do not treat this file itself as physics authority.
 7. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 8. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current next gate is separate Phase P scientific execution authorization. Phase P execution remains unauthorized.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current next gate is READ-ONLY PHASE P NUMERICAL CONVERGENCE POST-MORTEM. Further Phase P execution remains unauthorized.
