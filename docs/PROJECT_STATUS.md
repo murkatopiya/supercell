@@ -1,8 +1,27 @@
 # PROJECT_STATUS
 
-**Current gate — 2026-09-13: PHASE P IMPLEMENTATION — COMPLETE · AWAITING HUMAN REVIEW.**
+**Current gate — 2026-09-13: PHASE P IMPLEMENTATION REVIEW — CLOSED · APPROVED.**
 
-Authoritative [Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md): PHASE P SPECIFICATION — FROZEN; PHASE P IMPLEMENTATION DESIGN — CLOSED · APPROVED. The three validation-only implementation files are complete and awaiting human implementation review. PHASE P EXECUTION — NOT AUTHORIZED; MAIN L1 — NOT FROZEN; material-response thresholds STILL OPEN. Production/UI unchanged. The frozen specification bytes and historical gate statements remain unchanged; this bookmark records the subsequent authorized implementation step.
+Authoritative [Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md) remains byte-for-byte frozen. This bookmark records human implementation-review closure, an engineering/provenance milestone, not a scientific result.
+
+```text
+PHASE P SPECIFICATION — FROZEN
+PHASE P IMPLEMENTATION DESIGN — CLOSED · APPROVED
+PHASE P IMPLEMENTATION — COMPLETE
+PHASE P IMPLEMENTATION REVIEW — CLOSED · APPROVED
+REVIEWED IMPLEMENTATION SHA — 285e623
+PHASE P EXECUTION — NOT AUTHORIZED
+OBSERVED PHASE P SCIENTIFIC RUNS — 0
+MAIN L1 — NOT FROZEN
+MATERIAL-RESPONSE THRESHOLDS — STILL OPEN
+PRODUCTION/UI — UNCHANGED
+```
+
+Specification baseline: `5c0d13a`. Human-reviewed implementation: `285e623` (full SHA `285e6230667cb47b9bbdce920b94089309c7d823`). Future runtime execution HEAD: unknown. A separately authorized execution may use a docs-only descendant HEAD; scientific implementation bytes must match the reviewed implementation under the existing preflight contract.
+
+Human review verified validation-only scope, unchanged production/UI, frozen constants and E1 C-matrix/storm inheritance, guard/preflight and GLOBAL READY boundary, explicit-C routing and seven-operand composition, lifecycle/support/crossing semantics, numerical qualification machinery, first-step oracle, outcome-blind controller and artifact contract. Final infrastructure verification recorded: 28 passed, 1 scientific test skipped; typecheck and diff/whitespace checks passed. Observed scientific runs: 0.
+
+The narrow event-width implementation corrigendum was reviewed and approved before closure: fine bracket width had initially been compared against coarse h; coarse now requires `b_c - a_c <= h_c`, and fine requires `b_f - a_f <= h_f`. A regression test was added. Event-time tolerance `max(1 s, 2h)` is unchanged. This corrects implementation of the frozen rule; it does not change the scientific specification.
 
 The E1 closure and earlier gate narratives below retain their historical provenance. The current Phase P bookmark and NEXT ACTION supersede older references to the next Lagrangian protocol-design gate; they change no E1 or H1–H5 input, result or classification.
 
@@ -213,9 +232,9 @@ At the earlier implementation handoff, no scientific E1 execution had occurred. 
 
 ## 6. NEXT ACTION
 
-**Human implementation review of the three Phase P validation files against the frozen [qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md).**
+**Separate Phase P scientific execution authorization.**
 
-PHASE P IMPLEMENTATION — COMPLETE · AWAITING HUMAN REVIEW. Implementation followed the approved design and separate implementation authorization. Only targeted infrastructure tests, hand-authored/synthetic fixtures, typecheck and static checks were used. Observed Phase P scientific runs: 0. Execution requires separate authorization after human implementation review. Main L1 remains NOT FROZEN; main material-response thresholds remain open.
+Human implementation review is CLOSED · APPROVED for `285e623`. Phase P execution remains NOT AUTHORIZED; observed Phase P scientific runs remain 0. This docs-only closure establishes provenance only. Main L1 remains NOT FROZEN; material-response thresholds remain STILL OPEN.
 
 The approved exact E1 C matrix and 36-parameter storm snapshot are explicitly inherited. E1 stays CLOSED · PASS; no E1/H1–H5 rerun is authorized. No observed scientific collection, commit or push occurred during Phase P implementation.
 
@@ -303,4 +322,4 @@ Do not treat this file itself as physics authority.
 7. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 8. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current next gate is human Phase P implementation review. Phase P execution remains unauthorized.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current next gate is separate Phase P scientific execution authorization. Phase P execution remains unauthorized.
