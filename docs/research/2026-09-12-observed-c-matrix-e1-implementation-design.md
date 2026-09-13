@@ -1,5 +1,13 @@
 # Observed C-Matrix E1 — Test-Only Implementation Design
 
+**Current scientific status: E1 CLOSED · PASS by human review; executed exactly once.**
+See [owning observed protocol §14](2026-09-12-observed-c-matrix-protocol-design.md#14-e1-execution-results-and-human-scientific-closure)
+for provenance, findings and scope. The next gate is a separately reviewed/frozen
+Lagrangian stage design; Lagrangian implementation/execution remain unauthorized.
+The earlier execution-authorization bookmarks below are historical. This pointer
+changes no frozen implementation-contract requirement.
+
+
 **E1 IMPLEMENTATION DESIGN REVIEW — CLOSED · APPROVED.**
 
 **E1 IMPLEMENTATION REVIEW — CLOSED · APPROVED (2026-09-13).**

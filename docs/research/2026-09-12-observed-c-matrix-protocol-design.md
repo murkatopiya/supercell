@@ -1,7 +1,14 @@
 # Observed C-Matrix Protocol Design
 
-**Status: E1 ARITHMETIC INPUTS — FROZEN PENDING IMPLEMENTATION REVIEW (§13).
-E1 IMPLEMENTATION CONTRACT FROZEN · E1 EXECUTION NOT AUTHORIZED.**
+**Status: E1 SCIENTIFIC EXECUTION — CLOSED · PASS (human review, §14).
+E1 ARITHMETIC INPUTS AND IMPLEMENTATION CONTRACT — FROZEN.
+LAGRANGIAN STAGE — NOT AUTHORIZED / NEXT DESIGN GATE.**
+
+The current E1 execution/classification authority is [§14](#14-e1-execution-results-and-human-scientific-closure).
+Earlier design, implementation and execution-gate statements below are historical;
+§13 remains unchanged. E1 ran exactly once and was subsequently human-classified
+CLOSED · PASS. This closure grants no rerun or Lagrangian implementation/execution
+authorization and does not fill the parent campaign §12 Conclusions.
 
 **Implementation design review closure — 2026-09-13: CLOSED · APPROVED.**
 The [E1 implementation contract](2026-09-12-observed-c-matrix-e1-implementation-design.md)
@@ -883,3 +890,108 @@ harness stage, simulation, H1/H2/H3/H4/H5, prior campaign or observed matrix
 was executed. No production/harness/UI/ScenarioConfig file or frozen H1–H5
 record was modified; parent §12 Conclusions remains untouched. No commit or
 push was performed. **STOP FOR SCIENTIFIC REVIEW.**
+
+
+## 14. E1 execution results and human scientific closure
+
+**Human scientific closure — 2026-09-13.** The first separately authorized E1
+scientific execution ran exactly once and subsequently received human scientific
+review. **Human review, not runner success, establishes this CLOSED · PASS.**
+The original execution artifacts retain their emitted pre-review status; they
+are not rewritten to incorporate this later classification.
+
+```text
+E1 SCIENTIFIC EXECUTION — CLOSED · PASS
+E1 VALID CONTROL — YES
+E1 UNEXPLAINED DEVIATIONS — NONE
+E1 PHYSICS FAILURE ESTABLISHED — NO
+PRODUCTION PHYSICS — UNCHANGED
+LAGRANGIAN STAGE — NOT AUTHORIZED / NEXT DESIGN GATE
+```
+
+### 14.1 Execution provenance and local immutable evidence
+
+- Runtime HEAD: `d158482ad5fbccaa24e1ec48822c803bdc3200f6`.
+- Reviewed implementation SHA: `c54f8857a808de0aae316556306af2069c7b5aa3`.
+- Execution count: exactly one; runner exit **0**; emitted run state **COMPLETE**.
+- Vitest: **1 passed, 11 skipped**.
+- Preflight: **336 checks, 0 blocks**.
+- Members collected: **20/20**; uncollected members: **0**; faults: **0**.
+- Applicable assertions: **PASS 1054 / INVALID CONTROL 0 / UNEXPLAINED 0 / FAIL 0**.
+- **N_A 22**: **12 BASELINE_REFERENCE**, **10 COLUMN_UNAVAILABLE**.
+- Independent assertions recorded: **480**. Repeated invariants and dependent
+  corroboration are not additional independent physical experiments.
+
+| Local immutable execution artifact | SHA-256 |
+| --- | --- |
+| `e1-first-d158482.evidence.json` | `7e2b2e2c1e78d145fc5d4eef5da87667e61c8bc876b8bb55ee7cbc2b2119e916` |
+| `e1-first-d158482.stdout.txt` | `9e2729faa5dbdcb3a1abfccd48fdcc6fe0254519a8fd6e7a5bc23dfb1ecf2b18` |
+
+These filenames are relative to the repository root. The 4.66 MB JSON and full
+stdout remain local, immutable execution evidence; their contents were not
+modified, staged or committed. Existing H4/H5 output files remain untouched
+and are not added. This documentation records provenance, not another execution.
+
+### 14.2 Recorded E1-A–F assertion summary
+
+| Group | PASS | INVALID CONTROL | UNEXPLAINED | FAIL | N_A |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| E1-A | 168 | 0 | 0 | 0 | 0 |
+| E1-B | 188 | 0 | 0 | 0 | 0 |
+| E1-C | 32 | 0 | 0 | 0 | 4 |
+| E1-D | 140 | 0 | 0 | 0 | 0 |
+| E1-E | 176 | 0 | 0 | 0 | 8 |
+| E1-F | 350 | 0 | 0 | 0 | 10 |
+| Total | 1054 | 0 | 0 | 0 | 22 |
+
+### 14.3 Scientific findings within the frozen controls
+
+1. Source/environmental invariants remained unchanged across all five C members.
+2. Storm-relative environmental wind showed the frozen direct translation
+   response to C.
+3. For all four observed Source profiles, SRH response matched the frozen
+   endpoint-arithmetic prediction: parallel_plus/parallel_minus gave numerically
+   zero DeltaSRH at binary64-scale residuals; right_plus/right_minus matched
+   +Q/2 and -Q/2. Every residual was far inside the frozen 1e-6 m²/s² tolerance.
+4. Finite-layer streamwise/crosswise decomposition followed the member-specific,
+   C-dependent reference basis, with no invalid exact-zero controls.
+5. Fixed-point seven-operand composition showed the expected direct C response
+   while the six prescribed storm-local operands remained unchanged.
+6. Same-point local T1 remained invariant across the five C members for each
+   case/probe. This agrees with the frozen Eulerian prediction: changing C alone
+   does not directly change T1 = omega_h · grad_h(w_updraft) at a fixed point
+   when q(h) and the prescribed updraft are unchanged.
+7. Source and Analysis T1 are representation-specific and need not agree.
+   Dumas Source T1 = 0 at both frozen probes because its native Source segment
+   has exactly zero local shear; Analysis T1 is nonzero at those probes.
+   This is valid evidence, not a failed or invalid control.
+8. Moore behaved as preregistered: Source T1 was supported, Analysis was
+   unavailable, availability assertions were PASS, and 10 numeric Analysis
+   records remained N_A / COLUMN_UNAVAILABLE. No Source substitution occurred.
+
+### 14.4 Narrow interpretation and explicit exclusions
+
+E1 validates the frozen observed Eulerian C-sensitivity identities and
+implementation routing for the four selected observed wind profiles under the
+V1 kinematic model. Direct C-dependent quantities responded as preregistered;
+quantities predicted to be Eulerian invariants remained invariant within the
+frozen controls and tolerances.
+
+E1 does **not** establish that prescribed C is the actual storm motion of any
+observed storm, reconstruct any real supercell, predict tornadoes/outcomes,
+validate thermodynamics, establish a direct C-driven change of local Eulerian
+T1, or establish any Lagrangian/path-mediated C response. No broader storm or
+campaign conclusion follows from this closure.
+
+### 14.5 Next gate and documentation-only boundary
+
+**NEXT ACTION:** Design the observed Lagrangian C-sensitivity stage under a new
+separately reviewed/frozen protocol. No Lagrangian implementation or execution
+is authorized by E1 closure. This documentation task does not start or design
+that stage.
+
+Frozen arithmetic inputs and the E1 implementation contract, src/**,
+production physics/UI/ScenarioConfig/DEMO composition, H1–H5 evidence and
+classifications, and parent §12 Conclusions remain unchanged. No E1 rerun,
+H1–H5 run, tests/typecheck/build, Simulation/trajectory execution, commit or push
+occurred in this docs-only closure task. **STOP FOR E1 CLOSURE-DOC REVIEW.**
