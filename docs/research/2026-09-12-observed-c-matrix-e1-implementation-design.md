@@ -2,6 +2,30 @@
 
 **E1 IMPLEMENTATION DESIGN REVIEW — CLOSED · APPROVED.**
 
+**E1 IMPLEMENTATION REVIEW — CLOSED · APPROVED (2026-09-13).**
+
+The reviewed code is exactly the committed/pushed three-file E1 implementation
+at **c54f885** (full SHA: `c54f8857a808de0aae316556306af2069c7b5aa3`):
+`src/validation/observedCMatrixE1Spec.ts`,
+`src/validation/observedCMatrixE1.ts`, and
+`src/validation/observedCMatrixE1.validation.test.ts`.
+Human implementation review is now closed and approved. Infrastructure fixtures
+(11 passed; scientific entry skipped) and typecheck passed before review closure;
+these checks were not rerun for this docs-only closure.
+
+No observed E1 scientific collection has run. No H1–H5 rerun or
+Simulation/trajectory execution occurred. Production physics, UI, ScenarioConfig
+and DEMO composition remain unchanged. Arithmetic inputs and the implementation
+contract remain FROZEN. Implementation review approval does not authorize execution.
+
+Current next action: **Separately authorize the first E1 scientific execution
+against reviewed implementation SHA c54f885.** E1 execution and the Lagrangian
+stage remain NOT AUTHORIZED. **STOP FOR REVIEW-CLOSURE CHECK.**
+
+The design-freeze narrative and gate sequence below are historical records of
+the earlier slice; this closure supersedes their implementation-status bookmarks,
+without changing any frozen contract requirement.
+
 **Implementation contract version: `observed-c-matrix-e1-implementation/v1` — FROZEN.**
 Human scientific review closure recorded 2026-09-13. This docs-only closure adds the
 explicit storm-only literal snapshot in §4.1 and freezes the reviewed contract.
@@ -11,8 +35,9 @@ It does not start implementation or authorize scientific execution.
 E1 ARITHMETIC INPUTS — FROZEN
 E1 IMPLEMENTATION DESIGN REVIEW — CLOSED · APPROVED
 E1 IMPLEMENTATION CONTRACT — FROZEN
-E1 IMPLEMENTATION — NOT STARTED
-E1 IMPLEMENTATION — AUTHORIZED TO START AFTER FREEZE REVIEW/COMMIT
+E1 IMPLEMENTATION — COMPLETE
+E1 IMPLEMENTATION REVIEW — CLOSED · APPROVED
+E1 IMPLEMENTATION REVIEWED SHA — c54f885
 E1 EXECUTION — NOT AUTHORIZED
 LAGRANGIAN STAGE — NOT AUTHORIZED
 ```
@@ -726,7 +751,7 @@ After emitting the evidence, any unresolved/invalid required assertion fails
 the runner gate. The test runner's success alone never closes scientific E1.
 Human E1 closure must precede any separately authorized Lagrangian work.
 
-## 10. Closed design review and remaining implementation gates
+## 10. Design-review gate history
 
 **E1 IMPLEMENTATION DESIGN REVIEW — CLOSED · APPROVED.**
 The three-file layout, arithmetic authority/cross-check, isolated selector,
@@ -841,28 +866,29 @@ No helper script or implementation/test file was saved.
 | F. Tolerances | Separate dimensional categories; SRH tolerance 1e-6 accepted from the independent <8.10e-8 conservative error estimate; all numerical categories frozen (§7) |
 | G. Evidence | Versioned deterministic JSON with complete case/member/probe provenance, raw/expected/residual/tolerance/status and separate N/A counts (§8) |
 | H. Stop/classification | Preflight abort on provenance/input mismatch, typed invalid support, provisional UNEXPLAINED for discrepancies, human-reviewed FAIL and closure (§9) |
-| I. Remaining gates | Review/commit this documentation freeze; implement the frozen contract and infrastructure fixtures; stop for actual implementation review (§10) |
+| I. Remaining gates | Implementation review CLOSED · APPROVED at c54f885; separately authorize the first E1 scientific execution |
 
-The next gate is **freeze review/commit -> implement the frozen E1 test-only
-contract and infrastructure fixtures -> stop for actual implementation review
--> implementation review closure -> separately authorized E1 execution**.
-Implementation is authorized to start only after this freeze is reviewed and
-committed; it remains NOT STARTED in this task. Design approval is not E1
-execution authorization. E1 must close before any Lagrangian stage.
+Implementation is COMPLETE; implementation review is CLOSED · APPROVED for
+c54f885. The next gate is **separate authorization of the first E1 scientific
+execution against reviewed implementation SHA c54f885**. Execution remains
+NOT AUTHORIZED. E1 must close before any Lagrangian stage.
 
 ```text
 E1 ARITHMETIC INPUTS — FROZEN
 E1 IMPLEMENTATION DESIGN REVIEW — CLOSED · APPROVED
 E1 IMPLEMENTATION CONTRACT — FROZEN
-E1 IMPLEMENTATION — NOT STARTED
-E1 IMPLEMENTATION — AUTHORIZED TO START AFTER FREEZE REVIEW/COMMIT
+E1 IMPLEMENTATION — COMPLETE
+E1 IMPLEMENTATION REVIEW — CLOSED · APPROVED
+E1 IMPLEMENTATION REVIEWED SHA — c54f885
 E1 EXECUTION — NOT AUTHORIZED
 LAGRANGIAN STAGE — NOT AUTHORIZED
 ```
 
-This closure changes only this design document, `docs/PROJECT_STATUS.md` and
+The earlier design-freeze closure changed only this design document, `docs/PROJECT_STATUS.md` and
 review-status/navigation text outside §13 in the owning observed protocol.
 The arithmetic protocol §13, all 20 C vectors, production code, tests/harness,
 UI/ScenarioConfig, H1–H5 records and parent §12 Conclusions are untouched. No tests, typecheck, build, simulation or
 campaign ran; no commit or push occurred. Existing untracked `h4-output.txt`
-and `h5-output.txt` are untouched. **STOP FOR FREEZE REVIEW.**
+and `h5-output.txt` are untouched. The current closure changes only this document and `docs/PROJECT_STATUS.md`;
+no tests/build/typecheck/simulation/campaigns, commit or push were performed.
+**STOP FOR REVIEW-CLOSURE CHECK.**
