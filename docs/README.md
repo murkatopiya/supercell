@@ -19,6 +19,8 @@ index disagrees with an owning document, the owning document wins.
 
 ## 1. Start here
 
+Current observed Lagrangian research gate: [frozen Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md). Specification authority only; implementation/execution remain unauthorized, main L1 remains unfrozen.
+
 | Question | Read |
 | --- | --- |
 | Where is the project now, what is complete, and what is next? | `PROJECT_STATUS.md` |

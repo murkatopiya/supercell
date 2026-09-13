@@ -2,7 +2,9 @@
 
 **Status: E1 SCIENTIFIC EXECUTION — CLOSED · PASS (human review, §14).
 E1 ARITHMETIC INPUTS AND IMPLEMENTATION CONTRACT — FROZEN.
-LAGRANGIAN STAGE — NOT AUTHORIZED / NEXT DESIGN GATE.**
+LAGRANGIAN PHASE P SPECIFICATION — FROZEN; IMPLEMENTATION/EXECUTION NOT AUTHORIZED.**
+
+**Current successor gate:** [Phase P qualification specification](2026-09-13-observed-lagrangian-phase-p-qualification-specification.md) is frozen after human scientific review. Main L1 remains NOT FROZEN. Earlier next-action text below is historical; no E1 arithmetic or scientific closure record changes.
 
 The current E1 execution/classification authority is [§14](#14-e1-execution-results-and-human-scientific-closure).
 Earlier design, implementation and execution-gate statements below are historical;
