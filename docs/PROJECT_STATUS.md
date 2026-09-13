@@ -1,5 +1,20 @@
 # PROJECT_STATUS
 
+**Current gate — 2026-09-13: PHASE P2 SPECIFICATION — FROZEN · HUMAN REVIEW APPROVED.**
+
+Authoritative [Phase P2 qualification specification](research/2026-09-13-observed-lagrangian-phase-p2-qualification-specification.md). Specification ID: `observed-lagrangian-phase-p2-qualification/v1`. Frozen exact-file SHA-256: `fe5a33f8753b7538e5c3abdd2fe9f5766a2bdcefd08bfab07e6ced34bcfae59b`. Human specification review: CLOSED · APPROVED. This specification-only freeze supersedes the older current/next-action bookmarks below; historical Phase P narratives remain unchanged. No implementation design or execution is authorized by this freeze.
+
+```text
+PHASE P — CLOSED · INVALID CONTROL
+PHASE P2 SPECIFICATION — FROZEN · HUMAN REVIEW APPROVED
+PHASE P2 IMPLEMENTATION — NOT AUTHORIZED
+PHASE P2 EXECUTION — NOT AUTHORIZED
+MAIN L1 — NOT AUTHORIZED / NOT TESTED
+MATERIAL RESPONSE THRESHOLDS — STILL OPEN
+PRODUCTION/UI — UNCHANGED
+```
+
+
 **Current gate — 2026-09-13: PHASE P SCIENTIFIC EXECUTION — CLOSED · INVALID CONTROL.**
 
 Authoritative [Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md) remains byte-for-byte frozen. This bookmark records the human-classified qualification/control result and execution provenance in [Phase P execution and human closure](#phase-p-execution-and-human-closure). Cause: NUMERICAL CONVERGENCE. No main L1 conclusion or production-physics failure is established.
