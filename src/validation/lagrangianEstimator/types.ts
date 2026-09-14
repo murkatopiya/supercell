@@ -78,3 +78,26 @@ export type PartitionRequest = Readonly<{
   eligibility: "ELIGIBLE" | "INELIGIBLE";
   support: "FULL_SUPPORT" | "ALLOW_BOUNDARY_CONDITIONED";
 }>;
+
+/** Caller attests the already-authorized evidence role; no eligibility decision here. */
+export type ExposureRequest = Readonly<{ role: "PRIMARY" | "SECONDARY_DESCRIPTIVE" }>;
+export type ExposureContribution = LinearIntegrals & Readonly<{
+  order: number; stepIndex: number; subintervalIndex: number;
+  pathFingerprint: string; interval: SegmentSubinterval;
+}>;
+export type ExposureTrace = Readonly<{
+  inputs: readonly EstimatorResult<StepPartition>[];
+  contributions: readonly ExposureContribution[];
+}>;
+export type ExposureEvidence = Readonly<{
+  schema: "p2-exposure/v1"; units: "s^-1";
+  role: ExposureRequest["role"]; support: DiagnosticSupport;
+  pathFingerprint: string; providerFingerprint: string;
+  interval: Interval; stepCount: number; subintervalCount: number; crossingCount: number;
+  Esigned: number; Eabs: number; allowance: ArithmeticAllowance;
+  invariants: Readonly<{ absoluteNonnegative: boolean; signedBounded: boolean }>;
+  trace: ExposureTrace;
+}>;
+export type ExposureResult = Readonly<{ status: "COMPLETE"; value: ExposureEvidence }>
+  | ((Exclude<EstimatorResult<never>, { status: "COMPLETE" }> | ArithmeticFailure)
+    & Readonly<{ trace: ExposureTrace }>);
