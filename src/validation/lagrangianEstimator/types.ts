@@ -101,3 +101,62 @@ export type ExposureEvidence = Readonly<{
 export type ExposureResult = Readonly<{ status: "COMPLETE"; value: ExposureEvidence }>
   | ((Exclude<EstimatorResult<never>, { status: "COMPLETE" }> | ArithmeticFailure)
     & Readonly<{ trace: ExposureTrace }>);
+
+/** Applicability is supplied by the caller, never inferred by history. */
+export type HistoryPath = Readonly<{
+  path: AcceptedPath; provider: VerticalDiagnosticProvider;
+  eligibility: PartitionRequest["eligibility"];
+}>;
+export type HistoryRequest = Readonly<{
+  interval: Interval; role: "PRIMARY" | "SECONDARY_DESCRIPTIVE";
+}>;
+export type HistoryRole = "COARSE" | "FINE";
+export type HistoryPathEvidence = Readonly<{
+  path: AcceptedPath; providerFingerprint: string; topology: ProviderTopology | null;
+  eligibility: PartitionRequest["eligibility"];
+}>;
+export type HistoryNodeEvent = Readonly<{
+  role: HistoryRole | null;
+  kind: "INTERVAL_START" | "INTERVAL_END" | "STEP_VERTEX" | "DIAGNOSTIC_CONTACT";
+  pathFingerprint: string | null; providerFingerprint: string | null;
+  vertexIndex: number | null; contact: BoundaryContact | null;
+}>;
+export type HistoryNode = Readonly<{ time: number; events: readonly HistoryNodeEvent[] }>;
+export type HistoryOperands = Readonly<{
+  pathFingerprint: string; providerFingerprint: string; stepIndex: number;
+  segment: SegmentId; start: EndpointOperand; end: EndpointOperand;
+}>;
+export type HistoryContribution = Interval & Readonly<{
+  order: number; coarse: HistoryOperands; fine: HistoryOperands;
+  d0: number; d1: number; residualArea: number; referenceArea: number;
+  residualZeroFraction: number | null; referenceZeroFraction: number | null;
+}>;
+export type HistoryTrace = Readonly<{
+  request: HistoryRequest;
+  inputs: readonly EstimatorResult<HistoryPathEvidence>[]; // coarse, then fine
+  partitions: readonly Readonly<{ role: HistoryRole; stepIndex: number; result: EstimatorResult<StepPartition> }>[];
+  nodes: readonly HistoryNode[];
+  evaluations: readonly Readonly<{
+    role: HistoryRole; stepIndex: number; time: number; context: EndpointContext;
+    result: EstimatorResult<EndpointOperand>;
+  }>[];
+  contributions: readonly HistoryContribution[];
+}>;
+export type HistoryEvidence = Readonly<{
+  schema: "p2-history/v1"; units: "s^-2"; areaUnits: "s^-1";
+  runtime: Readonly<{ node: string; v8: string }>;
+  interval: Interval; duration: number; role: HistoryRequest["role"]; support: DiagnosticSupport;
+  coarsePathFingerprint: string; finePathFingerprint: string;
+  coarseProviderFingerprint: string; fineProviderFingerprint: string;
+  residualArea: number; referenceArea: number; R1: number; Aref: number;
+  durationSum: number; durationAllowance: ArithmeticAllowance;
+  arithmetic: Readonly<{
+    scope: "LOCAL_INTERPOLANT_ARITHMETIC_ONLY";
+    residualArea: ArithmeticAllowance; referenceArea: ArithmeticAllowance;
+    R1: ArithmeticAllowance; Aref: ArithmeticAllowance;
+  }>;
+  trace: HistoryTrace;
+}>;
+export type HistoryResult = Readonly<{ status: "COMPLETE"; value: HistoryEvidence }>
+  | ((Exclude<EstimatorResult<never>, { status: "COMPLETE" }> | ArithmeticFailure)
+    & Readonly<{ trace: HistoryTrace }>);
