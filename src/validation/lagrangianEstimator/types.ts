@@ -1,4 +1,5 @@
 /** Generic validation-local contracts. No campaign identities or admission policy. */
+import type { CaptureContext } from "./capture.js";
 export type ArithmeticFailure = Readonly<{
   status: "FAILED";
   code: "INVALID_INPUT" | "NONFINITE_ARITHMETIC";
@@ -54,8 +55,8 @@ export type EndpointOperand = DiagnosticValue & Readonly<{
 export interface VerticalDiagnosticProvider {
   readonly fingerprint: string;
   readonly topology: ProviderTopology | null;
-  ordinary(position: Position, time: number): EstimatorResult<EndpointOperand>;
-  explicit(position: Position, time: number, context: EndpointContext): EstimatorResult<EndpointOperand>;
+  ordinary(position: Position, time: number, capture?: CaptureContext): EstimatorResult<EndpointOperand>;
+  explicit(position: Position, time: number, context: EndpointContext, capture?: CaptureContext): EstimatorResult<EndpointOperand>;
 }
 export type BoundaryContact = Readonly<{
   pathFingerprint: string; boundary: BoundaryId;

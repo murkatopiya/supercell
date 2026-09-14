@@ -330,6 +330,6 @@ describe("P2 comparison typing, arithmetic and audit", () => {
   it("generic primitive imports only arithmetic/types and contains no campaign fixtures", () => {
     const text = readFileSync("src/validation/lagrangianEstimator/comparison.ts", "utf8");
     expect(text).not.toMatch(/Goshen|Prospect|Dumas|Moore|\bESC\b|\bIGRA\b|S[1-4]-[LH]|parallel_plus|right_minus|540|360|180|0\.0625|0\.125|0\.25|0\.5/);
-    expect([...text.matchAll(/from ["']([^"']+)["']/g)].map(m => m[1])).toEqual(["./arithmetic.js", "./types.js"]);
+    expect([...text.matchAll(/from ["']([^"']+)["']/g)].map(m => m[1])).toEqual(["./capture.js", "./arithmetic.js", "./types.js"]);
   });
 });
