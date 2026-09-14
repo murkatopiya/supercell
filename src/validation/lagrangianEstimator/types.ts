@@ -160,3 +160,61 @@ export type HistoryEvidence = Readonly<{
 export type HistoryResult = Readonly<{ status: "COMPLETE"; value: HistoryEvidence }>
   | ((Exclude<EstimatorResult<never>, { status: "COMPLETE" }> | ArithmeticFailure)
     & Readonly<{ trace: HistoryTrace }>);
+
+export type ComparisonRun = Readonly<{ id: string; pathFingerprint: string; h: number }>;
+export type ComparisonContext = Readonly<{
+  coarse: ComparisonRun; fine: ComparisonRun; interval: Interval;
+  channel: string; role: "PRIMARY" | "SECONDARY_DESCRIPTIVE";
+}>;
+export type ComparisonMetric = "POSITION" | "VERTICAL" | "RESPONSE" | "VERTICAL_RESPONSE"
+  | "HISTORY" | "EXPOSURE_ABS" | "EXPOSURE_SIGNED" | "POINTWISE"
+  | "EVENT_WIDTH" | "EVENT_TIME" | "EVENT_TYPES" | "EVENT_COUNT" | "PREFIX_TIME";
+export type ComparisonOutcome = "PASS" | "INVALID CONTROL";
+export type ComparisonCheck = Readonly<{
+  key: string; metric: ComparisonMetric; units: "m" | "s" | "s^-1" | "s^-2" | "1";
+  residual: number; tolerance: number; scale: number | null;
+  absoluteTerm: number | null; relativeTerm: number | null;
+  outcome: ComparisonOutcome; reason: "WITHIN_TOLERANCE" | "TOLERANCE_EXCEEDED";
+  arithmetic: readonly ArithmeticAllowance[];
+  details: Readonly<Record<string, unknown>>;
+}>;
+export type ComparisonBundle = Readonly<{
+  schema: "p2-comparison/v1"; context: ComparisonContext;
+  checks: readonly ComparisonCheck[]; outcome: ComparisonOutcome;
+  details: Readonly<Record<string, unknown>>;
+}>;
+export type ComparisonRejection = Exclude<EstimatorResult<never>, { status: "COMPLETE" }> | ArithmeticFailure
+  | Readonly<{ status: "N_A"; reason: "NO_SEGMENT_MATCHED_SAMPLES" | "BASELINE_SELF_RESPONSE"; value: null }>;
+export type PreparedComparison<T> = Readonly<{ status: "COMPLETE"; value: T }> | ComparisonRejection;
+export type ComparisonResult<T = ComparisonBundle> = Readonly<{ status: "COMPLETE"; value: T }>
+  | (ComparisonRejection & Readonly<{ evidence: Readonly<{ context: ComparisonContext; input: unknown }> }>);
+/** Rows are complete, already-matched stored common coarse-grid samples. No interpolation. */
+export type PreparedGeometry = Readonly<{
+  basis: "STORED_COMMON_COARSE_TIMES"; kind: "POSITION" | "MEMBER_RESPONSE" | "BASELINE_SELF_RESPONSE";
+  baselineIds: Readonly<{ coarse: string; fine: string }> | null;
+  samples: readonly Readonly<{ coarse: PathVertex; fine: PathVertex;
+    coarseBaseline: PathVertex | null; fineBaseline: PathVertex | null }>[];
+}>;
+export type PreparedCrossingBracket = Interval & Readonly<{ representation: string }>;
+export type PreparedPointwise = Readonly<{
+  basis: "STORED_COMMON_COARSE_TIMES";
+  samples: readonly Readonly<{ coarse: EndpointOperand; fine: EndpointOperand }>[];
+  coarseCrossings: readonly PreparedCrossingBracket[]; fineCrossings: readonly PreparedCrossingBracket[];
+}>;
+export type PreparedLifecycleEvent = Interval & Readonly<{
+  kind: string; representation: string | null; category: "LIFECYCLE" | "DIAGNOSTIC_CROSSING";
+}>;
+export type PreparedEvents = Readonly<{
+  coarseEvents: readonly PreparedLifecycleEvent[]; fineEvents: readonly PreparedLifecycleEvent[];
+  coarsePrefixTime: number; finePrefixTime: number;
+}>;
+export type RefinementEvidence = Readonly<{
+  schema: "p2-refinement/v1"; coarser: ComparisonBundle; finer: ComparisonBundle;
+  nonWorsening: readonly Readonly<{
+    key: string; metric: ComparisonMetric; units: ComparisonCheck["units"];
+    coarserResidual: number; finerResidual: number; finerTolerance: number;
+    increase: number; allowance: number; outcome: ComparisonOutcome;
+  }>[];
+  excluded: readonly Readonly<{ key: string; reason: "NOT_AN_AGGREGATE_REFINEMENT_METRIC" }>[];
+  ordinaryOutcome: ComparisonOutcome; outcome: ComparisonOutcome;
+}>;
