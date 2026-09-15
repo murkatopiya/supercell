@@ -1,21 +1,30 @@
 # PROJECT_STATUS
 
-**Current gate — 2026-09-13: PHASE P2 SPECIFICATION — FROZEN · HUMAN REVIEW APPROVED.**
+**Current gate — 2026-09-15: P2 FAILURE-EVIDENCE CAPTURE — CLOSED · APPROVED @ bf83c36.**
 
-Authoritative [Phase P2 qualification specification](research/2026-09-13-observed-lagrangian-phase-p2-qualification-specification.md). Specification ID: `observed-lagrangian-phase-p2-qualification/v1`. Frozen exact-file SHA-256: `fe5a33f8753b7538e5c3abdd2fe9f5766a2bdcefd08bfab07e6ced34bcfae59b`. Human specification review: CLOSED · APPROVED. This specification-only freeze supersedes the older current/next-action bookmarks below; historical Phase P narratives remain unchanged. No implementation design or execution is authorized by this freeze.
+Reviewed implementation checkpoint: `bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c`; parent: `52a9fcce7554504efc8bf540910c2529f18c770f` (evidence-contract foundation). Human closure explicitly approves this exact implementation; the status-only checkpoint adds no further implementation or execution authorization.
+
+Authoritative [Phase P2 qualification specification](research/2026-09-13-observed-lagrangian-phase-p2-qualification-specification.md). Specification ID: `observed-lagrangian-phase-p2-qualification/v1`. Frozen exact-file SHA-256: `fe5a33f8753b7538e5c3abdd2fe9f5766a2bdcefd08bfab07e6ced34bcfae59b`. Human specification review: CLOSED · APPROVED. This file is only a navigation/status bookmark; owning SoT and explicit human decisions take precedence. Historical baselines and pending-review text describe their original handoff, not automatically the current gate.
+
+P2 provenance: [qualification readiness](research/2026-09-14-observed-lagrangian-phase-p2-qualification-readiness-design.md), [evidence-contract review](research/2026-09-14-observed-lagrangian-phase-p2-evidence-contract-implementation-review.md), [approved capture design](research/2026-09-14-observed-lagrangian-phase-p2-failure-evidence-capture-design.md), and [capture implementation review](research/2026-09-14-observed-lagrangian-phase-p2-failure-evidence-capture-implementation-review.md). The later capture design records approval of Slices 1–6, readiness and foundation. Capture implementation is committed at `bf83c36`; the subsequent explicit human decision in this conversation closes its implementation gate: CLOSED · APPROVED @ bf83c36. Historical review/handoff states remain records of their original handoff. The current task's read-only Synthetic Qualification Harness Boundary Audit is recorded in the conversation, with its proposed next boundary below; it grants no implementation or execution authority.
 
 ```text
-PHASE P — CLOSED · INVALID CONTROL
+PHASE P — CLOSED · INVALID CONTROL / NUMERICAL CONVERGENCE
 PHASE P2 SPECIFICATION — FROZEN · HUMAN REVIEW APPROVED
-PHASE P2 IMPLEMENTATION — NOT AUTHORIZED
-PHASE P2 EXECUTION — NOT AUTHORIZED
+PHASE P2 SLICES 1–6 — CLOSED · APPROVED
+PHASE P2 EVIDENCE-CONTRACT FOUNDATION — CLOSED · APPROVED · COMMITTED (52a9fcc)
+P2 FAILURE-EVIDENCE CAPTURE — CLOSED · APPROVED @ bf83c36
+CAPTURE IMPLEMENTATION HUMAN APPROVAL — EXACT IMPLEMENTATION bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c
+PHASE P2 SYNTHETIC QUALIFICATION — NOT YET CERTIFIED
+FURTHER P2 IMPLEMENTATION / SYNTHETIC QUALIFICATION EXECUTION — NOT AUTHORIZED
+PHASE P2 SCIENTIFIC / OBSERVED EXECUTION — NOT AUTHORIZED
 MAIN L1 — NOT AUTHORIZED / NOT TESTED
 MATERIAL RESPONSE THRESHOLDS — STILL OPEN
 PRODUCTION/UI — UNCHANGED
 ```
 
 
-**Current gate — 2026-09-13: PHASE P SCIENTIFIC EXECUTION — CLOSED · INVALID CONTROL.**
+**Historical gate — 2026-09-13: PHASE P SCIENTIFIC EXECUTION — CLOSED · INVALID CONTROL.**
 
 Authoritative [Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md) remains byte-for-byte frozen. This bookmark records the human-classified qualification/control result and execution provenance in [Phase P execution and human closure](#phase-p-execution-and-human-closure). Cause: NUMERICAL CONVERGENCE. No main L1 conclusion or production-physics failure is established.
 
@@ -48,7 +57,7 @@ Earlier human implementation review verified validation-only scope, unchanged pr
 
 The narrow event-width implementation corrigendum was reviewed and approved before closure: fine bracket width had initially been compared against coarse h; coarse now requires `b_c - a_c <= h_c`, and fine requires `b_f - a_f <= h_f`. A regression test was added. Event-time tolerance `max(1 s, 2h)` is unchanged. This corrects implementation of the frozen rule; it does not change the scientific specification.
 
-The E1 closure and earlier gate narratives below retain their historical provenance. The current Phase P bookmark and NEXT ACTION supersede older references to the next Lagrangian protocol-design gate; they change no E1 or H1–H5 input, result or classification.
+The E1 closure and earlier gate narratives below retain their historical provenance. The current P2 bookmark above and NEXT ACTION below supersede historical next-gate statements; they change no Phase P, E1 or H1–H5 input, result or classification.
 
 **Role:** current-project status and navigation point. Use this file to quickly understand the active phase, completed milestones, open gates, and next action.
 
@@ -58,15 +67,15 @@ This file is a navigation/status bookmark only. It points to the documents that 
 
 **Maintenance rule:** update this file whenever a meaningful project step closes, the active phase changes, or `NEXT ACTION` changes. Do not update it for every commit or minor edit.
 
-**Last status update:** 2026-09-13
+**Last status update:** 2026-09-15
 
 ---
 
 ## 1. Current phase
 
-**Storm-Motion Sensitivity & V1 Validation**
+**Phase P2 — numerical measurement-apparatus qualification infrastructure.**
 
-Current status:
+Current P2 status is recorded at the top of this file. H1–H5 and E1 are closed; Phase P remains CLOSED · INVALID CONTROL due to numerical convergence, with no L1 falsification or established physics failure. The following is the historical H/E1 closure snapshot, not the active implementation gate:
 
 ```text
 STORM-MOTION SENSITIVITY CAMPAIGN / OBSERVED E1 SCIENTIFIC CLOSURE / NEXT LAGRANGIAN DESIGN GATE
@@ -212,6 +221,10 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 ## 5. Current step
 
+The read-only P2 Synthetic Qualification Harness Boundary Audit is complete. Its proposed next boundary awaits human review under [NEXT ACTION](#6-next-action). No fixture contract design or implementation is authorized by this status update.
+
+### Historical H/E1 closure context
+
 **H1, H2, and H3 Eulerian CLOSED · PASS. H3 trajectories CLOSED · INVALID CONTROL, with partial valid evidence preserved.**
 
 H3/H4 classifications remain unchanged. H5 CLOSED · PASS: clean same-segment geometric T1 reversal demonstrated within the frozen synthetic control, with no oracle discrepancy. The implementation design review is CLOSED · APPROVED and the implementation contract is FROZEN. E1 implementation is COMPLETE; implementation review is CLOSED · APPROVED at c54f885. The first separately authorized scientific execution ran exactly once and was subsequently human-classified CLOSED · PASS; valid control YES, unexplained deviations NONE, physics failure established NO.
@@ -336,15 +349,17 @@ No evidence was regenerated or modified during this docs-only closure. No tests,
 
 ## 6. NEXT ACTION
 
-**READ-ONLY PHASE P NUMERICAL CONVERGENCE POST-MORTEM**
+**PROPOSED NEXT BOUNDARY — P2 Synthetic Fixture Execution and Qualification Evidence Contract — DESIGN ONLY · STOP FOR HUMAN REVIEW**
 
-The next gate uses existing Attempt 2 qualification evidence only to determine where and how frozen numerical qualification failed. It should examine refinement trends by case, member, seed, candidate duration, resolution pair and criterion, especially 0.5 ↔ 0.25, 0.25 ↔ 0.125 and 0.125 ↔ 0.0625 s. That analysis is not part of this closure. No deeper dt ladder, changed tolerances, different integrator, seed/duration changes or another execution are prescribed or authorized here. Main L1 remains NOT AUTHORIZED and NOT FROZEN; material-response thresholds remain STILL OPEN.
+Provenance: the current task's read-only Synthetic Qualification Harness Boundary Audit (conversation; no repository audit document was created). It identified a partially specified connection between fixture declarations, real P2 API calls/assertions and fixture qualification records. The next action is human review of this proposed design boundary, not contract drafting or implementation. The previous writer/verifier-before-runner ordering is not an approved semantic contract.
 
-The approved exact E1 C matrix and 36-parameter storm snapshot are explicitly inherited. E1 stays CLOSED · PASS; no E1/H1–H5 rerun is authorized. No observed scientific collection, commit or push occurred during Phase P implementation.
+Further implementation, synthetic qualification execution/certification, observed collection/campaigns, Main L1 and material-response threshold selection remain unauthorized. No E1/H1–H5 or historical Phase P rerun is authorized. Production/UI remain unchanged.
 
 ---
 
-## 7. Synthetic closure and observed-protocol design gates
+## 7. Historical H/E1 synthetic closure and observed-protocol design gates
+
+The following records the earlier H/E1 gate sequence. Its next-stage statements are historical; the active P2 boundary is in NEXT ACTION above.
 
 Architecture blockers: **none**.
 
@@ -417,6 +432,7 @@ Do not treat this file itself as physics authority.
 ## 9. Current-state reading order
 
 1. **This file** — current phase and `NEXT ACTION`.
+   For active P2 authority, follow the frozen specification and readiness/foundation/capture documents linked at the top; the documents below retain earlier-stage provenance.
 2. [`research/2026-09-12-observed-c-matrix-protocol-design.md`](research/2026-09-12-observed-c-matrix-protocol-design.md) — reviewed scientific design, approved frozen E1 arithmetic inputs (§13); its historical open E1 decisions are resolved by the frozen implementation contract.
    Read alongside the [approved frozen E1 implementation contract](research/2026-09-12-observed-c-matrix-e1-implementation-design.md); implementation is complete and code review is CLOSED · APPROVED at c54f885; scientific execution is CLOSED · PASS by human review in observed protocol §14.
 3. [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md) — existing frozen synthetic implementation/output contract; not an E1 implementation specification.
@@ -426,4 +442,4 @@ Do not treat this file itself as physics authority.
 7. [`PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md) — broader deferred/unresolved work.
 8. [`README.md`](README.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) — global documentation/architecture map.
 
-The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current next gate is READ-ONLY PHASE P NUMERICAL CONVERGENCE POST-MORTEM. Further Phase P execution remains unauthorized.
+The [formal correction record](research/2026-09-12-storm-motion-srh-sign-correction.md) documents the closed pre-run specification issue. H1/H2/H3 evidence and classifications are owned by [protocol §10](research/2026-09-11-storm-motion-sensitivity-and-v1-validation.md#10-results); H4 specification is owned by §13 and remains unchanged. H5 frozen scientific design is owned by §14; execution evidence and human CLOSED · PASS classification are owned by §15. The current proposed P2 design boundary is recorded in NEXT ACTION above. Further Phase P execution remains unauthorized.
