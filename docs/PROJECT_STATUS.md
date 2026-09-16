@@ -1,12 +1,14 @@
 # PROJECT_STATUS
 
-**Current gate — 2026-09-15: P2 FAILURE-EVIDENCE CAPTURE — CLOSED · APPROVED @ bf83c36.**
+**Current gate — 2026-09-16: P2 SYNTHETIC FIXTURE EXECUTION AND QUALIFICATION EVIDENCE CONTRACT — CLOSED · HUMAN REVIEW APPROVED. CONTRACT FROZEN.**
 
-Reviewed implementation checkpoint: `bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c`; parent: `52a9fcce7554504efc8bf540910c2529f18c770f` (evidence-contract foundation). Human closure explicitly approves this exact implementation; the status-only checkpoint adds no further implementation or execution authorization.
+Explicit human review approves the complete resolved [P2 Synthetic Fixture Execution and Qualification Evidence Contract](research/2026-09-15-observed-lagrangian-phase-p2-synthetic-fixture-execution-contract-design.md), including D1/D2 and all fixture, supplemental and prerequisite mappings. Approval checkpoint: `main @ 401d59b8e1618cb264bafbc6f9d8188ae63e7ab5`; parent `bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c`. The approved document is a working-tree addition at that checkpoint, not a file committed in it. Exact reviewed pre-closure document SHA-256: `a9f1e373cdfb0e672616fdbd66d0a25f6bff561aba825cd1901b1a29c38a15a5`. Status/freeze-closed document SHA-256: `0d7025386bcca0e6020a720f0d147d797d419d67de1014e0e21f055c4e232622`. Only status/provenance passages changed during closure; reviewed semantics are preserved. No new implementation/runtime SHA, commit, or execution authority is established.
+
+Previous implementation gate remains closed: Failure-Evidence Capture approved at `bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c`, parent `52a9fcce7554504efc8bf540910c2529f18c770f` (evidence-contract foundation). Full contract approval authorizes neither fixture qualification layer implementation nor synthetic/observed execution.
 
 Authoritative [Phase P2 qualification specification](research/2026-09-13-observed-lagrangian-phase-p2-qualification-specification.md). Specification ID: `observed-lagrangian-phase-p2-qualification/v1`. Frozen exact-file SHA-256: `fe5a33f8753b7538e5c3abdd2fe9f5766a2bdcefd08bfab07e6ced34bcfae59b`. Human specification review: CLOSED · APPROVED. This file is only a navigation/status bookmark; owning SoT and explicit human decisions take precedence. Historical baselines and pending-review text describe their original handoff, not automatically the current gate.
 
-P2 provenance: [qualification readiness](research/2026-09-14-observed-lagrangian-phase-p2-qualification-readiness-design.md), [evidence-contract review](research/2026-09-14-observed-lagrangian-phase-p2-evidence-contract-implementation-review.md), [approved capture design](research/2026-09-14-observed-lagrangian-phase-p2-failure-evidence-capture-design.md), and [capture implementation review](research/2026-09-14-observed-lagrangian-phase-p2-failure-evidence-capture-implementation-review.md). The later capture design records approval of Slices 1–6, readiness and foundation. Capture implementation is committed at `bf83c36`; the subsequent explicit human decision in this conversation closes its implementation gate: CLOSED · APPROVED @ bf83c36. Historical review/handoff states remain records of their original handoff. The current task's read-only Synthetic Qualification Harness Boundary Audit is recorded in the conversation, with its proposed next boundary below; it grants no implementation or execution authority.
+P2 provenance: [qualification readiness](research/2026-09-14-observed-lagrangian-phase-p2-qualification-readiness-design.md), [evidence-contract review](research/2026-09-14-observed-lagrangian-phase-p2-evidence-contract-implementation-review.md), [approved capture design](research/2026-09-14-observed-lagrangian-phase-p2-failure-evidence-capture-design.md), and [capture implementation review](research/2026-09-14-observed-lagrangian-phase-p2-failure-evidence-capture-implementation-review.md). The later capture design records approval of Slices 1–6, readiness and foundation. Capture implementation is committed at `bf83c36` and its explicit human implementation approval remains closed. The subsequent Synthetic Qualification Harness Boundary Audit led to the now-approved fixture execution/evidence contract linked above. Historical review/handoff states remain records of their original handoff; they do not override this closure or authorize implementation/execution.
 
 ```text
 PHASE P — CLOSED · INVALID CONTROL / NUMERICAL CONVERGENCE
@@ -15,8 +17,11 @@ PHASE P2 SLICES 1–6 — CLOSED · APPROVED
 PHASE P2 EVIDENCE-CONTRACT FOUNDATION — CLOSED · APPROVED · COMMITTED (52a9fcc)
 P2 FAILURE-EVIDENCE CAPTURE — CLOSED · APPROVED @ bf83c36
 CAPTURE IMPLEMENTATION HUMAN APPROVAL — EXACT IMPLEMENTATION bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c
+P2 SYNTHETIC FIXTURE EXECUTION AND QUALIFICATION EVIDENCE CONTRACT — CLOSED · HUMAN REVIEW APPROVED
+FIXTURE EXECUTION / QUALIFICATION EVIDENCE CONTRACT — FROZEN
 PHASE P2 SYNTHETIC QUALIFICATION — NOT YET CERTIFIED
-FURTHER P2 IMPLEMENTATION / SYNTHETIC QUALIFICATION EXECUTION — NOT AUTHORIZED
+FIXTURE QUALIFICATION LAYER IMPLEMENTATION — NOT YET AUTHORIZED
+SYNTHETIC QUALIFICATION EXECUTION — NOT AUTHORIZED
 PHASE P2 SCIENTIFIC / OBSERVED EXECUTION — NOT AUTHORIZED
 MAIN L1 — NOT AUTHORIZED / NOT TESTED
 MATERIAL RESPONSE THRESHOLDS — STILL OPEN
@@ -67,7 +72,7 @@ This file is a navigation/status bookmark only. It points to the documents that 
 
 **Maintenance rule:** update this file whenever a meaningful project step closes, the active phase changes, or `NEXT ACTION` changes. Do not update it for every commit or minor edit.
 
-**Last status update:** 2026-09-15
+**Last status update:** 2026-09-16
 
 ---
 
@@ -221,7 +226,7 @@ Unsupported Analysis trajectory segments can expose the first tracer's red ident
 
 ## 5. Current step
 
-The read-only P2 Synthetic Qualification Harness Boundary Audit is complete. Its proposed next boundary awaits human review under [NEXT ACTION](#6-next-action). No fixture contract design or implementation is authorized by this status update.
+Status/freeze closure of the [P2 Synthetic Fixture Execution and Qualification Evidence Contract](research/2026-09-15-observed-lagrangian-phase-p2-synthetic-fixture-execution-contract-design.md) is complete: CLOSED · HUMAN REVIEW APPROVED; contract FROZEN. The complete resolved semantics, including D1/D2, are preserved. This closure performs static documentation checks only; no tests, fixture execution, scientific campaign result inspection, implementation, commit or push. Fixture qualification implementation remains NOT YET AUTHORIZED and synthetic qualification remains NOT YET CERTIFIED. The proposed next boundary in [NEXT ACTION](#6-next-action) requires separate human authorization.
 
 ### Historical H/E1 closure context
 
@@ -349,9 +354,9 @@ No evidence was regenerated or modified during this docs-only closure. No tests,
 
 ## 6. NEXT ACTION
 
-**PROPOSED NEXT BOUNDARY — P2 Synthetic Fixture Execution and Qualification Evidence Contract — DESIGN ONLY · STOP FOR HUMAN REVIEW**
+**PROPOSED NEXT BOUNDARY — bounded implementation design/planning for the minimal fixture-level qualification layer using the approved contract — SEPARATE HUMAN AUTHORIZATION REQUIRED · STOP FOR HUMAN REVIEW**
 
-Provenance: the current task's read-only Synthetic Qualification Harness Boundary Audit (conversation; no repository audit document was created). It identified a partially specified connection between fixture declarations, real P2 API calls/assertions and fixture qualification records. The next action is human review of this proposed design boundary, not contract drafting or implementation. The previous writer/verifier-before-runner ordering is not an approved semantic contract.
+Provenance: explicit human approval of the complete [fixture execution/qualification evidence contract](research/2026-09-15-observed-lagrangian-phase-p2-synthetic-fixture-execution-contract-design.md), at the document/checkpoint identified above. This is a proposal for a separately authorized planning boundary only. No implementation slice is selected or implemented during closure. Executor/runner/writer/verifier/certificate/persistence/reconstruction infrastructure remains outside this task. The previous writer/verifier-before-runner ordering is not an approved semantic contract.
 
 Further implementation, synthetic qualification execution/certification, observed collection/campaigns, Main L1 and material-response threshold selection remain unauthorized. No E1/H1–H5 or historical Phase P rerun is authorized. Production/UI remain unchanged.
 
@@ -432,7 +437,7 @@ Do not treat this file itself as physics authority.
 ## 9. Current-state reading order
 
 1. **This file** — current phase and `NEXT ACTION`.
-   For active P2 authority, follow the frozen specification and readiness/foundation/capture documents linked at the top; the documents below retain earlier-stage provenance.
+   For active P2 authority, follow the frozen specification, approved fixture execution/qualification evidence contract and readiness/foundation/capture documents linked at the top; the documents below retain earlier-stage provenance.
 2. [`research/2026-09-12-observed-c-matrix-protocol-design.md`](research/2026-09-12-observed-c-matrix-protocol-design.md) — reviewed scientific design, approved frozen E1 arithmetic inputs (§13); its historical open E1 decisions are resolved by the frozen implementation contract.
    Read alongside the [approved frozen E1 implementation contract](research/2026-09-12-observed-c-matrix-e1-implementation-design.md); implementation is complete and code review is CLOSED · APPROVED at c54f885; scientific execution is CLOSED · PASS by human review in observed protocol §14.
 3. [`research/2026-09-12-storm-motion-validation-harness-design.md`](research/2026-09-12-storm-motion-validation-harness-design.md) — existing frozen synthetic implementation/output contract; not an E1 implementation specification.
