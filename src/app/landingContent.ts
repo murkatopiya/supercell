@@ -1,5 +1,5 @@
 /**
- * Public Landing copy for v0.1. User-facing, not architecture lecture.
+ * Public Landing copy for the first release. User-facing, not architecture lecture.
  */
 
 import {

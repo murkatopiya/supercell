@@ -12,7 +12,7 @@ describe("App navigation Slice 1", () => {
     const html = renderToStaticMarkup(<App />);
     expect(html).toContain("app--landing");
     expect(html).toContain("Supercell Explorer");
-    expect(html).toContain("v0.1");
+    expect(html).toContain("V1.1");
     expect(html).toContain("Research prototype");
     expect(html).toContain("Open Laboratory");
     expect(html).toContain("kinematic laboratory");

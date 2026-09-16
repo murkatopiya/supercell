@@ -57,7 +57,7 @@ function landingMarkup() {
 const appCss = readFileSync(new URL("./app.css", import.meta.url), "utf8");
 
 describe("LandingPage", () => {
-  it("explains the current laboratory and marks it as a v0.1 research prototype", () => {
+  it("explains the current laboratory and marks it as a V1.1 research prototype", () => {
     const html = landingMarkup();
     expect(html).toContain("Supercell Explorer");
     expect(html).toContain(LANDING_LEDE);

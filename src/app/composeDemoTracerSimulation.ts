@@ -14,6 +14,7 @@ import { createRotationField } from "../scenario/createRotationField.js";
 import { createUpdraftField } from "../scenario/createUpdraftField.js";
 import { createUpperRadialOutflowField } from "../scenario/createUpperRadialOutflowField.js";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
+import type { StormMotion } from "../physics/environment/stormRelativeWind.js";
 import type { InspectableVelocityOperands } from "../interaction/TracerInspection.js";
 import { ATMOSPHERIC_TRACER_DOMAIN } from "../simulation/AtmosphericTracerDomain.js";
 import { createTracersFromSeeds } from "../simulation/createTracersFromSeeds.js";
@@ -72,6 +73,7 @@ export interface DemoObservedTracerSimulation {
 function environmentalOperand(
   groundRelativeEnvironmentField: EnvironmentalWindField,
   integrationFrame: IntegrationFrame,
+  stormMotion: StormMotion,
 ): VelocityField {
   switch (integrationFrame) {
     case IntegrationFrame.GroundRelativeWindTunnel:
@@ -79,7 +81,7 @@ function environmentalOperand(
     case IntegrationFrame.StormRelativeLaboratory:
       return new StormRelativeEnvironmentalAdvectionField(
         groundRelativeEnvironmentField,
-        DEMO_SCENARIO.stormMotion,
+        stormMotion,
       );
   }
 }
@@ -92,7 +94,7 @@ function environmentalOperand(
  * not know about the frame or C.
  *
  * Optional environmentalWindProfile replaces only the DEMO knots.
- * Storm factories and DEMO_SCENARIO.stormMotion stay prescribed.
+ * Explore may pass prescribed experiment C; default/Guided remain DEMO.
  *
  * Default composition frame: GroundRelativeWindTunnel.
  * Live App.tsx selects StormRelativeLaboratory explicitly.
@@ -100,6 +102,7 @@ function environmentalOperand(
 export function composeDemoTracerFields(
   integrationFrame: IntegrationFrame = DEFAULT_DEMO_INTEGRATION_FRAME,
   environmentalWindProfile?: EnvironmentalWindProfile,
+  stormMotion: StormMotion = DEMO_SCENARIO.stormMotion,
 ) {
   const profile =
     environmentalWindProfile ?? createEnvironmentalWindProfile(DEMO_SCENARIO);
@@ -107,6 +110,7 @@ export function composeDemoTracerFields(
   const environmentField = environmentalOperand(
     groundRelativeEnvironmentField,
     integrationFrame,
+    stormMotion,
   );
   const updraftField = createUpdraftField(DEMO_SCENARIO);
   const rotationField = createRotationField(DEMO_SCENARIO);
@@ -176,10 +180,12 @@ export function composeDemoTracersWithObservation(
   integrationFrame: IntegrationFrame,
   particles: TracerAdvectionState[],
   environmentalWindProfile?: EnvironmentalWindProfile,
+  stormMotion: StormMotion = DEMO_SCENARIO.stormMotion,
 ): DemoObservedTracerSimulation {
   const composed = composeDemoTracerFields(
     integrationFrame,
     environmentalWindProfile,
+    stormMotion,
   );
   const tiltingTendency = new DiagnosticTiltingTendency({
     profile: composed.profile,

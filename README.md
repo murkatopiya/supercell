@@ -4,7 +4,7 @@ An interactive kinematic laboratory for exploring how
 environmental wind and prescribed storm-local flow geometry
 shape tracer trajectories and vertical-tilting diagnostics.
 
-**v0.1 · Research prototype.** This is not a weather forecast
+**V1.1 · Research prototype.** This is not a weather forecast
 or a full atmospheric simulation. It is a prescribed
 kinematic laboratory for examining selected mechanisms under
 controlled assumptions.
@@ -35,7 +35,7 @@ observed environment; Demo, Prospect Valley, Dumas, and Moore
 remain selectable.
 
 A guided walkthrough is planned for a later version. Guided
-code remains in the repository; it is not a public v0.1
+code remains in the repository; it is not a public V1
 landing peer of Explore.
 
 ## Environmental datasets

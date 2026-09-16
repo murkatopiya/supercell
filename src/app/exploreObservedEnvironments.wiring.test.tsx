@@ -363,7 +363,8 @@ describe("Explore observed environments", () => {
     expect(controls).toMatch(/Storm-relative laboratory/);
     expect(controls).toMatch(/ExploreEnvironmentSelector/);
     expect(controls).toMatch(/onChange=\{selectExploreEnvironment\}/);
-    expect(controls).toMatch(/workbench__column-note/);
+    expect(controls).toMatch(/stormMotion=\{explore\.stormMotion\}/);
+    expect(controls).toMatch(/onApplyStormMotion=\{applyExploreStormMotion\}/);
     expect(controls).not.toMatch(/name="explore-environment-identity"/);
     const header = appSrc.slice(
       appSrc.indexOf("app__header"),

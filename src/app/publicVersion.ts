@@ -1,9 +1,11 @@
+import { CURRENT_RELEASE_CANDIDATE } from "./releaseHistory.js";
+
 /**
- * Public product framing for the first experimental release.
- * Not a release/version framework and not a scientific-validity claim.
+ * Public product framing follows the current release candidate in source.
+ * Version is not a scientific-validity claim.
  */
 
-export const PUBLIC_VERSION = "v0.1";
+export const PUBLIC_VERSION = CURRENT_RELEASE_CANDIDATE.version;
 
 export const PUBLIC_VERSION_STATUS = "Research prototype";
 

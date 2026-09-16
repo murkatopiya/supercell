@@ -9,6 +9,7 @@ import { EulerianAirflowSamples } from "../visualization/EulerianAirflowSamples.
 import type { EscHrTimeAnalysisColumn } from "../data/escHrTimeAnalysis/types.js";
 import {
   DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
+  EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED,
   type ExploreEnvironmentIdentity,
 } from "../explore/exploreEnvironmentIdentity.js";
 import { composeDemoTracersWithObservation } from "./composeDemoTracerSimulation.js";
@@ -19,10 +20,13 @@ import { IntegrationFrame } from "./IntegrationFrame.js";
 import type { DiagnosticTiltingTendency } from "../physics/diagnostics/DiagnosticTiltingTendency.js";
 import type { DiagnosticVerticalVorticity } from "../physics/diagnostics/DiagnosticVerticalVorticity.js";
 import type { Simulation } from "../simulation/Simulation.js";
+import type { StormMotion } from "../physics/environment/stormRelativeWind.js";
+import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
 
 export interface ExploreLab {
   readonly kind: "explore";
   readonly environmentIdentity: ExploreEnvironmentIdentity;
+  readonly stormMotion: Readonly<StormMotion>;
   readonly simulation: Simulation;
   readonly pathHistory: TracerPathHistory;
   readonly session: ExploreTracerSession;
@@ -38,6 +42,33 @@ export interface ExploreLab {
    * Null is COLUMN_UNAVAILABLE (Moore, Demo). Not a velocity operand.
    */
   readonly analysisColumn: EscHrTimeAnalysisColumn | null;
+}
+
+export type ExploreStormMotionOverrides = Partial<Record<ExploreEnvironmentIdentity, StormMotion>>;
+
+export function sameStormMotion(left: StormMotion, right: StormMotion): boolean {
+  return left.eastward === right.eastward && left.northward === right.northward;
+}
+
+export function exploreStormMotionFor(
+  identity: ExploreEnvironmentIdentity,
+  overrides: ExploreStormMotionOverrides,
+): StormMotion {
+  return identity === EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED
+    ? DEMO_SCENARIO.stormMotion
+    : overrides[identity] ?? DEMO_SCENARIO.stormMotion;
+}
+
+export function withExploreStormMotionOverride(
+  previous: ExploreStormMotionOverrides,
+  identity: ExploreEnvironmentIdentity,
+  next: StormMotion,
+): ExploreStormMotionOverrides {
+  const updated = { ...previous };
+  if (identity === EXPLORE_ENVIRONMENT_DEMO_PRESCRIBED) return updated;
+  if (sameStormMotion(next, DEMO_SCENARIO.stormMotion)) delete updated[identity];
+  else updated[identity] = { eastward: next.eastward, northward: next.northward };
+  return updated;
 }
 
 /**
@@ -59,12 +90,13 @@ export function composeExploreTracerSimulation(
  *
  * Explore identity selects Source EWP for advection and the matching
  * Analysis diagnostic sibling. Demo and Moore have analysisColumn null.
- * Storm operands and prescribed C remain DEMO. Guided does not use this.
+ * Storm-local operands remain DEMO; C is the selected Explore experiment value.
  * Analysis is not passed to Simulation or CompositeVelocityField.
  */
 export function createExploreLab(
   sceneSlots: ExploreSceneSlots,
   identity: ExploreEnvironmentIdentity = DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY,
+  stormMotion: StormMotion = DEMO_SCENARIO.stormMotion,
 ): ExploreLab {
   const environment = exploreEnvironmentRepresentations(identity);
   const {
@@ -77,6 +109,7 @@ export function createExploreLab(
     IntegrationFrame.StormRelativeLaboratory,
     [],
     environment.sourceProfile,
+    stormMotion,
   );
   const pathHistory = new TracerPathHistory(0);
   const session = new ExploreTracerSession(simulation, pathHistory);
@@ -98,6 +131,7 @@ export function createExploreLab(
   return {
     kind: "explore",
     environmentIdentity: environment.identity,
+    stormMotion: Object.freeze({ eastward: stormMotion.eastward, northward: stormMotion.northward }),
     simulation,
     pathHistory,
     session,

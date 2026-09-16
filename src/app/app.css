@@ -1719,6 +1719,160 @@ body:has(.app--landing) {
   font-weight: 650;
 }
 
+.explore-environment-disclosure,
+.explore-laboratory-about {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+}
+
+.explore-environment-disclosure:not([open]) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.explore-environment-disclosure:not([open]) > summary {
+  color: var(--color-accent);
+}
+
+.explore-environment-disclosure__summary,
+.explore-laboratory-about > summary {
+  display: block;
+  position: relative;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3) var(--space-2) calc(var(--space-3) + 1rem);
+  list-style: none;
+  color: var(--color-text-primary);
+  font-size: var(--text-label);
+  cursor: pointer;
+}
+
+.explore-environment-disclosure__summary::-webkit-details-marker,
+.explore-laboratory-about > summary::-webkit-details-marker {
+  display: none;
+}
+
+.explore-environment-disclosure__summary::before,
+.explore-laboratory-about > summary::before {
+  content: "";
+  position: absolute;
+  left: var(--space-3);
+  top: calc(var(--space-2) + 0.3rem);
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.explore-environment-disclosure[open] > summary::before,
+.explore-laboratory-about[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+.explore-environment-disclosure__summary:focus-visible,
+.explore-laboratory-about > summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.explore-environment-disclosure__title,
+.explore-environment-disclosure__value {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.explore-environment-disclosure__title,
+.explore-laboratory-about > summary {
+  font-weight: 650;
+}
+
+.explore-environment-disclosure__value {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+}
+
+.explore-environment-disclosure__body,
+.explore-laboratory-about .environment-clarity {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.explore-environment-disclosure__body > :last-child,
+.explore-laboratory-about .environment-clarity {
+  margin-bottom: 0;
+}
+
+.storm-motion-control {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 0 var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface-subtle);
+  color: var(--color-text-secondary);
+  font-size: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.storm-motion-control__title {
+  margin: 0 0 var(--space-1);
+  color: var(--color-text-primary);
+  font-size: var(--text-label);
+  font-weight: 650;
+}
+
+.storm-motion-control__description,
+.storm-motion-control__hint,
+.storm-motion-control__error {
+  margin: 0;
+}
+
+.storm-motion-control__fields,
+.storm-motion-control__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.storm-motion-control__field {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-1);
+  color: var(--color-text-primary);
+  font-size: var(--text-label);
+}
+
+.storm-motion-control__field .ui-input,
+.storm-motion-control__actions .ui-button {
+  width: 100%;
+  min-width: 0;
+}
+
+.storm-motion-control__field .ui-input[aria-invalid="true"] {
+  border-color: var(--color-accent);
+}
+
+.storm-motion-control__actions .ui-button {
+  white-space: normal;
+}
+
+.storm-motion-control__error {
+  margin-top: var(--space-2);
+  color: var(--color-accent);
+}
+
+.storm-motion-control__hint {
+  margin-top: var(--space-3);
+}
+
 .guided-experiment-selector {
   display: inline-flex;
   flex-wrap: wrap;
@@ -2539,6 +2693,19 @@ body:has(.app--landing) {
 
 .how-it-works__dialog--glossary {
   width: min(53rem, 100%);
+}
+
+.whats-new__dialog {
+  width: min(38rem, 100%);
+}
+
+.whats-new__entry + .whats-new__entry {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.whats-new__entry li {
+  overflow-wrap: anywhere;
 }
 
 .how-it-works__header {

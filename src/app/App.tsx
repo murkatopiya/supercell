@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { DEMO_SCENARIO } from "../scenario/DEMO_SCENARIO.js";
+import type { StormMotion } from "../physics/environment/stormRelativeWind.js";
 import { GlossaryAffordance } from "./GlossaryAffordance.js";
 import { GlossarySurface } from "./GlossarySurface.js";
 import { HowItWorksAffordance } from "./HowItWorksAffordance.js";
@@ -8,10 +9,12 @@ import type { HowItWorksContext } from "./howItWorksContent.js";
 import { LandingPage } from "./LandingPage.js";
 import { UserGuideAffordance } from "./UserGuideAffordance.js";
 import { UserGuideSurface } from "./UserGuideSurface.js";
+import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
+import { WhatsNewSurface } from "./WhatsNewSurface.js";
 import { ModeIdentity } from "./ModeIdentity.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
-import { ExploreEnvironmentSelector } from "../ui/hodograph/ExploreEnvironmentSelector.js";
+import { ExploreEnvironmentSelector, ExploreLaboratoryAbout } from "../ui/hodograph/ExploreEnvironmentSelector.js";
 import { DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY } from "../ui/hodograph/hodographOverlayVisibility.js";
 import { INITIAL_HODOGRAPH_PANEL_GEOMETRY } from "../ui/hodograph/hodographPanelGeometry.js";
 import { DEFAULT_HODOGRAPH_PLOT_VIEW } from "../ui/hodograph/hodographPlotView.js";
@@ -45,7 +48,11 @@ import {
 } from "../ui/tracer/TracerViewport.js";
 import {
   createExploreLab,
+  exploreStormMotionFor,
   resetExploreLab,
+  sameStormMotion,
+  withExploreStormMotionOverride,
+  type ExploreStormMotionOverrides,
   type ExploreLab,
 } from "./createExploreLab.js";
 import {
@@ -139,6 +146,8 @@ function createSceneSlots(
 export function App() {
   const [exploreEnvironmentIdentity, setExploreEnvironmentIdentity] =
     useState<ExploreEnvironmentIdentity>(DEFAULT_EXPLORE_ENVIRONMENT_IDENTITY);
+  const [exploreStormMotionOverrides, setExploreStormMotionOverrides] =
+    useState<ExploreStormMotionOverrides>({});
   const [overlayVisibility, setOverlayVisibility] = useState(
     DEFAULT_HODOGRAPH_OVERLAY_VISIBILITY,
   );
@@ -168,6 +177,8 @@ export function App() {
   const userGuideTriggerRef = useRef<HTMLButtonElement | null>(null);
   const userGuideOpenRef = useRef(false);
   userGuideOpenRef.current = userGuideOpen;
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+  const whatsNewTriggerRef = useRef<HTMLButtonElement | null>(null);
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
   if (sceneSlotsRef.current === null) {
@@ -457,6 +468,7 @@ export function App() {
       createExploreLab(
         sceneSlotsRef.current!,
         exploreEnvironmentIdentity,
+        exploreStormMotionFor(exploreEnvironmentIdentity, exploreStormMotionOverrides),
       ),
     );
     syncAuthoringHistoryButtons(null);
@@ -476,7 +488,7 @@ export function App() {
   };
 
   const enterGuided = () => {
-    // Retained Guided factory. Public v0.1 landing does not expose it as a peer CTA.
+    // Retained Guided factory. Public V1 landing does not expose it as a peer CTA.
     if (lab !== null && lab.kind === "guided") {
       return;
     }
@@ -529,6 +541,7 @@ export function App() {
       createExploreLab(
         sceneSlotsRef.current!,
         next,
+        exploreStormMotionFor(next, exploreStormMotionOverrides),
       ),
     );
     setPlacementEnabled(false);
@@ -537,10 +550,26 @@ export function App() {
     syncAuthoringHistoryButtons(null);
   };
 
+  const applyExploreStormMotion = (next: StormMotion) => {
+    if (lab === null || lab.kind !== "explore" ||
+      !Number.isFinite(next.eastward) || !Number.isFinite(next.northward) ||
+      sameStormMotion(next, lab.stormMotion)) return;
+    setExploreStormMotionOverrides(previous =>
+      withExploreStormMotionOverride(previous, exploreEnvironmentIdentity, next));
+    clearSelectionAndInspection();
+    sceneSlotsRef.current?.clearTracerSlots();
+    setLab(createExploreLab(sceneSlotsRef.current!, exploreEnvironmentIdentity, next));
+    setPlacementEnabled(false);
+    setPendingSeed(null);
+    setResetEpoch(epoch => epoch + 1);
+    syncAuthoringHistoryButtons(null);
+  };
+
   const openHowItWorks = (trigger: HTMLButtonElement) => {
     howItWorksTriggerRef.current = trigger;
     setUserGuideOpen(false);
     setGlossaryOpen(false);
+    setWhatsNewOpen(false);
     setHowItWorksOpen(true);
   };
 
@@ -552,6 +581,7 @@ export function App() {
     glossaryTriggerRef.current = trigger;
     setUserGuideOpen(false);
     setHowItWorksOpen(false);
+    setWhatsNewOpen(false);
     setGlossaryOpen(true);
   };
 
@@ -563,12 +593,23 @@ export function App() {
     userGuideTriggerRef.current = trigger;
     setHowItWorksOpen(false);
     setGlossaryOpen(false);
+    setWhatsNewOpen(false);
     setUserGuideOpen(true);
   };
 
   const closeUserGuide = () => {
     setUserGuideOpen(false);
   };
+
+  const openWhatsNew = (trigger: HTMLButtonElement) => {
+    whatsNewTriggerRef.current = trigger;
+    setUserGuideOpen(false);
+    setHowItWorksOpen(false);
+    setGlossaryOpen(false);
+    setWhatsNewOpen(true);
+  };
+
+  const closeWhatsNew = () => setWhatsNewOpen(false);
 
   const howItWorksContext: HowItWorksContext =
     appSurface === "landing" || lab === null
@@ -602,6 +643,11 @@ export function App() {
     />
   );
 
+  const whatsNewSurface = (
+    <WhatsNewSurface open={whatsNewOpen} onClose={closeWhatsNew}
+      returnFocusRef={whatsNewTriggerRef} />
+  );
+
   const returnToLanding = () => {
     clearSelectionAndInspection();
     setPendingSeed(null);
@@ -619,13 +665,16 @@ export function App() {
           onOpenUserGuide={openUserGuide}
           onOpenHowItWorks={openHowItWorks}
           onOpenGlossary={openGlossary}
+          onOpenWhatsNew={openWhatsNew}
           userGuideOpen={userGuideOpen}
           howItWorksOpen={howItWorksOpen}
           glossaryOpen={glossaryOpen}
+          whatsNewOpen={whatsNewOpen}
         />
         {userGuideSurface}
         {howItWorksSurface}
         {glossarySurface}
+        {whatsNewSurface}
       </>
     );
   }
@@ -709,7 +758,7 @@ export function App() {
     <EnvironmentSurface
       open={environmentOpen}
       points={points}
-      stormMotion={DEMO_SCENARIO.stormMotion}
+      stormMotion={explore !== null ? explore.stormMotion : DEMO_SCENARIO.stormMotion}
       selectedHeight={
         observedExploreActive ? undefined : DEMO_SELECTED_HEIGHT
       }
@@ -852,6 +901,7 @@ export function App() {
             expanded={glossaryOpen}
             onOpen={openGlossary}
           />
+          <WhatsNewAffordance expanded={whatsNewOpen} onOpen={openWhatsNew} />
         </div>
       </header>
       <p className="app__subtitle">
@@ -871,6 +921,9 @@ export function App() {
               value={exploreEnvironmentIdentity}
               onChange={selectExploreEnvironment}
               analysisAvailable={explore.analysisColumn !== null}
+              stormMotion={explore.stormMotion}
+              onApplyStormMotion={applyExploreStormMotion}
+              onRestoreStormMotion={() => applyExploreStormMotion(DEMO_SCENARIO.stormMotion)}
             />
             <div className="laboratory-toolbar laboratory-toolbar--explore">
               <div
@@ -956,6 +1009,10 @@ export function App() {
                 </div>
               </div>
             </div>
+            <ExploreLaboratoryAbout
+              value={exploreEnvironmentIdentity}
+              analysisAvailable={explore.analysisColumn !== null}
+            />
           </div>
 
           <div className="workbench__column workbench__column--viewport">
@@ -1059,6 +1116,7 @@ export function App() {
     {userGuideSurface}
     {howItWorksSurface}
     {glossarySurface}
+    {whatsNewSurface}
     </>
   );
 }

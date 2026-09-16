@@ -46,15 +46,18 @@ import {
   IGRA_STATION_ID,
 } from "./glossaryContent.js";
 import logoUrl from "./assets/supercell-explorer-logo.webp";
+import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
 
 export interface LandingPageProps {
   onEnterExplore: () => void;
   onOpenUserGuide: (trigger: HTMLButtonElement) => void;
   onOpenHowItWorks: (trigger: HTMLButtonElement) => void;
   onOpenGlossary: (trigger: HTMLButtonElement) => void;
+  onOpenWhatsNew?: (trigger: HTMLButtonElement) => void;
   userGuideOpen?: boolean;
   howItWorksOpen?: boolean;
   glossaryOpen?: boolean;
+  whatsNewOpen?: boolean;
 }
 
 /**
@@ -67,9 +70,11 @@ export function LandingPage({
   onOpenUserGuide,
   onOpenHowItWorks,
   onOpenGlossary,
+  onOpenWhatsNew,
   userGuideOpen = false,
   howItWorksOpen = false,
   glossaryOpen = false,
+  whatsNewOpen = false,
 }: LandingPageProps) {
   return (
     <main className="app app--landing">
@@ -119,6 +124,8 @@ export function LandingPage({
             >
               Glossary
             </button>
+            {onOpenWhatsNew && <WhatsNewAffordance expanded={whatsNewOpen}
+              onOpen={onOpenWhatsNew} className="landing__how-it-works" />}
           </div>
         </div>
         <img
