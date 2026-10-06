@@ -12,6 +12,8 @@ import {
   USER_GUIDE_RELEASE_FLOW,
   USER_GUIDE_RELEASE_NO_ADD,
   USER_GUIDE_SUPPORT,
+  USER_GUIDE_START_STORM_MOTION_EFFECT,
+  USER_GUIDE_START_STORM_MOTION_RESTORE,
   USER_GUIDE_T1_NOT_SPIN,
   USER_GUIDE_TITLE,
   USER_GUIDE_WHAT_IF_DOES_NOT,
@@ -77,6 +79,13 @@ describe("UserGuideSurface", () => {
     expect(html).toContain("Clear tracers");
     expect(html).toContain("Reset View");
     expect(html).toContain("Focus sample");
+    expect(html).toContain("Expand Environment &amp; storm motion");
+    expect(html).toContain(USER_GUIDE_START_STORM_MOTION_EFFECT);
+    expect(html).toContain(USER_GUIDE_START_STORM_MOTION_RESTORE);
+    expect(html).toContain("Eastward and Northward are signed components");
+    expect(html).toContain("nothing changes until you choose Apply C");
+    expect(html).toContain("observed ground-relative wind profile");
+    expect(html).toContain("Ordinary Reset keeps the current C");
     expect(html).toContain(USER_GUIDE_RELEASE_FLOW);
     expect(html).toContain(USER_GUIDE_RELEASE_NO_ADD);
     expect(html).not.toContain(">Add<");

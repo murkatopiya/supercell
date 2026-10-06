@@ -49,13 +49,22 @@ export const USER_GUIDE_DEFAULT_ALTITUDE_M = DEFAULT_EXPLORE_POINT_ALTITUDE_M;
 export const USER_GUIDE_START_OPEN =
   "From landing, Open Laboratory enters Explore. No laboratory is running until you do that.";
 
-export const USER_GUIDE_START_ENVIRONMENT = `Under Storm-relative laboratory, use Environment. Explore starts on ${USER_GUIDE_GOSHEN_LABEL} — a good first choice, because it has both a Source profile that carries the tracer and an Analysis representation that can color the recorded path.`;
+export const USER_GUIDE_START_ENVIRONMENT = `Under Storm-relative laboratory, open Environment & storm motion. Explore starts on ${USER_GUIDE_GOSHEN_LABEL} — a good first choice, because it has both a Source profile that carries the tracer and an Analysis representation that can color the recorded path.`;
+
+export const USER_GUIDE_START_STORM_MOTION =
+  "Expand Environment & storm motion to edit C for the selected observed environment. Eastward and Northward are signed components in m/s. The fields are drafts: nothing changes until you choose Apply C.";
+
+export const USER_GUIDE_START_STORM_MOTION_EFFECT =
+  "Applying a changed C starts a new experiment and clears current tracers, history, selection, point inspection, and any pending release. The active lab, hodograph marker and storm-relative environmental advection use the applied C together. The observed ground-relative wind profile and prescribed storm-local flow stay unchanged.";
+
+export const USER_GUIDE_START_STORM_MOTION_RESTORE =
+  "Each observed environment remembers its own applied C. Restore prescribed C returns the current environment to C (10, 0) m/s. Ordinary Reset keeps the current C and restarts the same experiment from time 0.";
 
 export const USER_GUIDE_START_OTHER_ENVIRONMENTS =
   "Other environments remain selectable. Source always advects the tracer. Analysis explanation is not identical for every environment.";
 
 export const USER_GUIDE_START_WORKSPACE =
-  "Left: Environment, Release, Runtime, and View. Center: the 3D scene. Right: Inspector and Analysis panels. Header: Hodograph plus this help.";
+  "Left: Environment & storm motion, Release, Runtime, View, and About this laboratory. Center: the 3D scene. Right: Inspector and Analysis panels. Header: Hodograph plus this help.";
 
 export const USER_GUIDE_RELEASE_FLOW = `Release tracer → click the ground → set Altitude (default ${USER_GUIDE_DEFAULT_ALTITUDE_M} m) → Confirm.`;
 
@@ -217,7 +226,7 @@ export const USER_GUIDE_RESET_CLEAR =
   "Clear tracers empties occupancy while the clock continues. Use it to start a new seeding without resetting time.";
 
 export const USER_GUIDE_RESET_ENVIRONMENT =
-  "Changing Environment builds a new laboratory atmosphere for that identity. It is the clean way to switch cases.";
+  "Changing Environment builds a new laboratory atmosphere for that identity and restores that environment's applied C. Applying or restoring C also starts a new experiment. Ordinary Reset keeps the current environment and C.";
 
 export const USER_GUIDE_RESET_LANDING =
   "Supercell in the header returns to landing. The live laboratory is dismissed.";

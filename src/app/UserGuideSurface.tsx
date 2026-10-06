@@ -39,6 +39,9 @@ import {
   USER_GUIDE_START_ENVIRONMENT,
   USER_GUIDE_START_OPEN,
   USER_GUIDE_START_OTHER_ENVIRONMENTS,
+  USER_GUIDE_START_STORM_MOTION,
+  USER_GUIDE_START_STORM_MOTION_EFFECT,
+  USER_GUIDE_START_STORM_MOTION_RESTORE,
   USER_GUIDE_START_WORKSPACE,
   USER_GUIDE_SUPPORT,
   USER_GUIDE_T1_COLOR,
@@ -182,10 +185,13 @@ export function UserGuideSurface({
             <p>{USER_GUIDE_START_OPEN}</p>
             <p>{USER_GUIDE_START_ENVIRONMENT}</p>
             <p>{USER_GUIDE_START_OTHER_ENVIRONMENTS}</p>
+            <p>{USER_GUIDE_START_STORM_MOTION}</p>
+            <p>{USER_GUIDE_START_STORM_MOTION_EFFECT}</p>
+            <p>{USER_GUIDE_START_STORM_MOTION_RESTORE}</p>
             <div className="user-guide-workspace" aria-hidden="true">
               <div className="user-guide-workspace__col">
                 <span className="user-guide-workspace__label">Left</span>
-                Environment · Release · Runtime · View
+                Environment &amp; C · Release · Runtime · View
               </div>
               <div className="user-guide-workspace__col user-guide-workspace__col--scene">
                 <span className="user-guide-workspace__label">Center</span>

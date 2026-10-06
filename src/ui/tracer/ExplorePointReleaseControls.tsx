@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface ExplorePointReleaseControlsProps {
   analysisAvailable?: boolean;
@@ -10,6 +10,45 @@ export interface ExplorePointReleaseControlsProps {
   onPlacementEnabledChange: (enabled: boolean) => void;
   onConfirm: () => boolean | void;
   onCancel: () => void;
+}
+
+export function ExploreReleaseSceneGuidance({
+  hasPending,
+  hasReleased,
+}: {
+  hasPending: boolean;
+  hasReleased: boolean;
+}) {
+  const [dismissed, setDismissed] = useState(false);
+  useEffect(() => {
+    if (!hasReleased) setDismissed(false);
+  }, [hasReleased]);
+  if (dismissed) return null;
+
+  const complete = hasReleased && !hasPending;
+  return (
+    <div
+      className={`release-scene-guidance${hasPending ? " release-scene-guidance--confirm" : ""}${complete ? " release-scene-guidance--complete" : ""}`}
+      role="status"
+      aria-live="polite"
+    >
+      {complete ? (
+        <button className="release-scene-guidance__close" type="button"
+          aria-label="Dismiss release guidance" onClick={() => setDismissed(true)}>×</button>
+      ) : null}
+      <span className="release-scene-guidance__step">
+        {complete ? "Ready to explore" : `Step ${hasPending ? "2" : "1"} of 2`}
+      </span>
+      <strong>{complete ? "Tracer released" : hasPending ? "Release point placed" : "Choose a release point"}</strong>
+      <span>
+        {complete
+          ? "Let it travel, then pause and click its recorded trail to inspect the route. Or click the black scene to place another tracer."
+          : hasPending
+          ? "Choose Confirm in the Release controls to release the tracer."
+          : "Click the black scene to place the tracer's release point."}
+      </span>
+    </div>
+  );
 }
 
 const PENDING_REQUIRED_REASON =

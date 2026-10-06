@@ -25,7 +25,7 @@ import {
 } from "../explore/exploreEnvironmentIdentity.js";
 import { ExploreClearTracersControl } from "../ui/tracer/ExploreClearTracersControl.js";
 import { ExploreAuthoringHistoryControls } from "../ui/tracer/ExploreAuthoringHistoryControls.js";
-import { ExplorePointReleaseControls } from "../ui/tracer/ExplorePointReleaseControls.js";
+import { ExplorePointReleaseControls, ExploreReleaseSceneGuidance } from "../ui/tracer/ExplorePointReleaseControls.js";
 import { matchExploreAuthoringHistoryShortcut } from "../ui/tracer/exploreAuthoringHistoryShortcut.js";
 import { GuidedExperimentPanel } from "../ui/tracer/GuidedExperimentPanel.js";
 import { GuidedExperimentSelector } from "../ui/tracer/GuidedExperimentSelector.js";
@@ -855,10 +855,18 @@ export function App() {
       followEnabledRef={followEnabledRef}
       onFollowUnavailable={() => setFollowEnabled(false)}
       overlay={
-        <CoordinateReferenceControl
-          visible={coordinateReferenceVisible}
-          onVisibleChange={setCoordinateReferenceVisible}
-        />
+        <>
+          <CoordinateReferenceControl
+            visible={coordinateReferenceVisible}
+            onVisibleChange={setCoordinateReferenceVisible}
+          />
+          {explore !== null && placementEnabled ? (
+            <ExploreReleaseSceneGuidance
+              hasPending={pendingSeed !== null}
+              hasReleased={explore.simulation.particles.length > 0}
+            />
+          ) : null}
+        </>
       }
       onPlacementAttempt={
         explore === null

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ExploreClearTracersControl } from "./ExploreClearTracersControl.js";
-import { ExplorePointReleaseControls } from "./ExplorePointReleaseControls.js";
+import { ExplorePointReleaseControls, ExploreReleaseSceneGuidance } from "./ExplorePointReleaseControls.js";
 import clearSrc from "./ExploreClearTracersControl.tsx?raw";
 import releaseSrc from "./ExplorePointReleaseControls.tsx?raw";
 import runtimeSrc from "./TracerRuntimeControls.tsx?raw";
@@ -67,6 +67,31 @@ describe("Explore Slice B action-rail controls", () => {
 });
 
 describe("Explore 41-1 Release tracer entry", () => {
+  it("guides the two placement steps on the scene", () => {
+    const choosePoint = renderToStaticMarkup(<ExploreReleaseSceneGuidance hasPending={false} hasReleased={false} />);
+    expect(choosePoint).toContain("Step 1 of 2");
+    expect(choosePoint).toContain("Click the black scene");
+    expect(choosePoint).toContain('role="status"');
+    expect(choosePoint).toContain('aria-live="polite"');
+    expect(choosePoint).not.toContain("release-scene-guidance--confirm");
+
+    const confirm = renderToStaticMarkup(<ExploreReleaseSceneGuidance hasPending hasReleased={false} />);
+    expect(confirm).toContain("Step 2 of 2");
+    expect(confirm).toContain("Release point placed");
+    expect(confirm).toContain("Choose Confirm in the Release controls");
+    expect(confirm).toContain("release-scene-guidance--confirm");
+
+    const explore = renderToStaticMarkup(<ExploreReleaseSceneGuidance hasPending={false} hasReleased />);
+    expect(explore).toContain("Ready to explore");
+    expect(explore).toContain("Tracer released");
+    expect(explore).toContain("pause and click its recorded trail");
+    expect(explore).toContain("place another tracer");
+    expect(explore).toContain('aria-label="Dismiss release guidance"');
+    expect(explore).not.toContain("Step 1 of 2");
+
+    expect(appSrc).toMatch(/placementEnabled[\s\S]*<ExploreReleaseSceneGuidance[\s\S]*hasPending=\{pendingSeed !== null\}[\s\S]*hasReleased=\{explore\.simulation\.particles\.length > 0\}/);
+  });
+
   it("replaces Enable placement with a pressed Release tracer control", () => {
     const idle = markup({ placementEnabled: false, hasPending: false });
     expect(idle).toContain("Release tracer");

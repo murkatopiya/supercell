@@ -12,6 +12,8 @@ import {
   HOW_IT_WORKS_PASSIVE,
   HOW_IT_WORKS_SOURCE,
   HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS,
+  HOW_IT_WORKS_STORM_MOTION,
+  HOW_IT_WORKS_STORM_MOTION_RESET,
   HOW_IT_WORKS_T1_SATURATION_DISPLAY,
   HOW_IT_WORKS_WHAT_IF,
 } from "./howItWorksContent.js";
@@ -39,7 +41,7 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain("aria-labelledby=\"how-it-works-title\"");
     expect(html).toContain("Close");
     expect(html).toContain("What is Supercell Explorer?");
-    expect(html).toContain("Choose an environment");
+    expect(html).toContain("Choose an environment and storm motion");
     expect(html).toContain("Release a tracer");
     expect(html).toContain("Read the recorded trajectory");
     expect(html).toContain("Understand the color");
@@ -71,7 +73,12 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain("vertical-tilting diagnostic");
     expect(html).toContain("When an Analysis representation is available");
     expect(html).toContain("supported parts of the recorded trajectory");
-    expect(html).toContain("Use the Environment selector under Storm-relative laboratory");
+    expect(html).toContain("Expand Environment &amp; storm motion under Storm-relative laboratory");
+    expect(html).toContain(HOW_IT_WORKS_STORM_MOTION);
+    expect(html).toContain(HOW_IT_WORKS_STORM_MOTION_RESET);
+    expect(html).toContain("not measured motion of the corresponding real storm");
+    expect(html).toContain("updates the storm-relative hodograph and environmental advection");
+    expect(html).toContain("Reset restarts the current experiment with that C");
     expect(html).toContain("fixed symmetric scale");
     expect(html).toContain(HOW_IT_WORKS_T1_SATURATION_DISPLAY);
     expect(html).toContain(HOW_IT_WORKS_COLOR_SCALE);
@@ -112,6 +119,7 @@ describe("HowItWorksSurface", () => {
     expect(guided).toContain(HOW_IT_WORKS_GUIDED_RELEASES);
     expect(guided).not.toContain(HOW_IT_WORKS_EXPLORE_WORKFLOW);
     expect(guided).not.toContain(HOW_IT_WORKS_HISTORICAL_SAMPLE);
+    expect(guided).not.toContain(HOW_IT_WORKS_STORM_MOTION);
     expect(guided).toContain(HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS);
     expect(HOW_IT_WORKS_PASSIVE).toContain("does not affect the airflow");
   });

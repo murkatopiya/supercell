@@ -16,6 +16,8 @@ import {
   HOW_IT_WORKS_SOURCE,
   HOW_IT_WORKS_SOURCE_ADVECTS_ANALYSIS_EXPLAINS,
   HOW_IT_WORKS_SPEED,
+  HOW_IT_WORKS_STORM_MOTION,
+  HOW_IT_WORKS_STORM_MOTION_RESET,
   HOW_IT_WORKS_T1_EQUATION,
   HOW_IT_WORKS_T1_EQUATION_COS,
   HOW_IT_WORKS_T1_GEOMETRY,
@@ -107,8 +109,14 @@ export function HowItWorksSurface({
           </section>
 
           <section className="how-it-works__section">
-            <h3>1. Choose an environment</h3>
+            <h3>1. Choose an environment and storm motion</h3>
             <p>{HOW_IT_WORKS_CHOOSE_ENVIRONMENT}</p>
+            {showExploreWorkflow ? (
+              <>
+                <p>{HOW_IT_WORKS_STORM_MOTION}</p>
+                <p>{HOW_IT_WORKS_STORM_MOTION_RESET}</p>
+              </>
+            ) : null}
           </section>
 
           <section className="how-it-works__section">

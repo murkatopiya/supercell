@@ -1249,11 +1249,107 @@ body:has(.app--landing) {
   top: 0.5rem;
   left: 0.5rem;
   z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.release-scene-guidance {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  gap: 0.15rem;
+  width: min(22rem, calc(100vw - 2rem));
+  max-width: calc(100% - 0.5rem);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-focus-on-dark);
+  border-radius: var(--radius-md);
+  background: rgba(16, 22, 32, 0.92);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-label);
+  line-height: 1.35;
+  pointer-events: none;
+}
+
+.release-scene-guidance--complete {
+  padding-right: 2.4rem;
+  border-color: #d5efff;
+  background: rgba(35, 83, 104, 0.96);
+}
+
+.release-scene-guidance__close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.35rem;
+  box-sizing: border-box;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-on-dark);
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
   pointer-events: auto;
+}
+
+.release-scene-guidance__close:hover {
+  background: var(--color-interactive-hover-on-dark);
+}
+
+.release-scene-guidance__close:focus-visible {
+  outline: 2px solid var(--color-focus-on-dark);
+  outline-offset: 1px;
+}
+
+.release-scene-guidance__step {
+  color: var(--color-focus-on-dark);
+  font-size: var(--text-readout);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.release-scene-guidance--confirm {
+  border-color: #d5efff;
+  background: rgba(31, 78, 112, 0.96);
+  animation: release-guidance-confirm 850ms ease-out 1;
+}
+
+.release-scene-guidance--confirm .release-scene-guidance__step {
+  color: #ffffff;
+}
+
+@keyframes release-guidance-confirm {
+  0% {
+    box-shadow: 0 0 0 0 rgba(142, 196, 232, 0.8), var(--shadow-floating);
+    transform: scale(1);
+  }
+  35% {
+    box-shadow: 0 0 0 0.4rem rgba(142, 196, 232, 0.35), var(--shadow-floating);
+    transform: scale(1.025);
+  }
+  100% {
+    box-shadow: 0 0 0 0.65rem rgba(142, 196, 232, 0), var(--shadow-floating);
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .release-scene-guidance--confirm {
+    animation: none;
+  }
 }
 
 .tracer-viewport__overlay .ui-button,
 .tracer-viewport__overlay .tracer-runtime-controls__button {
+  pointer-events: auto;
   min-height: 1.75rem;
   padding: 0.2rem 0.55rem;
   background: var(--color-bg-scene-chrome);

@@ -20,7 +20,13 @@ export const HOW_IT_WORKS_NOT_FORECAST =
   "This is not live weather and not a forecast. The airflow is prescribed by the current laboratory environment.";
 
 export const HOW_IT_WORKS_CHOOSE_ENVIRONMENT =
-  "Use the Environment selector under Storm-relative laboratory to choose an observed environment. Where available, that environment is an observed sounding-derived Source profile used in the laboratory velocity and advection path.";
+  "Expand Environment & storm motion under Storm-relative laboratory to choose an observed environment. Where available, that environment is an observed sounding-derived Source profile used in the laboratory velocity and advection path.";
+
+export const HOW_IT_WORKS_STORM_MOTION =
+  "Storm motion C is a prescribed laboratory vector, not measured motion of the corresponding real storm. Eastward and Northward are signed components in m/s. Edit the draft values and choose Apply C to start a new experiment; this clears current tracers and updates the storm-relative hodograph and environmental advection without changing the observed wind profile or prescribed storm-local flow.";
+
+export const HOW_IT_WORKS_STORM_MOTION_RESET =
+  "Each observed environment keeps its own applied C. Reset restarts the current experiment with that C; Restore prescribed C returns the selected environment to C (10, 0) m/s and starts a new experiment.";
 
 export const HOW_IT_WORKS_RELEASE_TRACER =
   "A tracer is a passive marker carried by the prescribed storm-relative laboratory velocity field. It does not affect the airflow.";
