@@ -1,6 +1,21 @@
 # V1 Known Limitations
 
-Material facts about current Supercell Explorer V1.
+Historical limitations of the V1 closure baseline (2026-08-27),
+not a complete inventory of current repository capabilities.
+Current production/release state is owned by
+[PROJECT_STATUS.md](PROJECT_STATUS.md), including the
+[prospective interactive-C acceptance](2026-10-11-interactive-c-production-acceptance-decision.md).
+
+**Scope clarification:** The fixed-profile/fixed-environment statements
+below describe the historical DEMO-only baseline, not the later selectable
+observed profiles. The fixed `(10, 0)` C statement describes that baseline
+and the Demo default, not a project-wide prohibition on changing C.
+The observed-profile interactive C capability is separately recorded in
+PROJECT_STATUS. C remains a prescribed laboratory value, constant within
+an experiment, not an estimator or an observed storm track. Changing C
+does not make the observed profiles or prescribed storm-local flow a
+reconstruction. The historical wording below is retained in that scope.
+
 These are limitations, not a promise that each item will be
 fixed next. POST-V1 ideas are not listed here; see
 [`docs/PROJECT_BACKLOG.md`](PROJECT_BACKLOG.md)

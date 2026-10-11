@@ -2,7 +2,11 @@
 
 **Documentation governance — 2026-10-11:** [Documentation Governance v1](DOCUMENTATION_GOVERNANCE.md) remains APPROVED, ACTIVE and EXACT_BYTE_FROZEN under its [adoption Decision](2026-10-11-documentation-governance-v1-adoption-decision.md). Its [bounded amendment](DOCUMENTATION_GOVERNANCE_V1_AMENDMENT.md) is APPROVED, ACTIVE and EXACT_BYTE_FROZEN under the [bootstrap/adoption Decision](2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md): C2 designation, exact-byte verification and publication completed for accepted C1 snapshot 8d916037058a919560b6c2d01ae65823589e96bb. The amendment’s embedded proposal metadata is historical; this external Decision and current status resolve its adoption/activation. Recover expected new frozen identities from that snapshot through [accepted snapshots](governance/accepted-snapshots.json) and [the identity index](governance/frozen-identities.json); verify with node scripts/check-frozen-identities.mjs from the repository root. Governance v1 controls unchanged topics; the amendment extends only §§8/12 prospectively. Existing documentation/pins are not automatically migrated. No scientific, implementation, execution or qualification authorization is granted.
 
-**Current gate — 2026-09-16: P2 SYNTHETIC FIXTURE EXECUTION AND QUALIFICATION EVIDENCE CONTRACT — CLOSED · HUMAN REVIEW APPROVED. CONTRACT FROZEN.**
+**Production capability / release disposition — 2026-10-11:** Interactive prescribed storm-motion C controls in Explore are accepted prospectively as a completed current production capability under the [human acceptance Decision](2026-10-11-interactive-c-production-acceptance-decision.md). The implementation allows C changes for the four observed profiles, with Apply starting a new experiment and clearing current tracers/history; Demo retains its prescribed C. V1 remains the latest published release according to [repository release metadata](../src/app/releaseHistory.ts); V1.1 remains the prepared release candidate. This acceptance neither establishes historical V1.1 approval/publication nor authorizes its release; a future release requires a separate human decision. It does not certify observed Lagrangian C-response or P2, change Phase P from INVALID CONTROL, or authorize Main L1.
+
+**Scope of unchanged-production statements below:** Validation/P2 slices left production/UI unchanged within their own historical scope. They do not describe the whole repository after the separate interactive-C product implementation (`cb4bf903e3a147e94536bc3ca5deb8c0ba173445`, 2026-09-16), accepted only prospectively above. Historical campaign gates and evidence retain their original meaning.
+
+**Current scientific gate — 2026-09-16: P2 SYNTHETIC FIXTURE EXECUTION AND QUALIFICATION EVIDENCE CONTRACT — CLOSED · HUMAN REVIEW APPROVED. CONTRACT FROZEN.**
 
 Explicit human review approves the complete resolved [P2 Synthetic Fixture Execution and Qualification Evidence Contract](research/2026-09-15-observed-lagrangian-phase-p2-synthetic-fixture-execution-contract-design.md), including D1/D2 and all fixture, supplemental and prerequisite mappings. Approval checkpoint: `main @ 401d59b8e1618cb264bafbc6f9d8188ae63e7ab5`; parent `bf83c3650f9c38ac42ba4e1ab50a8bb43fd9637c`. The approved document is a working-tree addition at that checkpoint, not a file committed in it. Exact reviewed pre-closure document SHA-256: `a9f1e373cdfb0e672616fdbd66d0a25f6bff561aba825cd1901b1a29c38a15a5`. Status/freeze-closed document SHA-256: `0d7025386bcca0e6020a720f0d147d797d419d67de1014e0e21f055c4e232622`. Only status/provenance passages changed during closure; reviewed semantics are preserved. No new implementation/runtime SHA, commit, or execution authority is established.
 
@@ -27,7 +31,7 @@ SYNTHETIC QUALIFICATION EXECUTION — NOT AUTHORIZED
 PHASE P2 SCIENTIFIC / OBSERVED EXECUTION — NOT AUTHORIZED
 MAIN L1 — NOT AUTHORIZED / NOT TESTED
 MATERIAL RESPONSE THRESHOLDS — STILL OPEN
-PRODUCTION/UI — UNCHANGED
+PRODUCTION/UI — UNCHANGED BY THESE VALIDATION/P2 SLICES
 ```
 
 
@@ -74,7 +78,7 @@ This file is a navigation/status bookmark only. It points to the documents that 
 
 **Maintenance rule:** update this file whenever a meaningful project step closes, the active phase changes, or `NEXT ACTION` changes. Do not update it for every commit or minor edit.
 
-**Last status update:** 2026-09-16
+**Last status update:** 2026-10-11 (production acceptance/release reconciliation; scientific gate unchanged).
 
 ---
 
@@ -125,7 +129,7 @@ V1 itself remains **CLOSED** as the finite validation prototype recorded in:
 - [`reviews/2026-08-27-v1-closed.md`](reviews/2026-08-27-v1-closed.md)
 - [`architecture/38-v1-scope-checkpoint.md`](architecture/38-v1-scope-checkpoint.md)
 
-The current campaign validates and probes the released V1 model before deciding whether storm-motion sensitivity should become later user-facing work. It does not silently reopen V1 or authorize production feature work.
+The campaign validates and probes the V1 model; its scientific gates do not authorize production feature work or reopen V1. Interactive C is a separate existing product capability accepted prospectively under the Decision at the top of this file, without observed Lagrangian qualification or V1.1 release authorization.
 
 ---
 
@@ -360,7 +364,7 @@ No evidence was regenerated or modified during this docs-only closure. No tests,
 
 Provenance: explicit human approval of the complete [fixture execution/qualification evidence contract](research/2026-09-15-observed-lagrangian-phase-p2-synthetic-fixture-execution-contract-design.md), at the document/checkpoint identified above. This is a proposal for a separately authorized planning boundary only. No implementation slice is selected or implemented during closure. Executor/runner/writer/verifier/certificate/persistence/reconstruction infrastructure remains outside this task. The previous writer/verifier-before-runner ordering is not an approved semantic contract.
 
-Further implementation, synthetic qualification execution/certification, observed collection/campaigns, Main L1 and material-response threshold selection remain unauthorized. No E1/H1–H5 or historical Phase P rerun is authorized. Production/UI remain unchanged.
+Further P2 implementation, synthetic qualification execution/certification, observed collection/campaigns, Main L1 and material-response threshold selection remain unauthorized. No E1/H1–H5 or historical Phase P rerun is authorized. This scientific boundary makes no production/UI change; the separate accepted interactive-C capability and unreleased V1.1 candidate are recorded above.
 
 ---
 
