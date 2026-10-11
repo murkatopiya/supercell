@@ -1,4 +1,10 @@
 {
   "schemaVersion": 1,
-  "snapshots": []
+  "snapshots": [
+    {
+      "id": "documentation-governance-v1-amendment-bootstrap",
+      "commit": "8d916037058a919560b6c2d01ae65823589e96bb",
+      "provenance": "docs/2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md#anchor-designation"
+    }
+  ]
 }
