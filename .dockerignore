@@ -13,6 +13,8 @@ coverage
 docs
 data
 *.md
+!LICENSE.md
+!THIRD_PARTY_NOTICES.md
 !package.json
 
 .env
