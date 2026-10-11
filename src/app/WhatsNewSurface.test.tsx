@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 import { LandingPage } from "./LandingPage.js";
 import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
 import { WhatsNewSurface } from "./WhatsNewSurface.js";
-import { CURRENT_RELEASE_CANDIDATE, LATEST_PUBLISHED_RELEASE, PUBLISHED_RELEASES, RELEASE_HISTORY } from "./releaseHistory.js";
+import { LATEST_PUBLISHED_RELEASE, PUBLISHED_RELEASES, RELEASE_HISTORY } from "./releaseHistory.js";
 import { PUBLIC_VERSION } from "./publicVersion.js";
 import appSrc from "./App.tsx?raw";
 const cssSrc = readFileSync("src/app/app.css", "utf8");
@@ -40,15 +40,16 @@ describe("What's new", () => {
       host.remove();
     }
   });
-  it("keeps published V1 distinct from prepared V1.1 without inventing release dates", () => {
+  it("records published V1.1 and its confirmed date without inventing a V1 date", () => {
     expect(RELEASE_HISTORY.map(release => [release.version, release.status])).toEqual([
-      ["V1.1", "prepared"], ["V1", "published"],
+      ["V1.1", "published"], ["V1", "published"],
     ]);
-    expect(PUBLISHED_RELEASES.map(release => release.version)).toEqual(["V1"]);
-    expect(CURRENT_RELEASE_CANDIDATE.version).toBe(PUBLIC_VERSION);
-    expect(LATEST_PUBLISHED_RELEASE.version).toBe("V1");
-    expect(RELEASE_HISTORY.every(release => release.date === undefined)).toBe(true);
-    expect(PUBLISHED_RELEASES.flatMap(release => release.changes).join(" ")).not.toMatch(/storm-motion vector C|A\/B|P2|F01|SRH/i);
+    expect(PUBLISHED_RELEASES.map(release => release.version)).toEqual(["V1.1", "V1"]);
+    expect(LATEST_PUBLISHED_RELEASE.version).toBe(PUBLIC_VERSION);
+    expect(LATEST_PUBLISHED_RELEASE.version).toBe("V1.1");
+    expect(LATEST_PUBLISHED_RELEASE.date).toBe("2026-09-16");
+    expect(RELEASE_HISTORY[1]!.date).toBeUndefined();
+    expect(PUBLISHED_RELEASES.flatMap(release => release.changes).join(" ")).not.toMatch(/A\/B|P2|F01|visible SRH/i);
     expect(RELEASE_HISTORY[0]!.changes[0]).toMatch(/prescribed storm-motion vector C/);
     expect(RELEASE_HISTORY[0]!.changes[0]).toMatch(/not a measured motion/);
     expect(RELEASE_HISTORY[0]!.changes).toHaveLength(1);
@@ -70,7 +71,7 @@ describe("What's new", () => {
     expect(appSrc).toMatch(/onOpenWhatsNew=\{openWhatsNew\}/);
   });
 
-  it("renders the prepared release distinctly before published V1 in a responsive dialog", () => {
+  it("renders published V1.1 with its date before V1 in a responsive dialog", () => {
     const html = renderToStaticMarkup(<WhatsNewSurface open onClose={() => {}}
       returnFocusRef={createRef<HTMLButtonElement>()} />);
     expect(html).toContain('role="dialog"');
@@ -78,7 +79,9 @@ describe("What's new", () => {
     expect(html.indexOf("V1.1 · Interactive storm motion")).toBeLessThan(html.indexOf("V1 · Research prototype"));
     expect(html).not.toContain("Unreleased");
     expect(html).not.toContain("Prepared for release");
-    expect(html).not.toContain("<time");
+    expect(html).toContain('aria-label="V1.1 published"');
+    expect(html).toContain('<time dateTime="2026-09-16">2026-09-16</time>');
+    expect(html.match(/<time /g)).toHaveLength(1);
     expect(html).toContain("Close");
     expect(cssSrc).toMatch(/\.whats-new__dialog\s*\{\s*width: min\(38rem, 100%\)/);
     expect(cssSrc).toMatch(/\.how-it-works__body\s*\{\s*overflow: auto/);

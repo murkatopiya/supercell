@@ -10,7 +10,8 @@ export interface ProductRelease {
 export const RELEASE_HISTORY: readonly ProductRelease[] = [
   {
     version: "V1.1",
-    status: "prepared",
+    status: "published",
+    date: "2026-09-16",
     title: "Interactive storm motion",
     changes: [
       "Explore: change the prescribed storm-motion vector C for each observed wind profile and examine how the storm-relative hodograph and tracer trajectories respond. The wind profiles remain observed data; C is a laboratory choice, not a measured motion of those storms.",
@@ -30,4 +31,3 @@ export const RELEASE_HISTORY: readonly ProductRelease[] = [
 
 export const PUBLISHED_RELEASES = RELEASE_HISTORY.filter(release => release.status === "published");
 export const LATEST_PUBLISHED_RELEASE = PUBLISHED_RELEASES[0]!;
-export const CURRENT_RELEASE_CANDIDATE = RELEASE_HISTORY[0]!;

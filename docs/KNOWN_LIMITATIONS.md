@@ -4,7 +4,7 @@ Historical limitations of the V1 closure baseline (2026-08-27),
 not a complete inventory of current repository capabilities.
 Current production/release state is owned by
 [PROJECT_STATUS.md](PROJECT_STATUS.md), including the
-[prospective interactive-C acceptance](2026-10-11-interactive-c-production-acceptance-decision.md).
+[corrected V1.1 release disposition](2026-10-11-v1-1-release-disposition-correction-decision.md).
 
 **Scope clarification:** The fixed-profile/fixed-environment statements
 below describe the historical DEMO-only baseline, not the later selectable

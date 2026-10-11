@@ -12,7 +12,7 @@
 | Parent authority | Explicit human decision reproduced below; record governed by active Documentation Governance v1 and its bounded amendment |
 | Current project state | [PROJECT_STATUS.md](PROJECT_STATUS.md) |
 | Supersedes | None |
-| Superseded by | None |
+| Superseded by | [V1.1 release-disposition correction](2026-10-11-v1-1-release-disposition-correction-decision.md), ONLY for the incorrect release-disposition scope; prospective capability acceptance and scientific exclusions remain active |
 
 ## Decision authority
 
