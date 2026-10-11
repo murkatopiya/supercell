@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "Please cite Supercell Explorer when using this software. Cite source datasets separately; see THIRD_PARTY_NOTICES.md."
+type: software
+title: Supercell Explorer
+authors:
+  - family-names: Hnatovska
+    given-names: Iryna
+version: "V1.1"
+date-released: 2026-09-16
+url: "https://supercell.iryna.online/"
+repository-code: "https://github.com/murkatopiya/supercell"
+license: PolyForm-Noncommercial-1.0.0
+abstract: "An interactive kinematic laboratory connecting selected environmental wind profiles with passive tracer trajectories through prescribed storm-local flow. External observations and third-party materials retain their own terms."
