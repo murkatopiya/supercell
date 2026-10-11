@@ -1,0 +1,4 @@
+docs/governance/frozen-identities.json text eol=lf
+docs/governance/accepted-snapshots.json text eol=lf
+docs/DOCUMENTATION_GOVERNANCE_V1_AMENDMENT.md text eol=lf
+scripts/check-frozen-identities.mjs text eol=lf

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "documentation-governance-v1-amendment",
+      "path": "docs/DOCUMENTATION_GOVERNANCE_V1_AMENDMENT.md",
+      "sha256": "ce91a33d7d37d3a81ea299ef180d0496a7635e3b495defa4cc80690668bc32ca",
+      "provenance": "docs/2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md#decision"
+    },
+    {
+      "id": "documentation-governance-v1-amendment-bootstrap-decision",
+      "path": "docs/2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md",
+      "sha256": "b92eb2fa2cb79d2cacff4e7cd8b944d0d672f0fb9159d4645d0b7e42cab60a4b",
+      "provenance": "docs/2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md#decision"
+    }
+  ]
+}
