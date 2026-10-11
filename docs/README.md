@@ -19,6 +19,8 @@ index disagrees with an owning document, the owning document wins.
 
 ## 1. Start here
 
+For active documentation governance, start with [PROJECT_STATUS.md](PROJECT_STATUS.md), then [Governance v1](DOCUMENTATION_GOVERNANCE.md), its [adoption Decision](2026-10-11-documentation-governance-v1-adoption-decision.md), the [bounded amendment](DOCUMENTATION_GOVERNANCE_V1_AMENDMENT.md) and its [bootstrap/adoption Decision](2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md). Frozen expected identities are recovered through the [accepted snapshot registry](governance/accepted-snapshots.json) and its anchored [identity index](governance/frozen-identities.json).
+
 Current observed Lagrangian research gate: [frozen Phase P qualification specification](research/2026-09-13-observed-lagrangian-phase-p-qualification-specification.md). Specification authority only; implementation/execution remain unauthorized, main L1 remains unfrozen.
 
 | Question | Read |

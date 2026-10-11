@@ -2,7 +2,8 @@
 
 This file is the repository-level execution entry point for documentation governance.
 It is not a second governance authority.
-If this file conflicts with Documentation Governance v1, Documentation Governance v1 controls.
+If this file conflicts with the active Governance authority set, that authority controls.
+Governance v1 controls unchanged topics; its adopted amendment extends only §§8/12.
 
 The documentation consequence/debt duties in this file apply repository-wide when
 work may affect documented project state, authority, scientific/model scope,
@@ -12,6 +13,9 @@ The documentation pre-edit protocol applies before modifying any file under `doc
 Owning authority: [Documentation Governance v1](docs/DOCUMENTATION_GOVERNANCE.md).
 Its adoption and externally pinned identity are recorded in the
 [adoption Decision Record](docs/2026-10-11-documentation-governance-v1-adoption-decision.md).
+The active [bounded amendment](docs/DOCUMENTATION_GOVERNANCE_V1_AMENDMENT.md) and its
+[bootstrap/adoption Decision](docs/2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md)
+extend only the prospective frozen-identity and Decision provenance rules.
 Mutable project-wide current state belongs only to [PROJECT_STATUS](docs/PROJECT_STATUS.md).
 
 ## Before editing documentation
@@ -20,7 +24,11 @@ Before modifying any file under `docs/**`, the agent MUST:
 
 1. Read `docs/DOCUMENTATION_GOVERNANCE.md`.
 2. Read `docs/2026-10-11-documentation-governance-v1-adoption-decision.md`.
-3. Read `docs/PROJECT_STATUS.md`.
+3. Read PROJECT_STATUS and its active amendment/Decision pointers,
+   including docs/DOCUMENTATION_GOVERNANCE_V1_AMENDMENT.md and
+   docs/2026-10-11-documentation-governance-v1-amendment-bootstrap-decision.md.
+   Resolve frozen expected identities through the designated accepted snapshot;
+   current artifact/index bytes alone do not establish a pin.
 4. Classify every intended target by Governance's semantic document types.
 5. Determine each target's authority scope.
 6. Determine its freeze mode and immutable identity constraints.
