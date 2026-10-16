@@ -14,7 +14,7 @@ The research question is simple: **how does following a moving tracer change wha
 - Change **C**, the prescribed storm-motion vector assigned in the experiment, for an observed environment. It sets the eastward/northward motion used to express environmental wind relative to the storm; it is not a storm-motion estimator or a measured track of these storms.
 - Apply changed storm motion to start a new experiment; this clears current tracers and history. Demo keeps its prescribed storm motion.
 - Release tracers, follow their paths, and select recorded samples to inspect motion and available diagnostics.
-- Inspect **T1**, a reduced vertical-tilting diagnostic: it describes how environmental horizontal vorticity aligns with the horizontal gradient of the prescribed updraft. Where supported, the processed **Analysis T1** representation explains this geometry along the recorded path. A constrained what-if alignment changes the explanation, not the flow or recorded trajectory.
+- Explore how horizontal rotation can be tilted into the vertical as a tracer moves through the prescribed updraft. This tilting is described by **T1**, a reduced diagnostic. Where supported, **Analysis T1** explains the tilting geometry along the recorded trajectory.
 
 The application's **User Guide**, **How It Works** and **Glossary** explain the controls and concepts.
 
