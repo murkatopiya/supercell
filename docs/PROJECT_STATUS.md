@@ -2,6 +2,10 @@
 
 **Local Learn commit authorization recorded — 2026-10-22:** The [bounded local-commit Decision](2026-10-22-learn-local-commits-authorization.md) records human permission for one exact five-commit sequence starting at 456696e3303607320ceeb6ae03c133243a8b3584, selective staging and scoped checks only. The permission is exhausted by those five local commits and does not authorize repetition, push/fetch, publication, new implementation or scientific execution. Existing scientific gates and Design states are unchanged.
 
+**Slice 2 local preservation documented — 2026-10-22:** The [bounded preservation record](2026-10-22-learn-demo-slice2-evidence-preservation-decision.md) records the executor-reported backup performed on 2026-10-21: 103 evidence files preserved in a verified local ZIP, with original evidence unchanged. LOCAL BACKUP — NOT PUBLICATION: source and backup are on the same D: volume, independent off-device/cloud retention is unconfirmed, and a fresh clone does not include the evidence automatically. No external audit, scientific qualification or new collection/implementation permission is claimed; public distribution requires separate disposition. Earlier Learn entries below retain their historical scope.
+
+**Controlled Demo collection Slice 2 — 2026-10-21:** The [bounded execution Decision](2026-10-21-learn-demo-collection-slice-2-authorization.md) permitted one isolated five-case collection using accepted Slice 1 after successful preflight. That single invocation is consumed: [local saved result](../artifacts/learn-demo-seed-verification/2026-10-21-slice2-125957-dc632454/result.json) is complete, provenance consistent, all five cases complete/consistent at 1200 steps, no termination observed; saved checksums and source snapshot verified read-only. Result raw SHA-256: `7826f9152e7be98bf27b11f859c2755f095f60a3ecce091a4695fbb1691c8678`. This bounded disposition controls collection in preference to earlier Slice 1/documentation-only summaries below; no repeat permission remains. Both Designs remain PROPOSED / INACTIVE / MUTABLE. B3, viewer, Learn and scientific Phase P/P2/Main L1 gates remain outside scope; no scientific qualification or Learn suitability is claimed. Evidence is local/ignored pending separate durable-retention disposition.
+
 **Collector Slice 1 — 2026-10-21:** The [bounded authorization](2026-10-21-learn-demo-collector-slice-1-authorization.md) permits implementation only in tools/learn-demo-seed-verification/ and infrastructure checks without Simulation/evidence. It accepts the reviewed verification Design as architecture basis for this slice without changing either Design's PROPOSED / INACTIVE / MUTABLE status. Collection (including the five cases), B3, viewer and Learn remain unauthorized; scientific NEXT ACTION and gates are unchanged.
 
 **Learn Demo seed verification documentation — 2026-10-21:** The [documentation Decision](2026-10-21-learn-mvp-demo-seed-verification-documentation-decision.md) records acceptance of the opt-in collector plus saved-record viewer approach as a basis for documentation only. The resulting [bounded Design](ux/2026-10-21-learn-mvp-demo-seed-verification-design.md) is PROPOSED / INACTIVE / MUTABLE. Tool implementation, collection, browser checks, reserve B3 use and acceptance of candidate teaching positions remain separately gated. No production/UI or scientific status changes; this does not change the scientific NEXT ACTION.
@@ -86,7 +90,7 @@ This file is a navigation/status bookmark only. It points to the documents that 
 
 **Maintenance rule:** update this file whenever a meaningful project step closes, the active phase changes, or `NEXT ACTION` changes. Do not update it for every commit or minor edit.
 
-**Last status update:** 2026-10-21 (Learn MVP documentation decision and proposed design pointer; scientific gate unchanged).
+**Last status update:** 2026-10-22 (Slice 2 local preservation documented; scientific gate unchanged).
 
 ---
 
