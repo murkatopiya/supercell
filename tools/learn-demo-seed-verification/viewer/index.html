@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Saved Trajectory Viewer · Demo</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <header><div><small>SUPERCELL EXPLORER · LOCAL DEVELOPER TOOL</small><h1>Saved Trajectory Viewer</h1></div><span class="badge">Read-only · Slice 2</span></header>
+  <main>
+    <section class="toolbar" aria-label="Управление просмотром">
+      <label>Сохранённый случай <select id="case" disabled></select></label>
+      <button id="play" disabled>Play</button><button id="restart" disabled>Restart</button>
+      <label>Скорость <select id="speed" disabled><option value="1">1×</option><option value="5">5×</option></select></label>
+      <button id="frame" disabled>Frame Trajectories</button><button id="reset" disabled>Reset View</button>
+    </section>
+    <section class="timeline"><label for="step">Шаг <output id="step-value">0</output> / 1200</label><input id="step" type="range" min="0" max="1200" step="1" value="0" disabled><p>clockTime: <output id="time">—</output> с <span>· Follow off · world 1:1</span></p></section>
+    <section id="viewport" aria-label="Трёхмерные сохранённые траектории"><canvas id="scene" aria-label="3D: метки и записанный пройденный путь"></canvas><div id="labels" aria-hidden="true"></div><div class="scene-note">Земля: y = 0 м · сетка 1000 м<br>x — восток · y — вверх · z — юг</div></section>
+    <section id="markers" aria-label="Состояния меток"></section>
+    <p id="camera-status" role="status">Камера: исходный фиксированный ракурс</p>
+    <p class="help">Мышь: левая кнопка — вращение, правая — сдвиг, колесо — масштаб. Ручной выбор шага ставит просмотр на паузу. Restart возвращает только курсор; Reset View — только камеру.</p>
+    <p id="status" role="status">Проверка сохранённого результата…</p>
+    <details><summary>Источник и ограничения</summary><p id="identity"></p><p>Только сохранённые состояния и фактические recorder samples. Прямая линия между соседними samples — отображение записанной ломаной, без вычисления промежуточных координат. При задержках кадров некоторые шаги могут не попасть на экран; история сохраняет весь доступный префикс. Не научная квалификация и не подтверждение понятности урока.</p><p>Неактивная метка скрывается по Demo baseline; её статус и сохранённое положение остаются в карточке. Камера и размер glyph — средства отображения.</p></details>
+  </main><script type="module" src="/main.ts"></script>
+</body></html>
