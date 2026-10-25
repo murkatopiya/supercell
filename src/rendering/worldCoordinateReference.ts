@@ -45,78 +45,85 @@ export function cardinalWorldPosition(
 export function createWorldCoordinateReference(
   gridSizeM: number,
   gridDivisions: number,
+  options: { distanceLabelsVisible?: boolean } = {},
 ): THREE.Group {
   const group = new THREE.Group();
   group.name = WORLD_COORDINATE_REFERENCE_NAME;
+  try {
+    const grid = new THREE.GridHelper(
+      gridSizeM,
+      gridDivisions,
+      0x3a4554,
+      0x2a3340,
+    );
+    disableRaycast(grid);
+    group.add(grid);
 
-  const grid = new THREE.GridHelper(
-    gridSizeM,
-    gridDivisions,
-    0x3a4554,
-    0x2a3340,
-  );
-  disableRaycast(grid);
-  group.add(grid);
+    const halfExtentM = gridSizeM / 2;
+    const cellM = gridSizeM / gridDivisions;
+    group.add(createOriginCross(halfExtentM));
+    group.add(createOriginDisc());
+    group.add(
+      createWorldLabelSprite("0", "origin", ORIGIN_SPRITE_SCALE, {
+        x: 180,
+        y: LABEL_HEIGHT_M,
+        z: 180,
+      }),
+    );
 
-  const halfExtentM = gridSizeM / 2;
-  const cellM = gridSizeM / gridDivisions;
-  group.add(createOriginCross(halfExtentM));
-  group.add(createOriginDisc());
-  group.add(
-    createWorldLabelSprite("0", "origin", ORIGIN_SPRITE_SCALE, {
-      x: 180,
-      y: LABEL_HEIGHT_M,
-      z: 180,
-    }),
-  );
+    (Object.keys(WORLD_CARDINAL_DIRECTIONS) as WorldCardinal[]).forEach(
+      (cardinal) => {
+        group.add(
+          createWorldLabelSprite(
+            cardinal,
+            "cardinal",
+            CARDINAL_SPRITE_SCALE,
+            cardinalWorldPosition(cardinal, halfExtentM),
+          ),
+        );
+      },
+    );
 
-  (Object.keys(WORLD_CARDINAL_DIRECTIONS) as WorldCardinal[]).forEach(
-    (cardinal) => {
+    const lastLabeledCell = options.distanceLabelsVisible === false
+      ? 0
+      : Math.floor(gridDivisions / 2) - 1;
+    for (let i = 1; i <= lastLabeledCell; i++) {
+      const metres = i * cellM;
       group.add(
         createWorldLabelSprite(
-          cardinal,
-          "cardinal",
-          CARDINAL_SPRITE_SCALE,
-          cardinalWorldPosition(cardinal, halfExtentM),
+          distanceMarkCopy("E", metres),
+          "metric",
+          METRIC_SPRITE_SCALE,
+          {
+            x: metres,
+            y: LABEL_HEIGHT_M,
+            z: DISTANCE_LABEL_OFFSET_M,
+          },
         ),
       );
-    },
-  );
+      group.add(
+        createWorldLabelSprite(
+          distanceMarkCopy("N", metres),
+          "metric",
+          METRIC_SPRITE_SCALE,
+          {
+            x: DISTANCE_LABEL_OFFSET_M,
+            y: LABEL_HEIGHT_M,
+            z: -metres,
+          },
+        ),
+      );
+    }
 
-  const lastLabeledCell = Math.floor(gridDivisions / 2) - 1;
-  for (let i = 1; i <= lastLabeledCell; i++) {
-    const metres = i * cellM;
-    group.add(
-      createWorldLabelSprite(
-        distanceMarkCopy("E", metres),
-        "metric",
-        METRIC_SPRITE_SCALE,
-        {
-          x: metres,
-          y: LABEL_HEIGHT_M,
-          z: DISTANCE_LABEL_OFFSET_M,
-        },
-      ),
-    );
-    group.add(
-      createWorldLabelSprite(
-        distanceMarkCopy("N", metres),
-        "metric",
-        METRIC_SPRITE_SCALE,
-        {
-          x: DISTANCE_LABEL_OFFSET_M,
-          y: LABEL_HEIGHT_M,
-          z: -metres,
-        },
-      ),
-    );
+    group.traverse((child) => {
+      disableRaycast(child);
+      disableFogOnMaterial(child);
+    });
+    return group;
+  } catch (error) {
+    disposeWorldCoordinateReference(group);
+    throw error;
   }
-
-  group.traverse((child) => {
-    disableRaycast(child);
-    disableFogOnMaterial(child);
-  });
-  return group;
 }
 
 export function disposeWorldCoordinateReference(group: THREE.Group): void {

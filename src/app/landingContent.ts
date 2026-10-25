@@ -21,7 +21,7 @@ export const LANDING_WHY_EXISTS_LEAD =
 export const LANDING_WHY_EXISTS_CONNECTS =
   "Supercell Explorer connects these views. Follow a passive tracer through the laboratory, see where Analysis T1 changes along its recorded trajectory, and inspect the vector geometry behind any recorded trajectory point with available diagnostics.";
 
-export const LANDING_CTA_LABEL = "Open Laboratory";
+export const LANDING_CTA_LABEL = "Explore";
 
 export const LANDING_DISCLAIMER =
   "This is not a weather forecast or a full atmospheric simulation. It is a prescribed kinematic laboratory for examining selected mechanisms under controlled assumptions.";

@@ -1,4 +1,7 @@
 import * as THREE from "three";
+import { createVelocityArrow, type VelocityArrowObservation } from "./velocityArrow.js";
+import { createCompareFlowPlacementArea } from "./compareFlowPlacementArea.js";
+import { createTracerAnnotations, type TracerAnnotation } from "./tracerAnnotations.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
 import type { TracerPathHistory } from "../simulation/TracerPathHistory.js";
@@ -91,6 +94,19 @@ export {
 } from "./selectionHaloMarker.js";
 
 export interface TracerSceneOptions {
+  /** Opt-in Learn comparison UI extent, never a model-domain boundary. */
+  comparisonPlacementArea?: Parameters<typeof createCompareFlowPlacementArea>[0];
+  /** Follow changing home bounds while preserving orbit/pan/relative zoom. Default false. */
+  trackViewPose?: boolean;
+  /** Optional labels and fixed starting rings; no simulation ownership. */
+  tracerAnnotations?: readonly TracerAnnotation[];
+  /** Show metric distance labels on the reference grid. Default true. */
+  distanceLabelsVisible?: boolean;
+  /** Optional presentation-only home framing; omitted by laboratory callers. */
+  viewPose?: (aspect: number) => {
+    cameraPosition: { x: number; y: number; z: number };
+    target: { x: number; y: number; z: number };
+  };
   /** When true, observe path-history as one Line per tracer. Default false. */
   trails?: boolean;
   /**
@@ -140,6 +156,10 @@ export class TracerScene {
   private selectionHalo: THREE.Mesh | undefined;
   private hoverHalo: THREE.Mesh | undefined;
   private historicalProbeMarker: THREE.Mesh | undefined;
+  private velocityArrow: ReturnType<typeof createVelocityArrow> | undefined;
+  private readonly comparisonArrows: Partial<Record<"a" | "b", ReturnType<typeof createVelocityArrow>>> = {};
+  private comparisonPlacementArea: ReturnType<typeof createCompareFlowPlacementArea> | undefined;
+  private comparisonInputPolicy: { enabled: boolean; touchAction: string } | undefined;
   private visualAirflowObject: THREE.Object3D | undefined;
   private selectedSlotIndex: number | null = null;
   private hoveredOccupancyIndex: number | null = null;
@@ -149,52 +169,81 @@ export class TracerScene {
   private readonly sharedGeometry: THREE.SphereGeometry;
   private readonly keepInactiveGlyphs: boolean;
   private readonly trailsEnabled: boolean;
+  private readonly viewPose: TracerSceneOptions["viewPose"];
+  private readonly trackViewPose: boolean;
+  private homePose: ReturnType<NonNullable<TracerSceneOptions["viewPose"]>> | undefined;
+  private annotations: ReturnType<typeof createTracerAnnotations> | undefined;
 
   constructor(
     canvas: HTMLCanvasElement,
     tracerCount: number,
     options?: TracerSceneOptions,
   ) {
+    this.viewPose = options?.viewPose;
+    this.trackViewPose = options?.trackViewPose === true;
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x1a2332, 1);
+    const initializationCleanup: Array<() => void> = [() => this.renderer.dispose()];
+    try {
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.setClearColor(0x1a2332, 1);
 
-    this.scene = new THREE.Scene();
+      this.scene = new THREE.Scene();
 
-    const view = DEEP_STORM_TRACER_VIEW;
-    this.camera = new THREE.PerspectiveCamera(
-      view.fovDeg,
-      1,
-      view.nearM,
-      view.farM,
-    );
-    this.camera.position.set(
-      view.cameraPosition.x,
-      view.cameraPosition.y,
-      view.cameraPosition.z,
-    );
-    this.camera.lookAt(view.target.x, view.target.y, view.target.z);
+      const view = DEEP_STORM_TRACER_VIEW;
+      this.camera = new THREE.PerspectiveCamera(
+        view.fovDeg,
+        1,
+        view.nearM,
+        view.farM,
+      );
+      this.camera.position.set(
+        view.cameraPosition.x,
+        view.cameraPosition.y,
+        view.cameraPosition.z,
+      );
+      this.camera.lookAt(view.target.x, view.target.y, view.target.z);
 
-    this.controls = new OrbitControls(this.camera, canvas);
-    this.controls.target.set(view.target.x, view.target.y, view.target.z);
-    this.controls.enableDamping = false;
-    this.controls.update();
+      this.controls = new OrbitControls(this.camera, canvas);
+      initializationCleanup.push(() => this.controls.dispose());
+      this.controls.target.set(view.target.x, view.target.y, view.target.z);
+      this.controls.enableDamping = false;
+      this.controls.update();
 
-    this.coordinateReference = createWorldCoordinateReference(
-      view.gridSizeM,
-      view.gridDivisions,
-    );
-    this.scene.add(this.coordinateReference);
+      if (this.viewPose) this.resetView();
 
-    this.sharedGeometry = new THREE.SphereGeometry(view.sphereRadiusM, 16, 12);
-    this.keepInactiveGlyphs = options?.keepInactiveGlyphs === true;
-    this.trailsEnabled = options?.trails === true;
+      this.coordinateReference = createWorldCoordinateReference(
+        view.gridSizeM,
+        view.gridDivisions,
+        { distanceLabelsVisible: options?.distanceLabelsVisible },
+      );
+      initializationCleanup.push(() => disposeWorldCoordinateReference(this.coordinateReference));
+      this.scene.add(this.coordinateReference);
 
-    for (let i = 0; i < tracerCount; i++) {
-      this.addTracerSlot();
+      this.sharedGeometry = new THREE.SphereGeometry(view.sphereRadiusM, 16, 12);
+      initializationCleanup.push(() => this.sharedGeometry.dispose());
+      initializationCleanup.push(() => this.clearTracerSlots());
+      this.keepInactiveGlyphs = options?.keepInactiveGlyphs === true;
+      this.trailsEnabled = options?.trails === true;
+
+      for (let i = 0; i < tracerCount; i++) {
+        this.addTracerSlot();
+      }
+      if (options?.tracerAnnotations) {
+        this.annotations = createTracerAnnotations(options.tracerAnnotations);
+        initializationCleanup.push(() => this.annotations?.dispose());
+        this.scene.add(this.annotations.object);
+      }
+      if (options?.comparisonPlacementArea) {
+        this.comparisonPlacementArea = createCompareFlowPlacementArea(options.comparisonPlacementArea);
+        initializationCleanup.push(() => this.comparisonPlacementArea?.dispose());
+        this.scene.add(this.comparisonPlacementArea.object);
+      }
+    } catch (error) {
+      for (const release of initializationCleanup.reverse()) release();
+      throw error;
     }
   }
 
@@ -460,7 +509,7 @@ export class TracerScene {
   }
 
   /**
-   * Restore canonical storm framing from DEEP_STORM_TRACER_VIEW.
+   * Restore supplied home framing, or canonical DEEP_STORM_TRACER_VIEW.
    * Clears the scene follow point and restores pan. Does not own
    * product Follow state, selection, tracers, preview, or airflow.
    * docs/architecture/37-reset-view-camera-recovery-architecture.md
@@ -468,7 +517,17 @@ export class TracerScene {
   resetView(): void {
     this.followPoint = null;
     this.controls.enablePan = true;
-    applyDeepStormTracerViewPose(this.camera.position, this.controls.target);
+    if (this.viewPose) {
+      const pose = this.viewPose(this.camera.aspect);
+      this.homePose = pose;
+      this.camera.position.copy(pose.cameraPosition);
+      this.controls.target.copy(pose.target);
+      this.camera.far = Math.max(DEEP_STORM_TRACER_VIEW.farM,
+        this.camera.position.distanceTo(this.controls.target) * 2);
+      this.camera.updateProjectionMatrix();
+    } else {
+      applyDeepStormTracerViewPose(this.camera.position, this.controls.target);
+    }
     this.controls.update();
   }
 
@@ -501,12 +560,29 @@ export class TracerScene {
     const w = Math.max(1, Math.floor(width));
     const h = Math.max(1, Math.floor(height));
     this.renderer.setSize(w, h, false);
+    this.refreshViewPose(w / h);
     this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+  }
+
+  private refreshViewPose(aspect: number): void {
+    if (!this.viewPose) return;
+    const previous = this.homePose ?? this.viewPose(this.camera.aspect);
+    const next = this.viewPose(aspect);
+    if (next === this.homePose) return;
+    const oldDistance = new THREE.Vector3().copy(previous.cameraPosition).distanceTo(previous.target);
+    const newDistance = new THREE.Vector3().copy(next.cameraPosition).distanceTo(next.target);
+    const offset = this.camera.position.clone().sub(this.controls.target);
+    this.controls.target.add(new THREE.Vector3().copy(next.target).sub(previous.target));
+    this.camera.position.copy(offset).multiplyScalar(newDistance / oldDistance).add(this.controls.target);
+    this.camera.far = Math.max(DEEP_STORM_TRACER_VIEW.farM, newDistance * 2);
+    this.homePose = next;
     this.camera.updateProjectionMatrix();
   }
 
   /** Copy last fixed-step particle positions into meshes (read-only observe). */
   syncFromParticles(particles: readonly TracerAdvectionState[]): void {
+    this.annotations?.sync(particles.map(particle => particle.position));
     const n = Math.min(particles.length, this.slots.length);
     for (let i = 0; i < n; i++) {
       const p = particles[i]!;
@@ -619,7 +695,49 @@ export class TracerScene {
     }
   }
 
+  /** Observe a supplied world velocity; no model sampling or physics here. */
+  syncVelocityArrow(sample: VelocityArrowObservation | null): void {
+    if (!sample && !this.velocityArrow) return;
+    if (!this.velocityArrow) {
+      this.velocityArrow = createVelocityArrow();
+      this.scene.add(this.velocityArrow.object);
+    }
+    this.velocityArrow.sync(sample);
+  }
+
+  /** Controls and canvas policy have the same scene owner. No reconnect/dispose. */
+  setComparisonPlacementMode(enabled: boolean): void {
+    if (!this.comparisonPlacementArea) return;
+    const element = this.controls.domElement;
+    if (!element) return;
+    if (enabled && !this.comparisonInputPolicy) {
+      this.comparisonInputPolicy = { enabled: this.controls.enabled, touchAction: element.style.touchAction };
+      this.controls.enabled = false;
+      element.style.touchAction = "pan-y pinch-zoom";
+    } else if (!enabled && this.comparisonInputPolicy) {
+      this.controls.enabled = this.comparisonInputPolicy.enabled;
+      element.style.touchAction = this.comparisonInputPolicy.touchAction;
+      this.comparisonInputPolicy = undefined;
+    }
+    this.comparisonPlacementArea.object.visible = enabled;
+  }
+
+  /** Opt-in static comparison, separately owned from Slice 3's single arrow. */
+  syncComparisonVelocityArrows(samples: Readonly<Record<"a" | "b", VelocityArrowObservation | null>>): void {
+    for (const key of ["a", "b"] as const) {
+      if (!samples[key] && !this.comparisonArrows[key]) continue;
+      if (!this.comparisonArrows[key]) {
+        const arrow = createVelocityArrow();
+        arrow.object.name = `comparisonVelocityArrow:${key}`;
+        this.comparisonArrows[key] = arrow;
+        this.scene.add(arrow.object);
+      }
+      this.comparisonArrows[key]!.sync(samples[key]);
+    }
+  }
+
   render(): void {
+    if (this.trackViewPose) this.refreshViewPose(this.camera.aspect);
     if (this.followPoint !== null) {
       translateCameraFollowTarget(
         this.camera.position,
@@ -632,6 +750,22 @@ export class TracerScene {
   }
 
   dispose(): void {
+    this.setComparisonPlacementMode(false);
+    if (this.comparisonPlacementArea) {
+      this.scene.remove(this.comparisonPlacementArea.object); this.comparisonPlacementArea.dispose(); this.comparisonPlacementArea = undefined;
+    }
+    for (const key of ["a", "b"] as const) {
+      const arrow = this.comparisonArrows[key];
+      if (arrow) { this.scene.remove(arrow.object); arrow.dispose(); delete this.comparisonArrows[key]; }
+    }
+    if (this.velocityArrow) {
+      this.scene.remove(this.velocityArrow.object);
+      this.velocityArrow.dispose(); this.velocityArrow = undefined;
+    }
+    if (this.annotations) {
+      this.scene.remove(this.annotations.object);
+      this.annotations.dispose(); this.annotations = undefined;
+    }
     this.controls.dispose();
     this.detachVisualAirflow();
     this.clearTracerSlots();

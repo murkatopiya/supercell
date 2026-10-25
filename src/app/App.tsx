@@ -7,6 +7,7 @@ import { HowItWorksAffordance } from "./HowItWorksAffordance.js";
 import { HowItWorksSurface } from "./HowItWorksSurface.js";
 import type { HowItWorksContext } from "./howItWorksContent.js";
 import { LandingPage } from "./LandingPage.js";
+import { LearnPage } from "./learn/LearnPage.js";
 import { UserGuideAffordance } from "./UserGuideAffordance.js";
 import { UserGuideSurface } from "./UserGuideSurface.js";
 import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
@@ -119,7 +120,7 @@ import {
 } from "../visualization/operandContributionDisplay.js";
 
 type Lab = GuidedLab | ExploreLab;
-type AppSurface = "landing" | "laboratory";
+type AppSurface = "landing" | "learn" | "laboratory";
 
 function createSceneSlots(
   sceneHandleRef: RefObject<TracerViewportHandle | null>,
@@ -657,10 +658,15 @@ export function App() {
     setAppSurface("landing");
   };
 
+  if (appSurface === "learn") {
+    return <LearnPage onReturnToLanding={returnToLanding} onEnterExplore={enterExplore} />;
+  }
+
   if (appSurface === "landing" || lab === null) {
     return (
       <>
         <LandingPage
+          onEnterLearn={() => setAppSurface("learn")}
           onEnterExplore={enterExplore}
           onOpenUserGuide={openUserGuide}
           onOpenHowItWorks={openHowItWorks}

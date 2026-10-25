@@ -218,7 +218,7 @@ describe("TracerScene.resetView capability", () => {
     expect(tracerSceneSrc).toMatch(/applyDeepStormTracerViewPose/);
     const start = tracerSceneSrc.indexOf("resetView(): void");
     expect(start).toBeGreaterThanOrEqual(0);
-    const body = tracerSceneSrc.slice(start, start + 450);
+    const body = tracerSceneSrc.slice(start, tracerSceneSrc.indexOf("\n  }", start) + 4);
     const followCleared = body.indexOf("this.followPoint = null");
     const panRestored = body.indexOf("this.controls.enablePan = true");
     const poseApplied = body.indexOf("applyDeepStormTracerViewPose");
@@ -231,7 +231,7 @@ describe("TracerScene.resetView capability", () => {
 
   it("keeps resetView independent of selection, slots, preview, airflow, and App follow", () => {
     const start = tracerSceneSrc.indexOf("resetView(): void");
-    const body = tracerSceneSrc.slice(start, start + 450);
+    const body = tracerSceneSrc.slice(start, tracerSceneSrc.indexOf("\n  }", start) + 4);
     expect(body).not.toMatch(/selectedSlotIndex/);
     expect(body).not.toMatch(/observeSelectionHalo/);
     expect(body).not.toMatch(/selectionHalo/);

@@ -49,6 +49,7 @@ import logoUrl from "./assets/supercell-explorer-logo.webp";
 import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
 
 export interface LandingPageProps {
+  onEnterLearn: () => void;
   onEnterExplore: () => void;
   onOpenUserGuide: (trigger: HTMLButtonElement) => void;
   onOpenHowItWorks: (trigger: HTMLButtonElement) => void;
@@ -66,6 +67,7 @@ export interface LandingPageProps {
  * Visual treatment: docs/ui/14-visual-design-foundation.md
  */
 export function LandingPage({
+  onEnterLearn,
   onEnterExplore,
   onOpenUserGuide,
   onOpenHowItWorks,
@@ -87,6 +89,7 @@ export function LandingPage({
           </header>
 
           <div className="landing__actions">
+            <button type="button" className="ui-button ui-button--primary landing__cta" onClick={onEnterLearn}>Learn</button>
             <button
               type="button"
               className="ui-button ui-button--primary landing__cta"
@@ -266,9 +269,6 @@ export function LandingPage({
           );
         })}
         . {LANDING_ENVIRONMENTS_ANALYSIS_NOTE}
-      </p>
-      <p className="landing__note landing__note--quiet">
-        {LANDING_GUIDED_LATER_NOTE}
       </p>
       <p className="landing__note landing__note--quiet">
         {LANDING_DESKTOP_RECOMMENDED}

@@ -46,6 +46,7 @@ import { readFileSync } from "node:fs";
 function landingMarkup() {
   return renderToStaticMarkup(
     <LandingPage
+      onEnterLearn={() => {}}
       onEnterExplore={() => {}}
       onOpenUserGuide={() => {}}
       onOpenHowItWorks={() => {}}
@@ -77,7 +78,8 @@ describe("LandingPage", () => {
     expect(html).not.toContain("onEnterGuided");
     expect(landingSrc).not.toContain("onEnterGuided");
     expect(landingSrc).toContain("onEnterExplore");
-    expect(html).toContain(LANDING_GUIDED_LATER_NOTE);
+    expect(html).not.toContain(LANDING_GUIDED_LATER_NOTE);
+    expect(html).toContain("Learn");
     expect(html).not.toContain("prepared supercell scenario");
   });
 
@@ -263,10 +265,10 @@ describe("LandingPage", () => {
     );
   });
 
-  it("keeps Open Laboratory as the only primary CTA and does not wire the roadmap into the laboratory", () => {
+  it("keeps Learn and Explore as entry CTAs and does not wire the roadmap into the laboratory", () => {
     const html = landingMarkup();
     expect(html).toContain(LANDING_CTA_LABEL);
-    expect(html.match(/ui-button--primary/g)).toHaveLength(1);
+    expect(html.match(/ui-button--primary/g)).toHaveLength(2);
     expect(html).toContain("landing__cta");
     expect(landingSrc).not.toContain("createExploreLab");
     expect(landingSrc).not.toContain("createGuidedLab");

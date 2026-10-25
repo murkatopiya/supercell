@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import ts from "typescript";
 import * as THREE from "three";
 import { TracerPathHistory } from "../simulation/TracerPathHistory.js";
 import type { TracerAdvectionState } from "../simulation/TracerParticle.js";
@@ -352,19 +353,44 @@ describe("pickPathHistorySample winner semantics", () => {
   it("gives hover and click one pick, so both resolve the same sample", () => {
     // One call site plus one shared helper is what makes hover and the
     // pointer-up historical selection structurally identical.
-    const callSites =
-      viewportSrc.match(/scene\.pickPathHistorySampleAtClientPoint\(/g) ?? [];
+    const source = ts.createSourceFile("TracerViewport.tsx", viewportSrc,
+      ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    const nodes = <T extends ts.Node>(root: ts.Node, matches: (node: ts.Node) => node is T): T[] => {
+      const found: T[] = [];
+      const visit = (node: ts.Node) => {
+        if (matches(node)) found.push(node);
+        ts.forEachChild(node, visit);
+      };
+      visit(root); return found;
+    };
+    const callSites = nodes(source, ts.isCallExpression).filter(({ expression }) =>
+      ts.isPropertyAccessExpression(expression) &&
+      ts.isIdentifier(expression.expression) && expression.expression.text === "scene" &&
+      expression.name.text === "pickPathHistorySampleAtClientPoint");
     expect(callSites).toHaveLength(1);
-    expect(viewportSrc).toMatch(/const pickTracerHits = \(/);
-    const hoverBody = /const applyHoverFromClientPoint = \([\s\S]*?\n {4}\};/.exec(
-      viewportSrc,
-    );
-    const pointerUpBody = /const onPointerUp = \([\s\S]*?\n {4}\};/.exec(
-      viewportSrc,
-    );
-    expect(hoverBody?.[0]).toMatch(/pickTracerHits\(/);
-    expect(pointerUpBody?.[0]).toMatch(/pickTracerHits\(/);
-    expect(pointerUpBody?.[0]).toMatch(/decision\.historyIndex/);
+    const handlerBody = (name: string) => {
+      const declarations = nodes(source, ts.isVariableDeclaration).filter(node =>
+        ts.isIdentifier(node.name) && node.name.text === name);
+      expect(declarations).toHaveLength(1);
+      const declarationList = declarations[0]!.parent;
+      expect(ts.isVariableDeclarationList(declarationList) &&
+        (declarationList.flags & ts.NodeFlags.Const) !== 0).toBe(true);
+      const initializer = declarations[0]!.initializer;
+      if (!initializer || !ts.isArrowFunction(initializer) || !ts.isBlock(initializer.body)) {
+        throw new Error(`Expected an arrow-function body for ${name}`);
+      }
+      return initializer.body;
+    };
+    handlerBody("pickTracerHits");
+    const hoverBody = handlerBody("applyHoverFromClientPoint");
+    const pointerUpBody = handlerBody("onPointerUp");
+    const usesSharedPicker = (body: ts.Node) => nodes(body, ts.isCallExpression).some(({ expression }) =>
+      ts.isIdentifier(expression) && expression.text === "pickTracerHits");
+    expect(usesSharedPicker(hoverBody)).toBe(true);
+    expect(usesSharedPicker(pointerUpBody)).toBe(true);
+    expect(nodes(pointerUpBody, ts.isPropertyAccessExpression).some(node =>
+      ts.isIdentifier(node.expression) && node.expression.text === "decision" &&
+      node.name.text === "historyIndex")).toBe(true);
 
     // And the pick itself is a pure function of its inputs.
     const camera = perspectiveLookingAtOrigin(1000);

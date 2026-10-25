@@ -5,7 +5,9 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { TracerScene } from "../../rendering/TracerScene.js";
+import { TracerScene, type TracerSceneOptions } from "../../rendering/TracerScene.js";
+import type { VelocityArrowObservation } from "../../rendering/velocityArrow.js";
+import type { TracerAdvectionState } from "../../simulation/TracerParticle.js";
 import { VisualAirflowWorkbenchScene } from "../../rendering/VisualAirflowWorkbenchScene.js";
 import {
   DEFAULT_OPERAND_HIGHLIGHT_MODE,
@@ -74,6 +76,16 @@ export interface TracerViewportHandle {
 }
 
 export interface TracerViewportProps {
+  /** Presentation-only marker snapshots; never used for integration or history capture. */
+  displayedParticlesSource?: () => readonly TracerAdvectionState[];
+  /** Opt-in observer sampled at displayed post-step P,t, including pause/replay. */
+  velocityArrowSource?: () => VelocityArrowObservation | null;
+  /** Opt-in Learn presentation/runtime boundaries. Laboratory defaults unchanged. */
+  sceneOptions?: TracerSceneOptions;
+  showGroundCursor?: boolean;
+  stepBudget?: { completedSteps: number; readonly maxSteps: number };
+  suspendWhenHidden?: boolean;
+  onViewportError?: (message: string) => void;
   simulation: Simulation;
   /** Present only in story mode. Diagnostic live path omits this. */
   pathHistory?: TracerPathHistory | null;
@@ -196,6 +208,13 @@ export interface TracerViewportProps {
  * Owns mount/dispose, resize, and the rAF fixed-step loop.
  */
 export function TracerViewport({
+  displayedParticlesSource,
+  velocityArrowSource,
+  sceneOptions,
+  showGroundCursor = true,
+  stepBudget,
+  suspendWhenHidden = false,
+  onViewportError,
   simulation,
   pathHistory = null,
   keepInactiveGlyphs = false,
@@ -229,6 +248,12 @@ export function TracerViewport({
   overlay,
 }: TracerViewportProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const displayedParticlesSourceRef = useRef(displayedParticlesSource);
+  displayedParticlesSourceRef.current = displayedParticlesSource;
+  const velocityArrowSourceRef = useRef(velocityArrowSource);
+  velocityArrowSourceRef.current = velocityArrowSource;
+  const viewportErrorRef = useRef(onViewportError);
+  viewportErrorRef.current = onViewportError;
   const hudEastRef = useRef<HTMLSpanElement>(null);
   const hudNorthRef = useRef<HTMLSpanElement>(null);
   const pausedRef = useRef(paused);
@@ -319,382 +344,429 @@ export function TracerViewport({
       return;
     }
 
-    const scene = new TracerScene(canvas, simulation.particles.length, {
-      trails: pathHistory !== null,
-      keepInactiveGlyphs,
-    });
-    sceneRef.current = scene;
-    const workbenchScene =
-      visualAirflowPopulation === null || eulerianAirflowSamples === null
-        ? null
-        : new VisualAirflowWorkbenchScene(
-            visualAirflowPopulation.occupantCount,
-            eulerianAirflowSamples.sampleCount,
-          );
-    if (workbenchScene !== null) {
-      scene.attachVisualAirflow(workbenchScene.object);
-    }
-    let accumulator = 0;
-    let visualAccumulator = 0;
-    let frameId = 0;
-    let previousMs = performance.now();
+    const resources: Array<() => void> = [];
     let disposed = false;
-    let pointerDown: { x: number; y: number; pointerId: number } | null =
-      null;
-    let analysisTiltingFingerprint = "";
-    const analysisTiltingCache = new ExploreAnalysisTiltingProjectionCache();
-
-    const resize = () => {
-      const parent = canvas.parentElement;
-      if (!parent) {
-        return;
-      }
-      const rect = parent.getBoundingClientRect();
-      scene.setSize(rect.width, rect.height);
-    };
-
-    const sync = () => {
-      scene.syncFromParticles(simulation.particles);
-      if (pathHistory) {
-        scene.syncFromPathHistory(pathHistory);
-        const column = analysisColumnRef.current;
-        const updraft = analysisUpdraftRef.current;
-        const fingerprint =
-          column == null || updraft == null
-            ? "column-unavailable"
-            : exploreAnalysisTiltingHistoryFingerprint(pathHistory, column);
-        if (fingerprint !== analysisTiltingFingerprint) {
-          analysisTiltingFingerprint = fingerprint;
-          if (column == null || updraft == null) {
-            analysisTiltingCache.reset();
-            scene.syncAnalysisTiltingOverlays(null);
-          } else {
-            scene.syncAnalysisTiltingOverlays(
-              analysisTiltingCache.encodeForPathHistory(
-                pathHistory,
-                column,
-                updraft,
-              ),
-            );
-          }
-        }
-      } else {
-        analysisTiltingFingerprint = "";
-        analysisTiltingCache.reset();
-        scene.syncAnalysisTiltingOverlays(null);
-      }
-      scene.syncAnalysisTiltingGlyph(analysisTiltingGlyphModelRef.current);
-      scene.syncAnalysisTiltingWhatIfGlyph(
-        analysisTiltingWhatIfModelRef.current,
-      );
-      if (workbenchScene !== null && visualAirflowPopulation !== null) {
-        const field = visualAirflowFieldRef.current;
-        const eulerian = eulerianAirflowSamplesRef.current;
-        if (field !== null && eulerian !== null) {
-          workbenchScene.sync({
-            mode: workbenchModeRef.current,
-            population: visualAirflowPopulation,
-            eulerian,
-            field,
-            time: simulation.clock.time,
-            highlightMode: highlightModeRef.current,
-            highlightOperand: highlightOperandRef.current,
-          });
-        }
-      }
-      scene.setDepthCueEnabled(depthCueEnabledRef.current);
-      scene.setCoordinateReferenceVisible(
-        coordinateReferenceVisibleRef.current,
-      );
-      scene.syncReleasePreview(pendingPreviewRef.current);
-      scene.syncSelectedSlot(
-        occupancyIndexForTracerId(
-          simulation.particles,
-          selectedTracerIdRef.current,
-        ),
-      );
-      scene.syncHistoricalPathProbe(historicalProbePositionRef.current);
-      const follow = viewportFollowSync({
-        followEnabled: followEnabledSourceRef.current?.current === true,
-        particles: simulation.particles,
-        selectedTracerId: selectedTracerIdRef.current,
-      });
-      if (follow.kind === "set") {
-        scene.setFollowPoint(follow.position);
-      } else {
-        scene.clearFollowPoint();
-        if (follow.kind === "unavailable") {
-          onFollowUnavailableRef.current?.();
-        }
-      }
-    };
-
-    resize();
-    sync();
-    scene.render();
-
-    const onResize = () => {
-      resize();
-      scene.render();
-    };
-    window.addEventListener("resize", onResize);
-    const resizeObserver =
-      typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(() => {
-            onResize();
-          })
-        : null;
-    if (resizeObserver !== null && canvas.parentElement !== null) {
-      resizeObserver.observe(canvas.parentElement);
-    }
-
-    const writeGroundCursorHud = (clientX: number, clientY: number) => {
-      const rect = canvas.getBoundingClientRect();
-      const lines = groundCursorHudFromClientPoint(
-        (ndcX, ndcY) => scene.worldRayFromNdc(ndcX, ndcY),
-        clientX,
-        clientY,
-        rect,
-      );
-      if (hudEastRef.current !== null) {
-        hudEastRef.current.textContent = lines.east;
-      }
-      if (hudNorthRef.current !== null) {
-        hudNorthRef.current.textContent = lines.north;
-      }
-    };
-
-    const clearGroundCursorHud = () => {
-      if (hudEastRef.current !== null) {
-        hudEastRef.current.textContent = GROUND_CURSOR_UNAVAILABLE;
-      }
-      if (hudNorthRef.current !== null) {
-        hudNorthRef.current.textContent = GROUND_CURSOR_UNAVAILABLE;
-      }
-    };
-
-    const pickTracerHits = (clientX: number, clientY: number) => {
-      const rect = canvas.getBoundingClientRect();
-      const hitSlotIndex = scene.pickVisibleTracerAtClientPoint(
-        clientX,
-        clientY,
-        rect,
-      );
-      const hitPathSample =
-        pathHistory === null || pathHistory === undefined
-          ? null
-          : scene.pickPathHistorySampleAtClientPoint(
-              pathHistory,
-              clientX,
-              clientY,
-              rect,
-            );
-      return { rect, hitSlotIndex, hitPathSample };
-    };
-
-    const applyHoverFromClientPoint = (clientX: number, clientY: number) => {
-      const { hitSlotIndex, hitPathSample } = pickTracerHits(
-        clientX,
-        clientY,
-      );
-      const hover = resolveTracerHover({ hitSlotIndex, hitPathSample });
-      scene.syncHoveredSlot(hover?.slotIndex ?? null);
-      canvas.style.cursor = canvasCursorForTracerHover(hover !== null);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      writeGroundCursorHud(event.clientX, event.clientY);
-      if (pointerDown !== null) {
-        scene.syncHoveredSlot(null);
-        canvas.style.cursor = canvasCursorForTracerHover(false);
-        return;
-      }
-      applyHoverFromClientPoint(event.clientX, event.clientY);
-    };
-
-    const onPointerLeave = () => {
-      clearGroundCursorHud();
-      scene.syncHoveredSlot(null);
-      canvas.style.cursor = canvasCursorForTracerHover(false);
-    };
-
-    const onPointerDown = (event: PointerEvent) => {
-      if (event.button !== 0) {
-        return;
-      }
-      pointerDown = {
-        x: event.clientX,
-        y: event.clientY,
-        pointerId: event.pointerId,
-      };
-    };
-
-    const onPointerUp = (event: PointerEvent) => {
-      const down = pointerDown;
-      pointerDown = null;
-      if (
-        down === null ||
-        event.button !== 0 ||
-        event.pointerId !== down.pointerId
-      ) {
-        return;
-      }
-      const movement = Math.hypot(
-        event.clientX - down.x,
-        event.clientY - down.y,
-      );
-      const { rect, hitSlotIndex, hitPathSample } = pickTracerHits(
-        event.clientX,
-        event.clientY,
-      );
-      const ndc = pointerNdcFromClientRect(
-        event.clientX,
-        event.clientY,
-        rect,
-      );
-      if (ndc === null) {
-        return;
-      }
-      const ray = scene.worldRayFromNdc(ndc.x, ndc.y);
-      const decision = resolveTracerPointerUp({
-        pointerMovementPx: movement,
-        hitSlotIndex,
-        hitPathSample,
-        placementAvailable: onPlacementAttemptRef.current !== undefined,
-        ray,
-      });
-      if (decision.action === "select") {
-        const tracerId = tracerIdForSlot(
-          simulation.particles,
-          decision.slotIndex,
-        );
-        if (tracerId !== undefined) {
-          onTracerSelectRef.current?.(tracerId);
-        }
-      } else if (decision.action === "inspect-path") {
-        onPathSampleSelectRef.current?.(
-          decision.slotIndex,
-          decision.historyIndex,
-        );
-      } else if (decision.action === "placement") {
-        onPlacementAttemptRef.current?.(
-          decision.origin,
-          decision.direction,
-          decision.pointerMovementPx,
-        );
-      }
-      applyHoverFromClientPoint(event.clientX, event.clientY);
-    };
-
-    const onPointerCancel = (event: PointerEvent) => {
-      if (pointerDown !== null && event.pointerId === pointerDown.pointerId) {
-        pointerDown = null;
-      }
-    };
-
-    canvas.addEventListener("pointerdown", onPointerDown);
-    canvas.addEventListener("pointerup", onPointerUp);
-    canvas.addEventListener("pointercancel", onPointerCancel);
-    canvas.addEventListener("pointermove", onPointerMove);
-    canvas.addEventListener("pointerleave", onPointerLeave);
-
-    const tick = (nowMs: number) => {
-      if (disposed) {
-        return;
-      }
-
-      if (resetPendingRef.current) {
-        resetPendingRef.current = false;
-        accumulator = 0;
-        visualAccumulator = 0;
-        previousMs = nowMs;
-      }
-
-      const pausedNow = pausedRef.current;
-      if (wasPausedRef.current && !pausedNow) {
-        // Extra no-catch-up safety on resume transition
-        previousMs = nowMs;
-        visualAccumulator = 0;
-      }
-      wasPausedRef.current = pausedNow;
-
-      const wallFrameDt = (nowMs - previousMs) / 1000;
-      previousMs = nowMs;
-
-      const simulationElapsed = simulationElapsedFromWall(wallFrameDt, {
-        paused: pausedNow,
-        timeScale: timeScaleRef.current,
-      });
-
-      const consumed = consumeFixedTimesteps(
-        accumulator,
-        simulationElapsed,
-        timestep,
-      );
-      accumulator = consumed.accumulator;
-      for (let i = 0; i < consumed.steps; i++) {
-        advanceLaboratoryFixedStep(simulation, timestep, {
-          pathHistory,
-          visualAirflowPopulation,
-        });
-      }
-      if (consumed.steps > 0) {
-        onSimulationAdvancedRef.current?.();
-      } else if (
-        pausedNow &&
-        pauseVisualizationRef.current === "frozen-field-animation" &&
-        visualAirflowPopulation !== null
-      ) {
-        const visualElapsed = visualAirflowElapsedFromWall(wallFrameDt);
-        const visualConsumed = consumeFixedTimesteps(
-          visualAccumulator,
-          visualElapsed,
-          timestep,
-        );
-        visualAccumulator = visualConsumed.accumulator;
-        const frozenTime = simulation.clock.time;
-        for (let i = 0; i < visualConsumed.steps; i++) {
-          stepVisualAirflowOnFrozenField(
-            visualAirflowPopulation,
-            timestep,
-            frozenTime,
-          );
-        }
-      }
-
-      sync();
-      if (pointerDown === null) {
-        canvas.style.cursor = canvasCursorForTracerHover(
-          scene.hoveredSlotIndex !== null,
-        );
-      }
-      scene.render();
-      frameId = requestAnimationFrame(tick);
-    };
-
-    frameId = requestAnimationFrame(tick);
-
-    return () => {
+    let frameId = 0;
+    const cleanup = () => {
+      if (disposed) return;
       disposed = true;
       cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", onResize);
-      resizeObserver?.disconnect();
-      canvas.removeEventListener("pointerdown", onPointerDown);
-      canvas.removeEventListener("pointerup", onPointerUp);
-      canvas.removeEventListener("pointercancel", onPointerCancel);
-      canvas.removeEventListener("pointermove", onPointerMove);
-      canvas.removeEventListener("pointerleave", onPointerLeave);
       sceneRef.current = null;
-      scene.detachVisualAirflow();
-      workbenchScene?.dispose();
-      scene.dispose();
+      for (const release of resources.reverse()) release();
     };
+    const fail = () => {
+      cleanup();
+      viewportErrorRef.current?.("The 3D view stopped. Replay to restore the view and restart this experiment.");
+    };
+    try {
+      const scene = new TracerScene(canvas, simulation.particles.length, {
+        ...sceneOptions,
+        trails: pathHistory !== null,
+        keepInactiveGlyphs,
+      });
+      resources.push(() => scene.dispose());
+      sceneRef.current = scene;
+      const workbenchScene =
+        visualAirflowPopulation === null || eulerianAirflowSamples === null
+          ? null
+          : new VisualAirflowWorkbenchScene(
+              visualAirflowPopulation.occupantCount,
+              eulerianAirflowSamples.sampleCount,
+            );
+      if (workbenchScene !== null) {
+        resources.push(() => { scene.detachVisualAirflow(); workbenchScene.dispose(); });
+        scene.attachVisualAirflow(workbenchScene.object);
+      }
+      let accumulator = 0;
+      let visualAccumulator = 0;
+      let previousMs = performance.now();
+      const onVisibilityChange = () => {
+        previousMs = performance.now(); accumulator = 0; visualAccumulator = 0;
+      };
+      if (suspendWhenHidden) {
+        document.addEventListener("visibilitychange", onVisibilityChange);
+        resources.push(() => document.removeEventListener("visibilitychange", onVisibilityChange));
+      }
+      const onContextLost = (event: Event) => { event.preventDefault(); fail(); };
+      if (viewportErrorRef.current) {
+        canvas.addEventListener("webglcontextlost", onContextLost);
+        resources.push(() => canvas.removeEventListener("webglcontextlost", onContextLost));
+      }
+      let pointerDown: { x: number; y: number; pointerId: number } | null =
+        null;
+      let analysisTiltingFingerprint = "";
+      const analysisTiltingCache = new ExploreAnalysisTiltingProjectionCache();
+
+      const resize = () => {
+        const parent = canvas.parentElement;
+        if (!parent) {
+          return;
+        }
+        const rect = parent.getBoundingClientRect();
+        scene.setSize(rect.width, rect.height);
+      };
+
+      const sync = () => {
+        scene.syncFromParticles(displayedParticlesSourceRef.current?.() ?? simulation.particles);
+        if (pathHistory) {
+          scene.syncFromPathHistory(pathHistory);
+          const column = analysisColumnRef.current;
+          const updraft = analysisUpdraftRef.current;
+          const fingerprint =
+            column == null || updraft == null
+              ? "column-unavailable"
+              : exploreAnalysisTiltingHistoryFingerprint(pathHistory, column);
+          if (fingerprint !== analysisTiltingFingerprint) {
+            analysisTiltingFingerprint = fingerprint;
+            if (column == null || updraft == null) {
+              analysisTiltingCache.reset();
+              scene.syncAnalysisTiltingOverlays(null);
+            } else {
+              scene.syncAnalysisTiltingOverlays(
+                analysisTiltingCache.encodeForPathHistory(
+                  pathHistory,
+                  column,
+                  updraft,
+                ),
+              );
+            }
+          }
+        } else {
+          analysisTiltingFingerprint = "";
+          analysisTiltingCache.reset();
+          scene.syncAnalysisTiltingOverlays(null);
+        }
+        scene.syncAnalysisTiltingGlyph(analysisTiltingGlyphModelRef.current);
+        scene.syncAnalysisTiltingWhatIfGlyph(
+          analysisTiltingWhatIfModelRef.current,
+        );
+        if (workbenchScene !== null && visualAirflowPopulation !== null) {
+          const field = visualAirflowFieldRef.current;
+          const eulerian = eulerianAirflowSamplesRef.current;
+          if (field !== null && eulerian !== null) {
+            workbenchScene.sync({
+              mode: workbenchModeRef.current,
+              population: visualAirflowPopulation,
+              eulerian,
+              field,
+              time: simulation.clock.time,
+              highlightMode: highlightModeRef.current,
+              highlightOperand: highlightOperandRef.current,
+            });
+          }
+        }
+        scene.setDepthCueEnabled(depthCueEnabledRef.current);
+        scene.setCoordinateReferenceVisible(
+          coordinateReferenceVisibleRef.current,
+        );
+        scene.syncReleasePreview(pendingPreviewRef.current);
+        scene.syncSelectedSlot(
+          occupancyIndexForTracerId(
+            simulation.particles,
+            selectedTracerIdRef.current,
+          ),
+        );
+        scene.syncHistoricalPathProbe(historicalProbePositionRef.current);
+        if (velocityArrowSourceRef.current) {
+          scene.syncVelocityArrow(velocityArrowSourceRef.current());
+        }
+        const follow = viewportFollowSync({
+          followEnabled: followEnabledSourceRef.current?.current === true,
+          particles: simulation.particles,
+          selectedTracerId: selectedTracerIdRef.current,
+        });
+        if (follow.kind === "set") {
+          scene.setFollowPoint(follow.position);
+        } else {
+          scene.clearFollowPoint();
+          if (follow.kind === "unavailable") {
+            onFollowUnavailableRef.current?.();
+          }
+        }
+      };
+
+      resize();
+      sync();
+      scene.render();
+
+      const onResize = () => {
+        if (disposed) return;
+        try { resize(); scene.render(); } catch (error) {
+          if (!viewportErrorRef.current) throw error;
+          fail();
+        }
+      };
+      window.addEventListener("resize", onResize);
+      resources.push(() => window.removeEventListener("resize", onResize));
+      const resizeObserver =
+        typeof ResizeObserver !== "undefined"
+          ? new ResizeObserver(() => {
+              onResize();
+            })
+          : null;
+      resources.push(() => resizeObserver?.disconnect());
+      if (resizeObserver !== null && canvas.parentElement !== null) {
+        resizeObserver.observe(canvas.parentElement);
+      }
+
+      const writeGroundCursorHud = (clientX: number, clientY: number) => {
+        const rect = canvas.getBoundingClientRect();
+        const lines = groundCursorHudFromClientPoint(
+          (ndcX, ndcY) => scene.worldRayFromNdc(ndcX, ndcY),
+          clientX,
+          clientY,
+          rect,
+        );
+        if (hudEastRef.current !== null) {
+          hudEastRef.current.textContent = lines.east;
+        }
+        if (hudNorthRef.current !== null) {
+          hudNorthRef.current.textContent = lines.north;
+        }
+      };
+
+      const clearGroundCursorHud = () => {
+        if (hudEastRef.current !== null) {
+          hudEastRef.current.textContent = GROUND_CURSOR_UNAVAILABLE;
+        }
+        if (hudNorthRef.current !== null) {
+          hudNorthRef.current.textContent = GROUND_CURSOR_UNAVAILABLE;
+        }
+      };
+
+      const pickTracerHits = (clientX: number, clientY: number) => {
+        const rect = canvas.getBoundingClientRect();
+        const hitSlotIndex = scene.pickVisibleTracerAtClientPoint(
+          clientX,
+          clientY,
+          rect,
+        );
+        const hitPathSample =
+          pathHistory === null || pathHistory === undefined
+            ? null
+            : scene.pickPathHistorySampleAtClientPoint(
+                pathHistory,
+                clientX,
+                clientY,
+                rect,
+              );
+        return { rect, hitSlotIndex, hitPathSample };
+      };
+
+      const applyHoverFromClientPoint = (clientX: number, clientY: number) => {
+        const { hitSlotIndex, hitPathSample } = pickTracerHits(
+          clientX,
+          clientY,
+        );
+        const hover = resolveTracerHover({ hitSlotIndex, hitPathSample });
+        scene.syncHoveredSlot(hover?.slotIndex ?? null);
+        canvas.style.cursor = canvasCursorForTracerHover(hover !== null);
+      };
+
+      const onPointerMove = (event: PointerEvent) => {
+        writeGroundCursorHud(event.clientX, event.clientY);
+        if (pointerDown !== null) {
+          scene.syncHoveredSlot(null);
+          canvas.style.cursor = canvasCursorForTracerHover(false);
+          return;
+        }
+        applyHoverFromClientPoint(event.clientX, event.clientY);
+      };
+
+      const onPointerLeave = () => {
+        clearGroundCursorHud();
+        scene.syncHoveredSlot(null);
+        canvas.style.cursor = canvasCursorForTracerHover(false);
+      };
+
+      const onPointerDown = (event: PointerEvent) => {
+        if (event.button !== 0) {
+          return;
+        }
+        pointerDown = {
+          x: event.clientX,
+          y: event.clientY,
+          pointerId: event.pointerId,
+        };
+      };
+
+      const onPointerUp = (event: PointerEvent) => {
+        const down = pointerDown;
+        pointerDown = null;
+        if (
+          down === null ||
+          event.button !== 0 ||
+          event.pointerId !== down.pointerId
+        ) {
+          return;
+        }
+        const movement = Math.hypot(
+          event.clientX - down.x,
+          event.clientY - down.y,
+        );
+        const { rect, hitSlotIndex, hitPathSample } = pickTracerHits(
+          event.clientX,
+          event.clientY,
+        );
+        const ndc = pointerNdcFromClientRect(
+          event.clientX,
+          event.clientY,
+          rect,
+        );
+        if (ndc === null) {
+          return;
+        }
+        const ray = scene.worldRayFromNdc(ndc.x, ndc.y);
+        const decision = resolveTracerPointerUp({
+          pointerMovementPx: movement,
+          hitSlotIndex,
+          hitPathSample,
+          placementAvailable: onPlacementAttemptRef.current !== undefined,
+          ray,
+        });
+        if (decision.action === "select") {
+          const tracerId = tracerIdForSlot(
+            simulation.particles,
+            decision.slotIndex,
+          );
+          if (tracerId !== undefined) {
+            onTracerSelectRef.current?.(tracerId);
+          }
+        } else if (decision.action === "inspect-path") {
+          onPathSampleSelectRef.current?.(
+            decision.slotIndex,
+            decision.historyIndex,
+          );
+        } else if (decision.action === "placement") {
+          onPlacementAttemptRef.current?.(
+            decision.origin,
+            decision.direction,
+            decision.pointerMovementPx,
+          );
+        }
+        applyHoverFromClientPoint(event.clientX, event.clientY);
+      };
+
+      const onPointerCancel = (event: PointerEvent) => {
+        if (pointerDown !== null && event.pointerId === pointerDown.pointerId) {
+          pointerDown = null;
+        }
+      };
+
+      canvas.addEventListener("pointerdown", onPointerDown);
+      canvas.addEventListener("pointerup", onPointerUp);
+      canvas.addEventListener("pointercancel", onPointerCancel);
+      canvas.addEventListener("pointermove", onPointerMove);
+      canvas.addEventListener("pointerleave", onPointerLeave);
+      resources.push(() => {
+        canvas.removeEventListener("pointerdown", onPointerDown);
+        canvas.removeEventListener("pointerup", onPointerUp);
+        canvas.removeEventListener("pointercancel", onPointerCancel);
+        canvas.removeEventListener("pointermove", onPointerMove);
+        canvas.removeEventListener("pointerleave", onPointerLeave);
+      });
+
+      const tick = (nowMs: number) => {
+        if (disposed) {
+          return;
+        }
+        try {
+          if (resetPendingRef.current) {
+            resetPendingRef.current = false;
+            accumulator = 0;
+            visualAccumulator = 0;
+            previousMs = nowMs;
+          }
+
+          const pausedNow = pausedRef.current || (suspendWhenHidden && document.hidden)
+            || (stepBudget !== undefined && stepBudget.completedSteps >= stepBudget.maxSteps);
+          if (wasPausedRef.current && !pausedNow) {
+            // Extra no-catch-up safety on resume transition
+            previousMs = nowMs;
+            visualAccumulator = 0;
+          }
+          wasPausedRef.current = pausedNow;
+
+          const wallFrameDt = (nowMs - previousMs) / 1000;
+          previousMs = nowMs;
+
+          const simulationElapsed = simulationElapsedFromWall(wallFrameDt, {
+            paused: pausedNow,
+            timeScale: timeScaleRef.current,
+          });
+
+          const consumed = consumeFixedTimesteps(
+            accumulator,
+            simulationElapsed,
+            timestep,
+          );
+          accumulator = consumed.accumulator;
+          const steps = Math.min(consumed.steps, stepBudget === undefined
+            ? Infinity : Math.max(0, stepBudget.maxSteps - stepBudget.completedSteps));
+          for (let i = 0; i < steps; i++) {
+            advanceLaboratoryFixedStep(simulation, timestep, {
+              pathHistory,
+              visualAirflowPopulation,
+            });
+            if (stepBudget) stepBudget.completedSteps += 1;
+          }
+          if (stepBudget && stepBudget.completedSteps >= stepBudget.maxSteps) accumulator = 0;
+          if (steps > 0) {
+            onSimulationAdvancedRef.current?.();
+          } else if (
+            pausedNow &&
+            pauseVisualizationRef.current === "frozen-field-animation" &&
+            visualAirflowPopulation !== null
+          ) {
+            const visualElapsed = visualAirflowElapsedFromWall(wallFrameDt);
+            const visualConsumed = consumeFixedTimesteps(
+              visualAccumulator,
+              visualElapsed,
+              timestep,
+            );
+            visualAccumulator = visualConsumed.accumulator;
+            const frozenTime = simulation.clock.time;
+            for (let i = 0; i < visualConsumed.steps; i++) {
+              stepVisualAirflowOnFrozenField(
+                visualAirflowPopulation,
+                timestep,
+                frozenTime,
+              );
+            }
+          }
+
+          sync();
+          if (pointerDown === null) {
+            canvas.style.cursor = canvasCursorForTracerHover(
+              scene.hoveredSlotIndex !== null,
+            );
+          }
+          scene.render();
+          frameId = requestAnimationFrame(tick);
+        } catch (error) {
+          if (!viewportErrorRef.current) throw error;
+          fail();
+        }
+      };
+
+      frameId = requestAnimationFrame(tick);
+
+      return cleanup;
+    } catch (error) {
+      cleanup();
+      if (!viewportErrorRef.current) throw error;
+      viewportErrorRef.current("The 3D view could not start. Replay to try again.");
+      return cleanup;
+    }
   }, [
     simulation,
     timestep,
     pathHistory,
     keepInactiveGlyphs,
     visualAirflowPopulation,
+    sceneOptions,
+    stepBudget,
+    suspendWhenHidden,
   ]);
 
   return (
@@ -709,7 +781,7 @@ export function TracerViewport({
         ) : null}
         {analysisColumn !== null ? <AnalysisT1ColorLegend /> : null}
       </div>
-      <div
+      {showGroundCursor && <div
         className="tracer-viewport__hud"
         aria-label="Ground cursor"
         style={{ pointerEvents: "none" }}
@@ -720,7 +792,7 @@ export function TracerViewport({
         <div>
           N: <span ref={hudNorthRef}>{GROUND_CURSOR_UNAVAILABLE}</span>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

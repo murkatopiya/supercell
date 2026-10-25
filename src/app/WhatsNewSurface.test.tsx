@@ -61,7 +61,7 @@ describe("What's new", () => {
     const affordance = renderToStaticMarkup(<WhatsNewAffordance expanded={false} onOpen={() => {}} />);
     expect(affordance).toContain("What&#x27;s new · V1.1");
     expect(affordance).toContain('aria-haspopup="dialog"');
-    const landing = renderToStaticMarkup(<LandingPage onEnterExplore={() => {}}
+    const landing = renderToStaticMarkup(<LandingPage onEnterLearn={() => {}} onEnterExplore={() => {}}
       onOpenUserGuide={() => {}} onOpenHowItWorks={() => {}} onOpenGlossary={() => {}}
       onOpenWhatsNew={() => {}} />);
     expect(landing).toContain("What&#x27;s new · V1.1");

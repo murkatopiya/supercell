@@ -14,10 +14,11 @@ describe("App navigation Slice 1", () => {
     expect(html).toContain("Supercell Explorer");
     expect(html).toContain("V1.1");
     expect(html).toContain("Research prototype");
-    expect(html).toContain("Open Laboratory");
+    expect(html).toContain("Explore");
+    expect(html).toContain("Learn");
     expect(html).toContain("kinematic laboratory");
     expect(html).toContain("How It Works");
-    expect(html).toContain("A guided walkthrough is planned for a later version.");
+    expect(html).not.toContain("A guided walkthrough is planned for a later version.");
     expect(html).not.toContain("prepared supercell scenario");
     expect(html).not.toContain("landing-mode-card");
     expect(html).not.toContain("disabled");
