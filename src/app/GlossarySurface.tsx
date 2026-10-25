@@ -1,5 +1,5 @@
+import { useResourceDialog } from "./useResourceDialog.js";
 import {
-  useEffect,
   useRef,
   type MouseEvent,
   type RefObject,
@@ -70,28 +70,7 @@ export function GlossarySurface({
 }: GlossarySurfaceProps) {
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const bodyRef = useRef<HTMLDivElement | null>(null);
-  const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-    closeButtonRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") {
-        return;
-      }
-      event.preventDefault();
-      event.stopPropagation();
-      onCloseRef.current();
-    };
-    window.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown, true);
-      returnFocusRef.current?.focus();
-    };
-  }, [open, returnFocusRef]);
+  const onCloseRef = useResourceDialog(open, onClose, returnFocusRef, closeButtonRef);
 
   if (!open) {
     return null;

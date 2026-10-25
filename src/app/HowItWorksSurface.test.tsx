@@ -40,6 +40,7 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain("aria-modal=\"true\"");
     expect(html).toContain("aria-labelledby=\"how-it-works-title\"");
     expect(html).toContain("Close");
+    expect(surfaceSrc).toContain("useResourceDialog(open, onClose, returnFocusRef, closeButtonRef)");
     expect(html).toContain("What is Supercell Explorer?");
     expect(html).toContain("Choose an environment and storm motion");
     expect(html).toContain("Release a tracer");
@@ -51,13 +52,7 @@ describe("HowItWorksSurface", () => {
     expect(html).toContain("Use what-if geometry");
     expect(html).toContain("Source vs Analysis");
     expect(html).toContain("Scientific boundary");
-    expect(surfaceSrc).toMatch(/event\.key !== "Escape"/);
-    expect(surfaceSrc).toMatch(/event\.stopPropagation\(\)/);
     expect(surfaceSrc).toMatch(/onClick=\{\(\) => onCloseRef\.current\(\)\}/);
-    expect(surfaceSrc).toMatch(/onPointerDown=\{\(event\) => event\.stopPropagation\(\)\}/);
-    expect(surfaceSrc).toMatch(/closeButtonRef\.current\?\.focus\(\)/);
-    expect(surfaceSrc).toMatch(/returnFocusRef\.current\?\.focus\(\)/);
-    expect(surfaceSrc).toMatch(/addEventListener\("keydown", onKeyDown, true\)/);
     expect(renderToStaticMarkup(
       <HowItWorksSurface
         open={false}

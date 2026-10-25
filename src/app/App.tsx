@@ -13,6 +13,9 @@ import { UserGuideSurface } from "./UserGuideSurface.js";
 import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
 import { WhatsNewSurface } from "./WhatsNewSurface.js";
 import { ModeIdentity } from "./ModeIdentity.js";
+import { GlobalHeader } from "./GlobalHeader.js";
+import { GlobalFooter } from "./GlobalFooter.js";
+import type { OpenResource } from "./shellResources.js";
 import { EnvironmentAffordance } from "../ui/hodograph/EnvironmentAffordance.js";
 import { EnvironmentSurface } from "../ui/hodograph/EnvironmentSurface.js";
 import { ExploreEnvironmentSelector, ExploreLaboratoryAbout } from "../ui/hodograph/ExploreEnvironmentSelector.js";
@@ -179,6 +182,8 @@ export function App() {
   const userGuideOpenRef = useRef(false);
   userGuideOpenRef.current = userGuideOpen;
   const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+  const whatsNewOpenRef = useRef(false);
+  whatsNewOpenRef.current = whatsNewOpen;
   const whatsNewTriggerRef = useRef<HTMLButtonElement | null>(null);
   const sceneHandleRef = useRef<TracerViewportHandle | null>(null);
   const sceneSlotsRef = useRef<ExploreSceneSlots | null>(null);
@@ -438,7 +443,7 @@ export function App() {
       if (
         howItWorksOpenRef.current ||
         glossaryOpenRef.current ||
-        userGuideOpenRef.current
+        userGuideOpenRef.current || whatsNewOpenRef.current
       ) {
         return;
       }
@@ -611,6 +616,10 @@ export function App() {
   };
 
   const closeWhatsNew = () => setWhatsNewOpen(false);
+  const openResource: OpenResource = (resource, trigger) => {
+    const actions = { "user-guide": openUserGuide, "how-it-works": openHowItWorks, glossary: openGlossary, "whats-new": openWhatsNew };
+    actions[resource](trigger);
+  };
 
   const howItWorksContext: HowItWorksContext =
     appSurface === "landing" || lab === null
@@ -892,18 +901,21 @@ export function App() {
 
   return (
     <>
+    <div className={explore !== null ? "explore-shell" : undefined}>
+    {explore !== null && <GlobalHeader section="explore" onHome={returnToLanding} onExplore={() => {}}
+      onLearn={() => { returnToLanding(); setAppSurface("learn"); }} onOpenResource={openResource} />}
     <main className={explore !== null ? "app app--explore" : "app app--guided"}>
       <header className="app__header">
-        <ModeIdentity
-          mode={explore !== null ? "Explore" : "Guided"}
+        {explore !== null ? <h1 className="explore-shell__title">Explore</h1> : <ModeIdentity
+          mode="Guided"
           onReturnToLanding={returnToLanding}
-        />
+        />}
         <div className="app__header-tools">
           <EnvironmentAffordance
             expanded={environmentOpen}
             onToggle={() => setEnvironmentOpen((open) => !open)}
           />
-          <UserGuideAffordance
+          {explore === null && <><UserGuideAffordance
             expanded={userGuideOpen}
             onOpen={openUserGuide}
           />
@@ -916,6 +928,7 @@ export function App() {
             onOpen={openGlossary}
           />
           <WhatsNewAffordance expanded={whatsNewOpen} onOpen={openWhatsNew} />
+          </>}
         </div>
       </header>
       <p className="app__subtitle">
@@ -1127,6 +1140,8 @@ export function App() {
         </section>
       )}
     </main>
+    {explore !== null && <GlobalFooter variant="compact" onOpenResource={openResource} />}
+    </div>
     {userGuideSurface}
     {howItWorksSurface}
     {glossarySurface}

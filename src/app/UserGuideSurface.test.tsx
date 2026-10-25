@@ -43,11 +43,8 @@ describe("UserGuideSurface", () => {
     expect(html).toContain("aria-labelledby=\"user-guide-title\"");
     expect(html).toContain(USER_GUIDE_TITLE);
     expect(html).toContain("Close");
+    expect(surfaceSrc).toContain("useResourceDialog(open, onClose, returnFocusRef, closeButtonRef)");
     expect(html).toContain("Practical manual");
-    expect(surfaceSrc).toMatch(/event\.key !== "Escape"/);
-    expect(surfaceSrc).toMatch(/event\.stopPropagation\(\)/);
-    expect(surfaceSrc).toMatch(/closeButtonRef.current\?\.focus\(\)/);
-    expect(surfaceSrc).toMatch(/returnFocusRef.current\?\.focus\(\)/);
     expect(
       renderToStaticMarkup(
         <UserGuideSurface

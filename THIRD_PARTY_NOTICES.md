@@ -204,3 +204,19 @@ request and selected by Iryna. It was created specifically for this project,
 not knowingly taken from third-party artwork. This statement does not claim
 exclusive copyright or uniqueness of the generated image. The project-code
 license does not itself grant an asset license.
+
+
+## Landing photograph — North Texas supercell
+
+Author: Rollingskyphoto. Title: *Mesocyclone and Associated Updraft in North Texas*.
+Photographed near Granbury, Texas, 18 May 2025.
+Source: https://commons.wikimedia.org/wiki/File:Mesocyclone_and_Associated_Updraft_in_North_Texas.jpg
+License: Creative Commons Attribution 4.0 International
+(https://creativecommons.org/licenses/by/4.0/).
+
+Local asset: `src/app/assets/north-texas-supercell.webp`. Resized from 6960×4640
+to 1200×800 and encoded as WebP; CSS uses object-fit: cover for display.
+This image is provided under CC BY 4.0, separately from the code license.
+Preserve author/source/license credit and indicate further changes on reuse.
+A photograph of the real atmosphere, not project-generated model output;
+no endorsement by the photographer is implied.

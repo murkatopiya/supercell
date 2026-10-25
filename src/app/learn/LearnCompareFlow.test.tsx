@@ -140,10 +140,25 @@ it("unwinds an already owned scene when observer initialization fails", () => {
 });
 it("enters lesson independently, preserves same selection and cleans on exit/re-entry", () => {
   act(() => root.render(<LearnPage onReturnToLanding={vi.fn()} onEnterExplore={vi.fn()} />));
-  click("Compare the Flow"); expect(host.querySelector('[aria-current="page"]')?.getAttribute("aria-label")).toBe("Compare the Flow");
+  click("Compare the Flow"); expect(host.querySelector('[aria-label="Learn lessons"] [aria-current="page"]')?.getAttribute("aria-label")).toBe("Compare the Flow");
   const scene = state.scenes.at(-1)!; click("Compare the Flow"); expect(scene.dispose).not.toHaveBeenCalled();
   click("Look Around"); expect(scene.dispose).toHaveBeenCalledOnce();
   click("Compare the Flow"); expect(host.textContent).toContain("19.30 m/s"); expect(state.samples).toHaveBeenCalledTimes(2);
+});
+
+it("does not resample or recreate Compare Flow through the global Resources disclosure and dialog", () => {
+  act(() => root.render(<LearnPage onReturnToLanding={vi.fn()} onEnterExplore={vi.fn()} />));
+  click("Compare the Flow");
+  const session = state.sessions[0], scene = state.scenes.at(-1)!;
+  const samples = state.samples.mock.calls.length;
+  click("Move B"); click("Resources ▾");
+  expect(scene.setComparisonPlacementMode.mock.lastCall?.[0]).toBe(true);
+  click("User Guide");
+  expect(scene.setComparisonPlacementMode.mock.lastCall?.[0]).toBe(false);
+  click("Close");
+  expect(state.sessions).toEqual([session]); expect(state.samples).toHaveBeenCalledTimes(samples);
+  expect(scene.dispose).not.toHaveBeenCalled();
+  expect(document.activeElement?.textContent).toBe("Resources ▾");
 });
 
 function canvas() {

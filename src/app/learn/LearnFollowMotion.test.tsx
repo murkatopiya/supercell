@@ -46,6 +46,10 @@ function mount(strict = false) {
 }
 function lab(): ReturnType<typeof createLearnSession> { return state.sessions[0]; }
 function click(label: string) {
+  if (label === "Home") {
+    const home = host.querySelector<HTMLAnchorElement>('.global-header__brand')!;
+    act(() => { home.focus(); home.click(); }); return;
+  }
   const button = [...host.querySelectorAll("button")].find(b => (b.getAttribute("aria-label") ?? b.textContent) === label);
   expect(button, label).toBeDefined();
   expect(button!.tabIndex).toBe(0); expect(button!.disabled).toBe(false);
@@ -220,18 +224,42 @@ it("starts paused, stops exactly at 1200 fixed steps, retains paths, and replays
 
 it("opens the shared model guide without discarding playback and restores focus", () => {
   act(() => root.render(<LearnPage onReturnToLanding={landing} onEnterExplore={explore} />));
-  expect(host.querySelector("footer h2")?.textContent).toBe("About this model");
-  expect(host.querySelector("footer")?.textContent).toContain("prescribed velocity field");
+  expect(host.querySelector(".learn__model-note-panel h2")?.textContent).toBe("About this model");
+  expect(host.querySelector(".learn__model-note-panel p")?.textContent).toBe("This is a computer model with a prescribed velocity field, not a reconstruction or forecast of a particular storm.");
+  expect(host.querySelector(".learn__model-note-panel button")).toBeNull();
+  expect(host.textContent).not.toContain("Learn · Model guide");
   click("Follow Motion"); click("Start"); frame(); frame();
   const session = lab(), before = session.pathHistory.samplesFor(0);
   click("How It Works"); frame(); frame();
   expect(host.querySelector('[role="dialog"]')?.textContent).toContain("How It Works");
   expect(session.pathHistory.samplesFor(0)).toEqual(before);
   click("Close");
-  expect(document.activeElement?.getAttribute("aria-label")).toBe("How It Works");
+  expect(document.activeElement?.textContent).toBe("How It Works");
   frame(); frame();
   expect(state.sessions).toHaveLength(1);
   expect(session.pathHistory.sampleCountFor(0)).toBeGreaterThan(before.length);
+});
+
+it.each(["User Guide", "How It Works", "Glossary", "What's New · V1.1"])("preserves the active Learn session through Resources / %s", label => {
+  act(() => root.render(<LearnPage onReturnToLanding={landing} onEnterExplore={explore} />));
+  click("Follow Motion"); click("Start"); frame(); frame();
+  const session = lab(), scene = state.scenes.at(-1)!;
+  const before = session.simulation.clock.time;
+  click("Resources ▾"); frame(); frame();
+  expect(session.simulation.clock.time).toBeGreaterThan(before);
+  click(label);
+  const history = session.pathHistory.samplesFor(0);
+  frame(); frame(); expect(session.pathHistory.samplesFor(0)).toEqual(history);
+  expect(host.querySelectorAll('[role="dialog"]')).toHaveLength(1);
+  expect(state.sessions).toHaveLength(1); expect(scene.dispose).not.toHaveBeenCalled();
+  click("Close");
+  expect(document.activeElement?.textContent).toBe("Resources ▾");
+  frame(); frame(); expect(session.pathHistory.sampleCountFor(0)).toBeGreaterThan(history.length);
+  click("Learn"); expect(state.sessions).toHaveLength(1); expect(scene.dispose).not.toHaveBeenCalled();
+  click("Home"); click("Stay here");
+  expect(document.activeElement).toBe(host.querySelector('.global-header__brand'));
+  expect(scene.dispose).not.toHaveBeenCalled(); expect(landing).not.toHaveBeenCalled();
+  click("Explore"); click("Leave for Explore"); expect(explore).toHaveBeenCalledOnce();
 });
 
 it("opens Read the Motion directly, observes current velocity, pauses, finishes and replays", () => {

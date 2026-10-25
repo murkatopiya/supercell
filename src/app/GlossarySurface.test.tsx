@@ -60,10 +60,7 @@ describe("GlossarySurface", () => {
     expect(html).toContain("aria-labelledby=\"glossary-title\"");
     expect(html).toContain(GLOSSARY_TITLE);
     expect(html).toContain("Close");
-    expect(surfaceSrc).toMatch(/event\.key !== "Escape"/);
-    expect(surfaceSrc).toMatch(/event\.stopPropagation\(\)/);
-    expect(surfaceSrc).toMatch(/closeButtonRef.current\?\.focus\(\)/);
-    expect(surfaceSrc).toMatch(/returnFocusRef.current\?\.focus\(\)/);
+    expect(surfaceSrc).toContain("useResourceDialog(open, onClose, returnFocusRef, closeButtonRef)");
     expect(
       renderToStaticMarkup(
         <GlossarySurface

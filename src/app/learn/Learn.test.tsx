@@ -47,7 +47,10 @@ function button(label: string) {
   expect(found, label).toBeDefined();
   return found!;
 }
-function click(label: string) { act(() => button(label).click()); }
+function click(label: string) { act(() => {
+  if (label === "Home") host.querySelector<HTMLAnchorElement>('.global-header__brand')!.click();
+  else button(label).click();
+}); }
 
 beforeEach(() => {
   vi.clearAllMocks(); spies.scenes.length = 0;
@@ -81,7 +84,7 @@ describe("Learn Slice 1", () => {
   it("offers native equal CTAs, enters Learn without Simulation, and disposes on return", () => {
     act(() => root.render(<App />));
     for (const label of ["Learn", "Explore"]) {
-      const cta = button(label);
+      const cta = [...host.querySelectorAll<HTMLButtonElement>(".landing__cta")].find(b => b.textContent === label)!;
       expect(cta.type).toBe("button"); expect(cta.disabled).toBe(false);
       expect(cta.tabIndex).toBe(0); expect(cta.className).toContain("ui-button--primary");
       cta.focus(); expect(document.activeElement).toBe(cta);
@@ -95,7 +98,9 @@ describe("Learn Slice 1", () => {
     expect(host.textContent).toContain("N/E/S/W mean north/east/south/west. The 0 marks the coordinate origin. Height increases upward.");
     expect(host.textContent).toContain("Its movement reveals where the air is going.");
     expect(host.querySelector(".learn__scene")?.firstElementChild?.classList.contains("learn__viewport")).toBe(true);
-    expect([...host.querySelectorAll("button")].map(b => b.getAttribute("aria-label") ?? b.textContent)).toEqual(["Home", "Explore", "Look Around", "Follow Motion", "Read the Motion", "Compare the Flow", "Next: Follow Motion", "Reset View", "How It Works"]);
+    expect([...host.querySelectorAll('[aria-label="Learn lessons"] button')].map(b => b.getAttribute("aria-label"))).toEqual(["Look Around", "Follow Motion", "Read the Motion", "Compare the Flow"]);
+    expect(host.querySelectorAll("footer")).toHaveLength(1);
+    expect(host.querySelector('[aria-label="Primary navigation"] [aria-current="page"]')?.textContent).toBe("Learn");
     const scene = spies.scenes[0]!;
     const [id, callback] = [...frames][0]!;
     frames.delete(id); act(() => callback(16));

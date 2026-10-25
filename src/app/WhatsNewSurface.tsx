@@ -1,4 +1,5 @@
-import { useEffect, useRef, type RefObject } from "react";
+import { useResourceDialog } from "./useResourceDialog.js";
+import { useRef, type RefObject } from "react";
 import { RELEASE_HISTORY } from "./releaseHistory.js";
 
 export interface WhatsNewSurfaceProps {
@@ -9,24 +10,7 @@ export interface WhatsNewSurfaceProps {
 
 export function WhatsNewSurface({ open, onClose, returnFocusRef }: WhatsNewSurfaceProps) {
   const closeRef = useRef<HTMLButtonElement | null>(null);
-  const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
-
-  useEffect(() => {
-    if (!open) return;
-    closeRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      event.preventDefault();
-      event.stopPropagation();
-      onCloseRef.current();
-    };
-    window.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown, true);
-      returnFocusRef.current?.focus();
-    };
-  }, [open, returnFocusRef]);
+  const onCloseRef = useResourceDialog(open, onClose, returnFocusRef, closeRef);
 
   if (!open) return null;
   return (

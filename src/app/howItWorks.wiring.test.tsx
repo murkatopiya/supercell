@@ -93,7 +93,7 @@ describe("How It Works Slice 6 wiring", () => {
   it("keeps How It Works outside the laboratory viewport and above the hodograph", () => {
     expect(appSrc).toMatch(/\{howItWorksSurface\}/);
     expect(appSrc).toMatch(
-      /<\/main>\s*\{userGuideSurface\}\s*\{howItWorksSurface\}/s,
+      /<\/main>[\s\S]*?<\/div>\s*\{userGuideSurface\}\s*\{howItWorksSurface\}/s,
     );
     expect(surfaceSrc).toMatch(/className="how-it-works"/);
     expect(surfaceSrc).toMatch(/position:fixed; inset:0; z-index:80/);

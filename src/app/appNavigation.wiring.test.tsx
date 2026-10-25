@@ -49,13 +49,15 @@ describe("App navigation Slice 1", () => {
     expect(appSrc).toMatch(/enterExplore[\s\S]*setAppSurface\("laboratory"\)/s);
   });
 
-  it("shows in-mode identity and returns to landing via Supercell", () => {
+  it("uses the shared Explore header and retains Guided identity", () => {
     const laboratoryHeader = appSrc.slice(
       appSrc.indexOf("app__header"),
       appSrc.indexOf("app__subtitle"),
     );
     expect(laboratoryHeader).toMatch(/ModeIdentity/);
-    expect(laboratoryHeader).toMatch(/mode=\{explore !== null \? "Explore" : "Guided"\}/);
+    expect(laboratoryHeader).toMatch(/mode="Guided"/);
+    expect(laboratoryHeader).toMatch(/<h1 className="explore-shell__title">Explore/);
+    expect(appSrc).toMatch(/<GlobalHeader section="explore" onHome=\{returnToLanding\}/);
     expect(laboratoryHeader).toMatch(/onReturnToLanding=\{returnToLanding\}/);
     expect(laboratoryHeader).not.toMatch(/app__mode-switch/);
     expect(laboratoryHeader).not.toMatch(/lab-experience-switch/);

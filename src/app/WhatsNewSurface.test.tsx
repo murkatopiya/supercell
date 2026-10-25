@@ -64,7 +64,7 @@ describe("What's new", () => {
     const landing = renderToStaticMarkup(<LandingPage onEnterLearn={() => {}} onEnterExplore={() => {}}
       onOpenUserGuide={() => {}} onOpenHowItWorks={() => {}} onOpenGlossary={() => {}}
       onOpenWhatsNew={() => {}} />);
-    expect(landing).toContain("What&#x27;s new · V1.1");
+    expect(landing).toContain("What&#x27;s New · V1.1");
     expect(landing).not.toContain("v0.1");
     expect(appSrc).toMatch(/<WhatsNewAffordance expanded=\{whatsNewOpen\} onOpen=\{openWhatsNew\}/);
     expect(appSrc).toMatch(/<WhatsNewSurface open=\{whatsNewOpen\}/);

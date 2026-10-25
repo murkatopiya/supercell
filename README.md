@@ -2,7 +2,7 @@
 
 **Explore the physics of atmospheric motion.**
 
-[**Open the live laboratory**](https://supercell.iryna.online/) · [Start with Learn](https://supercell.iryna.online/) · [Run locally](#run-locally) · [Scientific evidence](#scientific-evidence)
+[**Open the live application**](https://supercell.iryna.online/) · [Learn overview](#learn--guided-discovery) · [Run locally](#run-locally) · [Scientific evidence](#scientific-evidence)
 
 ![A real supercell thunderstorm with a mesocyclone and illuminated updraft over North Texas. This is an atmospheric photograph, not a model visualization.](src/app/assets/north-texas-supercell.webp)
 
@@ -32,11 +32,11 @@ No meteorology background is needed to **begin with Learn**. Understanding and i
 New to airflow models or tracers? **Learn** introduces the ideas step by step, using a simple prescribed Demo flow:
 
 1. **Look Around:** orient yourself in the three-dimensional space and discover why an invisible velocity field needs a way to be observed.
-2. **Follow Motion:** release two passive markers at the same height, watch their paths develop, and compare how motion differs by starting location.
+2. **Follow Motion:** watch two passive tracers start at the same height, follow their recorded paths, and compare motion from different starting locations.
+3. **Read the Motion:** inspect a tracer's recorded path and local velocity vector at selected moments, and save a reference moment for comparison.
+4. **Compare the Flow:** compare velocity vectors and measurements at two stationary probes, repositioning probe B to sample other positions at a fixed model time.
 
-These are the first implemented lessons. Further lessons—including how to read velocity vectors—are planned, not yet available.
-
-[**Open Learn in the live application**](https://supercell.iryna.online/)
+[**Run locally, then choose Learn**](#run-locally)
 
 ### Explore — independent investigation
 
@@ -49,7 +49,7 @@ Use the existing laboratory to investigate available environments and prescribed
 
 The application's **User Guide**, **How It Works**, and **Glossary** explain controls and technical terms in more detail.
 
-[**Open Explore in the live application**](https://supercell.iryna.online/)
+[**Open the live application, then choose Explore**](https://supercell.iryna.online/)
 
 ## More than a visualization
 
@@ -146,7 +146,7 @@ These commands are **not** scientific qualification or a reproduction of campaig
 
 ## Release and project status
 
-**Latest published product release: V1.1, released/deployed on 2026-09-16.** V1.1 added interactive prescribed storm motion for observed environments. Subsequent interface improvements, including Learn and the redesigned landing page, are product/UI developments and do not by themselves change scientific validation status. Product publication is separate from scientific validation.
+**Latest published product release: V1.1, released/deployed on 2026-09-16.** V1.1 added interactive prescribed storm motion for observed environments. The four-lesson Learn MVP is implemented and checkpointed at `c5a394d0cdf1bbefa7caff0ddf5ed2dba09b955c`. The subsequent Unified UI Shell and Landing polish are implemented and developer-verified, with final integrated human product/UI visual acceptance recorded for the bounded publication. These implementation milestones do not establish a new published release; V1.1 remains the latest established published release until a new release is explicitly authorized and published. These UI developments do not by themselves change scientific validation status. Product publication is separate from scientific validation.
 
 See [PROJECT_STATUS](docs/PROJECT_STATUS.md) for the authoritative current research state and [What's New in the application](https://supercell.iryna.online/) for user-facing changes.
 

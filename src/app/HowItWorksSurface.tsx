@@ -1,4 +1,5 @@
-import { useEffect, useRef, type RefObject } from "react";
+import { useResourceDialog } from "./useResourceDialog.js";
+import { useRef, type RefObject } from "react";
 import {
   HOW_IT_WORKS_ANALYSIS,
   HOW_IT_WORKS_ANALYSIS_UNAVAILABLE,
@@ -49,28 +50,7 @@ export function HowItWorksSurface({
   returnFocusRef,
 }: HowItWorksSurfaceProps) {
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-    closeButtonRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") {
-        return;
-      }
-      event.preventDefault();
-      event.stopPropagation();
-      onCloseRef.current();
-    };
-    window.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown, true);
-      returnFocusRef.current?.focus();
-    };
-  }, [open, returnFocusRef]);
+  const onCloseRef = useResourceDialog(open, onClose, returnFocusRef, closeButtonRef);
 
   if (!open) {
     return null;

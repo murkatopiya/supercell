@@ -8,7 +8,8 @@ import surfaceSrc from "./UserGuideSurface.tsx?raw";
 describe("User Guide wiring", () => {
   it("exposes User Guide on landing and in laboratory header chrome", () => {
     const html = renderToStaticMarkup(<App />);
-    expect(html).toContain("aria-label=\"User Guide\"");
+    expect(html).toContain(">User Guide</button>");
+    expect(appSrc).toContain('<GlobalHeader section="explore"');
     expect(landingSrc).toMatch(/onOpenUserGuide/);
     expect(appSrc).toMatch(/onOpenUserGuide=\{openUserGuide\}/);
     const header = appSrc.slice(
@@ -39,7 +40,7 @@ describe("User Guide wiring", () => {
     expect(appSrc).toMatch(/\{userGuideSurface\}/);
     expect(surfaceSrc).toMatch(/className="how-it-works"/);
     expect(surfaceSrc).toMatch(/position:fixed; inset:0; z-index:80/);
-    expect(surfaceSrc).toMatch(/event\.key !== "Escape"/);
+    expect(surfaceSrc).toContain("useResourceDialog(open, onClose, returnFocusRef, closeButtonRef)");
   });
 
   it("suspends the viewport while User Guide is open without writing user paused", () => {

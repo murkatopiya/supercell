@@ -41,7 +41,8 @@ function fakeSlots(): ExploreSceneSlots {
 describe("Glossary wiring", () => {
   it("exposes Glossary on landing and in Explore header chrome", () => {
     const html = renderToStaticMarkup(<App />);
-    expect(html).toContain("aria-label=\"Glossary\"");
+    expect(html).toContain(">Glossary</button>");
+    expect(appSrc).toContain('<GlobalHeader section="explore"');
     expect(landingSrc).toMatch(/onOpenGlossary/);
     expect(appSrc).toMatch(/onOpenGlossary=\{openGlossary\}/);
     const header = appSrc.slice(
@@ -66,7 +67,7 @@ describe("Glossary wiring", () => {
     expect(openFn).not.toMatch(/createExploreLab/);
     expect(appSrc).toMatch(/\{glossarySurface\}/);
     expect(surfaceSrc).toMatch(/className="how-it-works"/);
-    expect(surfaceSrc).toMatch(/event\.key !== "Escape"/);
+    expect(surfaceSrc).toContain("useResourceDialog(open, onClose, returnFocusRef, closeButtonRef)");
   });
 
   it("suspends the viewport while Glossary is open without writing user paused", () => {

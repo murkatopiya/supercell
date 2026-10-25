@@ -3,50 +3,21 @@ import {
   LANDING_CTA_LABEL,
   LANDING_DESKTOP_RECOMMENDED,
   LANDING_DISCLAIMER,
-  LANDING_ATTRIBUTION_ESC_CASES,
-  LANDING_ATTRIBUTION_LABEL,
-  LANDING_ATTRIBUTION_MOORE_CASE,
   LANDING_ENVIRONMENTS_ANALYSIS_NOTE,
   LANDING_ENVIRONMENTS_LEAD,
-  LANDING_FOOTER_CREATED_BY,
-  LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME,
-  LANDING_FOOTER_PORTFOLIO_LABEL,
-  LANDING_FOOTER_PORTFOLIO_URL,
-  LANDING_FOOTER_PRODUCT,
-  LANDING_FOOTER_PROJECT,
-  LANDING_GUIDED_LATER_NOTE,
   LANDING_LEDE,
   LANDING_OBSERVED_ENVIRONMENT_LINKS,
-  LANDING_WHATS_NEXT_DIRECTION,
-  LANDING_WHATS_NEXT_LEAD,
   LANDING_WHATS_NEXT_PRINCIPLE_CLOSE,
   LANDING_WHATS_NEXT_PRINCIPLE_LEAD,
   LANDING_WHATS_NEXT_STAGES,
   LANDING_WHATS_NEXT_TITLE,
-  LANDING_WHY_EXISTS_CONNECTS,
-  LANDING_WHY_EXISTS_LEAD,
-  LANDING_WHY_EXISTS_TITLE,
 } from "./landingContent.js";
-import {
-  PUBLIC_VERSION,
-  PUBLIC_VERSION_BADGE,
-  PUBLIC_VERSION_STATUS,
-} from "./publicVersion.js";
-import {
-  EOL_SOUNDING_DATASET_DOI,
-  EOL_SOUNDING_DATASET_DOI_URL,
-  EOL_SOUNDING_DATASET_ID,
-  EOL_SOUNDING_DATASET_NAME,
-  EOL_SOUNDING_DATASET_URL,
-  IGRA_ARCHIVE_DOI,
-  IGRA_ARCHIVE_DOI_URL,
-  IGRA_ARCHIVE_SHORT_NAME,
-  IGRA_ARCHIVE_URL,
-  IGRA_DSI,
-  IGRA_STATION_ID,
-} from "./glossaryContent.js";
-import logoUrl from "./assets/supercell-explorer-logo.webp";
-import { WhatsNewAffordance } from "./WhatsNewAffordance.js";
+import "./landing.css";
+import stormPhotoUrl from "./assets/north-texas-supercell.webp";
+
+import { GlobalHeader } from "./GlobalHeader.js";
+import { GlobalFooter } from "./GlobalFooter.js";
+import type { OpenResource } from "./shellResources.js";
 
 export interface LandingPageProps {
   onEnterLearn: () => void;
@@ -78,164 +49,73 @@ export function LandingPage({
   glossaryOpen = false,
   whatsNewOpen = false,
 }: LandingPageProps) {
+  const openResource: OpenResource = (resource, trigger) => {
+    const actions = { "user-guide": onOpenUserGuide, "how-it-works": onOpenHowItWorks, glossary: onOpenGlossary, "whats-new": onOpenWhatsNew };
+    actions[resource]?.(trigger);
+  };
   return (
+    <>
+    <GlobalHeader section="home" onHome={() => {}} onExplore={onEnterExplore} onLearn={onEnterLearn} onOpenResource={openResource} />
     <main className="app app--landing">
-      <div className="landing__hero">
-        <div className="landing__intro">
-          <header className="landing__header">
-            <p className="landing__badge">{PUBLIC_VERSION_BADGE}</p>
-            <h1 className="app__title ui-type-app-title">Supercell Explorer</h1>
+      <div className="landing__dark">
+        <section className="landing__hero" aria-labelledby="landing-title">
+          <div className="landing__intro">
+            <p className="landing__eyebrow">An interactive computational environment</p>
+            <h1 id="landing-title">Explore the physics of atmospheric motion.</h1>
             <p className="landing__lede">{LANDING_LEDE}</p>
-          </header>
-
-          <div className="landing__actions">
-            <button type="button" className="ui-button ui-button--primary landing__cta" onClick={onEnterLearn}>Learn</button>
-            <button
-              type="button"
-              className="ui-button ui-button--primary landing__cta"
-              onClick={onEnterExplore}
-            >
-              {LANDING_CTA_LABEL}
-            </button>
-            <button
-              type="button"
-              className="ui-button ui-button--subtle landing__how-it-works"
-              aria-label="User Guide"
-              aria-haspopup="dialog"
-              aria-expanded={userGuideOpen}
-              onClick={(event) => onOpenUserGuide(event.currentTarget)}
-            >
-              User Guide
-            </button>
-            <button
-              type="button"
-              className="ui-button ui-button--subtle landing__how-it-works"
-              aria-label="How It Works"
-              aria-haspopup="dialog"
-              aria-expanded={howItWorksOpen}
-              onClick={(event) => onOpenHowItWorks(event.currentTarget)}
-            >
-              How It Works
-            </button>
-            <button
-              type="button"
-              className="ui-button ui-button--subtle landing__how-it-works"
-              aria-label="Glossary"
-              aria-haspopup="dialog"
-              aria-expanded={glossaryOpen}
-              onClick={(event) => onOpenGlossary(event.currentTarget)}
-            >
-              Glossary
-            </button>
-            {onOpenWhatsNew && <WhatsNewAffordance expanded={whatsNewOpen}
-              onOpen={onOpenWhatsNew} className="landing__how-it-works" />}
+            <p className="landing__audience">For curious learners, students, and researchers investigating how air moves.</p>
           </div>
-        </div>
-        <img
-          className="landing__logo"
-          src={logoUrl}
-          width={2048}
-          height={768}
-          alt=""
-        />
-      </div>
-
-      <div className="landing__purpose-row">
-        <section
-          className="landing__purpose"
-          aria-labelledby="landing-purpose-title"
-        >
-          <h2 id="landing-purpose-title" className="landing__section-title">
-            {LANDING_WHY_EXISTS_TITLE}
-          </h2>
-          <p className="landing__purpose-copy">{LANDING_WHY_EXISTS_LEAD}</p>
-          <p className="landing__purpose-copy">{LANDING_WHY_EXISTS_CONNECTS}</p>
+          <figure className="landing__storm-photo">
+            <img src={stormPhotoUrl} width={1200} height={800} fetchPriority="high"
+              alt="A layered supercell thunderstorm with lightning illuminating its upper clouds near Granbury, North Texas." />
+            <figcaption>
+              Real storm photograph · Granbury, Texas, 18 May 2025. Not a model visualization.<br />
+              Photo: <a href="https://commons.wikimedia.org/wiki/File:Mesocyclone_and_Associated_Updraft_in_North_Texas.jpg" target="_blank" rel="noopener noreferrer">Rollingskyphoto / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. Resized, WebP; display crop.
+            </figcaption>
+          </figure>
         </section>
-
-        <section
-          className="landing__capabilities"
-          aria-labelledby="landing-capabilities-title"
-        >
-          <h2 id="landing-capabilities-title" className="landing__section-title">
-            What you can do
-          </h2>
+        <section className="landing__pathways" aria-labelledby="landing-pathways-title">
+          <h2 id="landing-pathways-title" className="landing__eyebrow">Two ways to explore</h2>
+          <div className="landing__pathway-grid">
+            <article className="landing-pathway landing-pathway--explore">
+              <div><h3>Independent investigation</h3><p>Investigate available datasets, follow calculated trajectories, and inspect vector quantities within explicit scientific assumptions.</p></div>
+              <button type="button" className="ui-button ui-button--primary landing__cta" onClick={onEnterExplore}>{LANDING_CTA_LABEL}</button>
+            </article>
+            <article className="landing-pathway">
+              <div><h3>Guided discovery</h3><p>Explore four interactive lessons on 3D orientation, passive tracer motion, velocity vectors, and spatial comparisons.</p></div>
+              <button type="button" className="ui-button ui-button--primary landing__cta" onClick={onEnterLearn}>Learn</button>
+            </article>
+          </div>
+        </section>
+      </div>
+      <div className="landing__content">
+        <section className="landing__capabilities" aria-labelledby="landing-capabilities-title">
+          <p className="landing__eyebrow">Inside the laboratory</p>
+          <h2 id="landing-capabilities-title" className="landing__section-title">More than a visualization</h2>
           <div className="landing__capability-grid">
-            {LANDING_CAPABILITIES.map((capability) => (
-              <article
-                key={capability.title}
-                className="ui-panel landing-capability"
-              >
+            {LANDING_CAPABILITIES.map((capability, index) => (
+              <article key={capability.title} className="landing-capability">
+                <span className="landing-capability__number" aria-hidden="true">0{index + 1}</span>
                 <h3 className="landing-capability__title">{capability.title}</h3>
                 <p className="landing-capability__copy">{capability.copy}</p>
               </article>
             ))}
           </div>
         </section>
-      </div>
 
-      <section
-        className="landing__whats-next"
-        aria-labelledby="landing-whats-next-title"
-      >
-        <h2 id="landing-whats-next-title" className="landing__section-title">
-          {LANDING_WHATS_NEXT_TITLE}
-        </h2>
-        <p className="landing__whats-next-copy">{LANDING_WHATS_NEXT_LEAD}</p>
-        <p className="landing__whats-next-copy">{LANDING_WHATS_NEXT_DIRECTION}</p>
+      <section className="landing__whats-next" aria-labelledby="landing-whats-next-title">
+        <h2 id="landing-whats-next-title" className="landing__section-title">{LANDING_WHATS_NEXT_TITLE}</h2>
+        <p className="landing__whats-next-copy">The current laboratory starts with motion. The next questions reach into what drives it.</p>
         <div className="landing-roadmap">
-          {LANDING_WHATS_NEXT_STAGES.flatMap((stage, index) => {
-            const card = (
-              <article
-                key={stage.id}
-                className={`ui-panel landing-roadmap__stage landing-roadmap__stage--${stage.kind}`}
-              >
-                <h3 className="landing-roadmap__label">
-                  {stage.status} · {stage.topic}
-                </h3>
-                {"copy" in stage ? (
-                  <p className="landing-roadmap__detail">{stage.copy}</p>
-                ) : (
-                  <p className="landing-roadmap__detail">
-                    {"tokens" in stage
-                      ? stage.tokens.map((token) => (
-                          <span
-                            key={token}
-                            className="landing-roadmap__token"
-                          >
-                            {token}
-                          </span>
-                        ))
-                      : null}
-                    {stage.items.map((item, itemIndex) => (
-                      <span key={item}>
-                        {"tokens" in stage || itemIndex > 0 ? (
-                          <span aria-hidden="true"> · </span>
-                        ) : null}
-                        {item}
-                      </span>
-                    ))}
-                  </p>
-                )}
-              </article>
-            );
-            if (index === 0) {
-              return [card];
-            }
-            return [
-              <span
-                key={`${stage.id}-connector`}
-                className="landing-roadmap__connector"
-                aria-hidden="true"
-              />,
-              card,
-            ];
-          })}
+          {LANDING_WHATS_NEXT_STAGES.map(stage => (
+            <article key={stage.id} className={`ui-panel landing-roadmap__stage landing-roadmap__stage--${stage.kind}`}>
+              <h3 className="landing-roadmap__label">{stage.status} · {stage.topic}</h3>
+              <p className="landing-roadmap__detail">{stage.copy}</p>
+            </article>
+          ))}
         </div>
-        <p className="landing__whats-next-principle">
-          {LANDING_WHATS_NEXT_PRINCIPLE_LEAD} {LANDING_WHATS_NEXT_PRINCIPLE_CLOSE}
-        </p>
+        <p className="landing__whats-next-principle">{LANDING_WHATS_NEXT_PRINCIPLE_LEAD} {LANDING_WHATS_NEXT_PRINCIPLE_CLOSE}</p>
       </section>
-
       <section
         className="ui-panel ui-panel--info landing__disclaimer"
         aria-labelledby="landing-disclaimer-title"
@@ -274,123 +154,9 @@ export function LandingPage({
         {LANDING_DESKTOP_RECOMMENDED}
       </p>
 
-      <footer className="landing__footer">
-        <div className="landing__footer-identity">
-          <p className="landing__footer-line">
-            {LANDING_FOOTER_PRODUCT} · {PUBLIC_VERSION} {PUBLIC_VERSION_STATUS}
-          </p>
-          <p className="landing__footer-line">
-            {LANDING_FOOTER_CREATED_BY} ·{" "}
-            <a
-              className="landing__footer-link"
-              href={LANDING_FOOTER_PORTFOLIO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={LANDING_FOOTER_PORTFOLIO_ACCESSIBLE_NAME}
-            >
-              {LANDING_FOOTER_PORTFOLIO_LABEL}
-              <span aria-hidden="true"> ↗</span>
-            </a>
-          </p>
-        </div>
-        <div className="landing__footer-meta">
-          <p className="landing__footer-line">{LANDING_FOOTER_PROJECT}</p>
-          <details className="landing__attribution">
-            <summary className="landing__attribution-summary">
-              {LANDING_ATTRIBUTION_LABEL}
-            </summary>
-            <div className="ui-panel landing__attribution-panel">
-              <article className="landing__attribution-source">
-                <h3 className="landing__attribution-case">
-                  {LANDING_ATTRIBUTION_ESC_CASES}
-                </h3>
-                <dl className="landing__attribution-fields">
-                  <div className="landing__attribution-field">
-                    <dt>Dataset</dt>
-                    <dd>
-                      EOL{" "}
-                      <a
-                        className="landing__footer-link"
-                        href={EOL_SOUNDING_DATASET_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`EOL dataset ${EOL_SOUNDING_DATASET_ID} (opens in a new tab)`}
-                      >
-                        {EOL_SOUNDING_DATASET_ID}
-                        <span aria-hidden="true"> ↗</span>
-                      </a>
-                    </dd>
-                  </div>
-                  <div className="landing__attribution-field">
-                    <dt>System</dt>
-                    <dd>{EOL_SOUNDING_DATASET_NAME}</dd>
-                  </div>
-                  <div className="landing__attribution-field">
-                    <dt>DOI</dt>
-                    <dd>
-                      <a
-                        className="landing__footer-link"
-                        href={EOL_SOUNDING_DATASET_DOI_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`DOI ${EOL_SOUNDING_DATASET_DOI} (opens in a new tab)`}
-                      >
-                        {EOL_SOUNDING_DATASET_DOI}
-                        <span aria-hidden="true"> ↗</span>
-                      </a>
-                    </dd>
-                  </div>
-                </dl>
-              </article>
-              <article className="landing__attribution-source">
-                <h3 className="landing__attribution-case">
-                  {LANDING_ATTRIBUTION_MOORE_CASE}
-                </h3>
-                <dl className="landing__attribution-fields">
-                  <div className="landing__attribution-field">
-                    <dt>Dataset</dt>
-                    <dd>
-                      <a
-                        className="landing__footer-link"
-                        href={IGRA_ARCHIVE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${IGRA_ARCHIVE_SHORT_NAME} archive (opens in a new tab)`}
-                      >
-                        {IGRA_ARCHIVE_SHORT_NAME}
-                        <span aria-hidden="true"> ↗</span>
-                      </a>
-                    </dd>
-                  </div>
-                  <div className="landing__attribution-field">
-                    <dt>Station</dt>
-                    <dd>{IGRA_STATION_ID}</dd>
-                  </div>
-                  <div className="landing__attribution-field">
-                    <dt>ID</dt>
-                    <dd>{IGRA_DSI}</dd>
-                  </div>
-                  <div className="landing__attribution-field">
-                    <dt>DOI</dt>
-                    <dd>
-                      <a
-                        className="landing__footer-link"
-                        href={IGRA_ARCHIVE_DOI_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`DOI ${IGRA_ARCHIVE_DOI} (opens in a new tab)`}
-                      >
-                        {IGRA_ARCHIVE_DOI}
-                        <span aria-hidden="true"> ↗</span>
-                      </a>
-                    </dd>
-                  </div>
-                </dl>
-              </article>
-            </div>
-          </details>
-        </div>
-      </footer>
+      </div>
     </main>
+    <GlobalFooter onOpenResource={openResource} />
+    </>
   );
 }
