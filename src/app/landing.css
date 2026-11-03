@@ -6,7 +6,7 @@
 .app--landing .landing__brand-name { display: flex; align-items: center; gap: .9rem; font-size: 1.125rem; font-weight: 650; }
 .app--landing .landing__logo { display: block; width: 200px; height: auto; flex-shrink: 0; object-fit: contain; }
 .app--landing .landing__badge { margin: 0; padding: .45rem .7rem; border: 1px solid #455666; border-radius: 4px; background: transparent; color: #c1d0dc; font-size: .75rem; white-space: nowrap; }
-.app--landing .landing__hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 3rem; padding: 3.5rem 0 2.5rem; }
+.app--landing .landing__hero { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 3rem; padding: 1.5rem 0 2.5rem; }
 .app--landing .landing__intro { display: block; }
 .app--landing .landing__eyebrow { margin: 0 0 1rem; font-size: .7rem; line-height: 1.5; font-weight: 650; letter-spacing: .15em; text-transform: uppercase; }
 .app--landing .landing__dark .landing__eyebrow { color: #a9c5d2; }
