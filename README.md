@@ -202,4 +202,4 @@ Use [CITATION.cff](CITATION.cff) to cite Supercell Explorer. Cite source dataset
 
 Start with [PROJECT_STATUS](docs/PROJECT_STATUS.md), the [documentation index](docs/README.md), [physics definitions](docs/physics/), or [software architecture](docs/ARCHITECTURE.md). [Known limitations](docs/KNOWN_LIMITATIONS.md) preserves the historical V1 baseline with scope clarifications. [Long-term vision](docs/CONCEPT.md) describes future concepts, not implemented capabilities.
 
-*For the full interactive 3D laboratory, a desktop browser is recommended.*
+*For the full interactive 3D laboratory, a desktop browser is strongly recommended. On entry, narrow screens (under 768 CSS pixels) and devices with a coarse primary pointer and no hover show a dismissible recommendation. Choose “Continue on mobile”, use the close button, or press Escape to proceed. Dismissal is remembered for the tab session when browser session storage is available.*
