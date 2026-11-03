@@ -16,6 +16,22 @@ const click = (element: HTMLElement) => act(() => element.click());
 const key = (element: HTMLElement, value: string, shiftKey = false) => act(() => element.dispatchEvent(new KeyboardEvent("keydown", { key: value, shiftKey, bubbles: true, cancelable: true })));
 
 describe("shared shell behavior", () => {
+  it("reveals Home attribution on opening without moving focus or scrolling on close", () => {
+    act(() => root.render(<GlobalFooter onOpenResource={() => {}} revealAttributionOnOpen />));
+    const details = host.querySelector("details")!, summary = details.querySelector("summary")!;
+    const scroll = vi.fn(); details.scrollIntoView = scroll;
+    summary.focus();
+    act(() => { details.open = true; details.dispatchEvent(new Event("toggle")); });
+    expect(scroll).toHaveBeenCalledWith({ block: "start", behavior: "instant" });
+    expect(document.activeElement).toBe(summary);
+    scroll.mockClear();
+    act(() => { details.open = false; details.dispatchEvent(new Event("toggle")); });
+    expect(scroll).not.toHaveBeenCalled();
+    act(() => root.render(<GlobalFooter onOpenResource={() => {}} />));
+    act(() => { details.open = true; details.dispatchEvent(new Event("toggle")); });
+    expect(scroll).not.toHaveBeenCalled();
+  });
+
   it("keeps current navigation a no-op and sends logo departures through the page", () => {
     const home = vi.fn(), learn = vi.fn(), explore = vi.fn();
     act(() => root.render(<GlobalHeader section="learn" onHome={home} onLearn={learn} onExplore={explore} onOpenResource={() => {}} />));

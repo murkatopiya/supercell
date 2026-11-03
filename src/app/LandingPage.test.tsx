@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+/** @vitest-environment happy-dom */
+import { describe, expect, it, vi } from "vitest";
+import { act } from "react";
+import { createRoot } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
 import { LandingPage } from "./LandingPage.js";
 import {
@@ -36,6 +39,7 @@ import {
 import landingSrc from "./LandingPage.tsx?raw";
 import identitySrc from "../explore/exploreEnvironmentIdentity.ts?raw";
 import { readFileSync } from "node:fs";
+const appCss = readFileSync("src/app/landing.css", "utf8");
 
 function landingMarkup() {
   return renderToStaticMarkup(
@@ -49,9 +53,85 @@ function landingMarkup() {
   );
 }
 
-const appCss = readFileSync(new URL("./landing.css", import.meta.url), "utf8");
+
 
 describe("LandingPage", () => {
+  it("uses single native entry surfaces and routes every Home CTA through existing callbacks", () => {
+    const host = document.createElement("div"); document.body.append(host);
+    const root = createRoot(host), learn = vi.fn(), explore = vi.fn();
+    (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+    try {
+      act(() => root.render(<LandingPage onEnterLearn={learn} onEnterExplore={explore} onOpenUserGuide={() => {}} onOpenHowItWorks={() => {}} onOpenGlossary={() => {}} />));
+      const cards = host.querySelectorAll<HTMLButtonElement>("button.landing-pathway");
+      expect(cards).toHaveLength(2);
+      expect(cards[0].querySelector(".landing-pathway__title")?.textContent).toBe("Explore");
+      expect(cards[1].querySelector(".landing-pathway__title")?.textContent).toBe("Learn");
+      cards.forEach((card, i) => {
+        expect(card.type).toBe("button");
+        expect(card.querySelector("button, a, [tabindex]")).toBeNull();
+        expect(card.hasAttribute("target")).toBe(false);
+        expect(card.getAttribute("aria-labelledby")?.split(" ").every(id => host.querySelector(`#${id}`))).toBe(true);
+        expect(host.querySelector(`#${card.getAttribute("aria-describedby")}`)).not.toBeNull();
+        card.focus(); expect(document.activeElement).toBe(card);
+        act(() => card.click());
+        expect(i === 0 ? explore : learn).toHaveBeenCalledTimes(1);
+      });
+      const groups = host.querySelectorAll(".landing__mode-actions");
+      expect(groups).toHaveLength(2);
+      expect(host.querySelector(".landing__capabilities")?.nextElementSibling).toBe(groups[0]);
+      expect(host.querySelector("main")?.lastElementChild?.lastElementChild).toBe(groups[1]);
+      groups.forEach(group => {
+        const buttons = group.querySelectorAll<HTMLButtonElement>("button");
+        expect([...buttons].map(b => b.textContent)).toEqual(["Open Explore", "Start with Learn"]);
+        buttons.forEach(button => { button.focus(); expect(document.activeElement).toBe(button); act(() => button.click()); });
+      });
+      expect(learn).toHaveBeenCalledTimes(3); expect(explore).toHaveBeenCalledTimes(3);
+      expect(appCss).toContain("button.landing-pathway:hover");
+      expect(appCss).toContain("button:focus-visible");
+      expect(appCss).toContain("prefers-reduced-motion: reduce");
+      expect(appCss).toContain("transition: none; animation: none");
+      expect(appCss).toContain("flex: 1 1 100%");
+    } finally { act(() => root.unmount()); host.remove(); }
+  });
+
+  it("opens repository resources in a new tab with decorative GitHub icons", () => {
+    const html = landingMarkup();
+    const links = html.match(/<a [^>]*href="https:\/\/github\.com[^>]*>[\s\S]*?<\/a>/g) ?? [];
+    expect(links).toHaveLength(5);
+    for (const link of links) {
+      expect(link).toContain('target="_blank"');
+      expect(link).toContain('rel="noopener noreferrer"');
+      expect(link).toContain('aria-hidden="true"');
+      expect(link).toContain('focusable="false"');
+    }
+  });
+  it("introduces T1 through a physical question while retaining diagnostic boundaries", () => {
+    const html = landingMarkup();
+    const section = html.slice(html.indexOf('class="landing__advanced"'), html.indexOf('class="landing__whats-next"'));
+    expect(section).toContain("Advanced analysis");
+    expect(section).toContain("How can airflow contribute to rotation?");
+    expect(section).toContain("rotation around a horizontal axis");
+    expect(section).toContain("tilt some of that horizontal rotation toward the vertical");
+    expect(section).toContain("one contribution to the local rate of change of vertical vorticity");
+    expect(section).toContain("does not calculate the complete development of a rotating storm");
+    expect(section).toContain("#comparison-scopes-and-advanced-availability");
+    expect(section).toContain("supported recorded points in Goshen, Prospect Valley and Dumas");
+    expect(section).toContain("Moore and Demo have no Analysis T1; unavailable does not mean zero");
+    expect(section).toContain("#comparison-scopes-and-advanced-availability");
+  });
+  it("keeps mode choices explicit and bounds the comparison exercise", () => {
+    const html = landingMarkup();
+    expect(html).toContain('id="landing-learn-title"');
+    expect(html).toContain('id="landing-explore-title"');
+    expect(html).toContain("inspect numerical velocity measurements");
+    expect(html).not.toContain("Explore has no arbitrary stationary A/B probes");
+
+    expect(html).toContain("selected observed weather-balloon wind profiles");
+    expect(html).toContain("#first-exercise-compare-motion-at-fixed-height-and-time");
+    expect(html).toContain("Scientific methods and evidence");
+    expect(html).not.toContain("explore-inspector.webp");
+  });
+
   it("explains the current laboratory and marks it as a V1.1 research prototype", () => {
     const html = landingMarkup();
     expect(html).toContain("Supercell Explorer");
@@ -66,7 +146,7 @@ describe("LandingPage", () => {
   it("uses Explore as the primary CTA and does not offer Guided as a peer choice", () => {
     const html = landingMarkup();
     expect(html).toContain(LANDING_CTA_LABEL);
-    expect(html).toContain("landing__cta");
+    expect(html).toContain("landing-pathway");
     expect(html).toContain("ui-button--primary");
     expect(html).not.toContain("landing-mode-card");
     expect(html).not.toContain("onEnterGuided");
@@ -115,7 +195,7 @@ describe("LandingPage", () => {
     expect(html).toContain('rel="noopener noreferrer"');
     expect(html.match(/class="landing-environment-link"/g)).toHaveLength(4);
     expect(html).not.toContain("Prospect Valley tornado");
-    expect(html).not.toContain("reconstruction");
+    expect(html).not.toContain("historical storm reconstruction");
     expect(html).not.toContain("Simulate the");
     expect(landingSrc).not.toContain("weather.gov");
     expect(identitySrc).not.toContain("eventContextUrl");
@@ -124,8 +204,10 @@ describe("LandingPage", () => {
 
   it("summarizes capabilities without claiming scientific qualification", () => {
     const html = landingMarkup();
-    for (const copy of ["Scientific data", "Motion &amp; vectors", "Controlled experiments", "project-specific, constrained vertical-tilting diagnostic", "prescribed updraft vertical velocity", "Source uses retained observed winds; Analysis is separately filtered"]) expect(html).toContain(copy);
-    expect(html).not.toMatch(/scientifically validated|production ready|parcel spin-up/i);
+    for (const copy of ["Inspect local motion", "Understand prescribed velocity contributions", "Follow calculated tracer paths", "Compare observations", "not independently observed physical causes", "Moore and Demo have no Analysis T1", "unavailable does not mean zero"]) expect(html).toContain(copy);
+    expect(html.indexOf("landing__advanced")).toBeGreaterThan(html.indexOf("landing__capabilities"));
+    expect(html).toContain("does not calculate the complete development of a rotating storm");
+    expect(html).not.toMatch(/scientifically validated|production ready/i);
   });
 
   it("exposes User Guide, How It Works, and Glossary as active help entries, not a third mode", () => {
@@ -154,12 +236,12 @@ describe("LandingPage", () => {
 
   it("describes the four available interactive lessons and makes both entry points primary", () => {
     const html = landingMarkup();
-    expect(html).toContain("Explore the physics of atmospheric motion.");
-    expect(html).toContain("Independent investigation");
+    expect(html).toContain("Explore airflow. Examine the motion.");
+    expect(html).toContain("Independent laboratory investigation");
     expect(html).toContain("Guided discovery");
     expect(html).not.toContain("Velocity-vector instruction is planned.");
-    expect(html).toContain("Explore four interactive lessons on 3D orientation, passive tracer motion, velocity vectors, and spatial comparisons.");
-    expect(html.match(/ui-button--primary landing__cta/g)).toHaveLength(2);
+    expect(html).toContain("Start with four guided lessons introducing 3D orientation, passive tracers, velocity vectors, and spatial comparison.");
+    expect(html.match(/class="landing-pathway(?: landing-pathway--explore)?"/g)).toHaveLength(2);
     expect(html).not.toContain("landing__cta--learn");
     for (const label of ["Goshen · 2009", "Prospect Valley · 2010", "Dumas · 2010", "Moore · 2013"]) expect(html).toContain(label);
   });
@@ -172,17 +254,11 @@ describe("LandingPage", () => {
 
   it("separates current kinematics from future research without implying certification", () => {
     const html = landingMarkup();
-    expect(html).toContain(LANDING_WHATS_NEXT_TITLE);
-    expect(html).toContain("V1 · Kinematics");
-    expect(html).toContain("Available today:");
-    expect(html).toContain("Next · Thermodynamics");
-    expect(html).toContain("Not implemented.");
-    expect(html).toContain("convective available potential energy (CAPE)");
-    expect(html).toContain("convective inhibition (CIN)");
-    expect(html).toContain("user-defined scenarios");
-    expect(html).toContain("not available today");
+    expect(html).toContain(LANDING_WHATS_NEXT_TITLE.replace("&", "&amp;"));
+    for (const text of ["Current", "Planned Research", "Long-term Vision", "Interactive Atmospheric Research", "not a fully validated atmospheric simulation", "remain unimplemented", "independently of thermodynamics", "independently solving atmospheric equations", "subject to separate scientific design and validation", "compatible user-provided meteorological datasets", "reproducible research workflows"]) expect(html).toContain(text);
+    expect(html.match(/class="landing-roadmap__stage landing-roadmap__stage--/g)).toHaveLength(3);
     expect(html).toContain(LANDING_WHATS_NEXT_PRINCIPLE_LEAD);
-    expect(html).toContain(LANDING_WHATS_NEXT_PRINCIPLE_CLOSE);
+    expect(html).toContain("Research directions are not rigid technical dependencies.");
   });
 
   it("offers equal Learn and Explore CTAs and does not wire the roadmap into the laboratory", () => {
@@ -190,7 +266,7 @@ describe("LandingPage", () => {
     expect(html).toContain(LANDING_CTA_LABEL);
     expect(html.match(/ui-button--primary/g)).toHaveLength(2);
     expect(html).toContain("Learn");
-    expect(html).toContain("landing__cta");
+    expect(html).toContain("landing-pathway");
     expect(landingSrc).not.toContain("createExploreLab");
     expect(landingSrc).not.toContain("createGuidedLab");
     expect(landingSrc).not.toContain("onEnterExplore()");

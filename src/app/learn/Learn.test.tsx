@@ -84,9 +84,9 @@ describe("Learn Slice 1", () => {
   it("offers native equal CTAs, enters Learn without Simulation, and disposes on return", () => {
     act(() => root.render(<App />));
     for (const label of ["Learn", "Explore"]) {
-      const cta = [...host.querySelectorAll<HTMLButtonElement>(".landing__cta")].find(b => b.textContent === label)!;
+      const cta = [...host.querySelectorAll<HTMLButtonElement>("button.landing-pathway")].find(b => b.querySelector(".landing-pathway__title")?.textContent === label)!;
       expect(cta.type).toBe("button"); expect(cta.disabled).toBe(false);
-      expect(cta.tabIndex).toBe(0); expect(cta.className).toContain("ui-button--primary");
+      expect(cta.tabIndex).toBe(0); expect(cta.querySelector("button, a")).toBeNull();
       cta.focus(); expect(document.activeElement).toBe(cta);
     }
     click("Learn");

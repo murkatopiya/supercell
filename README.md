@@ -1,6 +1,6 @@
 # Supercell Explorer
 
-**Explore the physics of atmospheric motion.**
+**Explore airflow. Examine the motion.**
 
 [**Open the live application**](https://supercell.iryna.online/) · [Learn overview](#learn--guided-discovery) · [Run locally](#run-locally) · [Scientific evidence](#scientific-evidence)
 
@@ -10,11 +10,9 @@
 
 ## Why this project exists
 
-What happens to airflow inside a supercell thunderstorm? How does motion change across three-dimensional space? And what can we learn by following movement through a calculated flow rather than looking at conditions at one fixed location?
+**Supercell Explorer is an interactive kinematic laboratory for inspecting local velocity, its prescribed contributions, and calculated passive tracer paths.** Learn provides prepared Demo comparisons; Explore supports tracer investigations using selected sounding-derived environmental wind profiles or a synthetic Demo environment.
 
-**Supercell Explorer is an interactive computational laboratory for investigating these questions.** It brings together atmospheric observations, prescribed three-dimensional flow, passive tracer trajectories, numerical methods, and inspection tools. The aim is to make complex patterns of motion visible **and examinable**—while being explicit about what the model represents, what has been tested, and what remains uncertain.
-
-It began with a simple curiosity: *what would it be like to move through a supercell and examine the physics along the way?* The current prototype is a first, deliberately constrained step toward that larger research vision.
+The environmental observations are wind profiles from selected soundings—not observed three-dimensional storm fields. Storm-local updraft, rotation, inflow, outflow and downdraft are prescribed. Results describe this model's behavior within its documented assumptions and qualification limits.
 
 ### Who is it for?
 
@@ -51,13 +49,43 @@ The application's **User Guide**, **How It Works**, and **Glossary** explain con
 
 [**Open the live application, then choose Explore**](https://supercell.iryna.online/)
 
-## More than a visualization
+## Questions you can investigate
 
-| Scientific data | Motion and vectors | Controlled experiments |
-| --- | --- | --- |
-| Selected sounding-derived environmental profiles with documented provenance | Three-dimensional passive tracer trajectories, sampled velocities, and supported diagnostics | Prescribed flow geometry, explicit parameters, numerical procedures, and recorded checks |
+| Research or learning question | Available tool or measurement | Supported interpretation | Scientific limitation |
+| --- | --- | --- | --- |
+| How does local motion differ between locations? | Learn → Compare the Flow: stationary A/B probes, velocity arrows, speed and components | Spatial differences within the same prescribed field at fixed height and time | Two readings do not establish forces, convergence or real-storm dynamics |
+| What velocity does a tracer encounter along its path? | Explore historical Inspector; Learn → Read the Motion timeline and saved reference | Local field values at recorded model positions and times | Calculated paths, not observations of real air parcels or thermodynamic parcel evolution |
+| Which prescribed contributions make up local velocity? | Explore → Inspector → Why this motion?: contribution vectors and magnitudes | The model-defined vector decomposition at the selected point | Contributions are not independently observed physical causes; their magnitudes are not additive shares of total speed |
+| How do paths differ between starting locations? | Learn → Follow Motion: two prepared passive tracers | Different calculated paths through the same prescribed Demo field | A prepared comparison, not a general ensemble or experiment-comparison system |
+| What changes when assigned storm motion C changes? | Explore's observed-environment C editor, hodograph marker and tracer investigations | Behavior of the configured storm-relative prescribed field | C is assigned, not an estimated storm track; interactive exploration does not establish qualified observed Lagrangian C-response |
+| How do T1's factors and alignment relate? | Supported Analysis T1 samples, numerical factors and hypothetical alignment | The reduced diagnostic's calculation and alignment dependence | Not full vorticity evolution, parcel spin-up or independent validation |
 
-A key research question is: **how does following a moving tracer change what we observe compared with sampling the flow at a fixed point?** A hodograph describes how environmental wind varies with height; a tracer offers a moving perspective through the prescribed flow. Tracers reveal the model's motion without changing the velocity field themselves.
+A hodograph describes how environmental wind varies with height. A tracer provides a moving perspective through the prescribed field. Together with numerical inspection, these views connect where a marker goes with the local model velocity it encounters, without the tracer changing the airflow.
+
+## First exercise: compare motion at fixed height and time
+
+1. Open **Learn → Compare the Flow**.
+2. Select **Reset B**.
+3. Note the displayed speed and vertical velocity at A and B. Expand **Show horizontal components** to inspect eastward and northward velocity.
+4. Press **East · 100 m** five times.
+5. Record B's new readings and compare them with its starting readings and the unchanged reference A.
+6. Select **Reset B** to return to the starting observation location.
+
+| Observation | East | North | Height above model ground | Model time |
+| --- | ---: | ---: | ---: | ---: |
+| Fixed probe A | 0 m | −4000 m | 1000 m | 0 s |
+| B after Reset B | 2400 m | 0 m | 1000 m | 0 s |
+| B after five eastward steps | 2900 m | 0 m | 1000 m | 0 s |
+
+Moving B changes where the field is sampled. The probes are stationary while measured; they are not transported tracers. Differences describe spatial variation within this prescribed field, not time evolution or evidence of real-storm dynamics. Compare the displayed values manually; this exercise requires no export or saved experiment archive.
+
+## Comparison scopes and advanced availability
+
+Learn provides three distinct comparisons: two prepared tracer paths, a selected recorded moment against one saved reference, and two stationary probes in a bounded plane at fixed height/time.
+
+Explore supports tracer release, current and recorded-point inspection, and assigned-C changes for observed environments. It does not provide arbitrary stationary A/B probes or general side-by-side C experiments. Applying a changed C clears existing tracer/history state; the observed ground-relative wind profile and prescribed storm-local fields remain unchanged. Historical inspection samples a recorded position/time; it does not rewind the live tracer.
+
+Analysis T1 is available for supported recorded samples in Goshen, Prospect Valley and Dumas. Its readout distinguishes full filter support from boundary-conditioned support. Moore and Demo have no Analysis representation; out-of-domain or unavailable values are not zero, and Source T1 is not a public fallback. Hypothetical alignment requires a defined alignment and does not modify the field or tracer path. See the [trajectory diagnostic methodology](docs/architecture/62-trajectory-tilting-explorer-v1.md).
 
 ## Research direction
 
@@ -72,6 +100,14 @@ A key research question is: **how does following a moving tracer change what we 
 The [long-term vision](docs/CONCEPT.md) describes additional possibilities, not current capabilities. This roadmap does not imply that a complete atmospheric simulation or a forecasting system is already available.
 
 ## What the model actually represents
+
+**Observation:** selected sounding measurements supply environmental horizontal wind as a function of height. Demo uses a synthetic profile.
+
+**Prescription:** the model combines environmental advection with prescribed storm-local fields. Assigned storm motion C sets environmental wind relative to the storm.
+
+**Calculation:** passive tracers are numerically transported through the combined velocity field. They neither change the airflow nor represent full thermodynamic parcels.
+
+**Diagnosis:** local velocity observations and selected diagnostic quantities describe the model. Analysis T1 uses a separate processed environmental representation; it does not replace Source wind for tracer advection or feed back into motion.
 
 | Component | Meaning |
 | --- | --- |

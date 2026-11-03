@@ -22,7 +22,7 @@ import {
 import { RESOURCE_ITEMS, type OpenResource } from "./shellResources.js";
 import "./shell.css";
 
-export function GlobalFooter({ variant = "full", onOpenResource }: { variant?: "full" | "compact"; onOpenResource: OpenResource }) {
+export function GlobalFooter({ variant = "full", onOpenResource, revealAttributionOnOpen = false }: { variant?: "full" | "compact"; onOpenResource: OpenResource; revealAttributionOnOpen?: boolean }) {
   if (variant === "compact") return (
     <footer className="global-footer global-footer--compact">
       <p className="global-footer__footer-line">{LANDING_FOOTER_PRODUCT} · {PUBLIC_VERSION}</p>
@@ -57,16 +57,20 @@ export function GlobalFooter({ variant = "full", onOpenResource }: { variant?: "
         <div className="global-footer__footer-meta">
           <p className="global-footer__footer-line">{LANDING_FOOTER_PROJECT}</p>
           <p className="global-footer__footer-line">Not a weather forecasting system</p>
-          <DataAttribution />
+          <DataAttribution revealOnOpen={revealAttributionOnOpen} />
         </div>
     </footer>
   );
 }
 
 /** Existing attribution content is shared by the full Footer and compact status strip. */
-function DataAttribution() {
+function DataAttribution({ revealOnOpen = false }: { revealOnOpen?: boolean }) {
   return (
-          <details className="global-footer__attribution">
+          <details className="global-footer__attribution" onToggle={event => {
+            if (revealOnOpen && event.currentTarget.open) {
+              event.currentTarget.scrollIntoView({ block: "start", behavior: "instant" });
+            }
+          }}>
             <summary className="global-footer__attribution-summary">
               {LANDING_ATTRIBUTION_LABEL}
             </summary>

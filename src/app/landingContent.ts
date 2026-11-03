@@ -15,14 +15,14 @@ import {
 } from "../explore/exploreEnvironmentIdentity.js";
 
 export const LANDING_LEDE =
-  "Investigate three-dimensional airflow through scientific data, calculated trajectories, and numerical experiments.";
+  "An interactive 3D laboratory for exploring airflow inside a model of a supercell thunderstorm.";
 
 export const LANDING_CTA_LABEL = "Explore";
 
 export const LANDING_DISCLAIMER =
   "Supercell Explorer is an experimental kinematic laboratory, not a weather forecast or a full atmospheric simulation. Its airflow is prescribed, and results must be interpreted within the assumptions and validation limits of each experiment.";
 
-export const LANDING_ENVIRONMENTS_LEAD = "Observed environments include";
+export const LANDING_ENVIRONMENTS_LEAD = "Observed environments include selected severe-storm cases in the United States:";
 
 export const LANDING_ENVIRONMENTS_ANALYSIS_NOTE =
   "Source uses retained observed winds; Analysis is separately filtered. Analysis explanation along a trajectory is available only when an Analysis representation exists. Storm-local airflow and storm motion remain prescribed.";
@@ -93,39 +93,34 @@ export const LANDING_ATTRIBUTION_ESC_CASES =
 export const LANDING_ATTRIBUTION_MOORE_CASE = "Moore";
 
 export const LANDING_CAPABILITIES = [
-  { title: "Scientific data", copy: "Work with documented atmospheric environments and their source data, including observed wind profiles." },
-  { title: "Motion & vectors", copy: "Examine three-dimensional passive tracer trajectories and velocity components. Analysis T1 is a project-specific, constrained vertical-tilting diagnostic using environmental horizontal vorticity and the horizontal gradient of prescribed updraft vertical velocity." },
-  { title: "Controlled experiments", copy: "Investigate model behavior using explicit numerical methods, assumptions, and reproducible procedures." },
+  { title: "Inspect local motion", copy: "Select a tracer or a point along its recorded path in Explore to inspect position, time, velocity components, and speed." },
+  { title: "Understand prescribed velocity contributions", copy: "Use “Why this motion?” to inspect the model components that contribute to local velocity. These are model-defined components, not independently observed physical causes." },
+  { title: "Follow calculated tracer paths", copy: "Release passive tracers in Explore and follow their recorded paths. Inspect earlier points along a path without rewinding the live tracer." },
+  { title: "Compare observations", copy: "In Learn, compare two fixed observation points, two prepared tracer paths, or a recorded moment with a saved reference. Each comparison uses a prepared Demo setup." },
 ] as const;
 
-export const LANDING_WHATS_NEXT_TITLE = "Research direction";
+export const LANDING_README_URL = "https://github.com/murkatopiya/supercell/blob/main/README.md";
+export const LANDING_SCIENCE_URL = "https://github.com/murkatopiya/supercell/blob/main/docs/README.md";
 
-export const LANDING_WHATS_NEXT_PRINCIPLE_LEAD =
-  "Kinematics first. Thermodynamics next.";
+export const LANDING_WHATS_NEXT_TITLE = "Research & Development Roadmap";
 
-export const LANDING_WHATS_NEXT_PRINCIPLE_CLOSE =
-  "Coupling only when the physics earns it.";
+export const LANDING_WHATS_NEXT_PRINCIPLE_LEAD = "Investigate → Understand → Experiment";
+export const LANDING_WHATS_NEXT_PRINCIPLE_CLOSE = "Research directions, not rigid technical dependencies.";
 
 export const LANDING_WHATS_NEXT_STAGES = [
   {
-    id: "kinematics",
-    kind: "current",
-    status: "V1",
-    topic: "Kinematics",
-    copy: "Available today: observed wind profiles, prescribed storm-local airflow, tracer trajectories, and constrained Analysis T1.",
+    id: "kinematics", kind: "current", status: "Current", topic: "Kinematics",
+    copy: "Investigate prescribed 3D airflow, selected observed environmental wind profiles, calculated trajectories, velocity components, and supported diagnostics.",
+    qualification: "The current research prototype is a kinematic laboratory, not a fully validated atmospheric simulation.",
   },
   {
-    id: "thermodynamics",
-    kind: "next",
-    status: "Next",
-    topic: "Thermodynamics",
-    copy: "Future research: atmospheric stability, parcel thermodynamics, buoyancy, convective available potential energy (CAPE) and convective inhibition (CIN). Not implemented.",
+    id: "thermodynamics", kind: "next", status: "Planned Research", topic: "Thermodynamics",
+    copy: "Investigate temperature, moisture, buoyancy, atmospheric instability, and convective potential energy (CAPE/CIN).",
+    qualification: "Future research may extend the laboratory toward physically justified coupling, subject to separate model design and validation.",
   },
   {
-    id: "coupled",
-    kind: "later",
-    status: "Later",
-    topic: "Coupled mechanisms & user-defined scenarios",
-    copy: "Longer-term direction, not available today. Only where scientifically justified and actually implemented.",
+    id: "interactive-research", kind: "later", status: "Long-term Vision", topic: "Interactive Atmospheric Research",
+    copy: "A configurable environment for user-defined atmospheric experiments: import and analyze compatible user-provided meteorological datasets, investigate interactive model output and calculated trajectories, and build reproducible research workflows.",
+    qualification: "Longer-term development may explore independent numerical atmospheric modeling, subject to separate scientific design and validation.",
   },
 ] as const;
